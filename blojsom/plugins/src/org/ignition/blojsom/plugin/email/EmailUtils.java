@@ -47,23 +47,24 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.3 2003-04-03 04:00:11 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.4 2003-04-04 02:52:52 czarneckid Exp $
  */
 public class EmailUtils {
 
     /**
      * Variable name for the message arraylist in the context on the plugin chain
      */
-    public static final String CONTEXT_VARIABLE = "BLOJSOM_OUTBOUNDMAIL";
+    public static final String BLOJSOM_OUTBOUNDMAIL = "BLOJSOM_OUTBOUNDMAIL";
 
 
     /**
      * Ensure that the ArrayList exists in the context, otherwise create it
+     *
      * @param context Context
      */
     private static void checkContext(Map context) {
-        if (!context.containsKey(CONTEXT_VARIABLE)) {
-            context.put(CONTEXT_VARIABLE, new ArrayList(1));
+        if (!context.containsKey(BLOJSOM_OUTBOUNDMAIL)) {
+            context.put(BLOJSOM_OUTBOUNDMAIL, new ArrayList(1));
         }
     }
 
@@ -78,9 +79,9 @@ public class EmailUtils {
      */
     public static void notifyBlogAuthor(String subject, String message, Map context) {
         checkContext(context);
-        List _messagelist = (ArrayList) context.get(CONTEXT_VARIABLE);
+        List _messagelist = (List) context.get(BLOJSOM_OUTBOUNDMAIL);
         _messagelist.add(new EmailMessage(subject, message));
-        context.put(CONTEXT_VARIABLE, _messagelist);
+        context.put(BLOJSOM_OUTBOUNDMAIL, _messagelist);
     }
 
 

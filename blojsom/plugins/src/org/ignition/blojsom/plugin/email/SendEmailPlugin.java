@@ -57,7 +57,7 @@ import java.util.*;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.3 2003-03-31 02:57:31 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.4 2003-04-04 02:53:03 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -122,7 +122,7 @@ public class SendEmailPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
-        List _messagelist = (ArrayList) context.get(EmailUtils.CONTEXT_VARIABLE);
+        List _messagelist = (ArrayList) context.get(EmailUtils.BLOJSOM_OUTBOUNDMAIL);
         if (_messagelist != null) {
             for (int x = 0; x < +_messagelist.size(); x++) {
                 EmailMessage _msg = (EmailMessage) _messagelist.get(x);
