@@ -9,7 +9,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>$BLOJSOM_BLOG.getBlogName()</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link rel="stylesheet" href="$BLOJSOM_SITE_URL/pumpkin.css" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" TYPE="image/x-icon"/>
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
