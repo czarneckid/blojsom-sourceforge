@@ -40,7 +40,7 @@ import java.util.Date;
  * BlogReferer
  *
  * @author Mark Lussier
- * @version $Id: BlogReferer.java,v 1.7 2003-07-01 02:22:09 czarneckid Exp $
+ * @version $Id: BlogReferer.java,v 1.8 2003-07-01 02:35:51 czarneckid Exp $
  */
 public class BlogReferer {
 
@@ -127,7 +127,7 @@ public class BlogReferer {
      * @param lastreferal Last referral date
      */
     public void setLastReferral(Date lastreferal) {
-        if (lastreferal.compareTo(_lastreferal) > 0) {
+        if (lastreferal.compareTo(_lastreferal) < 0) {
             _lastreferal = lastreferal;
             _istoday = determineToday();
         }
@@ -163,7 +163,7 @@ public class BlogReferer {
      *
      * @return a boolean indicating if it was set today
      */
-    public boolean determineToday() {
+    private boolean determineToday() {
         return (RefererLogPlugin.getRefererDate(new Date()).equals(RefererLogPlugin.getRefererDate(_lastreferal)));
     }
 }
