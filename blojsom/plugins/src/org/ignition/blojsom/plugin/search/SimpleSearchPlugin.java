@@ -51,7 +51,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.1 2003-03-28 22:06:50 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.2 2003-04-01 15:03:19 intabulas Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -107,7 +107,7 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
         }
 
         if (entriesMatchingQuery.size() == 0) {
-            return null;
+            return new BlogEntry[0];
         } else {
             return (BlogEntry[]) entriesMatchingQuery.toArray(new BlogEntry[entriesMatchingQuery.size()]);
         }
