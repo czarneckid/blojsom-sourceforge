@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.3 2003-08-11 02:04:17 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.4 2003-09-08 16:20:21 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -735,10 +735,21 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return The Hash as Hex String
      */
     public static String digestString(String data) {
+        return digestString("MD5");
+    }
+
+    /**
+     * Performs an Digest onthe given String content for the given algorithm
+     *
+     * @param data Content to digest
+     * @param algorithm the algorithm to use (MD5, SHA1)
+     * @return The Hash as Hex String
+     */
+    public static String digestString(String data, String algorithm) {
         String result = null;
         if (data != null) {
             try {
-                MessageDigest _md = MessageDigest.getInstance("MD5");
+                MessageDigest _md = MessageDigest.getInstance(algorithm);
                 _md.update(data.getBytes());
                 byte[] _digest = _md.digest();
                 String _ds = toHexString(_digest, 0, _digest.length);
@@ -749,6 +760,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
         return result;
     }
+
 
     /**
      * Convert Byte Array to Hex Value
