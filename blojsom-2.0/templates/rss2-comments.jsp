@@ -4,7 +4,7 @@
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogEntry,
                  org.blojsom.util.BlojsomUtils,
-                 java.util.ArrayList,
+                 java.util.List,
                  org.blojsom.blog.BlogComment"
                  session="false"%>
 <%
@@ -37,7 +37,7 @@
 
 
         <%
-             ArrayList blogComments = blogEntry.getComments();
+             List blogComments = blogEntry.getComments();
              if (blogComments != null) {
              for (int j = 0; j < blogComments.size(); j++) {
                    BlogComment blogComment = (BlogComment) blogComments.get(j);

@@ -1,6 +1,6 @@
 <%@ page import="org.blojsom.util.BlojsomConstants,
-                 java.util.ArrayList,
-                 org.blojsom.blog.*"
+                 org.blojsom.blog.*,
+                 java.util.List"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
@@ -88,7 +88,7 @@
         <p class="weblogtitle">Trackback for this entry</p>
         <p class="weblogdateline"><%= blogEntry.getLink() %>&amp;tb=y</p>
         <%
-            ArrayList blogTrackbacks = blogEntry.getTrackbacks();
+            List blogTrackbacks = blogEntry.getTrackbacks();
             if (blogTrackbacks != null) {
             for (int j = 0; j < blogTrackbacks.size(); j++) {
                 Trackback trackback = (Trackback) blogTrackbacks.get(j);
