@@ -49,10 +49,10 @@ import java.util.*;
 
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins
- * to filter content
+ * to filter content.
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.9 2003-04-19 02:45:07 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.10 2003-04-26 23:08:26 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
