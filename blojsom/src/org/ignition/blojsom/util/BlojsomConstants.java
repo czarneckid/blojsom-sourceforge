@@ -103,12 +103,12 @@ public interface BlojsomConstants {
     /**
      * RFC 822 style date format
      */
-    public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
+    public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy kk:mm:ss Z";
 
     /**
      * ISO 8601 style date format
      * ISO 8601 [W3CDTF] date format (used in rdf flavor)
      */
-    public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-DD'T'kk:mmZZZZZ";
+    public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-d'T'kk:mm:ssZZZZZ";
 
 }
