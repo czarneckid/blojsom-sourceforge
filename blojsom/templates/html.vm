@@ -24,9 +24,11 @@ Available categories:
     <p class="weblogbottomline"></p>
 #end
 
-Available categories:
-#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    [<i><a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a></i>]
+#if (!$BLOJSOM_ENTRIES)
+    Available categories:
+    #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+        [<i><a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a></i>]
+    #end
 #end
 
 <p />
