@@ -36,7 +36,7 @@ General:<br />
 - New <a href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</a> (RSD) flavor provides support for tools like <a href="http://www.audblog.com">AudBlog</a><br/>
 - Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from <i>blog-entry-filename.meta</i><br />
 - Added "Eclipse" theme courtesy of <a href="http://dmartin.org/blog/">Dan Martin</a><br />
-- Added "Shrubbery" theme courtest of <a href="http://acrump.info/blog/">Andrew Crump</a><br />
+- Added "Shrubbery" theme courtesy of <a href="http://acrump.info/blog/">Andrew Crump</a><br />
 - Persisted "Remember Me" checkbox value<br />
 - Normalized mechanism for blojsom to share certain templates across themes (e.g. trackback success and failure pages)<br />
 - Added <i>blog-file-encoding</i> parameter to <i>blojsom.properties</i> so that blog entries/comments/trackbacks could
@@ -47,6 +47,8 @@ exception classes to subclass from this root exception class<br />
 - File extension for entries posted via XML-RPC is now configurable via the <i>blog-xmlrpc-entry-extension</i>
 parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i><br />
 - Added <tt>Blog</tt> as a parameter to the <tt>GenericDispatcher.init()</tt> method<br />
+- All setXXX methods in the <tt>Blog</tt> class have been deprecated.<br />
+
 <p />
 Extension changes:<br />
 - The newPost() methods for the Blogger and MetaWebLog API now stores the poster's user id as entry
