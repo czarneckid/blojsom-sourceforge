@@ -108,11 +108,11 @@ public class VelocityDispatcher implements GenericDispatcher {
         }
 
         // We  need that content length, especially for RSS Feeds
-        String content  = sw.toString();
+        String content = sw.toString();
         httpServletResponse.addIntHeader("Content-Length", content.length());
 
         OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
-        osw.write( content );
+        osw.write(content);
         osw.flush();
     }
 }
