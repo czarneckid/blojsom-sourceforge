@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.60 2005-01-11 02:34:15 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.61 2005-01-23 19:17:15 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -397,5 +397,8 @@ public interface BlojsomConstants {
     // Configuration filename defaults
     public static final String DEFAULT_FLAVOR_CONFIGURATION_FILE = "flavor.properties";
     public static final String DEFAULT_PLUGIN_CONFIGURATION_FILE = "plugin.properties";
-    public static final String DEFAULT_DISPATCHER_CONFIGURATION_FILE = "dispatcher.properties"; 
+    public static final String DEFAULT_DISPATCHER_CONFIGURATION_FILE = "dispatcher.properties";
+
+    public static final String BLOG_PERMISSIONS_IP = "blog-permissions";
+    public static final String DEFAULT_PERMISSIONS_CONFIGURATION_FILE = "permissions.properties";
 }
