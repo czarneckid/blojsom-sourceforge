@@ -56,11 +56,22 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.15 2004-06-03 01:26:25 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.16 2004-07-25 02:00:05 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
     private static final String METAWEBLOG_ACCEPTED_TYPES_IP = "blojsom-extension-metaweblog-accepted-types";
+
+    /**
+     * Blogger API "blogid" key
+     */
+    private static final String MEMBER_BLOGID = "blogid";
+
+    /**
+     * Blogger API "blogName" key
+     */
+    private static final String MEMBER_BLOGNAME = "blogName";
+
     /**
      * MetaWeblog API "description" key
      */
@@ -194,6 +205,63 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     }
 
     /**
+     * Returns information on all the blogs a given user is a member of
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
+     * @return Blog category list
+     */
+    public Object getUsersBlogs(String appkey, String userid, String password) throws Exception {
+        _logger.debug("getUsersBlogs() Called ===[ SUPPORTED ]=======");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+            Vector result = new Vector();
+
+            BlogCategory[] _categories = _fetcher.fetchCategories(null, _blogUser);
+
+            if (_categories != null) {
+                for (int x = 0; x < _categories.length; x++) {
+                    Hashtable _bloglist = new Hashtable(3);
+                    BlogCategory _category = _categories[x];
+
+                    String _blogid = _category.getCategory();
+                    if (_blogid.length() > 1) {
+                        _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                    }
+
+                    String _description = "";
+                    Map _metadata = _category.getMetaData();
+                    if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
+                        _description = (String) _metadata.get(NAME_KEY);
+                    } else {
+                        _description = _blogid;
+                    }
+
+                    _bloglist.put(MEMBER_URL, _category.getCategoryURL());
+                    _bloglist.put(MEMBER_BLOGID, _blogid);
+                    _bloglist.put(MEMBER_BLOGNAME, _description);
+
+                    result.add(_bloglist);
+                }
+            } else {
+                throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
+            }
+
+            return result;
+        } catch (BlojsomException e) {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
+
+    /**
      * Authenticates a user and returns the categories available in the blojsom
      *
      * @param blogid   Dummy Value for Blojsom
@@ -242,6 +310,80 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 }
             } else {
                 throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
+            }
+
+            return result;
+        } catch (BlojsomException e) {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
+
+    /**
+     * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
+     *
+     * @param blogid   Unique identifier of the blog the post will be added to
+     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @param struct   Contents of the post
+     * @param publish  If true, the blog will be published immediately after the post is made
+     * @return Post ID of the added entry
+     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
+     */
+    public String newPost(String blogid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
+        _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("    Publish: " + publish);
+
+        blogid = BlojsomUtils.normalize(blogid);
+
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
+            String result = null;
+
+            //Quick verify that the categories are valid
+            File blogCategory = getBlogCategoryDirectory(blogid);
+            if (blogCategory.exists() && blogCategory.isDirectory()) {
+
+                Hashtable postcontent = struct;
+
+                String title = (String) postcontent.get(MEMBER_TITLE);
+                String description = (String) postcontent.get(MEMBER_DESCRIPTION);
+
+                if (title == null) {
+                    title = "No Title";
+                }
+
+                String filename = getBlogEntryFilename(description);
+                String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
+                String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
+
+                StringBuffer post = new StringBuffer();
+                post.append(title).append("\n").append(description);
+
+                try {
+                    File sourceFile = new File(outputfile);
+                    BlogEntry entry = _fetcher.newBlogEntry();
+                    HashMap attributeMap = new HashMap();
+                    HashMap blogEntryMetaData = new HashMap();
+
+                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
+                    entry.setAttributes(attributeMap);
+                    entry.setCategory(blogid);
+                    entry.setDescription(post.toString());
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                    entry.setMetaData(blogEntryMetaData);
+                    entry.save(_blogUser);
+                    result = postid;
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                }
             }
 
             return result;
@@ -344,82 +486,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         }
     }
 
-
-    /**
-     * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
-     *
-     * @param blogid   Unique identifier of the blog the post will be added to
-     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
-     * @param password Password for said username
-     * @param struct   Contents of the post
-     * @param publish  If true, the blog will be published immediately after the post is made
-     * @return Post ID of the added entry
-     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
-     */
-    public String newPost(String blogid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
-        _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
-        _logger.debug("     BlogId: " + blogid);
-        _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
-        _logger.debug("    Publish: " + publish);
-
-        blogid = BlojsomUtils.normalize(blogid);
-
-        try {
-            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
-            _authorizationProvider.authorize(_blogUser, null, userid, password);
-
-            String result = null;
-
-            //Quick verify that the categories are valid
-            File blogCategory = getBlogCategoryDirectory(blogid);
-            if (blogCategory.exists() && blogCategory.isDirectory()) {
-
-                Hashtable postcontent = struct;
-
-                String title = (String) postcontent.get(MEMBER_TITLE);
-                String description = (String) postcontent.get(MEMBER_DESCRIPTION);
-
-                if (title == null) {
-                    title = "No Title";
-                }
-
-                String filename = getBlogEntryFilename(description);
-                String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
-                String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
-
-                StringBuffer post = new StringBuffer();
-                post.append(title).append("\n").append(description);
-
-                try {
-                    File sourceFile = new File(outputfile);
-                    BlogEntry entry = _fetcher.newBlogEntry();
-                    HashMap attributeMap = new HashMap();
-                    HashMap blogEntryMetaData = new HashMap();
-
-                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
-                    entry.setAttributes(attributeMap);
-                    entry.setCategory(blogid);
-                    entry.setDescription(post.toString());
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
-                    entry.setMetaData(blogEntryMetaData);
-                    entry.save(_blogUser);
-                    result = postid;
-                } catch (BlojsomException e) {
-                    _logger.error(e);
-                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
-                }
-            }
-
-            return result;
-        } catch (BlojsomException e) {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
-            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
-        }
-    }
-
-
     /**
      * Retrieves a given post from the blog
      *
@@ -486,6 +552,68 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
+    }
+
+    /**
+     * Delete a Post
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param postid Unique identifier of the post to be changed
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param publish Ignored
+     * @throws XmlRpcException
+     * @return <code>true</code> if the entry was delete, <code>false</code> otherwise
+     */
+    public boolean deletePost(String appkey, String postid, String userid, String password, boolean publish) throws Exception {
+        _logger.debug("deletePost() Called =====[ SUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     PostId: " + postid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+
+        boolean result = false;
+
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
+            String category;
+            String permalink;
+            String match = "?" + PERMALINK_PARAM + "=";
+
+            int pos = postid.indexOf(match);
+            if (pos != -1) {
+                category = postid.substring(0, pos);
+                category = BlojsomUtils.normalize(category);
+                permalink = postid.substring(pos + match.length());
+
+                Map fetchMap = new HashMap();
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
+                fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+                fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+                BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap, _blogUser);
+
+                if (_entries != null && _entries.length > 0) {
+                    try {
+                        _entries[0].delete(_blogUser);
+                    } catch (BlojsomException e) {
+                        _logger.error(e);
+                        throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                    }
+                    result = true;
+                } else {
+                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+                }
+            }
+        } catch (BlojsomException e) {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+
+        return result;
     }
 
     /**
@@ -613,5 +741,51 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
+    }
+
+    /**
+     * Edits the main or archive index template of a given blog (NOT IMPLEMENTED)
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param template The text for the new template (usually mostly HTML). Must contain opening and closing <Blogger> tags, since they're needed to publish
+     * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
+     * @throws XmlRpcException
+     * @return
+     */
+    public boolean setTemplate(String appkey, String blogid, String userid, String password, String template, String templateType) throws Exception {
+        _logger.debug("setTemplate() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("   Template: " + template);
+        _logger.debug("       Type: " + templateType);
+
+        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+    }
+
+    /**
+     * Returns the main or archive index template of a given blog (NOT IMPLEMENTED)
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
+     * @throws XmlRpcException
+     * @return
+     */
+    public String getTemplate(String appkey, String blogid, String userid, String password, String templateType) throws Exception {
+        _logger.debug("getTemplate() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("       Type: " + templateType);
+
+        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
     }
 }
