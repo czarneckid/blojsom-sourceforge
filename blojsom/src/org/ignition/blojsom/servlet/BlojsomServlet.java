@@ -193,11 +193,28 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
         _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
+        _logger.debug("blojsom request URI: " + httpServletRequest.getRequestURI());
         _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL().toString());
         _logger.debug("blojsom URL: " + blogSiteURL);
 
+        // Make sure that we have a request URI ending with a / otherwise we need to
+        // redirect so that the browser can handle relative link generation
+        if (!httpServletRequest.getRequestURI().endsWith("/")) {
+            StringBuffer redirectURL = new StringBuffer();
+            redirectURL.append(httpServletRequest.getRequestURI());
+            redirectURL.append("/");
+            if (httpServletRequest.getParameterMap().size() > 0) {
+                redirectURL.append("?");
+                redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest));
+            }
+            _logger.debug("Redirecting the user to: " + redirectURL.toString());
+            httpServletResponse.sendRedirect(redirectURL.toString());
+            return;
+        }
+
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
+        _logger.debug("blojsom path info: " + requestedCategory);
 
         if (requestedCategory == null) {
             requestedCategory = "/";
