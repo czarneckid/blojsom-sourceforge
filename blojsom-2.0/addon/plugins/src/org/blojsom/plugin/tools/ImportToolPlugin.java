@@ -49,10 +49,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- *
+ * Import Tool plugin
+ * 
  * @author David Czarnecki
  * @since blojsom 2.15
- * @version $Id: ImportToolPlugin.java,v 1.1 2004-05-26 01:10:18 czarneckid Exp $
+ * @version $Id: ImportToolPlugin.java,v 1.2 2004-05-26 01:11:17 czarneckid Exp $
  */
 public class ImportToolPlugin implements BlojsomPlugin {
 
