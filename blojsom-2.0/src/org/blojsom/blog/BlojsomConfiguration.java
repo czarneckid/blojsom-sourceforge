@@ -52,7 +52,7 @@ import java.util.Properties;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.14 2004-04-09 18:46:00 intabulas Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.15 2004-04-15 00:49:57 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -124,7 +124,6 @@ public class BlojsomConfiguration implements BlojsomConstants {
         // Ensure the resource directory physically exists
         String resourceUrl = servletConfig.getServletContext().getRealPath(_resourceDirectory);
 
-
         _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
         InputStream is;
@@ -167,8 +166,6 @@ public class BlojsomConfiguration implements BlojsomConstants {
                     _logger.debug("Creating resource directory for user " + user);
                     resourceDirectory.mkdirs();
                 }
-
-
             }
 
             // Determine and set the default user
