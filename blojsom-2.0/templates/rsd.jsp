@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<%@ page import="org.ignition.blojsom.blog.Blog,
-                 org.ignition.blojsom.util.BlojsomConstants"%>
+<%@ page import="org.blojsom.blog.Blog,
+                 org.blojsom.util.BlojsomConstants"%>
 
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);

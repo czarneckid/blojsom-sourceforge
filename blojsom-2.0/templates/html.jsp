@@ -1,16 +1,16 @@
-<%@ page import="org.ignition.blojsom.blog.Blog,
-		 org.ignition.blojsom.util.BlojsomConstants,
-		 org.ignition.blojsom.blog.BlogEntry,
-		 org.ignition.blojsom.blog.BlogCategory,
+<%@ page import="org.blojsom.blog.Blog,
+		 org.blojsom.util.BlojsomConstants,
+		 org.blojsom.blog.BlogEntry,
+		 org.blojsom.blog.BlogCategory,
                  java.util.Map,
                  java.util.HashMap,
-                 org.ignition.blojsom.plugin.referer.RefererLogPlugin,
+                 org.blojsom.plugin.referer.RefererLogPlugin,
                  java.util.Iterator,
-                 org.ignition.blojsom.plugin.referer.BlogRefererGroup,
-                 org.ignition.blojsom.plugin.referer.BlogReferer,
-                 org.ignition.blojsom.plugin.calendar.BlogCalendar,
-                 org.ignition.blojsom.plugin.calendar.AbstractCalendarPlugin,
-                 org.ignition.blojsom.plugin.calendar.VelocityHelper"
+                 org.blojsom.plugin.referer.BlogRefererGroup,
+                 org.blojsom.plugin.referer.BlogReferer,
+                 org.blojsom.plugin.calendar.BlogCalendar,
+                 org.blojsom.plugin.calendar.AbstractCalendarPlugin,
+                 org.blojsom.plugin.calendar.VelocityHelper"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html

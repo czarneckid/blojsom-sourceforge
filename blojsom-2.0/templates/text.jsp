@@ -1,6 +1,6 @@
-<%@ page import="org.ignition.blojsom.blog.BlogEntry,
-                 org.ignition.blojsom.util.BlojsomConstants,
-                 org.ignition.blojsom.blog.Blog"
+<%@ page import="org.blojsom.blog.BlogEntry,
+                 org.blojsom.util.BlojsomConstants,
+                 org.blojsom.blog.Blog"
          contentType="text/plain" %>
 
 <% Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG); %>

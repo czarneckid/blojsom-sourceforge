@@ -1,11 +1,11 @@
-<%@ page import="org.ignition.blojsom.blog.Blog,
-		 org.ignition.blojsom.util.BlojsomConstants,
+<%@ page import="org.blojsom.blog.Blog,
+		 org.blojsom.util.BlojsomConstants,
                  java.util.Map,
                  java.util.HashMap,
-                 org.ignition.blojsom.plugin.referer.RefererLogPlugin,
+                 org.blojsom.plugin.referer.RefererLogPlugin,
                  java.util.Iterator,
-                 org.ignition.blojsom.plugin.referer.BlogRefererGroup,
-                 org.ignition.blojsom.plugin.referer.BlogReferer"
+                 org.blojsom.plugin.referer.BlogRefererGroup,
+                 org.blojsom.plugin.referer.BlogReferer"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html

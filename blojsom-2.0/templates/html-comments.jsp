@@ -1,10 +1,10 @@
-<%@ page import="org.ignition.blojsom.blog.Blog,
-                 org.ignition.blojsom.util.BlojsomConstants,
-                 org.ignition.blojsom.blog.BlogEntry,
-                 org.ignition.blojsom.blog.BlogCategory,
-                 org.ignition.blojsom.blog.BlogComment,
+<%@ page import="org.blojsom.blog.Blog,
+                 org.blojsom.util.BlojsomConstants,
+                 org.blojsom.blog.BlogEntry,
+                 org.blojsom.blog.BlogCategory,
+                 org.blojsom.blog.BlogComment,
                  java.util.ArrayList,
-                 org.ignition.blojsom.plugin.comment.CommentPlugin"
+                 org.blojsom.plugin.comment.CommentPlugin"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html

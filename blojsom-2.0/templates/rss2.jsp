@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<%@ page import="org.ignition.blojsom.blog.Blog,
-                 org.ignition.blojsom.util.BlojsomConstants,
-                 org.ignition.blojsom.blog.BlogEntry"
+<%@ page import="org.blojsom.blog.Blog,
+                 org.blojsom.util.BlojsomConstants,
+                 org.blojsom.blog.BlogEntry"
                  session="false"%>
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);

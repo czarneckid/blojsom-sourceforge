@@ -1,6 +1,6 @@
-<%@ page import="org.ignition.blojsom.util.BlojsomConstants,
+<%@ page import="org.blojsom.util.BlojsomConstants,
                  java.util.ArrayList,
-                 org.ignition.blojsom.blog.*"
+                 org.blojsom.blog.*"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
