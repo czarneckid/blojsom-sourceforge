@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.7 2003-11-11 02:09:58 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.8 2003-11-11 02:44:50 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -397,6 +397,8 @@ public class FileBackedBlogEntry extends BlogEntry {
             } catch (IOException e) {
                 _logger.error("Failed loading meta-data from: " + blogEntryMetaData.toString());
             }
+        } else if (_metaData == null) {
+            _metaData = new HashMap(5);
         }
     }
 
@@ -433,7 +435,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
             _logger.debug("Saved meta-data to: " + blogEntryMetaData.toString());
         } catch (IOException e) {
-            _logger.error("Failed saving meta-data to: " + blogEntryMetaData.toString());
+            _logger.error("Failed saving meta-data to: " + blogEntryMetaData.toString(), e);
         }
     }
 
@@ -502,6 +504,7 @@ public class FileBackedBlogEntry extends BlogEntry {
             _source.setLastModified(originalTimestamp);
             saveMetaData(blog);
         } catch (IOException e) {
+            _logger.error(e);
             throw new BlojsomException(e);
         }
     }
