@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.62 2003-06-11 14:22:49 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.63 2003-06-23 02:24:02 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -248,6 +248,11 @@ public interface BlojsomConstants {
      * Entry Attribute for File()
      */
     public static final String SOURCE_ATTRIBUTE = "blog-entry-source";
+
+    /**
+     * Line separator for the system
+     */
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 
     // Blog initialization parameters from blojsom.properties
