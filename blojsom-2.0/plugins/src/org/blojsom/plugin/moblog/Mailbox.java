@@ -41,7 +41,7 @@ import org.blojsom.blog.BlogUser;
  * This file is a container for everything the thread will need to connect to and to store into
  *
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.2 2004-04-26 00:49:17 intabulas Exp $
+ * @version $Id: Mailbox.java,v 1.3 2004-04-26 02:43:04 intabulas Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -211,7 +211,7 @@ public class Mailbox {
     /**
      * @param user
      */
-    public void seBlogtUser(BlogUser user) {
+    public void setBlogUser(BlogUser user) {
         this._user = user;
     }
 }

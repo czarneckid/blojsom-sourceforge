@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.2 2004-04-26 00:49:17 intabulas Exp $
+ * @version $Id: MoblogPlugin.java,v 1.3 2004-04-26 02:43:04 intabulas Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin {
@@ -204,7 +204,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                     if (mobogProperties.size() > 0) {
                         Mailbox mailbox = new Mailbox();
 
-                        mailbox.seBlogtUser(blogUser);
+                        mailbox.setBlogUser(blogUser);
 
                         String hostname = mobogProperties.getProperty(PROPERTY_HOSTNAME);
                         if (hostname != null) {
