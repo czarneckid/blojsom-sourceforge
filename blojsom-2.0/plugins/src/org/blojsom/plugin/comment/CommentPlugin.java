@@ -40,6 +40,7 @@ import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.AddBlogCommentEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
@@ -58,7 +59,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.28 2005-01-19 17:59:04 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.29 2005-01-19 19:14:37 intabulas Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -211,6 +212,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
     private Map _ipAddressCommentTimes;
     private BlojsomFetcher _fetcher;
 
+    private BlojsomConfiguration _configuration;
+
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
@@ -220,6 +223,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
+
+        _configuration = blojsomConfiguration;
 
         _ipAddressCommentTimes = new HashMap(10);
         String fetcherClassName = blojsomConfiguration.getFetcherClass();
@@ -509,6 +514,11 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                     context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
                     if (_comment != null) {
+                        _comment.setBlogEntry(entries[0]);
+
+                        _configuration.getEventBroadcaster().broadcastEvent(new AddBlogCommentEvent(this, new Date(), _comment, user));
+
+
                         List blogComments = entries[0].getComments();
                         if (blogComments == null) {
                             blogComments = new ArrayList(1);

@@ -44,6 +44,7 @@ import org.blojsom.plugin.comment.CommentUtils;
 import org.blojsom.plugin.email.EmailMessage;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.plugin.email.SendEmailPlugin;
+import org.blojsom.plugin.admin.event.AddBlogCommentEvent;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -79,7 +80,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.11 2005-01-18 03:29:07 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.12 2005-01-19 19:13:20 intabulas Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -353,6 +354,9 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                         bw.newLine();
                         bw.close();
                         _logger.debug("Added blog comment: " + commentFilename);
+
+                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogCommentEvent(this, new Date(), comment, blogUser));
+
 
                         // Send a Comment Email
                         sendCommentEmail(commentTitle, requestedCategory, permalink, commentAuthor, commentEmail,
