@@ -421,6 +421,7 @@
     <!-- Creates a ZIP of the documentation for the website                  -->
     <!-- =================================================================== -->
     <target name="website-docs" depends="javadoc" description="Creates a ZIP for the blojsom website">
+        <mkdir dir="${distro.dir}"/>
         <zip zipfile="${website.zip}" basedir="${docs.dir}"/>
     </target>
 
