@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.10 2004-01-11 04:04:12 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.11 2004-01-20 03:45:55 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -148,7 +148,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             if ("/".equals(category)) {
                 blogEntry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             } else {
-                blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncode(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
+                blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             }
             blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
             blogEntry.setBlogCategory(blogCategory);
@@ -217,7 +217,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 if ("/".equals(category)) {
                     blogEntry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 } else {
-                    blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncode(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
+                    blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 }
                 blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
