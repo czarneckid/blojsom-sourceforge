@@ -31,3 +31,7 @@
         #if ($selectedValue == false)<option value="false" selected>False</option> #else <option value="false">False</option>#end
     </select>
 #end
+
+#macro(resource $resourceID $fallback)
+    $!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogLanguage(), $BLOJSOM_BLOG.getBlogCountry())
+#end

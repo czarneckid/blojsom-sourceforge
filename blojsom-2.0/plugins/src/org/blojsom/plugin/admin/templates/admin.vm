@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Administration Console")
+#set($header = $!BLOJSOM_RESOURCE_MANAGER.getString("console.header", "org.blojsom.plugin.admin.resources.messages", "Administration Console", $BLOJSOM_BLOG.getBlogLanguage(), $BLOJSOM_BLOG.getBlogCountry()))
+#adminPageHeader($header)
 
     <div id="mainClm">
         <ul>
