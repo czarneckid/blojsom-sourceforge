@@ -51,7 +51,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.48 2003-05-03 18:01:24 intabulas Exp $
+ * @version $Id: Blog.java,v 1.49 2003-05-06 02:22:37 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -76,6 +76,7 @@ public class Blog implements BlojsomConstants {
     private Boolean _blogEmailEnabled;
     private String _blogTrackbackDirectory;
     private String _blogFetcher;
+    private String _blogEntryMetaDataExtension;
 
     private HashMap _blogProperties;
 
@@ -157,6 +158,9 @@ public class Blog implements BlojsomConstants {
 
         _blogPropertiesExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
         _blogProperties.put(BLOG_PROPERTIES_EXTENSIONS_IP, _blogPropertiesExtensions);
+
+        _blogEntryMetaDataExtension = blogConfiguration.getProperty(BLOG_ENTRY_META_DATA_EXTENSION_IP);
+        _blogProperties.put(BLOG_ENTRY_META_DATA_EXTENSION_IP, _blogEntryMetaDataExtension);
 
         _blogDisplayEntries = Integer.parseInt(blogConfiguration.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
         _blogProperties.put(BLOG_ENTRIES_DISPLAY_IP, new Integer(_blogDisplayEntries));
@@ -647,5 +651,23 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogEmailEnabled(Boolean blogEmailEnabled) {
         _blogEmailEnabled = blogEmailEnabled;
+    }
+
+    /**
+     *
+     * @since blojsom 1.9
+     * @return
+     */
+    public String getBlogEntryMetaDataExtension() {
+        return _blogEntryMetaDataExtension;
+    }
+
+    /**
+     *
+     * @since blojsom 1.9
+     * @param blogEntryMetaDataExtension
+     */
+    public void setBlogEntryMetaDataExtension(String blogEntryMetaDataExtension) {
+        _blogEntryMetaDataExtension = blogEntryMetaDataExtension;
     }
 }
