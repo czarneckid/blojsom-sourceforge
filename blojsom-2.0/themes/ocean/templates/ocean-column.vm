@@ -101,11 +101,6 @@
 									</div>
 									#end
 									<div>
-										<h5>Archives</h5>
-										<p>#MonthlyArchives(2 2003)</p>
-									</div>
-
-									<div>
 										<h5>Syndication:</h5>
 										<p><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf" title="Click here to view the XML feed of this blog" class="rounded"><span>XML</span></a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2" title="Click here to view the RSS feed of this blog" class="rounded"><span>RSS</span></a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom" title="Click here to view the Atom feed of this blog" class="rounded"><span>ATOM</span></a></p>
 									</div>
