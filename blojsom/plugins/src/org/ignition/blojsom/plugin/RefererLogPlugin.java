@@ -50,7 +50,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.4 2003-03-14 04:13:16 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.5 2003-03-14 16:29:48 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -59,11 +59,13 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     private static final String HEADER_REFERER = "referer";
     private static final String REFERER_LOG_IP = "referer-log";
+    private static final String REFERER_CONTEXT_NAME = "REFERER_HISTORY";
 
     /**
      * Fully qualified filename to write refere's to
      */
     private String _refererlog = null;
+    private Map _refererhistory = null;
 
     /**
      * Logger instance
@@ -79,6 +81,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         _refererlog = servletConfig.getInitParameter(REFERER_LOG_IP);
+        _refererhistory = new HashMap(20);
     }
 
     /**
@@ -93,6 +96,13 @@ public class RefererLogPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
+        if ( _refererhistory.containsKey(_referer)) {
+            int _count = ((Integer)_refererhistory.get(_referer)).intValue();
+            _refererhistory.put(_referer, new Integer(_count));
+        } else {
+            _refererhistory.put(_referer, new Integer(1));
+        }
+
         if (_refererlog != null) {
             try {
                 String output = _referer + "\n";
@@ -106,6 +116,8 @@ public class RefererLogPlugin implements BlojsomPlugin {
             _logger.info("HTTP Referer is " + _referer);
         }
 
+        context.put(REFERER_CONTEXT_NAME, _refererhistory);
+
         return entries;
     }
 
@@ -115,5 +127,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
+
     }
 }
