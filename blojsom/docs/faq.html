@@ -27,17 +27,50 @@ Q: Is it Blojsom or blojsom?<br />
 A: blojsom.
 <p />
 Q: How do I create my first blog entry?<br />
-A: blojsom renders your blog based on what files it finds in the directory you set as your blog home (see <a href="installation.html">installation</a>).In this directory, each individual file is treated as a seperate blog entry.  You can control which files are process and which are ignored using the blog-file-extentions and blog-directory-filter entries  in /WEB-INF/blojsom.properties. 
+A: blojsom renders your blog based on what files it finds in the directory you set as your
+<i>blog-home</i> (see <a href="installation.html">installation</a>). In this directory, each
+individual file is treated as a seperate blog entry. You can control which files are processed
+and which are ignored using the <i>blog-file-extentions</i> and <i>blog-directory-filter</i>
+entries in <i>/WEB-INF/blojsom.properties</i>.
 <p />
 Q: How do I create different blog categories?<br/>
-A: All you have to do is simply create new directories underneath you blog-home directory and blojsom will automatically recognize them as categories. You can further controll the categories using optional metadata, an example is a more descriptive name for the category. See <a href="customization.html">customization</a>  for more details.
+A: All you have to do is simply create new directories underneath your <i>blog-home</i>
+directory and blojsom will automatically recognize them as categories. You can further
+control the categories using optional meta-data, an example is a more descriptive name for
+the category. See <a href="customization.html">customization</a> for more details.
 <p />
+
+<p />
+<p class="weblogtitle">moblogging</p>
+<p />
+Q: I hear a lot about moblogging ... is it supported in any way by blojsom?<br />
+A: Yes. Well, there are different ways to support moblogging and with blojsom, you can use
+<a href="http://blojsim.sf.net">blojsim</a>, an instant messenger add-on for blojsom to blog
+via AIM, Jabber, or MSN.
+<p />
+Q: Besides blojsim, is there any other support for moblogging?<br />
+A: Eventually, we will get around to writing an e-mail interface so that you can send e-mail
+to a mailbox that blojsom will monitor and populate your blojsom blog with the content.
+<p />
+
+<p />
+<p class="weblogtitle">xml-rpc</p>
+<p />
+Q: Can I edit my blojsom blog via XML-RPC?<br />
+A: Yes. Starting with blojsom 1.4, blojsom will include an <a href="javadoc/org/ignition/blojsom/extension/xmlrpc/package-summary.html">XML-RPC servlet</a>
+and <a href="javadoc/org/ignition/blojsom/extension/xmlrpc/handlers/package-summary.html">XML-RPC handlers</a>
+for the Blogger API. We also intend to support the MetaWeblog API as well as the Live Journal API.
+<p />
+
 <p />
 <p class="weblogtitle">extensions / plug-ins</p>
 <p />
-Q: Are there any plug-ins available for blojsom?<br />
+Q: Are there any extensions available for blojsom?<br />
 A: Yes. In fact there is one (at the moment). Check out <a href="http://sourceforge.net/projects/blojsim">blojsim</a>, which is an instant messenger add-on for blojsom. Using blojsim, you can blog directly to blojsom from your mobile phone or any other IM-capable device.
 <p />
+Q: What plugins are available for blojsom?<br />
+A: As blojsom users write plugins for blojsom, we will maintain a list of plugins for blojsom. Starting with blojsom 1.4, there
+are a number of plugins available using the <a href="javadoc/org/ignition/blojsom/plugin/package-summary.html">plugin API</a>.
 </p>
 
 <p />
