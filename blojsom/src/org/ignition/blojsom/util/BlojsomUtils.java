@@ -63,7 +63,7 @@ public class BlojsomUtils {
             list.add(tokenizer.nextToken());
         }
         if (list.size() == 0) {
-            return new String[] {};
+            return new String[]{};
         }
         return (String[]) list.toArray(new String[list.size()]);
     }
@@ -101,16 +101,18 @@ public class BlojsomUtils {
     }
 
     /**
-     * Return an escaped string where &lt; and &gt; are converted to their HTML equivalents
+     * Return an escaped string where &amp;, &lt;, and &gt; are converted to their HTML equivalents
      *
      * @param input Unescaped string
-     * @return Escaped string containing HTML equivalents for &lt; and &gt;
+     * @return Escaped string containing HTML equivalents for &amp;, &lt;, and &gt;
      */
-    public static String escapeBrackets(String input) {
+    public static String escapeString(String input) {
         if (input == null) {
             return null;
         }
-        String unescaped = input.replaceAll("<", "&lt;");
+
+        String unescaped = input.replaceAll("&", "&amp;");
+        unescaped = input.replaceAll("<", "&lt;");
         unescaped = unescaped.replaceAll(">", "&gt;");
         return unescaped;
     }
