@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.62 2003-04-01 00:55:11 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.63 2003-04-01 02:01:41 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -293,14 +293,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      * @throws IOException If there is an error in IO
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
-        if (blogSiteURL.endsWith("/")) {
-            blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length() - 1);
-        }
         _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
         _logger.debug("blojsom request URI: " + httpServletRequest.getRequestURI());
         _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL().toString());
-        _logger.debug("blojsom URL: " + blogSiteURL);
+        _logger.debug("blojsom URL: " + _blog.getBlogBaseURL());
 
         // Make sure that we have a request URI ending with a / otherwise we need to
         // redirect so that the browser can handle relative link generation
@@ -430,7 +426,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         // Finish setting up the context for the dispatcher
         context.put(BLOJSOM_BLOG, _blog);
-        context.put(BLOJSOM_SITE_URL, blogSiteURL);
+        context.put(BLOJSOM_SITE_URL, _blog.getBlogBaseURL());
         context.put(BLOJSOM_ENTRIES, entries);
         context.put(BLOJSOM_DATE, blogdate);
         context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
