@@ -319,19 +319,19 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         BlogEntry[] entries;
 
-        // Check for a permalink entry request first
+        // Check for a permalink entry request
         if (permalink != null) {
             entries = _blog.getPermalinkEntry(category, permalink);
         } else {
-            if (requestedCategory.equals("/")) {
+            // Check to see if we have requested entries by calendar
+            if (year != null) {
+                entries = _blog.getEntriesForDate(category, year, month, day);
+            // Check for the default category
+            } else if (requestedCategory.equals("/")) {
                 entries = _blog.getEntriesAllCategories();
+            // Check for the requested category
             } else {
-                // Check to see if we have requested entries by calendar
-                if (year != null) {
-                    entries = _blog.getEntriesForDate(category, year, month, day);
-                } else {
-                    entries = _blog.getEntriesForCategory(category);
-                }
+                entries = _blog.getEntriesForCategory(category);
             }
         }
 
