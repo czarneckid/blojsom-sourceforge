@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.22 2004-04-16 03:47:35 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.23 2004-04-18 22:44:02 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1316,10 +1316,13 @@ public class BlojsomUtils implements BlojsomConstants {
 
         Calendar calendarStartDate = Calendar.getInstance();
         calendarStartDate.setTime(startDate);
+        int startDay = calendarStartDate.get(Calendar.DAY_OF_YEAR);
+        int startYear = calendarStartDate.get(Calendar.YEAR);
         Calendar calendarEndDate = Calendar.getInstance();
         calendarEndDate.setTime(endDate);
+        int endDay = calendarEndDate.get(Calendar.DAY_OF_YEAR);
+        int endYear = calendarEndDate.get(Calendar.YEAR);
 
-        long timeDifference = Math.abs(calendarStartDate.getTimeInMillis() - calendarEndDate.getTimeInMillis());
-        return (int) timeDifference / (24*60*60*1000);
+        return Math.abs((endDay - startDay) + ((endYear - startYear) * 365));
     }
 }

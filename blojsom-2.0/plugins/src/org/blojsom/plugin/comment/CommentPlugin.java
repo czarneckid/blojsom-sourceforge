@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.17 2004-04-18 20:38:39 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.18 2004-04-18 22:43:51 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataConstants {
 
@@ -444,8 +444,9 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
                         if (!BlojsomUtils.checkNullOrBlank(commentDaysExpiration)) {
                             try {
                                 int daysExpiration = Integer.parseInt(commentDaysExpiration);
-                                if ((daysExpiration > 0) && (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration)) {
-                                    _logger.debug("Comment period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
+                                int daysBetweenDates = BlojsomUtils.daysBetweenDates(entry.getDate(), new Date());
+                                if ((daysExpiration > 0) && (daysBetweenDates >= daysExpiration)) {
+                                    _logger.debug("Comment period for this entry has expired. Expiration period set at " + daysExpiration + " days. Difference in days: " + daysBetweenDates);
 
                                     return entries;
                                 }
