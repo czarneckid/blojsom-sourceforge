@@ -261,9 +261,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      * @throws IOException If there is an error in IO
      */
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        String blogSiteURL = BlojsomUtils.getBlogSiteURL(_blog.getBlogURL(), httpServletRequest.getServletPath());
-
-        _logger.debug("Request URL: " + httpServletRequest.getRequestURL());
+        String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
+        _logger.debug("blojsom URL: " + blogSiteURL);
 
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
