@@ -42,6 +42,7 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -55,14 +56,14 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 1.9
- * @version $Id: TextilePlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
+ * @version $Id: TextilePlugin.java,v 1.3 2004-01-11 03:04:42 czarneckid Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
 
     /**
      * MetaData Key to identify a Textile post
      */
-    public static final String METADATA_ISTEXTILE = "TEXTILE";
+    public static final String METADATA_RUN_TEXTILE = "run-textile";
 
     /**
      * Extension of Textile Post
@@ -108,8 +109,8 @@ public class TextilePlugin implements BlojsomPlugin {
                                BlogEntry[] entries) throws BlojsomPluginException {
         for (int x = 0; x < entries.length; x++) {
             BlogEntry entry = entries[x];
-            if (entry.getPermalink().endsWith(TEXTILE_EXTENSION)) {
-                _logger.debug("Textile Processing: " + entry.getTitle());
+            if (entry.getPermalink().endsWith(TEXTILE_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_TEXTILE)) {
+                _logger.debug("Textile processing: " + entry.getTitle());
                 entry.setDescription(_textile.process(entry.getDescription()));
             }
         }

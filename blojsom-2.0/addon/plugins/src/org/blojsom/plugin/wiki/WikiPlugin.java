@@ -41,6 +41,7 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 import org.radeox.EngineManager;
 import org.radeox.api.engine.RenderEngine;
 import org.radeox.api.engine.context.RenderContext;
@@ -55,13 +56,22 @@ import java.util.Map;
  * WikiPlugin
  * 
  * @author David Czarnecki 
- * @version $Id: WikiPlugin.java,v 1.4 2003-12-17 20:03:27 czarneckid Exp $
+ * @version $Id: WikiPlugin.java,v 1.5 2004-01-11 03:04:42 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class WikiPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WikiPlugin.class);
+
+    /**
+     * Entry extension of a Wiki post
+     */
     private static final String WIKI_EXTENSION = ".wiki";
+
+    /**
+     * MetaData Key to identify a Wiki post
+     */
+    public static final String METADATA_RUN_WIKI = "run-textile";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -94,7 +104,8 @@ public class WikiPlugin implements BlojsomPlugin {
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            if (entry.getId().endsWith(WIKI_EXTENSION)) {
+            if (entry.getPermalink().endsWith(WIKI_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_WIKI)) {
+                _logger.debug("Wiki processing: " + entry.getTitle());
                 String description = entry.getDescription();
                 entry.setDescription(engine.render(description, renderContext));
             }
