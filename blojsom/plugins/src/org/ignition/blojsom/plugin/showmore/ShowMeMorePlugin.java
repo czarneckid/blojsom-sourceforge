@@ -51,7 +51,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.5 2003-07-23 00:35:06 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.6 2003-08-01 21:50:38 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -60,7 +60,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     private static final String ENTRY_TEXT_CUTOFF = "entry-text-cutoff";
     private static final String SHOW_ME_MORE_TEXT = "show-me-more-text";
     private static final String SHOW_ME_MORE_PARAM = "smm";
-    private static final int ENTRY_TEXT_CUTOFF_DEFAULT = 400;
+    private static final int ENTRY_TEXT_CUTOFF_DEFAULT = -1;
 
     private int _cutoff;
     private String _textCutoff;
@@ -135,7 +135,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                         partialDescription.append(_moreText);
                         partialDescription.append("</a>");
                         entry.setDescription(partialDescription.toString());
-                    } else if (description.length() > _cutoff) {
+                    } else if ((_cutoff > 0) && (description.length() > _cutoff)) {
                         partialDescription.append(description.substring(0, _cutoff));
                         partialDescription.append("&nbsp; <a href=\"");
                         partialDescription.append(entry.getLink());
@@ -146,6 +146,16 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                         partialDescription.append("</a>");
                         entry.setDescription(partialDescription.toString());
                     }
+                } else if ((_cutoff > 0) && (description.length() > _cutoff)) {
+                    partialDescription.append(description.substring(0, _cutoff));
+                    partialDescription.append("&nbsp; <a href=\"");
+                    partialDescription.append(entry.getLink());
+                    partialDescription.append("&amp;");
+                    partialDescription.append(SHOW_ME_MORE_PARAM);
+                    partialDescription.append("=y\">");
+                    partialDescription.append(_moreText);
+                    partialDescription.append("</a>");
+                    entry.setDescription(partialDescription.toString());
                 }
             }
 
