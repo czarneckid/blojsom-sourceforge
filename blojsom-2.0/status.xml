@@ -17,6 +17,11 @@
                 Moved generation of trackback URL parameters outside of inner most loop so that they are not
                 built each time a URL is encountered in the blog entry.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Fixed issue with weblogs ping plugin to be multi-user compliant. Also, the plugin will now ping
+                weblo.gs using the same method as weblogs.com.
+            </action>
         </release>
 
         <release version="2.02" date="September 28, 2003">
