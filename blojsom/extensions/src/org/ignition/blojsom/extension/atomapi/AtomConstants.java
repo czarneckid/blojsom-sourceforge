@@ -38,7 +38,8 @@ package org.ignition.blojsom.extension.atomapi;
  * AtomConstants
  *
  * @author Mark Lussier
- * @version $Id: AtomConstants.java,v 1.1 2003-07-18 01:20:55 czarneckid Exp $
+ * @since blojsom 1.9.5
+ * @version $Id: AtomConstants.java,v 1.2 2003-07-20 20:51:02 czarneckid Exp $
  */
 public interface AtomConstants {
 

@@ -59,7 +59,8 @@ import java.io.ByteArrayOutputStream;
  * AtomEntry
  *
  * @author Mark Lussier
- * @version $Id: AtomEntry.java,v 1.1 2003-07-18 01:20:55 czarneckid Exp $
+ * @since blojsom 1.9.5
+ * @version $Id: AtomEntry.java,v 1.2 2003-07-20 20:51:02 czarneckid Exp $
  */
 public class AtomEntry implements AtomConstants, BlojsomConstants {
 

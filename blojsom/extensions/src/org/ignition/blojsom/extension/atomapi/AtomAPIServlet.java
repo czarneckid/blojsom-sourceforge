@@ -67,7 +67,8 @@ import java.util.Properties;
  * <a href="http://bitworking.org/rfc/draft-gregorio-05.html">http://bitworking.org/rfc/draft-gregorio-05.html</a>
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.3 2003-07-19 15:16:52 czarneckid Exp $
+ * @since blojsom 1.9.5
+ * @version $Id: AtomAPIServlet.java,v 1.4 2003-07-20 20:51:02 czarneckid Exp $
  */
 public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, AtomConstants {
 
