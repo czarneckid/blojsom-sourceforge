@@ -15,8 +15,8 @@
         <engineLink>http://blojsom.sf.net</engineLink>
         <homePageLink><%= blogInformation.getBlogURL() %></homePageLink>
         <apis>
-            <api name="blogger" preferred="true" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser %>" blogID=""/>
-            <api name="metaWeblog" preferred="false" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser %>" blogID=""/>
+            <api name="blogger" preferred="true" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser %>/" blogID=""/>
+            <api name="metaWeblog" preferred="false" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser %>/" blogID=""/>
         </apis>
     </service>
 </rsd>
