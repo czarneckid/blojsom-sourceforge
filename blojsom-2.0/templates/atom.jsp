@@ -56,12 +56,12 @@
         <title mode="escaped"><%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%></title>
         <link rel="alternate" type="text/html" href="<%= blogEntry.getLink() %>"/>
         <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/<%= blogUser %><%= blogEntry.getId() %>" rel="service.edit" title="Edit <%= blogEntry.getEscapedTitle() %>" type="application/x.atom+xml"/>
-        <modified><%= blogEntry.getUTCDate() %></modified>
-        <issued><%= blogEntry.getUTCDate() %></issued>
+        <modified><%= blogEntry.getISO8601Date() %></modified>
+        <issued><%= blogEntry.getISO8601Date() %></issued>
         <id>tag:<%= blogInformation.getBlogOwnerEmail() %>,<%= blogEntry.getDateAsFormat("yyyy-MM-dd") %>:<%= blogEntry.getEncodedCategory() %>.<%= blogEntry.getPermalink() %></id>
 
         <!-- entry optional elements -->
-        <created><%= blogEntry.getUTCDate() %></created>
+        <created><%= blogEntry.getISO8601Date() %></created>
         <content type="text/html" mode="escaped" xml:lang="<%= blogInformation.getBlogLanguage() %>" xml:base="<%= blogInformation.getBlogBaseURL() %>">
             <![CDATA[ <%= blogEntry.getDescription() %> ]]>
         </content>
