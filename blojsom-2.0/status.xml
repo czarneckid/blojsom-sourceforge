@@ -8,6 +8,14 @@
 
     <changes>
 
+        <release version="2.04" date="dev">
+            <action dev="czarneckid" type="update" context="Core">
+                Blog entry timestamp is preserved when saving an entry if the blog-entry-metadata-timestamp meta-data
+                exists. Its value contains a long value indicating the date and time of the original timestamp. This
+                meta-data is now populated through the Blogger, MetaWeblog, and Atom API handlers.
+            </action>
+        </release>
+
         <release version="2.03" date="October 15, 2003">
             <action dev="czarneckid" type="update" context="Build">
                 Added version number to JAR files.

@@ -40,14 +40,14 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.9 2003-10-13 23:59:29 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.10 2003-10-16 04:52:05 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
     /**
      * blojsom version
      */
-    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.03-dev";
+    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.04";
 
     /**
      * Key under which blog information will be placed
@@ -288,6 +288,11 @@ public interface BlojsomConstants {
      * Entry Attribute for File()
      */
     public static final String SOURCE_ATTRIBUTE = "blog-entry-source";
+
+    /**
+     * Entry meta-data key for entry time
+     */
+    public static final String BLOG_ENTRY_METADATA_TIMESTAMP = "blog-entry-metadata-timestamp";
 
     /**
      * Line separator for the system

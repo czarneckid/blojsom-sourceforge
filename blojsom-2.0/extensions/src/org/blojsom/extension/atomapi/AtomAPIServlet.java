@@ -65,6 +65,7 @@ import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * AtomAPIServlet
@@ -74,7 +75,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.17 2003-09-13 01:18:50 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.18 2003-10-16 04:52:17 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -450,6 +451,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     } else {
                         blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, "AtomAPI");
                     }
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(blog);
 
