@@ -35,18 +35,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
-import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.BlogCategory;
-import org.ignition.blojsom.blog.BlojsomConfigurationException;
+import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
-import java.util.*;
-
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger API
@@ -54,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.4 2003-02-26 20:10:15 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.5 2003-02-26 20:43:34 czarneckid Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -76,7 +75,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
     public BlojsomBloggerAPIHandler() {
     }
 
-
     /**
      * Gets the Name of API Handler. Used to Bind to XML-RPC
      *
@@ -94,7 +92,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
     public void setBlog(Blog bloginstance) {
         _blog = bloginstance;
     }
-
 
     /**
      * Edits the main or archive index template of a given blog
@@ -117,12 +114,8 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("   Template: " + template);
         _logger.info("       Type: " + templateType);
 
-
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-
-
     }
-
 
     /**
      * Returns the main or archive index template of a given blog
@@ -144,9 +137,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-
     }
-
 
     /**
      * Authenticates a user and returns basic user info (name, email, userid, etc.)
@@ -164,9 +155,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-
     }
-
 
     /**
      * Returns information on all the blogs a given user is a member of
@@ -183,14 +172,11 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("     UserId: " + userid);
         _logger.info("   Password: " + password);
 
-
         Vector result = new Vector();
 
         BlogCategory[] _categories = _blog.getBlogCategories();
 
         if (_categories != null) {
-
-
             for (int x = 0; x < _categories.length; x++) {
                 Hashtable _bloglist = new Hashtable(3);
                 BlogCategory _category = _categories[x];
@@ -202,8 +188,8 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
 
                 String _description = "";
                 HashMap _metadata = _category.getMetaData();
-                if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
-                    _description = (String) _metadata.get(DESCRIPTION_KEY);
+                if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
+                    _description = (String) _metadata.get(NAME_KEY);
                 } else {
                     _description = _blogid;
                 }
@@ -213,18 +199,12 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                 _bloglist.put(MEMBER_BLOGNAME, _description);
 
                 result.add(_bloglist);
-
-
             }
-
-
         } else {
             throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
         }
 
         return result;
-
-
     }
 
     /**
@@ -276,9 +256,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         }
 
         return result;
-
     }
-
 
     /**
      * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
@@ -313,11 +291,9 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                 hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
             }
 
-
             String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
             String outputfile = blogCategory.getAbsolutePath() + "/" + filename;
             String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
-
 
             try {
                 FileOutputStream _fos = new FileOutputStream(outputfile);
@@ -332,6 +308,4 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
 
         return result;
     }
-
-
 }
