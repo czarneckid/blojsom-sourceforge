@@ -61,9 +61,9 @@
 
     <servlet>
         <servlet-name>blojsomcommentapi</servlet-name>
-        <servlet-class>org.ignition.blojsom.extension.comment.CommentAPIServlet</servlet-class>
+        <servlet-class>org.blojsom.extension.comment.CommentAPIServlet</servlet-class>
         <init-param>
-            <param-name>blog-configuration</param-name>
+            <param-name>blojsom-configuration</param-name>
             <param-value>/WEB-INF/blojsom.properties</param-value>
         </init-param>
         <init-param>
