@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.3 2003-10-23 00:15:43 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.4 2003-10-23 01:31:10 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -94,12 +94,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, user.getBlog())) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
-            return entries;
-        }
+        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
 
-        // Setup default objects
         Blog blog = user.getBlog();
         Map flavorMap;
         Iterator flavorKeys;
@@ -148,6 +144,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogEmailEnabled(Boolean.valueOf(blogPropertyValue));
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-file-encoding", httpServletRequest);
             blog.setBlogFileEncoding(blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue("blog-file-extensions", httpServletRequest);
+            blog.setBlogFileExtensions(blogPropertyValue);
 
             // Set the blog default category mappings
             flavorMap = user.getFlavors();
@@ -184,6 +182,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             }
         }
 
+        // Populate the context with the flavor/category mapping
         flavorMap = user.getFlavors();
         flavorKeys = flavorMap.keySet().iterator();
         Map categoryMapping = new HashMap();
