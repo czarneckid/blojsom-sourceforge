@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.3 2003-08-23 15:49:59 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.4 2003-09-08 01:04:03 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -301,6 +301,7 @@ public interface BlojsomConstants {
     static final String BLOJSOM_DEFAULT_USER_IP = "blojsom-default-user";
     static final String BLOJSOM_FETCHER_IP = "blojsom-fetcher";
     static final String BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP = "blojsom-configuration-base-directory";
+    static final String BLOJSOM_INSTALLATION_DIRECTORY = "blojsom-installation-directory";
     static final String BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY = "/WEB-INF/";
     static final String BLOG_DEFAULT_PROPERTIES = "blog.properties";
 
