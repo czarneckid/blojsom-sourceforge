@@ -58,7 +58,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.7 2003-03-24 17:13:47 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.8 2003-03-24 18:55:26 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -185,7 +185,7 @@ public class CommentPlugin implements BlojsomPlugin {
 
         _emailcomment.append(userComment);
 
-        EmailUtils.notifyBlogAuthor("[blojsom] Comment on " + title, _emailcomment.toString(), context);
+        EmailUtils.notifyBlogAuthor("[blojsom] Comment on: " + title, _emailcomment.toString(), context);
 
     }
 
