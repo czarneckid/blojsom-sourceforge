@@ -53,7 +53,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.5 2004-01-28 05:15:59 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.6 2004-03-09 03:19:02 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -163,6 +163,7 @@ public class CachingFetcher extends StandardFetcher {
                 try {
                     entries = (BlogEntry[]) _cache.getFromCache(user.getId() + FLAVOR_KEY + flavor, refreshPeriod);
                     _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
+
                     return entries;
                 } catch (NeedsRefreshException e) {
                     entries = (BlogEntry[]) e.getCacheContent();
@@ -170,8 +171,10 @@ public class CachingFetcher extends StandardFetcher {
                         entries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
                         _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, entries);
                     } else {
+                        _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
                         AllCategoriesFetcherThread allCategoriesFetcherThread = new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth);
-                        allCategoriesFetcherThread.start();
+                        allCategoriesFetcherThread.run();
+                        _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
                     }
 
                     return entries;
@@ -180,6 +183,7 @@ public class CachingFetcher extends StandardFetcher {
                 try {
                     entries = (BlogEntry[]) _cache.getFromCache(user.getId() + CATEGORY_KEY + category.getCategory(), refreshPeriod);
                     _logger.debug("Returned entries from cache for user/category: " + user.getId() + " / " + category.getCategory());
+
                     return entries;
                 } catch (NeedsRefreshException e) {
                     entries = (BlogEntry[]) e.getCacheContent();
@@ -187,8 +191,10 @@ public class CachingFetcher extends StandardFetcher {
                         entries = getEntriesForCategory(user, category, -1);
                         _cache.putInCache(user.getId() + CATEGORY_KEY + category.getCategory(), entries);
                     } else {
+                        _cache.cancelUpdate(user.getId() + CATEGORY_KEY + category.getCategory());
                         SingleCategoryFetcherThread singleCategoryFetcherThread = new SingleCategoryFetcherThread(user, category);
-                        singleCategoryFetcherThread.start();
+                        singleCategoryFetcherThread.run();
+                        _logger.debug("Returning from single category fetcher thread for key: " + user.getId() + CATEGORY_KEY + category.getCategory());
                     }
 
                     return entries;
@@ -202,7 +208,7 @@ public class CachingFetcher extends StandardFetcher {
      *
      * @since blojsom 2.05
      */
-    private class AllCategoriesFetcherThread extends Thread {
+    private class AllCategoriesFetcherThread implements Runnable {
 
         private BlogUser _user;
         private String _flavor;
@@ -237,9 +243,10 @@ public class CachingFetcher extends StandardFetcher {
          */
         public void run() {
             BlogEntry[] entries = getEntriesAllCategories(_user, _flavor, -1, _blogDirectoryDepth);
+            _cache.flushEntry(_user.getId() + FLAVOR_KEY + _flavor);
             _cache.putInCache(_user.getId() + FLAVOR_KEY + _flavor, entries);
 
-            _logger.debug("Updated blog entries in cache for flavor:" + _user.getId() + FLAVOR_KEY + _flavor);
+            return;
         }
     }
 
@@ -248,7 +255,7 @@ public class CachingFetcher extends StandardFetcher {
      *
      * @since blojsom 2.05
      */
-    private class SingleCategoryFetcherThread extends Thread {
+    private class SingleCategoryFetcherThread implements Runnable {
 
         private BlogUser _user;
         private BlogCategory _category;
@@ -280,9 +287,10 @@ public class CachingFetcher extends StandardFetcher {
          */
         public void run() {
             BlogEntry[] entries = getEntriesForCategory(_user, _category, -1);
+            _cache.flushEntry(_user.getId() + CATEGORY_KEY + _category.getCategory());
             _cache.putInCache(_user.getId() + CATEGORY_KEY + _category.getCategory(), entries);
 
-            _logger.debug("Updated blog entries in cache for category: " + _user.getId() + CATEGORY_KEY + _category.getCategory());
+            return;
         }
     }
 }
