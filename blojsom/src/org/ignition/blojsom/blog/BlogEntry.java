@@ -33,10 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 
 /**
@@ -199,27 +196,65 @@ public class BlogEntry {
     }
 
     /**
+     * Returns the contents of the file in a byte array
+     *
+     * @param file Input file
+     * @return Byte array containing the file contents
+     * @throws IOException If there is an error reading the contents of the file
+     */
+    private static byte[] getBytesFromFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+
+        // Get the size of the file
+        long length = file.length();
+
+        // You cannot create an array using a long type.
+        // It needs to be an int type.
+        // Before converting to an int type, check
+        // to ensure that file is not larger than Integer.MAX_VALUE.
+        if (length > Integer.MAX_VALUE) {
+            // File is too large
+        }
+
+        // Create the byte array to hold the data
+        byte[] bytes = new byte[(int) length];
+
+        // Read in the bytes
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+            offset += numRead;
+        }
+
+        // Ensure all the bytes have been read in
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file: " + file.getName());
+        }
+
+        // Close the input stream and return bytes
+        is.close();
+        return bytes;
+    }
+
+    /**
      * Reload the blog entry from disk
      *
      * The first line of the blog entry will be used as the title of the blog
      */
     public void reloadSource() {
-        boolean hasLoadedTitle = false;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(_source));
-            String line;
-            StringBuffer description = new StringBuffer();
-            while ((line = br.readLine()) != null) {
-                if (!hasLoadedTitle) {
-                    _title = line;
-                    hasLoadedTitle = true;
-                } else {
-                    description.append(line);
-                    description.append("\n");
-                }
+            byte[] fileContents = getBytesFromFile(_source);
+            String lineSeparator = System.getProperty("line.separator");
+            String description = new String(fileContents);
+            int titleIndex = description.indexOf(lineSeparator);
+            if (titleIndex == -1) {
+                _title = "";
+                _description = description;
+            } else {
+                _title = description.substring(0, titleIndex);
+                _description = description.substring(titleIndex + 1);
             }
-            br.close();
-            _description = description.toString();
             _entryDate = new Date(_source.lastModified());
             _lastModified = _source.lastModified();
         } catch (IOException e) {
