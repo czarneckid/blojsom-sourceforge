@@ -75,13 +75,17 @@ public class BlojsomUtils {
      * @param requestedCategory Requested blog category
      * @return Blog category only
      */
-    public static String getBlogCategory(String blogHome, String requestedCategory) {
+    public static String getBlogCategory(String blogHome,
+                                         String requestedCategory) {
+        requestedCategory = requestedCategory.replace('\\', '/');
         int indexOfBlogHome = requestedCategory.indexOf(blogHome);
         if (indexOfBlogHome == -1) {
             return "";
         }
         indexOfBlogHome += blogHome.length();
-        return "/" + requestedCategory.substring(indexOfBlogHome);
+        String returnCategory = requestedCategory.substring(indexOfBlogHome);
+        returnCategory = removeInitialSlash(returnCategory);
+        return "/" + returnCategory;
     }
 
     /**
