@@ -34,6 +34,9 @@
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
             <dc:date>><%= blogEntry.getISO8601Date()%></dc:date>
+			<wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+                 <%= blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%>
+            </wfw:comment>
     	</item>
     <%
             }

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-secondwave.css" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
+
 </head>
 
 <h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
@@ -23,6 +24,7 @@ Available categories:
 
 #set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
+    <link rel="service.comment" type="text/xml" href="$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()" title="Comment Interface"/>
     <div class="entrystyle2">
     <p class="weblogtitle2">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
     <p class="weblogdateline">$entry.getDate()</p>

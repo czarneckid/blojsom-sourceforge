@@ -12,6 +12,9 @@
             <title>$entry.getEscapedTitle()</title>
             <link>$entry.getEscapedLink()</link>
             <description>$entry.getEscapedDescription()</description>
+	        <wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+              $BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()
+            </wfw:comment>
         </item>
         #end
     </channel>

@@ -20,6 +20,9 @@
 	   <link>$entry.getEscapedLink()</link>
        <description>$entry.getEscapedDescription()</description>
 	   <dc:date>$entry.getISO8601Date()</dc:date>
+	   <wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+          $BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()
+       </wfw:comment>
     </item>
     #end
 

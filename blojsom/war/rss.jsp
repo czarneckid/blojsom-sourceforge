@@ -24,6 +24,9 @@
     		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
+			<wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+                 <%= blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%>
+            </wfw:comment>
     	</item>
     <%
             }

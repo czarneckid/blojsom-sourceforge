@@ -39,6 +39,7 @@
 	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
     <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogInformation.getBlogURL() %>?flavor=rss" />
+
     </head>
 
     <body>
@@ -51,7 +52,8 @@
                 for (int i = 0; i < entryArray.length; i++) {
                 BlogEntry blogEntry = entryArray[i];
 %>
-
+    <!-- CommentAPI AutoDiscovery -->
+    <link rel="service.comment" type="text/xml" href="<%=blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%>" title="Comment Interface"/>
 
 
     <div class="entrystyle">
