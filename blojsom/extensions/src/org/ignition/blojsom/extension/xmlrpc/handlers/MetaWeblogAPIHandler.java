@@ -46,8 +46,9 @@ import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -55,7 +56,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.17 2003-04-17 03:30:38 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.18 2003-04-23 02:01:31 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -136,7 +137,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     }
 
                     String _description = "No Category Metadata Found";
-                    HashMap _metadata = _category.getMetaData();
+                    Map _metadata = _category.getMetaData();
                     if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
                         _description = (String) _metadata.get(DESCRIPTION_KEY);
                     }

@@ -49,6 +49,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Map;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger v1.0 API
@@ -56,7 +57,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.10 2003-04-17 03:30:04 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.11 2003-04-23 02:01:34 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -303,7 +304,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     }
 
                     String _description = "";
-                    HashMap _metadata = _category.getMetaData();
+                    Map _metadata = _category.getMetaData();
                     if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
                         _description = (String) _metadata.get(NAME_KEY);
                     } else {
