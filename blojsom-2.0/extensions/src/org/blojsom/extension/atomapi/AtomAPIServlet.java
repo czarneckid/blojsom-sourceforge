@@ -42,7 +42,6 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
-import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
@@ -55,6 +54,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,30 +62,23 @@ import java.util.Map;
  * AtomAPIServlet
  *
  * Implementation of J.C. Gregorio's AtomAPI
- * <a href="http://bitworking.org/rfc/draft-gregorio-05.html">http://bitworking.org/rfc/draft-gregorio-08.html</a>
+ * <a href="http://bitworking.org/rfc/draft-gregorio-08.xml">http://bitworking.org/rfc/draft-gregorio-08.xml</a>
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.2 2003-09-07 19:18:28 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.3 2003-09-07 20:10:57 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
-    private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
-    private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
 
-
-    private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
-    private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
-
-    private static final String CONTENTTYPE_ATOM = "application/atom+xml";
+    private static final String CONTENTTYPE_ATOM = "application/x.atom+xml";
 
     private Log _logger = LogFactory.getLog(AtomAPIServlet.class);
 
     protected Blog _blog = null;
     protected BlogUser _blogUser;
-    private BlojsomFetcher _fetcher;
     protected String _blogEntryExtension;
 
     /**
@@ -118,12 +111,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        String cfgfile = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
-
-        if (cfgfile == null || cfgfile.equals("")) {
-            _logger.info("blojsom configuration not specified, using " + DEFAULT_BLOJSOM_CONFIGURATION);
-            cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
-        }
         configureBlojsom(servletConfig);
         configureAuthorization(servletConfig);
 
@@ -214,51 +201,59 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-
-        _logger.info("AtomAPI GET Called =====[ SUPPORTED ]=====");
-        _logger.info("       Path: " + httpServletRequest.getPathInfo());
-
         // NOTE: Assumes that the getPathInfo() returns only category data
+        
+        if (isAuthorized(httpServletRequest)) {
 
-        String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
-        String category = BlojsomUtils.normalize(httpServletRequest.getPathInfo());
-        String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+            String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
+            String category = BlojsomUtils.normalize(httpServletRequest.getPathInfo());
+            String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
-        if (user == null || "".equals(user)) {
-            //@todo
-        } else {
+
+            _logger.info("AtomAPI GET Called =====[ SUPPORTED ]=====");
+            _logger.info("       Path: " + httpServletRequest.getPathInfo());
+            _logger.info("       User: " + user);
+            _logger.info("   Category: " + category);
+            _logger.info("  Permalink: " + permalink);
+
+
+            if (user == null || "".equals(user)) {
+                //@todo
+            } else {
+                try {
+                    setBlogUser((BlogUser) _users.get(user));
+                } catch (BlojsomException e) {
+                    _logger.error(e.getLocalizedMessage(), e);
+                }
+            }
+
+
+            Map fetchMap = new HashMap();
+            BlogCategory blogCategory = _fetcher.newBlogCategory();
+            blogCategory.setCategory(category);
+            blogCategory.setCategoryURL(_blog.getBlogURL() + category);
+            fetchMap.put(FETCHER_CATEGORY, blogCategory);
+            fetchMap.put(FETCHER_PERMALINK, permalink);
             try {
-                setBlogUser((BlogUser) _users.get(user));
-            } catch (BlojsomException e) {
-                _logger.error(e.getLocalizedMessage(), e);
+                BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
+
+                if (entries != null && entries.length > 0) {
+                    BlogEntry entry = entries[0];
+                    Entry atomentry = AtomUtils.fromBlogEntry(_blog, entry);
+                    String content = atomentry.toString();
+                    httpServletResponse.setContentType(CONTENTTYPE_ATOM);
+                    httpServletResponse.setStatus(200);
+                    httpServletResponse.setContentLength(content.length());
+                    OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
+                    osw.write(content);
+                    osw.flush();
+                }
+            } catch (BlojsomFetcherException e) {
+                _logger.error(e);
+                httpServletResponse.setStatus(404);
             }
-        }
-
-
-        Map fetchMap = new HashMap();
-        BlogCategory blogCategory = _fetcher.newBlogCategory();
-        blogCategory.setCategory(category);
-        blogCategory.setCategoryURL(_blog.getBlogURL() + category);
-        fetchMap.put(FETCHER_CATEGORY, blogCategory);
-        fetchMap.put(FETCHER_PERMALINK, permalink);
-        try {
-            BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
-
-            if (entries != null && entries.length > 0) {
-                BlogEntry entry = entries[0];
-                Entry atomentry = AtomUtils.fromBlogEntry(_blog, entry);
-                String content = atomentry.toString();
-                httpServletResponse.setContentType(CONTENTTYPE_ATOM);
-                httpServletResponse.setStatus(200);
-                httpServletResponse.setContentLength(content.length());
-                OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
-                osw.write(content);
-                osw.flush();
-
-            }
-        } catch (BlojsomFetcherException e) {
-            _logger.error(e);
-            httpServletResponse.setStatus(404);
+        } else {
+            sendAuthenticationRequired(httpServletResponse);
         }
 
 
@@ -274,10 +269,31 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        _logger.info("AtomAPI POST Called =====[ SUPPORTED ]=====");
-        _logger.info("       Path: " + httpServletRequest.getPathInfo());
 
         if (isAuthorized(httpServletRequest)) {
+            String category = BlojsomUtils.normalize(httpServletRequest.getPathInfo());
+            String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+
+            _logger.info("AtomAPI POST Called =====[ SUPPORTED ]=====");
+            _logger.info("       Path: " + httpServletRequest.getPathInfo());
+            _logger.info("       User: " + user);
+            _logger.info("   Category: " + category);
+
+            if (user == null || "".equals(user)) {
+                //@todo
+            } else {
+                try {
+                    setBlogUser((BlogUser) _users.get(user));
+                } catch (BlojsomException e) {
+                    _logger.error(e.getLocalizedMessage(), e);
+                }
+            }
+
+
+
+
+
+
 
         } else {
             sendAuthenticationRequired(httpServletResponse);
@@ -319,6 +335,25 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         }
 
     }
+
+
+    /**
+     * Get the blog category. If the category exists, return the
+     * appropriate directory, otherwise return the "root" of this blog.
+     *
+     * @since blojsom 1.9
+     * @param categoryName Category name
+     * @return A directory into which a blog entry can be placed
+     */
+    protected File getBlogCategoryDirectory(String categoryName) {
+        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
+        if (blogCategory.exists() && blogCategory.isDirectory()) {
+            return blogCategory;
+        } else {
+            return new File(_blog.getBlogHome() + "/");
+        }
+    }
+
 
 }
 
