@@ -31,6 +31,7 @@
     <property name="themes.dir" value="${basedir}/themes"/>
     <property name="core.jar" value="${webinf.lib.dir}/${name}-core-${version}.jar"/>
     <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins-${version}.jar"/>
+    <property name="plugins-templates.jar" value="${webinf.lib.dir}/${name}-plugins-templates-${version}.jar"/>
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
@@ -149,6 +150,9 @@
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${plugins.jar}" basedir="${compile.dir}"/>
+
+        <!-- Plugins templates -->
+        <jar file="${plugins-templates.jar}" basedir="${plugins.src.dir}" includes="**/*.vm"/>
 
         <!-- Extensions -->
         <delete dir="${compile.dir}"/>
