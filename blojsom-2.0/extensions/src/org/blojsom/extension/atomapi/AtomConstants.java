@@ -39,7 +39,7 @@ package org.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomConstants.java,v 1.5 2003-09-11 18:07:51 intabulas Exp $
+ * @version $Id: AtomConstants.java,v 1.6 2003-09-12 01:00:28 intabulas Exp $
  */
 public interface AtomConstants {
 
@@ -68,7 +68,7 @@ public interface AtomConstants {
     /**
      * Resonse Header for Authentication Challenge
      */
-    static final String HEADER_AUTHCHALLENGE = "WWW-Authenticate";
+    static final String HEADER_WWWAUTHENTICATE = "WWW-Authenticate";
 
     /**
      * Resonse Header for Path
@@ -114,5 +114,7 @@ public interface AtomConstants {
     static final String KEY_ATOMALL = "atom-all";
     static final String KEY_ATOMLAST = "atom-last";
 
+
+    static final String ATOM_SERVLETMAPPING = "/atomapi/";
 
 }

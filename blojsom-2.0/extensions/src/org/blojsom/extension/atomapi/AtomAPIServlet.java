@@ -45,7 +45,6 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
-
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
@@ -74,7 +73,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.14 2003-09-12 00:35:37 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.15 2003-09-12 01:02:02 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -108,9 +107,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
     /**
+     * Is the request from an Authorized poster to this blog?
      *
      * @param httpServletRequest Request
-     * @return
+     * @return a boolean indicating if the use was authorized or not
      */
     private boolean isAuthorized(Blog blog, HttpServletRequest httpServletRequest, String verb) {
         boolean result = false;
@@ -124,12 +124,13 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 _logger.info("Unable to locate user [" + auth.getUsername() + "] in authorization table");
             }
 
-            if (result) {
-                String sanityCheck = httpServletRequest.getHeader(HEADER_AUTHORIZATION);
-                if ((auth != null)) {
-                    result = sanityCheck.startsWith(ATOM_AUTH_PREFIX);
-                }
-            }
+
+//            if (result) {
+//                String sanityCheck = httpServletRequest.getHeader(HEADER_AUTHORIZATION);
+//                if ((auth != null)) {
+//                    result = sanityCheck.startsWith(ATOM_AUTH_PREFIX);
+//                }
+//            }
 
             if (!result) {
                 _logger.info("Unable to authenticate user [" + auth.getUsername() + "]");
@@ -148,21 +149,26 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     private void sendAuthenticationRequired(HttpServletResponse httpServletResponse, BlogUser user) {
         httpServletResponse.setContentType(CONTENTTYPE_HTML);
+
+        // Generate a NextNonce and add it to the header
         String nonce = AtomUtils.generateNextNonce(user);
         String relm = MessageFormat.format(AUTHENTICATION_REALM, new Object[]{nonce});
-        httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, relm);
+
+        // send the NextNonce as part of a WWW-Authenticate header
+        httpServletResponse.setHeader(HEADER_WWWAUTHENTICATE, relm);
+
         httpServletResponse.setStatus(401);
     }
 
 
     /**
-     * Is the GET a search request?
-     *
-     * @param request
+     * Is the AtomAPI Search request?
+     * @param request the HttpServlerRequest
      * @return
      */
     private boolean isSearchRequest(HttpServletRequest request) {
         Map paramMap = request.getParameterMap();
+        // Looks for the existence of specific params and also checks the QueryString for a name only param
         return (paramMap.containsKey(KEY_ATOMALL) || paramMap.containsKey(KEY_ATOMLAST) || paramMap.containsKey("start-range")
                 || (request.getQueryString().indexOf(KEY_ATOMALL) != -1));
     }
@@ -171,16 +177,19 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Process the search request
      *
-     * @param request
-     * @param category
-     * @param blog
-     * @param blogUser
-     * @return
+     * @param request the HttpServletRequest
+     * @param category the Blog Category
+     * @param blog the Blog instance
+     * @param blogUser the BlogUser instance
+     * @return the search result as a String
+     *
+     * @todo just hable BlogUser since we can get the Blog instance from it
      */
     private String processSearchRequest(HttpServletRequest request, String category, Blog blog, BlogUser blogUser) {
         String result = null;
         Map paramMap = request.getParameterMap();
         int numPosts = -1;
+        // Did they specify how many entries?
         if (paramMap.containsKey(KEY_ATOMLAST)) {
             numPosts = Integer.parseInt((String) paramMap.get(KEY_ATOMLAST));
         }
@@ -216,6 +225,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
     /**
+     * Handle a Delete Entry message
      *
      * @param httpServletRequest Request
      * @param httpServletResponse Response
@@ -223,7 +233,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @throws IOException If there is an error during I/O
      */
     protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
 
         Blog blog = null;
         BlogUser blogUser = null;
@@ -262,11 +271,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.delete(blog);
                 }
 
+                // Okay now we generate a new NextOnce value, just for saftey sake and shove in into the response
                 String nonce = AtomUtils.generateNextNonce(blogUser);
                 httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
-
                 httpServletResponse.setStatus(200);
-
 
             } catch (BlojsomFetcherException e) {
                 _logger.error(e.getLocalizedMessage(), e);
@@ -274,14 +282,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             } catch (BlojsomException e) {
                 _logger.error(e.getLocalizedMessage(), e);
                 httpServletResponse.setStatus(404);
-
             }
-
 
         } else {
             sendAuthenticationRequired(httpServletResponse, blogUser);
         }
-
 
     }
 
@@ -289,13 +294,15 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Creates and AtomAPI IntrospectionResponse
      *
-     * @param blog
-     * @param user
+     * @param blog the Blog Instance
+     * @param user the BlogUser Instance
      * @return
+     *
+     * @todo just hable BlogUser since we can get the Blog instance from it
      */
     private String createIntrospectionResponse(Blog blog, BlogUser user) {
 
-        String atomuri = blog.getBlogBaseURL() + "/atomapi/" + user.getId() + "/";
+        String atomuri = blog.getBlogBaseURL() + ATOM_SERVLETMAPPING + user.getId() + "/";
 
         Introspection introspection = new IntrospectionImpl();
         introspection.setSearchUrl(atomuri);
@@ -558,7 +565,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     String nonce = AtomUtils.generateNextNonce(blogUser);
                     httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
 
-                    httpServletResponse.setStatus(204); // @todo will be 204 in future AtomAPI Specs
+                    httpServletResponse.setStatus(204);
                 } else {
                     _logger.info("Unable to fetch " + permalink);
                 }

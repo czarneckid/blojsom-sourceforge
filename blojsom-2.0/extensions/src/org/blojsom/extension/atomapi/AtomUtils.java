@@ -37,6 +37,7 @@ package org.blojsom.extension.atomapi;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.authentication.DigestUtilities;
 import org.intabulas.sandler.elements.Author;
@@ -53,7 +54,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.7 2003-09-11 18:07:17 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.8 2003-09-12 01:00:42 intabulas Exp $
  */
 public class AtomUtils implements AtomConstants {
 
@@ -62,6 +63,7 @@ public class AtomUtils implements AtomConstants {
      *
      * @param user a BlogUser instance for the particular blog
      * @return a String that is a SHA digest (in hex) of the NONCE value
+     * @todo Optimize the format we gen the nonce from
      */
     public static String generateNextNonce(BlogUser user) {
         String nonce = BlojsomUtils.getISO8601Date(new Date()) + ":" + user.getId() + ":" + user.getBlog().getBlogDescription();
@@ -112,7 +114,8 @@ public class AtomUtils implements AtomConstants {
         Entry result = new EntryImpl();
         result.setTitle(blogentry.getEscapedTitle());
         //@todo move the servletmap constant out of this method
-        result.setId(blog.getBlogBaseURL() + "/atomapi/" + user.getId() + "/?permalink=" + blogentry.getPermalink());
+        result.setId(blog.getBlogBaseURL() + ATOM_SERVLETMAPPING + user.getId()
+                + "/?" + BlojsomConstants.PERMALINK_PARAM + "=" + blogentry.getPermalink());
         return result;
 
     }
