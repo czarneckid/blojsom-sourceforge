@@ -28,7 +28,7 @@
        <title><%= blogInformation.getBlogName() %></title>
        <link><%= blogInformation.getBlogURL() %></link>
     </image>
-    <docs>http://backend.userland.com/rss</docs>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <generator><%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %></generator>
     <managingEditor><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></managingEditor>
     <webMaster><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></webMaster>

@@ -11,10 +11,9 @@
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
-    String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
 %>
 
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+<rss version="2.0">
   <channel>
     <%
         if (blogEntries != null) {
@@ -25,18 +24,11 @@
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
             <language><%= blogInformation.getBlogLanguage() %></language>
-			<pubDate><%= blogEntry.getRFC822Date() %></pubDate>
-            <image>
-              <url><%= blogSiteURL %>/favicon.ico</url>
-              <title><%= blogInformation.getBlogName() %></title>
-              <link><%= blogInformation.getBlogURL() %></link>
-            </image>
-            <docs>http://backend.userland.com/rss</docs>
+            <docs>http://blogs.law.harvard.edu/tech/rss</docs>
             <generator><%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %></generator>
-	        <dc:publisher><%= blogInformation.getBlogOwner()%></dc:publisher>
-	        <dc:creator><%= blogInformation.getBlogOwnerEmail()%></dc:creator>
-
-
+            <pubDate><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE) %></pubDate>
+	        <managingEditor><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></managingEditor>
+            <webMaster><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></webMaster>
         <%
              List blogComments = blogEntry.getComments();
              if (blogComments != null) {
@@ -48,7 +40,7 @@
                 <link><%= blogEntry.getEscapedLink() %></link>
                 <description><%= blogComment.getComment() %></description>
 			    <pubDate><%= blogComment.getRFC822Date() %></pubDate>
-	            <dc:creator><%= blogComment.getAuthor()%></dc:creator>
+	            <author><%= blogComment.getAuthorEmail() %></author>
            </item>
         <%
                }

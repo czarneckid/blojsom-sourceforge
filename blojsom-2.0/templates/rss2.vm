@@ -11,7 +11,7 @@
             <title>$BLOJSOM_BLOG.getBlogName()</title>
             <link>$BLOJSOM_BLOG.getBlogURL()</link>
         </image>
-        <docs>http://backend.userland.com/rss</docs>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
 		<generator>$BLOJSOM_VERSION</generator>
 		<managingEditor>$BLOJSOM_BLOG.getBlogOwnerEmail()</managingEditor>
 		<webMaster>$BLOJSOM_BLOG.getBlogOwnerEmail()</webMaster>

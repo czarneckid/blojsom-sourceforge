@@ -30,8 +30,8 @@
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
             <% if (blogCommentsEnabled && blogEntry.supportsComments() && !BlojsomUtils.checkMapForKey(blogEntry.getMetaData(), "blog-entry-comments-disabled")) { %>
-			  <wfw:comment ><%= blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%></wfw:comment>
-              <wfw:commentRss><%= blogEntry.getEscapedLink()%>&amp;page=comments&amp;flavor=rss</wfw:commentRss>
+            <wfw:comment><%= blogInformation.getBlogBaseURL()%>/commentapi/<%= request.getAttribute(BlojsomConstants.BLOJSOM_USER) %><%= blogEntry.getId()%></wfw:comment>
+            <wfw:commentRss><%= blogEntry.getEscapedLink()%>&amp;page=comments&amp;flavor=rss</wfw:commentRss>
             <% } %>
     	</item>
     <%
