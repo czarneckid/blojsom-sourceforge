@@ -56,7 +56,7 @@ import java.util.*;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.10 2003-04-04 02:31:31 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.11 2003-04-04 02:44:16 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -71,9 +71,16 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private static final String REFERER_CONFIG_IP = "plugin-referer";
 
     /**
-     * Key used to put the referer groups into the display context
+     * Key under which the "REFERER_HISTORY" groups will be place into the context
+     * (example: on the request for the JSPDispatcher)
      */
-    private static final String REFERER_CONTEXT_NAME = "REFERER_HISTORY";
+    public static final String REFERER_CONTEXT_NAME = "REFERER_HISTORY";
+
+    /**
+     * Key under which the "REFERER_MAX_LENGTH" will be placed into the context
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String REFERER_CONTEXT_MAX_LENGTH = "REFERER_MAX_LENGTH";
 
     /**
      * Header written to the refer log file
@@ -111,7 +118,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private Log _logger = LogFactory.getLog(RefererLogPlugin.class);
 
     private Map _referergroups;
-    private int _referermaxlength = 40;
+
+    private static final int REFERER_MAX_LENGTH_DEFAULT = 40;
+
+    private int _referermaxlength = REFERER_MAX_LENGTH_DEFAULT;
 
     private static final String REFERER_LOG_FILE = "referer-filename";
 
@@ -149,7 +159,11 @@ public class RefererLogPlugin implements BlojsomPlugin {
             is.close();
             String maxlength = refererProperties.getProperty(REFERER_MAX_LENGTH);
             if (maxlength != null) {
-                _referermaxlength = Integer.parseInt(maxlength);
+                try {
+                    _referermaxlength = Integer.parseInt(maxlength);
+                } catch (NumberFormatException e) {
+                    _referermaxlength = REFERER_MAX_LENGTH_DEFAULT;
+                }
             }
 
             String hitcounters = refererProperties.getProperty(REFERER_HIT_COUNTS);
@@ -215,6 +229,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
         }
 
         context.put(REFERER_CONTEXT_NAME, _referergroups);
+        context.put(REFERER_CONTEXT_MAX_LENGTH, new Integer(_referermaxlength));
 
         return entries;
     }
