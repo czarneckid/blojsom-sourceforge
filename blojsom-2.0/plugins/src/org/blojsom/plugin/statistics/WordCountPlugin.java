@@ -39,6 +39,7 @@ import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.util.BlojsomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -53,12 +54,13 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 2.15
- * @version $Id: WordCountPlugin.java,v 1.2 2005-01-05 02:32:32 czarneckid Exp $
+ * @version $Id: WordCountPlugin.java,v 1.3 2005-03-05 18:14:29 czarneckid Exp $
  */
 public class WordCountPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WordCountPlugin.class);
 
+    public static final String WORD_COUNT_PLUGIN_HELPER = "WORD_COUNT_PLUGIN_HELPER";
     public static final String BLOJSOM_PLUGIN_WORD_COUNT_METADATA = "blojsom-plugin-word-count";
 
     /**
@@ -108,6 +110,8 @@ public class WordCountPlugin implements BlojsomPlugin {
             entry.setMetaData(entryMetaData);
         }
 
+        context.put(WORD_COUNT_PLUGIN_HELPER, new WordCountHelper());
+
         return entries;
     }
 
@@ -127,5 +131,28 @@ public class WordCountPlugin implements BlojsomPlugin {
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Class to handle word count for text in templates
+     */
+    public class WordCountHelper {
+
+        /**
+         * Count the number of words in a piece of text
+         *
+         * @param text Text
+         * @return # of words in text, 0 if text is <code>null</code> or blank
+         */
+        public Integer countWords(String text) {
+            if (BlojsomUtils.checkNullOrBlank(text)) {
+                return new Integer(0);
+            } else {
+                String textWithoutTokens = text.replaceAll("\\<.*?\\>", "");
+                StringTokenizer tokenizer = new StringTokenizer(textWithoutTokens);
+
+                return new Integer(tokenizer.countTokens());
+            }
+        }
     }
 }
