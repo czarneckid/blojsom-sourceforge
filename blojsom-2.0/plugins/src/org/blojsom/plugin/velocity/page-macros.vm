@@ -1,50 +1,34 @@
-#macro(BlogName)
-$BLOJSOM_BLOG.getBlogName()
-#end
+###############################################
+## Blog Information Macros
+###############################################
 
-#macro(EscapedBlogName)
-$BLOJSOM_BLOG.getEscapedBlogName()
-#end
+#macro(BlogName)$BLOJSOM_BLOG.getBlogName()#end
 
-#macro(BlogDescription)
-$BLOJSOM_BLOG.getBlogDescription()
-#end
+#macro(EscapedBlogName)$BLOJSOM_BLOG.getEscapedBlogName()#end
 
-#macro(EscapedBlogDescription)
-$BLOJSOM_BLOG.getEscapedBlogDescription()
-#end
+#macro(BlogDescription)$BLOJSOM_BLOG.getBlogDescription()#end
 
-#macro(BlogURL)
-$BLOJSOM_BLOG.getBlogURL()
-#end
+#macro(EscapedBlogDescription)$BLOJSOM_BLOG.getEscapedBlogDescription()#end
 
-#macro(BlogAdminURL)
-$BLOJSOM_BLOG.getBlogAdminURL()
-#end
+#macro(BlogURL)$BLOJSOM_BLOG.getBlogURL()#end
 
-#macro(BlogBaseURL)
-$BLOJSOM_BLOG.getBlogBaseURL()
-#end
+#macro(BlogAdminURL)$BLOJSOM_BLOG.getBlogAdminURL()#end
 
-#macro(BlogLanguage)
-$BLOJSOM_BLOG.getBlogLanguage()
-#end
+#macro(BlogBaseURL)$BLOJSOM_BLOG.getBlogBaseURL()#end
 
-#macro(BlogCountry)
-$BLOJSOM_BLOG.getBlogCountry()
-#end
+#macro(BlogLanguage)$BLOJSOM_BLOG.getBlogLanguage()#end
 
-#macro(BlogOwner)
-$BLOJSOM_BLOG.getBlogOwner()
-#end
+#macro(BlogCountry)$BLOJSOM_BLOG.getBlogCountry()#end
 
-#macro(BlogOwnerEmail)
-$BLOJSOM_BLOG.getBlogOwnerEmail()
-#end
+#macro(BlogOwner)$BLOJSOM_BLOG.getBlogOwner()#end
 
-#macro(BlogDefaultFlavor)
-$BLOJSOM_BLOG.getBlogDefaultFlavor()
-#end
+#macro(BlogOwnerEmail)$BLOJSOM_BLOG.getBlogOwnerEmail()#end
+
+#macro(BlogDefaultFlavor)$BLOJSOM_BLOG.getBlogDefaultFlavor()#end
+
+###############################################
+##  Entry Macros
+###############################################
 
 #macro(TotalCommentsPendingModeration $entry)
 #set($totalCommentsPendingModeration = 0)
@@ -82,11 +66,7 @@ $BLOJSOM_BLOG.getBlogDefaultFlavor()
 #end
 #end
 
-#macro(Author $entry)
-#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))
-    $entry.getMetaData().get("blog-entry-author")
-#end
-#end
+#macro(Author $entry)#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))$entry.getMetaData().get("blog-entry-author")#end#end
 
 #macro(CommentsAllowed $entry)
 #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
@@ -100,43 +80,11 @@ $BLOJSOM_BLOG.getBlogDefaultFlavor()
 #end
 #end
 
-#macro(DaysSincePosted $entry)
-$!entry.getMetaData().get("blojsom-plugin-days-since-posted")
-#end
+#macro(DaysSincePosted $entry)$!entry.getMetaData().get("blojsom-plugin-days-since-posted")#end
 
-#macro(FormatDate $entry $format)
-$entry.getDateAsFormat($format)
-#end
+#macro(FormatDate $entry $format)$entry.getDateAsFormat($format)#end
 
-#macro(NavigationLinks $homeText)
-#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) <a href="$entryLink">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">$homeText</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end #end
-#end
-
-#macro(EntryCategoryName $entry)
-#if ($entry.getBlogCategory().getName())
-    $entry.getBlogCategory().getName()
-#else
-    $entry.getBlogCategory().getCategory()
-#end
-#end
-
-#macro(CategoryName $blogCategory)
-#if ($blogCategory.getName())
-    $blogCategory.getName()
-#else
-    $blogCategory.getCategory()
-#end
-#end
-
-#macro(SearchBox)
-<div id="searchbox">
-    <form method="post" action=".">
-        <p id="searchlabel"><label for="query">Search:</label></p>
-        <p id="searchfield"><input type="text" name="query" value="" /></p>
-        <p id="searchimg"><input type="image" src="$BLOJSOM_BLOG.getBlogBaseURL()/search.png" value="submit" alt="Search" /></p>
-    </form>
-</div>
-#end
+#macro(EntryCategoryName $entry)#if ($entry.getBlogCategory().getName()) $entry.getBlogCategory().getName() #else $entry.getBlogCategory().getCategory()#end#end
 
 #macro(TrackbackAutoDiscovery $entry $runFriendlyPermalink)
 <!-- Trackback Auto Discovery -->
@@ -163,6 +111,35 @@ $entry.getDateAsFormat($format)
              trackback:ping="$entryLink?tb=y" />
      </rdf:RDF>
 -->
+#end
+
+###############################################
+## Category Macros
+###############################################
+
+#macro(CategoryName $blogCategory)#if ($blogCategory.getName()) $blogCategory.getName() #else $blogCategory.getCategory()#end#end
+
+###############################################
+## Template Snippet Macros
+###############################################
+
+#macro(Calendar)
+<div id="calendar">
+    <table>
+        <caption>$BLOJSOM_CALENDAR.getCaption()</caption>
+        <thead>
+            <tr>#foreach( $downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())#if($downame)<th>$downame&nbsp;</th>#end#end</tr>
+        </thead>
+        <tfoot>
+            <tr><td colspan="7">$BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonth()&nbsp;|&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getToday()&nbsp;|&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getNextMonth()</td></tr>
+        </tfoot>
+        <tbody>
+            #foreach( $number in [1..6] )
+            <tr>$BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow($number,"calendarcolumn")</tr>
+            #end
+        </tbody>
+    </table>
+</div>
 #end
 
 #macro(CommentFormWithPreview $entry)
@@ -199,35 +176,33 @@ $entry.getDateAsFormat($format)
     <h3>Live Comment Preview:</h3>
     <div id="commentPreview">&nbsp;</div>
 #end
+#end
 
-#macro(Calendar)
-<div id="calendar">
-    <table>
-        <caption>$BLOJSOM_CALENDAR.getCaption()</caption>
-        <thead>
-            <tr>#foreach( $downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())#if($downame)<th>$downame&nbsp;</th>#end#end</tr>
-        </thead>
-        <tfoot>
-            <tr><td colspan="7">$BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonth()&nbsp;|&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getToday()&nbsp;|&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getNextMonth()</td></tr>
-        </tfoot>
-        <tbody>
-            #foreach( $number in [1..6] )
-            <tr>$BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow($number,"calendarcolumn")</tr>
-            #end
-        </tbody>
-    </table>
+#macro(NavigationLinks $homeText)#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) <a href="$entryLink">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">$homeText</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end#end#end
+
+#macro(SearchBox)
+<div id="searchbox">
+    <form method="post" action=".">
+        <p id="searchlabel"><label for="query">Search:</label></p>
+        <p id="searchfield"><input type="text" name="query" value="" /></p>
+        <p id="searchimg"><input type="image" src="$BLOJSOM_BLOG.getBlogBaseURL()/search.png" value="submit" alt="Search" /></p>
+    </form>
 </div>
 #end
 
-#macro(Obfuscate $text)
-$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)
-#end
+#macro(Resource $item)$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/$item#end
 
-#macro(MathCommentQuestion)
-$!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2
-#end
+###############################################
+## Plugin Macros
+###############################################
+
+#macro(Obfuscate $text)$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
+
+#macro(MathCommentQuestion)$!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2#end
 
 #macro(MathCommentFormItem)
 <p class="label">Answer $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2 =</p>
 <p class="input"><input type="text" name="mathAnswerCheck" value="" class="fixed" /></p>
 #end
+
+#macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
