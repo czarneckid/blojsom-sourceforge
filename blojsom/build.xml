@@ -68,7 +68,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${core.jar}" basedir="${compile.dir}"/>
+        <jar file="${core.jar}" basedir="${compile.dir}"  />
     </target>
 
     <!-- =================================================================== -->

@@ -32,9 +32,31 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+
+    <servlet>
+        <servlet-name>blojsomxmlrpc</servlet-name>
+        <servlet-class>org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCServlet</servlet-class>
+        <init-param>
+            <param-name>blog-configuration</param-name>
+            <param-value>/WEB-INF/blojsom.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>blog-xmlrpc-configuration</param-name>
+            <param-value>/WEB-INF/blojsom-xmlrpc.properties</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
         <url-pattern>/blog/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>blojsomxmlrpc</servlet-name>
+        <url-pattern>/xmlrpc/*</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>
