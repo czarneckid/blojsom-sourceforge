@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.54 2003-05-25 15:54:29 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.55 2003-05-30 00:15:52 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -778,7 +778,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
         if (configuration == null || "".equals(configuration)) {
             if (required) {
-                throw new BlojsomException("No value given for: " + configurationIP +  " configuration parameter");
+                throw new BlojsomException("No value given for: " + configurationIP + " configuration parameter");
             } else {
                 return properties;
             }
@@ -800,5 +800,22 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return properties;
+    }
+
+    /**
+     * Normalize a path to remove all ./, ../, .../, //, etc. type references
+     *
+     * @param path Input path
+     * @return Normalized path
+     */
+    public static String normalize(String path) {
+        if (path == null) {
+            return null;
+        }
+
+        String value = path;
+        value = value.replaceAll("\\.*", "");
+        value = value.replaceAll("/{2,}", "");
+        return value;
     }
 }
