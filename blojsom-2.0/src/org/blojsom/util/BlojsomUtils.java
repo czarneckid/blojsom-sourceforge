@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.19 2004-02-16 23:48:37 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.20 2004-03-13 17:14:29 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -377,10 +377,10 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Return an escaped string where &amp;, &lt;, and &gt; are converted to their HTML equivalents
+     * Return an escaped string where &amp;, &lt;, &gt;, &quot;, and &apos; are converted to their HTML equivalents
      * 
      * @param input Unescaped string
-     * @return Escaped string containing HTML equivalents for &amp;, &lt;, and &gt;
+     * @return Escaped string containing HTML equivalents for &amp;, &lt;, &gt;, &quot;, and &apos;
      */
     public static String escapeString(String input) {
         if (input == null) {
@@ -390,6 +390,8 @@ public class BlojsomUtils implements BlojsomConstants {
         String unescaped = replace(input, "&", "&amp;");
         unescaped = replace(unescaped, "<", "&lt;");
         unescaped = replace(unescaped, ">", "&gt;");
+        unescaped = replace(unescaped, "\"", "&quot;");
+        unescaped = replace(unescaped, "'", "&apos;");
         return unescaped;
     }
 
