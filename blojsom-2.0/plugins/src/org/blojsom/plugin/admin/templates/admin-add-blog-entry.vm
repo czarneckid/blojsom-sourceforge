@@ -58,7 +58,7 @@
                         <td>#adminResource('category.text' 'Category')</td>
                         <td>
                             <select name="blog-category-name">
-                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+                            #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
                                 <option value="$blogCategory.getCategory()" #if ($blogCategory.getCategory().equals($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY)) selected #end>#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
                             #end
                             </select>
