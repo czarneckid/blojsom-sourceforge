@@ -9,6 +9,11 @@
     <changes>
 
         <release version="1.9.5" date="dev">
+            <action dev="intabulas" type="update" context="Extension">
+                Initial implementation of the <a href="http://bitworking.org/rfc/draft-gregorio-03.html">EchoAPI</a> for editing entries. At this time only
+                the fetching of entries is implemented.
+            </action>
+
             <action dev="czarneckid" type="update" context="Extension">
                 Refactored method to get a blog entry filename from within the Blogger and
                 MetaWeblog API handlers into the base <tt>AbstractBlojsomAPIHandler</tt> class.
