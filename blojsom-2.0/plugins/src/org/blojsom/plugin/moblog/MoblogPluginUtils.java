@@ -55,7 +55,7 @@ import java.util.Properties;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.4 2005-01-04 18:01:32 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.5 2005-01-04 18:02:06 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogPluginUtils {
@@ -264,7 +264,7 @@ public class MoblogPluginUtils {
     public static int saveFile(String filename, String extension, InputStream input) throws IOException {
         int count = 0;
         if (filename == null) {
-            throw new IOException("No filename provided to saveFile");
+            return count;
         }
 
         // Do not overwrite existing file
