@@ -60,7 +60,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.3 2003-10-07 01:20:44 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.4 2003-10-07 01:23:04 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -91,7 +91,8 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
         _callbackHandler = new WeblogsPingPluginAsyncCallback();
         _userLastPingMap = new HashMap(5);
         String user;
-        for (int i = 0; i < blojsomConfiguration.getBlojsomUsers().length; i++) {
+        String[] users = blojsomConfiguration.getBlojsomUsers();
+        for (int i = 0; i < users.length; i++) {
             user = blojsomConfiguration.getBlojsomUsers()[i];
             _userLastPingMap.put(user, new Date());
         }
