@@ -38,6 +38,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.Trackback;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.plugin.email.EmailUtils;
 import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
@@ -57,7 +58,7 @@ import java.io.IOException;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.8 2003-03-23 19:27:40 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.9 2003-03-24 18:55:09 intabulas Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -113,6 +114,8 @@ public class TrackbackPlugin implements BlojsomPlugin {
     private String[] _blogFileExtensions;
     private String _blogHome;
     private String _blogTrackbackDirectory;
+    private Boolean _blogEmailEnabled;
+    private String _blogUrlPrefix;
 
     /**
      * Default constructor
@@ -131,6 +134,9 @@ public class TrackbackPlugin implements BlojsomPlugin {
         _blogFileExtensions = (String[]) blogProperties.get(BlojsomConstants.BLOG_FILE_EXTENSIONS_IP);
         _blogHome = (String) blogProperties.get(BlojsomConstants.BLOG_HOME_IP);
         _blogTrackbackDirectory = (String) blogProperties.get(BlojsomConstants.BLOG_TRACKBACK_DIRECTORY_IP);
+        _blogEmailEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_EMAIL_ENABLED_IP);
+        _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+
     }
 
     /**
@@ -155,6 +161,8 @@ public class TrackbackPlugin implements BlojsomPlugin {
         String excerpt = httpServletRequest.getParameter(TRACKBACK_EXCERPT_PARAM);
         String blogName = httpServletRequest.getParameter(TRACKBACK_BLOG_NAME_PARAM);
         String tb = httpServletRequest.getParameter(TRACKBACK_PARAM);
+
+        String entryTitle = entries[0].getTitle();
 
         if ((permalink != null) && (!"".equals(permalink)) && (tb != null) && ("y".equalsIgnoreCase(tb))) {
             if ((url == null) || ("".equals(url.trim()))) {
@@ -182,6 +190,12 @@ public class TrackbackPlugin implements BlojsomPlugin {
                 category += "/";
             }
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName);
+
+            if (_blogEmailEnabled.booleanValue()) {
+                sendTrackbackEmail(entryTitle, title, category, permalink, url, excerpt, blogName, context);
+            }
+
+
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
             if (code.intValue() == 0) {
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_SUCCESS_PAGE);
@@ -261,6 +275,48 @@ public class TrackbackPlugin implements BlojsomPlugin {
         }
 
         return new Integer(0);
+    }
+
+
+    /**
+     * Send Trackback Email to Blog Author
+     *
+     * @param entryTitle Blog Entry title for this Trackback
+     * @param title title of trackback entry
+     * @param category catagory for trackbacked entry
+     * @param permalink permalink for trackbacked entry
+     * @param url URL of site tracking back
+     * @param excerpt excerpt of trackback post
+     * @param blogName Title of trackbacking blog
+     * @param context Context
+     */
+    private synchronized void sendTrackbackEmail(String entryTitle, String title, String category, String permalink, String url,
+                                                 String excerpt, String blogName, Map context) {
+
+
+        StringBuffer _trackback = new StringBuffer();
+        _trackback.append("Trackback on: ").append(_blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
+        _trackback.append("?permalink=").append(permalink).append("&page=comments").append("\n");
+
+        _trackback.append("\n==[ Trackback ]==========================================================").append("\n\n");
+
+
+        if (title == null && !title.equals("")) {
+            _trackback.append("Title    : ").append(title).append("\n");
+        }
+        if (url != null && !url.equals("")) {
+            _trackback.append("Url      : ").append(url).append("\n");
+        }
+        if (blogName == null && !blogName.equals("")) {
+            _trackback.append("Blog Name: ").append(blogName).append("\n");
+        }
+        if (excerpt != null && !excerpt.equals("")) {
+            _trackback.append("Excerpt  : ").append(excerpt).append("\n");
+        }
+
+        EmailUtils.notifyBlogAuthor("[blojsom] Trackback on: " + entryTitle, _trackback.toString(), context);
+
+
     }
 
 
