@@ -7,7 +7,10 @@
                  org.ignition.blojsom.plugin.referer.RefererLogPlugin,
                  java.util.Iterator,
                  org.ignition.blojsom.plugin.referer.BlogRefererGroup,
-                 org.ignition.blojsom.plugin.referer.BlogReferer"
+                 org.ignition.blojsom.plugin.referer.BlogReferer,
+                 org.ignition.blojsom.plugin.calendar.BlogCalendar,
+                 org.ignition.blojsom.plugin.calendar.AbstractCalendarPlugin,
+                 org.ignition.blojsom.plugin.calendar.VelocityHelper"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
@@ -56,24 +59,21 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 </div>
 
 
-	<h1><a href="<%= blogInformation.getBlogURL() %>">
-		<%= blogInformation.getBlogName() %>
-	</a></h1>
-
+	<h1><a href="<%= blogInformation.getBlogURL() %>"><%= blogInformation.getBlogName() %></a></h1>
 	<h3><%= blogInformation.getBlogDescription() %></h3>
 
-	<p><b>Available Categories: </b><%= catString %></p>
+	<p>Available Categories: <%= catString %></p>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+<td class="tablemaxwidth">
+
 <%
 	if (entryArray != null) {
 	    for (int i = 0; i < entryArray.length; i++) {
 		BlogEntry blogEntry = entryArray[i];
 %>
 		<div class="entrystyle">
-		<p class="weblogtitle"><%= blogEntry.getTitle() %>
-		    <span class="smalltext">
-			[<a href="<%= blogEntry.getLink() %>" title="Permalink to this blojsom entry">Permalink</a>]
-		    </span>
-		</p>
+		<p class="weblogtitle"><%= blogEntry.getTitle() %> <span class="smalltext">[<a href="<%= blogEntry.getLink() %>" title="Permalink to this blojsom entry">Permalink</a>]</span></p>
 		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
@@ -83,17 +83,72 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
         <% } %>
         Trackbacks [<a href="<%= blogEntry.getLink() %>&amp;page=trackback"><%= blogEntry.getNumTrackbacks() %></a>]
         </p>
+
 <%
 	    }
 	}
 %>
+</td>
+<td class="tablemaxpxwidth">&nbsp;</td>
 
-<p />
+<td valign="top" align="center" width="200">
+
+<%
+    BlogCalendar blogCalendar = (BlogCalendar)request.getAttribute(AbstractCalendarPlugin.BLOJSOM_CALENDAR);
+    VelocityHelper vtlHelper = (VelocityHelper )request.getAttribute(AbstractCalendarPlugin.BLOJSOM_CALENDAR_VTLHELPER);
+%>
+
+
+<div class="calendarbox">
+<table cellspacing="0" cellpadding="0" border="0" width="165"><tr><td colspan="7" class="calendarcaption"><b><%= blogCalendar.getCaption()%></b></td></tr>
+
+<!-- DOW Name Row -->
+<tr>
+
+<%
+     String[] dowNames = blogCalendar.getShortDayOfWeekNames();
+     for (int x = 0; x < dowNames.length; x++) {
+     %><td width="19" class="calendarcolumn"><%= dowNames[x]%>&nbsp;</td><%
+     }%>
+</tr>
+
+
+<tr>
+    <%= vtlHelper.getCalendarRow(1,"calendarcolumn")%>
+</tr>
+<tr>
+    <%= vtlHelper.getCalendarRow(2,"calendarcolumn")%>
+</tr>
+<tr>
+    <%= vtlHelper.getCalendarRow(3,"calendarcolumn")%>
+</tr>
+<tr>
+    <%= vtlHelper.getCalendarRow(4,"calendarcolumn")%>
+</tr>
+<tr>
+    <%= vtlHelper.getCalendarRow(5,"calendarcolumn")%>
+</tr>
+<tr>
+    <%= vtlHelper.getCalendarRow(6,"calendarcolumn")%>
+</tr>
+
+<tr>
+<td colspan="7" class="calendarcolumn"><%= vtlHelper.getPreviousMonth()%>&nbsp;&nbsp;&nbsp;<%= vtlHelper.getToday()%>&nbsp;&nbsp;&nbsp;<%= vtlHelper.getNextMonth()%></td>
+</tr>
+</table>
+</div>
+
+
+
+</td>
+</tr>
+</table >
+
 
 <%
     if ((entryArray != null) && (entryArray.length > 0)) {
 %>
-	<p><b>Available Categories: </b><%= catString %></p>
+	<p>Available Categories: <%= catString %></p>
 <%
     }
 %>
@@ -126,9 +181,8 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
                     if( referer.isToday()) {
                       %><a href="<%= refererKey %>"><%= refererKey %></a>&nbsp;(<%= referer.getCount() %>)<br/><%
                     }
-              %></p><%
-
-            }
+                }
+               %></p><%
 
         }
         }
