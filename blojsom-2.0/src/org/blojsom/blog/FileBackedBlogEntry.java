@@ -45,9 +45,9 @@ import java.util.*;
 
 /**
  * FileBackedBlogEntry
- * 
+ *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.20 2005-01-05 02:32:52 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.21 2005-01-11 02:49:49 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -70,7 +70,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Create a new blog entry
-     * 
+     *
      * @param title       Entry title
      * @param link        Permalink to the entry
      * @param description Entry description
@@ -87,7 +87,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the file encoding to use when loading the blog entry
-     * 
+     *
      * @param blogFileEncoding File encoding
      * @since blojsom 1.9
      */
@@ -97,7 +97,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * File containing the blog entry
-     * 
+     *
      * @return Blog entry file
      */
     public File getSource() {
@@ -106,7 +106,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the file of the blog entry
-     * 
+     *
      * @param source File for the blog entry
      */
     public void setSource(File source) {
@@ -115,7 +115,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Returns the BlogId  for this entry
-     * 
+     *
      * @return Blog Id
      */
     public String getId() {
@@ -129,7 +129,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Return the permalink name for this blog entry
-     * 
+     *
      * @return Permalink name
      */
     public String getPermalink() {
@@ -173,7 +173,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Determines whether or not this blog entry supports comments by testing to see if
      * the blog entry is writable.
-     * 
+     *
      * @return <code>true</code> if the blog entry is writable, <code>false</code> otherwise
      */
     public boolean supportsComments() {
@@ -182,7 +182,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Determines whether or not this blog entry supports trackbacks.
-     * 
+     *
      * @return <code>true</code> if the blog entry supports trackbacks, <code>false</code> otherwise
      * @since blojsom 2.05
      */
@@ -192,7 +192,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the directory for comments
-     * 
+     *
      * @param commentsDirectory Comments directory
      */
     public void setCommentsDirectory(String commentsDirectory) {
@@ -235,8 +235,8 @@ public class FileBackedBlogEntry extends BlogEntry {
      * author e-mail address<br />
      * author url<br />
      * everything else after is the comment
-     * 
-     * @param commentFile Comment file
+     *
+     * @param commentFile      Comment file
      * @param blogFileEncoding Encoding for blog files
      * @return BlogComment Blog comment loaded from disk
      */
@@ -296,7 +296,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the directory for trackbacks
-     * 
+     *
      * @param trackbacksDirectory Trackbacks directory
      */
     public void setTrackbacksDirectory(String trackbacksDirectory) {
@@ -335,8 +335,8 @@ public class FileBackedBlogEntry extends BlogEntry {
      * excerpt<br />
      * url<br />
      * blog_name
-     * 
-     * @param trackbackFile Trackback file
+     *
+     * @param trackbackFile    Trackback file
      * @param blogFileEncoding Encoding for blog files
      * @return Trackback Trackback loaded from disk
      */
@@ -402,7 +402,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Load the meta data for the entry
-     * 
+     *
      * @param blog Blog information
      * @since blojsom 1.9
      */
@@ -458,7 +458,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Store the meta data for the entry
-     * 
+     *
      * @param blog Blog information
      * @since blojsom 1.9
      */
@@ -486,8 +486,40 @@ public class FileBackedBlogEntry extends BlogEntry {
     }
 
     /**
+     * Load the blog category information for this entry
+     *
+     * @param blogUser {@link BlogUser} information
+     * @since blojsom 2.23
+     */
+    protected void loadBlogCategory(BlogUser blogUser) {
+        if (_category != null) {
+            Blog blog = blogUser.getBlog();
+            FileBackedBlogCategory blogCategoryForEntry;
+
+            blogCategoryForEntry = new FileBackedBlogCategory();
+            blogCategoryForEntry.setCategory(_category);
+            blogCategoryForEntry.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(_category));
+
+            try {
+                blogCategoryForEntry.load(blogUser);
+            } catch (BlojsomException e) {
+                _logger.error(e);
+            }
+
+
+            if ("/".equals(_category)) {
+                setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(_source.getName()));
+            } else {
+                setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(_category.substring(0, _category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(_source.getName()));
+            }
+
+            setBlogCategory(blogCategoryForEntry);
+        }
+    }
+
+    /**
      * Load a blog entry.
-     * 
+     *
      * @param blogUser User information
      * @throws BlojsomException If there is an error loading the entry
      * @since blojsom 1.9
@@ -501,6 +533,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
         try {
             reloadSource(blog);
+            loadBlogCategory(blogUser);
             if (blog.getBlogCommentsEnabled().booleanValue()) {
                 loadComments(blog);
                 loadTrackbacks(blog);
@@ -514,7 +547,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Save the blog entry. This method does not write out the comments or trackbacks to disk.
-     * 
+     *
      * @param blogUser User information
      * @throws BlojsomException If there is an error saving the entry
      * @since blojsom 1.9
@@ -561,7 +594,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Delete the blog entry.
-     * 
+     *
      * @param blogUser User information
      * @throws BlojsomException If there is an error deleting the entry
      * @since blojsom 1.9
@@ -599,7 +632,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set any attributes of the blog entry using data from the map.
-     * 
+     *
      * @param attributeMap Attributes
      */
     public void setAttributes(Map attributeMap) {
