@@ -38,7 +38,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
@@ -54,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.9 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.10 2004-01-20 03:55:58 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -131,7 +130,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     public static final String API_PREFIX = "blogger";
 
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
-    private Blog _blog;
 
     /**
      * Default constructor
@@ -162,16 +160,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         if (BlojsomUtils.checkNullOrBlank(_blogEntryExtension)) {
             _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
         }
-    }
-
-    /**
-     * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
-     *
-     * @param fetcher {@link BlojsomFetcher} instance
-     * @throws BlojsomException If there is an error in setting the fetcher
-     */
-    public void setFetcher(BlojsomFetcher fetcher) throws BlojsomException {
-        _fetcher = fetcher;
     }
 
     /**
@@ -470,7 +458,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             String result = null;
 
             // Quick verify that the category is valid
-            File blogCategory = getBlogCategoryDirectory(blogid, _blog);
+            File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
                 String filename = getBlogEntryFilename(content);

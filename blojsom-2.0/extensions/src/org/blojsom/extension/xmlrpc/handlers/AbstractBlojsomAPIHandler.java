@@ -37,6 +37,7 @@ package org.blojsom.extension.xmlrpc.handlers;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.Blog;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.util.BlojsomConstants;
@@ -50,7 +51,7 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.4 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.5 2004-01-20 03:55:51 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -69,6 +70,7 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
     public static final int    NOBLOGS_EXCEPTION = 3000;
     public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
 
+    protected Blog _blog;
     protected BlogUser _blogUser;
     protected BlojsomFetcher _fetcher;
     protected String _blogEntryExtension;
@@ -95,7 +97,9 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      * @param fetcher {@link BlojsomFetcher} instance
      * @throws BlojsomException If there is an error in setting the fetcher
      */
-    public abstract void setFetcher(BlojsomFetcher fetcher) throws BlojsomException;
+    public void setFetcher(BlojsomFetcher fetcher) throws BlojsomException {
+        _fetcher = fetcher;
+    }
 
     /**
      * Return a filename appropriate for the blog entry content
@@ -121,15 +125,14 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      *
      * @since blojsom 1.9
      * @param categoryName Category name
-     * @param blog Blog information
      * @return A directory into which a blog entry can be placed
      */
-    protected File getBlogCategoryDirectory(String categoryName, Blog blog) {
-        File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
+    protected File getBlogCategoryDirectory(String categoryName) {
+        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
             return blogCategory;
         } else {
-            return new File(blog.getBlogHome() + "/");
+            return new File(_blog.getBlogHome() + "/");
         }
     }
 }

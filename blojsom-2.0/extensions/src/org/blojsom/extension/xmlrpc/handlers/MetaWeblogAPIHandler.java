@@ -38,7 +38,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
@@ -57,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.11 2004-01-19 18:22:12 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.12 2004-01-20 03:55:58 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -135,7 +134,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     private String _uploadDirectory;
     private HashMap _acceptedMimeTypes;
     private String _staticURLPrefix;
-    private Blog _blog;
 
     private Log _logger = LogFactory.getLog(MetaWeblogAPIHandler.class);
 
@@ -199,16 +197,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 _staticURLPrefix += "/";
             }
         }
-    }
-
-    /**
-     * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
-     *
-     * @param fetcher {@link BlojsomFetcher} instance
-     * @throws BlojsomException If there is an error in setting the fetcher
-     */
-    public void setFetcher(BlojsomFetcher fetcher) throws BlojsomException {
-        _fetcher = fetcher;
     }
 
     /**
@@ -381,7 +369,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             String result = null;
 
             //Quick verify that the categories are valid
-            File blogCategory = getBlogCategoryDirectory(blogid, _blog);
+            File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
                 Hashtable postcontent = struct;
