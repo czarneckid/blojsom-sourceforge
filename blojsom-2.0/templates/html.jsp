@@ -24,8 +24,14 @@
     BlogCategory[] blogCategories = (BlogCategory[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
     BlogCategory requestedCategory = (BlogCategory) request.getAttribute(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
-    boolean blogCommentsEnabled = ((Boolean) request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED)).booleanValue();
-    boolean blogTrackbacksEnabled = ((Boolean) request.getAttribute("BLOJSOM_TRACKBACK_PLUGIN_ENABLED")).booleanValue();
+    boolean blogCommentsEnabled = true;
+    if (request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED) != null) {
+        blogCommentsEnabled = ((Boolean) request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED)).booleanValue();
+    }
+    boolean blogTrackbacksEnabled = true;
+    if (request.getAttribute("BLOJSOM_TRACKBACK_PLUGIN_ENABLED") != null) {
+        blogTrackbacksEnabled = ((Boolean) request.getAttribute("BLOJSOM_TRACKBACK_PLUGIN_ENABLED")).booleanValue();
+    }
 
     StringBuffer catStringBuf = new StringBuffer(20);
     String blogName = null;
