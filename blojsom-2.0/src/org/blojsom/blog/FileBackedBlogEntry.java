@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.14 2004-02-08 20:54:09 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.15 2004-02-27 03:09:27 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -65,6 +65,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     public FileBackedBlogEntry() {
         _commentsDirectory = DEFAULT_COMMENTS_DIRECTORY;
         _trackbacksDirectory = DEFAULT_TRACKBACK_DIRECTORY;
+        _blogFileEncoding = UTF8;
     }
 
     /**
@@ -134,13 +135,16 @@ public class FileBackedBlogEntry extends BlogEntry {
      * Reload the blog entry from disk
      * <p/>
      * The first line of the blog entry will be used as the title of the blog
+     *
+     * @param blog Blog information
+     * @throws IOException If there is an error loading the blog entry
      */
-    protected void reloadSource() throws IOException {
+    protected void reloadSource(Blog blog) throws IOException {
         boolean hasLoadedTitle = false;
         String lineSeparator = System.getProperty("line.separator");
 
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(_source), _blogFileEncoding));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(_source), blog.getBlogFileEncoding()));
             String line;
             StringBuffer description = new StringBuffer();
             while ((line = br.readLine()) != null) {
@@ -192,8 +196,10 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Convenience method to load the comments for this blog entry. A blog entry can have
+     *
+     * @param blog Blog information
      */
-    protected void loadComments() {
+    protected void loadComments(Blog blog) {
         if (supportsComments()) {
             String commentsDirectoryPath;
             if (_source.getParent() == null) {
@@ -209,7 +215,7 @@ public class FileBackedBlogEntry extends BlogEntry {
                 _comments = new ArrayList(comments.length);
                 for (int i = 0; i < comments.length; i++) {
                     File comment = comments[i];
-                    _comments.add(loadComment(comment));
+                    _comments.add(loadComment(comment, blog.getBlogFileEncoding()));
                 }
             }
         } else {
@@ -226,9 +232,10 @@ public class FileBackedBlogEntry extends BlogEntry {
      * everything else after is the comment
      * 
      * @param commentFile Comment file
+     * @param blogFileEncoding Encoding for blog files
      * @return BlogComment Blog comment loaded from disk
      */
-    protected BlogComment loadComment(File commentFile) {
+    protected BlogComment loadComment(File commentFile, String blogFileEncoding) {
         int commentSwitch = 0;
         BlogComment comment = new BlogComment();
         comment.setCommentDateLong(commentFile.lastModified());
@@ -236,7 +243,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         String separator = System.getProperty("line.separator");
         String commentLine;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), _blogFileEncoding));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), blogFileEncoding));
             while ((commentLine = br.readLine()) != null) {
                 switch (commentSwitch) {
                     case 0:
@@ -284,8 +291,10 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Convenience method to load the trackbacks for this blog entry.
+     *
+     * @param blog Blog Information
      */
-    protected void loadTrackbacks() {
+    protected void loadTrackbacks(Blog blog) {
         String trackbacksDirectoryPath;
         if (_source.getParent() == null) {
             trackbacksDirectoryPath = File.separator + _trackbacksDirectory + File.separator + _source.getName();
@@ -300,7 +309,7 @@ public class FileBackedBlogEntry extends BlogEntry {
             _trackbacks = new ArrayList(trackbacks.length);
             for (int i = 0; i < trackbacks.length; i++) {
                 File trackbackFile = trackbacks[i];
-                _trackbacks.add(loadTrackback(trackbackFile));
+                _trackbacks.add(loadTrackback(trackbackFile, blog.getBlogFileEncoding()));
             }
         }
     }
@@ -314,15 +323,16 @@ public class FileBackedBlogEntry extends BlogEntry {
      * blog_name
      * 
      * @param trackbackFile Trackback file
+     * @param blogFileEncoding Encoding for blog files
      * @return Trackback Trackback loaded from disk
      */
-    protected Trackback loadTrackback(File trackbackFile) {
+    protected Trackback loadTrackback(File trackbackFile, String blogFileEncoding) {
         int trackbackSwitch = 0;
         Trackback trackback = new Trackback();
         trackback.setTrackbackDateLong(trackbackFile.lastModified());
         String trackbackLine;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(trackbackFile), _blogFileEncoding));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(trackbackFile), blogFileEncoding));
             while (((trackbackLine = br.readLine()) != null) && (trackbackSwitch < 4)) {
                 switch (trackbackSwitch) {
                     case 0:
@@ -475,10 +485,10 @@ public class FileBackedBlogEntry extends BlogEntry {
         }
 
         try {
-            reloadSource();
+            reloadSource(blog);
             if (blog.getBlogCommentsEnabled().booleanValue()) {
-                loadComments();
-                loadTrackbacks();
+                loadComments(blog);
+                loadTrackbacks(blog);
             }
             loadMetaData(blog);
         } catch (IOException e) {
