@@ -14,10 +14,10 @@
                     <section>
                         <title>General changes</title>
                         <p>
-                            1. Change any classnames which reference the <code>org.blojsom.*</code>
+                            1. Change any classnames which reference the <code>org.ignition.blojsom.*</code>
                             package to <code>org.blojsom.*</code>. You will find classnames in the following
                             files, <code>blojsom.properties</code>, <code>dispatcher.properties</code>,
-                            <code>plugin.properties</code>, and <code>xmlrpc.properties</code>.
+                            <code>plugin.properties</code>, and <code>blojsom-xmlrpc.properties</code>.
                         </p>
                     </section>
                     <section>
@@ -28,7 +28,13 @@
                             <code>/WEB-INF/default</code>.
                         </p>
                         <p>
-                            2. Create a new <code>/WEB-INF/blojsom.properties</code> file with general configuration
+                            2. Move the <code>/WEB-INF/blojsom.properties</code> to the new user's directory under
+                            the name <code>blog.properties</code>. If you were creating a default user, you would
+                            be moving <code>/WEB-INF/blojsom.properties</code> to
+                            <code>/WEB-INF/default/blog.properties</code>.
+                        </p>
+                        <p>
+                            3. Create a new <code>/WEB-INF/blojsom.properties</code> file with general configuration
                             properties for blojsom. For example:
                             <pre>
                                 #
@@ -42,7 +48,7 @@
                             </pre>
                         </p>
                         <p>
-                            3. Move the <code>authorization.properties</code>, <code>blacklist.filters</code>,
+                            4. Move the <code>authorization.properties</code>, <code>blacklist.filters</code>,
                             and <code>flavor.properties</code> files to the initial user's directory. So, for
                             example, these would be moved to <code>/WEB-INF/default</code>. If you are using
                             any of the plugins which require configuration files (Emoticons, Macro Expansion,
@@ -51,7 +57,7 @@
                             <code>showmemore.properties</code>) into the initial user's directory.
                         </p>
                         <p>
-                            4. Copy the <code>/WEB-INF/plugin.properties</code> to the initial user's
+                            5. Copy the <code>/WEB-INF/plugin.properties</code> to the initial user's
                             directory. For example, if using the default user as above, you would now have a
                             copy of the file in <code>/WEB-INF/plugin.properties</code> and
                             <code>/WEB-INF/default/plugin.properties</code>. Edit <code>/WEB-INF/plugin.properties</code>
@@ -61,6 +67,10 @@
                             <code>blojsom-plugin-chain</code> references. blojsom will ignore the information it does
                             not need from these respective files, but for cleanliness and readability, you should
                             remove the appropriate information from the respective files.
+                        </p>
+                        <p>
+                            6. Change the <code>blog-blacklist-file</code> parameter in the user's <code>blog.properties</code> from
+                            <code>/WEB-INF/blacklist.filters</code> to <code>blacklist.filters</code>.
                         </p>
                     </section>
                     <section>
