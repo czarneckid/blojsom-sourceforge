@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.20 2005-01-27 01:27:49 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.21 2005-03-10 05:02:40 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -176,7 +176,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             return entries;
         }
 
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP, Collections.unmodifiableMap(_blojsomConfiguration.getBlogUsers()));        
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP, Collections.unmodifiableMap(BlojsomUtils.listToMap(BlojsomUtils.arrayToList(_blojsomConfiguration.getBlojsomUsers()))));
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
@@ -196,7 +196,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 _logger.debug("Deleting user: " + blogUserID);
 
                 // Delete the user from the in-memory list
-                _blojsomConfiguration.getBlogUsers().remove(blogUserID);
+                _blojsomConfiguration.removeBlogID(blogUserID);
 
                 File blogConfigurationDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogConfigurationDirectory)) {
@@ -232,7 +232,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         } else if (ADD_BLOG_USER_ACTION.equals(action)) {
             _logger.debug("User requested add blog user action");
 
-            Map blogUsers = _blojsomConfiguration.getBlogUsers();
+            Map blogUsers = _blojsomConfiguration.getBlogIDs();
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
 
             if (BlojsomUtils.checkNullOrBlank(blogUserID)) { // Check that we got a blog user ID
@@ -426,7 +426,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                         }
 
                         // Add the user to the global list of users
-                        _blojsomConfiguration.getBlogUsers().put(blogUserID, blogUser);
+                        _blojsomConfiguration.addBlogID(blogUserID);
                         writeBlojsomConfiguration();
                         _logger.debug("Wrote new blojsom configuration after adding new user: " + blogUserID);
 
@@ -444,15 +444,9 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
      */
     private void writeBlojsomConfiguration() {
         File blojsomConfigurationFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + "blojsom.properties");
-        Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
-        ArrayList users = new ArrayList();
-        while (usersIterator.hasNext()) {
-            users.add(usersIterator.next());
-        }
-
         Properties configurationProperties = new BlojsomProperties(true);
 
-        configurationProperties.put(BLOJSOM_USERS_IP, users);
+        configurationProperties.put(BLOJSOM_USERS_IP, BlojsomUtils.arrayToList(_blojsomConfiguration.getBlojsomUsers()));
         configurationProperties.put(BLOJSOM_FETCHER_IP, _blojsomConfiguration.getFetcherClass());
         configurationProperties.put(BLOJSOM_DEFAULT_USER_IP, _blojsomConfiguration.getDefaultUser());
         configurationProperties.put(BLOJSOM_INSTALLATION_DIRECTORY_IP, _blojsomConfiguration.getInstallationDirectory());

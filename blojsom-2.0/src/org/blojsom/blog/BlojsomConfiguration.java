@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.36 2005-01-15 16:19:47 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.37 2005-03-10 04:57:23 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -73,9 +73,11 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _globalBlogHome;
     private static BlojsomEventBroadcaster _eventBroadcaster = null;
     private String _installedLocales;
+    private ServletConfig _servletConfig;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
+    private Map _blogIDs;
 
     /**
      * Initialize the BlojsomConfiguration object
@@ -85,6 +87,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public BlojsomConfiguration(ServletConfig servletConfig, Map blojsomConfiguration) throws BlojsomConfigurationException {
         _blojsomConfiguration = blojsomConfiguration;
+        _servletConfig = servletConfig;
 
         _installationDirectory = servletConfig.getServletContext().getRealPath("/");
         if (BlojsomUtils.checkNullOrBlank(_installationDirectory)) {
@@ -200,7 +203,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 if (!_globalBlogHome.endsWith("/")) {
                     _globalBlogHome += "/";
                 }
-                
+
                 File blogHomeDirectory = new File(_globalBlogHome);
                 if (!blogHomeDirectory.exists()) {
                     if (!blogHomeDirectory.mkdirs()) {
@@ -228,66 +231,16 @@ public class BlojsomConfiguration implements BlojsomConstants {
             users = BlojsomUtils.parseCommaList(_blojsomUsers);
         }
 
-        InputStream is;
         if (users.length == 0) {
             _logger.error("No users defined for this blojsom blog");
             throw new BlojsomConfigurationException("No users defined for this blojsom blog");
         } else {
-            _blogUsers = new HashMap(users.length);
+            _blogUsers = new HashMap();
+            _blogIDs = new HashMap();
             for (int i = 0; i < users.length; i++) {
                 String user = users[i];
-                BlogUser blogUser = new BlogUser();
-                blogUser.setId(user);
 
-                Properties userProperties = new BlojsomProperties();
-                _logger.info("Attemping to load " + _baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
-                is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
-                if (is != null) {
-                    try {
-                        userProperties.load(is);
-                        is.close();
-                    } catch (IOException e) {
-                        _logger.error(e);
-                        throw new BlojsomConfigurationException(e);
-                    }
-
-                    Blog userBlog = null;
-                    try {
-                        // If a global blog-home directory has been defined, use it for each user
-                        if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome) &&
-                                !userProperties.containsKey(BLOG_HOME_IP)) {
-                            String usersBlogHome = _globalBlogHome + user + "/";
-                            File blogHomeDirectory = new File(usersBlogHome);
-                            if (!blogHomeDirectory.exists()) {
-                                if (!blogHomeDirectory.mkdirs()) {
-                                    _logger.error("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
-                                    throw new BlojsomConfigurationException("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
-                                }
-                            }
-
-                            userProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
-                            _logger.debug("Setting user blog-home directory: " + usersBlogHome);
-                        }
-
-                        userBlog = new Blog(userProperties);
-                        blogUser.setBlog(userBlog);
-
-                        _blogUsers.put(user, blogUser);
-                        _logger.debug("Added blojsom user: " + blogUser.getId());
-
-                        // Ensure the resource directory for the user physically exists
-                        File resourceDirectory = new File(_qualifiedResourceDirectory + File.separator + user);
-                        if (!resourceDirectory.exists()) {
-                            _logger.debug("Creating resource directory for user " + user);
-                            resourceDirectory.mkdirs();
-                        }
-                    } catch (BlojsomConfigurationException e) {
-                        _logger.error(e);
-                        _logger.error("Marking user as invalid: " + blogUser.getId());
-                    }
-                } else {
-                    _logger.error("Unable to load blog configuration for blog: " + blogUser.getId());
-                }
+                _blogIDs.put(user, user);
             }
 
             // Determine and set the default user
@@ -297,7 +250,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 throw new BlojsomConfigurationException("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
             }
 
-            if (!_blogUsers.containsKey(defaultUser)) {
+            if (!_blogIDs.containsKey(defaultUser)) {
                 _logger.error("Default user does not match any of the registered blojsom users: " + defaultUser);
                 throw new BlojsomConfigurationException("Default user does not match any of the registered blojsom users: " + defaultUser);
             }
@@ -354,8 +307,10 @@ public class BlojsomConfiguration implements BlojsomConstants {
     }
 
     /**
-     * @param propertyKey
-     * @return
+     * Retrieve a property from <code>blojsom.properties</code> as a {@link List}
+     *
+     * @param propertyKey Key
+     * @return {@link List} for property or <code>null</code> if property does not exist
      */
     public List getBlojsomPropertyAsList(String propertyKey) {
         if (_blojsomConfiguration.containsKey(propertyKey)) {
@@ -457,13 +412,21 @@ public class BlojsomConfiguration implements BlojsomConstants {
      * @return List of users as a String[]
      */
     public String[] getBlojsomUsers() {
-        return BlojsomUtils.parseCommaList(_blojsomUsers);
+        Iterator blogs = _blogIDs.keySet().iterator();
+        ArrayList blogsList = new ArrayList();
+        while (blogs.hasNext()) {
+            String blogID = (String) blogs.next();
+            blogsList.add(blogID);
+        }
+
+        return (String[]) blogsList.toArray(new String[blogsList.size()]);
     }
 
     /**
      * Get a map of the {@link BlogUser} objects
      *
      * @return Map of {@link BlogUser} objects
+     * @deprecated
      */
     public Map getBlogUsers() {
         return _blogUsers;
@@ -535,5 +498,116 @@ public class BlojsomConfiguration implements BlojsomConstants {
         }
 
         return locales;
+    }
+
+    /**
+     * Check to see if a blog ID exists in the known blog IDs
+     *
+     * @param blogID Blog ID
+     * @return <code>true</code> if the blog ID exists, <code>false</code> otherwise
+     * @since blojsom 2.24
+     */
+    public boolean checkBlogIDExists(String blogID) {
+        return _blogIDs.containsKey(blogID);
+    }
+
+    /**
+     * Load a {@link BlogUser} for a given blog ID
+     *
+     * @param blogID Blog ID
+     * @return {@link BlogUser} object
+     * @throws BlojsomException If there is an exception loading the {@link BlogUser object}
+     * @since blojsom 2.24
+     */
+    public BlogUser loadBlog(String blogID) throws BlojsomException {
+        InputStream is;
+
+        BlogUser blogUser = new BlogUser();
+        blogUser.setId(blogID);
+
+        Properties userProperties = new BlojsomProperties();
+        _logger.info("Attemping to load " + _baseConfigurationDirectory + blogID + '/' + BLOG_DEFAULT_PROPERTIES);
+        is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + blogID + '/' + BLOG_DEFAULT_PROPERTIES);
+        if (is != null) {
+            try {
+                userProperties.load(is);
+                is.close();
+            } catch (IOException e) {
+                _logger.error(e);
+                throw new BlojsomConfigurationException(e);
+            }
+
+            Blog userBlog = null;
+            try {
+                // If a global blog-home directory has been defined, use it for each user
+                if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome) &&
+                        !userProperties.containsKey(BLOG_HOME_IP)) {
+                    String usersBlogHome = _globalBlogHome + blogID + "/";
+                    File blogHomeDirectory = new File(usersBlogHome);
+                    if (!blogHomeDirectory.exists()) {
+                        if (!blogHomeDirectory.mkdirs()) {
+                            _logger.error("Unable to create blog-home directory for blog: " + blogHomeDirectory.toString());
+                            throw new BlojsomConfigurationException("Unable to create blog-home directory for blog: " + blogHomeDirectory.toString());
+                        }
+                    }
+
+                    userProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
+                    _logger.debug("Setting blog blog-home directory: " + usersBlogHome);
+                }
+
+                userBlog = new Blog(userProperties);
+                blogUser.setBlog(userBlog);
+
+                _logger.debug("Added blojsom blog: " + blogUser.getId());
+
+                // Ensure the resource directory for the user physically exists
+                File resourceDirectory = new File(_qualifiedResourceDirectory + File.separator + blogID);
+                if (!resourceDirectory.exists()) {
+                    _logger.debug("Creating resource directory for blog " + blogID);
+                    resourceDirectory.mkdirs();
+                }
+            } catch (BlojsomConfigurationException e) {
+                _logger.error(e);
+                _logger.error("Marking blog as invalid: " + blogUser.getId());
+
+                throw new BlojsomConfigurationException(e);
+            }
+        } else {
+            _logger.error("Unable to load blog configuration for blog: " + blogUser.getId());
+
+            throw new BlojsomConfigurationException("Unable to load blog configuration for blog: " + blogUser.getId());
+        }
+
+        return blogUser;
+    }
+
+    /**
+     * Retrieve a {@link Map} of the known blog IDs
+     *
+     * @return {@link Map} of the known blog IDs
+     * @since blojsom 2.24
+     */
+    public Map getBlogIDs() {
+        return Collections.unmodifiableMap(_blogIDs);
+    }
+
+    /**
+     * Add a blog ID to the known blog IDs
+     *
+     * @param blogID Blog ID
+     * @since blojsom 2.24
+     */
+    public void addBlogID(String blogID) {
+        _blogIDs.put(blogID, blogID);
+    }
+
+    /**
+     * Remove a blog ID from the known blog IDs
+     *
+     * @param blogID Blog ID
+     * @since blojsom 2.24
+     */
+    public void removeBlogID(String blogID) {
+        _blogIDs.remove(blogID);
     }
 }

@@ -72,7 +72,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.27 2005-02-06 00:38:52 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.28 2005-03-10 05:05:24 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
@@ -642,7 +642,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                 blogEntry.load(mailbox.getBlogUser());
 
                                 msgs[msgNum].setFlag(Flags.Flag.DELETED, true);
-                                
+
                                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), blogEntry, mailbox.getBlogUser()));
                             } catch (BlojsomException e) {
                                 _logger.error(e);
@@ -694,17 +694,22 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                 while (!_finished) {
                     _logger.debug("Moblog plugin waking up and looking for new messages");
 
-                    Iterator userIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
-                    while (userIterator.hasNext()) {
-                        String user = (String) userIterator.next();
-                        BlogUser blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+                    String[] users = _blojsomConfiguration.getBlojsomUsers();
+                    for (int i = 0; i < users.length; i++) {
+                        String user = users[i];
+                        BlogUser blogUser = null;
+                        try {
+                            blogUser = (BlogUser) _blojsomConfiguration.loadBlog(user);
 
-                        Mailbox mailbox = MoblogPluginUtils.readMailboxSettingsForUser(_blojsomConfiguration, _servletConfig, blogUser);
-                        if (mailbox != null) {
-                            if (mailbox.isEnabled()) {
-                                _logger.debug("Checking mailbox: " + mailbox.getUserId() + " for user: " + mailbox.getBlogUser().getId());
-                                processMailbox(mailbox);
+                            Mailbox mailbox = MoblogPluginUtils.readMailboxSettingsForUser(_blojsomConfiguration, _servletConfig, blogUser);
+                            if (mailbox != null) {
+                                if (mailbox.isEnabled()) {
+                                    _logger.debug("Checking mailbox: " + mailbox.getUserId() + " for user: " + mailbox.getBlogUser().getId());
+                                    processMailbox(mailbox);
+                                }
                             }
+                        } catch (BlojsomException e) {
+                            _logger.error(e);
                         }
                     }
 

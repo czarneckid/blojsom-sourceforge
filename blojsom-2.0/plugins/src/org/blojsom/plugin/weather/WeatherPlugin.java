@@ -36,6 +36,7 @@ package org.blojsom.plugin.weather;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
@@ -51,7 +52,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 
@@ -59,7 +59,7 @@ import java.util.Map;
  * WeatherPlugin
  *
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.4 2005-01-26 23:57:33 czarneckid Exp $
+ * @version $Id: WeatherPlugin.java,v 1.5 2005-03-10 05:06:28 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -245,19 +245,24 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
             try {
                 while (!_finished) {
                     _logger.debug("Weather plugin is waking up and looking for updated forecasts");
-                    Iterator userIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
-                    while (userIterator.hasNext()) {
-                        String user = (String) userIterator.next();
-                        BlogUser blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+                    String[] users = _blojsomConfiguration.getBlojsomUsers();
+                    for (int i = 0; i < users.length; i++) {
+                        String user = users[i];
+                        BlogUser blogUser = null;
+                        try {
+                            blogUser = _blojsomConfiguration.loadBlog(user);
 
-                        Weather weather = WeatherPluginUtils.readWeatherSettingsForUser(_blojsomConfiguration, _servletConfig, blogUser);
-                        if (weather != null) {
-                            if (weather.isEnabled()) {
-                                WeatherInformation info = collectWeatherData(weather);
-                                if (info != null) {
-                                    _userWeatherMap.put(blogUser, info);
+                            Weather weather = WeatherPluginUtils.readWeatherSettingsForUser(_blojsomConfiguration, _servletConfig, blogUser);
+                            if (weather != null) {
+                                if (weather.isEnabled()) {
+                                    WeatherInformation info = collectWeatherData(weather);
+                                    if (info != null) {
+                                        _userWeatherMap.put(blogUser, info);
+                                    }
                                 }
                             }
+                        } catch (BlojsomException e) {
+                            _logger.error(e);
                         }
                     }
 
