@@ -42,10 +42,10 @@ for blojsom will be "blojsom". <br /><p />
 <table border="1">
     <th>Configuration parameter</th> <th>Default value</th> <th>Usage</th>
     <tr align="center">
-        <td>blog-home</td> <td></td> <td align="left">Points to the directory where your blog entries will be located
+        <td>blog-home</td> <td></td> <td align="left">Points to the directory where your blog entries will be located<br />
+        For example: <i>/my/home/directory/blog</i>
         <p /><font color="red">NOTE:</font><br />This parameter should point to the absolute directory where your blog entries
-        will be kept. It should exist outside the web application root directory. For example:<p />
-        <i>/my/home/directory/blog</i> </td>
+        will be kept. It should exist outside the web application root directory.  </td>
     </tr>
     <tr align="center">
         <td>blog-directory-depth</td> <td>-1</td> <td align="left">Indicates the number of levels deep that blojsom should traverse in <i>blog-home</i> to look for entries. A value of -1 indicates that blojsom should traverse all directories</td>
@@ -58,6 +58,10 @@ for blojsom will be "blojsom". <br /><p />
     </tr>
     <tr align="center">
         <td>blog-description</td> <td></td> <td align="left">A concise description of your blog</td>
+    </tr>
+    <tr align="center">
+        <td>blog-base-url</td> <td></td> <td align="left">Base URL for your blog<br />For example: <i>http://localhost:8080/blojsom/</i>
+        </td>
     </tr>
     <tr align="center">
         <td>blog-url</td> <td></td> <td align="left">URL for your blog<br />For example: <i>http://localhost:8080/blojsom/blog/</i>
@@ -93,6 +97,9 @@ for blojsom will be "blojsom". <br /><p />
     </tr>
     <tr align="center">
         <td>blog-trackbacks-directory</td> <td>.trackbacks</td> <td align="left">The directory where blog trackbacks will be written to under the blog category directories. This directory is automatically added to the list of directories that get filtered</td>
+    </tr>
+    <tr align="center">
+        <td>blog-email-enabled</td> <td>false</td> <td align="left">Indicates whether or not comments and trackbacks will be e-mailed to the blog owner. Can be either <i>true</i> or <i>false</i></td>
     </tr>
 </table>
 <p />
