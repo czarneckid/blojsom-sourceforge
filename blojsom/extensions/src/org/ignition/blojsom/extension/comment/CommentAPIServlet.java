@@ -73,8 +73,11 @@ import java.util.Properties;
  *
  * Comment API Specification can be found at <a href="http://wellformedweb.org/story/9">http://wellformedweb.org/story/9</a>
  *
+ * For info on the <item/> fragment and it's content, thehe RSS 2.0 Spec can
+ * be found at http://backend.userland.com/rss
+ *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.5 2003-04-22 01:52:14 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.6 2003-04-22 13:40:28 intabulas Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
@@ -93,9 +96,16 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
     private String _defaultrecipientname;
     private String _defaultrecipientemail;
 
+    /** RSS <item/> fragment tag containing the Title */
     private static final String COMMENTAPI_TITLE = "title";
+
+    /** RSS <item/> fragment tag containing the Link */
     private static final String COMMENTAPI_LINK = "link";
+
+    /** RSS <item/> fragment tag containing the Description */
     private static final String COMMENTAPI_DESCRIPTION = "description";
+
+    /** RSS <item/> fragment tag containing the Author */
     private static final String COMMENTAPI_AUTHOR = "author";
 
     /**
@@ -242,6 +252,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
             if (commentLink == null) {
                 commentLink = "";
             }
+
             String requestedCategory = httpServletRequest.getPathInfo();
             if (requestedCategory == null) {
                 requestedCategory = "/";
@@ -316,7 +327,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
                     } catch (IOException e) {
                         _logger.error(e);
-                        httpServletResponse.setStatus(403);
+                        httpServletResponse.setStatus(500);
                     }
                 } else {
                     _logger.error("Duplicate comment submission detected, ignoring subsequent submission");
@@ -324,10 +335,10 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
                 }
                 httpServletResponse.setStatus(200);
             } else {
-                httpServletResponse.setStatus(403);
+                httpServletResponse.setStatus(500);
             }
         } else {
-            httpServletResponse.setStatus(403);
+            httpServletResponse.setStatus(500);
         }
     }
 
