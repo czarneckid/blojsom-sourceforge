@@ -81,7 +81,7 @@ The <i>referer.properties</i> contains three configurable parameters:
 referer-display-size=40
 referer-filename=/change/me/please/blojsom-referer.log
 
-# NOTE:hit-count flavors just capture totals and not referer urls
+# NOTE:hit-count flavors just captures totals and not referer urls
 hit-count-flavors=rss
 </pre>
 </ul>
@@ -90,7 +90,8 @@ hit-count-flavors=rss
 <i>referer-filename</i> is the location and filename of the log file it should write to on
 shutdown of your application server<br />
 <i>hit-count-flavors</i> is a comma-separated list of the flavors that the plugin should
-track for referers
+track for referers. Flavors added to this list will only have their hit counts tracked,
+but will not have the referer URL tracked
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
