@@ -55,9 +55,9 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.4 2003-08-22 04:41:55 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.5 2003-08-23 04:03:12 czarneckid Exp $
  */
-public class VelocityDispatcher implements GenericDispatcher {
+public class VelocityDispatcher implements BlojsomDispatcher {
 
     private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
 

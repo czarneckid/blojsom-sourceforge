@@ -38,7 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
-import org.blojsom.dispatcher.GenericDispatcher;
+import org.blojsom.dispatcher.BlojsomDispatcher;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPlugin;
@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.8 2003-08-22 04:39:07 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.9 2003-08-23 04:03:57 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -98,7 +98,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 String templateExtension = (String) templateIterator.next();
                 String templateDispatcherClass = templateMapProperties.getProperty(templateExtension);
                 Class dispatcherClass = Class.forName(templateDispatcherClass);
-                GenericDispatcher dispatcher = (GenericDispatcher) dispatcherClass.newInstance();
+                BlojsomDispatcher dispatcher = (BlojsomDispatcher) dispatcherClass.newInstance();
                 dispatcher.init(servletConfig, _blojsomConfiguration);
                 _dispatchers.put(templateExtension, dispatcher);
                 _logger.debug("Added template dispatcher: " + templateDispatcherClass);
@@ -461,7 +461,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         _logger.debug("Template extension: " + templateExtension);
 
         // Retrieve the appropriate dispatcher for the template
-        GenericDispatcher dispatcher = (GenericDispatcher) _dispatchers.get(templateExtension);
+        BlojsomDispatcher dispatcher = (BlojsomDispatcher) _dispatchers.get(templateExtension);
         dispatcher.dispatch(httpServletRequest, httpServletResponse, blogUser, context, flavorTemplate, flavorContentType);
     }
 

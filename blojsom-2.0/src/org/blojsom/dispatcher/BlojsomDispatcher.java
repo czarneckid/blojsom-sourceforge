@@ -47,12 +47,12 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * GenericDispatcher
+ * BlojsomDispatcher
  *
  * @author David Czarnecki
- * @version $Id: GenericDispatcher.java,v 1.2 2003-08-22 04:39:27 czarneckid Exp $
+ * @version $Id: BlojsomDispatcher.java,v 1.1 2003-08-23 04:03:12 czarneckid Exp $
  */
-public interface GenericDispatcher extends BlojsomConstants {
+public interface BlojsomDispatcher extends BlojsomConstants {
 
     static final String TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
     static final String DEFAULT_TEMPLATES_DIRECTORY = "/templates/";

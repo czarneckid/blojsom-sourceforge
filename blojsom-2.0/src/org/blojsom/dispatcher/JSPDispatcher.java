@@ -54,9 +54,9 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.5 2003-08-22 04:41:55 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.6 2003-08-23 04:03:12 czarneckid Exp $
  */
-public class JSPDispatcher implements GenericDispatcher {
+public class JSPDispatcher implements BlojsomDispatcher {
 
     private Log _logger = LogFactory.getLog(JSPDispatcher.class);
 
