@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.17 2004-01-19 18:20:15 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.18 2004-01-20 03:45:38 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -640,6 +640,27 @@ public class BlojsomUtils implements BlojsomConstants {
 
         try {
             return URLEncoder.encode(input, UTF8);
+        } catch (UnsupportedEncodingException e) {
+            return input;
+        }
+    }
+
+    /**
+     * Return an input string URL encoded for a URL link where '/' show as '/'
+     *
+     * @since blojsom 2.09
+     * @param input Input string
+     * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
+     */
+    public static final String urlEncodeForLink(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        try {
+            String result = URLEncoder.encode(input, UTF8);
+            result = replace(result, "%2F", "/");
+            return result;
         } catch (UnsupportedEncodingException e) {
             return input;
         }
