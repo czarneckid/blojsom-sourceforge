@@ -28,6 +28,12 @@
                         text for <code>$entry.getCategory()</code> in the &lt;id&gt; tag to
                         <code>$entry.getEncodedCategory()</code>.
                     </p>
+                    <p>
+                        2. Although this is not a required change, in your RSS 2.0 template, you can remove
+                        <code> isPermalink="true"</code> from the &lt;guid&gt; tag under the &lt;item&gt; element. By
+                        default, this attribute defaults to true, so you can save yourself some more bandwidth by
+                        removing it.
+                    </p>
                 </section>
             </section>
             <section>
