@@ -1,37 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="$BLOJSOM_BLOG.getBlogBaseURL()/atom.css" type="text/css"?>
 
-<feed xmlns="http://purl.org/atom/ns#"
+<feed version="0.3"
+    xmlns="http://purl.org/atom/ns#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()"
-    version="0.2">
+    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
 
-    <!-- feed required elements -->
+    <!-- required feed elements -->
     <title>$BLOJSOM_BLOG.getBlogName()</title>
-    <link>$BLOJSOM_BLOG.getBlogURL()</link>
+    <link rel="alternate" type="text/html" href="$BLOJSOM_BLOG.getBlogURL()"/>
     <modified>$BLOJSOM_DATE_UTC</modified>
 
-    <!-- feed optional elements -->
+    <!-- optional feed elements -->
+    <info type="application/xhtml+xml" mode="xml">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+        This is an Atom syndication feed. It is intended to be viewed in a news aggregator or syndicated to
+        another site.  Please visit the <a href="http://intertwingly.net/wiki/pie/">Atom Project</a> for
+        more information.
+        </div>
+    </info>
+
+    <!-- in a single-author feed (like an individual weblog), put author at the feed level;
+    in a multi-author feed (like a group weblog or a comments feed), put author at the entry level -->
+    <author>
+        <!-- required author elements -->
+        <name>$BLOJSOM_BLOG.getBlogOwner()</name>
+        <!-- optional author elements -->
+        <url>$BLOJSOM_BLOG.getBlogURL()</url>
+        <email>$BLOJSOM_BLOG.getBlogOwnerEmail()</email>
+    </author>
+
+    <!-- optional feed elements -->
     <tagline>$BLOJSOM_BLOG.getBlogDescription().replaceAll("<.*?>","")</tagline>
-    <generator name="$BLOJSOM_VERSION">http://blojsom.sf.net</generator>
+    <generator url="http://blojsom.sf.net" version="$BLOJSOM_VERSION">blojsom</generator>
     <copyright>Copyright (c) 2003 $BLOJSOM_BLOG.getBlogOwner()</copyright>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
-        <!-- entry required elements -->
+        <!-- required entry elements -->
         <title>$entry.getEscapedTitle().replaceAll("<.*?>","")</title>
-        <link>$entry.getLink()</link>
-        <id>$entry.getLink()</id>
-        <issued>$entry.getISO8601Date()</issued>
+        <link rel="alternate" type="text/html" href="$entry.getLink()"/>
         <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
+        <issued>$entry.getISO8601Date()</issued>
+        <id>tag:$BLOJSOM_BLOG.getBlogOwnerEmail(),$entry.getDateAsFormat("yyyy-MM-dd"):$entry.getCategory().$entry.getPermalink()</id>
 
-        <!-- entry optional elements -->
+        <!-- optional entry elements -->
         <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
-        <author>
-            <name>$BLOJSOM_BLOG.getBlogOwner()</name>
-            <url>$BLOJSOM_BLOG.getBlogURL()</url>
-            <email>$BLOJSOM_BLOG.getBlogOwnerEmail()</email>
-        </author>
-        <content type="text/html" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" mode="escaped">
+        <content type="text/html" mode="escaped" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" xml:base="$BLOJSOM_BLOG.getBlogBaseURL()">
             <![CDATA[ $entry.getDescription() ]]>
         </content>
     </entry>
