@@ -36,7 +36,6 @@ package org.blojsom.plugin.limiter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
@@ -52,7 +51,7 @@ import java.util.Map;
  * EntriesLimiterPlugin
  *
  * @author David Czarnecki
- * @version $Id: EntriesLimiterPlugin.java,v 1.3 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: EntriesLimiterPlugin.java,v 1.4 2004-06-25 02:04:19 czarneckid Exp $
  */
 public class EntriesLimiterPlugin implements BlojsomPlugin {
 
