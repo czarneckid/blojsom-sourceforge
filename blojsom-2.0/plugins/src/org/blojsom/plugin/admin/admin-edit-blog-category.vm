@@ -27,7 +27,7 @@
                     </tr>
                     <tr>
                         <td>Category meta-data</td>
-                        <td><textarea rows="10" cols="80" name="blog-category-meta-data">$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA</textarea></td>
+                        <td><textarea rows="10" cols="80" name="blog-category-meta-data">$!BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA</textarea></td>
                     </tr>
 
                     <tr>
