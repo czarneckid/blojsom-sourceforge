@@ -54,7 +54,7 @@
 <form class="searchform" method="post" action=".">
 <p class="searchtext">
 Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
-<input class="searchimage" type="image" src="<%= blogSiteURL %>/search.png" value="submit"/>
+<input class="searchimage" type="image" src="<%= blogSiteURL %>/search.png" value="submit" alt="Search"/>
 </p>
 </form>
 </div>
