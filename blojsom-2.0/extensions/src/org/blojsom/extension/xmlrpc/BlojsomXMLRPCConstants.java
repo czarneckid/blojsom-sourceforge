@@ -38,7 +38,7 @@ package org.blojsom.extension.xmlrpc;
  * BlojsomXMLRPCConstants
  *
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCConstants.java,v 1.1 2003-08-09 20:33:33 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCConstants.java,v 1.2 2003-12-10 02:27:38 czarneckid Exp $
  */
 public interface BlojsomXMLRPCConstants {
 
@@ -47,6 +47,11 @@ public interface BlojsomXMLRPCConstants {
      */
     public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
 
-    static final String BLOG_XMLRPC_CONFIGURATION_IP = "blog-xmlrpc-configuration";
-    static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
+    /**
+     * Default XML-RPC handler key for the Apache XML-RPC library
+     */
+    public static final String DEFAULT_XMLRPC_HANDLER_KEY = "$default";
+
+    public static final String BLOG_XMLRPC_CONFIGURATION_IP = "blog-xmlrpc-configuration";
+    public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
 }
