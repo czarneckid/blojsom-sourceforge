@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.78 2003-05-22 04:51:27 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.79 2003-06-16 01:15:11 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -107,6 +107,11 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             } catch (BlojsomPluginException e) {
                 _logger.error(e);
             }
+        }
+        try {
+            _fetcher.destroy();
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
         }
         _logger.debug("blojsom destroyed");
     }
