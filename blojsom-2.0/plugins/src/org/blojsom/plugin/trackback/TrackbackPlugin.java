@@ -56,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.22 2004-04-24 15:15:01 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.23 2004-05-03 23:37:05 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -335,12 +335,15 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                     excerpt = excerpt.substring(0, 252);
                     excerpt += "...";
                 }
+
+                excerpt = BlojsomUtils.stripLineTerminators(excerpt);
             }
 
             if (blogName == null) {
                 blogName = "";
             } else {
                 blogName = blogName.trim();
+                blogName = BlojsomUtils.stripLineTerminators(blogName);
             }
 
             if (!category.endsWith("/")) {
