@@ -34,10 +34,12 @@
  */
 package org.ignition.blojsom.plugin.textile;
 
-import org.ignition.blojsom.plugin.BlojsomPlugin;
-import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.plugin.BlojsomPlugin;
+import org.ignition.blojsom.plugin.BlojsomPluginException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -48,9 +50,29 @@ import java.util.Map;
  * Textile Plugin
  *
  * @author Mark Lussier
- * @version $Id: TextilePlugin.java,v 1.2 2003-05-26 23:06:49 intabulas Exp $
+ * @version $Id: TextilePlugin.java,v 1.3 2003-05-27 03:10:49 intabulas Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
+
+    /**
+     * MetaData Key to identify a Textile post
+     */
+    public static final String METADATA_ISTEXTILE = "TEXTILE";
+
+    /**
+     * Extension of Textile Post
+     */
+    public static final String TEXTILE_EXTENSION = ".textile";
+
+    /**
+     * Textile Instance
+     */
+    private Textile _textile;
+
+    /**
+     * Logger instance
+     */
+    private Log _logger = LogFactory.getLog(TextilePlugin.class);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -60,6 +82,7 @@ public class TextilePlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
+        _textile = new Textile();
     }
 
     /**
@@ -73,6 +96,17 @@ public class TextilePlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+
+        for (int x = 0; x < entries.length; x++) {
+            BlogEntry entry = entries[x];
+
+            if (entry.getMetaData().containsKey(METADATA_ISTEXTILE) || entry.getPermalink().endsWith(TEXTILE_EXTENSION)) {
+                _logger.info("Textile Processing: " + entry.getTitle());
+                entry.setDescription(_textile.process(entry.getDescription()));
+            }
+
+        }
+
         return entries;
     }
 
