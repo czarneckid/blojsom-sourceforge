@@ -50,12 +50,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.8 2004-01-28 05:20:54 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.9 2004-01-29 01:10:39 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -95,43 +96,68 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (entries.length > 0) {
-            Date latestEntryDate;
-
-            // The plugin needs to be aware of the latest comments since blojsom will use that to generate the
-            // Last-Modified and ETag headers if comments on the latest entry are available
-            if (entries[0].getNumComments() > 0) {
-                BlogComment comment = entries[0].getCommentsAsArray()[entries[0].getNumComments() - 1];
-                latestEntryDate = comment.getCommentDate();
+            // Check first to see if neither of the headers we need to check are present
+            if ((httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) == -1) &&
+                    (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) == null)) {
+                _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
             } else {
-                latestEntryDate = entries[0].getDate();
-            }
+                ArrayList datesToCheck = new ArrayList(5);
+                Date[] dates;
+                BlogComment[] comments;
+                BlogComment comment;
 
-            try {
-                if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
-                    Date ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
-                    if (latestEntryDate.toString().equals(ifModifiedSinceDate.toString()) ||
-                            latestEntryDate.before(ifModifiedSinceDate)) {
-                        _logger.debug("Returning 304 response based on If-Modified-Since header");
-                        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    } else {
-                        _logger.debug("Latest entry date/If-Modified-Since date: " + latestEntryDate.toString() + "/" + ifModifiedSinceDate.toString());
+                // If there are comments, add those to the dates to check, latest date first
+                if (entries[0].getNumComments() > 0) {
+                    comments = entries[0].getCommentsAsArray();
+                    for (int i = comments.length - 1; i >= 0; i--) {
+                        comment = comments[i];
+                        datesToCheck.add(comment.getCommentDate());
                     }
-                } else if (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) != null) {
-                    String ifNoneMatchHeader = httpServletRequest.getHeader(IF_NONE_MATCH_HEADER);
-                    String calculatedIfNoneMatchHeader = "\"" + BlojsomUtils.digestString(BlojsomUtils.getISO8601Date(latestEntryDate)) + "\"";
-                    if (ifNoneMatchHeader.equals(calculatedIfNoneMatchHeader)) {
-                        _logger.debug("Returning 304 response based on If-None-Match header");
-                        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    } else {
-                        _logger.debug("Calculated ETag/If-None-Match ETag: " + calculatedIfNoneMatchHeader + "/" + ifNoneMatchHeader);
-                    }
-                } else {
-                    _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
                 }
-            } catch (IllegalArgumentException e) {
-                _logger.error(e);
-            }
 
+                // And add the date for the latest entry
+                datesToCheck.add(entries[0].getDate());
+
+                dates = (Date[]) datesToCheck.toArray(new Date[datesToCheck.size()]);
+
+                // Cache the If-Modified-Since and If-None-Match headers since they will not change
+                Date ifModifiedSinceDate = null;
+                if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
+                    ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
+                }
+
+                String ifNoneMatchHeader = null;
+                if (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) != null) {
+                    ifNoneMatchHeader = httpServletRequest.getHeader(IF_NONE_MATCH_HEADER);
+                }
+
+                // Check the dates to see if anything matches
+                Date latestEntryDate;
+                for (int i = 0; i < dates.length; i++) {
+                    latestEntryDate = dates[i];
+
+                    if (ifModifiedSinceDate != null) {
+                        if (latestEntryDate.toString().equals(ifModifiedSinceDate.toString())) {
+                            _logger.debug("Returning 304 response based on If-Modified-Since header");
+                            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                            break;
+                        } else {
+                            _logger.debug("Latest entry date/If-Modified-Since date: " + latestEntryDate.toString() + "/" + ifModifiedSinceDate.toString());
+                        }
+                    } else if (ifNoneMatchHeader != null) {
+                        String calculatedIfNoneMatchHeader = "\"" + BlojsomUtils.digestString(BlojsomUtils.getISO8601Date(latestEntryDate)) + "\"";
+                        if (ifNoneMatchHeader.equals(calculatedIfNoneMatchHeader)) {
+                            _logger.debug("Returning 304 response based on If-None-Match header");
+                            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                            break;
+                        } else {
+                            _logger.debug("Calculated ETag/If-None-Match ETag: " + calculatedIfNoneMatchHeader + "/" + ifNoneMatchHeader);
+                        }
+                    } else {
+                        _logger.error("No If-Modified-Since or If-None-Match HTTP headers present and not caught in initial check.");
+                    }
+                }
+             }
         }
 
         return entries;
@@ -139,21 +165,19 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
-     * 
+     *
      * @throws org.blojsom.plugin.BlojsomPluginException
      *          If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
-
     }
 
     /**
      * Called when BlojsomServlet is taken out of service
-     * 
+     *
      * @throws org.blojsom.plugin.BlojsomPluginException
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-
     }
 }
