@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.31 2003-03-18 03:02:18 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.32 2003-03-19 03:24:25 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -385,7 +385,6 @@ public class Blog implements BlojsomConstants {
             return new BlogEntry[0];
         } else {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
-            entryArray = new BlogEntry[entries.length];
             BlogEntry blogEntry;
             int entryCounter;
             if (maxBlogEntries == -1) {
@@ -393,6 +392,7 @@ public class Blog implements BlojsomConstants {
             } else {
                 entryCounter = (maxBlogEntries > entries.length) ? entries.length : maxBlogEntries;
             }
+            entryArray = new BlogEntry[entryCounter];
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
                 blogEntry = new BlogEntry();
@@ -462,16 +462,30 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Convenience method to retrive entries for the categories, using the values set for
-     * the default category mapping and the maximum number of blog entries to retrieve
+     * the default category mapping and the configured number of blog entries to retrieve
      * from each category
      *
      * @param flavor Requested flavor
      * @return Blog entry array containing the list of blog entries for the categories
-     * or <code>null</code> if there are no entries
+     * or <code>BlogEntry[0]</code> if there are no entries
      */
     public BlogEntry[] getEntriesAllCategories(String flavor) {
+        return getEntriesAllCategories(flavor, _blogDisplayEntries);
+    }
+
+    /**
+     * Retrive entries for the categories, using the values set for
+     * the default category mapping and the configured number of blog entries to retrieve
+     * from each category
+     *
+     * @param flavor Requested flavor
+     * @param maxBlogEntries Maximum number of entries to retrieve per category
+     * @return Blog entry array containing the list of blog entries for the categories
+     * or <code>BlogEntry[0]</code> if there are no entries
+     */
+    public BlogEntry[] getEntriesAllCategories(String flavor, int maxBlogEntries) {
         if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
-            return getEntriesAllCategories(_blogDefaultCategoryMappings, _blogDisplayEntries);
+            return getEntriesAllCategories(_blogDefaultCategoryMappings, maxBlogEntries);
         } else {
             String flavorMappingKey = flavor + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
             String categoryMappingForFlavor = (String) _blogProperties.get(flavorMappingKey);
@@ -479,7 +493,7 @@ public class Blog implements BlojsomConstants {
             if (categoryMappingForFlavor != null) {
                 categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
             }
-            return getEntriesAllCategories(categoryMappingsForFlavor, _blogDisplayEntries);
+            return getEntriesAllCategories(categoryMappingsForFlavor, maxBlogEntries);
         }
     }
 
