@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.64 2005-03-05 18:05:55 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.65 2005-03-16 04:23:45 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -164,6 +164,12 @@ public interface BlojsomConstants {
      * (example: in the context for the Velocity dispatcher)
      */
     public static final String BLOJSOM_REQUESTED_FLAVOR = "BLOJSOM_REQUESTED_FLAVOR";
+
+    /**
+     * Key under which the plugins will be places
+     * (example: in the context for the Velocity dispatcher)
+     */
+    public static final String BLOJSOM_PLUGINS = "BLOJSOM_PLUGINS";
 
     /**
      * Default class for fetching blog entries
