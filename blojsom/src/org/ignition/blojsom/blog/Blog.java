@@ -55,7 +55,6 @@ public class Blog implements BlojsomConstants {
     private String _blogLanguage;
     private String[] _blogFileExtensions;
     private String[] _blogPropertiesExtensions;
-    private long _blogReloadCheck;
     private int _blogDepth;
 
     /**
@@ -66,19 +65,17 @@ public class Blog implements BlojsomConstants {
      * @param blogDescription Detailed description of the blog
      * @param blogURL URL for the blog
      * @param blogLanguage Language of the blog
-     * @param blogReloadCheck Time specified in ms when entries should be reloaded from disk
      * @param blogFileExtensions File extensions to look for when checking for blog entries
      * @param blogPropertiesExtensions File extensions to look for in category directories for meta-data
      * @param blogDepth Number of directory-levels to traverse in looking for blog entries
      */
     public Blog(String blogHome, String blogName, String blogDescription, String blogURL, String blogLanguage,
-                long blogReloadCheck, String[] blogFileExtensions, String[] blogPropertiesExtensions, int blogDepth) {
+               String[] blogFileExtensions, String[] blogPropertiesExtensions, int blogDepth) {
         _blogHome = blogHome;
         _blogName = blogName;
         _blogDescription = blogDescription;
         _blogURL = blogURL;
         _blogLanguage = blogLanguage;
-        _blogReloadCheck = blogReloadCheck;
         _blogFileExtensions = blogFileExtensions;
         _blogPropertiesExtensions = blogPropertiesExtensions;
         _blogDepth = blogDepth;
@@ -295,25 +292,6 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogDepth(int _blogDepth) {
         this._blogDepth = _blogDepth;
-    }
-
-    /**
-     * Return the time (in ms) when blog entries will be reloaded from disk
-     *
-     * @return Time (ms) when to reload the blog entries
-     */
-    public long getBlogReloadCheck() {
-        return _blogReloadCheck;
-    }
-
-    /**
-     * Set the time (in ms) when blog entries should be reloaded from disk. -1
-     * indicates that blog entries should not be reloaded
-     *
-     * @param _blogReloadCheck Time (ms) when to reload blog entries
-     */
-    public void setBlogReloadCheck(long _blogReloadCheck) {
-        this._blogReloadCheck = _blogReloadCheck;
     }
 
     /**

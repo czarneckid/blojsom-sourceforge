@@ -61,7 +61,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private final static String BLOG_HOME_IP = "blog-home";
     private final static String BLOG_NAME_IP = "blog-name";
     private final static String BLOG_DEPTH_IP = "blog-directory-depth";
-    private final static String BLOG_RELOAD_CHECK_IP = "blog-reload-check";
     private final static String BLOG_LANGUAGE_IP = "blog-language";
     private final static String BLOG_DESCRIPTION_IP = "blog-description";
     private final static String BLOG_URL_IP = "blog-url";
@@ -147,10 +146,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
 
             // The following parameters will either be removed or changed
-            long blogReloadCheck = Long.parseLong(configurationProperties.getProperty(BLOG_RELOAD_CHECK_IP));
             String[] blogFileExtensions = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOG_FILE_EXTENSIONS_IP));
             String[] blogPropertiesExtensions = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
-            _blog = new Blog(blogHome, blogName, blogDescription, blogURL, blogLanguage, blogReloadCheck,
+            _blog = new Blog(blogHome, blogName, blogDescription, blogURL, blogLanguage,
                     blogFileExtensions, blogPropertiesExtensions, blogDepth);
 
             int blogEntriesDisplay = Integer.parseInt(configurationProperties.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
