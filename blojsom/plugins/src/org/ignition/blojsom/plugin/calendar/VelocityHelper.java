@@ -40,10 +40,10 @@ import java.util.Calendar;
 
 
 /**
- * VelocityHelper
+ * VelocityHelper is a class used to help render a visual calendar using the VTL.
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.3 2003-03-28 01:07:03 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.4 2003-03-29 18:37:56 intabulas Exp $
  */
 public class VelocityHelper {
 
@@ -52,30 +52,35 @@ public class VelocityHelper {
     // [Row][Col]
     private String[][] visualcalendar = new String[6][7];
 
+    private static final String VTL_SPACER = "&nbsp;";
+
+    private static final String HREF_PREFIX = "<a href=\"";
+    private static final String HREF_SUFFIX = "</a>";
+
     /**
-     *
+     * Public Constructor
      */
     public VelocityHelper() {
     }
 
     /**
-     *
-     * @param calendar
+     * Public Constructor
+     * @param calendar BlogCalendar to render
      */
     public VelocityHelper(BlogCalendar calendar) {
         _calendar = calendar;
     }
 
     /**
-     *
-     * @param calendar
+     * Sets the BlogCalendar to render
+     * @param calendar BlogCalendar
      */
     public void setCalendar(BlogCalendar calendar) {
         _calendar = calendar;
     }
 
     /**
-     *
+     * Builds the visual calendar model
      */
     public void buildCalendar() {
         int fdow = _calendar.getFirstDayOfMonth() - 1;
@@ -84,16 +89,16 @@ public class VelocityHelper {
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 7; y++) {
                 if ((x == 0 && y < fdow) || (dowoffset >= ldom)) {
-                    visualcalendar[x][y] = "&nbsp;";
+                    visualcalendar[x][y] = VTL_SPACER;
                 } else {
                     dowoffset += 1;
                     if (!_calendar.dayHasEntry(dowoffset)) {
                         visualcalendar[x][y] = new Integer(dowoffset).toString();
                     } else {
-                        StringBuffer _url = new StringBuffer("<a href=\"");
+                        StringBuffer _url = new StringBuffer(HREF_PREFIX );
                         String _calurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), _calendar.getCurrentMonth(), dowoffset, _calendar.getCurrentYear());
                         _url.append(_calurl);
-                        _url.append("\">").append(dowoffset).append("</a>");
+                        _url.append("\">").append(dowoffset).append(HREF_SUFFIX);
                         visualcalendar[x][y] = _url.toString();
                     }
                 }
@@ -102,10 +107,10 @@ public class VelocityHelper {
     }
 
     /**
-     *
-     * @param row
-     * @param clazz
-     * @return
+     * Get the visual content for a given calendar row
+     * @param row the row
+     * @param clazz the css style apply
+     * @return the visual calendar row
      */
     public String getCalendarRow(int row, String clazz) {
         StringBuffer result = new StringBuffer();
@@ -116,37 +121,37 @@ public class VelocityHelper {
     }
 
     /**
-     *
-     * @return
+     * Get the visual control for navigating to Today
+     * @return the today navigation control
      */
     public String getToday() {
         StringBuffer result = new StringBuffer();
-        result.append("<a href=\"").append(_calendar.getCalendarUrl()).append("\">Today</a>");
+        result.append(HREF_PREFIX).append(_calendar.getCalendarUrl()).append("\">Today").append(HREF_SUFFIX);
         return result.toString();
     }
 
     /**
-     *
-     * @return
+     * Get the visual control for navigating to the previous month
+     * @return the previous month navigation control
      */
     public String getPreviousMonth() {
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, -1);
-        result.append("<a href=\"");
+        result.append(HREF_PREFIX );
         String prevurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
                 (_calendar.getCalendar().get(Calendar.MONTH) + 1),
                 -1, _calendar.getCalendar().get(Calendar.YEAR));
         result.append(prevurl);
-        result.append("\"> &lt;&nbsp;&nbsp;");
+        result.append("\"> &lt;").append( VTL_SPACER ).append(VTL_SPACER );
         result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-        result.append("</a>");
+        result.append(HREF_SUFFIX);
         _calendar.getCalendar().add(Calendar.MONTH, 1);
         return result.toString();
     }
 
     /**
-     *
-     * @return
+     *  Get the visual control for navigating to the next month
+     * @return the next month navigation control
      */
     public String getNextMonth() {
         StringBuffer result = new StringBuffer();
@@ -154,7 +159,7 @@ public class VelocityHelper {
 
         if ((_calendar.getCalendar().get(Calendar.MONTH) < (_calendar.getToday().get(Calendar.MONTH) + 1)) &&
                 (_calendar.getCalendar().get(Calendar.YEAR) <= _calendar.getToday().get(Calendar.YEAR))) {
-            result.append("<a href=\"");
+            result.append(HREF_PREFIX );
             String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
                     (_calendar.getCalendar().get(Calendar.MONTH) + 1),
                     -1, _calendar.getCalendar().get(Calendar.YEAR));
@@ -162,10 +167,11 @@ public class VelocityHelper {
             result.append(nexturl);
             result.append("\">");
             result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-            result.append("&nbsp;&nbsp;&gt; </a>");
+            result.append( VTL_SPACER ).append(VTL_SPACER ).append("&gt;").append(HREF_SUFFIX);
             _calendar.getCalendar().add(Calendar.MONTH, -1);
         } else {
-            result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH))).append("&nbsp;&nbsp;>");
+            result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+            result.append( VTL_SPACER ).append(VTL_SPACER ).append(">");
         }
         return result.toString();
     }

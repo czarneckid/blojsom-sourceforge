@@ -34,8 +34,6 @@
  */
 package org.ignition.blojsom.plugin.calendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.text.DateFormatSymbols;
@@ -45,11 +43,9 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.7 2003-03-28 01:07:03 czarneckid Exp $
+ * @version $Id: BlogCalendar.java,v 1.8 2003-03-29 18:37:56 intabulas Exp $
  */
 public class BlogCalendar {
-
-    private Log _logger = LogFactory.getLog(BlogCalendar.class);
 
     private Calendar _calendar;
     private Calendar _today;
@@ -62,18 +58,19 @@ public class BlogCalendar {
     private int currentyear;
 
     /**
-     *
-     * @param calendar
+     * Public Constructor
+     * @param calendar Caledar instance
+     * @param blogurl The blog's url for calendar navigation
      */
     public BlogCalendar(Calendar calendar, String blogurl) {
         this(calendar, blogurl, Locale.getDefault());
     }
 
     /**
-     *
-     * @param calendar
-     * @param blogurl
-     * @param locale
+     * Public Constructor
+     * @param calendar Caledar instance
+     * @param blogurl The blog's url for calendar navigation
+     * @param locale Locale for the Calendar
      */
     public BlogCalendar(Calendar calendar, String blogurl, Locale locale) {
         _locale = locale;
@@ -97,16 +94,16 @@ public class BlogCalendar {
     }
 
     /**
-     *
-     * @return
+     * Returns the current Month as MMMMM yyyy (ex: March 2003)
+     * @return the current month and year as a string
      */
     public String getCaption() {
         return BlojsomUtils.getFormattedDate(_calendar.getTime(), CalendarPlugin.BLOJSOM_CALENDAR_FORMAT);
     }
 
     /**
-     *
-     * @return
+     * Returns the day of the week for the 1st of the month occurs on
+     * @return the day of the week for the 1st of the month as an int
      */
     public int getFirstDayOfMonth() {
         _calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -114,33 +111,33 @@ public class BlogCalendar {
     }
 
     /**
-     *
-     * @return
+     * Returns the number of days in the current month
+     * @return days in this month
      */
     public int getDaysInMonth() {
         return _calendar.getMaximum(Calendar.DAY_OF_MONTH);
     }
 
     /**
-     *
-     * @param dom
+     * Flag a day in the current month as having entries
+     * @param dom the day of the month
      */
     public void setEntryForDOM(int dom) {
         _dayswithentry[dom - 1] = new Boolean(true);
     }
 
     /**
-     *
-     * @param dom
+     * Flag a day in the current month as NOT having entries
+     * @param dom the day of the month
      */
     public void removetEntryForDOM(int dom) {
         _dayswithentry[dom - 1] = new Boolean(false);
     }
 
     /**
-     *
-     * @param dom
-     * @return
+     * Determines if a day of the month has entries
+     * @param dom the day of the month
+     * @return a boolean indicating entries exist
      */
     public boolean dayHasEntry(int dom) {
         Boolean hasEntry = _dayswithentry[dom - 1];
@@ -148,116 +145,116 @@ public class BlogCalendar {
     }
 
     /**
-     *
-     * @return
+     * Get the array of day of month entry flags
+     * @return a boolean array of the months entries
      */
     public Boolean[] getEntryDates() {
         return _dayswithentry;
     }
 
     /**
-     *
-     * @param month
-     * @return
+     * Get the localized name of the given month
+     * @param month the month (as defined by Calendar)
+     * @return the month as a localized string
      */
     public String getMonthName(int month) {
         return getMonthNames()[month];
     }
 
     /**
-     *
-     * @return
+     * Get a list of the month names (localized)
+     * @return String array of localized month names
      */
     public String[] getMonthNames() {
         return _symbols.getMonths();
     }
 
     /**
-     *
-     * @param month
-     * @return
+     * Get the localized abbreviated name of the given month
+     * @param month the month (as defined by Calendar)
+     * @return the abbreviated month as a localized string (ex: Feb)
      */
     public String getShortMonthName(int month) {
         return getShortMonthNames()[month];
     }
 
     /**
-     *
-     * @return
+     * Get a list of the abbreviated month names (localized)
+     * @return String array of localized abbreviated month names
      */
     public String[] getShortMonthNames() {
         return _symbols.getShortMonths();
     }
 
     /**
-     *
-     * @param dow
-     * @return
+     * Get the localized name of a Day of the Week
+     * @param dow the day of the week (as defined by Calendar)
+     * @return the day of the week as a localized string
      */
     public String getDayOfWeekName(int dow) {
         return getDayOfWeekNames()[dow];
     }
 
     /**
-     *
-     * @return
+     * Get a lit of the day of the week names (localized)
+     * @return String array of localized Day of Week names
      */
     public String[] getDayOfWeekNames() {
         return _symbols.getWeekdays();
     }
 
     /**
-     *
-     * @param dow
-     * @return
+     * Get the localized abbreviated name of a Day of the Week
+     * @param dow the day of the week (as defined by Calendar)
+     * @return the abbreviated day of the week as a localized string
      */
     public String getShortDayOfWeekName(int dow) {
         return _shortdownames[dow - 1];
     }
 
     /**
-     *
-     * @return
+     * Get a lit of the abbreviated day of the week names (localized)
+     * @return String array of localized abbreviated Day of Week names
      */
     public String[] getShortDayOfWeekNames() {
         return _shortdownames;
     }
 
     /**
-     *
-     * @return
+     * Get the Current Month for this Calendar
+     * @return the current month as an int
      */
     public int getCurrentMonth() {
         return currentmonth;
     }
 
     /**
-     *
-     * @return
+     * Get the Current Year for this Calendar
+     * @return the current year as an int
      */
     public int getCurrentYear() {
         return currentyear;
     }
 
     /**
-     *
-     * @return
+     * Get the Blog URL used by the calendar
+     * @return the blog url
      */
     public String getCalendarUrl() {
         return _blogURL;
     }
 
     /**
-     *
-     * @return
+     * Get the Calendar instance
+     * @return Calendar instance
      */
     public Calendar getCalendar() {
         return _calendar;
     }
 
     /**
-     *
-     * @return
+     * Get today as a Calendar instance
+     * @return Calendar instance
      */
     public Calendar getToday() {
         return _today;
