@@ -37,15 +37,12 @@ General:<br />
 - Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from <i>blog-entry-filename.meta</i><br />
 - Added "Eclipse" theme courtesy of <a href="http://dmartin.org/blog/">Dan Martin</a><br />
 - Added "Shrubbery" theme courtesy of <a href="http://acrump.info/blog/">Andrew Crump</a><br />
-- Persisted "Remember Me" checkbox value<br />
 - Normalized mechanism for blojsom to share certain templates across themes (e.g. trackback success and failure pages)<br />
 - Added <i>blog-file-encoding</i> parameter to <i>blojsom.properties</i> so that blog entries/comments/trackbacks could
 be read and written using a particular file encoding. By default, blojsom uses UTF-8 as the
 file encoding<br />
 - Added new class <tt>org.ignition.blojsom.BlojsomException</tt> and changed the 2 other
 exception classes to subclass from this root exception class<br />
-- File extension for entries posted via XML-RPC is now configurable via the <i>blog-xmlrpc-entry-extension</i>
-parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i><br />
 - Added <tt>Blog</tt> as a parameter to the <tt>GenericDispatcher.init()</tt> method<br />
 - All setXXX methods in the <tt>Blog</tt> class have been deprecated.<br />
 
@@ -55,14 +52,18 @@ Extension changes:<br />
 meta-data. Template authors can now get the posting user id from the entry meta-data under the
 key, <tt>blog-entry-author</tt><br/>
 - Implementation of the Blogger API getUserInfo() method to allow services like <a href="http://www.audblog.com">AudBlog</a> to work<br/>
+- File extension for entries posted via XML-RPC is now configurable via the <i>blog-xmlrpc-entry-extension</i>
+parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i><br />
 
 <p />
 Plugin changes:<br />
+- Persisted "Remember Me" checkbox value in Comments Plugin<br />
 - Referer plugin now utilizes the new blacklist.filter file to filter referer's <br/>
 - Referer plugin was doing some detailed logging that it did not need to do, removed<br/>
-- Added <a href="javadoc/org/ignition/blojsom/plugin/highlight/GoogleHighlightPlugin.html">GoogleHighlightPlugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query<br/>
-- Added <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">ChronoPlugin</a>
+- Added <a href="javadoc/org/ignition/blojsom/plugin/highlight/GoogleHighlightPlugin.html">Google Highlight Plugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query<br/>
+- Added <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</a>
 which simply demonstrates how to sort entries in a different order<br/>
+- Added <a href="javadoc/org/ignition/blojsom/plugin/limiter/PreviewPlugin.html">Preview Plugin</a> courtesy of Nick Chalko<br />
 
 <p />
 The following bugs were fixed:<br />
