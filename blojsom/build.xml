@@ -67,7 +67,11 @@
                 <include name="**/*.properties"/>
             </fileset>
         </copy>
-        <jar file="${webinf.lib.dir}/${templates.jar}" basedir="${templates.dir}"/>
+        <copy todir="${build.dir}">
+            <fileset dir="${templates.dir}">
+                <include name="**/*.vm"/>
+            </fileset>
+        </copy>
     </target>
 
     <!-- =================================================================== -->
