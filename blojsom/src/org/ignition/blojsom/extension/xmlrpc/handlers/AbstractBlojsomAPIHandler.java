@@ -35,12 +35,10 @@ import org.ignition.blojsom.blog.Blog;
 
 
 /**
- * Abtract Class just to simplify my life (ie: no reflective method lookup)
- *
- * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
+ * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.3 2003-02-26 15:54:52 intabulas Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.4 2003-02-26 19:40:38 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 
@@ -48,11 +46,10 @@ public abstract class AbstractBlojsomAPIHandler  {
     public static final String UNKNOWN_EXCEPTION_MSG = "An error occured processing your request";
 
     public static final int    UNSUPPORTED_EXCEPTION = 1001;
-    public static final String UNSUPPORTED_EXCEPTION_MSG = "Un-Supported Method - blojsom does not support this blogger concept";
+    public static final String UNSUPPORTED_EXCEPTION_MSG = "Unsupported method - blojsom does not support this blogger concept";
 
     public static final int    INVALID_POSTID = 2000;
-    public static final String INVALID_POSTID_MSG= "The entry postid your submitted was invalid";
-
+    public static final String INVALID_POSTID_MSG= "The entry postid you submitted is invalid";
 
     public static final int    NOBLOGS_EXCEPTION = 3000;
     public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
@@ -71,6 +68,5 @@ public abstract class AbstractBlojsomAPIHandler  {
      * @return The API Name (ie: blogger)
      */
     public abstract String getName();
-
 }
 
