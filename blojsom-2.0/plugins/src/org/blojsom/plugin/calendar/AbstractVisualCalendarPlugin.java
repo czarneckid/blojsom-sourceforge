@@ -49,7 +49,7 @@ import java.util.*;
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.4 2004-10-27 19:41:38 czarneckid Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.5 2004-11-24 17:48:32 czarneckid Exp $
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
@@ -91,7 +91,8 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
 
             if (context.containsKey(BlojsomConstants.BLOJSOM_PERMALINK)) {
                 ArrayList files = new ArrayList();
-                BlojsomUtils.visitFilesAndDirectories(user.getBlog().getBlogFileExtensions(), user.getBlog().getBlogDirectoryFilter(), new File(user.getBlog().getBlogHome()), files);
+                Date today = new Date();
+                BlojsomUtils.visitFilesAndDirectories(today, user.getBlog().getBlogFileExtensions(), user.getBlog().getBlogDirectoryFilter(), new File(user.getBlog().getBlogHome()), files);
                 Calendar checkCalendar = Calendar.getInstance(locale);
                 for (int i = 0; i < files.size(); i++) {
                     File entryOnDisk = (File) files.get(i);

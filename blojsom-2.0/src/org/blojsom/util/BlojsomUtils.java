@@ -55,7 +55,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.46 2004-11-22 16:59:55 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.47 2004-11-24 17:49:09 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -329,13 +329,15 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param items               List of items
      * @since blojsom 2.20
      */
-    public static void visitFilesAndDirectories(final String[] extensions, final String[] excludedDirectories, final File directoryOrFile, List items) {
+    public static void visitFilesAndDirectories(final Date today, final String[] extensions, final String[] excludedDirectories, final File directoryOrFile, List items) {
         File[] subDirectories = directoryOrFile.listFiles(getExtensionsFilter(extensions, excludedDirectories, true));
         for (int i = 0; i < subDirectories.length; i++) {
             if (subDirectories[i].isDirectory()) {
-                visitFilesAndDirectories(extensions, excludedDirectories, subDirectories[i], items);
+                visitFilesAndDirectories(today, extensions, excludedDirectories, subDirectories[i], items);
             } else {
-                items.add(subDirectories[i]);
+                if (subDirectories[i].lastModified() <= today.getTime()) {
+                    items.add(subDirectories[i]);
+                }
             }
         }
     }
