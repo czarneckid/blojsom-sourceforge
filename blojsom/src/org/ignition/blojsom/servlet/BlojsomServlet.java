@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.33 2003-03-01 20:19:58 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.34 2003-03-02 19:08:19 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -73,7 +73,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private Map _templateDispatchers;
     private Map _plugins;
     private Map _pluginChainMap;
-    //private String[] _pluginChain;
 
     private Log _logger = LogFactory.getLog(BlojsomServlet.class);
 
