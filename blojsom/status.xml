@@ -1,70 +1,250 @@
 <?xml version="1.0"?>
 <status>
 
-  <developers>
-    <person name="David Czarnecki"      email="czarneckid@users.sourceforge.net"      id="czarneckid" />
-	<person name="Nick Chalko"      email="nick@chalko.com"      id="chalko" />
-    <!-- Add more people here -->
-  </developers>
+    <developers>
+        <person name="David Czarnecki" email="czarneckid@users.sourceforge.net" id="czarneckid"/>
+        <person name="Mark Lussier" email="intabulas@users.sourceforge.net" id="intabulas"/>
+        <person name="Nick Chalko" email="nick@chalko.com" id="chalko"/>
+        <!-- Add more people here -->
+    </developers>
 
-  <todo>
-    <actions priority="high">
-      <action context="docs" dev="chalko">
-        Customize this template project with your project's details.  This
-        TODO list is generated from 'status.xml'.
-      </action>
-      <action context="docs" dev="JB">
-        Add lots of content.  XML content goes in
-        <code>src/documentation/content/xdocs</code>, or wherever the
-        <code>${project.xdocs-dir}</code> property (set in
-        <code>forrest.properties</code>) points.
-      </action>
-      <action context="feedback" dev="JB">
-        Mail <link
-          href="mailto:forrest-dev@xml.apache.org">forrest-dev@xml.apache.org</link>
-        with feedback.
-      </action>
-    </actions>
-    <!-- Add todo items. @context is an arbitrary string. Eg:
-    <actions priority="high">
-      <action context="code" dev="SN">
-      </action>
-    </actions>
-    <actions priority="medium">
-      <action context="docs" dev="open">
-      </action>
-    </actions>
-    -->
-  </todo>
-
-  <changes>
-    <!-- Add new releases here -->
-    <release version="0.9.2" date="June 19, 2003">
-      <!-- Some action types have associated images. By default, images are
-      defined for 'add', 'fix', 'remove' and 'update'. If you add
-      src/documentation/resources/images/<foo>.jpg images, these will
-        automatically be used for entries of type <foo>. -->
-        <action dev="czarneckid" type="add"  contect="General">
-        BlojsomServlet and BlojsomXMLRPCServlet now call the destroy() method on the fetcher in use
-        </action>
-            <action dev="czarneckid" type="add"  contect="plugin">
-            Added new Weblogs Ping plugin that will automatically send a ping to weblogs.com when new entries are detected
-          </action>      
-          <action dev="czarneckid" type="fix" fixes-bug="755698" contect="core">
-            BlogCategory object on BlogEntry does not have meta-data
+    <todo>
+        <actions priority="high">
+            <action context="docs" dev="chalko">
+                Customize this template project with your project's details.  This
+                TODO list is generated from 'status.xml'.
+            </action>
+            <action context="docs" dev="JB">
+                Add lots of content.  XML content goes in
+                <code>src/documentation/content/xdocs</code>, or wherever the
+                <code>${project.xdocs-dir}</code> property (set in
+                <code>forrest.properties</code>) points.
+            </action>
+            <action context="feedback" dev="JB">
+                Mail
+                <link
+                    href="mailto:forrest-dev@xml.apache.org">forrest-dev@xml.apache.org</link>
+                with feedback.
+            </action>
+        </actions>
+        <!-- Add todo items. @context is an arbitrary string. Eg:
+        <actions priority="high">
+          <action context="code" dev="SN">
           </action>
-       
-        </release>
-  
-    <release version="0.1" date="2002">
-      <!-- Some action types have associated images. By default, images are
-      defined for 'add', 'fix', 'remove' and 'update'. If you add
-      src/documentation/resources/images/<foo>.jpg images, these will
-        automatically be used for entries of type <foo>. -->
-
-          <action dev="JB" type="add" context="admin">
-            Initial Import
+        </actions>
+        <actions priority="medium">
+          <action context="docs" dev="open">
           </action>
+        </actions>
+        -->
+    </todo>
+
+    <changes>
+        <!-- Add new releases here -->
+        <release version="1.9.3" date="July 6, 2003">
+            <action dev="czarneckid" type="add" context="General">
+                Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
+                Blogger 2 API or even develop Blogger to support the Blogger 2 API in favor of the Echo API
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>getDateAsFormat(String format)</tt> method to
+                <tt>BlogEntry</tt> class
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Fixed blojsom theme and shrubbery theme comment pages to output checked for "remember me" if this has been checked
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                The date format plugin was changed so that the date format object returned uses the locale that
+                is constructed from the blog language set in
+                <i>/WEB-INF/blojsom.properties</i>
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="763640">
+                Incorrect compareTo check in setLastReferral method
+            </action>
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="766160">
+                Comment plugin needs to check for author email and URL null
+            </action>
         </release>
-      </changes>
-    </status>
+
+        <release version="1.9.2" date="June 19, 2003">
+            <!-- Some action types have associated images. By default, images are
+            defined for 'add', 'fix', 'remove' and 'update'. If you add
+            src/documentation/resources/images/<foo>.jpg images, these will
+              automatically be used for entries of type <foo>. -->
+            <action dev="czarneckid" type="add" context="Core">
+                BlojsomServlet and BlojsomXMLRPCServlet now call the destroy() method on the fetcher in use
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added new Weblogs Ping plugin that will automatically send a ping to weblogs.com when new entries are detected
+            </action>
+
+            <action dev="czarneckid" type="fix" fixes-bug="755698" context="Core">
+                BlogCategory object on BlogEntry does not have meta-data
+            </action>
+        </release>
+
+        <release version="1.3" date="February 23, 2003">
+            <action dev="czarneckid" type="add" context="Core">
+                blojsom now requires Java 1.4.x as it now uses some of the Java 1.4 regular expression support
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added the blojsom
+                <i>favicon.ico</i> file and references in the html JSP and Velocity templates
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                <i>main.css</i> was renamed to
+                <i>blojsom.css</i> to avoid potential conflicts with existing style sheets
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                <i>dispatcher-map.properties</i> was changed to
+                <i>dispatcher.properties</i>
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>Blog(Properties blogConfiguration)</tt> to the
+                <tt>Blog</tt> class and removed previous
+                <tt>Blog</tt> constructor
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Removed intermediate category output in html JSP template
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                <i>blog-file-extensions</i> now takes a comma-separated list of regular expressions, rather than simply file extensions
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <i>blog-directory-filter</i> to
+                <i>blojsom.properties</i>, which takes a comma-separated list of regular expressions for directories to filter when generating the category list
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Correctly placed requested category
+                <tt>BlogCategory</tt> object on the context
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Powered-by logo is now href'd to http://blojsom.sf.net
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Images for RSS 0.92 and RSS 2.0 added with hrefs to the RSS feed for the current category
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Each flavor has a &lt;link/&gt; tag for RSS harvesters
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                blojsom can now generate RSS 2 feeds.
+                <i>flavor=rss2</i>
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                blojsom can now generate RDF feeds.
+                <i>flavor=rdf</i>
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Last-Modified header is now generated based on the most recent blog entry
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Correctly loaded meta-data for categories that get placed on the request (the categories list and the requested category)
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <i>blog-owner</i> and
+                <i>blog-owner-email</i> to blojsom.properties
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="689070">
+                ClassCastException in rss.jsp
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="691221">
+                All URIs need trailing /
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="691325">
+                Available Category Links show twice on empty category
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="691686">
+                RSS Flavors not setting Content-Length Header
+            </action>
+
+            <action dev="czarneckid" type="rfe" context="Core">
+                RFE 684341: blog-file-extensions -> blog-file-name-pattern
+            </action>
+            <action dev="czarneckid" type="rfe" context="Core">
+                Needs personalization support in blojsom.properties
+            </action>
+        </release>
+
+        <release version="1.2" date="February 17, 2003">
+            <action dev="czarneckid" type="remove" context="Core">
+                The in-memory blog cache was removed entirely. blojsom does not cache any of the blog entries
+                in memory anymore. It was the cause of much frustration trying to keep the in-memory cache
+                synchronized with the filesystem. It was certainly a "feature" that was contrary to the original
+                zen and philosophy of blosxom
+            </action>
+            <action dev="czarneckid" type="remove" context="Core">
+                <i>blog-reload-check</i> was removed from
+                <i>blojsom.properties</i> as there is no longer any more caching of blog entries in-memory
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                <i>blog-entries-display</i> was added to
+                <i>blojsom.properties</i> to limit the number of blog entries displayed per category or aggregated when requesting the default or "/" category
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                <i>blog-default-category-mapping</i> was added to
+                <i>blojsom.properties</i> to specify all (by leaving the parameter blank) or a subset (see
+                <a href="customization.html">customization</a>) of your blog directories that should be aggregated when requesting the default or "/" category
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="684666">
+                whitespace lost due to readline
+            </action>
+        </release>
+
+        <release version="1.1" date="February 10, 2003">
+            <action dev="czarneckid" type="add" context="General">
+                blojsom configuration parameters were moved from
+                <i>/WEB-INF/web.xml</i> to
+                <i>/WEB-INF/blojsom.properties</i>. This allows other projects such as
+                <a href="http://sourceforge.net/projects/blojsim">blojsim</a> to share blojsom configuration information
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                All of the blog-related functionality (e.g. building the blog entry map, looking up blog entries for a category, etc...) has been refactored into the Blog class. BlojsomServlet is now only concerned with processing requests for the blog
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                A per-category meta-data facility was added. This functionality is described in the
+                <a href="customization.html">customization</a> documentation
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Calendar-based navigation is now supported in blojsom. This means that users can add "year=YYYY", "month="MM", and "day=DD" parameters when requesting entries per blog category to see entries that fall under a particular date range. The year must be provided, but a user can narrow down the list of entries by providing a month and a day
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Added "powered by" logo to the HTML flavor templates (JSP and Velocity)
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="681271">
+                No trailing slash in blog dir hoses category (URI) generation
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="681964">
+                @see BUG 681271
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="681969">
+                URLs in RSS
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="682445">
+                JDK 1.4
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="684190">
+                Entry Titles with &amp;'s
+            </action>
+
+            <action dev="czarneckid" type="rfe" context="Core">
+                RFE 682499: blojsom is now built to blojsom-core.jar and placed in WEB-INF/lib
+            </action>
+        </release>
+
+        <release version="1.0" date="February 2, 2003">
+            <action dev="czarneckid" type="add" context="General">
+                Initial release of blojsom
+            </action>
+        </release>
+    </changes>
+</status>
