@@ -32,7 +32,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.plugin.admin.event;
+package org.blojsom.plugin.comment.event;
 
 import org.blojsom.blog.BlogComment;
 import org.blojsom.blog.BlogUser;
@@ -40,37 +40,23 @@ import org.blojsom.blog.BlogUser;
 import java.util.Date;
 
 /**
- * BlogCommentEvent
+ * Comment Added Event indicates an event where a {@link BlogComment} has been added to the system.
  *
  * @author Mark Lussier
- * @version $Id: BlogCommentEvent.java,v 1.2 2005-01-27 00:06:54 czarneckid Exp $
+ * @version $Id: CommentAddedEvent.java,v 1.1 2005-01-30 19:27:45 czarneckid Exp $
  * @since blojsom 2.23
  */
-public class BlogCommentEvent extends BlogEntryEvent {
-
-    protected BlogComment _blogComment;
+public class CommentAddedEvent extends CommentEvent {
 
     /**
-     * Create a new event indicating something happened with an entry in the system.
+     * Create a new event indicating an event where a {@link BlogComment} has been added to the system.
      *
      * @param source      Source of the event
      * @param timestamp   Event timestamp
      * @param blogComment {@link org.blojsom.blog.BlogComment}
      * @param blogUser    {@link org.blojsom.blog.BlogUser}
      */
-    public BlogCommentEvent(Object source, Date timestamp, BlogComment blogComment, BlogUser blogUser) {
-        super(source, timestamp, blogComment.getBlogEntry(), blogUser);
-
-        _blogComment = blogComment;
+    public CommentAddedEvent(Object source, Date timestamp, BlogComment blogComment, BlogUser blogUser) {
+        super(source, timestamp, blogComment, blogUser);
     }
-
-    /**
-     * Retrieve the {@link BlogComment} associated with the event
-     *
-     * @return {@link BlogComment}
-     */
-    public BlogComment getBlogComment() {
-        return _blogComment;
-    }
-
 }

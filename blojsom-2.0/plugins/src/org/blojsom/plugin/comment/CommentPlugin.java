@@ -40,7 +40,7 @@ import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.admin.event.AddBlogCommentEvent;
+import org.blojsom.plugin.comment.event.CommentAddedEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
@@ -59,7 +59,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.29 2005-01-19 19:14:37 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.30 2005-01-30 19:28:00 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -514,18 +514,16 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                     context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
                     if (_comment != null) {
-                        _comment.setBlogEntry(entries[0]);
-
-                        _configuration.getEventBroadcaster().broadcastEvent(new AddBlogCommentEvent(this, new Date(), _comment, user));
-
-
                         List blogComments = entries[0].getComments();
                         if (blogComments == null) {
                             blogComments = new ArrayList(1);
                         }
+
                         _comment.setBlogEntry(entries[0]);
                         blogComments.add(_comment);
                         entries[0].setComments(blogComments);
+
+                        _configuration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), _comment, user));
 
                         // Merge the template e-mail
                         Map emailTemplateContext = new HashMap();

@@ -41,14 +41,14 @@ import org.blojsom.blog.BlogComment;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfigurationException;
 import org.blojsom.plugin.comment.CommentUtils;
+import org.blojsom.plugin.comment.event.CommentAddedEvent;
 import org.blojsom.plugin.email.EmailMessage;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.plugin.email.SendEmailPlugin;
-import org.blojsom.plugin.admin.event.AddBlogCommentEvent;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -73,14 +73,13 @@ import java.util.Properties;
 /**
  * blojsom Comment API Implementation
  * <p/>
- * Comment API Specification can be found at <a href="http://wellformedweb.org/story/9">http://wellformedweb.org/story/9</a>
+ * <a href="http://wellformedweb.org/story/9">Comment API specification</a>.
  * <p/>
- * For info on the <item/> fragment and it's content, thehe RSS 2.0 Spec can
- * be found at http://backend.userland.com/rss
+ * For more information on the &lt;item/&gt; fragment and its content, check the <a href="http://blogs.law.harvard.edu/tech/rss">RSS 2.0 specification</a>.
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.12 2005-01-19 19:13:20 intabulas Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.13 2005-01-30 19:27:59 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -152,7 +151,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
             if (is == null) {
                 return null;
             }
-            
+
             userProperties.load(is);
             is.close();
             Blog userBlog = null;
@@ -224,7 +223,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         Blog blog = blogUser.getBlog();
 
         // Check to see if we need to dynamically determine blog-base-url and blog-url?
-        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);        
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
 
         _logger.info("Processing a comment for [" + user + "] in category [" + requestedCategory + "]");
 
@@ -355,7 +354,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                         bw.close();
                         _logger.debug("Added blog comment: " + commentFilename);
 
-                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogCommentEvent(this, new Date(), comment, blogUser));
+                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), comment, blogUser));
 
 
                         // Send a Comment Email

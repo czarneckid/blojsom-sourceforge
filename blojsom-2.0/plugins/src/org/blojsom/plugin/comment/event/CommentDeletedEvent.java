@@ -32,7 +32,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.plugin.admin.event;
+package org.blojsom.plugin.comment.event;
 
 import org.blojsom.blog.BlogComment;
 import org.blojsom.blog.BlogUser;
@@ -40,23 +40,23 @@ import org.blojsom.blog.BlogUser;
 import java.util.Date;
 
 /**
- * DeletedBlogCommentEvent indicates an event where a comment has been deleted from the system.
+ * Comment Deleted Event indicates an event where a {@link BlogComment} has been deleted from the system.
  *
  * @author David Czarnecki
- * @version $Id: DeletedBlogCommentEvent.java,v 1.1 2005-01-30 18:19:36 czarneckid Exp $
+ * @version $Id: CommentDeletedEvent.java,v 1.1 2005-01-30 19:27:45 czarneckid Exp $
  * @since blojsom 2.23
  */
-public class DeletedBlogCommentEvent extends BlogCommentEvent {
+public class CommentDeletedEvent extends CommentEvent {
 
     /**
-     * Create a new event indicating a blog comment has been deleted from the system.
+     * Create a new event indicating a {@link BlogComment} has been deleted from the system.
      *
      * @param source      Source of the event
      * @param timestamp   Event timestamp
      * @param blogComment {@link org.blojsom.blog.BlogComment}
      * @param blogUser    {@link org.blojsom.blog.BlogUser}
      */
-    public DeletedBlogCommentEvent(Object source, Date timestamp, BlogComment blogComment, BlogUser blogUser) {
+    public CommentDeletedEvent(Object source, Date timestamp, BlogComment blogComment, BlogUser blogUser) {
         super(source, timestamp, blogComment, blogUser);
     }
 }
