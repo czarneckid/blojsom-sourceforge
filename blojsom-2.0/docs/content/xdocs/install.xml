@@ -184,7 +184,7 @@
                     <tr>
                         <td>blog-file-extensions</td>
                         <td></td>
-                        <td>Customize the regular expressions to identify file extensions blojsom uses for blog entries. By default, blojsom will look for .txt and .html file extensions in the blog directories for entries</td>
+                        <td>Comma-separated list of regular expressions to identify file extensions blojsom uses for blog entries. By default, blojsom will look for .txt and .html file extensions in the blog directories for entries</td>
                     </tr>
                     <tr>
                         <td>blog-entry-meta-data-extension</td>
@@ -212,6 +212,11 @@
                             <em>blog-directory-depth</em> will be aggregated. This feature is described in the
                             <link href="custom.html">customization</link> reference
                         </td>
+                    </tr>
+                    <tr>
+                        <td>blog-directory-filter</td>
+                        <td></td>
+                        <td>Comma-separated list of regular expressions of directory names that blojsom should filter when looking for categories. By default, the comments and trackback directories are added to this list.</td>
                     </tr>
                     <tr>
                         <td>blog-owner</td>
