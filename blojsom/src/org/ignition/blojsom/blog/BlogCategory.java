@@ -47,7 +47,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.12 2003-04-17 03:11:26 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.13 2003-04-23 02:09:19 czarneckid Exp $
  */
 public class BlogCategory implements Comparable {
 
@@ -230,7 +230,7 @@ public class BlogCategory implements Comparable {
      *
      * @return The properties associated with the category as meta-data, or null if no metadata exists
      */
-    public HashMap getMetaData() {
-        return (HashMap) _metadata;
+    public Map getMetaData() {
+        return _metadata;
     }
 }
