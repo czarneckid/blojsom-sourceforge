@@ -39,6 +39,9 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.listener.event.BlojsomEventBroadcaster;
+import org.blojsom.listener.BlojsomListener;
+import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import java.io.File;
@@ -50,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.22 2004-08-23 01:58:19 intabulas Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.23 2004-08-26 01:57:45 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -68,6 +71,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _resourceManager;
     private String _authorizationProvider;
     private String _globalBlogHome;
+    private BlojsomEventBroadcaster _eventBroadcaster;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
@@ -121,6 +125,42 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
         }
         _logger.debug("Using resources directory: " + _resourceDirectory);
+
+        String eventBroadcaster = getBlojsomPropertyAsString(BLOJSOM_BROADCASTER_IP);
+        if (BlojsomUtils.checkNullOrBlank(eventBroadcaster)) {
+            eventBroadcaster = BLOJSOM_DEFAULT_BROADCASTER;
+        }
+
+        try {
+            Class broadcasterClass = Class.forName(eventBroadcaster);
+            _eventBroadcaster = (BlojsomEventBroadcaster) broadcasterClass.newInstance();
+            _logger.debug("Using event broadcaster: " + eventBroadcaster);
+
+            String listenerConfiguration = servletConfig.getInitParameter(BLOJSOM_LISTENER_CONFIGURATION_IP);
+            if (!BlojsomUtils.checkNullOrBlank(listenerConfiguration)) {
+                Properties listenerProperties = BlojsomUtils.loadProperties(servletConfig, BLOJSOM_LISTENER_CONFIGURATION_IP, true);
+                Iterator listenerIterator = listenerProperties.keySet().iterator();
+                while (listenerIterator.hasNext()) {
+                    Object key = listenerIterator.next();
+                    String listenerClassname = listenerProperties.getProperty(key.toString());
+                    Class listenerClass = Class.forName(listenerClassname);
+                    BlojsomListener listener = (BlojsomListener) listenerClass.newInstance();
+                    _eventBroadcaster.addListener(listener);
+                }
+            }
+        } catch (BlojsomException e) {
+            _logger.error(e);
+            throw new BlojsomConfigurationException(e);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new BlojsomConfigurationException("Unable to instantiate event broadcaster: " + eventBroadcaster, e);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new BlojsomConfigurationException("Unable to instantiate event broadcaster: " + eventBroadcaster, e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new BlojsomConfigurationException("Unable to instantiate event broadcaster: " + eventBroadcaster, e);
+        }
 
         // Ensure the resource directory physically exists
         _qualifiedResourceDirectory = servletConfig.getServletContext().getRealPath(_resourceDirectory);
@@ -432,5 +472,15 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public String getGlobalBlogHome() {
         return _globalBlogHome;
+    }
+
+    /**
+     * Get the {@link BlojsomEventBroadcaster} in use to broadcast events
+     *
+     * @return {@link BlojsomEventBroadcaster}
+     * @since blojsom 2.18
+     */
+    public BlojsomEventBroadcaster getEventBroadcaster() {
+        return _eventBroadcaster;
     }
 }
