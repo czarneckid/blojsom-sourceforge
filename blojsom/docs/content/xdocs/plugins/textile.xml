@@ -42,9 +42,10 @@ No context attributes are made available or used by the Textile plugin.
 
 </p>
 </section>
-<section><title>sample textile document - from 
-<link href="http://www.textism.com/tools/textile/">Textism</link> website</title>
-
+<section><title>sample textile document</title>
+<p>from 
+<link href="http://www.textism.com/tools/textile/">Textism</link> website
+</p>
 <source>
 h2. This is a title
 
