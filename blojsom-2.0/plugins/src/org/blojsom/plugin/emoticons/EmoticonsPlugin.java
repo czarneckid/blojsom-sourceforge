@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -56,7 +55,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.4 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.5 2004-08-10 01:21:21 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -117,7 +116,9 @@ public class EmoticonsPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(EmoticonsPlugin.class);
 
-    private Map _emoticonsMap;
+    private ServletConfig _servletConfig;
+    private BlojsomConfiguration _blojsomConfiguration;
+    private String _emoticonsConfigurationFile;
 
     /**
      * Default constructor
@@ -128,79 +129,93 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws org.blojsom.plugin.BlojsomPluginException {
-        String emoticonsConfiguration = servletConfig.getInitParameter(EMOTICONS_CONFIGURATION_IP);
-        if (BlojsomUtils.checkNullOrBlank(emoticonsConfiguration)) {
+        _servletConfig = servletConfig;
+        _blojsomConfiguration = blojsomConfiguration;
+
+        _emoticonsConfigurationFile = servletConfig.getInitParameter(EMOTICONS_CONFIGURATION_IP);
+        if (BlojsomUtils.checkNullOrBlank(_emoticonsConfigurationFile)) {
             throw new BlojsomPluginException("No value given for: " + EMOTICONS_CONFIGURATION_IP + " configuration parameter");
         }
+    }
 
-        String[] users = blojsomConfiguration.getBlojsomUsers();
-        _emoticonsMap = new HashMap(users.length);
-        for (int i = 0; i < users.length; i++) {
-            String user = users[i];
-            Properties emoticonsProperties = new Properties();
-            String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + emoticonsConfiguration;
-            InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
-            if (is == null) {
-                _logger.info("No emoticons configuration file found: " + configurationFile);
-            } else {
-                try {
-                    emoticonsProperties.load(is);
-                    is.close();
-                    _emoticonsMap.put(user, BlojsomUtils.propertiesToMap(emoticonsProperties));
-                } catch (IOException e) {
-                    _logger.error(e);
-                    throw new BlojsomPluginException(e);
-                }
+    /**
+     * Read in a properties file containing the mapping between the emoticon names and image files and return
+     * the mapping as a {@link Map}
+     *
+     * @param blogID Blog ID
+     * @return {@link Map} between emoticon names and image files or <code>null</code> if the mapping file could not
+     *         be read
+     */
+    private Map readEmoticonsMapForBlog(String blogID) {
+        Map emoticonsMap = null;
+
+        Properties emoticonsProperties = new Properties();
+        String configurationFile = _blojsomConfiguration.getBaseConfigurationDirectory() + blogID + '/' + _emoticonsConfigurationFile;
+        InputStream is = _servletConfig.getServletContext().getResourceAsStream(configurationFile);
+        if (is == null) {
+            _logger.info("No emoticons configuration file found: " + configurationFile);
+        } else {
+            try {
+                emoticonsProperties.load(is);
+                is.close();
+
+                return BlojsomUtils.propertiesToMap(emoticonsProperties);
+            } catch (IOException e) {
+                _logger.error(e);
             }
         }
+
+        return emoticonsMap;
     }
 
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link org.blojsom.blog.BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error processing the blog entries
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error processing the blog entries
      */
     public org.blojsom.blog.BlogEntry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               BlogUser user,
-                               Map context,
-                               org.blojsom.blog.BlogEntry[] entries) throws org.blojsom.plugin.BlojsomPluginException {
-        if (!_emoticonsMap.containsKey(user.getId())) {
+                                                HttpServletResponse httpServletResponse,
+                                                BlogUser user,
+                                                Map context,
+                                                org.blojsom.blog.BlogEntry[] entries) throws org.blojsom.plugin.BlojsomPluginException {
+        Map emoticonsForBlog = readEmoticonsMapForBlog(user.getId());
+        if (emoticonsForBlog == null) {
             return entries;
         }
 
         String blogBaseUrl = user.getBlog().getBlogBaseURL();
-        Map emoticonsForUser = (Map) _emoticonsMap.get(user.getId());
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
             String updatedDescription = entry.getDescription();
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, HAPPY, HAPPY_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, SAD, SAD_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, GRIN, GRIN_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, LOVE, LOVE_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, MISCHIEF, MISCHIEF_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, COOL, COOL_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, DEVIL, DEVIL_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, SILLY, SILLY_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, ANGRY, ANGRY_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, LAUGH, LAUGH_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, WINK, WINK_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, BLUSH, BLUSH_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, CRY, CRY_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, CONFUSED, CONFUSED_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, SHOCKED, SHOCKED_PARAM, blogBaseUrl);
-            updatedDescription = replaceEmoticon(emoticonsForUser, updatedDescription, PLAIN, PLAIN_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, HAPPY, HAPPY_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, SAD, SAD_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, GRIN, GRIN_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, LOVE, LOVE_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, MISCHIEF, MISCHIEF_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, COOL, COOL_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, DEVIL, DEVIL_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, SILLY, SILLY_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, ANGRY, ANGRY_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, LAUGH, LAUGH_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, WINK, WINK_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, BLUSH, BLUSH_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, CRY, CRY_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, CONFUSED, CONFUSED_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, SHOCKED, SHOCKED_PARAM, blogBaseUrl);
+            updatedDescription = replaceEmoticon(emoticonsForBlog, updatedDescription, PLAIN, PLAIN_PARAM, blogBaseUrl);
             entry.setDescription(updatedDescription);
         }
         return entries;
@@ -210,9 +225,9 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      * Replace the references in the description with the URL to the image for the emoticon
      *
      * @param emoticonString Description string
-     * @param emoticon Emoticon characters
-     * @param emoticonParam Emoticon property name
-     * @param url Base URL for the blog
+     * @param emoticon       Emoticon characters
+     * @param emoticonParam  Emoticon property name
+     * @param url            Base URL for the blog
      * @return Updated description with emoticon references replaced with URLs to the images for the emoticons
      */
     private String replaceEmoticon(Map emoticonsForUser, String emoticonString, String emoticon, String emoticonParam, String url) {
@@ -235,7 +250,8 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error performing cleanup for this plugin
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
     }
@@ -243,7 +259,8 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error in finalizing this plugin
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
     }
