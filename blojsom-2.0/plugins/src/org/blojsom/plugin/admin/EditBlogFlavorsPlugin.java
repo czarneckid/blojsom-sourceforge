@@ -58,7 +58,7 @@ import java.io.FileOutputStream;
  * EditBlogFlavorsPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.6 2003-12-23 01:57:00 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.7 2003-12-23 03:29:53 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -119,7 +119,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
             return entries;
@@ -159,12 +159,14 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             String flavorName = BlojsomUtils.getRequestValue(FLAVOR_NAME, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
+                addOperationResultMessage(context, "No flavor name specified");
                 return entries;
             }
 
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 _logger.debug("No blog template specified");
+                addOperationResultMessage(context, "No blog template specified");
                 return entries;
             }
 
@@ -192,8 +194,10 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
             try {
                 writeFlavorConfiguration(user);
+                addOperationResultMessage(context, "Successfully added flavor: " + flavorName + " using template: " + blogTemplate + " with content type: " + flavorMimeType + ";" + flavorCharacterSet);
                 _logger.debug("Successfully wrote flavor configuration file for user: " + user.getId());
             } catch (IOException e) {
+                addOperationResultMessage(context, "Unable to update flavor configuration");
                 _logger.error(e);
             }
 
@@ -204,6 +208,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             String flavorName = BlojsomUtils.getRequestValue(FLAVOR_NAME, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
+                addOperationResultMessage(context, "No flavor name specified");
                 return entries;
             }
 
@@ -216,7 +221,9 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             try {
                 writeFlavorConfiguration(user);
                 _logger.debug("Successfully wrote flavor configuration file for user: " + user.getId());
+                addOperationResultMessage(context, "Successfully deleted flavor: " + flavorName);
             } catch (IOException e) {
+                addOperationResultMessage(context, "Unable to update flavor configuration deleting flavor");
                 _logger.error(e);
             }
 

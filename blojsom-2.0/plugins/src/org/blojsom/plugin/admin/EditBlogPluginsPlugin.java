@@ -59,7 +59,7 @@ import java.io.FileOutputStream;
  *
  * @since blojsom 2.06
  * @author czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.4 2003-12-23 01:57:00 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.5 2003-12-23 03:30:38 czarneckid Exp $
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
@@ -129,7 +129,7 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
             return entries;
@@ -198,8 +198,10 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
             // Write out the updated plugin configuration file
             try {
                 writePluginsConfiguration(user.getId(), pluginChainForWriting);
+                addOperationResultMessage(context, "Successfully updated plugin configuration");
             } catch (IOException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unable to update plugin configuration");
             }
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP, pluginChainForContext);
