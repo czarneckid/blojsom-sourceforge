@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.38 2003-03-28 01:15:09 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.39 2003-03-28 03:50:28 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -432,6 +432,71 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Retrieve a subset of the entries for a requested category
+     *
+     * @param requestedCategory Requested category
+     * @param entriesStart Starting point for entries
+     * @param entriesEnd Ending point for entries
+     * @return Blog entry array containing the list of blog entries for the requested category,
+     * that falls within the requested start end end points or <code>BlogEntry[0]</code>
+     * if there are no entries for the category, starting point is greater than the number of
+     * entries, ending point is less than 0, or starting is greater than ending point
+     */
+    public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int entriesStart, int entriesEnd) {
+        BlogEntry[] entryArray;
+        File blogCategory = new File(_blogHome + BlojsomUtils.removeInitialSlash(requestedCategory.getCategory()));
+        File[] entries = blogCategory.listFiles(BlojsomUtils.getRegularExpressionFilter(_blogFileExtensions));
+        String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
+        if (entries == null) {
+            _logger.debug("No blog entries in blog directory: " + blogCategory);
+            return new BlogEntry[0];
+        } else {
+            Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
+            BlogEntry blogEntry;
+            if (entriesStart < 0) {
+                _logger.debug("Entries start < 0");
+                entriesStart = 0;
+            } else if (entriesStart > entries.length) {
+                return new BlogEntry[0];
+            }
+
+            if (entriesEnd < 0) {
+                _logger.debug("Entries end < 0");
+                return new BlogEntry[0];
+            } else if (entriesEnd > entries.length) {
+                entriesEnd = entries.length;
+            }
+
+            if (entriesStart > entriesEnd) {
+                _logger.debug("Entries start > Entries end");
+                return new BlogEntry[0];
+            }
+
+            int entryCounter = 0;
+            entryArray = new BlogEntry[entriesEnd - entriesStart];
+            for (int i = entriesStart; i < entriesEnd; i++) {
+                File entry = entries[i];
+                blogEntry = new BlogEntry();
+                blogEntry.setSource(entry);
+                blogEntry.setCategory(category);
+                blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                try {
+                    blogEntry.reloadSource();
+                } catch (IOException e) {
+                    _logger.error(e);
+                }
+                blogEntry.setCommentsDirectory(_blogCommentsDirectory);
+                if (_blogCommentsEnabled.booleanValue()) {
+                    blogEntry.loadComments();
+                }
+                blogEntry.loadTrackbacks();
+                entryArray[entryCounter++] = blogEntry;
+            }
+            return entryArray;
+        }
+    }
+
+    /**
      * Retrieve all of the entries for a requested category that fall under a given date. A partial
      * date may be given such that if only a year is given, it would retrieve all entries under the
      * given category for that year. If a year and a month are give, it would retrieve all entries
@@ -518,6 +583,36 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Retrive entries for the categories, using the values set for
+     * the default category mapping and the starting and ending points for entries
+     *
+     * @param flavor Requested flavor
+     * @param entriesStart Starting point for entries
+     * @param entriesEnd Ending point for entries
+     * @return Blog entry array containing the list of blog entries for the categories,
+     * that fall within the requested start end end points or <code>BlogEntry[0]</code>
+     * if there are no entries for the categories, starting point is greater than the number of
+     * entries, ending point is less than 0, or starting is greater than ending point
+     */
+    public BlogEntry[] getEntriesAllCategories(String flavor, int entriesStart, int entriesEnd) {
+        if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
+            return getEntriesAllCategories(_blogDefaultCategoryMappings, entriesStart, entriesEnd);
+        } else {
+            String flavorMappingKey = flavor + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
+            String categoryMappingForFlavor = (String) _blogProperties.get(flavorMappingKey);
+            String[] categoryMappingsForFlavor = null;
+            if (categoryMappingForFlavor != null) {
+                _logger.debug("Using category mappings for flavor with start/end: " + flavor);
+                categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
+            } else {
+                _logger.debug("Fallback to default category mappings for flavor with start/end: " + flavor);
+                categoryMappingsForFlavor = _blogDefaultCategoryMappings;
+            }
+            return getEntriesAllCategories(categoryMappingsForFlavor, entriesStart, entriesEnd);
+        }
+    }
+
+    /**
      * Retrieve entries for all the categories in the blog. This method will the parameter
      * <code>maxBlogEntries</code> to limit the entries it retrieves from each of the categories.
      * Entries from the categories are sorted based on file time.
@@ -568,6 +663,79 @@ public class Blog implements BlojsomConstants {
             BlogEntry[] entries = (BlogEntry[]) blogEntries.toArray(new BlogEntry[blogEntries.size()]);
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
             return entries;
+        }
+    }
+
+    /**
+     * Retrive entries for the categories, using the values set for
+     * the default category mapping and the starting and ending points for entries
+     *
+     * @param categoryFilter If <code>null</code>, a list of all the categories is retrieved, otherwise only
+     * the categories in the list will be used to search for entries
+     * @param entriesStart Starting point for entries
+     * @param entriesEnd Ending point for entries
+     * @return Blog entry array containing the list of blog entries for the categories,
+     * that fall within the requested start end end points or <code>BlogEntry[0]</code>
+     * if there are no entries for the categories, starting point is greater than the number of
+     * entries, ending point is less than 0, or starting is greater than ending point
+     */
+    public BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int entriesStart, int entriesEnd) {
+        BlogCategory[] blogCategories = null;
+
+        if (categoryFilter == null) {
+            blogCategories = getBlogCategories();
+        } else {
+            blogCategories = new BlogCategory[categoryFilter.length];
+            for (int i = 0; i < categoryFilter.length; i++) {
+                String category = BlojsomUtils.removeInitialSlash(categoryFilter[i]);
+                blogCategories[i] = new BlogCategory(category, _blogURL + category);
+            }
+        }
+
+        if (blogCategories == null) {
+            return new BlogEntry[0];
+        } else {
+            ArrayList blogEntries = new ArrayList();
+            for (int i = 0; i < blogCategories.length; i++) {
+                BlogCategory blogCategory = blogCategories[i];
+                BlogEntry[] entriesForCategory = getEntriesForCategory(blogCategory, -1);
+                if (entriesForCategory != null) {
+                    for (int j = 0; j < entriesForCategory.length; j++) {
+                        BlogEntry blogEntry = entriesForCategory[j];
+                        blogEntries.add(blogEntry);
+                    }
+                }
+            }
+
+            if (entriesStart < 0) {
+                _logger.debug("Entries start for all < 0");
+                entriesStart = 0;
+            } else if (entriesStart > blogEntries.size()) {
+                return new BlogEntry[0];
+            }
+
+            if (entriesEnd < 0) {
+                _logger.debug("Entries end for all < 0");
+                return new BlogEntry[0];
+            } else if (entriesEnd > blogEntries.size()) {
+                entriesEnd = blogEntries.size();
+            }
+
+            if (entriesStart > entriesEnd) {
+                _logger.debug("Entries start for all > Entries end for all");
+                return new BlogEntry[0];
+            }
+
+            BlogEntry[] entries = (BlogEntry[]) blogEntries.toArray(new BlogEntry[blogEntries.size()]);
+            Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
+
+            BlogEntry[] entriesSubset = new BlogEntry[entriesEnd - entriesStart];
+            int entryCounter = 0;
+            for (int i = entriesStart; i < entriesEnd; i++) {
+                BlogEntry blogEntry = entries[i];
+                entriesSubset[entryCounter++] = blogEntry;
+            }
+            return entriesSubset;
         }
     }
 
