@@ -6,7 +6,7 @@
 <project name="blojsom" default="compile" basedir=".">
 
     <property name="name" value="blojsom"/>
-    <property name="version" value="1.9.2"/>
+    <property name="version" value="1.9.3"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
     <property name="war.file" value="${distro.dir}/${name}.war"/>
@@ -318,6 +318,41 @@
                 <include name="**/*.css"/>
             </fileset>
         </copy>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Create a source distribution                                        -->
+    <!-- =================================================================== -->
+    <target name="create-source-distribution" depends="clean, prepare">
+        <tstamp/>
+        <zip zipfile="${distro.dir}/${name}-${version}-source.zip">
+            <zipfileset dir="${basedir}">
+                <!-- Base files -->
+                <include name="build.xml"/>
+                <include name="LICENSE"/>
+
+                <!-- Source directories -->
+                <include name="addon/**"/>
+                <include name="extensions/**"/>
+                <include name="plugins/**"/>
+                <include name="src/**"/>
+
+                <!-- Library directory -->
+                <include name="lib/"/>
+
+                <!-- Properties directory -->
+                <include name="properties/"/>
+
+                <!-- Templates and themes -->
+                <include name="templates/"/>
+                <include name="themes/**"/>
+
+                <!-- WAR directory -->
+                <include name="war/"/>
+                <include name="war/WEB-INF"/>
+                <include name="war/WEB-INF/lib"/>
+            </zipfileset>
+        </zip>
     </target>
 
 </project>
