@@ -57,9 +57,9 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.15 2005-01-05 02:31:18 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.16 2005-01-23 19:23:28 czarneckid Exp $
  */
-public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
+public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
     protected static final Log _logger = LogFactory.getLog(BaseAdminPlugin.class);
 
@@ -186,6 +186,26 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         } else {
             return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
+    }
+
+    /**
+     * Check the permission for a given username and permission
+     *
+     * @param blogUser          {@link org.blojsom.blog.BlogUser} information
+     * @param permissionContext {@link java.util.Map} containing context information for checking permission
+     * @param username          Username
+     * @param permission        Permission
+     * @return <code>true</code> if the username has the required permission, <code>false</code> otherwise
+     */
+    public boolean checkPermission(BlogUser blogUser, Map permissionContext, String username, String permission) {
+        try {
+            _authorizationProvider.checkPermission(blogUser, permissionContext, username, permission);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+            return false;
+        }
+
+        return true;
     }
 
     /**
