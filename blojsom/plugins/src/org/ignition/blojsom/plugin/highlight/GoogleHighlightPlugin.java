@@ -48,15 +48,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The GoogleHighlightPlugin will highlight words on your blog if the refere came from a Google
+ * The GoogleHighlightPlugin will highlight words on your blog if the referer came from a Google
  * query.
  *
  * Based on work from http://www.textism.com/
  *
  * @author Mark Lussier
- * @version $Id: GoogleHighlightPlugin.java,v 1.3 2003-05-05 00:54:25 intabulas Exp $
+ * @version $Id: GoogleHighlightPlugin.java,v 1.4 2003-05-25 15:14:39 czarneckid Exp $
  */
-
 public class GoogleHighlightPlugin implements BlojsomPlugin {
 
 
@@ -69,7 +68,7 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
     private static final String END_BOUNDRY = "\\b)";
 
     /**
-     * Expression used to identify the refer as a Google referer
+     * Expression used to identify the referer as a Google referer
      */
     private static final String EXPRESSSION_GOOGLE = "^http:\\/\\/w?w?w?\\.?google.*";
 
@@ -130,7 +129,6 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
         }
 
         return result;
-
     }
 
     /**
@@ -169,7 +167,6 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
         }
 
         return entries;
-
     }
 
     /**
@@ -187,6 +184,4 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
-
-
 }
