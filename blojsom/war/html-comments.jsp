@@ -58,7 +58,7 @@
 		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
-        <p class="weblogdateline">Comments on this entry</p>
+        <p class="weblogtitle">Comments on this entry</p>
         <div class="entrystyle">
         <%
             ArrayList blogComments = blogEntry.getComments();
@@ -68,7 +68,7 @@
         <p>
             Comment by: <a href="mailto:<%= blogComment.getAuthorEmail() %>"><%= blogComment.getAuthor() %></a> -
                 <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a><br />
-            Left on: <%= blogComment.getCommentDate() %><br />
+            <span class="weblogdateline">Left on: <%= blogComment.getCommentDate() %><span><br/><br />
             <%= blogComment.getComment() %><br />
         </p>
         <%

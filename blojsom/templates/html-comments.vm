@@ -24,13 +24,13 @@ Available categories:
     <p class="weblogdateline">$entry.getDate()</p>
     <p>$entry.getDescription()</p>
     </div>
-    <p class="weblogdateline">Comments on this entry</p>
+    <p class="weblogtitle">Comments on this entry</p>
     <div class="entrystyle">
     #foreach ($entryComment in $entry.getComments())
         <p>
             Comment by: <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> -
                 <a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a><br />
-            Left on: $entryComment.getCommentDate()<br />
+            <span class="weblogdateline">Left on: $entryComment.getCommentDate()</span><br/><br/>
             $entryComment.getComment()<br />
         </p>
     #end
