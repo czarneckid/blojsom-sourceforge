@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.2 2003-08-10 15:32:10 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -318,7 +318,7 @@ public class BlojsomUtils implements BlojsomConstants {
         indexOfBlogHome += blogHome.length();
         String returnCategory = requestedCategory.substring(indexOfBlogHome);
         returnCategory = removeInitialSlash(returnCategory);
-        return "/" + returnCategory;
+        return '/' + returnCategory;
     }
 
     /**
@@ -517,7 +517,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static final String getTemplateForPage(String flavorTemplate, String page) {
         int dotIndex = flavorTemplate.lastIndexOf(".");
         if (dotIndex == -1) {
-            return flavorTemplate + "-" + page;
+            return flavorTemplate + '-' + page;
         } else {
             StringBuffer newTemplate = new StringBuffer();
             if (page.startsWith("/")) {

@@ -53,7 +53,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.2 2003-08-10 15:29:55 intabulas Exp $
+ * @version $Id: JSPDispatcher.java,v 1.3 2003-08-10 15:31:13 intabulas Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -141,13 +141,13 @@ public class JSPDispatcher implements GenericDispatcher {
         // Dispatch to the proper JSP
         if (flavorTemplateForPage != null) {
             if (_context.getResource(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage) != null) {
-                httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + "/" + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
+                httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
                 return;
             } else {
                 _logger.debug("No resource found for flavor template: " + _templatesDirectory + user.getId() + '/' + flavorTemplateForPage);
             }
         }
 
-        httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + "/" + flavorTemplate).forward(httpServletRequest, httpServletResponse);
+        httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplate).forward(httpServletRequest, httpServletResponse);
     }
 }

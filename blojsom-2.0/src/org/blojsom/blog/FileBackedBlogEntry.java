@@ -46,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.2 2003-08-10 15:32:17 intabulas Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -119,7 +119,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @return Blog Id
      */
     public String getId() {
-        return _category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(_source.getName());
+        return _category + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(_source.getName());
     }
 
     /**

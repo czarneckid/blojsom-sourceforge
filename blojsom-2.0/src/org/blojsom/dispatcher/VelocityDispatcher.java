@@ -55,7 +55,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.2 2003-08-10 15:31:23 intabulas Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -127,16 +127,16 @@ public class VelocityDispatcher implements GenericDispatcher {
         VelocityContext velocityContext = new VelocityContext(context);
         try {
             if (flavorTemplateForPage != null) {
-                Velocity.mergeTemplate(user.getId() + "/" + flavorTemplateForPage, UTF8, velocityContext, sw);
+                Velocity.mergeTemplate(user.getId() + '/' + flavorTemplateForPage, UTF8, velocityContext, sw);
             } else {
-                Velocity.mergeTemplate(user.getId() + "/" + flavorTemplate, UTF8, velocityContext, sw);
+                Velocity.mergeTemplate(user.getId() + '/' + flavorTemplate, UTF8, velocityContext, sw);
             }
         } catch (ResourceNotFoundException e) {
             _logger.error(e);
             if (flavorTemplateForPage != null) {
                 _logger.debug("Trying to fallback to original flavor template: " + flavorTemplate);
                 try {
-                    Velocity.mergeTemplate(user.getId() + "/" + flavorTemplate, UTF8, velocityContext, sw);
+                    Velocity.mergeTemplate(user.getId() + '/' + flavorTemplate, UTF8, velocityContext, sw);
                 } catch (Exception internale) {
                     _logger.error(internale);
                 }
