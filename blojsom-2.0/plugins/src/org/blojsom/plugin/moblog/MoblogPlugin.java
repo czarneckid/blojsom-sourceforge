@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.11 2004-05-01 19:35:56 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.12 2004-05-03 23:37:40 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -605,7 +605,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                                             fos.write(imageFile);
                                             fos.close();
                                             String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
-                                            entry.append("<p /><img src=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\" border=\"0\"/ >");
+                                            entry.append("<p /><img src=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\" border=\"0\" />");
                                         } else if (attachmentMimeTypes.containsKey(type)) {
                                             _logger.debug("Creating attachment of type: " + type);
                                             InputStream is = bp.getInputStream();
