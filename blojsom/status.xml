@@ -21,7 +21,11 @@
     </todo>
 
     <changes>
-         <release version="1.9.4" date="July 6, 2003">
+         
+         <release version="1.9.4" date="dev">
+            <action dev="chalko=" type="change" context="doc">
+               The blojsom site is now built with forrest.
+            </action>
             <action dev="intabulas=" type="add" context="code">
                 Added  the ability to disable the setting of the LastModified and ETag header by sending
                 <i>lastmodified=true/false</i> on the request
