@@ -27,18 +27,17 @@ a:hover {
 	color: #CC0000;
 }
 #main {
-	width: 760px;
+	width: 770px;
 	margin: 0 auto;
 	text-align: left;
-	clear: both;
 }
 #header{
-	width: 760px;
+	width: 100%;
 	height: 80px;
 }
 #header h1 {
 	float: left;
-	margin: 26px 0 16px 36px;
+	margin: 26px 0 16px 30px;
 	display: inline;
 	font-size: 100%;
 }
@@ -57,7 +56,7 @@ a:hover {
 	font-weight: normal;
 }
 #footer {
-	width: 760px;
+	width: 100%;
 	clear: both;
 	margin-bottom: 30px;
 }
@@ -66,11 +65,11 @@ a:hover {
 }
 #copyright {
 	float: left;
-	padding-left: 36px;
+	padding-left: 32px;
 }
 #info {
 	float: right;
-	padding-right: 38px;
+	padding-right: 32px;
 }
 #info a {
 	color: #000000;
@@ -79,7 +78,7 @@ a:hover {
 	color: #365483;
 }
 #content {
-	width: 760px;
+	width: 100%;
 	background: url(asual-content.jpg) repeat-y;
 	clear: both;
 }
@@ -89,13 +88,13 @@ a:hover {
 }
 #chead {
 	background: #FFFFFF url(asual-chead.jpg) no-repeat;
-	width: 760px;
+	width: 100%;
 	height: 28px;
 }
 #cfoot {
 	background: #FFFFFF url(asual-cfoot.jpg) no-repeat left bottom;
-	width: 760px;
-	height: 26px;
+	width: 100%;
+	height: 24px;
 	clear: both;
 	margin-top: 10px;
 }
@@ -103,14 +102,14 @@ a:hover {
 	background: url(asual-cbody.jpg) repeat-x;
 	width: auto;
 	height: 200px;
-	margin: 0 11px;
-	padding: 0 25px;
+	margin: 0 9px;
+	padding: 0 21px;
 }
 #cbody h2 {
 	font-size: 140%;
 	font-weight: normal;
 	float: left;
-	margin-bottom: 10px;
+	width: 100%;
 }
 #cbody h2 a {
 	color: #333333;
@@ -120,22 +119,26 @@ a:hover {
 	color: #CC0000;
 }
 #nav {
-	float: right;
-	margin-bottom: 10px;
+	width: 100%;
+	clear: both;
+	float: left;
 }
 #clear {
 	clear: both;
+	height: 10px;
 }
 #entries {
 	width: 100%;
 	float: left; 
 	clear: both;
-	margin: 10px -22em 0 0;
+	margin-right: -20em;
+}
+* html #entries{
+	overflow: hidden;
 }
 #column {
-	width: 20em; 
+	width: 18em; 
 	float: right;
-	margin-top: 10px;
 }
 #column div {
 	display: block;
@@ -144,34 +147,36 @@ a:hover {
 #column ul {
 	list-style: none;
 }
-#holder {
-	float: right;
-}
-#holder a {
+#column a {
 	color: #365483;
 }
-#holder a:hover {
+#column a:hover {
 	color: #CC0000;
 }
 #calendar {
 	background: #F4F9FD;
 	border: 1px solid #365483;
 	width: auto;
-	padding: 5px;
+	padding: 3px;
+}
+#calendar table {
+	width: 100%;
+	border-collapse: collapse
 }
 #calendar caption {
 	font-size: 120%;
 	font-weight: bold;
 	text-align: center;
 	color: #365483;
-	margin: 0 auto 5px;
+	margin-bottom: 2px;
+}
+#calendar th, #calendar td {
+	margin: 0;
+	padding: 0 1px 1px 0;
+	text-align: center;
 }
 #calendar thead th {
-	text-align: center;
-	width: 15%;	
-}
-#calendar tfoot td {
-	text-align: center;
+	font-size: 90%;
 }
 #calendar tfoot a {
 	color: #365483;
@@ -179,12 +184,8 @@ a:hover {
 #calendar tfoot a:hover {
 	color: #CC0000;
 }
-#calendar tbody td {
-	text-align: center;
-}
 #calendar tbody a {
 	background: #365483;
-	width: 100%;
 	text-align: center;
 	text-decoration: none;
 	color: #FFFFFF;
@@ -200,7 +201,7 @@ a:hover {
 	width: 14em;
 	text-align: right;
 	border: 0;
-	margin: 26px 34px 0 0;
+	margin: 26px 29px 0 0;
 	display: inline;
 }
 #searchlabel {
@@ -227,7 +228,7 @@ a:hover {
 }
 div.entry {
 	padding: 0;
-	margin: 0 23em 3em 0;
+	margin: 0 20em 3em 0;
 }
 div.entry h3 {
 	border-bottom: 1px solid #365483;
@@ -246,10 +247,18 @@ div.entry div, div.entry p {
 div.entry span {
 	margin-right: 4px;
 }
+div.entry ul {
+	margin: 10px 0;
+}
 div.entry li {
 	padding-left: 10px;
 	list-style: none;
-	background: url(asual-disc.jpg) no-repeat 0 50%;
+	background: url(asual-disc.jpg) no-repeat 0 .5em;
+}
+div.entry blockquote {
+	margin: 10px;
+	padding-left: 20px;
+	background: url(asual-blockquote.jpg) no-repeat;	
 }
 div.comment {
 	padding: 0;
