@@ -37,6 +37,7 @@ package org.ignition.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.BlojsomException;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -47,11 +48,11 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.14 2003-05-16 20:36:54 intabulas Exp $
+ * @version $Id: BlogCategory.java,v 1.15 2003-06-11 02:46:09 czarneckid Exp $
  */
-public class BlogCategory implements Comparable {
+public abstract class BlogCategory implements Comparable {
 
-    private Log _logger = LogFactory.getLog(BlogCategory.class);
+    protected Log _logger = LogFactory.getLog(BlogCategory.class);
 
     protected String _categoryURL;
     protected String _category;
@@ -232,4 +233,13 @@ public class BlogCategory implements Comparable {
     public Map getMetaData() {
         return _metadata;
     }
+
+    /**
+     * Load a blog category.
+     *
+     * @since blojsom 1.9.1
+     * @param blog Blog
+     * @throws BlojsomException If there is an error loading the entry
+     */
+    public abstract void loadCategory(Blog blog) throws BlojsomException;
 }
