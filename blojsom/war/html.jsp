@@ -51,7 +51,7 @@
 		<div class="entrystyle">
 		<p class="weblogtitle"><%= blogEntry.getTitle() %>
 		    <span class="smalltext">
-			[<a href="<%= blogEntry.getLink() %>">Permalink</a>]
+			[<a href="<%= blogEntry.getLink() %>" title="Permalink to this blojsom entry">Permalink</a>]
 		    </span>
 		</p>
 		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
