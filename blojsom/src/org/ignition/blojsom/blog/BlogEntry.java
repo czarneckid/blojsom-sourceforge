@@ -43,7 +43,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.20 2003-03-06 16:05:04 intabulas Exp $
+ * @version $Id: BlogEntry.java,v 1.21 2003-03-13 02:14:49 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -406,7 +406,7 @@ public class BlogEntry implements BlojsomConstants {
             File[] comments = commentsDirectory.listFiles(BlojsomUtils.getExtensionFilter(COMMENT_EXTENSION));
             if ((comments != null) && (comments.length > 0)) {
                 _logger.debug("Adding " + comments.length + " comments to blog entry");
-                Arrays.sort(comments, BlojsomUtils.FILE_TIME_COMPARATOR);
+                Arrays.sort(comments, BlojsomUtils.FILE_TIME_ASCENDING_COMPARATOR);
                 _comments = new ArrayList(comments.length);
                 for (int i = 0; i < comments.length; i++) {
                     File comment = comments[i];
