@@ -23,15 +23,15 @@
     <changes>
          
          <release version="1.9.4" date="dev">
-            <action dev="chalko=" type="change" context="doc">
+            <action dev="chalko" type="change" context="General">
                The blojsom site is now built with forrest.
             </action>
-            <action dev="intabulas=" type="add" context="code">
+            <action dev="intabulas" type="add" context="Core">
                 Added  the ability to disable the setting of the LastModified and ETag header by sending
                 <i>lastmodified=true/false</i> on the request
             </action>
         </release>
-        <!-- Add new releases here -->
+
         <release version="1.9.3" date="July 6, 2003">
             <action dev="czarneckid" type="remove" context="General">
                 Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
