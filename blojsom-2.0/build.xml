@@ -142,6 +142,9 @@
         <delete dir="${webinf.dir}/themes"/>
         <delete dir="${resources.dir}/${default.user}" includeemptydirs="true"/>
         <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>
+        <delete>
+            <fileset dir="${war.dir}/WEB-INF/${default.user}/templates/" includes="*.vm"/> 
+        </delete>
     </target>
 
     <!-- =================================================================== -->
