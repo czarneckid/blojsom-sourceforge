@@ -35,6 +35,7 @@
 package org.blojsom.extension.xmlrpc.handlers;
 
 import org.blojsom.BlojsomException;
+import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
@@ -51,7 +52,7 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.6 2004-04-19 18:06:49 intabulas Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.7 2004-06-03 01:24:28 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -75,6 +76,7 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
     protected BlojsomFetcher _fetcher;
     protected BlojsomConfiguration _configuration;
     protected String _blogEntryExtension;
+    protected AuthorizationProvider _authorizationProvider;
 
     /**
      * Attach a blog instance to the API Handler so that it can interact with the blog
@@ -84,6 +86,10 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      * @see org.blojsom.blog.BlogUser
      */
     public abstract void setBlogUser(BlogUser blogUser) throws BlojsomException;
+
+    public void setAuthorizationProvider(AuthorizationProvider authorizationProvider) {
+        _authorizationProvider = authorizationProvider;
+    }
 
     /**
      * Gets the name of API Handler. Used to bind to XML-RPC
