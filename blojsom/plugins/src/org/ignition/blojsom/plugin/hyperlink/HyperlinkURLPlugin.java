@@ -48,7 +48,7 @@ import java.util.Map;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.1 2003-03-28 22:06:50 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.2 2003-03-29 17:58:20 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -60,13 +60,13 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
     /**
      * Regular expression to identify URLs in the entry
      */
-    private static final String URL_REGEX = "(^|[ t\rn])" + URL_PROTOCOLS
+    private static final String URL_REGEX = "(^|[\t\r\n])" + URL_PROTOCOLS
             + ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
 
     /**
      * The resulting replace string for formatting the href
      */
-    private static final String HREF_EXPRESSION = " <a href=\"$2\" target=\"_blank\">$2</a>";
+    private static final String HREF_EXPRESSION = "<a href=\"$2\" target=\"_blank\">$2</a>";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -114,4 +114,7 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
+
+
+
 }
