@@ -57,7 +57,7 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.28 2003-05-31 20:24:10 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.29 2003-06-11 02:49:42 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -197,7 +197,9 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 category = BlojsomUtils.normalize(category);
                 permalink = postid.substring(pos + match.length());
 
-                BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
 
                 Map fetchMap = new HashMap();
                 fetchMap.put(FETCHER_CATEGORY, blogCategory);
@@ -371,8 +373,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
             return blogCategory;
-        }
-        else{
+        } else {
             return new File(_blog.getBlogHome() + "/");
         }
     }

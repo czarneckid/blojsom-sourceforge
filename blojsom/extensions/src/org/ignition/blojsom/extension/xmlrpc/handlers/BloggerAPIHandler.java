@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.28 2003-05-31 20:24:10 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.29 2003-06-11 02:49:42 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -215,7 +215,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
-                BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
                 fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
@@ -419,8 +421,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
-                BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
-                fetchMap.put(FETCHER_CATEGORY, blogCategory);
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);                fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
@@ -541,7 +544,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             if (blogCategoryFile.exists() && blogCategoryFile.isDirectory()) {
 
                 String requestedCategory = BlojsomUtils.removeInitialSlash(blogid);
-                BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + requestedCategory);
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(blogid);
+                blogCategory.setCategoryURL(_blog.getBlogFileExtensions() + requestedCategory);
 
                 BlogEntry[] entries;
                 Map fetchMap = new HashMap();
