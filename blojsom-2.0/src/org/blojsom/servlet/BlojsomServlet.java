@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.32 2005-03-10 15:16:13 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.33 2005-03-10 15:43:18 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -220,7 +220,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
      * Configure the plugins that blojsom will use for a given blog
      *
      * @param servletConfig Servlet configuration information
-     * @param blogUser {@link BlogUser} information
+     * @param blogUser      {@link BlogUser} information
      * @since blojsom 2.24
      */
     protected void configurePluginsForBlog(ServletConfig servletConfig, BlogUser blogUser) throws ServletException {
@@ -326,7 +326,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 redirectURL.append("?");
                 redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest));
             }
-            
+
             _logger.debug("Redirecting the user to: " + redirectURL.toString());
             httpServletResponse.sendRedirect(redirectURL.toString());
 
@@ -348,10 +348,17 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         try {
             blogUser = _blojsomConfiguration.loadBlog(user);
         } catch (BlojsomException e) {
-            _logger.error(e);
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + user);
+            // Fallback to current default-blog-user functionality
+            if (!BlojsomUtils.checkNullOrBlank(_blojsomConfiguration.getDefaultUser())) {
+                try {
+                    blogUser = _blojsomConfiguration.loadBlog(_blojsomConfiguration.getDefaultUser());
+                } catch (BlojsomException e2) {
+                    _logger.error(e2);
+                    httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + user);
 
-            return;
+                    return;
+                }
+            }
         }
 
         // If the blog ID isn't in the known list of blog IDs, add it
