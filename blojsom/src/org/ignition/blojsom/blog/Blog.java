@@ -43,7 +43,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.21 2003-03-01 20:19:12 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.22 2003-03-04 03:31:29 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -62,6 +62,7 @@ public class Blog implements BlojsomConstants {
     private String[] _blogDirectoryFilter;
     private String _blogOwner;
     private String _blogOwnerEmail;
+    private String _blogCommentsDirectory;
 
     private HashMap _blogProperties;
 
@@ -150,17 +151,32 @@ public class Blog implements BlojsomConstants {
         }
         _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, _blogDefaultCategoryMappings);
 
-        String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
-        if (blogDirectoryFilter == null) {
-            _blogDirectoryFilter = null;
-            _logger.debug("blojsom not filtering 0 directories");
-        } else {
-            _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
-            for (int i = 0; i < _blogDirectoryFilter.length; i++) {
-                _logger.debug("blojsom to filter: " + _blogDirectoryFilter[i]);
-            }
-            _logger.debug("blojsom filtering " + _blogDirectoryFilter.length + " directories");
+        _blogCommentsDirectory = blogConfiguration.getProperty(BLOG_COMMENTS_DIRECTORY_IP);
+        if ((_blogCommentsDirectory == null) || ("".equals(_blogCommentsDirectory))) {
+            _blogCommentsDirectory = DEFAULT_COMMENTS_DIRECTORY;
         }
+        _logger.debug("blojsom comments directory: " + _blogCommentsDirectory);
+
+        String commentsDirectoryRegex;
+        if (_blogCommentsDirectory.startsWith(".")) {
+            commentsDirectoryRegex = ".*/\\" + _blogCommentsDirectory;
+        } else {
+            commentsDirectoryRegex = ".*/" + _blogCommentsDirectory;
+        }
+
+        String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
+        // Add the blog comments directory to the blog directory filter
+        if (blogDirectoryFilter == null) {
+            blogDirectoryFilter = commentsDirectoryRegex;
+        } else {
+            blogDirectoryFilter = blogDirectoryFilter + ", " + commentsDirectoryRegex;
+        }
+
+        _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
+        for (int i = 0; i < _blogDirectoryFilter.length; i++) {
+            _logger.debug("blojsom to filter: " + _blogDirectoryFilter[i]);
+        }
+        _logger.debug("blojsom filtering " + _blogDirectoryFilter.length + " directories");
         _blogProperties.put(BLOG_DIRECTORY_FILTER_IP, _blogDirectoryFilter);
 
         _blogOwner = blogConfiguration.getProperty(BLOG_OWNER);
@@ -263,6 +279,8 @@ public class Blog implements BlojsomConstants {
             blogEntry.setCategory(category);
             blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
             blogEntry.reloadSource();
+            blogEntry.setCommentsDirectory(_blogCommentsDirectory);
+            blogEntry.loadComments();
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -288,6 +306,8 @@ public class Blog implements BlojsomConstants {
             blogEntry.setCategory(category);
             blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
             blogEntry.reloadSource();
+            blogEntry.setCommentsDirectory(_blogCommentsDirectory);
+            blogEntry.loadComments();
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -338,6 +358,8 @@ public class Blog implements BlojsomConstants {
                 blogEntry.setCategory(category);
                 blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + entry.getName());
                 blogEntry.reloadSource();
+                blogEntry.setCommentsDirectory(_blogCommentsDirectory);
+                blogEntry.loadComments();
                 entryArray[i] = blogEntry;
             }
             return entryArray;

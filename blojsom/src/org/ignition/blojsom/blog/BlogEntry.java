@@ -34,17 +34,16 @@ import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.16 2003-03-01 20:19:32 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.17 2003-03-04 03:31:29 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -57,11 +56,14 @@ public class BlogEntry implements BlojsomConstants {
     private String _category;
     private Date _entryDate;
     private long _lastModified;
+    private String _commentsDirectory;
+    private ArrayList _comments;
 
     /**
      * Create a new blog entry with no data
      */
     public BlogEntry() {
+        _commentsDirectory = DEFAULT_COMMENTS_DIRECTORY;
     }
 
     /**
@@ -73,6 +75,7 @@ public class BlogEntry implements BlojsomConstants {
      * @param source File containing the blog entry
      */
     public BlogEntry(String title, String link, String description, File source) {
+        super();
         _title = title;
         _link = link;
         _description = description;
@@ -328,5 +331,148 @@ public class BlogEntry implements BlojsomConstants {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Determines whether or not this blog entry supports comments by testing to see if
+     * the blog entry is writable.
+     *
+     * @return <code>true</code> if the blog entry is writable, <code>false</code> otherwise
+     */
+    public boolean supportsComments() {
+        return _source.canWrite();
+    }
+
+    /**
+     * Get the comments
+     *
+     * @return ArrayList of comments
+     */
+    public ArrayList getComments() {
+        return _comments;
+    }
+
+    /**
+     * Get the comments as an array of BlogComment objects
+     *
+     * @return BlogComment[] array
+     */
+    public BlogComment[] getCommentsAsArray() {
+        if (_comments == null) {
+            return null;
+        } else {
+            return (BlogComment[]) _comments.toArray(new BlogComment[_comments.size()]);
+        }
+    }
+
+    /**
+     * XXX: This method will go away!
+     * @return
+     */
+    public BlogComment getFirstComment() {
+        return (BlogComment) _comments.get(0);
+    }
+
+    /**
+     * Get the number of comments for this entry
+     *
+     * @return 0 if comments is <code>null</code>, or the number of comments otherwise, which could be 0
+     */
+    public int getNumComments() {
+        if (_comments == null) {
+            return 0;
+        } else {
+            return _comments.size();
+        }
+    }
+
+    /**
+     * Set the directory for comments
+     *
+     * @param commentsDirectory Comments directory
+     */
+    public void setCommentsDirectory(String commentsDirectory) {
+        _commentsDirectory = commentsDirectory;
+    }
+
+    /**
+     * Convenience method to load the comments for this blog entry. A blog entry can have
+     * comments attached if the blog entry is writable, {@see #supportsComments}
+     */
+    public void loadComments() {
+        if (supportsComments()) {
+            String commentsDirectoryPath;
+            if (_source.getParent() == null) {
+                commentsDirectoryPath = File.separator + _commentsDirectory;
+            } else {
+                commentsDirectoryPath = _source.getParent() + File.separator + _commentsDirectory;
+            }
+            File commentsDirectory = new File(commentsDirectoryPath);
+            File[] comments = commentsDirectory.listFiles(BlojsomUtils.getExtensionFilter(COMMENT_EXTENSION));
+            if ((comments != null) && (comments.length > 0)) {
+                _logger.debug("Adding " + comments.length + " comments to blog entry");
+                Arrays.sort(comments, BlojsomUtils.FILE_TIME_COMPARATOR);
+                _comments = new ArrayList(comments.length);
+                for (int i = 0; i < comments.length; i++) {
+                    File comment = comments[i];
+                    _comments.add(loadComment(comment));
+                }
+            }
+        } else {
+            _logger.debug("Blog entry does not support comments");
+        }
+    }
+
+    /**
+     * Load a comment for this blog entry from disk
+     * Comments must always have the form:<br />
+     * author<br>
+     * author e-mail address<br />
+     * author url<br />
+     * everything else after is the comment
+     *
+     * @param commentFile Comment file
+     * @return BlogComment
+     */
+    private BlogComment loadComment(File commentFile) {
+        int commentSwitch = 0;
+        BlogComment comment = new BlogComment();
+        StringBuffer commentDescription = new StringBuffer();
+        String commentLine;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(commentFile));
+            while ((commentLine = br.readLine()) != null) {
+                switch (commentSwitch) {
+                    case 0:
+                        {
+                            comment.setAuthor(commentLine);
+                            commentSwitch++;
+                            break;
+                        }
+                    case 1:
+                        {
+                            comment.setAuthorEmail(commentLine);
+                            commentSwitch++;
+                            break;
+                        }
+                    case 2:
+                        {
+                            comment.setAuthorURL(commentLine);
+                            commentSwitch++;
+                            break;
+                        }
+                    default:
+                        {
+                            commentDescription.append(commentLine);
+                        }
+                }
+            }
+            comment.setComment(commentDescription.toString());
+            comment.setCommentDate(new Date(commentFile.lastModified()));
+            br.close();
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+        return comment;
     }
 }
