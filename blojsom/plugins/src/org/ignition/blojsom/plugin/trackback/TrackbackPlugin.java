@@ -157,6 +157,9 @@ public class TrackbackPlugin implements BlojsomPlugin {
             if (blogName == null) {
                 blogName = "";
             }
+            if (!category.endsWith("/")) {
+                category += "/";
+            }
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName);
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
             if (code.intValue() == 0) {
@@ -181,7 +184,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * @param blogName
      */
     public synchronized Integer addTrackback(Map context, String category, String permalink, String title,
-                                          String excerpt, String url, String blogName) {
+                                             String excerpt, String url, String blogName) {
         Trackback trackback = new Trackback();
         trackback.setTitle(title);
         trackback.setExcerpt(excerpt);
@@ -199,6 +202,12 @@ public class TrackbackPlugin implements BlojsomPlugin {
 
         trackbackDirectory.append(_blogHome);
         trackbackDirectory.append(BlojsomUtils.removeInitialSlash(category));
+        File blogEntry = new File(trackbackDirectory.toString() + File.separator + permalink);
+        if (!blogEntry.exists()) {
+            _logger.error("Trying to create trackback for invalid blog entry: " + permalink);
+            context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trying to create trackback for invalid permalink");
+            return new Integer(2);
+        }
         trackbackDirectory.append(_blogTrackbackDirectory);
         trackbackDirectory.append(File.separator);
         trackbackDirectory.append(permalink);
@@ -209,7 +218,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
             if (!trackbackDir.mkdirs()) {
                 _logger.error("Could not create directory for trackbacks: " + trackbackDirectory);
                 context.put(BLOJSOM_TRACKBACK_MESSAGE, "Could not create directory for trackbacks");
-                return new Integer(2);
+                return new Integer(3);
             }
         }
 
@@ -229,7 +238,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
         } catch (IOException e) {
             _logger.error(e);
             context.put(BLOJSOM_TRACKBACK_MESSAGE, "I/O error on trackback write.");
-            return new Integer(3);
+            return new Integer(4);
         }
 
         return new Integer(0);
