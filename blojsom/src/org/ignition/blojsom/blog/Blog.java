@@ -51,7 +51,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.50 2003-05-15 00:44:40 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.51 2003-05-20 02:53:18 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -274,17 +274,6 @@ public class Blog implements BlojsomConstants {
         }
 
         return result;
-    }
-
-    /**
-     * Check to see if a blog category contains any entries
-     *
-     * @param category Requested category
-     * @return <code>true</code> if the category has entries, <code>false</code> otherwise
-     */
-    public boolean checkCategoryHasEntries(BlogCategory category) {
-        File blogCategory = new File(_blogHome + BlojsomUtils.removeInitialSlash(category.getCategory()));
-        return blogCategory.exists();
     }
 
     /**
