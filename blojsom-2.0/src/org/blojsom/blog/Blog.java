@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.17 2004-02-18 00:56:59 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.18 2004-04-03 19:46:51 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -280,11 +280,72 @@ public class Blog implements BlojsomConstants {
 
         if (_authorization != null) {
             if (_authorization.containsKey(username)) {
-                result = password.equals(_authorization.get(username));
+                String parsedPassword = BlojsomUtils.parseCommaList((String)_authorization.get(username))[0];
+                result = password.equals(parsedPassword);
             }
         }
 
         return result;
+    }
+
+    /**
+     * Return the e-mail address of an authorized user from this blog. If the username is not in this user's
+     * authorized list, a value of <code>null</code> is returned.
+     *
+     * @param username Authorized username
+     * @return E-mail address of authorized user or <code>null</code> is username is not available
+     * @since blojsom 2.14
+     */
+    public String getAuthorizedUserEmail(String username) {
+        if (_authorization.containsKey(username)) {
+            String[] parsedPasswordAndEmail = BlojsomUtils.parseCommaList((String)_authorization.get(username));
+            if (parsedPasswordAndEmail.length < 2) {
+                return getBlogOwnerEmail();
+            } else {
+                return parsedPasswordAndEmail[1];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Set a new e-mail address for an authorized user for this blog.
+     *
+     * @param username Username
+     * @param email E-mail address
+     * @since blojsom 2.14
+     */
+    public void setAuthorizedUserEmail(String username, String email) {
+        if (_authorization.containsKey(username)) {
+            String[] parsedPasswordAndEmail = BlojsomUtils.parseCommaList((String)_authorization.get(username));
+            StringBuffer updatedPasswordAndEmail = new StringBuffer();
+            updatedPasswordAndEmail.append(parsedPasswordAndEmail[0]);
+            updatedPasswordAndEmail.append(",");
+            updatedPasswordAndEmail.append(email);
+            _authorization.put(username, updatedPasswordAndEmail.toString());
+            _logger.debug("Set authorized user: " + username + " with e-mail address: " + email);
+        }
+    }
+
+    /**
+     * Set a new password for an authorized user for this blog.
+     *
+     * @param username Username
+     * @param password Password
+     * @since blojsom 2.14
+     */
+    public void setAuthorizedUserPassword(String username, String password) {
+        if (_authorization.containsKey(username)) {
+            String[] parsedPasswordAndEmail = BlojsomUtils.parseCommaList((String)_authorization.get(username));
+            StringBuffer updatedPasswordAndEmail = new StringBuffer();
+            updatedPasswordAndEmail.append(password);
+            if (parsedPasswordAndEmail.length == 2) {
+                updatedPasswordAndEmail.append(",");
+                updatedPasswordAndEmail.append(parsedPasswordAndEmail[1]);
+            }
+            _authorization.put(username, updatedPasswordAndEmail.toString());
+        }
     }
 
     /**
@@ -767,5 +828,21 @@ public class Blog implements BlojsomConstants {
     public void setBlogDefaultFlavor(String blogDefaultFlavor) {
         _blogDefaultFlavor = blogDefaultFlavor;
         _blogProperties.put(BLOG_DEFAULT_FLAVOR_IP, _blogDefaultFlavor);
+    }
+
+    /**
+     * Set a blog property. Properties not allowed to be set are <code>blog-home</code>, <code>blog-comments-directory</code>,
+     * and <code>blog-trackbacks-directory</code>.
+     *
+     * @param key Blog property key
+     * @param value Blog property value
+     * @since blojsom 2.14
+     */
+    public void setBlogProperty(String key, String value) {
+        if (key != null && value != null) {
+            if (key != BLOG_HOME_IP && key != BLOG_COMMENTS_DIRECTORY_IP && key != BLOG_TRACKBACK_DIRECTORY_IP) {
+                _blogProperties.put(key, value);
+            }
+        }
     }
 }
