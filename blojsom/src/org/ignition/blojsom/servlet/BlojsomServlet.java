@@ -340,7 +340,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             if (_plugins.containsKey(plugin)) {
                 BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
                 try {
-                    blojsomPlugin.process(entries);
+                    entries = blojsomPlugin.process(httpServletRequest, entries);
                     blojsomPlugin.cleanup();
                 } catch (BlojsomPluginException e) {
                     _logger.error(e);
