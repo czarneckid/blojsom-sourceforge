@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.20 2003-06-10 04:11:17 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.21 2003-06-10 22:46:08 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -128,10 +128,19 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
             FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
-            FileBackedBlogCategory blogCategory = new FileBackedBlogCategory(requestedCategory.getCategory(), _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category));
+            FileBackedBlogCategory blogCategory;
+            if ("/".equals(category)) {
+                blogCategory = new FileBackedBlogCategory(category, _blog.getBlogURL());
+            } else {
+                blogCategory = new FileBackedBlogCategory(category, _blog.getBlogURL() + category);
+            }
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
-            blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
+            if ("/".equals(category)) {
+                blogEntry.setLink(_blog.getBlogURL() + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
+            } else {
+                blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
+            }
             blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
             blogEntry.setBlogCategory(blogCategory);
             try {
@@ -154,9 +163,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     protected BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int maxBlogEntries) {
         BlogEntry[] entryArray;
-        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(requestedCategory.getCategory()));
-        File[] entries = blogCategory.listFiles(BlojsomUtils.getRegularExpressionFilter(_blog.getBlogFileExtensions()));
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
+        if (!category.endsWith("/")) {
+            category += "/";
+        }
+
+        File blogCategory = new File(_blog.getBlogHome() + category);
+        File[] entries = blogCategory.listFiles(BlojsomUtils.getRegularExpressionFilter(_blog.getBlogFileExtensions()));
         if (entries == null) {
             _logger.debug("No blog entries in blog directory: " + blogCategory);
             return new BlogEntry[0];
@@ -173,10 +186,19 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
                 blogEntry = new FileBackedBlogEntry();
-                FileBackedBlogCategory blogCategoryForEntry = new FileBackedBlogCategory(requestedCategory.getCategory(), _blog.getBlogURL() + category);
+                FileBackedBlogCategory blogCategoryForEntry;
+                if ("/".equals(category)) {
+                    blogCategoryForEntry = new FileBackedBlogCategory(category, _blog.getBlogURL());
+                } else {
+                    blogCategoryForEntry = new FileBackedBlogCategory(category, _blog.getBlogURL() + category);
+                }
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
-                blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                if ("/".equals(category)) {
+                    blogEntry.setLink(_blog.getBlogURL() + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                } else {
+                    blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                }
                 blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
                 try {
