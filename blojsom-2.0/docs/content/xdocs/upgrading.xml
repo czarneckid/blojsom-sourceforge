@@ -100,6 +100,7 @@
                             velocimacro.permissions.allow.inline.local.scope=true
                         </pre>
                     </p>
+                </section>
             </section>
             <section>
                 <title>Upgrading from blojsom 2.05 to blojsom 2.06</title>
