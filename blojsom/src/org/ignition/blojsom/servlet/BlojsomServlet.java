@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.39 2003-03-07 22:13:10 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.40 2003-03-10 12:09:12 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -431,7 +431,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 _lastmodified = _entry.getLastModified();
             }
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
-            _blogdate = entries[0].getISO8601Date();
+            _blogdate = entries[0].getRFC822Date();
         } else {
             _blogdate = BlojsomUtils.getRFC822Date(new Date());
         }
