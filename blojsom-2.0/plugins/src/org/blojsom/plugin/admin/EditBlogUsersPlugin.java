@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.11 2004-08-11 02:35:55 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.12 2004-08-28 22:01:03 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -393,7 +393,12 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         configurationProperties.put(BLOJSOM_DEFAULT_USER_IP, _blojsomConfiguration.getDefaultUser());
         configurationProperties.put(BLOJSOM_INSTALLATION_DIRECTORY_IP, _blojsomConfiguration.getInstallationDirectory());
         configurationProperties.put(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP, _blojsomConfiguration.getBaseConfigurationDirectory());
-        configurationProperties.put(BLOJSOM_BLOG_HOME_IP, _blojsomConfiguration.getGlobalBlogHome());        
+        configurationProperties.put(BLOJSOM_BLOG_HOME_IP, _blojsomConfiguration.getGlobalBlogHome());
+        configurationProperties.put(BLOJSOM_TEMPLATES_DIRECTORY_IP, _blojsomConfiguration.getTemplatesDirectory());
+        configurationProperties.put(BLOJSOM_RESOURCE_DIRECTORY_IP, _blojsomConfiguration.getResourceDirectory());
+        configurationProperties.put(BLOJSOM_RESOURCE_MANAGER_IP, _blojsomConfiguration.getResourceManager());
+        configurationProperties.put(BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP, "org.blojsom.plugin.admin.resources.messages");
+        configurationProperties.put(BLOJSOM_BROADCASTER_IP, _blojsomConfiguration.getEventBroadcaster().getClass().getName());
 
         try {
             FileOutputStream fos = new FileOutputStream(blojsomConfigurationFile);
