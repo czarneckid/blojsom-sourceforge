@@ -53,7 +53,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.11 2003-04-10 01:41:15 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.12 2003-04-13 17:59:17 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -116,16 +116,16 @@ public class VelocityDispatcher implements GenericDispatcher {
         VelocityContext velocityContext = new VelocityContext(context);
         try {
             if (flavorTemplateForPage != null) {
-                Velocity.mergeTemplate(flavorTemplateForPage, "UTF-8", velocityContext, sw);
+                Velocity.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, sw);
             } else {
-                Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
+                Velocity.mergeTemplate(flavorTemplate, UTF8, velocityContext, sw);
             }
         } catch (ResourceNotFoundException e) {
             _logger.error(e);
             if (flavorTemplateForPage != null) {
                 _logger.debug("Trying to fallback to original flavor template: " + flavorTemplate);
                 try {
-                    Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
+                    Velocity.mergeTemplate(flavorTemplate, UTF8, velocityContext, sw);
                 } catch (Exception internale) {
                     _logger.error(internale);
                 }
@@ -138,12 +138,12 @@ public class VelocityDispatcher implements GenericDispatcher {
         String content = sw.toString();
         byte[] contentBytes = null;
         try {
-            contentBytes = content.getBytes("UTF-8");
+            contentBytes = content.getBytes(UTF8);
         } catch (UnsupportedEncodingException e) {
         }
         httpServletResponse.addIntHeader("Content-Length", (contentBytes == null ? content.length() : contentBytes.length));
 
-        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
+        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
         osw.write(content);
         osw.flush();
     }

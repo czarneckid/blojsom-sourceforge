@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.51 2003-04-13 15:56:03 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.52 2003-04-13 17:52:44 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -111,6 +111,11 @@ public interface BlojsomConstants {
      * Key under which whether or not email messages will be sent to the blog author
      */
     public static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
+
+    /**
+     * UTF-8 encoding
+     */
+    public static final String UTF8 = "UTF-8";
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
