@@ -27,7 +27,7 @@ ects/blojsom/">Sourceforge</a></p>
 
 <p class="weblogtitle">description</a>
 <p />
-The refere plugin simply logs to a user defined file all of the HTTP refere headers it see's. This is often useful if you want to see what google searches lead to your site.
+The referer plugin simply logs to a user defined file all of the HTTP referer headers it comes across. This is often useful if you want to see what google searches lead to your site.
 <p />
 
 <p class="weblogtitle">installation and setup</a>
@@ -42,7 +42,9 @@ You may then add "referer-log" to one of the flavor-based plugin chains. For exa
 html.blojsom-plugin-chain=referer-log
 </pre>
 
-The referer file does not have its own configuration file, but relies on a fully qualified filename to be added to <i>web.xml</i>. For example:
+The referer file does not have its own configuration file, but relies on a
+fully qualified filename to be added to <i>web.xml</i> using the <i>referer-log</i>
+parameter. For example:
 <pre>
     &lt;init-param&gt;
         &lt;param-name&gt;referer-log&lt;/param-name&gt;
@@ -53,7 +55,7 @@ The referer file does not have its own configuration file, but relies on a fully
 
 <p />
 <p class="weblogdateline">usage parameters</p>
-There are no URL parameters to control the operation of the macro expansion plugin.
+There are no URL parameters to control the operation of the referer plugin.
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
