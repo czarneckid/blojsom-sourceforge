@@ -43,7 +43,7 @@ import java.util.Set;
  * BlogRefererGroup
  *
  * @author Mark Lussier
- * @version $Id: BlogRefererGroup.java,v 1.3 2003-03-29 18:07:17 intabulas Exp $
+ * @version $Id: BlogRefererGroup.java,v 1.4 2003-03-31 03:22:52 czarneckid Exp $
  */
 public class BlogRefererGroup {
 
@@ -54,18 +54,21 @@ public class BlogRefererGroup {
     private Date _lasthit;
 
     /**
+     * BlogRefererGroup constructor
      *
+     * @param ishitcount Whether or not this is a hit counter group
      */
-    public BlogRefererGroup(boolean ishotcount) {
+    public BlogRefererGroup(boolean ishitcount) {
         _groups = new HashMap(25);
-        _hitcount = ishotcount;
+        _hitcount = ishitcount;
     }
 
     /**
+     * Add a referer to this referer group
      *
-     * @param flavor
-     * @param url
-     * @param date
+     * @param flavor Flavor
+     * @param url URL
+     * @param date Date of the referral
      */
     public void addReferer(String flavor, String url, Date date) {
         if (_groups.containsKey(url)) {
@@ -80,11 +83,21 @@ public class BlogRefererGroup {
 
     }
 
-
+    /**
+     * Add a hit count for a given date
+     *
+     * @param date Date of referral
+     */
     public void addHitCount(Date date) {
         addHitCount(date, 1);
     }
 
+    /**
+     * Add a hit count for the given date
+     *
+     * @param date Date
+     * @param count New hit count
+     */
     public void addHitCount(Date date, int count) {
         if (_lasthit == null) {
             _lasthit = date;
@@ -98,11 +111,12 @@ public class BlogRefererGroup {
     }
 
     /**
+     * Add a referral to this group
      *
-     * @param flavor
-     * @param url
-     * @param date
-     * @param total
+     * @param flavor Flavor
+     * @param url URL
+     * @param date Date
+     * @param total Total number of hits
      */
     public void addReferer(String flavor, String url, Date date, int total) {
         if (_groups.containsKey(url)) {
@@ -118,46 +132,65 @@ public class BlogRefererGroup {
     }
 
     /**
+     * Return the number of referral groups
      *
-     * @return
+     * @return Number of blog referer groups
      */
     public int size() {
         return _groups.size();
     }
 
     /**
+     * Get a referer from the group for a given key (URL)
      *
-     * @param key
-     * @return
+     * @param key Referer key
+     * @return <code>BlogReferer</code> for the given key (URL)
      */
     public Object get(Object key) {
         return _groups.get(key);
     }
 
     /**
+     * Return the keys for the referer groups
      *
-     * @return
+     * @return Keys for the referer groups
      */
     public Set keySet() {
         return _groups.keySet();
     }
 
     /**
+     * Get the total referer count
      *
-     * @return
+     * @return Total referer count
      */
     public int getRefererCount() {
         return _grouptotal;
     }
 
+    /**
+     * Check whether or not this blog referer group collects hits
+     *
+     * @return
+     */
     public boolean isHitCounter() {
         return _hitcount;
     }
 
+    /**
+     * Check to see if the date of the last hit was today
+     *
+     * @return <code>true</code> if the last hit was today, <code>false</code> otherwise
+     */
     private boolean determineToday() {
         return (RefererLogPlugin.getRefererDate(new Date()).equals(RefererLogPlugin.getRefererDate(_lasthit)));
     }
 
+    /**
+     * Get the date of the last hit
+     *
+     * @return Last hit date
+     */
     public Date getLastHit() {
         return _lasthit;
     }

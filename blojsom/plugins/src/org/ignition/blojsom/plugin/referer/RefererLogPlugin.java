@@ -60,7 +60,7 @@ import java.util.*;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.2 2003-03-29 18:07:51 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.3 2003-03-31 03:22:52 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -68,10 +68,12 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * HTTP Header for Referer Information
      */
     private static final String HEADER_REFERER = "referer";
+
     /**
      * web.xml init-param name
      */
     private static final String REFERER_CONFIG_IP = "plugin-referer";
+
     /**
      * Key used to put the referer groups into the display context
      */
@@ -80,7 +82,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Header written to the refer log file
      */
-    public static final String REFERER_LOG_HEADER = "blojsom referer log";
+    private static final String REFERER_LOG_HEADER = "blojsom referer log";
 
     /**
      * Format used to store last refer date for a given url
@@ -158,7 +160,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
                 _logger.info("Hit count flavors = " + _hitcountflavors.size());
             }
 
-
             _refererlog = refererProperties.getProperty(REFERER_LOG_FILE);
         } catch (IOException e) {
             throw new BlojsomPluginException(e);
@@ -177,7 +178,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
-     I  close     */
+     */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String referer = httpServletRequest.getHeader(HEADER_REFERER);
@@ -196,9 +197,8 @@ public class RefererLogPlugin implements BlojsomPlugin {
             } else {
                 group = new BlogRefererGroup(true);
             }
-            group.addHitCount(new Date(),1);
+            group.addHitCount(new Date(), 1);
             _referergroups.put(flavor, group);
-
 
         } else if ((referer != null) && (!referer.startsWith(_blogurlfilter))) {
             _logger.info("[Referer] Flavor = " + flavor + "  Referer = " + referer);
@@ -238,7 +238,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
         if (_refererfile.exists()) {
 
-
             Properties _refererproperties = new Properties();
 
             try {
@@ -259,7 +258,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
                             + "Date [" + _details[FIELD_DATE] + "] "
                             + "Count [" + _details[FIELD_COUNT] + "]");
 
-
                     BlogRefererGroup _group;
                     if (_referergroups.containsKey(_flavor)) {
                         _group = (BlogRefererGroup) _referergroups.get(_flavor);
@@ -267,14 +265,12 @@ public class RefererLogPlugin implements BlojsomPlugin {
                         _group = new BlogRefererGroup(_hitcountflavors.contains(_flavor));
                     }
 
-
                     if (_hitcountflavors.contains(_flavor)) {
                         _group.addHitCount(getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
                     } else {
                         _group.addReferer(_flavor, _url, getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
                     }
                     _referergroups.put(_flavor, _group);
-
                 }
 
             } catch (IOException e) {
@@ -299,7 +295,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
             String groupflavor = (String) _groupiterator.next();
             BlogRefererGroup group = (BlogRefererGroup) _referergroups.get(groupflavor);
             if (group.isHitCounter()) {
-               _refererproperties.put(groupflavor + ".hitcounter", getRefererDate(group.getLastHit()) +","+ group.getRefererCount() );
+                _refererproperties.put(groupflavor + ".hitcounter", getRefererDate(group.getLastHit()) + "," + group.getRefererCount());
             } else {
                 Iterator _flavoriterator = group.keySet().iterator();
                 while (_flavoriterator.hasNext()) {
@@ -307,12 +303,9 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
                     _refererproperties.put(groupflavor + "." + BlojsomUtils.escapeString(referer.getUrl()),
                             getRefererDate(referer.getLastReferal()) + "," + referer.getRefererCount());
-
                 }
             }
-
         }
-
 
         try {
             FileOutputStream _fos = new FileOutputStream(_refererlog, false);
@@ -321,12 +314,11 @@ public class RefererLogPlugin implements BlojsomPlugin {
         } catch (IOException e) {
             _logger.error(e);
         }
-
     }
-
 
     /**
      * Converts a string date in the form of yyyy-MM-dd to a Date
+     *
      * @param rfcdate String in yyyy-MM-dd format
      * @return the Date
      */
@@ -343,6 +335,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
     /**
      * Converts a Date into a String for writing to the referer log
+     * 
      * @param date Date to write
      * @return String verion of date in the format of yyyy-MM-dd
      */
@@ -350,6 +343,4 @@ public class RefererLogPlugin implements BlojsomPlugin {
         SimpleDateFormat sdf = new SimpleDateFormat(REFERER_DATE_FORMAT);
         return sdf.format(date);
     }
-
-
 }

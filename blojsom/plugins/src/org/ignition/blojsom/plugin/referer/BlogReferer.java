@@ -34,44 +34,29 @@
  */
 package org.ignition.blojsom.plugin.referer;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.ignition.blojsom.util.BlojsomUtils;
-
 import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import sun.util.calendar.Gregorian;
 
 /**
  * BlogReferer
  *
  * @author Mark Lussier
- * @version $Id: BlogReferer.java,v 1.3 2003-03-29 18:06:45 intabulas Exp $
+ * @version $Id: BlogReferer.java,v 1.4 2003-03-31 03:22:52 czarneckid Exp $
  */
 public class BlogReferer {
+
     private String _url;
     private String _flavor;
     private Date _lastreferal;
     private int _count;
-
-    /**
-     *
-     */
     private boolean _istoday = false;
 
     /**
+     * Blog referer constructor
      *
-     */
-    private Log _logger = LogFactory.getLog(BlogReferer.class);
-
-    /**
-     *
-     * @param flavor
-     * @param url
-     * @param date
-     * @param count
+     * @param flavor Flavor
+     * @param url URL
+     * @param date Date
+     * @param count Hit count
      */
     public BlogReferer(String flavor, String url, Date date, int count) {
         _url = url;
@@ -82,48 +67,54 @@ public class BlogReferer {
     }
 
     /**
+     * Get the flavor for the blog referer
      *
-     * @return
+     * @return Flavor for blog referer
      */
     public String getFlavor() {
         return _flavor;
     }
 
     /**
+     * Set the flavor for this blog referer
      *
-     * @param flavor
+     * @param flavor Flavor
      */
     public void setFlavor(String flavor) {
         _flavor = flavor;
     }
 
     /**
+     * Get the URL for this blog referer
      *
-     * @return
+     * @return URL for blog referer
      */
     public String getUrl() {
         return _url;
     }
 
     /**
+     * Set the URL for this blog referer
      *
-     * @param url
+     * @param url URL
      */
     public void setUrl(String url) {
         _url = url;
     }
 
     /**
+     * Get the last date of referral for this URL
      *
-     * @return
+     * @return Date of last referral
      */
     public Date getLastReferal() {
         return _lastreferal;
     }
 
     /**
+     * Check whether this blog referer has been seen today
      *
-     * @return
+     * @return <code>true</code> if it has been seen today, <code>false</code> otherwise
      */
     public boolean isToday() {
         return _istoday;
@@ -131,8 +122,9 @@ public class BlogReferer {
     }
 
     /**
+     * Set the date of last referral for this blog referer
      *
-     * @param lastreferal
+     * @param lastreferal Last referral date
      */
     public void setLastReferal(Date lastreferal) {
         if (lastreferal.compareTo(_lastreferal) > 0) {
@@ -142,23 +134,25 @@ public class BlogReferer {
     }
 
     /**
+     * Get the referer count
      *
-     * @return
+     * @return Number of referrals
      */
     public int getRefererCount() {
         return _count;
     }
 
     /**
-     *
+     * Increment the referer count by 1
      */
     public void increment() {
         _count += 1;
     }
 
     /**
+     * Set the referer count
      *
-     * @param count
+     * @param count Referer count
      */
     public void setCount(int count) {
         _count = count;
@@ -166,10 +160,10 @@ public class BlogReferer {
 
     /**
      * Determines if this referer has been seen TODAY
-     * @return a boolean indicating if it was seend today
+     *
+     * @return a boolean indicating if it was set today
      */
     private boolean determineToday() {
         return (RefererLogPlugin.getRefererDate(new Date()).equals(RefererLogPlugin.getRefererDate(_lastreferal)));
     }
-
 }
