@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.15 2003-11-12 03:01:34 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.16 2003-11-13 00:54:34 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -138,12 +138,6 @@ public interface BlojsomConstants {
      * (example: on the request for the JSP dispatcher)
      */
     public static final String BLOJSOM_VERSION = "BLOJSOM_VERSION";
-
-    /**
-     * Key under which the blog character encoding will be placed
-     * (this is used for the Compression Filter)
-     */
-    public static final String BLOG_CHARACTER_ENCODING = "org.blojsom.BLOG_CHARACTER_ENCODING";
 
     /**
      * Default class for fetching blog entries

@@ -96,14 +96,7 @@ public class CompressionFilter implements Filter, BlojsomConstants {
             // it into a byte array.
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             GZIPOutputStream zipOut = new GZIPOutputStream(byteStream);
-
-            // Grab the character encoding for the blog and default to UTF-8 if necessary
-            String blogCharacterEncoding = (String) req.getAttribute(BLOG_CHARACTER_ENCODING);
-            if (blogCharacterEncoding == null || "".equals(blogCharacterEncoding)) {
-                blogCharacterEncoding = UTF8;
-            }
-            _logger.debug("Compressing using character encoding: " + blogCharacterEncoding);
-            OutputStreamWriter tempOut = new OutputStreamWriter(zipOut, blogCharacterEncoding);
+            OutputStreamWriter tempOut = new OutputStreamWriter(zipOut, UTF8);
       
             // Compress original output and put it into byte array.
             tempOut.write(responseChars);
