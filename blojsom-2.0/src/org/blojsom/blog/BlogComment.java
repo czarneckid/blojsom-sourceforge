@@ -36,15 +36,16 @@ package org.blojsom.blog;
 
 import org.blojsom.util.BlojsomUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.7 2004-05-16 22:37:45 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.8 2004-09-15 13:28:43 czarneckid Exp $
  */
 public class BlogComment {
 
@@ -198,6 +199,7 @@ public class BlogComment {
 
     /**
      * Set the Comment Date as a Long
+     *
      * @param commentDateLong the comment file's lastModified()
      */
     public void setCommentDateLong(long commentDateLong) {
@@ -207,8 +209,8 @@ public class BlogComment {
     /**
      * Get the id of this blog comments
      *
-     * @since blojsom 2.07
      * @return Id
+     * @since blojsom 2.07
      */
     public String getId() {
         return _id;
@@ -217,8 +219,8 @@ public class BlogComment {
     /**
      * Set the id of this blog comment. This method can only be called if the id has not been set.
      *
-     * @since blojsom 2.07
      * @param id New id
+     * @since blojsom 2.07
      */
     public void setId(String id) {
         if (_id == null) {
@@ -234,5 +236,27 @@ public class BlogComment {
      */
     public void setMetaData(Map metaData) {
         _metaData = metaData;
+    }
+
+    /**
+     * Return the comment date formatted with a specified date format
+     *
+     * @param format Date format
+     * @return <code>null</code> if the comment date or format is null, otherwise returns the comment date
+     *         formatted to the specified format. If the format is invalid, returns <tt>commentDate.toString()</tt>
+     * @since blojsom 2.19
+     */
+    public String getDateAsFormat(String format) {
+        if (_commentDate == null || format == null) {
+            return null;
+        }
+
+        SimpleDateFormat sdf = null;
+        try {
+            sdf = new SimpleDateFormat(format);
+            return sdf.format(_commentDate);
+        } catch (IllegalArgumentException e) {
+            return _commentDate.toString();
+        }
     }
 }

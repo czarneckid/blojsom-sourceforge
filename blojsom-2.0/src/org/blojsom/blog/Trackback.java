@@ -34,15 +34,16 @@
  */
 package org.blojsom.blog;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.5 2004-05-16 22:37:45 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.6 2004-09-15 13:28:43 czarneckid Exp $
  */
 public class Trackback {
 
@@ -63,9 +64,9 @@ public class Trackback {
     /**
      * Trackback constructor to take a title, excerpt, url, and blog name
      *
-     * @param title Title of the trackback
-     * @param excerpt Excerpt from the trackback
-     * @param url Url for the trackback
+     * @param title    Title of the trackback
+     * @param excerpt  Excerpt from the trackback
+     * @param url      Url for the trackback
      * @param blogName Blog name of the trackback
      */
     public Trackback(String title, String excerpt, String url, String blogName) {
@@ -148,7 +149,7 @@ public class Trackback {
         if (_metaData == null) {
             return new HashMap();
         }
-        
+
         return _metaData;
     }
 
@@ -191,8 +192,8 @@ public class Trackback {
     /**
      * Get the id of this blog comments
      *
-     * @since blojsom 2.07
      * @return Id
+     * @since blojsom 2.07
      */
     public String getId() {
         return _id;
@@ -201,8 +202,8 @@ public class Trackback {
     /**
      * Set the id of this blog comment. This method can only be called if the id has not been set.
      *
-     * @since blojsom 2.07
      * @param id New id
+     * @since blojsom 2.07
      */
     public void setId(String id) {
         if (_id == null) {
@@ -218,5 +219,28 @@ public class Trackback {
      */
     public void setMetaData(Map metaData) {
         _metaData = metaData;
+    }
+
+    /**
+     * Return the trackback date formatted with a specified date format
+     *
+     * @param format Date format
+     * @return <code>null</code> if the format is null, otherwise returns the trackback date formatted to
+     *         the specified format. If the format is invalid, returns <tt>trackbackDate.toString()</tt>
+     * @since blojsom 2.19
+     */
+    public String getDateAsFormat(String format) {
+        if (format == null) {
+            return null;
+        }
+
+        SimpleDateFormat sdf = null;
+        Date trackbackDate = new Date(_trackbackDateLong);
+        try {
+            sdf = new SimpleDateFormat(format);
+            return sdf.format(trackbackDate);
+        } catch (IllegalArgumentException e) {
+            return trackbackDate.toString();
+        }
     }
 }
