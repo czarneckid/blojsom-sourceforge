@@ -56,11 +56,11 @@ import java.io.File;
 /**
  * Blogger2APIHandler
  *
- * Blogger 2 details can be found at http://www.blogger.com/developers/api/documentation20.html
+ * Blogger 2 details can be found at <a href="http://www.blogger.com/developers/api/documentation20.html">Blogger 2.0 API</a>
  *
  * @author David Czarnecki
  * @since blojsom 1.9.3
- * @version $Id: Blogger2APIHandler.java,v 1.1 2003-06-23 02:28:08 czarneckid Exp $
+ * @version $Id: Blogger2APIHandler.java,v 1.2 2003-06-24 01:55:42 czarneckid Exp $
  */
 public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -151,12 +151,13 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
      *
-     * @param login
-     * @param post
-     * @param actions
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @param post Post structure
+     * @param actions Actions to take for the new post
+     * @return Post ID of the newly added post
+     * @throws XmlRpcException If there is an error adding the post to the blog
      */
     public String newPost(Hashtable login, Hashtable post, Hashtable actions) throws XmlRpcException {
         _logger.debug("newPost called. SUPPORTED");
@@ -215,12 +216,13 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Edits a given post. Optionally, will publish the blog after making the edit
      *
-     * @param login
-     * @param post
-     * @param actions
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @param post Post structure
+     * @param actions Actions to take for the edited post
+     * @return <code>true</code> if the post has been edited, otherwise an {@link XmlRpcException} is thrown
+     * @throws XmlRpcException If there is an error editing the post
      */
     public Boolean editPost(Hashtable login, Hashtable post, Hashtable actions) throws XmlRpcException {
         _logger.debug("editPost called. SUPPORTED");
@@ -266,12 +268,13 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Deletes a given post from the blog
      *
-     * @param login
-     * @param post
-     * @param actions
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @param post Post structure
+     * @param actions Actions to take when deleting the post
+     * @return <code>true</code> if the post has been edited, otherwise an {@link XmlRpcException} is thrown
+     * @throws XmlRpcException If there is an error deleting the post
      */
     public Boolean deletePost(Hashtable login, Hashtable post, Hashtable actions) throws XmlRpcException {
         _logger.debug("deletePost called. SUPPORTED");
@@ -320,11 +323,12 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Retrieves a given post from the blog
      *
-     * @param login
-     * @param post
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @param post Post structure
+     * @return Post structure as dictated by the Blogger 2 API
+     * @throws XmlRpcException If there is an error retrieving the specific post
      */
     public Object getPost(Hashtable login, Hashtable post) throws XmlRpcException {
         _logger.debug("getPost called. SUPPORTED");
@@ -379,12 +383,13 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Retrieve a given set of posts from the blog
      *
-     * @param login
-     * @param blogID
-     * @param filters
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @param blogID Blog category from which to retrieve posts
+     * @param filters Filters to apply when retrieving posts (currently not used)
+     * @return Array of post structures
+     * @throws XmlRpcException If there is an error retrieving the posts from the given blog category
      */
     public Object getPosts(Hashtable login, String blogID, Hashtable filters) throws XmlRpcException {
         _logger.debug("getPosts called. SUPPORTED");
@@ -453,10 +458,11 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Retrieve a given set of categories from this blog
      *
-     * @param login
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @return Array of blog structutes
+     * @throws XmlRpcException If there is an error retreiving the categories from this blog
      */
     public Object getBlogs(Hashtable login) throws XmlRpcException {
         _logger.debug("getBlogs called. SUPPORTED");
@@ -506,10 +512,11 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * NOT IMPLEMENTED
      *
-     * @param login
-     * @param blogID
-     * @param templateName
+     * @param login Login structure
+     * @param blogID Blog category
+     * @param templateName Template
      * @return
      * @throws XmlRpcException
      */
@@ -518,10 +525,11 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * NOT IMPLEMENTED
      *
-     * @param login
-     * @param blogID
-     * @param template
+     * @param login Login structure
+     * @param blogID Blog category
+     * @param template Template
      * @return
      * @throws XmlRpcException
      */
@@ -530,9 +538,10 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * NOT IMPLEMENTED
      *
-     * @param login
-     * @param blogID
+     * @param login Login structure
+     * @param blogID Blog category
      * @return
      * @throws XmlRpcException
      */
@@ -541,10 +550,11 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Retrieve the blog owner informaton
      *
-     * @param login
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @return User structure
+     * @throws XmlRpcException If there is an error retrieving the user information
      */
     public Object getUserInfo(Hashtable login) throws XmlRpcException {
         _logger.debug("getUserInfo called. SUPPORTED");
@@ -572,9 +582,10 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * NOT IMPLEMENTED
      *
-     * @param login
-     * @param user
+     * @param login Login structure
+     * @param user User structure
      * @return
      * @throws XmlRpcException
      */
@@ -583,11 +594,12 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Retrieve a set of blog categories
      *
-     * @param login
-     * @param blogID
-     * @return
-     * @throws XmlRpcException
+     * @param login Login structure
+     * @param blogID Blog category
+     * @return Array of blog categories (Strings)
+     * @throws XmlRpcException If there is an error retrieving the blog categories for this blog
      */
     public Object getBlogCategories(Hashtable login, String blogID) throws XmlRpcException {
         _logger.debug("getBlogCategories called. SUPPORTED");
@@ -618,10 +630,11 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * NOT IMPLEMENTED
      *
-     * @param login
-     * @param blogID
-     * @param categories
+     * @param login Login structure
+     * @param blogID Blog category
+     * @param categories New set of blog categories for this blog
      * @return
      * @throws XmlRpcException
      */
@@ -631,9 +644,10 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * NOT IMPLEMENTED
      *
-     * @param login
-     * @param blogID
+     * @param login Login structure
+     * @param blogID Blog category
      * @return
      * @throws XmlRpcException
      */
@@ -643,9 +657,10 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Utility method to check the authorization of the user
      *
-     * @param login
-     * @return
+     * @param login Login structure
+     * @return <code>true</code> if the given username/password can authenticate, <code>false</code> otherwise
      */
     private boolean checkAuthorization(Hashtable login) {
         String username = (String) login.get(LOGIN_USERNAME);
@@ -660,9 +675,10 @@ public class Blogger2APIHandler extends AbstractBlojsomAPIHandler implements Blo
     }
 
     /**
+     * Convenience method to retrieve the username/password from the login structure
      *
-     * @param login
-     * @return
+     * @param login Login structure
+     * @return Username/password
      */
     private String getUsernameAndPassword(Hashtable login) {
         String username = (String) login.get(LOGIN_USERNAME);
