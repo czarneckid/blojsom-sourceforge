@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.14 2004-09-12 18:45:29 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.15 2004-09-15 00:59:34 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -128,6 +128,10 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 _blogHomeBaseDirectory = _blojsomConfiguration.getGlobalBlogHome();
                 if (BlojsomUtils.checkNullOrBlank(_blogHomeBaseDirectory)) {
                     throw new BlojsomPluginException("No blog base home directory specified.");
+                }
+            } else {
+                if (!_blogHomeBaseDirectory.endsWith("/")) {
+                    _blogHomeBaseDirectory += "/";
                 }
             }
 
