@@ -60,7 +60,7 @@
 
 <!-- Search Box Code -->
 <div id="searchbox">
-<form class="searchform" method="post" action=".">
+<form class="searchform" method="post" action="<%= blogInformation.getBlogURL() %>">
 <p class="searchtext">
 Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 <input class="searchimage" type="image" src="<%= blogSiteURL %>/search.png" value="submit" alt="Search"/>
