@@ -57,7 +57,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.5 2003-04-15 01:42:48 intabulas Exp $
+ * @version $Id: EmailUtils.java,v 1.6 2003-04-15 01:48:40 intabulas Exp $
  */
 public class EmailUtils {
 
@@ -186,27 +186,4 @@ public class EmailUtils {
 
     }
 
-    public static String constructCommentEmail(String permalink, String author, String authorEmail, String authorURL,
-                                               String userComment, String url) {
-
-        StringBuffer emailcomment = new StringBuffer();
-        emailcomment.append("Comment on: ").append(url);
-        emailcomment.append("?permalink=").append(permalink).append("&page=comments").append("\n");
-
-        if (author != null && !author.equals("")) {
-            emailcomment.append("Comment by: ").append(author).append("\n");
-        }
-        if (authorEmail != null && !authorEmail.equals("")) {
-            emailcomment.append("            ").append(authorEmail).append("\n");
-        }
-        if (authorURL != null && !authorURL.equals("")) {
-            emailcomment.append("            ").append(authorURL).append("\n");
-        }
-
-        emailcomment.append("\n==[ Comment ]==========================================================").append("\n\n");
-        emailcomment.append(userComment);
-
-        return emailcomment.toString();
-
-    }
 }
