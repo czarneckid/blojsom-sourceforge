@@ -38,7 +38,7 @@ package org.blojsom.util;
  * BlojsomMetaDataConstants
  *
  * @author David Czarnecki
- * @version $Id: BlojsomMetaDataConstants.java,v 1.5 2005-01-05 02:33:03 czarneckid Exp $
+ * @version $Id: BlojsomMetaDataConstants.java,v 1.6 2005-01-31 04:27:28 czarneckid Exp $
  * @since blojsom 2.04
  */
 public interface BlojsomMetaDataConstants {
@@ -71,12 +71,17 @@ public interface BlojsomMetaDataConstants {
     public static final String BLOG_ENTRY_METADATA_TIMESTAMP = "blog-entry-metadata-timestamp";
 
     /**
-     * Entry metadata key for disabling comments
+     * Entry meta-data key for disabling comments
      */
     public static final String BLOG_METADATA_COMMENTS_DISABLED = "blog-entry-comments-disabled";
 
     /**
-     * Entry metadata key for disabling trackbacks
+     * Entry meta-data key for disabling trackbacks
      */
     public static final String BLOG_METADATA_TRACKBACKS_DISABLED = "blog-entry-trackbacks-disabled";
+
+    /**
+     * Entry meta-data key for disabling pingbacks
+     */
+    public static final String BLOG_METADATA_PINGBACKS_DISABLED = "blog-entry-pingbacks-disabled";
 }
