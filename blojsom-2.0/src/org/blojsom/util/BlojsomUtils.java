@@ -54,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.36 2004-10-27 19:41:53 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.37 2004-11-03 17:03:04 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -346,6 +346,17 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String[] parseCommaList(String commaList) {
         return parseDelimitedList(commaList, ", ");
+    }
+
+    /**
+     * Parse a comma-separated list of values
+     *
+     * @param commaList Comma-separated list
+     * @return Individual strings from the comma-separated list
+     * @since blojsom 2.21
+     */
+    public static String[] parseOnlyCommaList(String commaList) {
+        return parseDelimitedList(commaList, ",");
     }
 
     /**
@@ -1508,6 +1519,24 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return result.toString();
+    }
+
+    /**
+     * Return a comma-separated list of Strings as a {@link List}; trims space around value
+     *
+     * @param valuesAsString Comma-separated values
+     * @return Comma-separated list of Strings as a {@link List}
+     * @since blojsom 2.21
+     */
+    public static List csvToList(String valuesAsString) {
+        String[] values = parseOnlyCommaList(valuesAsString);
+        ArrayList updated = new ArrayList();
+        for (int i = 0; i < values.length; i++) {
+            String value = values[i].trim();
+            updated.add(value);
+        }
+
+        return updated;
     }
 
     /**
