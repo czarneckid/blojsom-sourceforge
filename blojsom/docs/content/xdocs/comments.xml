@@ -65,6 +65,15 @@
                     blog-banned-ip-addresses=127\\.0\\.0\\.1
                 </source>
             </section>
+            <section>
+                <title>Configuring "Remember Me" cookie expiration</title>
+                <p>
+                    Expiration of the cookies for the "Remember Me" functionality in the
+                    comments plugin can be controlled by the <em>plugin-comment-expiration-duration</em>
+                    parameter in <em>/WEB-INF/blojsom.properties</em>. This parameter is specified as
+                    an integer value in number of seconds until expiration.
+                </p>
+            </section>
         </section>
     </body>
 </document>
