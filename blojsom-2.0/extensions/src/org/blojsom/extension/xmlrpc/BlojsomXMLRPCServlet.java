@@ -65,7 +65,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.1 2003-08-09 20:33:33 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2003-08-20 02:55:40 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -180,7 +180,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
         byte[] result = xmlRpcServer.execute(httpServletRequest.getInputStream());
         String content = new String(result, UTF8);
-        httpServletResponse.setContentType("text/xml;chartset=UTF-8");
+        httpServletResponse.setContentType("text/xml;charset=UTF-8");
         httpServletResponse.setContentLength(content.length());
         OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
         osw.write(content);
