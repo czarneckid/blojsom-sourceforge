@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.58 2005-01-05 02:33:01 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.59 2005-01-06 03:31:17 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -393,4 +393,9 @@ public interface BlojsomConstants {
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";
+
+    // Configuration filename defaults
+    public static final String DEFAULT_FLAVOR_CONFIGURATION_FILE = "flavor.properties";
+    public static final String DEFAULT_PLUGIN_CONFIGURATION_FILE = "plugin.properties";
+    public static final String DEFAULT_DISPATCHER_CONFIGURATION_FILE = "dispatcher.properties"; 
 }
