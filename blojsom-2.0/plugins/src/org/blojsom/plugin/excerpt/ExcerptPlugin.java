@@ -51,7 +51,7 @@ import java.util.Map;
  * ExcerptPlugin
  *
  * @author Mark Lussier
- * @version $Id: ExcerptPlugin.java,v 1.3 2004-03-29 23:01:15 intabulas Exp $
+ * @version $Id: ExcerptPlugin.java,v 1.4 2004-07-13 01:13:12 czarneckid Exp $
  * @since blojsom 2.13
  */
 public class ExcerptPlugin implements BlojsomPlugin {
@@ -97,7 +97,7 @@ public class ExcerptPlugin implements BlojsomPlugin {
             BlogEntry entry = entries[i];
             String updatedDescription = entry.getDescription();
             if (updatedDescription.matches(EXCERPT_EXPRESSION)) {
-                _logger.info("Performing Excerpt on " + entry.getTitle());
+                _logger.info("Performing excerpt on " + entry.getTitle());
                 entry.setDescription(updatedDescription.replaceAll(EXCERPT_EXPRESSION, SHOWME_START) + entry.getLink() + SHOWME_FINISH);
             } else {
                 _logger.info("Nothing to excerpt on " + entry.getTitle());
