@@ -34,29 +34,29 @@
  */
 package org.blojsom.plugin.admin;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 import org.apache.commons.fileupload.DiskFileUpload;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.FileItem;
-import org.blojsom.blog.BlojsomConfiguration;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
 import java.io.File;
+import java.util.*;
 
 /**
  * FileUploadPlugin
- * 
+ *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.16 2004-08-31 17:50:02 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.17 2004-08-31 17:56:46 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -104,7 +104,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     * 
+     *
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws org.blojsom.plugin.BlojsomPluginException
@@ -172,7 +172,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
     /**
      * Process the blog entries
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -234,11 +234,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                             }
                         }
 
-                        if (!isAcceptedFileExtension) {
-                            _logger.error("Upload file does not have an accepted extension: " + extension);
-                            addOperationResultMessage(context, "Upload file does not have an accepted extension: " + extension);
-                        }
-
                         // If so, upload the file to the resources directory
                         if (isAcceptedFileType && isAcceptedFileExtension) {
                             if (!resourceDirectory.exists()) {
@@ -260,8 +255,13 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                             _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
                             addOperationResultMessage(context, "Successfully upload resource file: " + item.getName());
                         } else {
-                            _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
-                            addOperationResultMessage(context, "Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
+                            if (!isAcceptedFileExtension) {
+                                _logger.error("Upload file does not have an accepted extension: " + extension);
+                                addOperationResultMessage(context, "Upload file does not have an accepted extension: " + extension);
+                            } else {
+                                _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
+                                addOperationResultMessage(context, "Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
+                            }
                         }
                     }
                 }
