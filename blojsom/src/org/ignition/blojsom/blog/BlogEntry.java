@@ -226,4 +226,21 @@ public class BlogEntry {
     public void setCategory(String _category) {
         this._category = _category;
     }
+
+    /**
+     * Checks to see if the link to this entry is the same as the input entry
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o) {
+        if (!(o instanceof BlogEntry)) {
+            return false;
+        }
+
+        BlogEntry entry = (BlogEntry) o;
+        if (this.getLink().equals(entry.getLink())) {
+            return true;
+        }
+        return false;
+    }
 }
