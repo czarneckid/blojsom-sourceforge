@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.1 2003-08-12 02:24:23 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-08-12 02:26:16 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -72,13 +72,11 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * Regular expression to identify macros as $MACRO$ and DOES NOT ignore escaped $'s
      */
     private static final String MACRO_REGEX = "(\\$[^\\$]*\\$)";
-    //private Pattern _macro;
 
     /**
      * Default constructor. Compiles the macro regular expression pattern, $MACRO$
      */
     public MacroExpansionPlugin() {
-        //_macro = Pattern.compile(MACRO_REGEX);
     }
 
     /**
@@ -172,6 +170,9 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
                                Map context,
                                BlogEntry[] entries) throws BlojsomPluginException {
         String userId = user.getId();
+
+        // If we don't find the user id as a key into the user macros, then there was no
+        // configuration file for us to load so we just return the entries
         if (!_userMacros.containsKey(userId)) {
             return entries;
         }
