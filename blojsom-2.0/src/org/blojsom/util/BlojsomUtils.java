@@ -49,15 +49,19 @@ import java.util.*;
 
 /**
  * BlojsomUtils
- *
+ * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.8 2003-10-21 03:37:45 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.9 2003-11-11 01:54:52 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
     /**
-     * Filter only directories
+     * Private constructor so that the class cannot be instantiated.
      */
+    private BlojsomUtils() {
+    }
+
+    /** Filter only directories */
     private static final FileFilter DIRECTORY_FILTER = new FileFilter() {
         public boolean accept(File pathname) {
             return (pathname.isDirectory());
@@ -99,12 +103,9 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     };
 
-    private BlojsomUtils() {
-    }
-
     /**
      * Return a file filter which only returns directories
-     *
+     * 
      * @return File filter appropriate for filtering only directories
      */
     public static FileFilter getDirectoryFilter() {
@@ -114,7 +115,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a file filter which only returns directories that are not one of a list
      * of excluded directories
-     *
+     * 
      * @param excludedDirectories List of directories to exclude
      * @return File filter appropriate for filtering only directories
      */
@@ -142,7 +143,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a date in RFC 822 style
-     *
+     * 
      * @param date Date
      * @return Date formatted as RFC 822
      */
@@ -152,8 +153,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a date formatted date
-     *
-     * @param date Date
+     * 
+     * @param date   Date
      * @param format Date Format String
      * @return Date formatted date
      */
@@ -165,7 +166,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a date in ISO 8601 style
      * http://www.w3.org/TR/NOTE-datetime
-     *
+     * 
      * @param date Date
      * @return Date formatted as ISO 8601
      */
@@ -175,7 +176,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a date in UTC style
-     *
+     * 
      * @param date Date
      * @return Date formatted as ISO 8601
      * @since blojsom 1.9.4
@@ -186,7 +187,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a file filter which takes a list of regular expressions to look for
-     *
+     * 
      * @param expressions List of regular expressions for files to retrieve
      * @return File filter appropriate for filtering out a set of files based on regular expressions
      */
@@ -216,7 +217,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a file filter which takes a list of file extensions to look for
-     *
+     * 
      * @param extensions List of file extensions
      * @return File filter appropriate for filtering out a set of file extensions
      */
@@ -239,7 +240,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a file filter which takes a single file extension to look for
-     *
+     * 
      * @param extension File extension
      * @return File filter appropriate for filtering out a single file extension
      */
@@ -249,7 +250,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Parse a comma-separated list of values; also parses over internal spaces
-     *
+     * 
      * @param commaList Comma-separated list
      * @return Individual strings from the comma-separated list
      */
@@ -259,9 +260,9 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Parse a delimited list of values
-     *
+     * 
      * @param delimitedList Delimited list
-     * @param delimiter Field Delimiter
+     * @param delimiter     Field Delimiter
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseDelimitedList(String delimitedList, String delimiter) {
@@ -283,7 +284,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Convert the request parameters to a string
-     *
+     * 
      * @param request Servlet request
      * @return Request parameters in the form &amp;name=value
      */
@@ -307,8 +308,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Strip off the blog home directory for a requested blog category
-     *
-     * @param blogHome Blog home value
+     * 
+     * @param blogHome          Blog home value
      * @param requestedCategory Requested blog category
      * @return Blog category only
      */
@@ -327,8 +328,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a URL to the main blog site without the servlet path requested
-     *
-     * @param blogURL URL for the blog
+     * 
+     * @param blogURL     URL for the blog
      * @param servletPath Servlet path under which the blog is placed
      * @return URL to the blog up to the servlet path
      */
@@ -346,7 +347,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return an escaped string where &amp;, &lt;, and &gt; are converted to their HTML equivalents
-     *
+     * 
      * @param input Unescaped string
      * @return Escaped string containing HTML equivalents for &amp;, &lt;, and &gt;
      */
@@ -363,7 +364,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return an escaped string where &lt;meta, &lt;link tags are escaped
-     *
+     * 
      * @param input Unescaped string
      * @return Escaped string where &lt;meta, &lt;link tags are escaped
      */
@@ -379,8 +380,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Replace any occurances of a string pattern within a string with a different string.
-     *
-     * @param str The source string.  This is the string that will be searched and have the replacements
+     * 
+     * @param str     The source string.  This is the string that will be searched and have the replacements
      * @param pattern The pattern to look for in str
      * @param replace The string to insert in the place of <i>pattern</i>
      * @return String with replace occurences
@@ -414,7 +415,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return the file extension for a given filename or <code>null</code> if no file extension
      * is present
-     *
+     * 
      * @param filename Filename
      * @return File extension without the . or <code>null</code> if no file extension is present
      */
@@ -429,10 +430,10 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return the filename without extension for a given filename
-     *
-     * @since blojsom 1.9
+     * 
      * @param filename Filename
      * @return Filename up to the .
+     * @since blojsom 1.9
      */
     public static String getFilename(String filename) {
         int dotIndex = filename.lastIndexOf(".");
@@ -445,7 +446,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a string of "YYYYMMDD"
-     *
+     * 
      * @param date Date from which to extract "key"
      * @return String of "YYYYMMDD"
      */
@@ -477,7 +478,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Remove the initial "/" from a string
-     *
+     * 
      * @param input Input string
      * @return Input string without initial "/" removed or <code>null</code> if the input was null
      */
@@ -495,7 +496,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Extracts the first line in a given string, otherwise returns the first n bytes
-     * @param input String from which to extract the first line
+     * 
+     * @param input  String from which to extract the first line
      * @param length Number of bytes to  return if line seperator isnot found
      * @return the first line of the  string
      */
@@ -513,10 +515,10 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return the template name for a particular page
-     *
+     * 
      * @param flavorTemplate Flavor template filename
-     * @param page Requested page
-     * @return
+     * @param page           Requested page
+     * @return 
      */
     public static final String getTemplateForPage(String flavorTemplate, String page) {
         int dotIndex = flavorTemplate.lastIndexOf(".");
@@ -540,8 +542,8 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Tries to retrieve a given key using getParameter(key) and if not available, will
      * use getAttribute(key) from the servlet request
-     *
-     * @param key Parameter to retrieve
+     * 
+     * @param key                Parameter to retrieve
      * @param httpServletRequest Request
      * @return Value of the key as a string, or <code>null</code> if there is no parameter/attribute
      */
@@ -557,8 +559,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return only the filename of a permalink request
-     *
-     * @param permalink Permalink request
+     * 
+     * @param permalink           Permalink request
      * @param blogEntryExtensions Regex for blog entries so that we only pickup requests for valid blog entries
      * @return Filename portion of permalink request
      */
@@ -596,7 +598,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return an input string URL encoded
-     *
+     * 
      * @param input Input string
      * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
      */
@@ -614,7 +616,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Return a URL decoded string
-     *
+     * 
      * @param input Input string
      * @return URL decoded string or <code>null</code> if either the input was null or there is a decoding exception
      */
@@ -632,11 +634,11 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Create a Calendar Navigatation URL
-     *
+     * 
      * @param prefix Any URL Prefix
-     * @param month Month of navigation
-     * @param day Day of navigation
-     * @param year Year of navigation
+     * @param month  Month of navigation
+     * @param day    Day of navigation
+     * @param year   Year of navigation
      * @return Properly formatted calendar navigation url
      */
     public static String getCalendarNavigationUrl(String prefix, int month, int day, int year) {
@@ -709,9 +711,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     };
 
-    /**
-     * Return a comparator to sort by name
-     */
+    /** Return a comparator to sort by name */
     public static final Comparator FILE_NAME_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
@@ -730,7 +730,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Performs an MD5 Digest onthe given String content
-     *
+     * 
      * @param data Content to digest
      * @return The Hash as Hex String
      */
@@ -740,8 +740,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Performs an Digest onthe given String content for the given algorithm
-     *
-     * @param data Content to digest
+     * 
+     * @param data      Content to digest
      * @param algorithm the algorithm to use (MD5, SHA1)
      * @return The Hash as Hex String
      */
@@ -765,11 +765,11 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Convert Byte Array to Hex Value
-     *
-     * @param buf Byte Array to convert to Hex Value
+     * 
+     * @param buf    Byte Array to convert to Hex Value
      * @param offset Starting Offset for Conversion
      * @param length Length to convery
-     * @param value Hex Value
+     * @param value  Hex Value
      */
     private static void toHexValue(byte[] buf, int offset, int length, int value) {
         do {
@@ -784,8 +784,8 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Convert a byte array to a hex string
-     *
-     * @param buf Byte array to convert to hex string
+     * 
+     * @param buf    Byte array to convert to hex string
      * @param offset Starting offset for conversion
      * @param length Length to convert
      * @return Hex string representing the byte array
@@ -800,15 +800,14 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Try to load a properties file from disk
-     *
-     * @param servletConfig Servlet configuration
+     * 
+     * @param servletConfig   Servlet configuration
      * @param configurationIP Name of the file to load the properties from
-     * @param required If the properties file is required
-     * @since blojsom 1.9
-     *
+     * @param required        If the properties file is required
      * @return Properties from the file. NEVER returns null.
      * @throws BlojsomException If there is an I/O error or if configurationIP is
-     * 		   not set and required == true.
+     *                          not set and required == true.
+     * @since blojsom 1.9
      */
     public static Properties loadProperties(ServletConfig servletConfig, String configurationIP, boolean required)
             throws BlojsomException {
@@ -846,12 +845,12 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Try to load a properties file from disk. In this method, the properties file to load must have
      * an explicit path provided
-     *
-     * @since blojsom 2.0
-     * @param servletConfig Servlet configuration
+     * 
+     * @param servletConfig     Servlet configuration
      * @param configurationFile Properties file to be loaded from disk (e.g. /WEB-INF/sample.properties)
      * @return Loaded properties object
      * @throws BlojsomException If there is an error loading the properties from disk
+     * @since blojsom 2.0
      */
     public static Properties loadProperties(ServletConfig servletConfig, String configurationFile)
             throws BlojsomException {
@@ -876,7 +875,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Normalize a path to remove all ./, ../, .../, //, etc. type references
-     *
+     * 
      * @param path Input path
      * @return Normalized path
      */
@@ -893,10 +892,10 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Check to see if the given input string is <code>null</code> and if so, return a blank string instead
-     *
-     * @since blojsom 1.9
+     * 
      * @param input Input string
      * @return Blank string if the input string is <code>null</code>, otherwise just return the input string
+     * @since blojsom 1.9
      */
     public static String nullToBlank(String input) {
         return (input == null) ? "" : input;
@@ -904,11 +903,11 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Convert a set of {@link Properties} to a {@link Map}
-     *
-     * @since blojsom 2.0
+     * 
      * @param properties Properties to be converted to a Map
      * @return Map object containing all the keys and values from the original Properties object. If the
-     * Properties object was null, a new Map is returned with no values.
+     *         Properties object was null, a new Map is returned with no values.
+     * @since blojsom 2.0
      */
     public static Map propertiesToMap(Properties properties) {
         if (properties == null) {
@@ -931,7 +930,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Turn an array of strings into a single string separated by commas. If the incoming array is null, this
      * method returns the <code>null</code> string.
-     *
+     * 
      * @param array Array of strings
      * @return Single string containing all the strings from the original array separated by commas, or <code>null</code> if the input was null.
      */
@@ -945,7 +944,7 @@ public class BlojsomUtils implements BlojsomConstants {
         for (int i = 0; i < array.length; i++) {
             element = array[i];
             result.append(element);
-            if (i < array.length -1) {
+            if (i < array.length - 1) {
                 result.append(", ");
             }
         }
@@ -955,11 +954,11 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Convert a {@link Map} to a set of {@link BlojsomProperties}
-     *
-     * @param map Map to be converted to a BlojsomProperties object
+     * 
+     * @param map      Map to be converted to a BlojsomProperties object
      * @param encoding Specific encoding to use when writing BlojsomProperties object
      * @return BlojsomProperties object containing all the keys and values from the original Map object. If the
-     * Map object was null, a new BlojsomProperties is returned with no values.
+     *         Map object was null, a new BlojsomProperties is returned with no values.
      * @since blojsom 2.04
      */
     public static Properties mapToProperties(Map map, String encoding) {
@@ -986,10 +985,10 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /**
      * Convert a {@link Map} to a set of {@link BlojsomProperties}. Uses the default encoding.
-     *
+     * 
      * @param map Map to be converted to a BlojsomProperties object
      * @return BlojsomProperties object containing all the keys and values from the original Map object. If the
-     * Map object was null, a new BlojsomProperties is returned with no values.
+     *         Map object was null, a new BlojsomProperties is returned with no values.
      * @since blojsom 2.04
      */
     public static Properties mapToProperties(Map map) {
@@ -1000,10 +999,10 @@ public class BlojsomUtils implements BlojsomConstants {
      * Returns category information from the path provided to the method where the path provided is
      * assumed to be everything after the servlet instance with a user id at the very beginning of the path.
      * For example, /david/this/is/the/category
-     *
-     * @since blojsom 2.0
+     * 
      * @param pathInfo Path information
      * @return Everything after the second "/" character in the path
+     * @since blojsom 2.0
      */
     public static final String getCategoryFromPath(String pathInfo) {
         if (pathInfo == null || "/".equals(pathInfo)) {
@@ -1022,10 +1021,10 @@ public class BlojsomUtils implements BlojsomConstants {
      * Returns user id information from the path provided to the method where the path provided is
      * assumed to be everything after the servlet instance with a user id at the very beginning of the path.
      * For example, /david/this/is/the/category
-     *
-     * @since blojsom 2.0
+     * 
      * @param pathInfo Path information
      * @return Everything before the second "/" character in the path
+     * @since blojsom 2.0
      */
     public static final String getUserFromPath(String pathInfo) {
         if (pathInfo == null || "/".equals(pathInfo)) {
@@ -1038,5 +1037,27 @@ public class BlojsomUtils implements BlojsomConstants {
                 return pathInfo.substring(1, userEnd);
             }
         }
+    }
+
+    /**
+     * Delete a directory (or file) and any subdirectories underneath the directory
+     * 
+     * @param directoryOrFile Directory or file to be deleted
+     * @return <code>true</code> if the directory (or file) could be deleted, <code>falde</code> otherwise
+     */
+    public static boolean deleteDirectory(File directoryOrFile) {
+        if (directoryOrFile.isDirectory()) {
+            File[] children = directoryOrFile.listFiles();
+            if (children != null && children.length > 0) {
+                for (int i = 0; i < children.length; i++) {
+                    boolean success = deleteDirectory(children[i]);
+                    if (!success) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return directoryOrFile.delete();
     }
 }

@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.5 2003-10-17 01:48:06 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.6 2003-11-11 01:54:52 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -505,23 +505,6 @@ public class FileBackedBlogEntry extends BlogEntry {
     }
 
     /**
-     * Helper method to empty a directory
-     *
-     * @param directory File instance of directory to empty
-     */
-    private void removeDirectory(File directory) {
-        if (directory.exists() && directory.isDirectory()) {
-            File[] _children = directory.listFiles();
-            if (_children != null && _children.length > 0) {
-                for (int x = 0; x < _children.length; x++) {
-                    _children[x].delete();
-                }
-            }
-            directory.delete();
-        }
-    }
-
-    /**
      * Delete the blog entry.
      *
      * @since blojsom 1.9
@@ -542,12 +525,12 @@ public class FileBackedBlogEntry extends BlogEntry {
         // Delete comments
         File _comments = new File(blog.getBlogHome() + _category + blog.getBlogCommentsDirectory()
                 + File.separatorChar + _source.getName() + File.separatorChar);
-        removeDirectory(_comments);
+        BlojsomUtils.deleteDirectory(_comments);
 
         // Delete trackbacks
         File _trackbacks = new File(blog.getBlogHome() + _category + blog.getBlogTrackbackDirectory()
                 + File.separatorChar + _source.getName() + File.separatorChar);
-        removeDirectory(_trackbacks);
+        BlojsomUtils.deleteDirectory(_trackbacks);
 
         // Delete meta-data
         File metaFile = new File(blog.getBlogHome() + _category + BlojsomUtils.getFilename(_source.getName())

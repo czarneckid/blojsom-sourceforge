@@ -53,7 +53,7 @@ import java.util.Map;
  * EditBlogCategoriesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.4 2003-11-11 01:30:57 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.5 2003-11-11 01:54:52 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -84,26 +84,6 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * Delete a directory (or file) and any subdirectories underneath the directory
-     * 
-     * @param directoryOrFile Directory or file to be deleted
-     * @return <code>true</code> if the directory (or file) could be deleted, <code>falde</code> otherwise
-     */
-    private boolean deleteDirectory(File directoryOrFile) {
-        if (directoryOrFile.isDirectory()) {
-            File[] children = directoryOrFile.listFiles();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDirectory(children[i]);
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        return directoryOrFile.delete();
-    }
-
-    /**
      * Process the blog entries
      * 
      * @param httpServletRequest  Request
@@ -131,7 +111,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             _logger.debug("Normalized category name: " + BlojsomUtils.normalize(blogCategoryName));
 
             File existingBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
-            if (!deleteDirectory(existingBlogCategory)) {
+            if (!BlojsomUtils.deleteDirectory(existingBlogCategory)) {
                 _logger.debug("Unable to delete blog category: " + existingBlogCategory.toString());
             } else {
                 _logger.debug("Deleted blog category: " + existingBlogCategory.toString());
@@ -169,10 +149,11 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                     }
                 }
 
-                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME, blogCategoryName);
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA, categoryPropertiesString.toString());
-                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORY_PAGE);
             }
+
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME, blogCategoryName);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORY_PAGE);
         } else if (ADD_BLOG_CATEGORY_ACTION.equals(action) || UPDATE_BLOG_CATEGORY_ACTION.equals(action)) {
             boolean isUpdatingCategory = UPDATE_BLOG_CATEGORY_ACTION.equals(action);
 
