@@ -50,6 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -57,7 +58,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.65 2003-04-06 18:50:57 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.66 2003-04-10 01:41:36 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -293,6 +294,12 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      * @throws IOException If there is an error in IO
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        try {
+            httpServletRequest.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            _logger.error(e);
+        }
+
         _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
         _logger.debug("blojsom request URI: " + httpServletRequest.getRequestURI());
         _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL().toString());
