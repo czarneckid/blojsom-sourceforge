@@ -64,6 +64,10 @@
                         <td><input type="checkbox" name="ping-blog-urls" CHECKED/></td>
                     </tr>
                     <tr>
+                        <td>#adminResource('blog.entry.send.pingbacks.text' 'Send pingbacks to URLs?')</td>
+                        <td><input type="checkbox" name="send-pingbacks" /></td>
+                    </tr>
+                    <tr>
                         <td>#adminResource('blog.disable.comments.text' 'Disable comments?')</td>
                         <td><input type="checkbox" name="blog-entry-comments-disabled" value="y"
                             #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getMetaData() && $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getMetaData().containsKey("blog-entry-comments-disabled")) CHECKED #end/></td>

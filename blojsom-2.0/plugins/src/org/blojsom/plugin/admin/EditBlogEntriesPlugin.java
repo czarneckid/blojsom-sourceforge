@@ -41,6 +41,7 @@ import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
@@ -71,7 +72,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.43 2005-01-31 00:59:20 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.44 2005-02-10 16:11:32 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -265,6 +266,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
+            String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
 
             _logger.debug("Blog entry id: " + blogEntryId);
 
@@ -295,6 +297,12 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryMetaData.put(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA, "true");
                 } else {
                     entryMetaData.remove(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA);
+                }
+
+                if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
+                    entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
+                } else {
+                    entryMetaData.remove(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS);
                 }
 
                 entryToUpdate.setMetaData(entryMetaData);
@@ -379,6 +387,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String proposedBlogFilename = BlojsomUtils.getRequestValue(BLOG_ENTRY_PROPOSED_NAME, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
+            String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
 
             BlogCategory category;
             category = _fetcher.newBlogCategory();
@@ -421,6 +430,10 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(pingBlogURLS)) {
                 entryMetaData.put(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA, "true");
             }
+
+            if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
+                entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
+            } 
 
             entry.setMetaData(entryMetaData);
 
