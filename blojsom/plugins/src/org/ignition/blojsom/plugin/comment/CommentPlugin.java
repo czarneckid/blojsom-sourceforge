@@ -58,9 +58,19 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.34 2003-06-04 01:53:05 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.35 2003-06-11 02:39:20 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
+
+    /**
+     * Default prefix for comment e-mail notification
+     */
+    private static final String DEFAULT_COMMENT_PREFIX = "[blojsom] Comment on: ";
+
+    /**
+     * Initialization parameter for e-mail prefix
+     */
+    private static final String COMMENT_PREFIX_IP = "plugin-comment-email-prefix";
 
     /**
      * Request parameter for the "comment"
@@ -156,6 +166,7 @@ public class CommentPlugin extends IPBanningPlugin {
     private String _blogCommentsDirectory;
     private String _blogUrlPrefix;
     private String _blogFileEncoding;
+    private String _emailPrefix;
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -173,6 +184,10 @@ public class CommentPlugin extends IPBanningPlugin {
         _blogCommentsDirectory = blog.getBlogCommentsDirectory();
         _blogUrlPrefix = blog.getBlogURL();
         _blogFileEncoding = blog.getBlogFileEncoding();
+        _emailPrefix = blog.getBlogProperty(COMMENT_PREFIX_IP);
+        if (_emailPrefix == null) {
+            _emailPrefix = DEFAULT_COMMENT_PREFIX;
+        }
     }
 
     /**
@@ -375,7 +390,7 @@ public class CommentPlugin extends IPBanningPlugin {
         String url = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
         String emailComment = CommentUtils.constructCommentEmail(permalink, author, authorEmail, authorURL, userComment, url);
 
-        EmailUtils.notifyBlogAuthor("[blojsom] Comment on: " + title, emailComment, context);
+        EmailUtils.notifyBlogAuthor(_emailPrefix + title, emailComment, context);
     }
 
 
