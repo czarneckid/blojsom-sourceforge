@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.27 2003-03-07 01:46:33 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.28 2003-03-14 04:14:03 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -58,10 +58,16 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
-     * Value under which the date of the blog will be placed
+     * Value under which the date (RFC 822 format) of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_DATE = "BLOJSOM_DATE";
+
+    /**
+     * Value under which the date (ISO 8601 format) of the blog will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_DATE_ISO8601 = "BLOJSOM_DATE_ISO8601";
 
     /**
      * Value under which the blog site will be placed
