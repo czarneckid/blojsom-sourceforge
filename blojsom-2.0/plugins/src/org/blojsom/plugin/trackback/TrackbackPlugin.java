@@ -59,7 +59,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.13 2004-02-17 03:28:04 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.14 2004-04-08 01:15:02 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -73,12 +73,12 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     /**
      * Initialization parameter for e-mail prefix
      */
-    private static final String TRACKBACK_PREFIX_IP = "plugin-trackback-email-prefix";
+    public static final String TRACKBACK_PREFIX_IP = "plugin-trackback-email-prefix";
 
     /**
      * Initialization parameter for the throttling of trackbacks from IP addresses
      */
-    private static final String TRACKBACK_THROTTLE_MINUTES_IP = "plugin-trackback-throttle";
+    public static final String TRACKBACK_THROTTLE_MINUTES_IP = "plugin-trackback-throttle";
 
     /**
      * Default throttle value for trackbacks from a particular IP address

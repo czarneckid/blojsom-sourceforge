@@ -40,6 +40,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -59,7 +60,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.16 2004-04-08 01:02:44 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.17 2004-04-08 01:15:04 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -156,6 +157,12 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_THROTTLE_MINUTES_IP, httpServletRequest);
             blog.setBlogProperty(CommentPlugin.COMMENT_THROTTLE_MINUTES_IP, blogPropertyValue);
 
+            // Trackback plugin properties
+            blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_THROTTLE_MINUTES_IP, httpServletRequest);
+            blog.setBlogProperty(TrackbackPlugin.TRACKBACK_THROTTLE_MINUTES_IP, blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_PREFIX_IP, httpServletRequest);
+            blog.setBlogProperty(TrackbackPlugin.TRACKBACK_PREFIX_IP, blogPropertyValue);
+            
             // Set the blog default category mappings
             flavorMap = user.getFlavors();
             flavorKeys = flavorMap.keySet().iterator();

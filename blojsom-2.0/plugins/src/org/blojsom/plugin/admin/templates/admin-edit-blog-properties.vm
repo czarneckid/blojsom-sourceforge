@@ -91,6 +91,12 @@
                         <td>#adminResource('comment.autoformat.text' 'Autoformat comment text?')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("plugin-comment-autoformat"))</td>
                     </tr>
                     <tr>
+                        <td>#adminResource('trackback.prefix.text' 'Prefix for trackback e-mail')</td> <td><input name="plugin-trackback-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-email-prefix")"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('trackback.throttle.text' 'Trackback throttle minutes')</td> <td><input name="plugin-trackback-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-throttle")"/></td>
+                    </tr>
+                    <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('edit.blog.properties.text' 'Edit blog properties')"/>
                             <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
