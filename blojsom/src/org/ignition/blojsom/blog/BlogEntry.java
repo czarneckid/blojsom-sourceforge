@@ -43,7 +43,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.21 2003-03-13 02:14:49 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.22 2003-03-18 03:08:49 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -58,12 +58,15 @@ public class BlogEntry implements BlojsomConstants {
     private long _lastModified;
     private String _commentsDirectory;
     private ArrayList _comments;
+    private ArrayList _trackbacks;
+    private String _trackbacksDirectory;
 
     /**
      * Create a new blog entry with no data
      */
     public BlogEntry() {
         _commentsDirectory = DEFAULT_COMMENTS_DIRECTORY;
+        _trackbacksDirectory = DEFAULT_TRACKBACK_DIRECTORY;
     }
 
     /**
@@ -232,8 +235,9 @@ public class BlogEntry implements BlojsomConstants {
     }
 
     /**
+     * Return the permalink name for this blog entry
      *
-     * @return
+     * @return Permalink name
      */
     public String getPermalink() {
         return _source.getName();
@@ -357,6 +361,16 @@ public class BlogEntry implements BlojsomConstants {
     }
 
     /**
+     * Set the comments for this blog entry. The comments must be an <code>ArrayList</code>
+     * of {@link BlogComment}. This method will not writeback or change the comments
+     *
+     * @param comments Comments for this entry
+     */
+    public void setComments(ArrayList comments) {
+        _comments = comments;
+    }
+
+    /**
      * Get the comments as an array of BlogComment objects
      *
      * @return BlogComment[] array
@@ -405,7 +419,7 @@ public class BlogEntry implements BlojsomConstants {
             File commentsDirectory = new File(commentsDirectoryPath);
             File[] comments = commentsDirectory.listFiles(BlojsomUtils.getExtensionFilter(COMMENT_EXTENSION));
             if ((comments != null) && (comments.length > 0)) {
-                _logger.debug("Adding " + comments.length + " comments to blog entry");
+                _logger.debug("Adding " + comments.length + " comments to blog entry: " + getPermalink());
                 Arrays.sort(comments, BlojsomUtils.FILE_TIME_ASCENDING_COMPARATOR);
                 _comments = new ArrayList(comments.length);
                 for (int i = 0; i < comments.length; i++) {
@@ -470,5 +484,135 @@ public class BlogEntry implements BlojsomConstants {
             _logger.error(e);
         }
         return comment;
+    }
+
+    /**
+     * Get the trackbacks
+     *
+     * @return ArrayList of trackbacks
+     */
+    public ArrayList getTrackbacks() {
+        return _trackbacks;
+    }
+
+    /**
+     * Set the trackbacks for this blog entry. The trackbacks must be an <code>ArrayList</code>
+     * of {@link Trackback}. This method will not writeback or change the trackbacks
+     *
+     * @param trackbacks Trackbacks for this entry
+     */
+    public void setTrackbacks(ArrayList trackbacks) {
+        _trackbacks = trackbacks;
+    }
+
+    /**
+     * Get the trackbacks as an array of Trackback objects
+     *
+     * @return Trackback[] array
+     */
+    public Trackback[] getTrackbacksAsArray() {
+        if (_trackbacks == null) {
+            return null;
+        } else {
+            return (Trackback[]) _trackbacks.toArray(new Trackback[_trackbacks.size()]);
+        }
+    }
+
+    /**
+     * Get the number of trackbacks for this entry
+     *
+     * @return 0 if trackbacks is <code>null</code>, or the number of trackbacks otherwise, which could be 0
+     */
+    public int getNumTrackbacks() {
+        if (_trackbacks == null) {
+            return 0;
+        } else {
+            return _trackbacks.size();
+        }
+    }
+
+    /**
+     * Set the directory for trackbacks
+     *
+     * @param trackbacksDirectory Trackbacks directory
+     */
+    public void setTrackbacksDirectory(String trackbacksDirectory) {
+        _trackbacksDirectory = trackbacksDirectory;
+    }
+
+    /**
+     * Convenience method to load the trackbacks for this blog entry.
+     */
+    public void loadTrackbacks() {
+        String trackbacksDirectoryPath;
+        if (_source.getParent() == null) {
+            trackbacksDirectoryPath = File.separator + _trackbacksDirectory + File.separator + _source.getName();
+        } else {
+            trackbacksDirectoryPath = _source.getParent() + File.separator + _trackbacksDirectory + File.separator + _source.getName();
+        }
+        File trackbacksDirectory = new File(trackbacksDirectoryPath);
+        File[] trackbacks = trackbacksDirectory.listFiles(BlojsomUtils.getExtensionFilter(TRACKBACK_EXTENSION));
+        if ((trackbacks != null) && (trackbacks.length > 0)) {
+            _logger.debug("Adding " + trackbacks.length + " trackbacks to blog entry: " + getPermalink());
+            Arrays.sort(trackbacks, BlojsomUtils.FILE_TIME_ASCENDING_COMPARATOR);
+            _trackbacks = new ArrayList(trackbacks.length);
+            for (int i = 0; i < trackbacks.length; i++) {
+                File trackbackFile = trackbacks[i];
+                _trackbacks.add(loadTrackback(trackbackFile));
+            }
+        }
+    }
+
+    /**
+     * Load a trackback for this blog entry from disk
+     * Trackbacks must always have the form:<br />
+     * title<br>
+     * excerpt<br />
+     * url<br />
+     * blog_name
+     *
+     * @param trackbackFile Trackback file
+     * @return Trackback Trackback loaded from disk
+     */
+    private Trackback loadTrackback(File trackbackFile) {
+        int trackbackSwitch = 0;
+        Trackback trackback = new Trackback();
+        trackback.setTrackbackDateLong(trackbackFile.lastModified());
+        String trackbackLine;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(trackbackFile));
+            while (((trackbackLine = br.readLine()) != null) && (trackbackSwitch < 4)) {
+                switch (trackbackSwitch) {
+                    case 0:
+                        {
+                            trackback.setTitle(trackbackLine);
+                            trackbackSwitch++;
+                            break;
+                        }
+                    case 1:
+                        {
+                            trackback.setExcerpt(trackbackLine);
+                            trackbackSwitch++;
+                            break;
+                        }
+                    case 2:
+                        {
+                            trackback.setUrl(trackbackLine);
+                            trackbackSwitch++;
+                            break;
+                        }
+                    case 3:
+                        {
+                            trackback.setBlogName(trackbackLine);
+                            trackbackSwitch++;
+                            break;
+                        }
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+        return trackback;
     }
 }
