@@ -43,7 +43,7 @@
 		<%= blogInformation.getBlogName() %>
 	</a></h1>
 
-	<big><i><%= blogInformation.getBlogDescription() %></i></big>
+	<h3><%= blogInformation.getBlogDescription() %></h3>
 
 	<p><b>Available Categories: </b><%= catString %></p>
 <%
