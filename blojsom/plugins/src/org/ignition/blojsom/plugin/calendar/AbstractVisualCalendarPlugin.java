@@ -47,9 +47,9 @@ import java.util.Map;
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.3 2003-03-31 16:16:16 intabulas Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.4 2003-04-03 03:02:27 czarneckid Exp $
  */
-public class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
+public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
 
     protected BlogCalendar _blogCalendar;

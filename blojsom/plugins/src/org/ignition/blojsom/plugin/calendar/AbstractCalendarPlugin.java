@@ -50,9 +50,9 @@ import java.util.*;
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.6 2003-04-02 18:01:25 intabulas Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.7 2003-04-03 03:02:27 czarneckid Exp $
  */
-public class AbstractCalendarPlugin implements BlojsomPlugin {
+public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(AbstractCalendarPlugin.class);
 
@@ -69,16 +69,31 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
     public static final String BLOJSOM_CALENDAR_VTLHELPER = "BLOJSOM_CALENDAR_VTLHELPER";
 
     /**
+     * Request parameter for the "year"
+     */
+    protected static final String YEAR_PARAM = "year";
+
+    /**
+     * Request parameter for the "month"
+     */
+    protected static final String MONTH_PARAM = "month";
+
+    /**
+     * Request parameter for the "day"
+     */
+    protected static final String DAY_PARAM = "day";
+
+    /**
      * Format String for Calendar Month
      * (Example: March 2003)
      */
-    public static final String BLOJSOM_CALENDAR_FORMAT = "MMMMM yyyy";
+    protected static final String BLOJSOM_CALENDAR_FORMAT = "MMMMM yyyy";
 
     /**
      * Short Format String for Previous/Next Calendar Month(s)
      * (Example: Mar)
      */
-    public static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
+    protected static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
 
     /**
      * Locale to use for the Calendar.
@@ -146,7 +161,7 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
         String day = null;
 
 
-        year = httpServletRequest.getParameter(BlojsomConstants.YEAR_PARAM);
+        year = httpServletRequest.getParameter(YEAR_PARAM);
         if (year != null) {
 
             // Must be a 4 digit year
@@ -161,7 +176,7 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                     _logger.error("Invalid Year Param submitted and ignored: " + year);
                 }
 
-                month = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
+                month = httpServletRequest.getParameter(MONTH_PARAM);
 
                 if (month == null) {
                     month = "";
@@ -177,7 +192,7 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                         _logger.error("Invalid Month Param submitted and ignored: " + month);
                     }
                 }
-                day = httpServletRequest.getParameter(BlojsomConstants.DAY_PARAM);
+                day = httpServletRequest.getParameter(DAY_PARAM);
                 if (day == null) {
                     day = "";
                 } else if (day.length() < 2) {
