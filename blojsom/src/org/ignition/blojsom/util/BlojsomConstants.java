@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.38 2003-03-26 05:10:17 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.39 2003-03-26 15:17:11 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -67,6 +67,29 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_CALENDAR = "BLOJSOM_CALENDAR";
+
+    /**
+     * Key under which the blog calendar previous month value will be placed
+     */
+    public static final String BLOJSOM_CALENDAR_PREVIOUS = "BLOJSOM_CALENDAR_PREVIOUS";
+
+    /**
+     * Key under which the blog calendar next month value will be placed
+     */
+    public static final String BLOJSOM_CALENDAR_NEXT = "BLOJSOM_CALENDAR_NEXT";
+
+    /**
+     * Format String for Calendar Month
+     * (Example: March 2003)
+     */
+    public static final String BLOJSOM_CALENDAR_FORMAT = "MMMMM yyyy";
+
+    /**
+     * Short Format String for Previous/Next Calendar Month(s)
+     * (Example: Mar)
+     */
+    public static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
+
 
     /**
      * Key under which the date (RFC 822 format) of the blog will be placed
