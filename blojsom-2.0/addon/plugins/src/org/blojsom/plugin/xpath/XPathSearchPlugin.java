@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathSearchPlugin.java,v 1.3 2003-09-26 17:07:17 intabulas Exp $
+ * @version $Id: XPathSearchPlugin.java,v 1.4 2003-09-27 12:51:08 intabulas Exp $
  */
 
 public class XPathSearchPlugin extends SimpleSearchPlugin {
@@ -114,7 +114,7 @@ public class XPathSearchPlugin extends SimpleSearchPlugin {
                 results = super.process(httpServletRequest, httpServletResponse, user, context, entries);
             }
         } else {
-            results = new BlogEntry[0];
+            results = entries;
         }
 
         return results;
