@@ -54,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.3 2003-08-20 02:55:25 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -197,11 +197,15 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         }
 
         String category = httpServletRequest.getPathInfo();
+        if (category.startsWith("/" + user.getId() + "/")) {
+            category = BlojsomUtils.getCategoryFromPath(category);
+        }
         if (category == null) {
             category = "/";
         } else if (!category.endsWith("/")) {
             category += "/";
         }
+
         String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         String title = httpServletRequest.getParameter(TRACKBACK_TITLE_PARAM);
@@ -305,7 +309,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         File blogEntry = new File(trackbackDirectory.toString() + File.separator + permalinkFilename);
         if (!blogEntry.exists()) {
             _logger.error("Trying to create trackback for invalid blog entry: " + permalink);
-            context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trying to create trackback for invalid permalink");
+            context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trying to create trackback for invalid permalink: " + category + permalinkFilename);
             return new Integer(1);
         }
         trackbackDirectory.append(blogTrackbackDirectory);
