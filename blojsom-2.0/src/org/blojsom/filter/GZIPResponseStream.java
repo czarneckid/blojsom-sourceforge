@@ -50,7 +50,7 @@ import java.util.zip.GZIPOutputStream;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
- * @version $Id: GZIPResponseStream.java,v 1.5 2005-02-10 21:42:10 czarneckid Exp $
+ * @version $Id: GZIPResponseStream.java,v 1.6 2005-02-11 01:25:18 czarneckid Exp $
  * @since blojsom 2.10
  */
 public class GZIPResponseStream extends ServletOutputStream {
@@ -69,6 +69,7 @@ public class GZIPResponseStream extends ServletOutputStream {
      */
     public GZIPResponseStream(HttpServletResponse response) throws IOException {
         super();
+
         closed = false;
         this.response = response;
         this.output = response.getOutputStream();
@@ -94,9 +95,14 @@ public class GZIPResponseStream extends ServletOutputStream {
 
         response.addHeader("Content-Length", Integer.toString(bytes.length));
         response.addHeader("Content-Encoding", "gzip");
+
+        baos.flush();
+        baos.close();
+
         output.write(bytes);
         output.flush();
         output.close();
+
         closed = true;
     }
 
