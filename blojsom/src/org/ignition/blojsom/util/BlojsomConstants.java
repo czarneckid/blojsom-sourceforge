@@ -29,6 +29,12 @@ public class BlojsomConstants {
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
+     * Value under which the blog site will be place
+     * (example: on the request for the JSPDispatcher
+     */
+    public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
+
+    /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
      */
     public static final String DEFAULT_FLAVOR_HTML = "html";
