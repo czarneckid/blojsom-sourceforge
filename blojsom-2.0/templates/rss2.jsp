@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- name="generator" content="<%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %>" -->
 <%@ page import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogEntry"

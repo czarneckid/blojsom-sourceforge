@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- name="generator" content="$BLOJSOM_VERSION" -->
 <rss version="2.0" xmlns="http://backend.userland.com/rss2"
                    xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
