@@ -55,18 +55,15 @@ import java.util.Map;
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.1 2004-01-05 01:10:39 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.2 2004-01-05 01:18:20 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(ConditionalGetPlugin.class);
 
-    private static final String CONDITIONAL_GET_CONFIGURATION_IP = "plugin-conditional-get";
     private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
 
-    private Map _ifModifiedSinceMap;
     private Map _defaultConditionalGetFlavors;
-    private Map _conditionalGetFlavorsPerUser;
 
     /**
      *
@@ -83,22 +80,13 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        // Setup a map for each user for the If-Modified-Since header check
-        _ifModifiedSinceMap = new HashMap(blojsomConfiguration.getBlojsomUsers().length);
-        _conditionalGetFlavorsPerUser = new HashMap(blojsomConfiguration.getBlojsomUsers().length);
-
-        for (int i = 0; i < blojsomConfiguration.getBlojsomUsers().length; i++) {
-            String user = blojsomConfiguration.getBlojsomUsers()[i];
-            _ifModifiedSinceMap.put(user, null);
-        }
-
         // Setup a map for the default flavors to use conditional get (the syndication flavors)
         _defaultConditionalGetFlavors = new HashMap();
         _defaultConditionalGetFlavors.put("rdf", "rdf");
         _defaultConditionalGetFlavors.put("rss", "rss");
         _defaultConditionalGetFlavors.put("rss2", "rss2");
         _defaultConditionalGetFlavors.put("atom", "atom");
-    }
+   }
 
     /**
      * Process the blog entries
@@ -113,7 +101,7 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (_ifModifiedSinceMap.containsKey(user.getId()) && entries.length > 0) {
+        if (entries.length > 0) {
             String flavor = BlojsomUtils.getRequestValue(FLAVOR_PARAM, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(flavor)) {
                 flavor = user.getBlog().getBlogDefaultFlavor();
