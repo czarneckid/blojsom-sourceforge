@@ -77,6 +77,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private long _blogReloadCheck;
 
     private Map _blogEntryMap;
+    private Map _blogCalendarMap;
 
     private Map _flavorToTemplateMap;
     private Map _flavorToContentTypeMap;
@@ -119,6 +120,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         _blogFileExtensions = BlojsomUtils.parseCommaList(servletConfig.getInitParameter(BLOG_FILE_EXTENSIONS_IP));
         _blog = new Blog(_blogName, _blogDescription, _blogURL, _blogLanguage);
         _blogEntryMap = new TreeMap();
+        _blogCalendarMap = new TreeMap();
     }
 
     /**
@@ -239,18 +241,33 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         File[] entries = blog.listFiles(BlojsomUtils.getExtensionsFilter(_blogFileExtensions));
         if (entries == null) {
             _logger.debug("No blog entries in blog directory: " + blogDirectory);
-            _blogEntryMap.put(blogCategory, null);
+            _blogEntryMap.put(blogCategory, new TreeMap(BlojsomUtils.FILE_TIME_COMPARATOR));
         } else {
             Map entryMap;
+            Map calendarMap;
+
+            // Get the category-based map
             if (!_blogEntryMap.containsKey(blogCategory)) {
                 entryMap = new TreeMap(BlojsomUtils.FILE_TIME_COMPARATOR);
             } else {
                 entryMap = (Map) _blogEntryMap.get(blogCategory);
                 _blogEntryMap.remove(blogCategory);
             }
+
             _logger.debug("Adding " + entries.length + " entries to the blog");
             for (int i = 0; i < entries.length; i++) {
                 File entry = entries[i];
+
+                String blogCalendarKey = BlojsomUtils.getDateKey(new Date(entry.lastModified()));
+                blogCalendarKey = blogCategory + blogCalendarKey;
+
+                if (!_blogCalendarMap.containsKey(blogCalendarKey)) {
+                    calendarMap = new TreeMap(BlojsomUtils.FILE_TIME_COMPARATOR);
+                } else {
+                    calendarMap = (Map) _blogCalendarMap.get(blogCalendarKey);
+                    _blogCalendarMap.remove(blogCalendarKey);
+                }
+
                 BlogEntry blogEntry;
                 if (!entryMap.containsKey(entry)) {
                     blogEntry = new BlogEntry();
@@ -259,24 +276,29 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                     blogEntry.setLink(_blogURL + BlojsomUtils.removeInitialSlash(categoryKey) + "?permalink=" + entry.getName());
                     blogEntry.reloadSource();
                     entryMap.put(entry, blogEntry);
+                    calendarMap.put(entry, blogEntry);
                     _logger.debug("Adding initial blog entry: " + entry.toString() + " in blog category: " + categoryKey);
                 } else {
                     blogEntry = (BlogEntry) entryMap.get(entry);
                     if (entry.lastModified() > blogEntry.getLastModified()) {
                         entryMap.remove(entry);
+                        calendarMap.remove(entry);
                         blogEntry = new BlogEntry();
                         blogEntry.setSource(entry);
                         blogEntry.setCategory(BlojsomUtils.removeInitialSlash(categoryKey));
                         blogEntry.setLink(_blogURL + BlojsomUtils.removeInitialSlash(categoryKey) + "?permalink=" + entry.getName());
                         blogEntry.reloadSource();
                         entryMap.put(entry, blogEntry);
+                        calendarMap.put(entry, blogEntry);
                         _logger.debug("Blog entry updated on disk: " + entry.toString());
                     }
                 }
+                _blogCalendarMap.put(blogCalendarKey, calendarMap);
+                _logger.debug("Added " + calendarMap.size() + " entries to calendar map under key: " + blogCalendarKey);
             }
             blogCategory.setNumberOfEntries(entryMap.size());
-            _logger.debug("Added " + entryMap.size() + " entries to the blog");
             _blogEntryMap.put(blogCategory, entryMap);
+            _logger.debug("Added " + entryMap.size() + " entries to the blog map under key: " + blogCategory);
         }
 
         if (directories == null) {
@@ -299,12 +321,25 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             BlogCategory blogCategory = (BlogCategory) categoryIterator.next();
             File blogDirectory = new File(_blogHome + blogCategory.getCategory());
             if (!blogDirectory.exists()) {
-                _logger.debug("Blog directory deleted: " + blogDirectory.toString());
                 deletedCategories.add(blogCategory);
             }
         }
+
         for (int i = 0; i < deletedCategories.size(); i++) {
-            _blogEntryMap.remove(deletedCategories.get(i));
+            BlogCategory deletedCategory = (BlogCategory) deletedCategories.get(i);
+            String deletedCategoryName = deletedCategory.getCategory();
+
+            _blogEntryMap.remove(deletedCategory);
+            _logger.debug("Removed blog entry category: " + deletedCategoryName);
+
+            Iterator calendarMapIterator = _blogCalendarMap.keySet().iterator();
+            while (calendarMapIterator.hasNext()) {
+                String calendarMapKey = (String) calendarMapIterator.next();
+                if (calendarMapKey.startsWith(deletedCategoryName)) {
+                    _logger.debug("Removed blog calendar category: " + deletedCategoryName);
+                    _blogCalendarMap.remove(calendarMapKey);
+                }
+            }
         }
     }
 
@@ -349,12 +384,11 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      *
      * @param entriesForCategory Entries for the requested category
      * @param requestedCategory Requested category
-     * @return Entry array containing the list of blog entries for the requested category
+     * @return Blog entry array containing the list of blog entries for the requested category
      */
     private BlogEntry[] getEntriesForCategory(Map entriesForCategory) {
         BlogEntry[] entryArray;
         ArrayList entryList = new ArrayList();
-        entryArray = new BlogEntry[entriesForCategory.size()];
         Iterator entryIterator = entriesForCategory.keySet().iterator();
         while (entryIterator.hasNext()) {
             Object entryKey = entryIterator.next();
@@ -371,6 +405,53 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     }
 
     /**
+     * Retrieve all of the entries for a requested category that fall under a given date. A partial
+     * date may be given such that if only a year is given, it would retrieve all entries under the
+     * given category for that year. If a year and a month are give, it would retrieve all entries
+     * under the given category for that year and month. If a year, month, and day are given, it would
+     * retrieve all entries under the given category for that year, month, and day.
+     *
+     * @param requestedCategory Requested category
+     * @param year Year to retrieve entries for
+     * @param month Month to retrieve entries for
+     * @param day Day to retrieve entries for
+     * @return Blog entry array containing the list of blog entries for the given category, year, month, and day
+     */
+    private BlogEntry[] getEntriesForDate(String requestedCategory, String year, String month, String day) {
+        String blogCalendarKey = requestedCategory + year + month + day;
+        _logger.debug("Looking for entries by date under key: " + blogCalendarKey);
+        BlogEntry[] entryArray;
+        ArrayList entryList = new ArrayList();
+        Map entriesForDate = null;
+
+        // Search for the calendar key in the calendar map
+        Iterator calendarKeyIterator = _blogCalendarMap.keySet().iterator();
+        while (calendarKeyIterator.hasNext()) {
+            String calendarKey = (String) calendarKeyIterator.next();
+            if (calendarKey.startsWith(blogCalendarKey)) {
+                entriesForDate = (Map) _blogCalendarMap.get(calendarKey);
+            }
+        }
+
+        if (entriesForDate != null) {
+            Iterator entryIterator = entriesForDate.keySet().iterator();
+            while (entryIterator.hasNext()) {
+                Object entryKey = entryIterator.next();
+                if (entriesForDate.containsKey(entryKey)) {
+                    entryList.add(entriesForDate.get(entryKey));
+                } else {
+                    entriesForDate.remove(entryKey);
+                }
+            }
+            entryArray = (BlogEntry[]) entryList.toArray(new BlogEntry[entryList.size()]);
+
+            return entryArray;
+        }
+
+        return null;
+    }
+
+    /**
      * Service a request to blojsom
      *
      * @param httpServletRequest Request
@@ -384,12 +465,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
 
-        // Determine if a permalink has been requested
-        String permalink = httpServletRequest.getParameter("permalink");
-        if (permalink != null) {
-            _logger.debug("Permalink request for: " + permalink);
-        }
-
         if (requestedCategory == null) {
             requestedCategory = "/";
         } else if (!requestedCategory.endsWith("/")) {
@@ -399,6 +474,37 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         _logger.debug("User requested category: " + requestedCategory);
         BlogCategory category = new BlogCategory(requestedCategory, _blogURL + BlojsomUtils.removeInitialSlash(requestedCategory));
 
+        // Determine if a permalink has been requested
+        String permalink = httpServletRequest.getParameter("permalink");
+        if (permalink != null) {
+            _logger.debug("Permalink request for: " + permalink);
+        }
+
+        // Determine a calendar-based request
+        String year = null;
+        String month = null;
+        String day = null;
+
+        year = httpServletRequest.getParameter(YEAR_PARAM);
+        if (year != null) {
+
+            // Must be a 4 digit year
+            if (year.length() != 4) {
+                year = null;
+            } else {
+                month = httpServletRequest.getParameter(MONTH_PARAM);
+                if (month == null) {
+                    month = "";
+                }
+                day = httpServletRequest.getParameter(DAY_PARAM);
+                if (day == null) {
+                    day = "";
+                }
+            }
+            _logger.debug("Calendar-based request for: " + requestedCategory + year + month + day);
+        }
+
+        // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
         if (flavor == null) {
             flavor = DEFAULT_FLAVOR_HTML;
@@ -410,16 +516,26 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         // Get the entries for the requested category
         Map entriesForCategory = (Map) _blogEntryMap.get(category);
-        if (entriesForCategory == null) {
-            entriesForCategory = (Map) _blogEntryMap.get(new BlogCategory("/", _blogURL));
-        }
 
         // Convert the entries from the map into an array
         BlogEntry[] entries;
-        if (permalink != null) {
-            entries = getPermalinkEntry(entriesForCategory, requestedCategory, permalink);
+
+        // Check first to see if the entries for the requested category is null
+        // If so, there is no use looking for a permalink entry or a calendar-based entry in that category
+        if (entriesForCategory == null) {
+            entries = null;
         } else {
-            entries = getEntriesForCategory(entriesForCategory);
+            // Otherwise, check for a permalink entry first
+            if (permalink != null) {
+                entries = getPermalinkEntry(entriesForCategory, requestedCategory, permalink);
+            } else {
+                // Check to see if we have requested entries by calendar
+                if (year != null) {
+                    entries = getEntriesForDate(requestedCategory, year, month, day);
+                } else {
+                    entries = getEntriesForCategory(entriesForCategory);
+                }
+            }
         }
 
         // Setup the context for the dispatcher
