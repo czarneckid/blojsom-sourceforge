@@ -28,7 +28,7 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
-     * Value under which the date of the bloj will be placed
+     * Value under which the date of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_DATE = "BLOJSOM_DATE";
