@@ -58,7 +58,7 @@ import java.util.regex.Matcher;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.6 2004-03-24 02:34:15 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.7 2004-04-13 00:08:02 intabulas Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -240,7 +240,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     /**
      * Internal class to hold configuration properties
      */
-    private class ShowMeMoreConfiguration {
+    private static class ShowMeMoreConfiguration {
 
         private int _cutoff;
         private String _textCutoff;

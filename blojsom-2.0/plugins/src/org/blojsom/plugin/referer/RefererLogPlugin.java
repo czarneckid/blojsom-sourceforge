@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: RefererLogPlugin.java,v 1.4 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.5 2004-04-13 00:07:40 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -476,7 +476,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Internal class to hold referer log configuration information per user
      */
-    private class RefererLogConfiguration {
+    private static class RefererLogConfiguration {
 
         /**
          * Contains compiled blacklist filter patterns
