@@ -35,8 +35,6 @@
 package org.ignition.blojsom.plugin.calendar;
 
 import org.ignition.blojsom.util.BlojsomUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.text.DateFormatSymbols;
 import java.util.*;
@@ -45,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.13 2003-04-02 17:32:13 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.14 2003-04-02 18:01:24 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -85,8 +83,9 @@ public class BlogCalendar {
         _symbols = new DateFormatSymbols(_locale);
         _blogURL = blogurl;
 
-        currentmonth = calendar.get(Calendar.MONTH) + 1;// Damm Java!
+        currentmonth = calendar.get(Calendar.MONTH);
         currentyear = calendar.get(Calendar.YEAR);
+        currentday = calendar.get(Calendar.DAY_OF_MONTH);
 
         _dayswithentry = new Boolean[_calendar.getActualMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(_dayswithentry, Boolean.FALSE);
@@ -256,7 +255,7 @@ public class BlogCalendar {
      * @return current month as an int (as defined by Calendar)
      */
     public int getCurrentMonth() {
-        return currentmonth ;
+        return currentmonth;
     }
 
     /**
@@ -265,7 +264,7 @@ public class BlogCalendar {
      */
     public void setCurrentMonth(int currentmonth) {
         this.currentmonth = currentmonth;
-        _calendar.set( Calendar.MONTH, currentmonth ) ;
+        _calendar.set(Calendar.MONTH, currentmonth);
     }
 
     /**
@@ -283,7 +282,7 @@ public class BlogCalendar {
      */
     public void setCurrentYear(int currentyear) {
         this.currentyear = currentyear;
-        _calendar.set( Calendar.YEAR, currentyear ) ;
+        _calendar.set(Calendar.YEAR, currentyear);
     }
 
     /**
@@ -300,7 +299,7 @@ public class BlogCalendar {
      */
     public void setCurrentDay(int currentday) {
         this.currentday = currentday;
-        _calendar.set( Calendar.DAY_OF_MONTH, currentday) ;
+        _calendar.set(Calendar.DAY_OF_MONTH, currentday);
     }
 
     // ========================

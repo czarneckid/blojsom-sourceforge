@@ -50,7 +50,7 @@ import java.util.*;
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.5 2003-04-02 17:32:13 intabulas Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.6 2003-04-02 18:01:25 intabulas Exp $
  */
 public class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -208,9 +208,6 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
         }
 
         BlogCalendar blogCalendar = new BlogCalendar(calendar, calendarUrl, _locale);
-        blogCalendar.setCurrentMonth(currentMonth);
-        blogCalendar.setCurrentDay(currentDay);
-        blogCalendar.setCurrentYear(currentYear);
         blogCalendar.setRequestedDateKey(requestedDateKey);
 
         context.put(BLOJSOM_CALENDAR, blogCalendar);
