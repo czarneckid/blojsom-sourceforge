@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -55,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.50 2004-12-17 16:45:27 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.51 2005-01-04 17:32:05 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1318,7 +1319,17 @@ public class BlojsomUtils implements BlojsomConstants {
                 FileChannel fcin = fis.getChannel();
                 FileChannel fcout = fos.getChannel();
 
-                fcin.transferTo(0, fcin.size(), fcout);
+                ByteBuffer buf = ByteBuffer.allocateDirect(8192);
+                long size = fcin.size();
+                long n = 0;
+                while (n < size) {
+                    buf.clear();
+                    if (fcin.read(buf) < 0) {
+                        break;
+                    }
+                    buf.flip();
+                    n += fcout.write(buf);
+                }
 
                 fcin.close();
                 fcout.close();
