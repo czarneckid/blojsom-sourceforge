@@ -42,15 +42,20 @@ import java.util.HashMap;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.1 2003-02-26 00:56:15 intabulas Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.2 2003-02-26 01:35:26 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
+    /**
+     * Protocol support for HREF links
+     */
+    private static final String URL_PROTOCOLS = "((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file)";
 
     /**
      * Regular Express to  identify URLs in the entry
      */
-    private static final String URL_REGEX = "(^|[ t\rn])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero):[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
+    private static final String URL_REGEX = "(^|[ t\rn])" + URL_PROTOCOLS
+            +  ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
 
     /**
      * The resulting replace string for formatting the href
@@ -87,7 +92,7 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            _logger.info("href'ing any hyperlinks in title and body");
+            _logger.info("Converting plain text URLs to HTML HREFs");
 
             entry.setTitle(entry.getTitle().replaceAll(URL_REGEX, HREF_EXPRESSION));
             entry.setDescription(entry.getDescription().replaceAll(URL_REGEX, HREF_EXPRESSION));
