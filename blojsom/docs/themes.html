@@ -33,9 +33,9 @@ sheets that tell blojsom how to render a different presentation. Creating new th
 
 <p class="weblogtitle">installing blojsom themes</a></p>
 <p/>
-Starting with release 1.7, blojsom ships with an alternate theme called <b>SecondWave</b>. For those who care, the name is
+Starting with blojsom 1.7, blojsom ships with an alternate theme called <b>SecondWave</b>. For those who care, the name is
 a pun on the fact that it's the 2nd template for blojsom. SecondWave is a
-Velocity only template.<p/>
+Velocity-only template.<p/>
 Here is a <a href="takingout_secondwave.png">screenshot</a> of SecondWave in action<p/>
 To install the template simply follow these steps:<p/>
 1. Copy the all SecondWave files (secondwave*.vm) from <i>$BLOJSOM_INSTALL_DIR</i>/themes/secondwave to your
@@ -50,7 +50,7 @@ All that is left to do is tell blojsom to use the new template.
 <p class="weblogtitle">configuring the active theme</a></p>
 <p/>
 All you need to do to enable your template is to edit your <i>/WEB-INF/flavor.properties</i> and edit the value for the html flavor<p>
-As an example, for SecondWave the line should read: <pre>html=secondwave.vm, text/html</pre><p/>
+As an example, for SecondWave the line should read: <pre>html=secondwave.vm, text/html;chartset=UTF-8</pre><p/>
 That's it, your blog has a brand new look!
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
