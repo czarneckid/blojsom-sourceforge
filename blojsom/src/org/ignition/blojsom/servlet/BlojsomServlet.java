@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.63 2003-04-01 02:01:41 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.64 2003-04-05 18:10:48 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -373,6 +373,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             String pluginChainMapKey = flavor + "." + BLOJSOM_PLUGIN_CHAIN;
             if (_pluginChainMap.containsKey(pluginChainMapKey)) {
                 pluginChain = (String[]) _pluginChainMap.get(pluginChainMapKey);
+            } else {
+                pluginChain = (String[]) _pluginChainMap.get(BLOJSOM_PLUGIN_CHAIN);
             }
         }
 
