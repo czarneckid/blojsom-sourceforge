@@ -99,7 +99,7 @@
                 <td>URL: </td><td><input type="text" name="authorURL" value=""/></td>
             </tr>
             <tr>
-                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="5" columns="120"></textarea></td>
+                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
             </tr>
             <p />
             <tr>
