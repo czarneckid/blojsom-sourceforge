@@ -33,8 +33,8 @@
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions.jar"/>
     <property name="templates.jar" value="${name}-templates.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
-    
-    
+
+
 
 
     <!-- Add-on properties -->
@@ -121,7 +121,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${core.jar}" basedir="${compile.dir}" />
+        <jar file="${core.jar}" basedir="${compile.dir}"/>
 
         <!-- Plugins -->
         <delete dir="${compile.dir}"/>
@@ -133,7 +133,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${plugins.jar}" basedir="${compile.dir}" />
+        <jar file="${plugins.jar}" basedir="${compile.dir}"/>
 
         <!-- Extensions -->
         <delete dir="${compile.dir}"/>
@@ -145,7 +145,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${extensions.jar}" basedir="${compile.dir}" />
+        <jar file="${extensions.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
     </target>
 
@@ -170,7 +170,7 @@
         </javac>
         <javac srcdir="${extensions.src.dir}"
             destdir="${compile.dir}"
-        debug="${debug}"
+            debug="${debug}"
             deprecation="${deprecation}"
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
@@ -198,7 +198,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${addon.core.jar}" basedir="${compile.dir}" />
+        <jar file="${addon.core.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
 
         <!-- Add-on plugins -->
@@ -211,7 +211,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${addon.plugins.jar}" basedir="${compile.dir}" />
+        <jar file="${addon.plugins.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
 
         <!-- Add-on extensions -->
@@ -224,7 +224,7 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${addon.extensions.jar}" basedir="${compile.dir}" />
+        <jar file="${addon.extensions.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
     </target>
 
@@ -360,45 +360,42 @@
             </zipfileset>
         </zip>
     </target>
-    
-    
-    
-    
+
+
+
+
     <!-- deploy the site -->
-     <target name="deploysite"
-  		 >
-  		
-   <!-- property to build and deploy the forrest site -->
-    <property name="forrest.site.dir" location="build/site"/>
-    <property name="forrest.deployer.name" value="${user.name}"/>
- 
-    <property name="forrest.site.hostname" value="shell.sf.net"/>
-    <property name="forrest.site.remotedir" value="/home/groups/b/bl/blojsom/htdocs/"/>
-    
-    <property name="forrest.site.work.dir" value="build/work-site"/>
-    <delete dir="${forrest.site.work.dir}"/>
-    <mkdir dir="${forrest.site.work.dir}"/>
+    <target name="deploysite">
 
-    <property name="forrest.site.tar.path.and.name" value="${forrest.site.work.dir}/${name}-site"/>
+        <!-- property to build and deploy the forrest site -->
+        <property name="forrest.site.dir" location="build/site"/>
+        <property name="forrest.deployer.name" value="${user.name}"/>
 
-    <tar tarfile="${forrest.site.tar.path.and.name}.tar" basedir="${forrest.site.dir}"/>
-    <gzip zipfile="${forrest.site.tar.path.and.name}.tar.gz" src="${forrest.site.tar.path.and.name}.tar"/>
-    <delete file="${forrest.site.tar.path.and.name}.tar"/>
+        <property name="forrest.site.hostname" value="shell.sf.net"/>
+        <property name="forrest.site.remotedir" value="/home/groups/b/bl/blojsom/htdocs/"/>
 
-    <exec dir="${forrest.site.work.dir}" executable="scp">
-      <arg value="${name}-site.tar.gz"/>
-      <arg value="${forrest.deployer.username}@${forrest.site.hostname}:${forrest.site.remotedir}"/>
-    </exec>
+        <property name="forrest.site.work.dir" value="build/work-site"/>
+        <delete dir="${forrest.site.work.dir}"/>
+        <mkdir dir="${forrest.site.work.dir}"/>
 
-    <exec dir="." executable="ssh">
-      <arg line="-n ${forrest.site.hostname} -l ${forrest.deployer.username} 'cd ${forrest.site.remotedir};gunzip ${name}-site.tar.gz;tar xUvf ${name}-site.tar;chgrp -R ${name} *;chmod -R g+rwX *;rm ${name}-site.tar'"/>
-    </exec>
+        <property name="forrest.site.tar.path.and.name" value="${forrest.site.work.dir}/${name}-site"/>
 
-    <delete file="${forrest.site.tar.path.and.name}.tar.gz"/>
+        <tar tarfile="${forrest.site.tar.path.and.name}.tar" basedir="${forrest.site.dir}"/>
+        <gzip zipfile="${forrest.site.tar.path.and.name}.tar.gz" src="${forrest.site.tar.path.and.name}.tar"/>
+        <delete file="${forrest.site.tar.path.and.name}.tar"/>
 
-  </target>
-    
-    
+        <exec dir="${forrest.site.work.dir}" executable="scp">
+            <arg value="${name}-site.tar.gz"/>
+            <arg value="${forrest.deployer.username}@${forrest.site.hostname}:${forrest.site.remotedir}"/>
+        </exec>
+
+        <exec dir="." executable="ssh">
+            <arg line="-n ${forrest.site.hostname} -l ${forrest.deployer.username} 'cd ${forrest.site.remotedir};gunzip ${name}-site.tar.gz;tar xUvf ${name}-site.tar;chgrp -R ${name} *;chmod -R g+rwX *;rm ${name}-site.tar'"/>
+        </exec>
+
+        <delete file="${forrest.site.tar.path.and.name}.tar.gz"/>
+
+    </target>
 
     <!-- &forrest-targets; -->
 
