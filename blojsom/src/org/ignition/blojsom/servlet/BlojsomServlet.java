@@ -44,6 +44,7 @@ import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -60,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.77 2003-05-14 00:11:10 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.78 2003-05-22 04:51:27 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -137,7 +138,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      *
      * @param servletConfig Servlet configuration information
      */
-    private void configureFlavors(ServletConfig servletConfig) {
+    private void configureFlavors(ServletConfig servletConfig) throws ServletException {
         _flavors = new HashMap();
         _flavorToTemplateMap = new HashMap();
         _flavorToContentTypeMap = new HashMap();
@@ -158,6 +159,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         } catch (IOException e) {
             _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
@@ -166,7 +168,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      *
      * @param servletConfig Servlet configuration information
      */
-    private void configureAuthorization(ServletConfig servletConfig) {
+    private void configureAuthorization(ServletConfig servletConfig) throws ServletException {
         Map _authorization = new HashMap();
 
         String authConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
@@ -188,6 +190,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         } catch (IOException e) {
             _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
@@ -198,7 +201,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      *
      * @param servletConfig Servlet configuration information
      */
-    private void configureDispatchers(ServletConfig servletConfig) {
+    private void configureDispatchers(ServletConfig servletConfig) throws ServletException {
         String templateConfiguration = servletConfig.getInitParameter(BLOG_DISPATCHER_MAP_CONFIGURATION_IP);
         _templateDispatchers = new HashMap();
         Properties templateMapProperties = new Properties();
@@ -212,7 +215,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 String templateDispatcherClass = templateMapProperties.getProperty(templateExtension);
                 Class dispatcherClass = Class.forName(templateDispatcherClass);
                 GenericDispatcher dispatcher = (GenericDispatcher) dispatcherClass.newInstance();
-                dispatcher.init(servletConfig);
+                dispatcher.init(servletConfig, _blog);
                 _templateDispatchers.put(templateExtension, dispatcher);
                 _logger.debug("Added template dispatcher: " + templateDispatcherClass);
             }
@@ -224,6 +227,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             _logger.error(e);
         } catch (IOException e) {
             _logger.error(e);
+            throw new ServletException(e);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
@@ -232,7 +239,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      *
      * @param servletConfig Servlet configuration information
      */
-    private void configurePlugins(ServletConfig servletConfig) {
+    private void configurePlugins(ServletConfig servletConfig) throws ServletException {
         String pluginConfiguration = servletConfig.getInitParameter(BLOG_PLUGIN_CONFIGURATION_IP);
         _plugins = new HashMap();
         _pluginChainMap = new HashMap();
@@ -268,6 +275,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         } catch (IOException e) {
             _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
