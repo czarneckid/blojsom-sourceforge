@@ -39,8 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.Trackback;
-import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.plugin.common.IPBanningPlugin;
 import org.ignition.blojsom.plugin.email.EmailUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -56,9 +56,9 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.22 2003-05-15 00:47:18 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.23 2003-06-04 01:53:17 czarneckid Exp $
  */
-public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
+public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
     /**
      * Request parameter to indicate a trackback "tb"
@@ -151,6 +151,13 @@ public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (entries.length == 0) {
+            return entries;
+        }
+
+        // Check for a trackback from a banned IP address
+        String remoteIPAddress = httpServletRequest.getRemoteAddr();
+        if (isIPBanned(remoteIPAddress)) {
+            _logger.debug("Attempted trackback from banned IP address: " + remoteIPAddress);
             return entries;
         }
 
