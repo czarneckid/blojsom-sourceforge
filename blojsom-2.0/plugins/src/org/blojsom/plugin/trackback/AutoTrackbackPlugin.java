@@ -64,7 +64,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.9 2004-01-17 19:20:43 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.10 2004-04-18 20:37:48 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -164,6 +164,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                                 // Open a connection to the trackback URL and read its input
                                                 HttpURLConnection trackbackUrlConnection = (HttpURLConnection) trackbackUrl.openConnection();
                                                 trackbackUrlConnection.setRequestMethod("POST");
+                                                trackbackUrlConnection.setRequestProperty("Content-Encoding", UTF8);
                                                 trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                                                 trackbackUrlConnection.setDoOutput(true);
                                                 trackbackUrlConnection.connect();

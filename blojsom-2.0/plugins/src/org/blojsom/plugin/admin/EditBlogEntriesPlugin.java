@@ -60,7 +60,7 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.25 2004-04-01 03:11:27 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.26 2004-04-18 20:37:58 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -598,6 +598,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     // Open a connection to the trackback URL and read its input
                     HttpURLConnection trackbackUrlConnection = (HttpURLConnection) trackbackUrl.openConnection();
                     trackbackUrlConnection.setRequestMethod("POST");
+                    trackbackUrlConnection.setRequestProperty("Content-Encoding", UTF8);
                     trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     trackbackUrlConnection.setDoOutput(true);
                     trackbackUrlConnection.connect();
