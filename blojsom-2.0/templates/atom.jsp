@@ -18,7 +18,7 @@
     <title mode="escaped"><%= blogInformation.getBlogName() %></title>
     <link rel="alternate" type="text/html" href="<%= blogInformation.getBlogURL() %>"/>
 
-    <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/<%= blogUser %>" rel="service.post" title="<%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
+    <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/<%= blogUser %>/" rel="service.post" title="<%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
 
     <modified><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE_UTC) %></modified>
 
