@@ -59,7 +59,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.13 2003-03-27 03:26:27 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.14 2003-03-27 03:57:20 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -152,6 +152,10 @@ public class TrackbackPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        if (entries.length == 0) {
+            return entries;
+        }
+
         String category = httpServletRequest.getPathInfo();
         if (category == null) {
             category = "/";

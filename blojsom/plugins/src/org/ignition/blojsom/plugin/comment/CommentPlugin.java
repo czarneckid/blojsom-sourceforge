@@ -61,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.18 2003-03-27 03:23:03 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.19 2003-03-27 03:57:11 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -190,6 +190,10 @@ public class CommentPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        if (entries.length == 0) {
+            return entries;
+        }
+
         // Comment handling
         if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blogCommentsEnabled.booleanValue()) {
             String author = httpServletRequest.getParameter(AUTHOR_PARAM);
