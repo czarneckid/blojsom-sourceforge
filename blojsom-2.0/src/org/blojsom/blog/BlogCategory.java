@@ -46,7 +46,7 @@ import java.util.*;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.7 2005-01-05 02:32:39 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.8 2005-01-18 03:29:55 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -106,19 +106,19 @@ public abstract class BlogCategory implements Comparable {
     }
 
     /**
-     * Return the category name encoded
+     * Return the category name encoded for a link
      *
-     * @return Category name encoded as UTF-8
+     * @return Category name encoded as UTF-8 with preserved "/" and "+" characters
      * @since blojsom 2.08
      */
     public String getEncodedCategory() {
-        return BlojsomUtils.urlEncode(_category);
+        return BlojsomUtils.urlEncodeForLink(_category);
     }
 
     /**
      * Return the category URL encoded for a link
      *
-     * @return Category URL encoded as UTF-8 with preserved "/" characters
+     * @return Category URL encoded as UTF-8 with preserved "/" characters and "+" characters
      * @see {@link BlojsomUtils#urlEncodeForLink(java.lang.String)}
      * @since blojsom 2.14
      */
