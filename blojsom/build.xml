@@ -12,13 +12,15 @@
     <property name="war.file" value="${distro.dir}/${name}.war"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="src.dir" value="${basedir}/src"/>
-    <property name="webinf.dir" value="${basedir}/war/WEB-INF"/>
+    <property name="war.dir" value="${basedir}/war"/>
+    <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
     <property name="build.dir" value="${webinf.dir}/classes"/>
     <property name="javadoc.dir" value="${basedir}/api/blojsom"/>
+    <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
-    <property name="templates.jar" value="blojsom-templates.jar"/>
+    <property name="templates.jar" value="${name}-templates.jar"/>
 
     <property name="debug" value="on"/>
     <property name="deprecation" value="on"/>
@@ -29,7 +31,7 @@
     <!-- =================================================================== -->
     <path id="build.classpath">
         <fileset dir="${lib.dir}">
-            <include name="**/*servlet*.jar"/>
+            <include name="**/*.jar"/>
         </fileset>
         <fileset dir="${webinf.lib.dir}">
             <include name="*.jar"/>
@@ -37,7 +39,7 @@
     </path>
 
     <!-- =================================================================== -->
-    <!-- Prepares the build directory                                        -->
+    <!-- Prepares the build process                                          -->
     <!-- =================================================================== -->
     <target name="prepare">
         <tstamp/>
@@ -81,7 +83,7 @@
     <!-- =================================================================== -->
     <target name="war" depends="clean,compile">
         <mkdir dir="${distro.dir}"/>
-        <jar jarfile="${war.file}" basedir="war"/>
+        <jar jarfile="${war.file}" basedir="${war.dir}"/>
     </target>
 
     <!-- =================================================================== -->
@@ -99,6 +101,7 @@
             sourcepath="${src.dir}">
             <classpath refid="build.classpath"/>
         </javadoc>
+        <zip file="${javadoc.zip}" basedir="${javadoc.dir}"/>
     </target>
 </project>
 
