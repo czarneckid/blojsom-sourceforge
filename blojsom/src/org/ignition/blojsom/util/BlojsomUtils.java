@@ -69,6 +69,19 @@ public class BlojsomUtils implements BlojsomConstants {
         return sdf.format(date);
     }
 
+
+    /**
+     * Return a date in ISO 8601 style
+     * http://www.w3.org/TR/NOTE-datetime
+     *
+     * @param date Date
+     * @return Date formatted as ISO 8601
+     */
+    public static String getISO8601Date(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+        return sdf.format(date);
+    }
+
     /**
      * Return a file filter which takes a list of regular expressions to look for
      *

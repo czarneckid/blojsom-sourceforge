@@ -28,6 +28,12 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
+     * Value under which the date of the bloj will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_DATE = "BLOJSOM_DATE";
+
+    /**
      * Value under which the blog site will be placed
      * (example: on the request for the JSPDispatcher)
      */
@@ -98,4 +104,11 @@ public interface BlojsomConstants {
      * RFC 822 style date format
      */
     public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
+
+    /**
+     * RFC 822 style date format
+     * ISO 8601 [W3CDTF] date format (used in rdf flavor)
+     */
+    public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-DD'T'kk:mmZZZZZ";
+
 }

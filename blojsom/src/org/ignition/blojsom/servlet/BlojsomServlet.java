@@ -284,9 +284,14 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
+        String _blogdate;
         // If we have entries, construct a last modified on the most recent
+        // Additional  set the blog date
         if (entries != null && entries.length > 0) {
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, entries[0].getLastModified());
+            _blogdate = entries[0].getISO8601Date();
+        } else {
+            _blogdate = BlojsomUtils.getRFC822Date( new Date());
         }
 
         // Setup the context for the dispatcher
@@ -294,6 +299,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_BLOG, _blog);
         context.put(BLOJSOM_SITE_URL, blogSiteURL);
         context.put(BLOJSOM_ENTRIES, entries);
+        context.put(BLOJSOM_DATE, _blogdate);
         if (requestedCategory.equals("/")) {
             context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
         } else {

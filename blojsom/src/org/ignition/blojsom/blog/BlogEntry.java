@@ -99,6 +99,16 @@ public class BlogEntry {
     }
 
     /**
+     * Return an ISO 8601 style date
+     * http://www.w3.org/TR/NOTE-datetime
+     *
+     * @return Date formatted in ISO 8601 format
+     */
+    public String getISO8601Date() {
+        return BlojsomUtils.getISO8601Date(_entryDate);
+    }
+
+    /**
      * Title of the blog entry
      *
      * @return Blog title
