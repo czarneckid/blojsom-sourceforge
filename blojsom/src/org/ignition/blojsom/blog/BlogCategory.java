@@ -31,6 +31,12 @@ package org.ignition.blojsom.blog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.util.BlojsomConstants;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.Enumeration;
 
 /**
  * BlogCategory
@@ -44,6 +50,10 @@ public class BlogCategory implements Comparable {
     private String _categoryURL;
     private String _category;
     private int _numOfEntries = 0;
+    private Map _metadata = null;
+    private String _description = null;
+    private String _name = null;
+
 
     /**
      * Create a new BlogCategory
@@ -136,10 +146,85 @@ public class BlogCategory implements Comparable {
     /**
      * Returns the category name
      *
-     * @see #getCategory
+     * @see #getCategory()
      * @return Category name
      */
     public String toString() {
         return _category;
+    }
+
+    /**
+     * Sets the description of this category
+     *
+     * @param desc The new description of the category
+     */
+    public void setDescription(String desc) {
+        _description = desc;
+        if (_metadata == null) {
+            _metadata = new HashMap(5);
+        }
+        _metadata.put(BlojsomConstants.DESCRIPTION_KEY, _description);
+    }
+
+    /**
+     * Retrieves the description of this category
+     *
+     * @return The description of the category
+     */
+    public String getDescription() {
+        return _description;
+    }
+
+    /**
+     * Sets the name of this category
+     *
+     * @param desc The new description of the category
+     */
+    public void setName(String name) {
+        _name = name;
+        if (_metadata == null) {
+            _metadata = new HashMap(5);
+        }
+        _metadata.put(BlojsomConstants.NAME_KEY, _name);
+    }
+
+    /**
+     * Retrieves the name of this category
+     *
+     * @return The name of the category
+     */
+    public String getName() {
+        return _name;
+    }
+
+    /**
+     * Sets the meta-data associated with this category
+     *
+     * @param data The properties to be associated with the category as meta-data
+     */
+    public void setMetaData(Properties data) {
+        String s = null;
+        Enumeration keys = data.keys();
+        Enumeration vals = data.elements();
+        if (_metadata == null) {
+            _metadata = new HashMap(5);
+        }
+        while (keys.hasMoreElements()) {
+            _metadata.put(keys.nextElement(), vals.nextElement());
+        }
+
+        s = (String) _metadata.get(BlojsomConstants.DESCRIPTION_KEY);
+        if ((s != null) && (!"".equals(s))) {
+            _description = s;
+        }
+    }
+
+    /**
+     * Retrieves the meta-data associated with this category
+     *
+     * @return The properties associated with the category as meta-data, or null if no metadata exists
+     */
+    public HashMap getMetaData() {
+        return (HashMap) _metadata;
     }
 }
