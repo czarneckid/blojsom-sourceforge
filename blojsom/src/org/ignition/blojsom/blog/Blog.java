@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.28 2003-03-15 17:10:14 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.29 2003-03-15 17:34:35 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -143,7 +143,7 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_ENTRIES_DISPLAY_IP, new Integer(_blogDisplayEntries));
 
         String blogDefaultCategoryMapping = blogConfiguration.getProperty(BLOG_DEFAULT_CATEGORY_MAPPING_IP);
-        if (blogDefaultCategoryMapping == null) {
+        if (blogDefaultCategoryMapping == null || "".equals(blogDefaultCategoryMapping)) {
             _blogDefaultCategoryMappings = null;
             _logger.debug("No mapping supplied for the default category '/'");
         } else {
@@ -403,23 +403,22 @@ public class Blog implements BlojsomConstants {
      * retrieve all entries under the given category for that year, month, and day.
      *
      * @param requestedCategory Requested category
+     * @param flavor Flavor
      * @param year Year to retrieve entries for
      * @param month Month to retrieve entries for
      * @param day Day to retrieve entries for
      * @return Blog entry array containing the list of blog entries for the given category, year, month, and day,
      * or <code>BlogEntry[0]</code> if there are no entries
      */
-    public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String year, String month, String day) {
+    public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String flavor, String year, String month, String day) {
         BlogEntry[] blogEntries = null;
         ArrayList updatedEntryList = new ArrayList();
         String requestedDateKey = year + month + day;
 
-        if ((requestedCategory == null) || ("".equals(requestedCategory))) {
-            blogEntries =
-                    getEntriesAllCategories(_blogDefaultCategoryMappings, -1);
+        if ((requestedCategory == null) || ("/".equals(requestedCategory.getCategory()))) {
+            blogEntries = getEntriesAllCategories(flavor);
         } else {
-            blogEntries =
-                    getEntriesForCategory(requestedCategory, -1);
+            blogEntries = getEntriesForCategory(requestedCategory, -1);
         }
 
         if (blogEntries == null) {
