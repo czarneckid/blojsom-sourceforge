@@ -49,7 +49,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.3 2003-03-26 05:06:12 czarneckid Exp $
+ * @version $Id: CalendarPlugin.java,v 1.4 2003-03-26 05:22:47 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -76,17 +76,24 @@ public class CalendarPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
+        // Default to the Current Month and Year
         Calendar calendar = Calendar.getInstance();
-
-        // Default to the Current Month
         calendar.setTime(new Date());
         int currentmonth = calendar.get(Calendar.MONTH);
+        int currentyear = calendar.get(Calendar.YEAR);
 
-        // If one is seen on the URL, either by design or calnav params, use it!
+        // If a  Month is seen on the URL, either by design or calnav params, use it!
         String navmonth = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
         if (navmonth != null) {
             currentmonth = new Integer(navmonth).intValue();
         }
+
+        // If a Year is seen on the URL, either by design or calnav params, use it!
+        String navyear = httpServletRequest.getParameter(BlojsomConstants.YEAR_PARAM);
+        if (navyear != null) {
+            currentyear = new Integer(navyear).intValue();
+        }
+
 
         Boolean[] dates = new Boolean[calendar.getMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(dates, Boolean.FALSE);
@@ -95,8 +102,15 @@ public class CalendarPlugin implements BlojsomPlugin {
             for (int x = 0; x < entries.length; x++) {
                 BlogEntry entry = entries[x];
                 calendar.setTime(entry.getDate());
-                if (calendar.get(Calendar.MONTH) == currentmonth) {
+                int entrymonth = calendar.get(Calendar.MONTH);
+                int entryear = calendar.get(Calendar.YEAR);
+                if ((entrymonth == currentmonth) && (entryear == currentyear)) {
                     dates[calendar.get(Calendar.DAY_OF_MONTH)] = Boolean.TRUE;
+                }
+
+                // The MB Filter ;) Break on dates EARLIER than current month/year
+                if ((entrymonth < currentmonth) && (entryear <= currentyear)) {
+                    break;
                 }
             }
         }
