@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.23 2004-04-18 22:44:02 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.24 2004-04-23 22:13:50 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -124,7 +124,7 @@ public class BlojsomUtils implements BlojsomConstants {
     };
 
     /**
-     * UTC format                                             Ä
+     * UTC format
      * SimpleDateFormats are not threadsafe, but we should not need more than one per
      * thread.
      */
@@ -571,7 +571,7 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String getFirstLine(String input, int length) {
         String result;
-        String lineSeparator = System.getProperty("line.separator");
+        String lineSeparator = LINE_SEPARATOR;
         int titleIndex = input.indexOf(lineSeparator);
         if (titleIndex == -1) {
             result = input.substring(0, length) + "...";
