@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.18 2003-12-16 17:13:30 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.19 2003-12-17 20:04:26 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -281,12 +281,16 @@ public interface BlojsomConstants {
 
     public static final String BLOJSOM_CONFIGURATION_IP = "blojsom-configuration";
 
+    // Initialization parameters from web.xml
+    public final static String BLOJSOM_FLAVOR_CONFIGURATION_IP = "flavor-configuration";
+    public final static String BLOJSOM_PLUGIN_CONFIGURATION_IP = "plugin-configuration";
+
     // blojsom initialization parameters from blojsom.properties
     public static final String BLOJSOM_USERS_IP = "blojsom-users";
     public static final String BLOJSOM_DEFAULT_USER_IP = "blojsom-default-user";
     public static final String BLOJSOM_FETCHER_IP = "blojsom-fetcher";
     public static final String BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP = "blojsom-configuration-base-directory";
-    public static final String BLOJSOM_INSTALLATION_DIRECTORY = "blojsom-installation-directory";
+    public static final String BLOJSOM_INSTALLATION_DIRECTORY_IP = "blojsom-installation-directory";
     public static final String BLOJSOM_TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
     public static final String BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY = "/WEB-INF/";
     public static final String BLOJSOM_DEFAULT_TEMPLATES_DIRECTORY = "/templates";
@@ -319,4 +323,7 @@ public interface BlojsomConstants {
     public static final String BLOG_FILE_ENCODING_IP = "blog-file-encoding";
     public static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
     public static final String BLOG_DEFAULT_FLAVOR_IP = "blog-default-flavor";
+
+    // Other generic properties
+    public static final String ADMINISTRATORS_IP = "administrators";
 }
