@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.4 2003-09-08 16:20:21 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.5 2003-09-09 00:41:06 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -735,7 +735,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return The Hash as Hex String
      */
     public static String digestString(String data) {
-        return digestString("MD5");
+        return digestString(data, "MD5");
     }
 
     /**
