@@ -57,7 +57,7 @@ import java.io.FileOutputStream;
  * 
  * @author czarnecki
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.2 2003-12-18 06:33:41 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.3 2003-12-18 17:42:06 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -187,10 +187,11 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * Write out the authorization configuration information for a particular user
      *
-     * @param authorizationMap
-     * @param user
-     * @throws IOException
+     * @param authorizationMap Authorization usernames/passwords
+     * @param user User id
+     * @throws IOException If there is an error writing the authorization file
      */
     private void writeAuthorizationConfiguration(Map authorizationMap, String user) throws IOException {
         File authorizationFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + user + "/" + _authorizationConfiguration);
