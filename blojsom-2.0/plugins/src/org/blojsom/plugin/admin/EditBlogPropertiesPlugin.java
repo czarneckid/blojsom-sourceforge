@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.2 2003-10-22 02:48:30 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.3 2003-10-23 00:15:43 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -101,27 +101,16 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
         // Setup default objects
         Blog blog = user.getBlog();
-
-        Map flavorMap = user.getFlavors();
-        Iterator flavorKeys = flavorMap.keySet().iterator();
-        Map categoryMapping = new HashMap();
-        while (flavorKeys.hasNext()) {
-            String key = (String) flavorKeys.next();
-            if (blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP) != null) {
-                categoryMapping.put(key, blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP));
-            }
-        }
-        context.put(BLOJSOM_PLUGIN_CATEGORY_MAP, categoryMapping);
+        Map flavorMap;
+        Iterator flavorKeys;
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action == null || "".equals(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            return entries;
         } else if (PAGE_ACTION.equals(action)) {
             _logger.debug("User requested edit page");
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
-            return entries;
         } else if (EDIT_BLOG_PROPERTIES_ACTION.equals(action)) {
             _logger.debug("User requested edit action");
 
@@ -160,6 +149,21 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-file-encoding", httpServletRequest);
             blog.setBlogFileEncoding(blogPropertyValue);
 
+            // Set the blog default category mappings
+            flavorMap = user.getFlavors();
+            flavorKeys = flavorMap.keySet().iterator();
+            String key;
+            String flavorCategoryMapping;
+            while (flavorKeys.hasNext()) {
+                key = (String) flavorKeys.next();
+                flavorCategoryMapping = BlojsomUtils.getRequestValue(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP, httpServletRequest);
+                if (flavorCategoryMapping != null) {
+                    blog.setBlogDefaultCategoryMappingForFlavor(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP, flavorCategoryMapping);
+                }
+            }
+
+            user.setBlog(blog);
+
             // Request that we go back to the edit blog properties page
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
 
@@ -178,9 +182,21 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             } catch (IOException e) {
                 _logger.error(e);
             }
-
-            return entries;
         }
+
+        flavorMap = user.getFlavors();
+        flavorKeys = flavorMap.keySet().iterator();
+        Map categoryMapping = new HashMap();
+        while (flavorKeys.hasNext()) {
+            String key = (String) flavorKeys.next();
+            if (blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP) != null) {
+                categoryMapping.put(key, blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP));
+            } else {
+                categoryMapping.put(key, "");
+            }
+        }
+
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP, categoryMapping);
 
         return entries;
     }

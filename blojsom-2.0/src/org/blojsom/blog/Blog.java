@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.6 2003-10-22 02:43:35 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.7 2003-10-23 00:17:34 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -182,8 +182,7 @@ public class Blog implements BlojsomConstants {
                 _blogDefaultCategoryMappings = null;
             }
         }
-        _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, _blogDefaultCategoryMappings);
-        _blogProperties.put(DEFAULT_FLAVOR_HTML + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP, blogDefaultCategoryMapping);
+        _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, blogDefaultCategoryMapping);
 
         _blogCommentsDirectory = blogConfiguration.getProperty(BLOG_COMMENTS_DIRECTORY_IP);
         if ((_blogCommentsDirectory == null) || ("".equals(_blogCommentsDirectory))) {
@@ -217,8 +216,6 @@ public class Blog implements BlojsomConstants {
         // Add the blog comments directory to the blog directory filter
         if (blogDirectoryFilter == null) {
             blogDirectoryFilter = commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
-        } else {
-            blogDirectoryFilter = blogDirectoryFilter + ", " + commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
         }
 
         _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
@@ -701,5 +698,17 @@ public class Blog implements BlojsomConstants {
     public void setBlogFileEncoding(String blogFileEncoding) {
         _blogFileEncoding = blogFileEncoding;
         _blogProperties.put(BLOG_FILE_ENCODING_IP, blogFileEncoding);
+    }
+
+    /**
+     * Set the new blog default category mapping for a particular flavor
+     *
+     * @param flavorKey Flavor key (must end in blog-default-category-mapping)
+     * @param blogDefaultCategoryMapping New blog category mapping
+     */
+    public void setBlogDefaultCategoryMappingForFlavor(String flavorKey, String blogDefaultCategoryMapping) {
+        if (flavorKey.endsWith(BLOG_DEFAULT_CATEGORY_MAPPING_IP)) {
+            _blogProperties.put(flavorKey, blogDefaultCategoryMapping);
+        }
     }
 }
