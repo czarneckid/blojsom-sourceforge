@@ -32,13 +32,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.plugin.common;
+package org.blojsom.plugin.statistics;
 
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.util.BlojsomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,25 +47,25 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.Date;
 
 /**
- * Word Count plugin.
+ * Days since posted plugin
  *
  * @author David Czarnecki
- * @since blojsom 2.15
- * @version $Id: WordCountPlugin.java,v 1.2 2004-05-27 00:40:18 czarneckid Exp $
+ * @since blojsom 2.16
+ * @version $Id: DaysSincePostedPlugin.java,v 1.1 2004-07-05 18:53:20 czarneckid Exp $
  */
-public class WordCountPlugin implements BlojsomPlugin {
+public class DaysSincePostedPlugin implements BlojsomPlugin {
 
-    private Log _logger = LogFactory.getLog(WordCountPlugin.class);
+    private Log _logger = LogFactory.getLog(DaysSincePostedPlugin.class);
 
-    public static final String BLOJSOM_PLUGIN_WORD_COUNT_METADATA = "blojsom-plugin-word-count";
+    public static final String BLOJSOM_PLUGIN_DAYS_SINCE_POSTED_METADATA = "blojsom-plugin-days-since-posted";
 
     /**
      * Default constructor.
      */
-    public WordCountPlugin() {
+    public DaysSincePostedPlugin() {
     }
 
     /**
@@ -76,7 +77,7 @@ public class WordCountPlugin implements BlojsomPlugin {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        _logger.debug("Initialized Word Count plugin");
+        _logger.debug("Initialized Days Since Posted plugin");
     }
 
     /**
@@ -92,20 +93,14 @@ public class WordCountPlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        Date today = new Date();
+
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            Map entryMetaData = entry.getMetaData();
-
-            if (entry.getDescription() == null) {
-                entryMetaData.put(BLOJSOM_PLUGIN_WORD_COUNT_METADATA, new Integer(0));
-            } else {
-                String entryWithoutTags = entry.getDescription();
-                entryWithoutTags = entryWithoutTags.replaceAll("\\<.*?\\>", "");
-                StringTokenizer tokenizer = new StringTokenizer(entryWithoutTags);
-                entryMetaData.put(BLOJSOM_PLUGIN_WORD_COUNT_METADATA, new Integer(tokenizer.countTokens()));
-            }
-
-            entry.setMetaData(entryMetaData);
+            Map metaData = entry.getMetaData();
+            Integer daysSincePosted = new Integer(BlojsomUtils.daysBetweenDates(entry.getDate(), today));
+            metaData.put(BLOJSOM_PLUGIN_DAYS_SINCE_POSTED_METADATA, daysSincePosted);
+            entry.setMetaData(metaData);
         }
 
         return entries;
