@@ -47,6 +47,8 @@ import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.elements.Entry;
+import org.intabulas.sandler.Sandler;
+import org.intabulas.sandler.exceptions.FeedMarshallException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -66,7 +68,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.3 2003-09-07 20:10:57 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.4 2003-09-07 20:23:08 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -206,7 +208,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (isAuthorized(httpServletRequest)) {
 
             String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
-            String category = BlojsomUtils.normalize(httpServletRequest.getPathInfo());
+            String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
             String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
 
@@ -271,7 +273,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
         if (isAuthorized(httpServletRequest)) {
-            String category = BlojsomUtils.normalize(httpServletRequest.getPathInfo());
+            String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
             String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
             _logger.info("AtomAPI POST Called =====[ SUPPORTED ]=====");
@@ -290,9 +292,49 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             }
 
 
+            String result = null;
+
+            // Quick verify that the category is valid
+            File blogCategory = getBlogCategoryDirectory(category);
+            if (blogCategory.exists() && blogCategory.isDirectory()) {
+
+                try {
+                    Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream());
+
+                    String filename = getBlogEntryFilename(atomEntry.getContent(0).getBody());
+                    String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
+                    String postid = category + "?" + PERMALINK_PARAM + "=" + filename;
 
 
+                    File sourceFile = new File(outputfile);
+                    BlogEntry entry = _fetcher.newBlogEntry();
+                    Map attributeMap = new HashMap();
+                    Map blogEntryMetaData = new HashMap();
+                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
+                    entry.setAttributes(attributeMap);
+                    entry.setCategory(category);
+                    entry.setDescription(atomEntry.getContent(0).getBody());
+                    entry.setDate(atomEntry.getCreated());
+                    entry.setTitle(atomEntry.getTitle());
 
+                    blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, atomEntry.getAuthor().getName());
+                    entry.setMetaData(blogEntryMetaData);
+                    entry.save(_blog);
+                    result = postid;
+
+                    httpServletResponse.setContentType("text/html");
+                    httpServletResponse.setHeader(HEADER_LOCATION, entry.getEscapedLink());
+                    httpServletResponse.setStatus(201);
+                } catch (FeedMarshallException e) {
+                    _logger.error(e.getLocalizedMessage(), e);
+                    httpServletResponse.setStatus(404);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+                    httpServletResponse.setStatus(404);
+                }
+
+
+            }
 
 
         } else {
@@ -354,6 +396,24 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         }
     }
 
+
+    /**
+     * Return a filename appropriate for the blog entry content
+     *
+     * @param content Blog entry content
+     * @return Filename for the new blog entry
+     */
+    protected String getBlogEntryFilename(String content) {
+        String hashable = content;
+
+        if (content.length() > MAX_HASHABLE_LENGTH) {
+            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+        }
+
+        String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
+        String filename = baseFilename + _blogEntryExtension;
+        return filename;
+    }
 
 }
 
