@@ -49,7 +49,7 @@ import java.util.*;
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.1 2003-03-31 04:23:29 intabulas Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.2 2003-03-31 04:37:14 intabulas Exp $
  */
 public class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -189,8 +189,11 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
 
 
             }
-
             _requestedDateKey = year + month + day;
+            _logger.info("Setting Filter Key = " + _requestedDateKey);
+
+        } else {
+            _requestedDateKey = null;
         }
 
         return entries;

@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.8 2003-03-29 18:37:56 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.9 2003-03-31 04:37:14 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -98,7 +98,7 @@ public class BlogCalendar {
      * @return the current month and year as a string
      */
     public String getCaption() {
-        return BlojsomUtils.getFormattedDate(_calendar.getTime(), CalendarPlugin.BLOJSOM_CALENDAR_FORMAT);
+        return BlojsomUtils.getFormattedDate(_calendar.getTime(), AbstractCalendarPlugin.BLOJSOM_CALENDAR_FORMAT);
     }
 
     /**
