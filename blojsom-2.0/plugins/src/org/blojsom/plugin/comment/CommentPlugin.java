@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.24 2004-11-28 17:01:56 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.25 2004-12-03 20:22:46 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -205,6 +205,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
     public static final String BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT = "BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT";
 
     public static final String BLOJSOM_PLUGIN_COMMENT_METADATA = "BLOJSOM_PLUGIN_COMMENT_METADATA";
+
+    public static final String BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY = "BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY";
 
     private Map _ipAddressCommentTimes;
     private BlojsomFetcher _fetcher;
@@ -497,33 +499,38 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                     }
                 }
 
-                BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL,
-                        commentText, _blogCommentsEnabled.booleanValue(), _blogFileExtensions, _blogHome,
-                        _blogCommentsDirectory, _blogFileEncoding, commentMetaData);
+                // Check to see if the comment should be destroyed (not saved) automatically
+                if (!commentMetaData.containsKey(BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY)) {
+                    BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL,
+                            commentText, _blogCommentsEnabled.booleanValue(), _blogFileExtensions, _blogHome,
+                            _blogCommentsDirectory, _blogFileEncoding, commentMetaData);
 
-                // For persisting the Last-Modified time
-                context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
+                    // For persisting the Last-Modified time
+                    context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
-                if (_comment != null) {
-                    List blogComments = entries[0].getComments();
-                    if (blogComments == null) {
-                        blogComments = new ArrayList(1);
+                    if (_comment != null) {
+                        List blogComments = entries[0].getComments();
+                        if (blogComments == null) {
+                            blogComments = new ArrayList(1);
+                        }
+                        blogComments.add(_comment);
+                        entries[0].setComments(blogComments);
+
+                        // Merge the template e-mail
+                        Map emailTemplateContext = new HashMap();
+                        emailTemplateContext.put(BLOJSOM_BLOG, blog);
+                        emailTemplateContext.put(BLOJSOM_USER, user);
+                        emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, _comment);
+                        emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entries[0]);
+
+                        String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
+
+                        if (_blogEmailEnabled.booleanValue()) {
+                            sendCommentEmail(_emailPrefix, title, emailComment, context);
+                        }
                     }
-                    blogComments.add(_comment);
-                    entries[0].setComments(blogComments);
-
-                    // Merge the template e-mail
-                    Map emailTemplateContext = new HashMap();
-                    emailTemplateContext.put(BLOJSOM_BLOG, blog);
-                    emailTemplateContext.put(BLOJSOM_USER, user);
-                    emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, _comment);
-                    emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entries[0]);
-
-                    String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
-
-                    if (_blogEmailEnabled.booleanValue()) {
-                        sendCommentEmail(_emailPrefix, title, emailComment, context);
-                    }
+                } else {
+                    _logger.info("Comment meta-data contained destroy key. Comment was not saved");
                 }
 
                 // If we're asked to remember the person, then add the appropriate cookies
