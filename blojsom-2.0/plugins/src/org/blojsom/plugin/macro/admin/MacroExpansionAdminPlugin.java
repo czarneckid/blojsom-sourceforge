@@ -58,7 +58,7 @@ import java.util.Properties;
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.2 2004-07-13 00:57:34 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.3 2004-09-02 20:06:15 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -139,6 +139,12 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                             String macro = macrosToDelete[i];
                             macros.remove(macro);
                         }
+
+                        try {
+                            writeMacroConfiguration(user.getId(), macroConfiguration, macros);
+                        } catch (IOException e) {
+                            _logger.error(e);
+                        }
                         addOperationResultMessage(context, "Deleted " + macrosToDelete.length + " macros");
                     } else {
                         addOperationResultMessage(context, "No macros selected for deletion");
@@ -153,17 +159,16 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                         if (!macros.containsKey(macroShortName)) {
                             macros.put(macroShortName, macroExpansion);
 
+                            try {
+                                writeMacroConfiguration(user.getId(), macroConfiguration, macros);
+                            } catch (IOException e) {
+                                _logger.error(e);
+                            }
                             addOperationResultMessage(context, "Added macro: " + macroShortName);
                         } else {
                             addOperationResultMessage(context, "Macro short name: " + macroShortName + " already exists");
                         }
                     }
-                }
-
-                try {
-                    writeMacroConfiguration(user.getId(), macroConfiguration, macros);
-                } catch (IOException e) {
-                    _logger.error(e);
                 }
 
                 readMacros(user.getId(), macroConfiguration);
@@ -177,7 +182,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
     /**
      * Read in the macros from the specified configuration file in the user's directory
      *
-     * @param userId User ID
+     * @param userId             User ID
      * @param macroConfiguration Macro configuration file
      * @return Macros as a {@link Map}
      * @throws BlojsomPluginException If there is an error reading in the macros
@@ -206,9 +211,9 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
     /**
      * Write out the macros configuration file for a particular user
      *
-     * @param userId User ID
+     * @param userId             User ID
      * @param macroConfiguration Macro configuration filename
-     * @param macros Map of the macros
+     * @param macros             Map of the macros
      * @throws java.io.IOException If there is an error writing the plugin configuration file
      */
     private void writeMacroConfiguration(String userId, String macroConfiguration, Map macros) throws IOException {
