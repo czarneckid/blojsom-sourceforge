@@ -17,7 +17,7 @@
 #end
 #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
     #if ($blogCategory.getNumberOfEntries() > 0)
-        <a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a><br />
+        <a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()#if ($blogCategory.getDescription()) ($blogCategory.getDescription())#end</a><br />
     #end
 #end
 </body>
