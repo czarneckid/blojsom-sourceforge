@@ -7,6 +7,13 @@
     </developers>
 
     <changes>
+        <release version="2.11" date="Available from CVS">
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="886003">
+                Fixed issue where Conditional GET plugin did not take latest entry comments into account when
+                generating information to check to see if it should or should not send a 304 response.
+            </action>
+        </release>
+        
         <release version="2.10" date="January 26, 2004">
             <action dev="czarneckid" type="update" context="Core">
                 Updated Compression (GZIP) filter code.
