@@ -40,9 +40,9 @@
                 <tr>
                     <td>Blog depth</td> <td><input name="blog-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
                 </tr>
-                #foreach ($flavor in $FLAVOR_MAP.keySet())
+                #foreach ($flavor in BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP.keySet())
                         <tr>
-                            <td>$flavor default category mapping</td> <td><input name="${flavor}-blog-default-category-mapping" type="text" size="50" value="$FLAVOR_MAP.get($flavor)"/></td>
+                            <td>$flavor default category mapping</td> <td><input name="${flavor}-blog-default-category-mapping" type="text" size="50" value="BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP.get($flavor)"/></td>
                         </tr>
                 #end
                 <tr>
