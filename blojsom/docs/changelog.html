@@ -37,6 +37,7 @@ General:<br/>
 - Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
 Blogger 2 API or even develop Blogger to support the Blogger 2 API in favor of the Echo API<br/>
 - Added <tt>getDateAsFormat(String format)</tt> method to <tt>BlogEntry</tt> class<br/>
+- Fixed blojsom theme and shrubbery theme comment pages to output checked for "remember me" if this has been checked<br/>
 
 <p />
 Extension changes:<br />
@@ -50,6 +51,7 @@ is constructed from the blog language set in <i>/WEB-INF/blojsom.properties</i>
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=763640&group_id=72754&atid=535586">BUG 763640</a>: Incorrect compareTo check in setLastReferral method<br/>
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=766160&group_id=72754&atid=535586">BUG 766160</a>: Comment plugin needs to check for author email and URL null<br/>
 
 
 <p class="weblogtitle">blojsom 1.9.2 (codename: Chopin)</p>
