@@ -54,17 +54,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.30 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.31 2005-01-30 18:01:14 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -262,7 +259,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         // Populate the context with the flavor/category mapping
         flavorMap = user.getFlavors();
         flavorKeys = flavorMap.keySet().iterator();
-        Map categoryMapping = new HashMap();
+        Map categoryMapping = new TreeMap();
         while (flavorKeys.hasNext()) {
             String key = (String) flavorKeys.next();
             if (blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP) != null) {

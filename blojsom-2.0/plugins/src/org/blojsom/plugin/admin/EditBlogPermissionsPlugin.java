@@ -56,7 +56,7 @@ import java.io.FileOutputStream;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.3 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.4 2005-01-30 18:01:05 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -147,7 +147,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
      * @return Permissions for the given blog
      */
     private Map readPermissionsForBlog(Map context, String blogID) {
-        TreeMap permissions = new TreeMap();
+        Map permissions = new TreeMap();
         try {
             Properties permissionsProperties = readPermissionsConfiguration(blogID);
             permissions = new TreeMap(BlojsomUtils.blojsomPropertiesToMap(permissionsProperties));
@@ -278,7 +278,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
         }
 
 
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP, Collections.unmodifiableMap(user.getBlog().getAuthorization()));
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP, Collections.unmodifiableMap(new TreeMap(user.getBlog().getAuthorization())));
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_MAP, Collections.unmodifiableMap(permissions));
         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PERMISSIONS_PAGE);
 
