@@ -48,6 +48,10 @@
             <action dev="czarneckid" type="update" context="Library">
                 Updated <link href="http://opensymphony.com/oscache">OSCache</link> to 2.0.1.
             </action>
+
+            <action dev="czarneckid" type="update" context="Template">
+                Updated <link href="http://www.intertwingly.net/wiki/pie/">Atom</link> templates to 0.3 snapshot.
+            </action>
         </release>
         
         
