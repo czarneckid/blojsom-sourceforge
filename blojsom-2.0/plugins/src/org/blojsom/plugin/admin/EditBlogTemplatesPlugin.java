@@ -54,7 +54,7 @@ import java.util.Map;
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.1 2003-11-05 03:30:07 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.2 2003-11-11 01:29:55 czarneckid Exp $
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
@@ -95,6 +95,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
      * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
         _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
         _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
@@ -200,23 +201,5 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         }
 
         return entries;
-    }
-
-    /**
-     * Perform any cleanup for the plugin. Called after {@link #process}.
-     *
-     * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
-     */
-    public void cleanup() throws BlojsomPluginException {
-
-    }
-
-    /**
-     * Called when BlojsomServlet is taken out of service
-     *
-     * @throws BlojsomPluginException If there is an error in finalizing this plugin
-     */
-    public void destroy() throws BlojsomPluginException {
-
     }
 }

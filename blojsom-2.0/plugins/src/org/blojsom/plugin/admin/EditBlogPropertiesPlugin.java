@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.5 2003-11-03 04:14:59 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.6 2003-11-11 01:30:20 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -69,17 +69,6 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
      *
      */
     public EditBlogPropertiesPlugin() {
-    }
-
-    /**
-     * Initialize this plugin. This method only called when the plugin is instantiated.
-     *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
-     */
-    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        super.init(servletConfig, blojsomConfiguration);
     }
 
     /**
@@ -199,23 +188,5 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP, categoryMapping);
 
         return entries;
-    }
-
-    /**
-     * Perform any cleanup for the plugin. Called after {@link #process}.
-     *
-     * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
-     */
-    public void cleanup() throws BlojsomPluginException {
-
-    }
-
-    /**
-     * Called when BlojsomServlet is taken out of service
-     *
-     * @throws BlojsomPluginException If there is an error in finalizing this plugin
-     */
-    public void destroy() throws BlojsomPluginException {
-
     }
 }

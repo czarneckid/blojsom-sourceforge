@@ -34,28 +34,26 @@
  */
 package org.blojsom.plugin.admin;
 
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.blog.Blog;
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Iterator;
 import java.io.*;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * EditBlogCategoriesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.3 2003-11-05 03:29:40 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.4 2003-11-11 01:30:57 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -83,17 +81,6 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
      * Default constructor
      */
     public EditBlogCategoriesPlugin() {
-    }
-
-    /**
-     * Initialize this plugin. This method only called when the plugin is instantiated.
-     * 
-     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blojsomConfiguration {@link BlojsomConfiguration} information
-     * @throws BlojsomPluginException If there is an error initializing the plugin
-     */
-    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        super.init(servletConfig, blojsomConfiguration);
     }
 
     /**
@@ -256,23 +243,5 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
         }
 
         return entries;
-    }
-
-    /**
-     * Perform any cleanup for the plugin. Called after {@link #process}.
-     * 
-     * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
-     */
-    public void cleanup() throws BlojsomPluginException {
-        super.cleanup();
-    }
-
-    /**
-     * Called when BlojsomServlet is taken out of service
-     * 
-     * @throws BlojsomPluginException If there is an error in finalizing this plugin
-     */
-    public void destroy() throws BlojsomPluginException {
-        super.destroy();
     }
 }
