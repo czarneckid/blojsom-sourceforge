@@ -7,6 +7,12 @@
     </developers>
 
     <changes>
+        <release version="2.08" date="Available from CVS">
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Conditional GET plugin for RSS aggregators that support this feature.
+            </action>
+        </release>
+
         <release version="2.07" date="January 3, 2003">
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated administration plugins to report back status of operations.
@@ -32,7 +38,6 @@
             <action dev="intabulas" type="update" context="Library">
                 Updated blojsom to use the Sandler 0.4 release.
             </action>
-
         </release>
 
         <release version="2.06" date="December 22, 2003">
