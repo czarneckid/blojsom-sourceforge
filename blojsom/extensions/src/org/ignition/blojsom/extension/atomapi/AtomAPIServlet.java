@@ -67,7 +67,7 @@ import java.util.Properties;
  * <a href="http://bitworking.org/rfc/draft-gregorio-05.html">http://bitworking.org/rfc/draft-gregorio-05.html</a>
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.2 2003-07-18 16:17:23 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.3 2003-07-19 15:16:52 czarneckid Exp $
  */
 public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, AtomConstants {
 
@@ -303,10 +303,10 @@ public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, Ato
         fetchMap.put(FETCHER_CATEGORY, blogCategory);
         fetchMap.put(FETCHER_PERMALINK, permalink);
         try {
-            BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
+            BlogEntry[] entries = _fetcher.fetchEntries(fetchMap);
 
-            if (_entries != null && _entries.length > 0) {
-                BlogEntry entry = _entries[0];
+            if (entries != null && entries.length > 0) {
+                BlogEntry entry = entries[0];
                 // AtomEntry converts a BlogEntry to an Atom Entry XML stream..
                 // VERY messy right now and it will be refactored to be bidi
                 AtomEntry atom = new AtomEntry(_blog, entry);
