@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.10 2003-09-27 12:51:20 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.11 2003-09-27 12:52:52 intabulas Exp $
  */
 public class XPathPlugin implements BlojsomPlugin {
 
@@ -120,7 +120,6 @@ public class XPathPlugin implements BlojsomPlugin {
                 }
             }
         } else {
-            _logger.info("No XPath found, returning " + entries.length + " entrie(s)");
             results = entries;
         }
 
