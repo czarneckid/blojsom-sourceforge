@@ -81,7 +81,7 @@
                         <td><input type="checkbox" name="blog-entry-trackbacks-disabled" value="y"/></td>
                     </tr>
                     <tr>
-                        <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') (MM/dd/yyyy HH:mm:ss)</td>
+                        <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') <br />(MM/dd/yyyy HH:mm:ss)</td>
                         <td><input type="text" size="30" name="blog-entry-publish-datetime"/></td>
                     </tr>
                     <tr>
