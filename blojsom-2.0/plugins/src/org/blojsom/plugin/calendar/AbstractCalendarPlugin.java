@@ -53,7 +53,7 @@ import java.util.*;
  * to filter content.
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.5 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.6 2004-01-30 23:30:15 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -101,11 +101,10 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
     protected static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
 
 
-
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
@@ -115,11 +114,11 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -146,7 +145,8 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
         // Default to the Current Month and Year
         Calendar calendar = new GregorianCalendar(locale);
-        calendar.setTime(new Date());
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -179,6 +179,7 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
                 } else if (month.length() < 2) {
                     month = "0" + month;
                 }
+
                 if (!month.equals("")) {
                     try {
                         currentMonth = Integer.parseInt(month) - 1; // Damm Sun!
@@ -188,6 +189,7 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
                         _logger.error("Invalid Month Param submitted and ignored: " + month);
                     }
                 }
+
                 day = httpServletRequest.getParameter(DAY_PARAM);
                 if (day == null) {
                     day = "";
@@ -198,20 +200,17 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
                 if (!day.equals("")) {
                     try {
                         currentDay = Integer.parseInt(day);
-                        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+                        if (currentDay > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                            _logger.info("Adjusting day of month to max maximum for selected month");
+                            currentDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                        }
+                        calendar.set(Calendar.DAY_OF_MONTH, currentDay);                        
                     } catch (NumberFormatException e) {
                         _logger.error("Invalid Day Param submitted and ignored: " + day);
                     }
                 }
-
-                if (currentDay > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                    _logger.info("Adjusting DOM to  max maximum for selected month");
-                    currentDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    calendar.set(Calendar.DAY_OF_MONTH, currentDay);
-                }
-
-
             }
+
             requestedDateKey = year + month + day;
 
         } else {
