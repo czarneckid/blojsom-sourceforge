@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.41 2003-04-01 02:00:39 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.42 2003-04-01 03:36:42 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -180,9 +180,9 @@ public class Blog implements BlojsomConstants {
 
         String commentsDirectoryRegex;
         if (_blogCommentsDirectory.startsWith(".")) {
-            commentsDirectoryRegex = ".*/\\" + _blogCommentsDirectory;
+            commentsDirectoryRegex = ".*" + File.separator + "\\" + _blogCommentsDirectory;
         } else {
-            commentsDirectoryRegex = ".*/" + _blogCommentsDirectory;
+            commentsDirectoryRegex = ".*" + File.separator + _blogCommentsDirectory;
         }
 
         _blogTrackbackDirectory = blogConfiguration.getProperty(BLOG_TRACKBACK_DIRECTORY_IP);
@@ -194,9 +194,9 @@ public class Blog implements BlojsomConstants {
 
         String trackbackDirectoryRegex;
         if (_blogTrackbackDirectory.startsWith(".")) {
-            trackbackDirectoryRegex = ".*/\\" + _blogTrackbackDirectory;
+            trackbackDirectoryRegex = ".*" + File.separator + "\\" + _blogTrackbackDirectory;
         } else {
-            trackbackDirectoryRegex = ".*/" + _blogTrackbackDirectory;
+            trackbackDirectoryRegex = ".*" + File.separator + _blogTrackbackDirectory;
         }
 
         String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
