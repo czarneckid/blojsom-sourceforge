@@ -1,7 +1,5 @@
 package org.ignition.blojsom.util;
 
-import org.ignition.blojsom.blog.BlogCategory;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
@@ -100,22 +98,6 @@ public class BlojsomUtils {
         }
 
         return blogURL.substring(0, servletPathIndex);
-    }
-
-    /**
-     * Return a list of categories for the blog that are appropriate in a hyperlink
-     *
-     * @param blogURL URL for the blog
-     * @param blog Blog category map
-     * @return List of blog category hyperlinks
-     */
-    public static BlogCategory[] getBlogCategories(String blogURL, Map blog) {
-        ArrayList categoryList = new ArrayList();
-        Iterator categoryIterator = blog.keySet().iterator();
-        while (categoryIterator.hasNext()) {
-            categoryList.add(categoryIterator.next());
-        }
-        return (BlogCategory[]) (categoryList.toArray(new BlogCategory[categoryList.size()]));
     }
 
     /**
