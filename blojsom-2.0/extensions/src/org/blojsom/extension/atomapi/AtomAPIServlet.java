@@ -79,7 +79,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.41 2004-07-16 20:52:31 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.42 2004-07-20 02:12:23 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -602,15 +602,21 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     } else {
                         blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, blog.getBlogOwner());
                     }
+
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
+
                     entry.save(blogUser);
+                    entry.load(blogUser);
 
+                    StringBuffer editURI = new StringBuffer();
+                    editURI.append(blog.getBlogURL());
+                    String entryId = entry.getId();
+                    editURI.append(BlojsomUtils.removeInitialSlash(entryId));
+
+                    atomEntry.setId(editURI.toString());
                     httpServletResponse.setContentType(CONTENTTYPE_HTML);
-                    httpServletResponse.setHeader(HEADER_LOCATION, entry.getEscapedLink());
-
-                    //String nonce = AtomUtils.generateNextNonce(blogUser);
-                    //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
+                    httpServletResponse.setHeader(HEADER_LOCATION, editURI.toString());
                     httpServletResponse.setStatus(201);
                 } catch (MarshallException e) {
                     _logger.error(e.getLocalizedMessage(), e);
