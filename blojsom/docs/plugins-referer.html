@@ -94,6 +94,22 @@ shutdown of your application server<br />
 track for referers. Flavors added to this list will only have their hit counts tracked,
 but will not have the referer URL tracked
 
+<p class="weblogtitle">context attributes and types</p>
+<p />
+The following table describes the context attributes that are available and their associated type.
+<p />
+<table border="1">
+    <th>Context key</th> <th>Input or Output</th> <th>Type</th> <th>Description</th>
+    <tr>
+        <td>REFERER_HISTORY</td> <td>Output</td>
+        <td><tt>org.ignition.blojsom.plugin.referer.BlogRefererGroup</tt></td>
+        <td>Manages the referer groups for the various flavors setup in <i>referer.properties</i></td>
+    </tr>
+    <tr>
+        <td>REFERER_MAX_LENGTH</td> <td>Output</td> <td><tt>java.lang.Integer</tt></td> <td>Max length for referer URLs</td>
+    </tr>
+</table>
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
