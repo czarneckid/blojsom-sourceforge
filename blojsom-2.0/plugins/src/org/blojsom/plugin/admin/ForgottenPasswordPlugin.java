@@ -40,7 +40,6 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.email.EmailMessage;
 import org.blojsom.plugin.email.EmailUtils;
@@ -58,14 +57,13 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.14
- * @version $Id: ForgottenPasswordPlugin.java,v 1.1 2004-04-03 19:48:58 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.2 2004-04-08 00:32:32 czarneckid Exp $
  */
-public class ForgottenPasswordPlugin implements BlojsomPlugin, BlojsomConstants {
+public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(ForgottenPasswordPlugin.class);
 
     private static final String FORGOTTEN_USERNAME_PARAM = "forgotten-username";
-    private static final String FORGOTTEN_PASSWORD_SENT_PAGE = "/org/blojsom/plugin/admin/templates/admin-forgotten-password-sent";
 
     /**
      * Default constructor.
@@ -106,12 +104,15 @@ public class ForgottenPasswordPlugin implements BlojsomPlugin, BlojsomConstants 
                 ArrayList emailMessages = new ArrayList();
                 emailMessages.add(emailMessage);
                 context.put(EmailUtils.BLOJSOM_OUTBOUNDMAIL, emailMessages);
-                httpServletRequest.setAttribute(PAGE_PARAM, FORGOTTEN_PASSWORD_SENT_PAGE);
                 _logger.debug("Constructed forgotten password e-mail message to user: " + username);
+                addOperationResultMessage(context, "Constructed forgotten password e-mail message to username: " + username);
             } else {
                 _logger.debug("Authorized e-mail address was blank for user: " + username);
+                addOperationResultMessage(context, "No authorized user found with username: " + username);
             }
         }
+
+        httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
         return entries;
     }
