@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.18 2004-04-03 19:46:51 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.19 2004-04-12 23:50:04 intabulas Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -840,7 +840,7 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogProperty(String key, String value) {
         if (key != null && value != null) {
-            if (key != BLOG_HOME_IP && key != BLOG_COMMENTS_DIRECTORY_IP && key != BLOG_TRACKBACK_DIRECTORY_IP) {
+            if (!key.equals(BLOG_HOME_IP)  && !key.equals(BLOG_COMMENTS_DIRECTORY_IP)  && !key.equals(BLOG_TRACKBACK_DIRECTORY_IP)) {
                 _blogProperties.put(key, value);
             }
         }
