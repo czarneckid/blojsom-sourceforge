@@ -26,9 +26,36 @@
 
 
 <p>
-<p class="weblogtitle">Upgrading blojsom from v1.6 to v1.7</p>
+<p class="weblogtitle">Upgrading blojsom from v1.6.x to v1.7</p>
 <p/>
+1. A required parameter has been added to <i>/WEB-INF/blojsom.properties</i>.<br />
+<i>blog-base-url</i> is required. This parameter will be nearly identical to
+<i>blog-url</i>, except you do not include the servlet mapping.<br />
+For example:
+<pre>
+blog-base-url=http://localhost:8080/
+</pre>
+<p />
 
+2. Entry limiting, controlled by the <i>blog-entries-display</i> parameter has been
+refactored from <tt>BlojsomServlet</tt> to the Entries Limiter plugin. To limit the number
+of entries displayed, if you are using this functionality, you will need to add the
+following to your <i>/WEB-INF/plugin.properties</i> file.
+<pre>
+limiter=org.ignition.blojsom.plugin.limiter.EntriesLimiterPlugin
+</pre>
+The "limiter" plugin short name would then be added near the end of one of your plugin chains.
+For example:
+<pre>
+html.blojsom-plugin-chain=calendar-filter, comment, trackback, sendemail, limiter, simple-search, calendar-gui
+</pre>
+<p />
+
+3. If you are using the Send Email plugin to send comments and trackbacks via e-mail,
+you will need to add the following property to <i>/WEB-INF/blojsom.properties</i>.
+<pre>
+blog-email-enabled=true
+</pre>
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
