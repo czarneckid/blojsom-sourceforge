@@ -3,7 +3,8 @@
                  org.ignition.blojsom.blog.BlogEntry,
                  org.ignition.blojsom.blog.BlogCategory,
                  org.ignition.blojsom.blog.BlogComment,
-                 java.util.ArrayList"
+                 java.util.ArrayList,
+                 org.ignition.blojsom.plugin.comment.CommentPlugin"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
@@ -41,36 +42,32 @@
     </head>
 
     <body>
-	<h1><a href="<%= blogInformation.getBlogURL() %>">
-		<%= blogInformation.getBlogName() %>
-	</a></h1>
-
+	<h1><a href="<%= blogInformation.getBlogURL() %>"><%= blogInformation.getBlogName() %></a></h1>
 	<h3><%= blogInformation.getBlogDescription() %></h3>
 
-	<p><b>Available Categories: </b><%= catString %></p>
+	<p>Available Categories: <%= catString %></p>
 <%
             if (entryArray != null) {
                 for (int i = 0; i < entryArray.length; i++) {
                 BlogEntry blogEntry = entryArray[i];
 %>
-		<div class="entrystyle">
-		<p class="weblogtitle"><%= blogEntry.getTitle() %>
-		    <span class="smalltext">
-			[<a href="<%= blogEntry.getLink() %>">Permalink</a>]
-		    </span>
-		</p>
-		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
-		<p><%= blogEntry.getDescription() %></p>
-		</div>
-        <p class="weblogtitle">Comments on this entry</p>
-        <div class="entrystyle">
+
+
+
+    <div class="entrystyle">
+    <p class="weblogtitle"><%= blogEntry.getTitle() %> <span class="smalltext">[<a href="<%= blogEntry.getLink() %>">Permalink</a>]</span> </p>
+    <p class="weblogdateline"><%= blogEntry.getDate() %></p>
+    <p><%= blogEntry.getDescription() %></p>
+    </div>
+    <p class="weblogtitle">Comments on this entry</p><br/>
+    <div class="entrystyle">
         <%
-            ArrayList blogComments = blogEntry.getComments();
-            if (blogComments != null) {
-            for (int j = 0; j < blogComments.size(); j++) {
-                BlogComment blogComment = (BlogComment) blogComments.get(j);
+                    ArrayList blogComments = blogEntry.getComments();
+                    if (blogComments != null) {
+                    for (int j = 0; j < blogComments.size(); j++) {
+                        BlogComment blogComment = (BlogComment) blogComments.get(j);
         %>
-        <div class="commentstyle">
+                <div class="commentstyle">
             Comment by: <a href="mailto:<%= blogComment.getAuthorEmail() %>"><%= blogComment.getAuthor() %></a> -
                 <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a>
             <div class="weblogdateline">Left on: <%= blogComment.getCommentDate() %></div><br/>
@@ -91,14 +88,24 @@
             <input type="hidden" name="page" value="comments"/>
             <input type="hidden" name="category" value="<%= requestedCategory.getCategory() %>"/><br />
             <input type="hidden" name="permalink" value="<%= blogEntry.getPermalink() %>"/> <br />
+            <%
+
+            String commentAuthor = request.getParameter(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR);
+            if (commentAuthor == null) { commentAuthor = ""; }
+            String commentEmail = request.getParameter(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL);
+            if (commentEmail == null) { commentEmail = ""; }
+            String commentUrl = request.getParameter(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL);
+            if (commentUrl == null) { commentUrl = ""; }
+            %>
+
             <tr>
-                <td>Author (<font color="red">*</font>):</td><td><input type="text" name="author" value=""/></td>
+                <td>Author (<font color="red">*</font>):</td><td><input type="text" name="author" value="<%=commentAuthor%>"/></td>
             </tr>
             <tr>
-                <td>E-mail:</td><td><input type="text" name="authorEmail" value=""/></td>
+                <td>E-mail:</td><td><input type="text" name="authorEmail" value="<%=commentEmail%>"/></td>
             </tr>
             <tr>
-                <td>URL: </td><td><input type="text" name="authorURL" value=""/></td>
+                <td>URL: </td><td><input type="text" name="authorURL" value="<%=commentUrl%>"/></td>
             </tr>
             <tr>
                 <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
@@ -125,7 +132,7 @@
 <%
             if ((entryArray != null) && (entryArray.length > 0)) {
 %>
-	<p><b>Available Categories: </b><%= catString %></p>
+	<p>Available Categories: <%= catString %></p>
 <%
             }
 %>
