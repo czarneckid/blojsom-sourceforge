@@ -51,7 +51,7 @@ import java.util.Map;
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.1 2003-03-31 04:23:29 intabulas Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.2 2003-03-31 15:25:33 intabulas Exp $
  */
 public class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
@@ -75,13 +75,14 @@ public class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
         entries = super.process(httpServletRequest, httpServletResponse, context, entries);
 
         // Was a category part of the URL? If so we want to create href's based on the category
-        String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
-        if (category == null) {
-            category = "";
+        String requestedCategory = httpServletRequest.getPathInfo();
+        if (requestedCategory== null) {
+            requestedCategory = "";
         }
+        _logger.info( "Category is" +requestedCategory);
 
 
-        String _calurl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
+        String _calurl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(requestedCategory);
         _blogCalendar = new BlogCalendar(_calendar, _calurl, _locale);
 
         Calendar entrycalendar = new GregorianCalendar(_locale);
