@@ -47,21 +47,21 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * EditBlogTemplatesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.17 2005-01-24 04:46:11 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.18 2005-01-25 18:44:33 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(EditBlogTemplatesPlugin.class);
+
+    private static final String DEFAULT_ACCEPTED_TEMPLATE_EXTENSIONS = "vm";
+    private static final String ACCEPTED_TEMPLATE_EXTENSIONS_INIT_PARAM = "accepted-template-extensions";
 
     // Pages
     private static final String EDIT_BLOG_TEMPLATES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-templates";
@@ -71,17 +71,26 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES";
 
     // Actions
+    private static final String ADD_BLOG_TEMPLATE_ACTION = "add-blog-template";
+    private static final String DELETE_BLOG_TEMPLATE_ACTION = "delete-blog-template";
     private static final String EDIT_BLOG_TEMPLATES_ACTION = "edit-blog-template";
     private static final String UPDATE_BLOG_TEMPLATE_ACTION = "update-blog-template";
+    private static final String ADD_TEMPLATE_DIRECTORY_ACTION = "add-template-directory";
+    private static final String DELETE_TEMPLATE_DIRECTORY_ACTION = "delete-template-directory";
 
     // Form elements
     private static final String BLOG_TEMPLATE = "blog-template";
     private static final String BLOG_TEMPLATE_DATA = "blog-template-data";
+    private static final String BLOG_TEMPLATE_DIRECTORY = "blog-template-directory";
+    private static final String TEMPLATE_DIRECTORY_TO_ADD = "template-directory-to-add";
 
     // Permissions
     private static final String EDIT_BLOG_TEMPLATES_PERMISSION = "edit_blog_templates";
+
+    private Map _acceptedTemplateExtensions;
 
     /**
      * Default constructor.
@@ -99,6 +108,18 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
+
+        String acceptedTemplateExtensions = servletConfig.getInitParameter(ACCEPTED_TEMPLATE_EXTENSIONS_INIT_PARAM);
+        if (BlojsomUtils.checkNullOrBlank(acceptedTemplateExtensions)) {
+            acceptedTemplateExtensions = DEFAULT_ACCEPTED_TEMPLATE_EXTENSIONS;
+        }
+
+        _acceptedTemplateExtensions = new HashMap();
+        String[] templateExtensions = BlojsomUtils.parseCommaList(acceptedTemplateExtensions);
+        for (int i = 0; i < templateExtensions.length; i++) {
+            String templateExtension = templateExtensions[i];
+            _acceptedTemplateExtensions.put(templateExtension, templateExtension);
+        }
     }
 
     /**
@@ -120,6 +141,24 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         }
 
         return blogTemplate;
+    }
+
+    protected void putTemplatesInContext(File templatesDirectory, Map context) {
+        List templateFiles = new ArrayList();
+        BlojsomUtils.listFilesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateFiles);
+        File[] templates = (File[]) templateFiles.toArray(new File[templateFiles.size()]);
+        Arrays.sort(templates);
+
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templates);
+    }
+
+    protected void putTemplateDirectoriesInContext(File templatesDirectory, Map context) {
+        List templateDirectories = new ArrayList();
+        BlojsomUtils.listDirectoriesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateDirectories);
+        File[] directories = (File[]) templateDirectories.toArray(new File[templateDirectories.size()]);
+        Arrays.sort(directories);
+
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES, directories);
     }
 
     /**
@@ -154,13 +193,8 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 user.getId() + _blojsomConfiguration.getTemplatesDirectory());
         _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
-        List templateFiles = new ArrayList();
-        BlojsomUtils.listFilesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateFiles);
-        File[] templates = (File[]) templateFiles.toArray(new File[templateFiles.size()]);
-        Arrays.sort(templates);
-        ArrayList templatesList = new ArrayList(templateFiles);
-
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templatesList);
+        putTemplatesInContext(templatesDirectory, context);
+        putTemplateDirectoriesInContext(templatesDirectory, context);
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
@@ -259,6 +293,106 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE, blogTemplate);
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE, BlojsomUtils.escapeString(blogTemplateData));
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
+        } else if (ADD_BLOG_TEMPLATE_ACTION.equals(action)) {
+            _logger.debug("User requested add blog template action");
+
+            String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
+            String blogTemplateDirectory = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DIRECTORY, httpServletRequest);
+
+            if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
+                addOperationResultMessage(context, "No template name specified");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
+                return entries;
+            }
+
+            String templateName = BlojsomUtils.getFilenameFromPath(blogTemplate);
+            String templateExtension = BlojsomUtils.getFileExtension(templateName);
+
+            if (!_acceptedTemplateExtensions.containsKey(templateExtension)) {
+                addOperationResultMessage(context, "Invalid template extension: " + templateExtension);
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
+                return entries;
+            } else {
+                blogTemplateDirectory = BlojsomUtils.normalize(blogTemplateDirectory);
+                File addedTemplateDirectory = new File(templatesDirectory, blogTemplateDirectory);
+                if (addedTemplateDirectory.exists()) {
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE, blogTemplateDirectory + File.separator + templateName);
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE, "");
+
+                    httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
+                } else {
+                    addOperationResultMessage(context, "Specified template directory does not exist");
+                }
+            }
+        } else if (ADD_TEMPLATE_DIRECTORY_ACTION.equals(action)) {
+            _logger.debug("User requested add blog template directory action");
+
+            String templateDirectoryToAdd = BlojsomUtils.getRequestValue(TEMPLATE_DIRECTORY_TO_ADD, httpServletRequest);
+            String blogTemplateDirectory = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DIRECTORY, httpServletRequest);
+            if (BlojsomUtils.checkNullOrBlank(templateDirectoryToAdd)) {
+                addOperationResultMessage(context, "New template directory not specified");
+            } else {
+                blogTemplateDirectory = BlojsomUtils.normalize(blogTemplateDirectory);
+                templateDirectoryToAdd = BlojsomUtils.normalize(templateDirectoryToAdd);
+
+                File newTemplateDirectory = new File(templatesDirectory, blogTemplateDirectory + File.separator + templateDirectoryToAdd);
+                _logger.debug("Adding blog template directory: " + newTemplateDirectory.toString());
+
+                if (!newTemplateDirectory.mkdir()) {
+                    addOperationResultMessage(context, "Unable to add new template directory: " + templateDirectoryToAdd);
+                } else {
+                    addOperationResultMessage(context, "Added template directory: " + templateDirectoryToAdd);
+
+                    putTemplateDirectoriesInContext(templatesDirectory, context);
+                }
+            }
+
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+        } else if (DELETE_TEMPLATE_DIRECTORY_ACTION.equals(action)) {
+            _logger.debug("User requested delete blog template directory action");
+
+            String blogTemplateDirectory = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DIRECTORY, httpServletRequest);
+            if (BlojsomUtils.checkNullOrBlank(blogTemplateDirectory)) {
+                addOperationResultMessage(context, "You cannot remove root the top-level template directory");
+            } else {
+                blogTemplateDirectory = BlojsomUtils.normalize(blogTemplateDirectory);
+                _logger.debug("Sanitized template directory: " + blogTemplateDirectory);
+                File templateDirectoryToDelete = new File(templatesDirectory, blogTemplateDirectory);
+                _logger.debug("Removing blog template directory: " + templateDirectoryToDelete);
+
+                if (!BlojsomUtils.deleteDirectory(templateDirectoryToDelete, true)) {
+                    addOperationResultMessage(context, "Unable to remove template directory: " + blogTemplateDirectory);
+                } else {
+                    addOperationResultMessage(context, "Removed template directory: " + blogTemplateDirectory);
+
+                    putTemplateDirectoriesInContext(templatesDirectory, context);
+                }
+            }
+
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+        } else if (DELETE_BLOG_TEMPLATE_ACTION.equals(action)) {
+             _logger.debug("User requested delete blog template directory action");
+
+            String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
+            if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
+                addOperationResultMessage(context, "Template to delete not specified");
+            }
+
+            blogTemplate = sanitizeFilename(blogTemplate);
+            File templateToDelete = new File(templatesDirectory, blogTemplate);
+            _logger.debug("Deleting blog template: " + templateToDelete.toString());
+
+            if (!templateToDelete.delete()) {
+                addOperationResultMessage(context, "Unable to delete template: " + blogTemplate);
+            } else {
+                addOperationResultMessage(context, "Deleted blog template: " + blogTemplate);
+
+                putTemplatesInContext(templatesDirectory, context);
+            }
+
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
         }
 
         return entries;
