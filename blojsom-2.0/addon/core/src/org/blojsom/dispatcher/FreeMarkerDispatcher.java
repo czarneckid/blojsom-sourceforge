@@ -51,7 +51,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
@@ -60,7 +59,7 @@ import java.util.Properties;
  * FreeMarkerDispatcher
  * 
  * @author czarneckid
- * @version $Id: FreeMarkerDispatcher.java,v 1.2 2003-12-16 16:57:17 czarneckid Exp $
+ * @version $Id: FreeMarkerDispatcher.java,v 1.3 2003-12-17 20:02:35 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FreeMarkerDispatcher implements BlojsomDispatcher {
@@ -92,14 +91,8 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
         _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
 
-        String freemarkerConfiguration = servletConfig.getInitParameter(FREEMARKER_PROPERTIES_IP);
-        InputStream is = servletConfig.getServletContext().getResourceAsStream(freemarkerConfiguration);
-        try {
-            _freemarkerProperties = new Properties();
-            _freemarkerProperties.load(is);
-            is.close();
-        } catch (IOException e) {
-            _logger.error(e);
+        _freemarkerProperties = BlojsomUtils.loadProperties(servletConfig, FREEMARKER_PROPERTIES_IP, true);
+        if (_freemarkerProperties.isEmpty()) {
             _freemarkerProperties = null;
         }
 
