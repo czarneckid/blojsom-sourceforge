@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.17 2004-09-19 15:24:06 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.18 2004-09-30 19:36:59 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -387,11 +387,27 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
                         // Add the resources directory
                         File blogResourcesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
-                        _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
+                            _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
+                        File bootstrapResourcesDirectory = new File(bootstrapDirectory, _blojsomConfiguration.getResourceDirectory());
                         if (!blogResourcesDirectory.mkdirs()) {
                             _logger.error("Unable to create blog resource directory: " + blogResourcesDirectory.toString());
                         } else {
-                            _logger.debug("Added blog resource directory: " + blogResourcesDirectory.toString());                            
+                            _logger.debug("Added blog resource directory: " + blogResourcesDirectory.toString());
+                        }
+                        try {
+                            if (bootstrapResourcesDirectory.exists()) {
+                                BlojsomUtils.copyDirectory(bootstrapResourcesDirectory, blogResourcesDirectory);
+                            }
+
+                            // Cleanup the bootstrap resources directory
+                            File resourcesDirectoryToDelete = new File(_blojsomConfiguration.getInstallationDirectory() +
+                                    _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID +
+                                    _blojsomConfiguration.getResourceDirectory());
+                            if (resourcesDirectoryToDelete.exists()) {
+                                BlojsomUtils.deleteDirectory(resourcesDirectoryToDelete);
+                            }
+                        } catch (IOException e) {
+                            _logger.error(e);
                         }
 
                         // Add the user to the global list of users
