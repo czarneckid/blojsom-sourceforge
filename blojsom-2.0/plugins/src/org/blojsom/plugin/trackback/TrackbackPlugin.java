@@ -56,7 +56,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.10 2004-02-06 02:28:45 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.11 2004-02-06 02:48:59 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -274,6 +274,10 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                     long differenceInMinutes = timeDifference / (60 * 1000);
                     if (differenceInMinutes < commentThrottleMinutes) {
                         _logger.debug("Comment throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + commentThrottleMinutes + " minutes");
+
+                        context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
+                        context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trackback throttling enabled.");
+                        httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
 
                         return entries;
                     } else {
