@@ -51,8 +51,8 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
+ * @version $Id: StandardFetcher.java,v 1.17 2004-07-08 00:52:43 intabulas Exp $
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.16 2004-06-17 03:27:51 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -72,7 +72,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Initialize this fetcher. This method only called when the fetcher is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration blojsom configuration information
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
@@ -83,8 +83,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Return a new blog entry instance. This methods returns an instance of {@link FileBackedBlogEntry}.
      *
-     * @since blojsom 1.9
      * @return Blog entry instance
+     * @since blojsom 1.9
      */
     public BlogEntry newBlogEntry() {
         return new FileBackedBlogEntry();
@@ -93,8 +93,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Return a new blog category instance
      *
-     * @since blojsom 1.9.1
      * @return Blog category instance
+     * @since blojsom 1.9.1
      */
     public BlogCategory newBlogCategory() {
         return new FileBackedBlogCategory();
@@ -103,11 +103,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Retrieve a permalink entry from the entries for a given category
      *
-     * @param blogUser Blog information
+     * @param blogUser          Blog information
      * @param requestedCategory Requested category
-     * @param permalink Permalink entry requested
+     * @param permalink         Permalink entry requested
      * @return Blog entry array containing the single requested permalink entry,
-     * or <code>BlogEntry[0]</code> if the permalink entry was not found
+     *         or <code>BlogEntry[0]</code> if the permalink entry was not found
      */
     protected BlogEntry[] getPermalinkEntry(BlogUser blogUser, BlogCategory requestedCategory, String permalink) {
         Blog blog = blogUser.getBlog();
@@ -119,7 +119,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         String permalinkEntry = blog.getBlogHome() + category + permalink;
         File blogFile = new File(permalinkEntry);
-        
+
         if (!blogFile.exists()) {
             return new BlogEntry[0];
         } else {
@@ -178,9 +178,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * Retrieve all of the entries for a requested category
      *
      * @param requestedCategory Requested category
-     * @param maxBlogEntries Maximum number of blog entries to retrieve from a blog category
+     * @param maxBlogEntries    Maximum number of blog entries to retrieve from a blog category
      * @return Blog entry array containing the list of blog entries for the requested category,
-     * or <code>BlogEntry[0]</code> if there are no entries for the category
+     *         or <code>BlogEntry[0]</code> if there are no entries for the category
      */
     protected BlogEntry[] getEntriesForCategory(BlogUser user, BlogCategory requestedCategory, int maxBlogEntries) {
         BlogEntry[] entryArray;
@@ -267,11 +267,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * the default category mapping and the configured number of blog entries to retrieve
      * from each category
      *
-     * @param flavor Requested flavor
-     * @param maxBlogEntries Maximum number of entries to retrieve per category
+     * @param flavor             Requested flavor
+     * @param maxBlogEntries     Maximum number of entries to retrieve per category
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return Blog entry array containing the list of blog entries for the categories
-     * or <code>BlogEntry[0]</code> if there are no entries
+     *         or <code>BlogEntry[0]</code> if there are no entries
      */
     protected BlogEntry[] getEntriesAllCategories(BlogUser user, String flavor, int maxBlogEntries, int blogDirectoryDepth) {
         Blog blog = user.getBlog();
@@ -296,12 +296,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * <code>maxBlogEntries</code> to limit the entries it retrieves from each of the categories.
      * Entries from the categories are sorted based on file time.
      *
-     * @param categoryFilter If <code>null</code>, a list of all the categories is retrieved, otherwise only
-     * the categories in the list will be used to search for entries
-     * @param maxBlogEntries Maximum number of blog entries to retrieve from each category
+     * @param categoryFilter     If <code>null</code>, a list of all the categories is retrieved, otherwise only
+     *                           the categories in the list will be used to search for entries
+     * @param maxBlogEntries     Maximum number of blog entries to retrieve from each category
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return Blog entry array containing the list of blog entries for the categories
-     * or <code>BlogEntry[0]</code> if there are no entries
+     *         or <code>BlogEntry[0]</code> if there are no entries
      */
     protected BlogEntry[] getEntriesAllCategories(BlogUser user, String[] categoryFilter, int maxBlogEntries, int blogDirectoryDepth) {
         BlogCategory[] blogCategories = null;
@@ -411,11 +411,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Fetch a set of {@link BlogEntry} objects.
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param flavor Flavor
-     * @param context Context
+     * @param user                {@link BlogUser} instance
+     * @param flavor              Flavor
+     * @param context             Context
      * @return Blog entries retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
      */
@@ -456,14 +456,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                         BlogEntry blogEntry = allEntries[i];
                         String blogEntryId = blogEntry.getId();
                         if (blogEntryId != null && blogEntryId.equals(permalinkId)) {
-                            if ((i-1) >= 0) {
-                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i-1]);
+                            if ((i - 1) >= 0) {
+                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i - 1]);
                             } else {
                                 context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, null);
                             }
 
-                            if ((i+1) < allEntries.length) {
-                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, allEntries[i+1]);
+                            if ((i + 1) < allEntries.length) {
+                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, allEntries[i + 1]);
                             } else {
                                 context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, null);
                             }
@@ -476,7 +476,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
             return permalinkEntry;
         } else {
-            if (category.getCategory().equals("/")) {
+            if ("/".equals(category.getCategory())) {
                 return getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
             } else {
                 return getEntriesForCategory(user, category, -1);
@@ -508,7 +508,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * </table>
      *
      * @param fetchParameters Parameters which will be used to retrieve blog entries
-     * @param user {@link BlogUser} instance
+     * @param user            {@link BlogUser} instance
      * @return Blog entries retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
      */
@@ -528,10 +528,10 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Build a list of blog categories recursively
      *
-     * @param blogDepth Depth at which the current iteration is running
+     * @param blogDepth          Depth at which the current iteration is running
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
-     * @param blogDirectory Directory in which the current iteration is running
-     * @param categoryList Dynamic list of categories that gets added to as it explores directories
+     * @param blogDirectory      Directory in which the current iteration is running
+     * @param categoryList       Dynamic list of categories that gets added to as it explores directories
      */
     protected void recursiveCategoryBuilder(Blog blog, int blogDepth, int blogDirectoryDepth, String blogDirectory, ArrayList categoryList) {
         blogDepth++;
@@ -592,13 +592,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * the parent categories are returned. Down the hierarchy from the current category, all
      * children are returned while obeying the <code>blog-directory-depth</code> parameter.
      *
-     * @param currentCategory Current category in the blog category hierarchy
+     * @param currentCategory    Current category in the blog category hierarchy
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return List of blog categories or <code>null</code> if "/" category is requested or there
-     * are no sub-categories
+     *         are no sub-categories
      */
     protected BlogCategory[] getBlogCategoryHierarchy(Blog blog, BlogCategory currentCategory, int blogDirectoryDepth) {
-        if (currentCategory.getCategory().equals("/")) {
+        if ("/".equals(currentCategory.getCategory())) {
             return null;
         }
 
@@ -624,7 +624,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             }
         }
 
-        recursiveCategoryBuilder(blog, -1, blogDirectoryDepth,  blog.getBlogHome() + BlojsomUtils.removeInitialSlash(currentCategory.getCategory()), categoryList);
+        recursiveCategoryBuilder(blog, -1, blogDirectoryDepth, blog.getBlogHome() + BlojsomUtils.removeInitialSlash(currentCategory.getCategory()), categoryList);
         for (int i = 0; i < categoryList.size(); i++) {
             category = (BlogCategory) categoryList.get(i);
             if (!category.getCategory().equals(currentCategory.getCategory())) {
@@ -653,11 +653,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Fetch a set of {@link BlogCategory} objects
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param flavor Flavor
-     * @param context Context
+     * @param user                {@link BlogUser} instance
+     * @param flavor              Flavor
+     * @param context             Context
      * @return Blog categories retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog categories for the request
      */
@@ -688,7 +688,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         BlogCategory[] allCategories = getBlogCategories(blog, blogDirectoryDepth);
         context.put(BLOJSOM_ALL_CATEGORIES, allCategories);
 
-        if (category.getCategory().equals("/")) {
+        if ("/".equals(category.getCategory())) {
             categories = allCategories;
         } else {
             categories = getBlogCategoryHierarchy(blog, category, blogDirectoryDepth);
@@ -720,7 +720,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * </table>
      *
      * @param fetchParameters Parameters which will be used to retrieve blog entries
-     * @param user {@link BlogUser} instance
+     * @param user            {@link BlogUser} instance
      * @return Blog categories retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog categories for the request
      */
@@ -730,7 +730,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return getBlogCategories(blog, blog.getBlogDepth());
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY)) {
             BlogCategory category = (BlogCategory) fetchParameters.get(FETCHER_CATEGORY);
-            if (category.getCategory().equals("/")) {
+            if ("/".equals(category.getCategory())) {
                 return getBlogCategories(blog, blog.getBlogDepth());
             } else {
                 return getBlogCategoryHierarchy(blog, category, blog.getBlogDepth());

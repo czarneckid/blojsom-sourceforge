@@ -57,11 +57,11 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.13 2004-04-03 00:57:34 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.14 2004-07-08 00:52:39 intabulas Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
-    private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
+    private static final String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
 
     private Log _logger = LogFactory.getLog(VelocityDispatcher.class);
     private String _installationDirectory;
@@ -78,7 +78,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
     /**
      * Initialization method for blojsom dispatchers
      *
-     * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param servletConfig        ServletConfig for obtaining any initialization parameters
      * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws BlojsomException If there is an error initializing the dispatcher
      */
@@ -129,13 +129,13 @@ public class VelocityDispatcher implements BlojsomDispatcher {
      * provided with the template for the requested flavor along with the content type for the
      * specific flavor.
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context map
-     * @param flavorTemplate Template to dispatch to for the requested flavor
-     * @param flavorContentType Content type for the requested flavor
-     * @throws IOException If there is an exception during IO
+     * @param user                {@link BlogUser} instance
+     * @param context             Context map
+     * @param flavorTemplate      Template to dispatch to for the requested flavor
+     * @param flavorContentType   Content type for the requested flavor
+     * @throws IOException      If there is an exception during IO
      * @throws ServletException If there is an exception in dispatching the request
      */
     public void dispatch(HttpServletRequest httpServletRequest,

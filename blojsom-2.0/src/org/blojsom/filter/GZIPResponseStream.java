@@ -50,7 +50,7 @@ import java.util.zip.GZIPOutputStream;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
- * @version $Id: GZIPResponseStream.java,v 1.2 2004-03-09 02:04:19 czarneckid Exp $
+ * @version $Id: GZIPResponseStream.java,v 1.3 2004-07-08 00:52:43 intabulas Exp $
  * @since blojsom 2.10
  */
 public class GZIPResponseStream extends ServletOutputStream {
@@ -85,7 +85,7 @@ public class GZIPResponseStream extends ServletOutputStream {
         if (closed) {
             throw new IOException("This output stream has already been closed.");
         }
-        
+
         gzipstream.finish();
 
         byte[] bytes = baos.toByteArray();
@@ -131,19 +131,19 @@ public class GZIPResponseStream extends ServletOutputStream {
      * @param b Byte array to write
      * @throws IOException If the stream is closed or there is an error in writing
      */
-    public void write(byte b[]) throws IOException {
+    public void write(byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
     /**
      * Write a byte array to the stream
      *
-     * @param b Byte array to write
+     * @param b   Byte array to write
      * @param off Offset of starting point in byte array to start writing
      * @param len Length of bytes to write
      * @throws IOException If the stream is closed or there is an error in writing
      */
-    public void write(byte b[], int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         if (closed) {
             throw new IOException("Cannot write to a closed output stream.");
         }

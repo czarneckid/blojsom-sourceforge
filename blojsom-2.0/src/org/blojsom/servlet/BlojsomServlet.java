@@ -57,15 +57,15 @@ import java.util.*;
 
 /**
  * BlojsomServlet
- * 
+ *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.25 2004-06-03 01:20:40 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.26 2004-07-08 00:52:43 intabulas Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
     // BlojsomServlet initialization properties from web.xml
-    private final static String BLOJSOM_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-configuration";
+    private static final String BLOJSOM_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-configuration";
 
     private Log _logger = LogFactory.getLog(BlojsomServlet.class);
 
@@ -82,7 +82,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     /**
      * Configure the dispatchers that blojsom will use when passing a request/response on to a
      * particular template
-     * 
+     *
      * @param servletConfig Servlet configuration information
      */
     protected void configureDispatchers(ServletConfig servletConfig) throws ServletException {
@@ -121,7 +121,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     /**
      * Configure the flavors for the blog which map flavor values like "html" and "rss" to
      * the proper template and content type
-     * 
+     *
      * @param servletConfig Servlet configuration information
      */
     protected void configureFlavors(ServletConfig servletConfig) throws ServletException {
@@ -163,7 +163,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     /**
      * Configure the plugins that blojsom will use
-     * 
+     *
      * @param servletConfig Servlet configuration information
      */
     protected void configurePlugins(ServletConfig servletConfig) throws ServletException {
@@ -273,7 +273,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     /**
      * Initialize blojsom: configure blog, configure flavors, configure dispatchers
-     * 
+     *
      * @param servletConfig Servlet configuration information
      * @throws ServletException If there is an error initializing blojsom
      */
@@ -291,7 +291,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     /**
      * Service a request to blojsom
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
