@@ -59,7 +59,7 @@ import java.util.Map;
  * WeatherPlugin
  *
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.2 2005-01-12 18:23:24 intabulas Exp $
+ * @version $Id: WeatherPlugin.java,v 1.3 2005-01-12 18:45:47 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -72,7 +72,7 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
     private static final int DEFAULT_POLL_TIME = 3200;
 
     /**
-     * Weather configuration parameter for mailbox polling time (5 minutes)
+     * Weather configuration parameter for forcast polling time (60 minutes)
      */
     public static final String PLUGIN_WEATHER_POLL_TIME = "plugin-weather-poll-time";
 
@@ -122,12 +122,12 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
 
         _userWeatherMap = new HashMap(10);
 
-        String moblogPollTime = servletConfig.getInitParameter(PLUGIN_WEATHER_POLL_TIME);
-        if (BlojsomUtils.checkNullOrBlank(moblogPollTime)) {
+        String weatherPollTime = servletConfig.getInitParameter(PLUGIN_WEATHER_POLL_TIME);
+        if (BlojsomUtils.checkNullOrBlank(weatherPollTime)) {
             _pollTime = DEFAULT_POLL_TIME;
         } else {
             try {
-                _pollTime = Integer.parseInt(moblogPollTime);
+                _pollTime = Integer.parseInt(weatherPollTime);
             } catch (NumberFormatException e) {
                 _logger.error("Invalid time specified for: " + PLUGIN_WEATHER_POLL_TIME);
                 _pollTime = DEFAULT_POLL_TIME;

@@ -37,6 +37,7 @@ package org.blojsom.plugin.weather;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.plugin.weather.beans.WeatherInformation;
+import org.blojsom.util.BlojsomConstants;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -56,7 +57,7 @@ import java.util.zip.GZIPInputStream;
  * Portions taken from the ROME Fetcher (http://rome.dev.java.net)
  *
  * @author Mark Lussier
- * @version $Id: WeatherFetcher.java,v 1.2 2005-01-12 18:23:24 intabulas Exp $
+ * @version $Id: WeatherFetcher.java,v 1.3 2005-01-12 18:45:46 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class WeatherFetcher {
@@ -64,7 +65,6 @@ public class WeatherFetcher {
     private URL _stationUrl;
 
     private Log _logger = LogFactory.getLog(WeatherFetcher.class);
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     private DocumentBuilder _documentBuilder;
 
@@ -111,7 +111,7 @@ public class WeatherFetcher {
 
         String input = null;
         while ((input = br.readLine()) != null) {
-            buffer.append(input).append(LINE_SEPARATOR);
+            buffer.append(input).append(BlojsomConstants.LINE_SEPARATOR);
         }
 
         try {
