@@ -40,7 +40,7 @@ import java.util.Date;
  * BlogReferer
  *
  * @author Mark Lussier
- * @version $Id: BlogReferer.java,v 1.6 2003-04-01 02:10:34 intabulas Exp $
+ * @version $Id: BlogReferer.java,v 1.7 2003-07-01 02:22:09 czarneckid Exp $
  */
 public class BlogReferer {
 
@@ -163,7 +163,7 @@ public class BlogReferer {
      *
      * @return a boolean indicating if it was set today
      */
-    private boolean determineToday() {
+    public boolean determineToday() {
         return (RefererLogPlugin.getRefererDate(new Date()).equals(RefererLogPlugin.getRefererDate(_lastreferal)));
     }
 }
