@@ -40,6 +40,7 @@ import org.ignition.blojsom.blog.Blog;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.2 2003-02-25 22:54:13 intabulas Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 

@@ -51,6 +51,7 @@ import java.io.IOException;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.2 2003-02-25 22:54:13 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 

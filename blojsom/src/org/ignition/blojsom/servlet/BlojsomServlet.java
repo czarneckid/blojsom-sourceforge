@@ -188,6 +188,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 String plugin = (String) pluginIterator.next();
                 if (plugin.equals(BLOJSOM_PLUGIN_CHAIN)) {
                     _pluginChain = BlojsomUtils.parseCommaList(pluginProperties.getProperty(BLOJSOM_PLUGIN_CHAIN));
+                    _logger.info( "Plugin chain: " + _pluginChain);
                 } else {
                     String pluginClassName = pluginProperties.getProperty(plugin);
                     Class pluginClass = Class.forName(pluginClassName);
