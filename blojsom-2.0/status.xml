@@ -8,6 +8,11 @@
 
     <changes>
         <release version="2.11" date="Available from CVS">
+
+            <action dev="intabulas" type="update" context="Extension">
+                Updated the sandler library to the new 0.5 release.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated the Comment and Trackback plugins to support throttling. If throttling is enabled,
                 comments and trackbacks left from a particular IP address must wait a configurable number of
