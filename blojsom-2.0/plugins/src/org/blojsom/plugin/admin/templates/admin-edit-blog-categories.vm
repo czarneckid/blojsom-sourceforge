@@ -5,7 +5,7 @@
     <ul id="globalnav">
         <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin">#adminResource('administration.text' '')</a></li>
         <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-categories&action=page" class="here">#adminResource('edit.blog.categories.page.header' '')</a></li>
-        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">Entries</a></li>
+        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">#adminResource('entries.page.header' '')</a></li>
         <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-properties&action=page">#adminResource('weblog.settings.text' '')</a></li>
         <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-plugins&action=page">#adminResource('plugin.settings.text' '')</a></li>
         <li><a href="$BLOJSOM_BLOG.getBlogURL()">#adminResource('view.site.text' '')</a></li>
