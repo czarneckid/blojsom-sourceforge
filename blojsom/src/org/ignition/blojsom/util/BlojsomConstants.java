@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.29 2003-03-15 02:29:57 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.30 2003-03-18 03:12:38 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -168,6 +168,16 @@ public interface BlojsomConstants {
     public static final String CATEGORY_PARAM = "category";
 
     /**
+     * Default directory for adding trackbacks
+     */
+    public static final String DEFAULT_TRACKBACK_DIRECTORY = ".trackbacks";
+
+    /**
+     * Reserved file extension for blojsom trackbacks
+     */
+    public static final String TRACKBACK_EXTENSION = ".tb";
+
+    /**
      * Value indicating all subdirectories under the blog home should be searched
      */
     public static final int INFINITE_BLOG_DEPTH = -1;
@@ -231,7 +241,7 @@ public interface BlojsomConstants {
     static final String BLOG_OWNER = "blog-owner";
     static final String BLOG_OWNER_EMAIL = "blog-owner-email";
     static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
+    static final String BLOG_TRACKBACK_DIRECTORY_IP = "blog-trackbacks-directory";
     static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
-
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
 }
