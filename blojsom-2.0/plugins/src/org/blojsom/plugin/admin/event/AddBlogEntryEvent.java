@@ -36,7 +36,6 @@ package org.blojsom.plugin.admin.event;
 
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
-import org.blojsom.event.BlojsomEvent;
 
 import java.util.Date;
 
@@ -44,13 +43,10 @@ import java.util.Date;
  * AddBlogEntryEvent
  *
  * @author David Czarnecki
- * @version $Id: AddBlogEntryEvent.java,v 1.4 2005-01-05 02:31:23 czarneckid Exp $
+ * @version $Id: AddBlogEntryEvent.java,v 1.5 2005-01-05 18:34:09 czarneckid Exp $
  * @since blojsom 2.18
  */
-public class AddBlogEntryEvent extends BlojsomEvent {
-
-    protected BlogEntry _blogEntry;
-    protected BlogUser _blogUser;
+public class AddBlogEntryEvent extends BlogEntryEvent {
 
     /**
      * Create a new event indicating a new entry has been added to the system.
@@ -61,26 +57,6 @@ public class AddBlogEntryEvent extends BlojsomEvent {
      * @param blogUser {@link BlogUser}
      */
     public AddBlogEntryEvent(Object source, Date timestamp, BlogEntry blogEntry, BlogUser blogUser) {
-        super(source, timestamp);
-        _blogEntry = blogEntry;
-        _blogUser = blogUser;
-    }
-
-    /**
-     * Retrieve the {@link BlogEntry} associated with the event
-     *
-     * @return {@link BlogEntry}
-     */
-    public BlogEntry getBlogEntry() {
-        return _blogEntry;
-    }
-
-    /**
-     * Retrieve the {@link BlogUser} associated with the event
-     *
-     * @return {@link BlogUser}
-     */
-    public BlogUser getBlogUser() {
-        return _blogUser;
+        super(source, timestamp, blogEntry, blogUser);
     }
 }
