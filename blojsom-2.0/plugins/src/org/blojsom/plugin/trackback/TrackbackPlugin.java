@@ -59,7 +59,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.15 2004-04-13 21:03:04 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.16 2004-04-16 03:47:55 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -79,6 +79,11 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * Initialization parameter for the throttling of trackbacks from IP addresses
      */
     public static final String TRACKBACK_THROTTLE_MINUTES_IP = "plugin-trackback-throttle";
+
+    /**
+     * Initialization parameter for disabling trackbacks on entries after a certain number of days
+     */
+    public static final String TRACKBACK_DAYS_EXPIRATION_IP = "plugin-trackback-days-expiration";
 
     /**
      * Default throttle value for trackbacks from a particular IP address
@@ -361,6 +366,18 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                         httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
 
                         return entries;
+                    }
+
+                    // Check for a trackback where the number of days between trackback auto-expiration has passed
+                    String trackbackDaysExpiration = blog.getBlogProperty(TRACKBACK_DAYS_EXPIRATION_IP);
+                    try {
+                        int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
+                        if (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration) {
+                            _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
+
+                            return entries;
+                        }
+                    } catch (NumberFormatException e) {
                     }
                 }
             } catch (BlojsomFetcherException e) {

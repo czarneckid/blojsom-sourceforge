@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.14 2004-04-13 21:03:33 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.15 2004-04-16 03:47:55 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataConstants {
 
@@ -88,6 +88,11 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
      * Initialization parameter for the throttling of comments from IP addresses
      */
     public static final String COMMENT_THROTTLE_MINUTES_IP = "plugin-comment-throttle";
+
+    /**
+     * Initialization parameter for disabling comments on entries after a certain number of days
+     */
+    public static final String COMMENT_DAYS_EXPIRATION_IP = "plugin-comment-days-expiration";
 
     /**
      * Default throttle value for comments from a particular IP address
@@ -433,6 +438,18 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
 
                             return entries;
                         }
+
+                        // Check for a comment where the number of days between comment auto-expiration has passed
+                        String commentDaysExpiration = blog.getBlogProperty(COMMENT_DAYS_EXPIRATION_IP);
+                        try {
+                            int daysExpiration = Integer.parseInt(commentDaysExpiration);
+                            if (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration) {
+                                _logger.debug("Comment period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
+
+                                return entries;
+                            }
+                        } catch (NumberFormatException e) {
+                        }
                     }
                 } catch (BlojsomFetcherException e) {
                     _logger.error(e);
@@ -550,7 +567,7 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
             String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
 
             comment.setId(hashedComment + BlojsomConstants.COMMENT_EXTENSION);
-            
+
             File commentDir = new File(commentDirectory.toString());
             if (!commentDir.exists()) {
                 if (!commentDir.mkdirs()) {
