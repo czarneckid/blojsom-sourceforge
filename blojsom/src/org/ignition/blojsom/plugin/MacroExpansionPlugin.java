@@ -47,29 +47,24 @@ import java.util.regex.Matcher;
  * MacroExpansionPlugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.1 2003-02-25 23:09:38 intabulas Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-02-26 00:40:01 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
     private static final String BLOG_MACRO_CONFIGURATION_IP = "blog-macros-expansion";
 
     private Log _logger = LogFactory.getLog(MacroExpansionPlugin.class);
-
     private Map _macros;
 
     /**
      * RegExt to identify Macros as $MACRO$ and DOES NOT ignore escaped $'s
      */
     private static final String MACRO_REGEX = "(\\$[^\\$]*\\$)";
-
     private Pattern _macro;
-
 
     public MacroExpansionPlugin() {
         _macro = Pattern.compile(MACRO_REGEX);
-
     }
-
 
     /**
      * Load the Macro Mappings
@@ -86,12 +81,11 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
             while (handlerIterator.hasNext()) {
                 String keyword = (String) handlerIterator.next();
                 _macros.put(keyword, macroProperties.get(keyword));
-                _logger.info( "Adding Macro [" + keyword + "] with value of  [" +macroProperties.get(keyword)+ "]");
+                _logger.info("Adding macro [" + keyword + "] with value of  [" + macroProperties.get(keyword) + "]");
             }
         } catch (IOException e) {
             _logger.error(e);
         }
-
     }
 
     /**
@@ -105,9 +99,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
         _macros = new HashMap(10);
 
         loadMacros(servletConfig);
-
     }
-
 
     /**
      * Replace Macro Tokens with their values
@@ -116,7 +108,6 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * @todo Very Sub-Optimal
      */
     private String replaceMacros(String content) {
-
         Matcher _matcher = _macro.matcher(content);
 
         while (_matcher.find()) {
@@ -126,11 +117,12 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
                 content = BlojsomUtils.replace(content, _token, (String) _macros.get(_macro));
             }
         }
+
         return content;
     }
 
     /**
-     * Process the blog entries
+     * Process the blog entries. Expands any macros in title and body.
      *
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
@@ -143,7 +135,6 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            _logger.info("Expanding any macros in title and body");
             entry.setTitle(replaceMacros(entry.getTitle()));
             entry.setDescription(replaceMacros(entry.getDescription()));
         }
@@ -159,6 +150,4 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     public void cleanup() throws BlojsomPluginException {
         _macros.clear();
     }
-
-
 }
