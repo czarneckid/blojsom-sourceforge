@@ -48,7 +48,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.17 2003-07-22 00:07:41 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.18 2003-08-09 16:53:22 intabulas Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -63,7 +63,7 @@ public abstract class BlogCategory implements Comparable {
     /**
      * Create a new BlogCategory.
      */
-    public BlogCategory() {
+    protected BlogCategory() {
     }
 
     /**

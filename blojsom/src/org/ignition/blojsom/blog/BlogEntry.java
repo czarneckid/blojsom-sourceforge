@@ -49,7 +49,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.40 2003-08-04 15:36:00 intabulas Exp $
+ * @version $Id: BlogEntry.java,v 1.41 2003-08-09 16:53:01 intabulas Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -69,7 +69,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     /**
      * Create a new blog entry with no data
      */
-    public BlogEntry() {
+    protected BlogEntry() {
     }
 
     /**

@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.60 2003-08-04 15:36:17 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.61 2003-08-09 16:54:34 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -713,7 +713,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     };
 
-    static final byte HEX_DIGITS[] = {
+    static final byte[] HEX_DIGITS = {
         (byte) '0', (byte) '1', (byte) '2', (byte) '3',
         (byte) '4', (byte) '5', (byte) '6', (byte) '7',
         (byte) '8', (byte) '9', (byte) 'a', (byte) 'b',

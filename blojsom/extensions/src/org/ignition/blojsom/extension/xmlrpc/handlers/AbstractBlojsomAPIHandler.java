@@ -46,9 +46,12 @@ import org.ignition.blojsom.util.BlojsomUtils;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.7 2003-07-15 00:17:36 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.8 2003-08-09 16:53:11 intabulas Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
+
+    AbstractBlojsomAPIHandler() {
+    }
 
     public static final int    AUTHORIZATION_EXCEPTION = 0001;
     public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid Username and/or Password";

@@ -60,7 +60,7 @@ import java.util.Vector;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.37 2003-07-26 15:48:46 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.38 2003-08-09 16:54:59 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -247,7 +247,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             return result;
         } else {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + ']');
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -276,7 +276,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             String category;
             String permalink;
-            String match = "?" + PERMALINK_PARAM + "=";
+            String match = '?' + PERMALINK_PARAM + '=';
 
             int pos = postid.indexOf(match);
             if (pos != -1) {
@@ -329,7 +329,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             return result;
         } else {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + ']');
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -373,7 +373,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
                 String filename = getBlogEntryFilename(description);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
-                String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
+                String postid = blogid + '?' + PERMALINK_PARAM + '=' + filename;
 
                 StringBuffer post = new StringBuffer();
                 post.append(title).append("\n").append(description);
@@ -400,7 +400,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             return result;
         } else {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + ']');
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -427,7 +427,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             String category;
             String permalink;
-            String match = "?" + PERMALINK_PARAM + "=";
+            String match = '?' + PERMALINK_PARAM + '=';
 
             int pos = postid.indexOf(match);
             if (pos != -1) {
@@ -460,7 +460,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
         } else {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + ']');
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -511,7 +511,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             return blogEntries;
         } else {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + ']');
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -544,7 +544,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 extension = "";
             }
             name = BlojsomUtils.normalize(name);
-            name += "." + extension;
+            name += '.' + extension;
             byte[] decodedFile = Base64.decode(bits.getBytes());
 
             if (!_acceptedMimeTypes.containsKey(type.toLowerCase())) {
@@ -567,7 +567,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
             }
         } else {
-            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + ']');
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -585,7 +585,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         if (blogCategory.exists() && blogCategory.isDirectory()) {
             return blogCategory;
         } else {
-            return new File(_blog.getBlogHome() + "/");
+            return new File(_blog.getBlogHome() + '/');
         }
     }
 }

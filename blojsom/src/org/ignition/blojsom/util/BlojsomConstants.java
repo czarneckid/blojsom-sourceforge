@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.69 2003-07-20 22:04:47 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.70 2003-08-09 16:54:47 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -48,234 +48,234 @@ public interface BlojsomConstants {
      * Key under which blog information will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_BLOG = "BLOJSOM_BLOG";
+    static final String BLOJSOM_BLOG = "BLOJSOM_BLOG";
 
     /**
      * Key under which the blog entries will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_ENTRIES = "BLOJSOM_ENTRIES";
+    static final String BLOJSOM_ENTRIES = "BLOJSOM_ENTRIES";
 
     /**
      * Key under which the blog categories will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
+    static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
      * Key under which the date (RFC 822 format) of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_DATE = "BLOJSOM_DATE";
+    static final String BLOJSOM_DATE = "BLOJSOM_DATE";
 
     /**
      * Key under which the date (ISO 8601 format) of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_DATE_ISO8601 = "BLOJSOM_DATE_ISO8601";
+    static final String BLOJSOM_DATE_ISO8601 = "BLOJSOM_DATE_ISO8601";
 
     /**
      * Key under which the date object of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_DATE_OBJECT = "BLOJSOM_DATE_OBJECT";
+    static final String BLOJSOM_DATE_OBJECT = "BLOJSOM_DATE_OBJECT";
 
     /**
      * Key under which the date (UTC format) of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_DATE_UTC = "BLOJSOM_DATE_UTC";
+    static final String BLOJSOM_DATE_UTC = "BLOJSOM_DATE_UTC";
 
     /**
      * Key under which the blog site will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
+    static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
 
     /**
      * Key under which the permalink value will be placed. This is used to allow templates
      * to generate trackback auto-discovery fragments.
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_PERMALINK = "BLOJSOM_PERMALINK";
+    static final String BLOJSOM_PERMALINK = "BLOJSOM_PERMALINK";
 
     /**
      * Key under which the requested category will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_REQUESTED_CATEGORY = "BLOJSOM_REQUESTED_CATEGORY";
+    static final String BLOJSOM_REQUESTED_CATEGORY = "BLOJSOM_REQUESTED_CATEGORY";
 
     /**
      * Key under which whether or not comments are enabled will be placed
      * (example: on the request for the JSP dispatcher)
      */
-    public static final String BLOJSOM_COMMENTS_ENABLED = "BLOJSOM_COMMENTS_ENABLED";
+    static final String BLOJSOM_COMMENTS_ENABLED = "BLOJSOM_COMMENTS_ENABLED";
 
     /**
      * Key under which whether or not email messages will be sent to the blog author
      */
-    public static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
+    static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
 
     /**
      * Key under which the lastmodified date of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_LAST_MODIFIED = "BLOJSOM_LAST_MODIFIED";
+    static final String BLOJSOM_LAST_MODIFIED = "BLOJSOM_LAST_MODIFIED";
 
     /**
      * Default class for fetching blog entries
      */
-    public static final String BLOG_DEFAULT_FETCHER = "org.ignition.blojsom.fetcher.StandardFetcher";
+    static final String BLOG_DEFAULT_FETCHER = "org.ignition.blojsom.fetcher.StandardFetcher";
 
     /**
      * UTF-8 encoding
      */
-    public static final String UTF8 = "UTF-8";
+    static final String UTF8 = "UTF-8";
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
      */
-    public static final String DEFAULT_FLAVOR_HTML = "html";
+    static final String DEFAULT_FLAVOR_HTML = "html";
 
     /**
      * Default directory for adding comments
      */
-    public static final String DEFAULT_COMMENTS_DIRECTORY = ".comments";
+    static final String DEFAULT_COMMENTS_DIRECTORY = ".comments";
 
     /**
      * Reserved file extension for blojsom comments
      */
-    public static final String COMMENT_EXTENSION = ".cmt";
+    static final String COMMENT_EXTENSION = ".cmt";
 
     /**
      * Request parameter for the requested "flavor"
      */
-    public static final String FLAVOR_PARAM = "flavor";
+    static final String FLAVOR_PARAM = "flavor";
 
     /**
      * Request parameter for a "permalink"
      */
-    public static final String PERMALINK_PARAM = "permalink";
+    static final String PERMALINK_PARAM = "permalink";
 
     /**
      * Request parameter for the "plugins"
      */
-    public static final String PLUGINS_PARAM = "plugins";
+    static final String PLUGINS_PARAM = "plugins";
 
     /**
      * Request parameter for the "page"
      */
-    public static final String PAGE_PARAM = "page";
+    static final String PAGE_PARAM = "page";
 
     /**
      * Request parameter value for the archive page
      */
-    public static final String PAGE_PARAM_ARCHIVE = "archive";
+    static final String PAGE_PARAM_ARCHIVE = "archive";
 
 
     /**
      * Request parameter value for not toggling LastModfied and ETag fromgetting generated
      */
-    public static final String OVERRIDE_LASTMODIFIED_PARAM = "lastmodified";
+    static final String OVERRIDE_LASTMODIFIED_PARAM = "lastmodified";
 
 
     /**
      * Request parameter for the "category"
      */
-    public static final String CATEGORY_PARAM = "category";
+    static final String CATEGORY_PARAM = "category";
 
     /**
      * Default directory for adding trackbacks
      */
-    public static final String DEFAULT_TRACKBACK_DIRECTORY = ".trackbacks";
+    static final String DEFAULT_TRACKBACK_DIRECTORY = ".trackbacks";
 
     /**
      * Reserved file extension for blojsom trackbacks
      */
-    public static final String TRACKBACK_EXTENSION = ".tb";
+    static final String TRACKBACK_EXTENSION = ".tb";
 
     /**
      * Value indicating all subdirectories under the blog home should be searched
      */
-    public static final int INFINITE_BLOG_DEPTH = -1;
+    static final int INFINITE_BLOG_DEPTH = -1;
 
     /**
      * The properties file key that denotes a blog category description
      */
-    public static final String DESCRIPTION_KEY = "blojsom.description";
+    static final String DESCRIPTION_KEY = "blojsom.description";
 
     /**
      * The properties file key that denotes a blog category name (different from the directory name)
      */
-    public static final String NAME_KEY = "blojsom.name";
+    static final String NAME_KEY = "blojsom.name";
 
     /**
      * Default language for blog if none supplied (en)
      */
-    public static final String BLOG_LANGUAGE_DEFAULT = "en";
+    static final String BLOG_LANGUAGE_DEFAULT = "en";
 
     /**
      * Default country for blog if none supplied (US)
      */
-    public static final String BLOG_COUNTRY_DEFAULT = "US";
+    static final String BLOG_COUNTRY_DEFAULT = "US";
 
     /**
      * Default number of blog entries to display (-1 indicates all entries will be displayed)
      */
-    public static final int BLOG_ENTRIES_DISPLAY_DEFAULT = -1;
+    static final int BLOG_ENTRIES_DISPLAY_DEFAULT = -1;
 
     /**
      * HTTP Header Name representing the Last Modified Timstamp of the blog (GMT Based)
      */
-    public static final String HTTP_LASTMODIFIED = "Last-Modified";
+    static final String HTTP_LASTMODIFIED = "Last-Modified";
 
     /**
      * HTTP Header Name representing the ETag of the blog
      */
-    public static final String HTTP_ETAG = "ETag";
+    static final String HTTP_ETAG = "ETag";
 
     /**
      * RFC 822 style date format
      */
-    public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy kk:mm:ss Z";
+    static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy kk:mm:ss Z";
 
     /**
      * ISO 8601 style date format
      * ISO 8601 [W3CDTF] date format (used in rdf flavor)
      */
-    public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssz";
+    static final String ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssz";
 
     /**
      * UTC style date format
      * @since blojsom 1.9.4
      */
-    public static final String UTC_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ss'Z'";
+    static final String UTC_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ss'Z'";
 
     /**
      * If a entry is longer that this length, then when any content hashing is performed, it is
      * truncated to this size. NOTE: This only truncates for hash.
      */
-    public static final int MAX_HASHABLE_LENGTH = 300;
+    static final int MAX_HASHABLE_LENGTH = 300;
 
     /**
      * Entry Meta Data Key for Poster
      */
-    public static final String BLOG_METADATA_ENTRY_AUTHOR = "blog-entry-author";
+    static final String BLOG_METADATA_ENTRY_AUTHOR = "blog-entry-author";
 
     /**
      * Entry MetaData File Header
      */
-    public static final String BLOG_METADATA_HEADER = "blojsom entry metadata";
+    static final String BLOG_METADATA_HEADER = "blojsom entry metadata";
 
     /**
      * Entry Attribute for File()
      */
-    public static final String SOURCE_ATTRIBUTE = "blog-entry-source";
+    static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     /**
      * Line separator for the system
      */
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     // Blog initialization parameters from blojsom.properties
     static final String BLOG_HOME_IP = "blog-home";
