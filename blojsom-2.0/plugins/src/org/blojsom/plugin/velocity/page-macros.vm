@@ -119,13 +119,13 @@
 -->
 #end
 
-#macro(PingbackLink $entry $xmlrpcurl)
+#macro(XMLRPCLink $entry $xmlrpcurl)
     #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #if ("" == $xmlrpcurl)
         #set($xmlrpcurl = "xmlrpc")
     #end
-    #set ($pingbackLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_USER/$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
+    #set ($xmlrpcLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_USER/$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
 
 ###############################################
