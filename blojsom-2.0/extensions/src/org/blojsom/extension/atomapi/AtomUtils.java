@@ -55,7 +55,7 @@ import java.util.Date;
  * AtomUtils
  *
  * @author Mark Lussier
- * @version $Id: AtomUtils.java,v 1.16 2004-07-16 20:52:31 czarneckid Exp $
+ * @version $Id: AtomUtils.java,v 1.17 2004-07-20 14:28:44 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomUtils implements AtomAPIConstants {
@@ -90,9 +90,7 @@ public class AtomUtils implements AtomAPIConstants {
         result.setCreated(blogentry.getDate());
         result.setIssued(blogentry.getDate());
         result.setModified(new Date(blogentry.getLastModified()));
-        result.setId("tag:" + blog.getBlogOwnerEmail() + "," + blogentry.getDateAsFormat("yyyy-MM-dd") + ":" +
-                blogentry.getEncodedCategory() + "." + blogentry.getPermalink());
-
+        result.setId("tag:" + blog.getBlogOwnerEmail() + "," + blogentry.getDateAsFormat("yyyy-MM-dd") + ":" + blogentry.getId());
 
         Link link = new LinkImpl();
         link.setType("text/html");
@@ -103,9 +101,8 @@ public class AtomUtils implements AtomAPIConstants {
         Link editlink = new LinkImpl();
         editlink.setType("application/x.atom+xml");
         editlink.setRelationship("service.edit");
-        editlink.setHref(blog.getBlogBaseURL() + servletPath + blogentry.getCategory() + "/?permalink=" + blogentry.getPermalink());
+        editlink.setHref(blog.getBlogBaseURL() + servletPath + blogentry.getId());
         result.addLink(editlink);
-
 
         result.setAuthor(SyndicationFactory.createPerson(blog.getBlogOwner(), blog.getBlogOwnerEmail(), blog.getBlogURL()));
 
