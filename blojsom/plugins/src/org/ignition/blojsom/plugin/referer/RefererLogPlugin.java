@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.17 2003-05-25 20:36:15 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.18 2003-05-28 14:40:26 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -181,13 +181,15 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private boolean isBlacklisted(String referer) {
 
         boolean result = false;
-        int count = _blacklistPatterns.size();
-        if (referer != null && count > 0) {
-            for (int x = 0; x < count; x++) {
-                //@todo should this be a matches() ?
-                result = ((Pattern) _blacklistPatterns.get(x)).matcher(referer).find();
-                if (result) {
-                    break;
+        if (_blacklistPatterns != null) {
+            int count = _blacklistPatterns.size();
+            if (referer != null && count > 0) {
+                for (int x = 0; x < count; x++) {
+                    //@todo should this be a matches() ?
+                    result = ((Pattern) _blacklistPatterns.get(x)).matcher(referer).find();
+                    if (result) {
+                        break;
+                    }
                 }
             }
         }
@@ -391,7 +393,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
 
                     _refererproperties.put(groupflavor + "." + getRefererDate(referer.getLastReferral()) + "." + referer.getCount(),
-                                           referer.getUrl());
+                            referer.getUrl());
                 }
             }
         }
