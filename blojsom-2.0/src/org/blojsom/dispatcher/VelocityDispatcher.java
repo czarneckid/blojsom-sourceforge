@@ -37,7 +37,7 @@ package org.blojsom.dispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
@@ -55,15 +55,17 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.5 2003-08-23 04:03:12 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.6 2003-09-09 01:35:43 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
     private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
 
     private Log _logger = LogFactory.getLog(VelocityDispatcher.class);
+    private String _installationDirectory;
     private String _baseConfigurationDirectory;
     private String _templatesDirectory;
+    private Properties _velocityProperties;
 
     /**
      * Create a new VelocityDispatcher
@@ -80,6 +82,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
         _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
+        _installationDirectory = blojsomConfiguration.getInstallationDirectory();
         _templatesDirectory = blojsomConfiguration.getBlojsomPropertyAsString(TEMPLATES_DIRECTORY_IP);
         if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
             _templatesDirectory = DEFAULT_TEMPLATES_DIRECTORY;
@@ -87,18 +90,33 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
         String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
-        Properties velocityProperties = new Properties();
+        _velocityProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(velocityConfiguration);
 
         try {
-            velocityProperties.load(is);
-            Velocity.init(velocityProperties);
+            _velocityProperties.load(is);
             is.close();
         } catch (Exception e) {
             _logger.error(e);
         }
 
         _logger.debug("Initialized Velocity dispatcher");
+    }
+
+    /**
+     * Return a path appropriate for the Velocity file resource loader
+     *
+     * @param userId User ID
+     * @return blojsom installation directory + base configuration directory + user id + templates directory
+     */
+    private String getVelocityFileLoaderPath(String userId) {
+        StringBuffer fileLoaderPath = new StringBuffer();
+        fileLoaderPath.append(_installationDirectory);
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
+        fileLoaderPath.append(userId).append("/");
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
+
+        return fileLoaderPath.toString();
     }
 
     /**
@@ -125,6 +143,18 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             throws IOException, ServletException {
         httpServletResponse.setContentType(flavorContentType);
 
+        // Create the Velocity Engine
+        VelocityEngine velocityEngine = new VelocityEngine();
+
+        try {
+            Properties updatedVelocityProperties = (Properties) _velocityProperties.clone();
+            updatedVelocityProperties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, getVelocityFileLoaderPath(user.getId()));
+            velocityEngine.init(updatedVelocityProperties);
+        } catch (Exception e) {
+            _logger.error(e);
+            return;
+        }
+
         StringWriter sw = new StringWriter();
         String flavorTemplateForPage = null;
 
@@ -138,40 +168,32 @@ public class VelocityDispatcher implements BlojsomDispatcher {
 
         if (flavorTemplateForPage != null) {
             // Try and look for the flavor page template for the individual user
-            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplateForPage;
-            if (!Velocity.templateExists(templateToLoad)) {
-                _logger.error("Could not find flavor page template for user: " + templateToLoad);
-                templateToLoad = flavorTemplateForPage;
-                if (!Velocity.templateExists(templateToLoad)) {
-                    _logger.error("Could not find default flavor page template: " + templateToLoad);
+            if (!velocityEngine.templateExists(flavorTemplateForPage)) {
+                _logger.error("Could not find flavor page template for user: " + flavorTemplateForPage);
+                return;
+            } else {
+                try {
+                    velocityEngine.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, sw);
+                } catch (Exception e) {
+                    _logger.error(e);
                     return;
                 }
             }
-
-            try {
-                Velocity.mergeTemplate(templateToLoad, UTF8, velocityContext, sw);
-            } catch (Exception e) {
-                _logger.error(e);
-            }
-            _logger.debug("Dispatched to flavor page template: " + templateToLoad);
+            _logger.debug("Dispatched to flavor page template: " + flavorTemplateForPage);
         } else {
             // Otherwise, fallback and look for the flavor template for the individual user
-            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplate;
-            if (!Velocity.templateExists(templateToLoad)) {
-                _logger.error("Could not find flavor template for user: " + templateToLoad);
-                templateToLoad = flavorTemplate;
-                if (!Velocity.templateExists(templateToLoad)) {
-                    _logger.error("Could not find default flavor template: " + templateToLoad);
+            if (!velocityEngine.templateExists(flavorTemplate)) {
+                _logger.error("Could not find flavor template for user: " + flavorTemplate);
+                return;
+            } else {
+                try {
+                    velocityEngine.mergeTemplate(flavorTemplate, UTF8, velocityContext, sw);
+                } catch (Exception e) {
+                    _logger.error(e);
                     return;
                 }
             }
-
-            try {
-                Velocity.mergeTemplate(templateToLoad, UTF8, velocityContext, sw);
-            } catch (Exception e) {
-                _logger.error(e);
-            }
-            _logger.debug("Dispatched to flavor template: " + templateToLoad);
+            _logger.debug("Dispatched to flavor template: " + flavorTemplate);
         }
 
         // We need that content length, especially for RSS feeds
