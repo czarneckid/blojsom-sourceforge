@@ -74,6 +74,10 @@
                 Any usernames without e-mail addresses are assume to be the property of the blog owner, so in these
                 cases, a forgotten password e-mail message would be sent to the blog owner's e-mail address.
             </action>
+
+            <action dev="czarneckid" type="update" context="Libary">
+                Updated Velocity to the 1.4 release.
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
