@@ -36,6 +36,10 @@
             <action dev="czarneckid" type="add" context="Library">
                 Added <link href="http://jakarta.apache.org/commons/fileupload/">Jakarta Commons FileUpload</link> 1.0.
             </action>
+
+            <action dev="czarneckid" type="update" context="Library">
+                Updated <link href="http://radeox.org">Radeox</link> library to 0.9.
+            </action>
         </release>
         
         
