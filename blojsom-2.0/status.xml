@@ -7,6 +7,10 @@
     </developers>
 
     <changes>
+        <release version="2.14" date="Available from CVS">
+            
+        </release>
+
         <release version="2.13" date="March 17, 2004">
             <action dev="czarneckid" type="add" context="Core">
                 All available categories are now placed under the key <code>BLOJSOM_ALL_CATEGORIES</code>. This would

@@ -9,6 +9,20 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.13 to blojsom 2.14</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar,
+                        blojsom-resources-*.jar and blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.14.jar,
+                        blojsom-extensions-2.14.jar, blojsom-plugins-2.14.jar files, blojsom-resources-2.14.jar, 
+                        and blojsom-plugins-templates-2.14.jar.
+                    </p>
+                </section>
+            </section>
+
+            <section>
                 <title>Upgrading from blojsom 2.12 to blojsom 2.13</title>
                 <section>
                     <title>Library changes</title>
