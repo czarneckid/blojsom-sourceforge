@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.24 2003-06-16 01:16:12 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.25 2003-06-17 03:56:30 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -131,8 +131,18 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             FileBackedBlogCategory blogCategory;
             if ("/".equals(category)) {
                 blogCategory = new FileBackedBlogCategory(category, _blog.getBlogURL());
+                try {
+                    blogCategory.load(_blog);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+                }
             } else {
                 blogCategory = new FileBackedBlogCategory(category, _blog.getBlogURL() + category);
+                try {
+                    blogCategory.load(_blog);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+                }
             }
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
@@ -189,8 +199,18 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 FileBackedBlogCategory blogCategoryForEntry;
                 if ("/".equals(category)) {
                     blogCategoryForEntry = new FileBackedBlogCategory(category, _blog.getBlogURL());
+                    try {
+                        blogCategoryForEntry.load(_blog);
+                    } catch (BlojsomException e) {
+                        _logger.error(e);
+                    }
                 } else {
                     blogCategoryForEntry = new FileBackedBlogCategory(category, _blog.getBlogURL() + category);
+                    try {
+                        blogCategoryForEntry.load(_blog);
+                    } catch (BlojsomException e) {
+                        _logger.error(e);
+                    }
                 }
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
