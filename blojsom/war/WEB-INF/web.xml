@@ -117,7 +117,7 @@
 
     <servlet-mapping>
         <servlet-name>blojsomatomapi</servlet-name>
-        <url-pattern>/echoapi/*</url-pattern>
+        <url-pattern>/atomapi/*</url-pattern>
     </servlet-mapping>
 
 
