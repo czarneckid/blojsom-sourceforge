@@ -36,6 +36,7 @@ package org.blojsom.plugin.admin.event;
 
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.event.BlojsomEvent;
 
 import java.util.Date;
 
@@ -43,10 +44,13 @@ import java.util.Date;
  * DeletedBlogEntryEvent
  *
  * @author David Czarnecki
- * @version $Id: DeletedBlogEntryEvent.java,v 1.1 2004-08-30 14:15:36 czarneckid Exp $
+ * @version $Id: DeletedBlogEntryEvent.java,v 1.2 2004-12-22 15:03:20 czarneckid Exp $
  * @since blojsom 2.18
  */
-public class DeletedBlogEntryEvent extends AddBlogEntryEvent {
+public class DeletedBlogEntryEvent extends BlojsomEvent {
+
+    protected BlogEntry _blogEntry;
+    protected BlogUser _blogUser;
 
     /**
      * Create a new event indicating an entry has been deleted in the system.
@@ -57,6 +61,26 @@ public class DeletedBlogEntryEvent extends AddBlogEntryEvent {
      * @param blogUser {@link BlogUser}
      */
     public DeletedBlogEntryEvent(Object source, Date timestamp, BlogEntry blogEntry, BlogUser blogUser) {
-        super(source, timestamp, blogEntry, blogUser);
+        super(source, timestamp);
+        _blogEntry = blogEntry;
+        _blogUser = blogUser;
+    }
+
+    /**
+     * Retrieve the {@link BlogEntry} associated with the event
+     *
+     * @return {@link BlogEntry}
+     */
+    public BlogEntry getBlogEntry() {
+        return _blogEntry;
+    }
+
+    /**
+     * Retrieve the {@link BlogUser} associated with the event
+     *
+     * @return {@link BlogUser}
+     */
+    public BlogUser getBlogUser() {
+        return _blogUser;
     }
 }

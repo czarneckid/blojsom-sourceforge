@@ -34,9 +34,9 @@
  */
 package org.blojsom.plugin.admin.event;
 
-import org.blojsom.event.BlojsomEvent;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.event.BlojsomEvent;
 
 import java.util.Date;
 
@@ -44,7 +44,7 @@ import java.util.Date;
  * AddBlogEntryEvent
  *
  * @author David Czarnecki
- * @version $Id: AddBlogEntryEvent.java,v 1.2 2004-08-31 20:18:12 czarneckid Exp $
+ * @version $Id: AddBlogEntryEvent.java,v 1.3 2004-12-22 15:03:20 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class AddBlogEntryEvent extends BlojsomEvent {
