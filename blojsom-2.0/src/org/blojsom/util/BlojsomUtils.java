@@ -55,7 +55,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.45 2004-11-18 17:53:09 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.46 2004-11-22 16:59:55 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1253,12 +1253,24 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Delete a directory (or file) and any subdirectories underneath the directory
+     * Delete a directory (or file) and any sub-directories underneath the directory
      *
      * @param directoryOrFile Directory or file to be deleted
-     * @return <code>true</code> if the directory (or file) could be deleted, <code>falde</code> otherwise
+     * @return <code>true</code> if the directory (or file) could be deleted, <code>false</code> otherwise
      */
     public static boolean deleteDirectory(File directoryOrFile) {
+        return deleteDirectory(directoryOrFile, true);
+    }
+
+    /**
+     * Delete a directory (or file) and any sub-directories underneath the directory
+     *
+     * @param directoryOrFile Directory or file to be deleted
+     * @param removeDirectoryOrFile If the directory of file should be deleted in addition to the sub-directories
+     * @return <code>true</code> if the directory (or file) could be deleted, <code>false</code> otherwise
+     * @since blojsom 2.21
+     */
+    public static boolean deleteDirectory(File directoryOrFile, boolean removeDirectoryOrFile) {
         if (directoryOrFile.isDirectory()) {
             File[] children = directoryOrFile.listFiles();
             if (children != null && children.length > 0) {
@@ -1271,7 +1283,11 @@ public class BlojsomUtils implements BlojsomConstants {
             }
         }
 
-        return directoryOrFile.delete();
+        if (removeDirectoryOrFile) {
+            return directoryOrFile.delete();
+        }
+
+        return true;
     }
 
     /**
