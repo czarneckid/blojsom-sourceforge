@@ -39,24 +39,22 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
-import org.blojsom.plugin.admin.event.BlogEntryEvent;
-import org.blojsom.event.BlojsomListener;
-import org.blojsom.event.BlojsomEvent;
 import org.blojsom.blog.*;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
+import org.blojsom.plugin.admin.event.BlogEntryEvent;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.15 2005-03-05 18:15:48 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.16 2005-03-11 04:19:16 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -82,16 +80,6 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
      * Default location for oscache.properties
      */
     private static final String OSCACHE_PROPERTIES_DEFAULT = "/WEB-INF/oscache.properties";
-
-    /**
-     * Internal key for cache for flavor
-     */
-    private static final String FLAVOR_KEY = "__FLAVOR__";
-
-    /**
-     * Internal key for cache for category
-     */
-    private static final String CATEGORY_KEY = "__CATEGORY__";
 
     protected static GeneralCacheAdministrator _cache;
 
@@ -144,7 +132,6 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
     public BlogEntry[] fetchEntries(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, String flavor, Map context) throws BlojsomFetcherException {
         BlogCategory category = (BlogCategory) context.get(STANDARD_FETCHER_CATEGORY);
         context.remove(STANDARD_FETCHER_CATEGORY);
-        int blogDirectoryDepth = ((Integer) context.get(STANDARD_FETCHER_DEPTH)).intValue();
         context.remove(STANDARD_FETCHER_DEPTH);
         Blog blog = user.getBlog();
 
@@ -169,40 +156,12 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
         if (permalink != null) {
             context.put(BLOJSOM_PERMALINK, permalink);
 
-            String cacheRefresh = user.getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
-            int refreshPeriod;
-            if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
-                refreshPeriod = DEFAULT_CACHE_REFRESH;
-            }
-            try {
-                refreshPeriod = Integer.parseInt(cacheRefresh);
-            } catch (NumberFormatException e) {
-                refreshPeriod = DEFAULT_CACHE_REFRESH;
-            }
-
             BlogEntry[] permalinkEntry = getPermalinkEntry(user, category, permalink);
 
             if (blog.getLinearNavigationEnabled().booleanValue()) {
                 BlogEntry[] allEntries;
 
-                try {
-                    allEntries = (BlogEntry[]) _cache.getFromCache(user.getId() + FLAVOR_KEY + flavor, refreshPeriod);
-                    _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
-                } catch (NeedsRefreshException e) {
-                    allEntries = (BlogEntry[]) e.getCacheContent();
-
-                    if (allEntries == null) {
-                        allEntries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
-                        _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, allEntries);
-                    } else {
-                        _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
-                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth));
-                        allCategoriesFetcherThread.setDaemon(true);
-                        allCategoriesFetcherThread.start();
-
-                        _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
-                    }
-                }
+                allEntries = getEntriesFromCache(user);
 
                 if (permalinkEntry.length > 0 && allEntries.length > 0) {
                     String permalinkId = permalinkEntry[0].getId();
@@ -232,63 +191,155 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
         } else {
             BlogEntry[] entries;
 
-            String cacheRefresh = user.getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
-            int refreshPeriod;
-            if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
-                refreshPeriod = DEFAULT_CACHE_REFRESH;
-            }
-            try {
-                refreshPeriod = Integer.parseInt(cacheRefresh);
-            } catch (NumberFormatException e) {
-                refreshPeriod = DEFAULT_CACHE_REFRESH;
+            entries = getEntriesFromCache(user);
+
+            if (entries == null || entries.length == 0) {
+                return new BlogEntry[0];
             }
 
             if (category.getCategory().equals("/")) {
-                try {
-                    entries = (BlogEntry[]) _cache.getFromCache(user.getId() + FLAVOR_KEY + flavor, refreshPeriod);
-                    _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
+                entries = filterEntriesForFlavor(user, flavor);
 
-                    return entries;
-                } catch (NeedsRefreshException e) {
-                    entries = (BlogEntry[]) e.getCacheContent();
-                    if (entries == null) {
-                        entries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
-                        _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, entries);
-                    } else {
-                        _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
-                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth));
-                        allCategoriesFetcherThread.setDaemon(true);
-                        allCategoriesFetcherThread.start();
-
-                        _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
-                    }
-
-                    return entries;
-                }
+                return entries;
             } else {
-                try {
-                    entries = (BlogEntry[]) _cache.getFromCache(user.getId() + CATEGORY_KEY + category.getCategory(), refreshPeriod);
-                    _logger.debug("Returned entries from cache for user/category: " + user.getId() + " / " + category.getCategory());
+                if (!category.getCategory().startsWith("/")) {
+                    category.setCategory("/" + category.getCategory());
+                }
 
-                    return entries;
-                } catch (NeedsRefreshException e) {
-                    entries = (BlogEntry[]) e.getCacheContent();
-                    if (entries == null) {
-                        entries = getEntriesForCategory(user, category, -1);
-                        _cache.putInCache(user.getId() + CATEGORY_KEY + category.getCategory(), entries);
+                ArrayList entriesList = new ArrayList(entries.length);
+                String entryCategory;
+                for (int i = 0; i < entries.length; i++) {
+                    BlogEntry entry = entries[i];
+                    if (!entry.getCategory().startsWith("/")) {
+                        entryCategory = "/" + entry.getCategory();
                     } else {
-                        _cache.cancelUpdate(user.getId() + CATEGORY_KEY + category.getCategory());
-                        Thread singleCategoryFetcherThread = new Thread(new SingleCategoryFetcherThread(user, category));
-                        singleCategoryFetcherThread.setDaemon(true);
-                        singleCategoryFetcherThread.start();
-
-                        _logger.debug("Returning from single category fetcher thread for key: " + user.getId() + CATEGORY_KEY + category.getCategory());
+                        entryCategory = entry.getCategory();
                     }
 
-                    return entries;
+                    if (entryCategory.equals(category.getCategory())) {
+                        entriesList.add(entry);
+                    }
                 }
+
+                return (BlogEntry[]) entriesList.toArray(new BlogEntry[entriesList.size()]);
             }
         }
+    }
+
+    /**
+     * Retrieve cached blog entries for a given blog
+     *
+     * @param blog {@link BlogUser}
+     * @return Entries for the blog
+     * @since blojsom 2.24
+     */
+    protected BlogEntry[] getEntriesFromCache(BlogUser blog) {
+        BlogEntry[] entries;
+
+        String cacheRefresh = blog.getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
+        int refreshPeriod;
+        if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
+            refreshPeriod = DEFAULT_CACHE_REFRESH;
+        }
+        try {
+            refreshPeriod = Integer.parseInt(cacheRefresh);
+        } catch (NumberFormatException e) {
+            refreshPeriod = DEFAULT_CACHE_REFRESH;
+        }
+
+        // Get the entries for this blog from the cache
+        try {
+            entries = (BlogEntry[]) _cache.getFromCache(blog.getId(), refreshPeriod);
+            _logger.debug("Returned entries from cache for blog: " + blog.getId());
+        } catch (NeedsRefreshException e) {
+            entries = (BlogEntry[]) e.getCacheContent();
+            if (entries == null) {
+                String[] filter = null;
+                entries = getEntriesAllCategories(blog, filter, -1, blog.getBlog().getBlogDepth());
+                _cache.putInCache(blog.getId(), entries);
+            } else {
+                _cache.cancelUpdate(blog.getId());
+                Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(blog, blog.getBlog().getBlogDepth()));
+                allCategoriesFetcherThread.setDaemon(true);
+                allCategoriesFetcherThread.start();
+
+                _logger.debug("Returning from all categories fetcher thread for key: " + blog.getId());
+            }
+        }
+
+        return entries;
+    }
+
+    /**
+     * Filter blog entries for the flavor
+     *
+     * @param blog {@link BlogUser}
+     * @param flavor Flavor
+     * @return <code>BlogEntry[]</code> for flavor
+     * @since blojsom 2.24
+     */
+    protected BlogEntry[] filterEntriesForFlavor(BlogUser blog, String flavor) {
+        Blog blogInformation = blog.getBlog();
+
+        String flavorMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
+        String categoryMappingForFlavor = (String) blogInformation.getBlogProperty(flavorMappingKey);
+        String[] categoryMappingsForFlavor = null;
+
+        if (!BlojsomUtils.checkNullOrBlank(categoryMappingForFlavor)) {
+            _logger.debug("Using category mappings for flavor: " + flavor);
+            categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
+        } else if (blogInformation.getBlogDefaultCategoryMappings() != null && blogInformation.getBlogDefaultCategoryMappings().length > 0) {
+            _logger.debug("Using default category mapping");
+            categoryMappingsForFlavor = blogInformation.getBlogDefaultCategoryMappings();
+        } else {
+            categoryMappingsForFlavor = null;
+        }
+
+        BlogEntry[] entries = getEntriesFromCache(blog);
+        if (entries != null && entries.length > 0) {
+            ArrayList entriesList = new ArrayList(entries.length);
+            Map categoryMap = new HashMap();
+
+            if (categoryMappingsForFlavor != null) {
+                // Setup map to check categories
+                for (int i = 0; i < categoryMappingsForFlavor.length; i++) {
+                    String category = categoryMappingsForFlavor[i];
+                    if (!category.startsWith("/")) {
+                        category = "/" + category;
+                    }
+
+                    if (!category.endsWith("/")) {
+                        category = category + "/";
+                    }
+
+                    categoryMap.put(category, category);
+                }
+
+                String entryCategory;
+                for (int i = 0; i < entries.length; i++) {
+                    BlogEntry entry = entries[i];
+                    entryCategory = entry.getCategory();
+
+                    if (!entryCategory.startsWith("/")) {
+                        entryCategory = "/" + entryCategory;
+                    }
+
+                    if (!entryCategory.endsWith("/")) {
+                        entryCategory = entryCategory + "/";
+                    }
+
+                    if (categoryMap.containsKey(entryCategory)) {
+                        entriesList.add(entry);
+                    }
+                }
+
+                return (BlogEntry[]) entriesList.toArray(new BlogEntry[entriesList.size()]);
+            } else {
+                return entries;
+            }
+        }
+
+        return new BlogEntry[0];
     }
 
     /**
@@ -320,7 +371,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
                     shouldRefreshCache = false;
 
                     try {
-                        if (_cache.getFromCache(blogEntryEvent.getBlogUser().getId() + FLAVOR_KEY + flavor, refreshPeriod) != null) {
+                        if (_cache.getFromCache(blogEntryEvent.getBlogUser().getId(), refreshPeriod) != null) {
                             shouldRefreshCache = true;
                         }
                     } catch (NeedsRefreshException e) {
@@ -329,9 +380,9 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
                         }
                     }
 
-                    _cache.cancelUpdate(blogEntryEvent.getBlogUser().getId() + FLAVOR_KEY + flavor);
+                    _cache.cancelUpdate(blogEntryEvent.getBlogUser().getId());
                     if (shouldRefreshCache) {
-                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(blogEntryEvent.getBlogUser(), flavor, blogEntryEvent.getBlogUser().getBlog().getBlogDepth()));
+                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(blogEntryEvent.getBlogUser(), blogEntryEvent.getBlogUser().getBlog().getBlogDepth()));
                         allCategoriesFetcherThread.setDaemon(true);
                         allCategoriesFetcherThread.start();
                     }
@@ -361,19 +412,16 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
     private class AllCategoriesFetcherThread implements Runnable {
 
         private BlogUser _user;
-        private String _flavor;
         private int _blogDirectoryDepth;
 
         /**
          * Default constructor.
          *
          * @param user               Blog user
-         * @param flavor             Flavor
          * @param blogDirectoryDepth Blog directory depth
          */
-        public AllCategoriesFetcherThread(BlogUser user, String flavor, int blogDirectoryDepth) {
+        public AllCategoriesFetcherThread(BlogUser user, int blogDirectoryDepth) {
             _user = user;
-            _flavor = flavor;
             _blogDirectoryDepth = blogDirectoryDepth;
         }
 
@@ -392,53 +440,10 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
          * @see Runnable#run()
          */
         public void run() {
-            BlogEntry[] entries = getEntriesAllCategories(_user, _flavor, -1, _blogDirectoryDepth);
-            _cache.flushEntry(_user.getId() + FLAVOR_KEY + _flavor);
-            _cache.putInCache(_user.getId() + FLAVOR_KEY + _flavor, entries);
-
-            return;
-        }
-    }
-
-    /**
-     * SingleCategoryFetcherThread
-     *
-     * @since blojsom 2.05
-     */
-    private class SingleCategoryFetcherThread implements Runnable {
-
-        private BlogUser _user;
-        private BlogCategory _category;
-
-        /**
-         * Default constructor.
-         *
-         * @param user     Blog user
-         * @param category Blog category
-         */
-        public SingleCategoryFetcherThread(BlogUser user, BlogCategory category) {
-            _user = user;
-            _category = category;
-        }
-
-        /**
-         * If this thread was constructed using a separate
-         * <code>Runnable</code> run object, then that
-         * <code>Runnable</code> object's <code>run</code> method is called;
-         * otherwise, this method does nothing and returns.
-         * <p/>
-         * Subclasses of <code>Thread</code> should override this method.
-         *
-         * @see Thread#start()
-         * @see Thread#stop()
-         * @see Thread#Thread(ThreadGroup,
-                *      Runnable, String)
-         * @see Runnable#run()
-         */
-        public void run() {
-            BlogEntry[] entries = getEntriesForCategory(_user, _category, -1);
-            _cache.flushEntry(_user.getId() + CATEGORY_KEY + _category.getCategory());
-            _cache.putInCache(_user.getId() + CATEGORY_KEY + _category.getCategory(), entries);
+            String[] filter = null;
+            BlogEntry[] entries = getEntriesAllCategories(_user, filter, -1, _blogDirectoryDepth);
+            _cache.flushEntry(_user.getId());
+            _cache.putInCache(_user.getId(), entries);
 
             return;
         }
