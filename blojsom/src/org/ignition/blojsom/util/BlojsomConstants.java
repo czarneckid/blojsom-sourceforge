@@ -27,10 +27,16 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
-     * Value under which the blog site will be place
+     * Value under which the blog site will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
+
+    /**
+     * Value under which the requested category will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_REQUESTED_CATEGORY = "BLOJSOM_REQUESTED_CATEGORY";
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
@@ -71,4 +77,14 @@ public interface BlojsomConstants {
      * The properties file key that denotes a blog category name (different from the directory name)
      */
     public static final String NAME_KEY = "blojsom.name";
+
+    /**
+     * Default language for blog if none supplied (en)
+     */
+    public static final String BLOG_LANGUAGE_DEFAULT = "en";
+
+    /**
+     * Default number of blog entries to display (-1 indicates all entries will be displayed)
+     */
+    public static final int BLOG_ENTRIES_DISPLAY_DEFAULT = -1;
 }
