@@ -8,6 +8,13 @@
 
     <changes>
 
+        <release version="1.9.5" date="dev">
+            <action dev="czarneckid" type="update" context="Extension">
+                Refactored method to get a blog entry filename from within the Blogger and
+                MetaWeblog API handlers into the base <tt>AbstractBlojsomAPIHandler</tt> class.
+            </action>
+        </release>
+
         <release version="1.9.4" date="July 13, 2003">
             <action dev="chalko" type="update" context="General">
                 The blojsom site is now built with forrest.
