@@ -53,7 +53,7 @@ import java.util.*;
  * to filter content.
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.3 2003-08-18 02:19:35 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.4 2003-09-23 02:42:03 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -142,7 +142,7 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
         context.put(BLOJSOM_CALENDAR_LOCALE, locale);
 
         String requestedDateKey;
-        String calendarUrl = httpServletRequest.getRequestURL().toString();
+        String calendarUrl = user.getBlog().getBlogURL();
 
         // Default to the Current Month and Year
         Calendar calendar = new GregorianCalendar(locale);
