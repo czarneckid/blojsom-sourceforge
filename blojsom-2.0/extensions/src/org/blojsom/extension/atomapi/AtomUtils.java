@@ -40,15 +40,14 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.AtomConstants;
+import org.intabulas.sandler.SyndicationFactory;
 import org.intabulas.sandler.authentication.DigestUtilities;
 import org.intabulas.sandler.elements.Content;
 import org.intabulas.sandler.elements.Entry;
 import org.intabulas.sandler.elements.Link;
-import org.intabulas.sandler.elements.Person;
 import org.intabulas.sandler.elements.impl.ContentImpl;
 import org.intabulas.sandler.elements.impl.EntryImpl;
 import org.intabulas.sandler.elements.impl.LinkImpl;
-import org.intabulas.sandler.elements.impl.PersonImpl;
 
 import java.util.Date;
 
@@ -56,7 +55,7 @@ import java.util.Date;
  * AtomUtils
  *
  * @author Mark Lussier
- * @version $Id: AtomUtils.java,v 1.14 2004-02-23 18:27:21 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.15 2004-04-29 03:15:54 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomUtils implements AtomAPIConstants {
@@ -90,7 +89,8 @@ public class AtomUtils implements AtomAPIConstants {
         result.setCreated(blogentry.getDate());
         result.setIssued(blogentry.getDate());
         result.setModified(new Date(blogentry.getLastModified()));
-        result.setId(blogentry.getEscapedLink());
+        result.setId("tag:" + blog.getBlogOwnerEmail() + "," + blogentry.getDateAsFormat("yyyy-MM-dd") + ":" +
+                blogentry.getEncodedCategory() + "." + blogentry.getPermalink());
 
 
         Link link = new LinkImpl();
@@ -99,11 +99,14 @@ public class AtomUtils implements AtomAPIConstants {
         link.setHref(blogentry.getEscapedLink());
         result.addLink(link);
 
-        Person author = new PersonImpl();
-        author.setName(blog.getBlogOwner());
-        author.setEmail(blog.getBlogOwnerEmail());
-        author.setUrl(blog.getBlogURL());
-        result.setAuthor(author);
+        Link editlink = new LinkImpl();
+        editlink.setType("application/x.atom+xml");
+        editlink.setRelationship("service.edit");
+        editlink.setHref(blog.getBlogBaseURL() + "/atomapi" + blogentry.getCategory() + "/?permalink=" + blogentry.getPermalink());
+        result.addLink(editlink);
+
+
+        result.setAuthor(SyndicationFactory.createPerson(blog.getBlogOwner(), blog.getBlogOwnerEmail(), blog.getBlogURL()));
 
         Content content = new ContentImpl();
         content.setMimeType(CONTENTTYPE_HTML);

@@ -45,14 +45,14 @@ import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.Sandler;
-import org.intabulas.sandler.exceptions.MarshallException;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.authentication.AtomAuthentication;
 import org.intabulas.sandler.elements.Entry;
+import org.intabulas.sandler.exceptions.MarshallException;
 import org.intabulas.sandler.introspection.Introspection;
 import org.intabulas.sandler.introspection.impl.IntrospectionImpl;
 
@@ -64,18 +64,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
 
 /**
  * AtomAPIServlet
- *
+ * <p/>
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
+ * @version $Id: AtomAPIServlet.java,v 1.30 2004-04-29 03:15:54 intabulas Exp $
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.29 2004-03-05 03:43:37 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
 
@@ -142,7 +142,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * Send back failed authorization response
      *
      * @param httpServletResponse Response
-     * @param user BlogUser instance
+     * @param user                BlogUser instance
      */
     private void sendAuthenticationRequired(HttpServletResponse httpServletResponse, BlogUser user) {
         httpServletResponse.setContentType(CONTENTTYPE_HTML);
@@ -176,9 +176,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Process the Search request
      *
-     * @param request Request
+     * @param request  Request
      * @param category Blog category
-     * @param blog Blog instance
+     * @param blog     Blog instance
      * @param blogUser BlogUser instance
      * @return the search result as a String
      */
@@ -189,7 +189,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         // Did they specify how many entries?
         if (paramMap.containsKey(KEY_ATOMLAST)) {
             try {
-                numPosts = Integer.parseInt(((String []) paramMap.get(KEY_ATOMLAST))[0]);
+                numPosts = Integer.parseInt(((String[]) paramMap.get(KEY_ATOMLAST))[0]);
                 if (numPosts < -1 || numPosts == 0) {
                     numPosts = -1;
                 }
@@ -228,10 +228,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Handle a Delete Entry message
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
-     * @throws IOException If there is an error during I/O
+     * @throws IOException      If there is an error during I/O
      */
     protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         Blog blog = null;
@@ -307,10 +307,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Process a Get Entry message
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
-     * @throws IOException If there is an error during I/O
+     * @throws IOException      If there is an error during I/O
      */
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         Blog blog = null;
@@ -369,9 +369,12 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 if (entries != null && entries.length > 0) {
                     BlogEntry entry = entries[0];
                     Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry);
-                    content = atomentry.toString();
+                    content = Sandler.marshallEntry(atomentry);
                     httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                 }
+            } catch (MarshallException e) {
+                _logger.error(e);
+                httpServletResponse.setStatus(404);
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
@@ -398,10 +401,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Handle a Post Entry request
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
-     * @throws IOException If there is an error during I/O
+     * @throws IOException      If there is an error during I/O
      */
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         Blog blog = null;
@@ -483,10 +486,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Handle a Put Entry request
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
-     * @throws IOException If there is an error during I/O
+     * @throws IOException      If there is an error during I/O
      */
     protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         Blog blog = null;
@@ -574,9 +577,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * Get the blog category. If the category exists, return the
      * appropriate directory, otherwise return the "root" of this blog.
      *
-     * @since blojsom 1.9
      * @param categoryName Category name
      * @return A directory into which a blog entry can be placed
+     * @since blojsom 1.9
      */
     protected File getBlogCategoryDirectory(Blog blog, String categoryName) {
         File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));

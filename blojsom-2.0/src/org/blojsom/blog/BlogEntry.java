@@ -50,7 +50,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.7 2004-03-09 01:47:16 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.8 2004-04-29 03:15:54 intabulas Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -75,7 +75,7 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
 
     /**
      * Date of the blog entry
-     *
+     * <p/>
      * This value is constructed from the lastModified value of the file
      *
      * @return Date of the blog entry
@@ -102,6 +102,17 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
         return BlojsomUtils.getRFC822Date(_entryDate);
     }
 
+
+    /**
+     * Return an UTC style date
+     *
+     * @return Date formatted in UTC format
+     */
+    public String getUTCDate() {
+        return BlojsomUtils.getUTCDate(_entryDate);
+    }
+
+
     /**
      * Return an ISO 8601 style date
      * http://www.w3.org/TR/NOTE-datetime
@@ -115,9 +126,9 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Return the blog entry date formatted with a specified date format
      *
-     * @since blojsom 1.9.3
      * @param format Date format
      * @return <code>null</code> if the entry date or format is null, otherwise returns the entry date formatted to the specified format. If the format is invalid, returns <tt>entryDate.toString()</tt>
+     * @since blojsom 1.9.3
      */
     public String getDateAsFormat(String format) {
         if (_entryDate == null || format == null) {
@@ -250,8 +261,8 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Return the category name encoded
      *
-     * @since blojsom 2.08
      * @return Category name encoded as UTF-8
+     * @since blojsom 2.08
      */
     public String getEncodedCategory() {
         return BlojsomUtils.urlEncode(_category);
@@ -338,8 +349,8 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Determines whether or not this blog entry supports trackbacks.
      *
-     * @since blojsom 2.05
      * @return <code>true</code> if the blog entry supports trackbacks, <code>false</code> otherwise
+     * @since blojsom 2.05
      */
     public abstract boolean supportsTrackbacks();
 
@@ -409,8 +420,8 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Return meta data for this blog entry. This method may return <code>null</code>.
      *
-     * @since blojsom 1.8
      * @return Meta data
+     * @since blojsom 1.8
      */
     public Map getMetaData() {
         return _metaData;
@@ -430,8 +441,8 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * Return a string representation of the entry. The default implementation is to return
      * the blog entry title.
      *
-     * @since blojsom 1.9
      * @return String representation of this entry
+     * @since blojsom 1.9
      */
     public String toString() {
         return _title;
@@ -440,8 +451,8 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Set any attributes of the blog entry using data from the map.
      *
-     * @since blojsom 1.9
      * @param attributeMap Attributes
+     * @since blojsom 1.9
      */
     public void setAttributes(Map attributeMap) {
     }
@@ -449,27 +460,27 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Load a blog entry.
      *
-     * @since blojsom 1.9
      * @param blogUser User information
      * @throws BlojsomException If there is an error loading the entry
+     * @since blojsom 1.9
      */
     public abstract void load(BlogUser blogUser) throws BlojsomException;
 
     /**
      * Save the blog entry.
      *
-     * @since blojsom 1.9
      * @param blogUser User information
      * @throws BlojsomException If there is an error saving the entry
+     * @since blojsom 1.9
      */
     public abstract void save(BlogUser blogUser) throws BlojsomException;
 
     /**
      * Delete the blog entry.
      *
-     * @since blojsom 1.9
      * @param blogUser User information
      * @throws BlojsomException If there is an error deleting the entry
+     * @since blojsom 1.9
      */
     public abstract void delete(BlogUser blogUser) throws BlojsomException;
 }
