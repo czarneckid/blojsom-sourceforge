@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.12 2004-08-28 22:01:03 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.13 2004-09-06 17:44:26 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -189,12 +189,18 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 // Delete the user from the in-memory list
                 _blojsomConfiguration.getBlogUsers().remove(blogUserID);
 
-                // @todo Remove their home and blog directories or make it a configuration option to do so
                 File blogConfigurationDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogConfigurationDirectory)) {
-                    _logger.error("Error removing blog configuration directory: " + blogConfigurationDirectory.toString());
+                    _logger.error("Unable to remove blog configuration directory: " + blogConfigurationDirectory.toString());
                 } else {
                     _logger.debug("Removed blog configuration directory: " + blogConfigurationDirectory.toString());
+                }
+
+                File blogDirectory = new File(_blogHomeBaseDirectory + blogUserID + "/");
+                if (!BlojsomUtils.deleteDirectory(blogDirectory)) {
+                    _logger.error("Unable to remove blog directory for user: " + blogDirectory.toString());
+                } else {
+                    _logger.debug("Removed blog directory: " + blogDirectory.toString());
                 }
 
                 writeBlojsomConfiguration();
