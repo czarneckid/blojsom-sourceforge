@@ -23,7 +23,10 @@ ects/blojsom/">Sourceforge</a></p>
 <p class="weblogtitle">installation and default configuration</a></p>
 <p />
 1. Download <a href="http://sourceforge.net/projects/blojsom">blojsom</a>.<p />
-2. Unpack <i>blojsom.war</i> using Java's JAR program (jar xvf blojsom.war) into the directory where the application server will be running blojsom. Under Tomcat, this might be $TOMCAT_HOME/webapps.<br /><p />
+2. Unpack <i>blojsom.war</i> using Java's JAR program (jar xvf blojsom.war) into a directory
+under where the application server will be running blojsom.
+Under Tomcat, this might be $TOMCAT_HOME/webapps/blojsom. In this case, the servlet context
+for blojsom will be "blojsom". <br /><p />
 3. Configure the <i>WEB-INF/blojsom.properties</i> file for your blog.
 <p />
 <table border="1">
@@ -44,7 +47,7 @@ ects/blojsom/">Sourceforge</a></p>
         <td>blog-description</td> <td></td> <td align="left">A concise description of your blog</td>
     </tr>
     <tr align="center">
-        <td>blog-url</td> <td></td> <td align="left">URL for your blog</td>
+        <td>blog-url</td> <td></td> <td align="left">URL for your blog<br />Example: <i>http://localhost:8080/blojsom/blog/</i></td>
     </tr>
     <tr align="center">
         <td>blog-file-extensions</td> <td></td> <td align="left">Customize the regular expressions to identify file extensions blojsom uses for blog entries. By default, blojsom will look for .txt and .html file extensions in the blog directories for entries</td>
@@ -66,7 +69,9 @@ ects/blojsom/">Sourceforge</a></p>
     </tr>
 </table>
 <p />
-4. Start your application server. On startup, blojsom will log messages to the console to indicate what it is doing. Configuring blojsom's log capability is described in a later section of this document.
+4. Start your application server. On startup, blojsom will log messages to the console to indicate what it is doing. Configuring blojsom's log capability is described in a later section of this document.<p />
+5. Start your browser and open the URL to your blog. Example: <i>http://localhost:8080/blojsom/blog/</i>.
+Your new blog should show up in your browser. Now you're ready to create categories and entries for your blog.
 <p />
 <p class="weblogtitle">adding, removing, and updating blog entries and categories</p>
 <p/>
