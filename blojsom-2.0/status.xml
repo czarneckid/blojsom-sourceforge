@@ -85,6 +85,16 @@
                 cases, a forgotten password e-mail message would be sent to the blog owner's e-mail address.
             </action>
 
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Groovy plugin which allows you to write blojsom plugins using <a href="http://groovy.codehaus.org">Groovy</a>.
+                The scripts must implement the BlojsomPlugin interface. The plugin can also accept a request parameter,
+                <code>groovy-scripts</code> which is a comma-separated list of the scripts to execute. This parameter
+                is used if the Groovy plugin is included more than once in one of the flavor-based plugin chains. The
+                first time the plugin executes, it would use the first script in the <code>groovy-scripts</code> parameter
+                list, and the second time the plugin executes, it would use the second script in the <code>groovy-scripts</code>
+                parameter list, and so on.
+            </action>
+
             <action dev="czarneckid" type="update" context="Template">
                 Updated RDF JSP and Velocity templates to add missing items element inside the channel element.
             </action>
