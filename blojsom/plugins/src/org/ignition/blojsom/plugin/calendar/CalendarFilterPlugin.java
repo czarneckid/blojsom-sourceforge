@@ -50,11 +50,10 @@ import java.util.Map;
  * in the URL
  *
  * @author Mark Lussier
- * @version $Id: CalendarFilterPlugin.java,v 1.3 2003-04-03 03:02:53 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.4 2003-04-04 01:44:21 czarneckid Exp $
  */
 
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
-
 
     /**
      * Process the blog entries
@@ -85,7 +84,6 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
                 if (blogCalendar.getRequestedDateKey() == null || (blogDateKey.startsWith(blogCalendar.getRequestedDateKey()))) {
                     updatedEntryList.add(entry);
                 }
-
             }
         }
 
@@ -96,7 +94,5 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
         }
 
         return entries;
-
     }
-
 }

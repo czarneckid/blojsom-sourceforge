@@ -38,12 +38,11 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.util.Calendar;
 
-
 /**
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.6 2003-04-02 17:32:12 intabulas Exp $
+ * @version $Id: VelocityHelper.java,v 1.7 2003-04-04 01:44:21 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -65,6 +64,7 @@ public class VelocityHelper {
 
     /**
      * Public Constructor
+     *
      * @param calendar BlogCalendar to render
      */
     public VelocityHelper(BlogCalendar calendar) {
@@ -73,6 +73,7 @@ public class VelocityHelper {
 
     /**
      * Sets the BlogCalendar to render
+     *
      * @param calendar BlogCalendar
      */
     public void setCalendar(BlogCalendar calendar) {
@@ -109,6 +110,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual content for a given calendar row
+     *
      * @param row the row
      * @param clazz the css style apply
      * @return the visual calendar row
@@ -123,6 +125,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to Today
+     *
      * @return the today navigation control
      */
     public String getToday() {
@@ -133,6 +136,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to the previous month
+     *
      * @return the previous month navigation control
      */
     public String getPreviousMonth() {
@@ -151,7 +155,8 @@ public class VelocityHelper {
     }
 
     /**
-     *  Get the visual control for navigating to the next month
+     * Get the visual control for navigating to the next month
+     *
      * @return the next month navigation control
      */
     public String getNextMonth() {

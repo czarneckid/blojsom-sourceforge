@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.14 2003-04-02 18:01:24 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.15 2003-04-04 01:44:21 czarneckid Exp $
  */
 public class BlogCalendar {
 
@@ -62,6 +62,7 @@ public class BlogCalendar {
 
     /**
      * Public Constructor
+     *
      * @param calendar Caledar instance
      * @param blogurl The blog's url for calendar navigation
      */
@@ -71,6 +72,7 @@ public class BlogCalendar {
 
     /**
      * Public Constructor
+     *
      * @param calendar Caledar instance
      * @param blogurl The blog's url for calendar navigation
      * @param locale Locale for the Calendar
@@ -99,6 +101,7 @@ public class BlogCalendar {
 
     /**
      * Returns the current Month as MMMMM yyyy (ex: March 2003)
+     *
      * @return the current month and year as a string
      */
     public String getCaption() {
@@ -107,6 +110,7 @@ public class BlogCalendar {
 
     /**
      * Returns the day of the week for the 1st of the month occurs on
+     *
      * @return the day of the week for the 1st of the month as an int
      */
     public int getFirstDayOfMonth() {
@@ -116,6 +120,7 @@ public class BlogCalendar {
 
     /**
      * Returns the number of days in the current month
+     *
      * @return days in this month
      */
     public int getDaysInMonth() {
@@ -124,6 +129,7 @@ public class BlogCalendar {
 
     /**
      * Flag a day in the current month as having entries
+     *
      * @param dom the day of the month
      */
     public void setEntryForDOM(int dom) {
@@ -132,6 +138,7 @@ public class BlogCalendar {
 
     /**
      * Flag a day in the current month as NOT having entries
+     *
      * @param dom the day of the month
      */
     public void removetEntryForDOM(int dom) {
@@ -140,6 +147,7 @@ public class BlogCalendar {
 
     /**
      * Determines if a day of the month has entries
+     *
      * @param dom the day of the month
      * @return a boolean indicating entries exist
      */
@@ -150,6 +158,7 @@ public class BlogCalendar {
 
     /**
      * Get the array of day of month entry flags
+     *
      * @return a boolean array of the months entries
      */
     public Boolean[] getEntryDates() {
@@ -158,6 +167,7 @@ public class BlogCalendar {
 
     /**
      * Get the localized name of the given month
+     *
      * @param month the month (as defined by Calendar)
      * @return the month as a localized string
      */
@@ -167,6 +177,7 @@ public class BlogCalendar {
 
     /**
      * Get a list of the month names (localized)
+     *
      * @return String array of localized month names
      */
     public String[] getMonthNames() {
@@ -175,6 +186,7 @@ public class BlogCalendar {
 
     /**
      * Get the localized abbreviated name of the given month
+     *
      * @param month the month (as defined by Calendar)
      * @return the abbreviated month as a localized string (ex: Feb)
      */
@@ -184,6 +196,7 @@ public class BlogCalendar {
 
     /**
      * Get a list of the abbreviated month names (localized)
+     *
      * @return String array of localized abbreviated month names
      */
     public String[] getShortMonthNames() {
@@ -192,6 +205,7 @@ public class BlogCalendar {
 
     /**
      * Get the localized name of a Day of the Week
+     *
      * @param dow the day of the week (as defined by Calendar)
      * @return the day of the week as a localized string
      */
@@ -201,6 +215,7 @@ public class BlogCalendar {
 
     /**
      * Get a lit of the day of the week names (localized)
+     *
      * @return String array of localized Day of Week names
      */
     public String[] getDayOfWeekNames() {
@@ -209,6 +224,7 @@ public class BlogCalendar {
 
     /**
      * Get the localized abbreviated name of a Day of the Week
+     *
      * @param dow the day of the week (as defined by Calendar)
      * @return the abbreviated day of the week as a localized string
      */
@@ -218,6 +234,7 @@ public class BlogCalendar {
 
     /**
      * Get a lit of the abbreviated day of the week names (localized)
+     *
      * @return String array of localized abbreviated Day of Week names
      */
     public String[] getShortDayOfWeekNames() {
@@ -226,6 +243,7 @@ public class BlogCalendar {
 
     /**
      * Get the Blog URL used by the calendar
+     *
      * @return the blog url
      */
     public String getCalendarUrl() {
@@ -234,6 +252,7 @@ public class BlogCalendar {
 
     /**
      * Get the Calendar instance
+     *
      * @return Calendar instance
      */
     public Calendar getCalendar() {
@@ -242,16 +261,16 @@ public class BlogCalendar {
 
     /**
      * Get today as a Calendar instance
+     *
      * @return Calendar instance
      */
     public Calendar getToday() {
         return _today;
     }
 
-    // ==========
-
     /**
      * Gets the current month for this Calendar
+     *
      * @return current month as an int (as defined by Calendar)
      */
     public int getCurrentMonth() {
@@ -260,6 +279,7 @@ public class BlogCalendar {
 
     /**
      * Sets the current month for this Calendar
+     *
      * @param currentmonth current month as an int (as defined by Calendar)
      */
     public void setCurrentMonth(int currentmonth) {
@@ -269,6 +289,7 @@ public class BlogCalendar {
 
     /**
      * Gets the current year for this Calendar
+     *
      * @return current year as an int (as defined by Calendar)
      */
     public int getCurrentYear() {
@@ -278,6 +299,7 @@ public class BlogCalendar {
 
     /**
      * Sets the current year for this Calendar
+     *
      * @param currentyear current year as an int (as defined by Calendar)
      */
     public void setCurrentYear(int currentyear) {
@@ -287,6 +309,7 @@ public class BlogCalendar {
 
     /**
      * Gets the current day for this Calendar
+     *
      * @return current day as an int (as defined by Calendar)
      */
     public int getCurrentDay() {
@@ -295,6 +318,7 @@ public class BlogCalendar {
 
     /**
      * Sets the current day for this Calendar
+     *
      * @param currentday current day as an int (as defined by Calendar)
      */
     public void setCurrentDay(int currentday) {
@@ -302,10 +326,9 @@ public class BlogCalendar {
         _calendar.set(Calendar.DAY_OF_MONTH, currentday);
     }
 
-    // ========================
-
     /**
      * Gets the current entry date match key (year+month+day)
+     *
      * @return Date match key as a String
      */
     public String getRequestedDateKey() {
@@ -314,12 +337,11 @@ public class BlogCalendar {
 
     /**
      * Sets the current entry date match key (year+month+day)
+     *
      * @param requestedDateKey current entry match key
      */
     public void setRequestedDateKey(String requestedDateKey) {
         _requestedDateKey = requestedDateKey;
     }
-
-
 }
 

@@ -47,7 +47,7 @@ import java.util.Map;
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.4 2003-04-03 03:02:27 czarneckid Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.5 2003-04-04 01:44:21 czarneckid Exp $
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
@@ -88,8 +88,5 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
 
         context.put(BLOJSOM_CALENDAR, blogCalendar);
         return entries;
-
     }
-
-
 }

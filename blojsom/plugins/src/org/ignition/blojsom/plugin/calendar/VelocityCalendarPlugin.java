@@ -45,11 +45,9 @@ import java.util.Map;
  * VelocityCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: VelocityCalendarPlugin.java,v 1.3 2003-04-03 03:03:03 czarneckid Exp $
+ * @version $Id: VelocityCalendarPlugin.java,v 1.4 2003-04-04 01:44:21 czarneckid Exp $
  */
-
 public class VelocityCalendarPlugin extends AbstractVisualCalendarPlugin {
-
 
     /**
      * Process the blog entries
