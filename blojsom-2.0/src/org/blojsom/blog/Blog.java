@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.13 2003-12-17 20:13:56 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.14 2003-12-18 06:35:12 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -439,7 +439,7 @@ public class Blog implements BlojsomConstants {
      * @return Map of authorization usernames/passwords
      */
     public Map getAuthorization() {
-        return Collections.unmodifiableMap(_authorization);
+        return _authorization;
     }
 
 
