@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.8 2003-11-11 02:44:50 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.9 2003-11-29 16:20:42 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -170,6 +170,16 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @return <code>true</code> if the blog entry is writable, <code>false</code> otherwise
      */
     public boolean supportsComments() {
+        return _source.canWrite();
+    }
+
+    /**
+     * Determines whether or not this blog entry supports trackbacks.
+     *
+     * @since blojsom 2.05
+     * @return <code>true</code> if the blog entry supports trackbacks, <code>false</code> otherwise
+     */
+    public boolean supportsTrackbacks() {
         return _source.canWrite();
     }
 

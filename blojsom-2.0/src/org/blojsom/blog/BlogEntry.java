@@ -50,7 +50,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.2 2003-10-17 01:48:06 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.3 2003-11-29 16:20:42 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -324,6 +324,14 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
             return _comments.size();
         }
     }
+
+    /**
+     * Determines whether or not this blog entry supports trackbacks.
+     *
+     * @since blojsom 2.05
+     * @return <code>true</code> if the blog entry supports trackbacks, <code>false</code> otherwise
+     */
+    public abstract boolean supportsTrackbacks();
 
     /**
      * Get the trackbacks
