@@ -51,7 +51,7 @@
                 Added $default to <tt>xmlrpc.properties</tt> so that one can have a default XML-RPC handler.
             </action>
 
-            <action dev="czarneckid" type="add" context="Core (addon)">
+            <action dev="czarneckid" type="add" context="Core (add-on)">
                 Added <link href="http://www.freemarker.org">FreeMarker</link> dispatcher to allow users to develop
                 templates in FreeMarker.
             </action>

@@ -75,7 +75,7 @@
                     </p>
                 </section>
                 <section>
-                    <title>Core (addon) changes</title>
+                    <title>Core (add-on) changes</title>
                     <p>
                         1. If you would like to develop templates using the <link href="http://www.freemarker.org">FreeMarker</link>
                         template language, copy the <code>freemarker-2.2.5.jar</code> file to your <code>/WEB-INF/lib</code>
@@ -84,10 +84,13 @@
                         <pre>
                             fm=org.blojsom.dispatcher.FreeMarkerDispatcher
                         </pre>
+                        Templates will need to have the <code>.fm</code> extension for them to be handled by the
+                        FreeMarker dispatcher. You will also need to make the appropriate changes to an individual
+                        user's <code>flavor.properties</code> to change any flavors to use FreeMarker templates.
                     </p>
                 </section>
                 <section>
-                    <title>Plugin (addon) library changes</title>
+                    <title>Plugin (add-on) library changes</title>
                     <p>
                         1. If you are using the Wiki plugin, replace the radeox-*.jar in your <code>/WEB-INF/lib</code> directory with the
                         updated radeox-0.9.jar file.
