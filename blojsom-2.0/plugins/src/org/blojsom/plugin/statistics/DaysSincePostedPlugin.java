@@ -54,12 +54,13 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 2.16
- * @version $Id: DaysSincePostedPlugin.java,v 1.2 2005-01-05 02:32:32 czarneckid Exp $
+ * @version $Id: DaysSincePostedPlugin.java,v 1.3 2005-03-05 18:13:01 czarneckid Exp $
  */
 public class DaysSincePostedPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(DaysSincePostedPlugin.class);
 
+    public static final String DAYS_SINCE_POSTED_PLUGIN_HELPER = "DAYS_SINCE_POSTED_PLUGIN_HELPER";
     public static final String BLOJSOM_PLUGIN_DAYS_SINCE_POSTED_METADATA = "blojsom-plugin-days-since-posted";
 
     /**
@@ -103,6 +104,8 @@ public class DaysSincePostedPlugin implements BlojsomPlugin {
             entry.setMetaData(metaData);
         }
 
+        context.put(DAYS_SINCE_POSTED_PLUGIN_HELPER, new DaysSincePostedHelper());
+
         return entries;
     }
 
@@ -122,5 +125,21 @@ public class DaysSincePostedPlugin implements BlojsomPlugin {
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Class to handle days since posted calculation in templates
+     */
+    public class DaysSincePostedHelper {
+
+        /**
+         * Determine number of days between current date and date passed to the method
+         *
+         * @param date Date
+         * @return Number of days between dates
+         */
+        public Integer daysSincePosted(Date date) {
+            return new Integer(BlojsomUtils.daysBetweenDates(date, new Date()));
+        }
     }
 }
