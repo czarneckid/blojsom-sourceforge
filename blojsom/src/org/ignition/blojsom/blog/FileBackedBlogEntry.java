@@ -46,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.9 2003-05-31 20:12:42 intabulas Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.10 2003-06-12 02:07:26 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -438,7 +438,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blog Blog
      * @throws BlojsomException If there is an error loading the entry
      */
-    public void loadEntry(Blog blog) throws BlojsomException {
+    public void load(Blog blog) throws BlojsomException {
         if (_source == null) {
             throw new BlojsomException("No source file set for this blog entry.");
         }
@@ -463,7 +463,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blog Blog
      * @throws BlojsomException If there is an error saving the entry
      */
-    public void saveEntry(Blog blog) throws BlojsomException {
+    public void save(Blog blog) throws BlojsomException {
         if (_source == null) {
             throw new BlojsomException("No source file set for this blog entry.");
         }
@@ -509,7 +509,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blog Blog
      * @throws BlojsomException If there is an error deleting the entry
      */
-    public void deleteEntry(Blog blog) throws BlojsomException {
+    public void delete(Blog blog) throws BlojsomException {
         if (_source == null) {
             throw new BlojsomException("No source file set for this blog entry.");
         }

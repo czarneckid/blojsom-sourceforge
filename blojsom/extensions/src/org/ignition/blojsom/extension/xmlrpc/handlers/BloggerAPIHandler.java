@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.29 2003-06-11 02:49:42 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.30 2003-06-12 02:08:40 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -224,7 +224,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                 if (_entries != null && _entries.length > 0) {
                     try {
-                        _entries[0].deleteEntry(_blog);
+                        _entries[0].delete(_blog);
                     } catch (BlojsomException e) {
                         _logger.error(e);
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
@@ -423,14 +423,15 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 Map fetchMap = new HashMap();
                 BlogCategory blogCategory = _fetcher.newBlogCategory();
                 blogCategory.setCategory(category);
-                blogCategory.setCategoryURL(_blog.getBlogURL() + category);                fetchMap.put(FETCHER_CATEGORY, blogCategory);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
+                fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     try {
-                        _entry.saveEntry(_blog);
+                        _entry.save(_blog);
                         result = true;
                     } catch (BlojsomException e) {
                         _logger.error(e);
@@ -500,7 +501,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     entry.setDescription(content);
                     blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
                     entry.setMetaData(blogEntryMetaData);
-                    entry.saveEntry(_blog);
+                    entry.save(_blog);
                     result = postid;
                 } catch (BlojsomException e) {
                     _logger.error(e);

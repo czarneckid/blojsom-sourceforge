@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.22 2003-06-11 02:48:24 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.23 2003-06-12 02:07:48 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -154,7 +154,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
             blogEntry.setBlogCategory(blogCategory);
             try {
-                blogEntry.loadEntry(_blog);
+                blogEntry.load(_blog);
             } catch (BlojsomException e) {
                 return new BlogEntry[0];
             }
@@ -212,7 +212,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
                 try {
-                    blogEntry.loadEntry(_blog);
+                    blogEntry.load(_blog);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
@@ -338,7 +338,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         // We might also want to pass the flavor so that we can also have flavor-based category meta-data
         try {
-            category.loadCategory(_blog);
+            category.load(_blog);
         } catch (BlojsomException e) {
             _logger.error(e);
         }
@@ -457,7 +457,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         FileBackedBlogCategory blogCategory = new FileBackedBlogCategory(categoryKey, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
         try {
-            blogCategory.loadCategory(_blog);
+            blogCategory.load(_blog);
         } catch (BlojsomException e) {
             _logger.error(e);
         }
@@ -511,7 +511,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             if (!previousCategoryName.equals(currentCategory.getCategory())) {
                 fileBackedCategory = new FileBackedBlogCategory(previousCategoryName, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
                 try {
-                    fileBackedCategory.loadCategory(_blog);
+                    fileBackedCategory.load(_blog);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
@@ -530,7 +530,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         FileBackedBlogCategory rootCategory = new FileBackedBlogCategory("/", _blog.getBlogURL());
         try {
-            rootCategory.loadCategory(_blog);
+            rootCategory.load(_blog);
         } catch (BlojsomException e) {
             _logger.error(e);
         }

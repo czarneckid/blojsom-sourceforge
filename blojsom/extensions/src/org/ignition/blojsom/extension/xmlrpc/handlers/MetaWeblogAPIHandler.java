@@ -57,7 +57,7 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.29 2003-06-11 02:49:42 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.30 2003-06-12 02:08:40 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -227,7 +227,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
                         _entry.setTitle(_title);
                         _entry.setDescription(_description);
-                        _entry.saveEntry(_blog);
+                        _entry.save(_blog);
                         result = true;
                     } catch (BlojsomException e) {
                         _logger.error(e);
@@ -308,7 +308,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     entry.setDescription(_post.toString());
                     blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
                     entry.setMetaData(blogEntryMetaData);
-                    entry.saveEntry(_blog);
+                    entry.save(_blog);
                     result = postid;
                 } catch (BlojsomException e) {
                     _logger.error(e);
