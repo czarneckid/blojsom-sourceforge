@@ -48,14 +48,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.5 2004-01-06 02:52:09 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.6 2004-01-06 23:17:55 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -63,8 +62,6 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
     private static final String IF_NONE_MATCH_HEADER = "If-None-Match";
-
-    private Map _defaultConditionalGetFlavors;
 
     /**
      * Default constructor.
@@ -81,12 +78,6 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        // Setup a map for the default flavors to use conditional get (the syndication flavors)
-        _defaultConditionalGetFlavors = new HashMap();
-        _defaultConditionalGetFlavors.put("rdf", "rdf");
-        _defaultConditionalGetFlavors.put("rss", "rss");
-        _defaultConditionalGetFlavors.put("rss2", "rss2");
-        _defaultConditionalGetFlavors.put("atom", "atom");
     }
 
     /**
@@ -103,36 +94,28 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (entries.length > 0) {
-            String flavor = BlojsomUtils.getRequestValue(FLAVOR_PARAM, httpServletRequest);
-            if (BlojsomUtils.checkNullOrBlank(flavor)) {
-                flavor = user.getBlog().getBlogDefaultFlavor();
+            Date latestEntryDate = entries[0].getDate();
+            try {
+                if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
+                    Date ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
+                    if (latestEntryDate.toString().equals(ifModifiedSinceDate.toString())) {
+                        _logger.debug("Returning 304 response based on If-Modified-Since header");
+                        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                    }
+                } else if (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) != null) {
+                    String ifNoneMatchHeader = httpServletRequest.getHeader(IF_NONE_MATCH_HEADER);
+                    String calculatedIfNoneMatchHeader = "\"" + BlojsomUtils.digestString(BlojsomUtils.getISO8601Date(new Date(entries[0].getLastModified()))) + "\"";
+                    if (ifNoneMatchHeader.equals(calculatedIfNoneMatchHeader)) {
+                        _logger.debug("Returning 304 response based on If-None-Match header");
+                        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                    }
+                } else {
+                    _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
+                }
+            } catch (IllegalArgumentException e) {
+                _logger.error(e);
             }
 
-            if (_defaultConditionalGetFlavors.containsKey(flavor)) {
-                Date latestEntryDate = entries[0].getDate();
-                try {
-                    if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
-                        Date ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
-                        if (latestEntryDate.toString().equals(ifModifiedSinceDate.toString())) {
-                            _logger.debug("Returning 304 response for flavor from If-Modified-Since: " + flavor);
-                            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                        }
-                    } else if (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) != null){
-                        String ifNoneMatchHeader = httpServletRequest.getHeader(IF_NONE_MATCH_HEADER);
-                        String calculatedIfNoneMatchHeader = "\"" + BlojsomUtils.digestString(BlojsomUtils.getISO8601Date(new Date(entries[0].getLastModified()))) + "\"";
-                        if (ifNoneMatchHeader.equals(calculatedIfNoneMatchHeader)) {
-                            _logger.debug("Returning 304 response for flavor from If-None-Match: " + flavor);
-                            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                        }
-                    } else {
-                        _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
-                    }
-                } catch (IllegalArgumentException e) {
-                    _logger.error(e);
-                }
-            } else {
-                _logger.debug("Requested flavor is not a conditional get flavor: " + flavor);
-            }
         }
 
         return entries;
