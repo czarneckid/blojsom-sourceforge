@@ -2,9 +2,22 @@
 
 #adminPageHeader("#adminResource('update.macro.expansion.page.header' 'Update Macro Expansion Plugin Configuration')")
 
-    <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
+    <div id="header">
+        <ul id="primary">
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">Categories</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">Entries</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-properties&action=page">Weblog Settings</a></li>
+            <li><span>Plugin Settings</span></li>
+            <ul id="secondary">
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-plugins&action=page">Mappings</a></li>
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=list-web-admin-plugins">Configure available plugins</a></li>
+            </ul>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&action=logout">Logout</a></li>
+        </ul>
     </div>
+
+    <div id="contents">
 
         <!-- Add macro form -->
         <div id="mainClm">
@@ -31,6 +44,8 @@
                 </form>
             </table>
         </div>
+
+        <p></p>
 
         <!-- Delete selected macros form -->
         <div id="mainClm">
@@ -62,5 +77,6 @@
                 </form>
             </table>
         </div>
+    </div>
 
 #adminPageFooter()

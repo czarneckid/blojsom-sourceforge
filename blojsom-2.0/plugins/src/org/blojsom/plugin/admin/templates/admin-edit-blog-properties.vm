@@ -2,9 +2,28 @@
 
 #adminPageHeader("#adminResource('blog.properties.page.header' 'Blog Properties')")
 
-    <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
+    <div id="header">
+        <ul id="primary">
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">Categories</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">Entries</a></li>
+            <li><span>Weblog Settings</span></li>
+            <ul id="secondary">
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-authorization&action=page">Authorization</a></li>
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=file-upload&action=page">Files</a></li>
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-flavors&action=page">Flavors</a></li>
+                <li><span>Properties</span></li>
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-templates&action=page">Templates</a></li>
+                <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-users&action=page">Users</a></li>
+            </ul>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-plugins&action=page">Plugin Settings</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&action=logout">Logout</a></li>
+        </ul>
     </div>
+
+    <div id="contents">
+
+        #showErrorMessage()
 
         <center>
             <table>
@@ -147,5 +166,6 @@
                 </form>
             </table>
         </center>
+    </div>
 
 #adminPageFooter()
