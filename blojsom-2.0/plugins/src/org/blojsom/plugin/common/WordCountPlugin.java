@@ -53,13 +53,13 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 2.15
- * @version $Id: WordCountPlugin.java,v 1.1 2004-05-26 02:10:30 czarneckid Exp $
+ * @version $Id: WordCountPlugin.java,v 1.2 2004-05-27 00:40:18 czarneckid Exp $
  */
 public class WordCountPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WordCountPlugin.class);
 
-    public static final String BLOJSOM_PLUGIN_WORD_COUNT = "BLOJSOM_PLUGIN_WORD_COUNT";
+    public static final String BLOJSOM_PLUGIN_WORD_COUNT_METADATA = "blojsom-plugin-word-count";
 
     /**
      * Default constructor.
@@ -97,12 +97,12 @@ public class WordCountPlugin implements BlojsomPlugin {
             Map entryMetaData = entry.getMetaData();
 
             if (entry.getDescription() == null) {
-                entryMetaData.put(BLOJSOM_PLUGIN_WORD_COUNT, new Integer(0));
+                entryMetaData.put(BLOJSOM_PLUGIN_WORD_COUNT_METADATA, new Integer(0));
             } else {
                 String entryWithoutTags = entry.getDescription();
                 entryWithoutTags = entryWithoutTags.replaceAll("\\<.*?\\>", "");
                 StringTokenizer tokenizer = new StringTokenizer(entryWithoutTags);
-                entryMetaData.put(BLOJSOM_PLUGIN_WORD_COUNT, new Integer(tokenizer.countTokens()));
+                entryMetaData.put(BLOJSOM_PLUGIN_WORD_COUNT_METADATA, new Integer(tokenizer.countTokens()));
             }
 
             entry.setMetaData(entryMetaData);
