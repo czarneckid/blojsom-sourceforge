@@ -52,7 +52,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.7 2003-11-05 13:07:11 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.8 2003-11-13 02:38:19 czarneckid Exp $
  */
 public class BlojsomConfiguration implements BlojsomConstants {
 
@@ -86,7 +86,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 _installationDirectory += "/";
             }
         }
-        _logger.debug("Using installation directory" + _installationDirectory);
+        _logger.debug("Using installation directory: " + _installationDirectory);
 
         _baseConfigurationDirectory = getBlojsomPropertyAsString(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP);
         if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
