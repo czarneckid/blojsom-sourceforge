@@ -206,7 +206,7 @@
     <!-- =================================================================== -->
     <!-- Compiles the add-on source code                                     -->
     <!-- =================================================================== -->
-    <target name="compile-addon" depends="prepare" description="Compiles the add-on core, extensions, and plugins">
+    <target name="compile-addon" depends="compile" description="Compiles the add-on core, extensions, and plugins">
         <!-- Add-on core -->
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
@@ -275,6 +275,9 @@
             </fileset>
             <fileset dir="${addon.lib.dir}">
                 <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${properties.dir}">
+                <include name="oscache.properties"/>
             </fileset>
         </zip>
     </target>
