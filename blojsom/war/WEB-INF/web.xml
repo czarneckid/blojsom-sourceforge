@@ -76,7 +76,7 @@
     </servlet>
 
 
-
+    <!--
     <servlet>
         <servlet-name>blojsomrestlog</servlet-name>
         <servlet-class>org.ignition.blojsom.extension.restlog.RESTLogServlet</servlet-class>
@@ -90,7 +90,7 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
-
+     -->
     <servlet>
         <servlet-name>blojsomcommentapi</servlet-name>
         <servlet-class>org.ignition.blojsom.extension.comment.CommentAPIServlet</servlet-class>
@@ -112,10 +112,12 @@
         <url-pattern>/xmlrpc/*</url-pattern>
     </servlet-mapping>
 
+    <!--
     <servlet-mapping>
         <servlet-name>blojsomrestlog</servlet-name>
         <url-pattern>/restlog/*</url-pattern>
     </servlet-mapping>
+    -->
 
     <servlet-mapping>
         <servlet-name>blojsomcommentapi</servlet-name>
