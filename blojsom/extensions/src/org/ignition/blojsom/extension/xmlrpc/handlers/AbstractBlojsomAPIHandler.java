@@ -38,7 +38,7 @@ import org.ignition.blojsom.blog.Blog;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.2 2003-02-27 16:20:35 intabulas Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.3 2003-03-02 19:07:11 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 
@@ -58,7 +58,7 @@ public abstract class AbstractBlojsomAPIHandler  {
     public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
 
     /**
-     * Attach a Blog instance to the API Handler so that it can interact with the blog
+     * Attach a blog instance to the API Handler so that it can interact with the blog
      *
      * @param bloginstance an instance of Blog
      * @see org.ignition.blojsom.blog.Blog
@@ -66,7 +66,7 @@ public abstract class AbstractBlojsomAPIHandler  {
     public abstract void setBlog(Blog bloginstance);
 
     /**
-     * Gets the Name of API Handler. Used to Bind to XML-RPC
+     * Gets the name of API Handler. Used to bind to XML-RPC
      *
      * @return The API Name (ie: blogger)
      */

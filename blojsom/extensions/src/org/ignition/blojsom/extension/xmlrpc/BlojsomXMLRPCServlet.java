@@ -60,12 +60,12 @@ import java.util.HashMap;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.3 2003-03-01 19:29:09 intabulas Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.4 2003-03-02 19:06:58 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
-    private static final String BLOG_XMLRPC_CONFIGURATION_IP  = "blog-xmlrpc-configuration";
+    private static final String BLOG_XMLRPC_CONFIGURATION_IP = "blog-xmlrpc-configuration";
 
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
 
@@ -73,15 +73,11 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
 
     XmlRpcServer _xmlrpc;
 
-    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        byte[] result = _xmlrpc.execute(httpServletRequest.getInputStream());
-        httpServletResponse.setContentType("text/xml");
-        httpServletResponse.setContentLength(result.length);
-        OutputStream out = httpServletResponse.getOutputStream();
-        out.write(result);
-        out.flush();
+    /**
+     * Construct a new Blojsom XML-RPC servlet instance
+     */
+    public BlojsomXMLRPCServlet() {
     }
-
 
     /**
      * Configure the XML-RPC API Handlers
@@ -100,9 +96,9 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
                 String handlerClassName = handlerMapProperties.getProperty(handlerName);
                 Class handlerClass = Class.forName(handlerClassName);
                 AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
-                handler.setBlog( _blog );
-                _xmlrpc.addHandler( handler.getName(), handler);
-                _logger.debug("Added ["+ handler.getName() +"] API Handler : " + handlerClass);
+                handler.setBlog(_blog);
+                _xmlrpc.addHandler(handler.getName(), handler);
+                _logger.debug("Added [" + handler.getName() + "] API Handler : " + handlerClass);
             }
         } catch (InstantiationException e) {
             _logger.error(e);
@@ -113,7 +109,6 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         } catch (IOException e) {
             _logger.error(e);
         }
-
     }
 
     /**
@@ -145,38 +140,13 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         }
     }
 
-
-    public void init(ServletConfig servletConfig) throws ServletException {
-        super.init(servletConfig);
-
-
-
-        String _cfgfile = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
-
-        if (_cfgfile == null || _cfgfile.equals("")) {
-            _logger.info("blojsom  configuration not specified, using " + DEFAULT_BLOJSOM_CONFIGURATION);
-            _cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
-        }
-
-
-        processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
-        configureAuthorization(servletConfig);
-
-        _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
-
-
-        _xmlrpc = new XmlRpcServer();
-
-        configureAPIHandlers(servletConfig);
-
-    }
-
-
-    public void destroy() {
-    }
-
+    /**
+     * Load blojsom configuration information
+     *
+     * @param context Servlet context
+     * @param filename blojsom configuration file to be loaded
+     */
     public void processBlojsomCongfiguration(ServletContext context, String filename) {
-
         Properties _configuration = new Properties();
         InputStream _cis = context.getResourceAsStream(filename);
 
@@ -188,7 +158,52 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         } catch (BlojsomConfigurationException e) {
             _logger.error(e);
         }
-
     }
 
+    /**
+     * Initialize the blojsom XML-RPC servlet
+     *
+     * @param servletConfig Servlet configuration information
+     * @throws ServletException If there is an error initializing the servlet
+     */
+    public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+        String _cfgfile = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
+
+        if (_cfgfile == null || _cfgfile.equals("")) {
+            _logger.info("blojsom configuration not specified, using " + DEFAULT_BLOJSOM_CONFIGURATION);
+            _cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
+        }
+
+        processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
+        configureAuthorization(servletConfig);
+
+        _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
+        _xmlrpc = new XmlRpcServer();
+
+        configureAPIHandlers(servletConfig);
+    }
+
+    /**
+     * Service an XML-RPC request by passing the request to the proper handler
+     *
+     * @param httpServletRequest Request
+     * @param httpServletResponse Response
+     * @throws ServletException If there is an error processing the request
+     * @throws IOException If there is an error during I/O
+     */
+    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        byte[] result = _xmlrpc.execute(httpServletRequest.getInputStream());
+        httpServletResponse.setContentType("text/xml");
+        httpServletResponse.setContentLength(result.length);
+        OutputStream out = httpServletResponse.getOutputStream();
+        out.write(result);
+        out.flush();
+    }
+
+    /**
+     * Called when removing the servlet from the servlet container
+     */
+    public void destroy() {
+    }
 }

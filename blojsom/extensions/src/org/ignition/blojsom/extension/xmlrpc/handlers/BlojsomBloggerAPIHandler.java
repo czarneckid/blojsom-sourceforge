@@ -53,7 +53,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.3 2003-03-01 19:29:09 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.4 2003-03-02 19:07:10 czarneckid Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -70,7 +70,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
     private Log _logger = LogFactory.getLog(BlojsomBloggerAPIHandler.class);
 
     /**
-     *
+     * Default constructor
      */
     public BlojsomBloggerAPIHandler() {
     }
@@ -86,6 +86,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
 
     /**
      * Attach a Blog instance to the API Handler so that it can interact with the blog
+     *
      * @param bloginstance an instance of Blog
      * @see org.ignition.blojsom.blog.Blog
      */
@@ -171,7 +172,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("     Appkey: " + appkey);
         _logger.info("     UserId: " + userid);
         _logger.info("   Password: " + password);
-
 
         if (_blog.checkAuthorization(userid, password)) {
             Vector result = new Vector();
@@ -270,7 +270,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
 
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
-
     }
 
     /**
@@ -293,7 +292,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("   Password: " + password);
         _logger.info("    Publish: " + publish);
         _logger.info("     Content:\n " + content);
-
 
         if (_blog.checkAuthorization(userid, password)) {
 
@@ -330,6 +328,5 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
-
     }
 }
