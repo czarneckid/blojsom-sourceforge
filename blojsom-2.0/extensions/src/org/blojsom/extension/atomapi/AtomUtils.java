@@ -55,7 +55,7 @@ import java.util.Date;
  * AtomUtils
  *
  * @author Mark Lussier
- * @version $Id: AtomUtils.java,v 1.17 2004-07-20 14:28:44 czarneckid Exp $
+ * @version $Id: AtomUtils.java,v 1.18 2004-07-20 16:45:05 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomUtils implements AtomAPIConstants {
@@ -93,14 +93,14 @@ public class AtomUtils implements AtomAPIConstants {
         result.setId("tag:" + blog.getBlogOwnerEmail() + "," + blogentry.getDateAsFormat("yyyy-MM-dd") + ":" + blogentry.getId());
 
         Link link = new LinkImpl();
-        link.setType("text/html");
-        link.setRelationship("alternate");
+        link.setType(CONTENTTYPE_HTML);
+        link.setRelationship(AtomConstants.Rel.ALTERNATE);
         link.setHref(blogentry.getEscapedLink());
         result.addLink(link);
 
         Link editlink = new LinkImpl();
-        editlink.setType("application/x.atom+xml");
-        editlink.setRelationship("service.edit");
+        editlink.setType(CONTENTTYPE_ATOM);
+        editlink.setRelationship(AtomConstants.Rel.SERVICE_EDIT);
         editlink.setHref(blog.getBlogBaseURL() + servletPath + blogentry.getId());
         result.addLink(editlink);
 
@@ -127,8 +127,7 @@ public class AtomUtils implements AtomAPIConstants {
     public static Entry fromBlogEntrySearch(Blog blog, BlogUser user, BlogEntry blogentry, String servletMapping) {
         Entry result = new EntryImpl();
         result.setTitle(blogentry.getEscapedTitle());
-        result.setId(blog.getBlogBaseURL() + servletMapping + user.getId()
-                + "/?" + BlojsomConstants.PERMALINK_PARAM + "=" + blogentry.getPermalink());
+        result.setId(blog.getBlogBaseURL() + servletMapping + user.getId() + blogentry.getId());
 
         return result;
     }
