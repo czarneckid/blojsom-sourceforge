@@ -7,6 +7,12 @@
     </developers>
 
     <changes>
+        <release version="2.07" date="Available from CVS">
+            <action dev="czarneckid" type="updated" context="Plugin">
+                Updated administration plugins to report back status of operations.
+            </action>
+        </release>
+
         <release version="2.06" date="December 22, 2003">
             <action dev="czarneckid" type="update" context="Core">
                 Updated loading of users so that if an individual user's configuration cannot be loaded, then only
