@@ -8,7 +8,7 @@
 
     <changes>
         <release version="2.10" date="January 26, 2004">
-            <action dev="czarneckid" type="updated" context="Core">
+            <action dev="czarneckid" type="update" context="Core">
                 Updated Compression (GZIP) filter code.
             </action>
 
