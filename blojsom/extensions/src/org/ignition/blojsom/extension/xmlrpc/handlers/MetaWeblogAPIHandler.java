@@ -55,11 +55,11 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.16 2003-04-17 02:35:36 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.17 2003-04-17 03:30:38 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
-    private static final String FETCHER_CATEGORY_STRING = "FETCHER_CATEGORY_STRING";
+    private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
 
     public static final String API_PREFIX = "metaWeblog";
@@ -189,8 +189,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 category = postid.substring(0, pos);
                 permalink = postid.substring(pos + match.length());
 
+                BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
+
                 HashMap fetchMap = new HashMap();
-                fetchMap.put(FETCHER_CATEGORY_STRING, category);
+                fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 

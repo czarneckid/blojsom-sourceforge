@@ -56,13 +56,12 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.9 2003-04-17 02:35:36 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.10 2003-04-17 03:30:04 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
     public static final String API_PREFIX = "blogger";
 
-    private static final String FETCHER_CATEGORY_STRING = "FETCHER_CATEGORY_STRING";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
     private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
     private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
@@ -187,7 +186,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 permalink = postid.substring(pos + match.length());
 
                 HashMap fetchMap = new HashMap();
-                fetchMap.put(FETCHER_CATEGORY_STRING, category);
+                BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
+                fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
@@ -363,7 +363,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 permalink = postid.substring(pos + match.length());
 
                 HashMap fetchMap = new HashMap();
-                fetchMap.put(FETCHER_CATEGORY_STRING, category);
+                BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
+                fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
