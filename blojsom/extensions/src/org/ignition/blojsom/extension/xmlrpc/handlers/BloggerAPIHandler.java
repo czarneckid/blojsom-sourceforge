@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.22 2003-05-22 03:11:12 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.23 2003-05-30 00:19:40 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -228,6 +228,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             int pos = postid.indexOf(match);
             if (pos != -1) {
                 category = postid.substring(0, pos);
+                category = BlojsomUtils.normalize(category);
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
@@ -447,6 +448,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             int pos = postid.indexOf(match);
             if (pos != -1) {
                 category = postid.substring(0, pos);
+                category = BlojsomUtils.normalize(category);
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
@@ -500,6 +502,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _logger.debug("    Publish: " + publish);
         _logger.debug("     Content:\n " + content);
 
+        blogid = BlojsomUtils.normalize(blogid);
         if (_blog.checkAuthorization(userid, password)) {
             String result = null;
 
@@ -579,6 +582,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _logger.debug("     Number: " + numposts);
 
         Vector recentPosts = new Vector();
+        blogid = BlojsomUtils.normalize(blogid);
 
         if (_blog.checkAuthorization(userid, password)) {
 
@@ -606,8 +610,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     for (int x = 0; x < entries.length; x++) {
                         FileBackedBlogEntry entry = (FileBackedBlogEntry) entries[x];
                         Hashtable entrystruct = new Hashtable();
-                        entrystruct.put(MEMBER_POSTID, blogid + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
-                        entrystruct.put(MEMBER_BLOGID, blogid);
+                        entrystruct.put(MEMBER_POSTID, entry.getCategory() + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
+                        entrystruct.put(MEMBER_BLOGID, entry.getCategory());
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
                         entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
