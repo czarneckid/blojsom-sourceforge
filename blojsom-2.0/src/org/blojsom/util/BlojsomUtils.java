@@ -36,6 +36,7 @@ package org.blojsom.util;
 
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.FileBackedBlogEntry;
+import org.blojsom.blog.Blog;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.34 2004-09-01 17:13:05 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.35 2004-10-05 02:46:14 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1455,5 +1456,60 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return result.toString();
+    }
+
+    /**
+     * Construct a blog base URL from the request
+     *
+     * @param httpServletRequest Request
+     * @return URL of the form <code>http://server:port/context_path</code>
+     * @since blojsom 2.20
+     */
+    public static String constructBaseURL(HttpServletRequest httpServletRequest) {
+        StringBuffer result = new StringBuffer();
+
+        result.append(httpServletRequest.getScheme()).append("://");
+        result.append(httpServletRequest.getServerName());
+        if (httpServletRequest.getServerPort() != 80) {
+            result.append(":").append(httpServletRequest.getServerPort());
+        }
+        result.append(httpServletRequest.getContextPath());
+
+        return result.toString();
+    }
+
+    /**
+     * Construct a blog URL from the request
+     *
+     * @param httpServletRequest Request
+     * @param blogID Blog ID
+     * @return URL of the form <code>http://server:port/context_path/servlet_path/blog_id/</code>
+     * @since blojsom 2.20
+     */
+    public static String constructBlogURL(HttpServletRequest httpServletRequest, String blogID) {
+        StringBuffer result = new StringBuffer(constructBaseURL(httpServletRequest));
+
+        result.append("/").append(httpServletRequest.getServletPath()).append("/").append(blogID).append("/");
+
+        return result.toString();
+    }
+
+    /**
+     * Check to see if the blog base URL or blog URL are present. If not, construct them dynamically by calling
+     * {@link #constructBaseURL(javax.servlet.http.HttpServletRequest)} and {@link #constructBlogURL(javax.servlet.http.HttpServletRequest, String)}.
+     *
+     * @param httpServletRequest Request
+     * @param blog {@link Blog}
+     * @param blogID Blog ID
+     * @since blojsom 2.20
+     */
+    public static void resolveDynamicBaseAndBlogURL(HttpServletRequest httpServletRequest, Blog blog, String blogID) {
+        if (BlojsomUtils.checkNullOrBlank(blog.getBlogBaseURL())) {
+            blog.setBlogBaseURL(BlojsomUtils.constructBaseURL(httpServletRequest));
+        }
+
+        if (BlojsomUtils.checkNullOrBlank(blog.getBlogURL())) {
+            blog.setBlogURL(BlojsomUtils.constructBlogURL(httpServletRequest, blogID));
+        }
     }
 }
