@@ -81,7 +81,7 @@
         %>
         </div>
 
-        <% if (blogCommentsEnabled) { %>
+        <% if (blogCommentsEnabled && blogEntry.supportsComments()) { %>
         <hr />
     <table>
         <form name="commentform" method="post" action=".">

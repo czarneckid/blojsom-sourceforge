@@ -36,7 +36,7 @@ Available categories:
     #end
 
     #set( $totalEntries = $totalEntries + 1)
-    #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue())
+    #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
     <hr />
     <table>
         <form name="commentform" method="post" action=".">

@@ -57,7 +57,7 @@
 		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
-        <% if (blogCommentsEnabled) { %>
+        <% if (blogCommentsEnabled && blogEntry.supportsComments()) { %>
         <p class="weblogbottomline">Comments [<a href="<%= blogEntry.getLink() %>&page=comments"><%= blogEntry.getNumComments() %></a>]</p>
         <% } %>
 <%
