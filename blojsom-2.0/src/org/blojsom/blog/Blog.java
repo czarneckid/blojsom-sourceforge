@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.31 2005-01-05 02:32:37 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.32 2005-01-31 02:40:31 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -75,12 +75,14 @@ public class Blog implements BlojsomConstants {
     private Boolean _blogCommentsEnabled;
     private Boolean _blogEmailEnabled;
     private Boolean _blogTrackbacksEnabled;
+    private Boolean _blogPingbacksEnabled;
     private String _blogTrackbackDirectory;
     private String _blogEntryMetaDataExtension;
     private String _blogFileEncoding;
     private String _blogDefaultFlavor;
     private Boolean _linearNavigationEnabled;
     private Boolean _xmlrpcEnabled;
+    private String _blogPingbacksDirectory;
 
     private Map _blogProperties;
 
@@ -227,10 +229,21 @@ public class Blog implements BlojsomConstants {
 
         trackbackDirectoryRegex = ".*" + File.separator + _blogTrackbackDirectory;
 
+        _blogPingbacksDirectory = blogConfiguration.getProperty(BLOG_PINGBACKS_DIRECTORY_IP);
+        if (BlojsomUtils.checkNullOrBlank(_blogPingbacksDirectory)) {
+            _blogPingbacksDirectory = DEFAULT_PINGBACKS_DIRECTORY;
+        }
+        _logger.debug("blojsom pingbacks directory: " + _blogPingbacksDirectory);
+        _blogProperties.put(BLOG_PINGBACKS_DIRECTORY_IP, _blogPingbacksDirectory);
+
+        String pingbacksDirectoryRegex;
+
+        pingbacksDirectoryRegex = ".*" + File.separator + _blogPingbacksDirectory;
+
         String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
         // Add the blog comments and trackback directories to the blog directory filter
         if (BlojsomUtils.checkNullOrBlank(blogDirectoryFilter)) {
-            blogDirectoryFilter = commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
+            blogDirectoryFilter = commentsDirectoryRegex + ", " + trackbackDirectoryRegex + ", " + pingbacksDirectoryRegex;
         } else {
             if (blogDirectoryFilter.indexOf(commentsDirectoryRegex) == -1) {
                 blogDirectoryFilter += ", " + commentsDirectoryRegex;
@@ -239,9 +252,14 @@ public class Blog implements BlojsomConstants {
             if (blogDirectoryFilter.indexOf(trackbackDirectoryRegex) == -1) {
                 blogDirectoryFilter += ", " + trackbackDirectoryRegex;
             }
+
+            if (blogDirectoryFilter.indexOf(pingbacksDirectoryRegex) == -1) {
+                blogDirectoryFilter += ", " + pingbacksDirectoryRegex;
+            }
         }
         _logger.debug("Comments directory regex: " + commentsDirectoryRegex);
         _logger.debug("Trackbacks directory regex: " + trackbackDirectoryRegex);
+        _logger.debug("Pingbacks directory regex: " + pingbacksDirectoryRegex);
 
         _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
         for (int i = 0; i < _blogDirectoryFilter.length; i++) {
@@ -263,6 +281,10 @@ public class Blog implements BlojsomConstants {
         String blogTrackbacksEnabled = blogConfiguration.getProperty(BLOG_TRACKBACKS_ENABLED_IP);
         _blogTrackbacksEnabled = Boolean.valueOf(blogTrackbacksEnabled);
         _blogProperties.put(BLOG_TRACKBACKS_ENABLED_IP, _blogTrackbacksEnabled);
+
+        String blogPingbacksEnabled = blogConfiguration.getProperty(BLOG_PINGBACKS_ENABLED_IP);
+        _blogPingbacksEnabled = Boolean.valueOf(blogPingbacksEnabled);
+        _blogProperties.put(BLOG_PINGBACKS_ENABLED_IP, _blogPingbacksEnabled);
 
         String blogEmailEnabled = blogConfiguration.getProperty(BLOG_EMAIL_ENABLED_IP);
         if ("true".equalsIgnoreCase(blogEmailEnabled)) {
@@ -619,6 +641,17 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Get the directory where blog pingbacks will be written to under the individual blog
+     * category directories
+     *
+     * @return Blog pingbacks directory
+     * @since blojsom 2.23
+     */
+    public String getBlogPingbacksDirectory() {
+        return _blogPingbacksDirectory;
+    }
+
+    /**
      * Return whether or not comments are enabled
      * 
      * @return Whether or not comments are enabled
@@ -635,6 +668,16 @@ public class Blog implements BlojsomConstants {
      */
     public Boolean getBlogTrackbacksEnabled() {
         return _blogTrackbacksEnabled;
+    }
+
+    /**
+     * Return whether or not pingbacks are enabled
+     *
+     * @return <code>true</code> if pingbacks are enabled, <code>false</code> otherwise
+     * @since blojsom 2.23
+     */
+    public Boolean getBlogPingbacksEnabled() {
+        return _blogPingbacksEnabled;
     }
 
     /**
@@ -843,6 +886,17 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Set whether blog pingbacks are enabled
+     *
+     * @param blogPingbacksEnabled <code>true</code> if pingbacks are enabled, <code>false</code> otherwise
+     * @since blojsom 2.23
+     */
+    public void setBlogPingbacksEnabled(Boolean blogPingbacksEnabled) {
+        _blogPingbacksEnabled = blogPingbacksEnabled;
+        _blogProperties.put(BLOG_PINGBACKS_ENABLED_IP, blogPingbacksEnabled);
+    }
+
+    /**
      * Set the new blog file encoding
      * 
      * @param blogFileEncoding Blog file encoding
@@ -895,7 +949,7 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogProperty(String key, String value) {
         if (key != null && value != null) {
-            if (!key.equals(BLOG_HOME_IP)  && !key.equals(BLOG_COMMENTS_DIRECTORY_IP)  && !key.equals(BLOG_TRACKBACK_DIRECTORY_IP)) {
+            if (!key.equals(BLOG_HOME_IP)  && !key.equals(BLOG_COMMENTS_DIRECTORY_IP)  && !key.equals(BLOG_TRACKBACK_DIRECTORY_IP) && !key.equals(BLOG_PINGBACKS_DIRECTORY_IP)) {
                 _blogProperties.put(key, value);
             }
         }

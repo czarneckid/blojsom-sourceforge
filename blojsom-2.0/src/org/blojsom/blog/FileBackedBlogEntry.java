@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.23 2005-01-19 17:54:47 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.24 2005-01-31 02:42:35 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -57,6 +57,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     private transient File _source;
     private transient String _commentsDirectory;
     private transient String _trackbacksDirectory;
+    private transient String _pingbacksDirectory;
     private transient String _blogFileEncoding;
 
     /**
@@ -65,6 +66,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     public FileBackedBlogEntry() {
         _commentsDirectory = DEFAULT_COMMENTS_DIRECTORY;
         _trackbacksDirectory = DEFAULT_TRACKBACK_DIRECTORY;
+        _pingbacksDirectory = DEFAULT_PINGBACKS_DIRECTORY;
         _blogFileEncoding = UTF8;
     }
 
@@ -187,6 +189,16 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @since blojsom 2.05
      */
     public boolean supportsTrackbacks() {
+        return _source.canWrite();
+    }
+
+    /**
+     * Determines whether or not this blog entry supports pingbacks.
+     *
+     * @return <code>true</code> if the blog entry supports pingbacks, <code>false</code> otherwise
+     * @since blojsom 2.23
+     */
+    public boolean supportsPingbacks() {
         return _source.canWrite();
     }
 
@@ -412,6 +424,120 @@ public class FileBackedBlogEntry extends BlogEntry {
     }
 
     /**
+     * Set the directory for pingbacks
+     *
+     * @param pingbacksDirectory Pingbacks directory
+     * @since blojsom 2.23
+     */
+    public void setPingbacksDirectory(String pingbacksDirectory) {
+        _pingbacksDirectory = pingbacksDirectory;
+    }
+
+    /**
+     * Convenience method to load the pingbacks for this blog entry.
+     *
+     * @param blog {@link Blog} information
+     * @since blojsom 2.23
+     */
+    protected void loadPingbacks(Blog blog) {
+        String pingbacksDirectoryPath;
+        if (_source.getParent() == null) {
+            pingbacksDirectoryPath = File.separator + _pingbacksDirectory + File.separator + _source.getName();
+        } else {
+            pingbacksDirectoryPath = _source.getParent() + File.separator + _pingbacksDirectory + File.separator + _source.getName();
+        }
+
+        File pingbacksDirectory = new File(pingbacksDirectoryPath);
+        File[] pingbacks = pingbacksDirectory.listFiles(BlojsomUtils.getExtensionFilter(PINGBACK_EXTENSION));
+        if ((pingbacks != null) && (pingbacks.length > 0)) {
+            _logger.debug("Adding " + pingbacks.length + " pingbacks to blog entry: " + getPermalink());
+            Arrays.sort(pingbacks, BlojsomUtils.FILE_TIME_ASCENDING_COMPARATOR);
+            _pingbacks = new ArrayList(pingbacks.length);
+            for (int i = 0; i < pingbacks.length; i++) {
+                File pingbackFile = pingbacks[i];
+                _pingbacks.add(loadPingback(pingbackFile, blog.getBlogFileEncoding()));
+            }
+        }
+    }
+
+    /**
+     * Load a pingback for this blog entry from disk
+     * Pingbacks must always have the form:<br />
+     * title<br>
+     * url<br />
+     * blog_name<br/>
+     * excerpt<br />
+     *
+     * @param pingbackFile    Pingback file
+     * @param blogFileEncoding Encoding for blog files
+     * @return {@link Pingback} loaded from disk
+     * @since blojsom 2.23
+     */
+    protected Pingback loadPingback(File pingbackFile, String blogFileEncoding) {
+        int pingbackSwitch = 0;
+        Pingback pingback = new Pingback();
+        pingback.setTrackbackDateLong(pingbackFile.lastModified());
+        StringBuffer pingbackExcerpt = new StringBuffer();
+        String pingbackLine;
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(pingbackFile), blogFileEncoding));
+            while (((pingbackLine = br.readLine()) != null) && (pingbackSwitch < 4)) {
+                switch (pingbackSwitch) {
+                    case 0:
+                        {
+                            if (!"".equals(pingbackLine.trim())) {
+                                pingback.setTitle(pingbackLine);
+                            }
+                            pingbackSwitch++;
+                            break;
+                        }
+                    case 1:
+                        {
+                            if (!"".equals(pingbackLine.trim())) {
+                                pingback.setUrl(pingbackLine);
+                            }
+                            pingbackSwitch++;
+                            break;
+                        }
+                    case 2:
+                        {
+                            if (!"".equals(pingbackLine.trim())) {
+                                pingback.setBlogName(pingbackLine);
+                            }
+                            pingbackSwitch++;
+                            break;
+                        }
+                    default:
+                        {
+                            pingbackExcerpt.append(pingbackLine).append(BlojsomUtils.LINE_SEPARATOR);
+                        }
+                }
+            }
+
+            pingback.setExcerpt(pingbackExcerpt.toString());
+            pingback.setId(pingbackFile.getName());
+            br.close();
+
+            // Load pingback meta-data if available
+            File pingbackMetaData = new File(BlojsomUtils.getFilename(pingbackFile.toString()) + ".meta");
+            if (pingbackMetaData.exists()) {
+                _logger.debug("Loading pingback meta-data: " + pingbackMetaData.toString());
+                Properties pingbackMetaDataProperties = new BlojsomProperties(true);
+                FileInputStream fis = new FileInputStream(pingbackMetaData);
+                pingbackMetaDataProperties.load(fis);
+                fis.close();
+                pingback.setMetaData(BlojsomUtils.propertiesToMap(pingbackMetaDataProperties));
+            }
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+
+        pingback.setBlogEntry(this);
+
+        return pingback;
+    }
+
+    /**
      * Load the meta data for the entry
      *
      * @param blog Blog information
@@ -549,6 +675,7 @@ public class FileBackedBlogEntry extends BlogEntry {
             if (blog.getBlogCommentsEnabled().booleanValue()) {
                 loadComments(blog);
                 loadTrackbacks(blog);
+                loadPingbacks(blog);
             }
             loadMetaData(blog);
         } catch (IOException e) {
@@ -633,6 +760,11 @@ public class FileBackedBlogEntry extends BlogEntry {
         File _trackbacks = new File(blog.getBlogHome() + _category + blog.getBlogTrackbackDirectory()
                 + File.separatorChar + _source.getName() + File.separatorChar);
         BlojsomUtils.deleteDirectory(_trackbacks);
+
+         // Delete pingbacks
+        File _pingbacks = new File(blog.getBlogHome() + _category + blog.getBlogPingbacksDirectory()
+                + File.separatorChar + _source.getName() + File.separatorChar);
+        BlojsomUtils.deleteDirectory(_pingbacks);
 
         // Delete meta-data
         File metaFile = new File(blog.getBlogHome() + _category + BlojsomUtils.getFilename(_source.getName())

@@ -49,7 +49,7 @@ import java.io.Serializable;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.13 2005-01-30 18:47:50 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.14 2005-01-31 02:41:06 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants, Serializable {
 
@@ -63,6 +63,7 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     protected long _lastModified;
     protected List _comments;
     protected List _trackbacks;
+    protected List _pingbacks;
     protected BlogCategory _blogCategory;
     protected Map _metaData;
 
@@ -474,6 +475,67 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * @since blojsom 1.9
      */
     public void setAttributes(Map attributeMap) {
+    }
+
+    /**
+     * Determines whether or not this blog entry supports pingbacks.
+     *
+     * @return <code>true</code> if the blog entry supports pingbacks, <code>false</code> otherwise
+     * @since blojsom 2.23
+     */
+    public abstract boolean supportsPingbacks();
+
+    /**
+     * Get the pingbacks for this entry
+     *
+     * @return List of {@link Pingback}s
+     * @since blojsom 2.23
+     */
+    public List getPingbacks() {
+        if (_pingbacks == null) {
+            return new ArrayList();
+        }
+
+        return _pingbacks;
+    }
+
+    /**
+     * Set the pingbacks for this blog entry. The pingbacks must be a <code>List</code>
+     * of {@link Pingback}. This method will not writeback or change the pingbacks to disk.
+     *
+     * @param pingbacks {@link Pingback}s for this entry
+     * @since blojsom 2.23
+     */
+    public void setPingbacks(List pingbacks) {
+        _pingbacks = pingbacks;
+    }
+
+    /**
+     * Get the pingbacks as an array of {@link Pingback}s objects
+     *
+     * @return {@link Pingback}[] array
+     * @since blojsom 2.23
+     */
+    public Pingback[] getPingbacksAsArray() {
+        if (_pingbacks == null) {
+            return new Pingback[0];
+        } else {
+            return (Pingback[]) _pingbacks.toArray(new Pingback[_pingbacks.size()]);
+        }
+    }
+
+    /**
+     * Get the number of pingbacks for this entry
+     *
+     * @return 0 if pingbacks is <code>null</code>, or the number of pingbacks otherwise, which could be 0
+     * @since blojsom 2.23
+     */
+    public int getNumPingbacks() {
+        if (_pingbacks == null) {
+            return 0;
+        } else {
+            return _pingbacks.size();
+        }
     }
 
     /**
