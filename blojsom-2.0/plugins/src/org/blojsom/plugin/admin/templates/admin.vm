@@ -12,7 +12,7 @@
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-templates&action=page">$editText</a> #adminResource('blog.templates.text' 'blog templates.')</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-flavors&action=page">$editText</a> #adminResource('blog.flavors.text' 'blog flavors.')</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-plugins&action=page">$editText</a> #adminResource('blog.pluginchains.text' 'blog plugin chains.')</li>
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=list-web-admin-plugins&action=page">$editText</a> #adminResource('web.admin.plugins.text' 'settings for configurable plugins.')</li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=list-web-admin-plugins">$editText</a> #adminResource('web.admin.plugins.text' 'settings for configurable plugins.')</li>
 
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=page">$editText</a> #adminResource('blog.entries.text' 'blog entries.')</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">$editText</a> #adminResource('blog.categories.text' 'blog categories.')</li>
