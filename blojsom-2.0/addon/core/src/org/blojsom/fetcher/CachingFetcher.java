@@ -54,7 +54,7 @@ import java.util.*;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.17 2005-03-12 16:27:56 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.18 2005-03-12 20:28:36 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -62,9 +62,9 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
     private Log _logger = LogFactory.getLog(CachingFetcher.class);
 
     /**
-     * Default refresh period for refreshing the cache (5 minutes)
+     * Default refresh period for refreshing the cache (30 minutes)
      */
-    private static final int DEFAULT_CACHE_REFRESH = 300;
+    private static final int DEFAULT_CACHE_REFRESH = 1800;
 
     /**
      * Initialization parameter for web.xml
@@ -145,6 +145,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
         if (permalink != null) {
             permalink = BlojsomUtils.getFilenameForPermalink(permalink, blog.getBlogFileExtensions());
             permalink = BlojsomUtils.urlDecode(permalink);
+
             if (permalink == null) {
                 _logger.error("Permalink request for invalid permalink: " + httpServletRequest.getParameter(PERMALINK_PARAM));
             } else {
@@ -165,9 +166,12 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
 
                 if (permalinkEntry.length > 0 && allEntries.length > 0) {
                     String permalinkId = permalinkEntry[0].getId();
+                    BlogEntry blogEntry;
+
                     for (int i = 0; i < allEntries.length; i++) {
-                        BlogEntry blogEntry = allEntries[i];
+                        blogEntry = allEntries[i];
                         String blogEntryId = blogEntry.getId();
+
                         if (blogEntryId != null && blogEntryId.equals(permalinkId)) {
                             if ((i - 1) >= 0) {
                                 context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i - 1]);
@@ -208,8 +212,11 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
 
                 ArrayList entriesList = new ArrayList(entries.length);
                 String entryCategory;
+                BlogEntry entry;
+
                 for (int i = 0; i < entries.length; i++) {
-                    BlogEntry entry = entries[i];
+                    entry = entries[i];
+
                     if (!entry.getCategory().startsWith("/")) {
                         entryCategory = "/" + entry.getCategory();
                     } else {
@@ -253,6 +260,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
             _logger.debug("Returned entries from cache for blog: " + blog.getId());
         } catch (NeedsRefreshException e) {
             entries = (BlogEntry[]) e.getCacheContent();
+
             if (entries == null) {
                 String[] filter = null;
                 entries = getEntriesAllCategories(blog, filter, -1, blog.getBlog().getBlogDepth());
@@ -304,6 +312,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
                 // Setup map to check categories
                 for (int i = 0; i < categoryMappingsForFlavor.length; i++) {
                     String category = categoryMappingsForFlavor[i];
+
                     if (!category.startsWith("/")) {
                         category = "/" + category;
                     }
@@ -409,9 +418,9 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
                 BlogEntry[] entries = getEntriesAllCategories(_user, filter, -1, _blogDirectoryDepth);
                 _cache.flushEntry(_user.getId());
                 _cache.putInCache(_user.getId(), entries);
-
-                return;
             }
+
+            return;            
         }
     }
 }
