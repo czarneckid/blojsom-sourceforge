@@ -26,13 +26,17 @@
                 Added Edit Blog Authorization plugin to allow you to add new authors to your blog.
             </action>
 
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Edit Blog Plugins plugin to allow you to edit the flavor-based plugin chains for your blog.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
-                Updated edit blog flavors plugin to persist changes to flavor configuration file.
+                Updated Edit Blog Flavors plugin to persist changes to flavor configuration file.
                 Users can now add, modify, and delete flavors.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
-                Updated weblogs ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
+                Updated Weblogs Ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
                 to signal it should not ping weblogs.com, weblo.gs, and Technorati. Also updated the plugin to
                 ping Technorati.
             </action>
