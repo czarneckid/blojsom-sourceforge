@@ -55,13 +55,14 @@ import java.util.Map;
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.3 2004-01-05 01:28:00 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.4 2004-01-05 04:04:39 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(ConditionalGetPlugin.class);
 
     private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
+    private static final String IF_NONE_MATCH_HEADER = "If-None-Match";
 
     private Map _defaultConditionalGetFlavors;
 
@@ -112,10 +113,19 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
                 try {
                     if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
                         Date ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
-                        if (latestEntryDate.compareTo(ifModifiedSinceDate) <= 0) {
-                            _logger.debug("Returning 304 response for flavor: " + flavor);
+                        if (latestEntryDate.toString().equals(ifModifiedSinceDate.toString())) {
+                            _logger.debug("Returning 304 response for flavor from If-Modified-Since: " + flavor);
                             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                         }
+                    } else if (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) != null){
+                        String ifNoneMatchHeader = httpServletRequest.getHeader(IF_NONE_MATCH_HEADER);
+                        String calculatedIfNoneMatchHeader = "\"" + BlojsomUtils.digestString(BlojsomUtils.getISO8601Date(new Date(entries[0].getLastModified()))) + "\"";
+                        if (ifNoneMatchHeader.equals(calculatedIfNoneMatchHeader)) {
+                            _logger.debug("Returning 304 response for flavor from If-None-Match: " + flavor);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                        }
+                    } else {
+                        _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
                     }
                 } catch (IllegalArgumentException e) {
                     _logger.error(e);
