@@ -1,14 +1,14 @@
 <html>
 
 <head>
-<title>blojsom - plugins - hyperlink</title>
+<title>blojsom - plugins - Send Email</title>
 <link rel="stylesheet" href="blojsom.css" />
 <link rel="SHORTCUT ICON" href="favicon.ico" />
 </head>
 
 <body>
 
-<p class="weblogtitle">blojsom - plugins - hyperlink</p>
+<p class="weblogtitle">blojsom - plugins - Send Email</p>
 
 <p class="navigation"><a href="index.html">home</a> |
 <a href="http://sourceforge.net/project/showfiles.php?group_id=72754">download</a> |
@@ -29,45 +29,49 @@
 <a href="plugins-macro.html">macro expansion plugin</a> |
 <a href="plugins-referer.html">referer plugin</a> |
 <a href="plugins-showmemore.html">"show me more" plugin</a> |
-<a href="plugins-simplesearch.html">simple search plugin</a> |
-<a href="plugins-sendemail.html">send email plugin</a>
+<a href="plugins-simplesearch.html">simple search plugin</a>
 </p>
 </ul>
 
 <p class="weblogtitle">description</a>
 <p />
-The hyperlink plugin will identify any valid url in a blog entry and automatically
-convert it into a clickable hyperlink.
-<p />
-The plugin uses a regular expression to identify the  urls and is smart enough to
-ignore existing href tags. So when you're posting your entries you no longer have to take the time to wrap an href around urls.
-A great time saver!
+The Send Email plugin will ...<br/>
 
 <p class="weblogtitle">installation and setup</a>
 <p />
 In your <i>plugin.properties</i> file, add the following line:
 <ul>
 <pre>
-href-hyperlinks=org.ignition.blojsom.plugin.HyperlinkURLPlugin
+sendemail=org.ignition.blojsom.plugin.email.SendEmailPlugin
 </pre>
 </ul>
 
-You may then add "href-hyperlinks" to one of the flavor-based plugin chains. For example:
+You may then add "sendemail" to the <b>end</b> one of the flavor-based plugin chains. For example:
 <ul>
 <pre>
-html.blojsom-plugin-chain=href-hyperlinks
+html.blojsom-plugin-chain=...,sendemail
 </pre>
 </ul>
 
-<p class="weblogtitle">usage and URL parameters</a>
+In your <i>blojsom.properties</i> file, add the following line:
+<ul>
+<pre>
+blog-email-enabled=true
+</pre>
+</ul>
 
+
+
+
+The Send Email plugin requires the smtp server be defined in <i>web.xml</i>. For example:
+<pre>
+    &lt;init-param&gt;
+        &lt;param-name&gt;smtp-server&lt;/param-name&gt;
+        &lt;param-value&gt;localhost&lt;/param-value&gt;
+    &lt;/init-param&gt;
+</pre>
 <p />
-<p class="weblogdateline">usage</p>
-In your entries, simply type in a URL like http://blojsom.sf.net and it will be converted
-to <a href="http://blojsom.sf.net">http://blojsom.sf.net</a>.
-<p />
-<p class="weblogdateline">URL parameters</p>
-There are no URL parameters to control the operation of the hyperlink plugin.
+
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
