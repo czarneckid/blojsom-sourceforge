@@ -21,6 +21,10 @@
                 Updated file upload plugin to allow for deleting of files from the resources directory.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated edit blog entries plugin to allow one to delete comments and trackbacks from entries.
+            </action>
+
             <action dev="intabulas" type="update" context="Extension">
                 Updated the Atom API extension to use Sandler 0.4 library (Full Atom 0.3 support).
             </action>
