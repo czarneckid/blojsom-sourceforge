@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.6 2003-08-15 11:34:47 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.7 2003-08-17 00:34:20 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -173,20 +173,12 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             _logger.error("No plugin configuration file specified");
             throw new ServletException("No plugin configuration file specified");
         }
-        _plugins = new HashMap();
-        String pluginConfigurationLocation = _baseConfigurationDirectory + pluginConfiguration;
-        Properties pluginProperties = new Properties();
-        try {
-            pluginProperties = BlojsomUtils.loadProperties(servletConfig, pluginConfigurationLocation);
-        } catch (BlojsomException e) {
-            _logger.error(e);
-            throw new ServletException(e);
-        }
 
         // Load the plugin chains for the individual users
         Iterator usersIterator = _users.keySet().iterator();
-        Iterator pluginIterator = pluginProperties.keySet().iterator();
+        Iterator pluginIterator;
         BlogUser blogUser;
+        Properties pluginProperties;
 
         while (usersIterator.hasNext()) {
             Map pluginChainMap = new HashMap();
@@ -212,6 +204,16 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 _logger.error(e);
                 throw new ServletException(e);
             }
+        }
+
+        _plugins = new HashMap();
+        String pluginConfigurationLocation = _baseConfigurationDirectory + pluginConfiguration;
+        pluginProperties = new Properties();
+        try {
+            pluginProperties = BlojsomUtils.loadProperties(servletConfig, pluginConfigurationLocation);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+            throw new ServletException(e);
         }
 
         // Instantiate the plugin classes
