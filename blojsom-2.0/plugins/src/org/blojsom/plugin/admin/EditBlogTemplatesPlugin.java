@@ -54,8 +54,8 @@ import java.util.Map;
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.9 2003-12-23 16:28:16 czarneckid Exp $
  * @since blojsom 2.04
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.8 2003-12-23 03:31:25 czarneckid Exp $
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
@@ -86,10 +86,11 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     *
+     * 
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
@@ -97,7 +98,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
     /**
      * Process the blog entries
-     *
+     * 
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -113,6 +114,24 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             return entries;
         }
 
+        // Add list of templates to context
+        File templatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
+                BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
+                user.getId() + _blojsomConfiguration.getTemplatesDirectory());
+        _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
+
+        File[] templates = templatesDirectory.listFiles();
+        ArrayList templatesList = new ArrayList(templates.length);
+        for (int i = 0; i < templates.length; i++) {
+            File template = templates[i];
+            if (template.isFile()) {
+                templatesList.add(template.getName());
+                _logger.debug("Added template: " + template.getName());
+            }
+        }
+
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templatesList);
+
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action == null || "".equals(action)) {
             _logger.debug("User did not request edit action");
@@ -120,22 +139,6 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         } else if (PAGE_ACTION.equals(action)) {
             _logger.debug("User requested edit blog templates page");
 
-            File templatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
-                    BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
-                    user.getId() + _blojsomConfiguration.getTemplatesDirectory());
-            _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
-
-            File[] templates = templatesDirectory.listFiles();
-            ArrayList templatesList = new ArrayList(templates.length);
-            for (int i = 0; i < templates.length; i++) {
-                File template = templates[i];
-                if (template.isFile()) {
-                    templatesList.add(template.getName());
-                    _logger.debug("Added template: " + template.getName());
-                }
-            }
-
-            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templatesList);
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
         } else if (EDIT_BLOG_TEMPLATES_ACTION.equals(action)) {
             _logger.debug("User requested edit blog templates action");
@@ -168,8 +171,12 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
             } catch (UnsupportedEncodingException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unable to load blog template: " + blogTemplate);
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
             } catch (IOException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unable to load blog template: " + blogTemplate);
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
             }
         } else if (UPDATE_BLOG_TEMPLATE_ACTION.equals(action)) {
             _logger.debug("User requested update blog template action");
@@ -193,11 +200,14 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 bw.close();
             } catch (UnsupportedEncodingException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unable to update blog template: " + blogTemplate);
             } catch (IOException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unable to update blog template: " + blogTemplate);
             }
 
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            addOperationResultMessage(context, "Updated blog template: " + blogTemplate);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
         }
 
         return entries;

@@ -58,7 +58,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.11 2003-12-23 03:31:25 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.12 2003-12-23 16:28:16 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -161,9 +161,6 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
             user.setBlog(blog);
 
-            // Request that we go back to the edit blog properties page
-            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
-
             // Write out new blog properties
             Properties blogProperties = BlojsomUtils.mapToProperties(blog.getBlogProperties(), UTF8);
             File propertiesFile = new File(_blojsomConfiguration.getInstallationDirectory()
@@ -176,9 +173,14 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
                 FileOutputStream fos = new FileOutputStream(propertiesFile);
                 blogProperties.store(fos, null);
                 fos.close();
+                addOperationResultMessage(context, "Updated blog properties");
             } catch (IOException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unable to save blog properties");
             }
+
+            // Request that we go back to the edit blog properties page
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
         }
 
         // Populate the context with the flavor/category mapping
