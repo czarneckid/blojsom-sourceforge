@@ -264,5 +264,5 @@
 
 #macro(Obfuscate $text)$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
 
-#macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
+#macro(RSSEnclosure $entry) $entry.getMetaData().get("rss-enclosure") #end
 
