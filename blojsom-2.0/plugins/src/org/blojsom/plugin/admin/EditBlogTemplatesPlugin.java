@@ -54,7 +54,8 @@ import java.util.Map;
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.2 2003-11-11 01:29:55 czarneckid Exp $
+ * @since blojsom 2.04
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.3 2003-11-13 00:54:48 czarneckid Exp $
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 

@@ -53,7 +53,8 @@ import java.util.Map;
  * EditBlogCategoriesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.5 2003-11-11 01:54:52 czarneckid Exp $
+ * @since blojsom 2.04
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.6 2003-11-13 00:54:48 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
