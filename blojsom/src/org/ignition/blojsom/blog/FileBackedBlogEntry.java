@@ -45,7 +45,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.3 2003-05-07 02:27:56 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.4 2003-05-15 00:46:20 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -55,6 +55,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     private File _source;
     private String _commentsDirectory;
     private String _trackbacksDirectory;
+    private String _blogFileEncoding;
 
     /**
      * Create a new blog entry with no data
@@ -79,6 +80,16 @@ public class FileBackedBlogEntry extends BlogEntry {
         _description = description;
         _source = source;
         _entryDate = new Date(_source.lastModified());
+    }
+
+    /**
+     * Set the file encoding to use when loading the blog entry
+     *
+     * @since blojsom 1.9
+     * @param blogFileEncoding File encoding
+     */
+    public void setBlogFileEncoding(String blogFileEncoding) {
+        _blogFileEncoding = blogFileEncoding;
     }
 
     /**
@@ -127,7 +138,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         String lineSeparator = System.getProperty("line.separator");
 
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(_source), UTF8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(_source), _blogFileEncoding));
             String line;
             StringBuffer description = new StringBuffer();
             while ((line = br.readLine()) != null) {
@@ -212,7 +223,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         StringBuffer commentDescription = new StringBuffer();
         String commentLine;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), UTF8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), _blogFileEncoding));
             while ((commentLine = br.readLine()) != null) {
                 switch (commentSwitch) {
                     case 0:
@@ -297,7 +308,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         trackback.setTrackbackDateLong(trackbackFile.lastModified());
         String trackbackLine;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(trackbackFile), UTF8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(trackbackFile), _blogFileEncoding));
             while (((trackbackLine = br.readLine()) != null) && (trackbackSwitch < 4)) {
                 switch (trackbackSwitch) {
                     case 0:

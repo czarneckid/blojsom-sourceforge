@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.14 2003-05-14 02:20:05 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.15 2003-05-15 00:45:26 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -118,6 +118,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
+            blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
             try {
                 blogEntry.reloadSource();
                 blogCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
@@ -170,6 +171,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
                 blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
                 try {
                     blogEntry.reloadSource();
                     blogCategoryForEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
