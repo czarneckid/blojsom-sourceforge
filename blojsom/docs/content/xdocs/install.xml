@@ -2,20 +2,20 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "http://cvs.apache.org/viewcvs.cgi/*checkout*/xml-forrest/src/resources/schema/dtd/document-v12.dtd?rev=HEAD&content-type=text/plain">
 <document>
     <header>
-        <title>installation</title>
+        <title>Installation</title>
     </header>
     <body>
         <section>
             <title>Installation</title>
             <section>
-                <title>requirements</title>
+                <title>Requirements</title>
                 <ul>
                     <li>Servlet 2.3 compliant application server (e.g. Jakarta Tomcat 4.1.18)</li>
                     <li>Java 1.4.x runtime</li>
                 </ul>
             </section>
             <section>
-                <title>installation and default configuration</title>
+                <title>Installation and default configuration</title>
                 <p>
                     1. Download
                     <link href="http://sourceforge.net/projects/blojsom">blojsom</link>.
@@ -111,14 +111,14 @@
                         <td>blog-entry-meta-data-extension</td>
                         <td></td>
                         <td>File extension that blojsom should look for if using per-entry meta-data. This feature is described in the
-                            <link href="customization.html">customization</link> reference
+                            <link href="custom.html">customization</link> reference
                         </td>
                     </tr>
                     <tr>
                         <td>blog-properties-extensions</td>
                         <td></td>
                         <td>File extensions that blojsom should look for in the blog category directories. Any properties files discovered when loading the blog from disk will be used as meta-data for the current category. This feature is described in the
-                            <link href="customization.html">customization</link> reference
+                            <link href="custom.html">customization</link> reference
                         </td>
                     </tr>
                     <tr>
@@ -131,7 +131,7 @@
                         <td></td>
                         <td>Customize the blog directories that will be "aggregated" to the default or "/" category. If left blank, all directories, up to
                             <em>blog-directory-depth</em> will be aggregated. This feature is described in the
-                            <link href="customization.html">customization</link> reference
+                            <link href="custom.html">customization</link> reference
                         </td>
                     </tr>
                     <tr>
@@ -213,7 +213,7 @@
                     4. Start your application server. On startup, blojsom will log messages to the console to
                     indicate what it is doing. Configuring blojsom's log capability is described on
                     the
-                    <link href="customization.html">customization</link> page.
+                    <link href="custom.html">customization</link> page.
                 </p>
                 <p>
                     5. Start your browser and open the URL to your blog. Example:
@@ -222,7 +222,7 @@
                 </p>
             </section>
             <section>
-                <title>adding, removing, and updating blog entries and categories</title>
+                <title>Adding, removing, and updating blog entries and categories</title>
                 <p>
                     blojsom uses the filesystem as its database. In blojsom, files matching the files indicated in the
                     <em>blog-file-extensions</em> configuration property will be picked up as your
@@ -285,7 +285,7 @@
                 </p>
             </section>
             <section>
-                <title>blog navigation</title>
+                <title>Blog navigation</title>
                 <p>
                     After blojsom is setup and running, your users will be able to navigate around your blog in those categories that have entries. No surprise there, eh?!
                 </p>

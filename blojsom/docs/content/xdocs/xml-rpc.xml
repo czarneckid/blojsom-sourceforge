@@ -10,7 +10,7 @@
 
         </section>
         <section>
-            <title>installation and default configuration</title>
+            <title>Installation and default configuration</title>
             <p>
                 Starting with blojsom 1.4, an XML-RPC servlet is included with blojsom that provides
                 support for the
@@ -34,7 +34,7 @@
 
         </section>
         <section>
-            <title>writing a custom XML-RPC handler</title>
+            <title>Writing a custom XML-RPC handler</title>
             <p>
                 If you are writing a custom XML-RPC handler for blojsom, you must write your class to implement
                 the
@@ -48,7 +48,7 @@
 
         </section>
         <section>
-            <title>registering a custom XML-RPC handler</title>
+            <title>Registering a custom XML-RPC handler</title>
             <p>
                 To register your custom XML-RPC handler with blojsom, you must modify the
                 <em>/WEB-INF/blojsom-xmlrpc.properties</em>

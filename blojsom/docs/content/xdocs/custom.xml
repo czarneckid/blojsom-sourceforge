@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>customization</title>
+        <title>Customization</title>
     </header>
     <body>
         <section>
@@ -42,7 +42,7 @@
             </p>
         </section>
         <section>
-            <title>flavor-based default category mapping</title>
+            <title>Flavor-based default category mapping</title>
             <p>
                 Starting with blojsom 1.4, you have the ability to configure a default category mapping based on
                 the particular flavor. The default flavor, HTML, will still be mapped using the
@@ -288,7 +288,7 @@
             </p>
         </section>
         <section>
-            <title>writing a blojsom custom dispatcher</title>
+            <title>Writing a blojsom custom dispatcher</title>
             <p>
                 For now, check out the
                 <link href="javadoc/index.html">javadocs</link> and the source code for the

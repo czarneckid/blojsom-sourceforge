@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>themes</title>
+        <title>Themes</title>
     </header>
     <body>
         <section>
@@ -14,7 +14,7 @@
             </p>
         </section>
         <section>
-            <title>installing blojsom themes</title>
+            <title>Installing blojsom themes</title>
             <p>
                 Starting with blojsom 1.7, blojsom ships with an alternate theme called
                 <strong>SecondWave</strong>. For those who care, the name is
@@ -48,7 +48,7 @@
             </p>
         </section>
         <section>
-            <title>configuring the active theme</title>
+            <title>Configuring the active theme</title>
             <p>
                 All you need to do to enable your template is to edit your
                 <em>/WEB-INF/flavor.properties</em>

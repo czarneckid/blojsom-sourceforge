@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>plugins</title>
+        <title>Plugins</title>
     </header>
 
     <body>
@@ -57,7 +57,7 @@
             </p>
         </section>
         <section>
-            <title>using blojsom plugins</title>
+            <title>Using blojsom plugins</title>
             <p>
                 One of the initialization parameters defined in the
                 <em>web.xml</em> for blojsom is called

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE faqs PUBLIC "-//APACHE//DTD FAQ V1.2//EN" "dtd/faq-v12.dtd">
 
-<faqs title="frequently asked questions">
+<faqs title="Frequently Asked Questions">
     <part id="general">
         <title>General</title>
         <faq id="name">
@@ -108,6 +108,11 @@
                     <link href="http://blojsim.sf.net">blojsim</link>, an instant messenger add-on for blojsom to blog
                     via AIM, Jabber, or MSN.
                 </p>
+                <p>
+                    You may also download the <link href="http://sourceforge.net/projects/pop2blog">pop2blog plugin</link>
+                    for blojsom. This plugin will monitor a POP3 mailbox and post blog entries to the appropriate
+                    category.
+                </p>
             </answer>
         </faq>
         <faq id="othermob">
@@ -123,7 +128,7 @@
         </faq>
     </part>
     <part id="xml-rpc">
-        <title>xml-rpc</title>
+        <title>XML-RPC</title>
         <faq id="edit-xml-rpc">
             <question>
                 Can I edit my blojsom blog via XML-RPC?
@@ -137,14 +142,13 @@
                     for the
                     <link href="http://plant.blogger.com/api/index.html">Blogger API</link> and
                     the
-                    <link href="http://www.xmlrpc.com/metaWeblogAPI">MetaWeblog API</link>. In the future we
-                    may support the Live Journal API.
+                    <link href="http://www.xmlrpc.com/metaWeblogAPI">MetaWeblog API</link>.
                 </p>
             </answer>
         </faq>
     </part>
     <part id="ext-plug">
-        <title>extensions / plug-ins</title>
+        <title>Extensions / plug-ins</title>
         <faq id="ext">
             <question>
                 Are there any extensions available for blojsom?
@@ -171,6 +175,4 @@
             </answer>
         </faq>
     </part>
-
-    <!-- More faqs or parts here -->
 </faqs>
