@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Authorization")
+#adminPageHeader("#adminResource('authorization.page.header' 'Authorization')")
 
         <div id="sideBar">
-            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
         </div>
 
         <!-- Add blog user authorization form -->
         <div id="mainClm">
-            <h2>Add a new authorized user to the current blog</h2>
+            <h2>#adminResource('add.new.user.text' 'Add a new authorized user to the current blog')</h2>
             <table>
                 <form name="add-blog-authorization" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-authorization"/>
                     <tr>
-                        <td>Authorized user id</td>
+                        <td>#adminResource('authorized.user.id.text' 'Authorized user ID')</td>
                         <td><input type="text" size="15" name="blog-user-id"/></td>
                     </tr>
                     <tr>
-                        <td>Authorized user password</td>
+                        <td>#adminResource('authorized.user.password.text' 'Authorized user password')</td>
                         <td><input type="password" size="15" name="blog-user-password"/></td>
                     </tr>
                     <tr>
-                        <td>Authorized user password (again)</td>
+                        <td>#adminResource('authorized.user.password.check.text' 'Authorized user password (check)')</td>
                         <td><input type="password" size="15" name="blog-user-password-check"/></td>
                     </tr>
                     <tr />
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Add authorized user"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('add.authorized.user.text' 'Add authorized user')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
@@ -39,14 +39,14 @@
 
         <!-- Modify blog user authorization form -->
         <div id="mainClm">
-            <h2>Modify an existing authorized user to the current blog</h2>
+            <h2>#adminResource('modify.user.text' 'Modify an existing authorized user to the current blog')</h2>
             <table>
                 <form name="add-blog-authorization" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-authorization"/>
                     <tr>
-                        <td>Authorized user id</td>
+                        <td>#adminResource('authorized.user.id.text' 'Authorized user ID')</td>
                         <td>
                             <select name="blog-user-id">
                             #foreach ($blogUserID in $BLOJSOM_PLUGIN_EDIT_BLOG_AUTHORIZATION_MAP.keySet())
@@ -56,18 +56,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Authorized user password</td>
+                        <td>#adminResource('authorized.user.password.text' 'Authorized user password')</td>
                         <td><input type="password" size="15" name="blog-user-password"/></td>
                     </tr>
                     <tr>
-                        <td>Authorized user password (again)</td>
+                        <td>#adminResource('authorized.user.password.check.text' 'Authorized user password (check)')</td>
                         <td><input type="password" size="15" name="blog-user-password-check"/></td>
                     </tr>
                     <tr />
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Modify authorized user"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('modify.authorized.user.text' 'Modify authorized user')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
@@ -76,14 +76,14 @@
 
         <!-- Delete blog user authorization form -->
         <div id="mainClm">
-            <h2>Delete an authorized user from the current blog</h2>
+            <h2>#adminResource('delete.user.text' 'Delete an authorized user from the current blog')</h2>
             <table>
                 <form name="delete-blog-user" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-authorization"/>
                     <tr>
-                        <td>Authorized user id</td>
+                        <td>#adminResource('authorized.user.id.text' 'Authorized user ID')</td>
                         <td>
                             <select name="blog-user-id">
                             #foreach ($blogUserID in $BLOJSOM_PLUGIN_EDIT_BLOG_AUTHORIZATION_MAP.keySet())
@@ -95,8 +95,8 @@
                     <tr />
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Delete authorized user"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('delete.authorized.user.text' 'Delete authorized user')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
