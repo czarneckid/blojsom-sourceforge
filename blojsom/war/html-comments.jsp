@@ -103,6 +103,9 @@
             <tr>
                 <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
             </tr>
+            <tr>
+                <td>Remember me?</td> <td><input type="checkbox" name="remember"/></td>
+            </tr>
             <p />
             <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
