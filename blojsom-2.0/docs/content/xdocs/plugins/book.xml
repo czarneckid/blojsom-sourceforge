@@ -22,6 +22,7 @@ site.xml. -->
         <menu-item label="Google Highlight" href="google-highlight.html"/>
         <menu-item label="Hyperlink URL " href="hyperlink-URL.html"/>
         <menu-item label="Macro Expansion" href="macro-expansion.html"/>
+        <menu-item label="Markdown" href="markdown.html"/> 
         <menu-item label="Meta Data" href="meta.html"/>
         <menu-item label="Obfuscation" href="obfuscation.html"/>
         <menu-item label="Preview" href="preview.html"/>
