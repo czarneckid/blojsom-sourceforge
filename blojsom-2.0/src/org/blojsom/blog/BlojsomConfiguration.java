@@ -44,16 +44,13 @@ import javax.servlet.ServletConfig;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * BlojsomConfiguration
- * 
+ *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.20 2004-07-31 20:33:05 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.21 2004-08-11 02:27:24 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -77,7 +74,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Initialize the BlojsomConfiguration object
-     * 
+     *
      * @param servletConfig        Servlet configuration information
      * @param blojsomConfiguration Map of loaded blojsom properties
      */
@@ -162,8 +159,9 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
         }
 
-        _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
-        String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
+        List blojsomUsers = getBlojsomPropertyAsList(BLOJSOM_USERS_IP);
+        String[] users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
+        _blojsomUsers = BlojsomUtils.arrayOfStringsToString(users);
         InputStream is;
         if (users.length == 0) {
             _logger.error("No users defined for this blojsom blog");
@@ -177,41 +175,44 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
                 Properties userProperties = new BlojsomProperties();
                 is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
-                try {
-                    userProperties.load(is);
-                    is.close();
-                } catch (IOException e) {
-                    _logger.error(e);
-                    throw new BlojsomConfigurationException(e);
-                }
-
-                Blog userBlog = null;
-                try {
-                    // If a global blog-home directory has been defined, use it for each user
-                    if (_globalBlogHome != null) {
-                        String usersBlogHome = _globalBlogHome + user + "/";
-                        File blogHomeDirectory = new File(usersBlogHome);
-                        if (!blogHomeDirectory.exists()) {
-                            if (!blogHomeDirectory.mkdirs()) {
-                                _logger.error("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
-                                throw new BlojsomConfigurationException("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
-                            }
-                        }
-
-                        userProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
-                        _logger.debug("Setting user blog-home directory: " + usersBlogHome);
+                if (is != null) {
+                    try {
+                        userProperties.load(is);
+                        is.close();
+                    } catch (IOException e) {
+                        _logger.error(e);
+                        throw new BlojsomConfigurationException(e);
                     }
 
-                    userBlog = new Blog(userProperties);
-                    blogUser.setBlog(userBlog);
+                    Blog userBlog = null;
+                    try {
+                        // If a global blog-home directory has been defined, use it for each user
+                        if (_globalBlogHome != null) {
+                            String usersBlogHome = _globalBlogHome + user + "/";
+                            File blogHomeDirectory = new File(usersBlogHome);
+                            if (!blogHomeDirectory.exists()) {
+                                if (!blogHomeDirectory.mkdirs()) {
+                                    _logger.error("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
+                                    throw new BlojsomConfigurationException("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
+                                }
+                            }
 
-                    _blogUsers.put(user, blogUser);
-                    _logger.debug("Added blojsom user: " + blogUser.getId());
-                } catch (BlojsomConfigurationException e) {
-                    _logger.error(e);
-                    _logger.error("Marking user as invalid: " + blogUser.getId());
+                            userProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
+                            _logger.debug("Setting user blog-home directory: " + usersBlogHome);
+                        }
+
+                        userBlog = new Blog(userProperties);
+                        blogUser.setBlog(userBlog);
+
+                        _blogUsers.put(user, blogUser);
+                        _logger.debug("Added blojsom user: " + blogUser.getId());
+                    } catch (BlojsomConfigurationException e) {
+                        _logger.error(e);
+                        _logger.error("Marking user as invalid: " + blogUser.getId());
+                    }
+                } else {
+                    _logger.error("Unable to load blog configuration for blog: " + blogUser.getId());
                 }
-
 
                 // Ensure the resource directory for the user physically exists
                 File resourceDirectory = new File(_qualifiedResourceDirectory + File.separator + user);
@@ -257,7 +258,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Returns an unmodifiable map of the blojsom configuration properties
-     * 
+     *
      * @return Unmodifiable map of the blojsom configuration properties
      */
     public Map getBlojsomConfiguration() {
@@ -266,7 +267,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Retrieve a blojsom property as a string
-     * 
+     *
      * @param propertyKey Property key
      * @return Value of blojsom property as a string or <code>null</code> if no property key is found
      */
@@ -279,8 +280,29 @@ public class BlojsomConfiguration implements BlojsomConstants {
     }
 
     /**
-     * Return a blojsom configuration property
      * 
+     * @param propertyKey
+     * @return
+     */
+    public List getBlojsomPropertyAsList(String propertyKey) {
+        if (_blojsomConfiguration.containsKey(propertyKey)) {
+            Object value = _blojsomConfiguration.get(propertyKey);
+            if (value instanceof List) {
+                return (List) value;
+            } else {
+                ArrayList values = new ArrayList();
+                values.add(value);
+
+                return values;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Return a blojsom configuration property
+     *
      * @param propertyKey Property key
      * @return Value of blojsom property
      */
@@ -290,7 +312,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the default user for this blojsom instance
-     * 
+     *
      * @return Default user
      */
     public String getDefaultUser() {
@@ -299,7 +321,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the base directory for obtaining configuration information
-     * 
+     *
      * @return Configuration base directory (e.g. /WEB-INF)
      */
     public String getBaseConfigurationDirectory() {
@@ -308,7 +330,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the classname of the fetcher used for this blojsom instance
-     * 
+     *
      * @return Fetcher classname
      */
     public String getFetcherClass() {
@@ -318,7 +340,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     /**
      * Get the installation directory for blojsom. This is the directory where the blojsom WAR file will
      * be unpacked.
-     * 
+     *
      * @return Installation directory
      * @since blojsom 2.01
      */
@@ -328,7 +350,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the directory where templates will be located off the user's directory.
-     * 
+     *
      * @return Templates directory
      * @since blojsom 2.04
      */
@@ -356,10 +378,9 @@ public class BlojsomConfiguration implements BlojsomConstants {
         return _qualifiedResourceDirectory;
     }
 
-
     /**
      * Get the list of users for this blojsom instance returned as a String[]
-     * 
+     *
      * @return List of users as a String[]
      */
     public String[] getBlojsomUsers() {
@@ -368,7 +389,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get a map of the {@link BlogUser} objects
-     * 
+     *
      * @return Map of {@link BlogUser} objects
      */
     public Map getBlogUsers() {
