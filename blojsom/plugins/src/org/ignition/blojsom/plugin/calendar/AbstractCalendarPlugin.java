@@ -40,23 +40,20 @@ import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomConstants;
-import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-
 /**
- * CalendarPlugin
- *
+ * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.14 2003-03-28 01:07:03 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.1 2003-03-31 04:23:29 intabulas Exp $
  */
-public class CalendarPlugin implements BlojsomPlugin {
+public class AbstractCalendarPlugin implements BlojsomPlugin {
 
-    private Log _logger = LogFactory.getLog(CalendarPlugin.class);
+    private Log _logger = LogFactory.getLog(AbstractCalendarPlugin.class);
 
     /**
      * Key under which the blog calendar will be placed
@@ -85,19 +82,26 @@ public class CalendarPlugin implements BlojsomPlugin {
     /**
      * Locale to use for the Calendar.
      */
-    private Locale _locale = Locale.getDefault();
+    protected Locale _locale = Locale.getDefault();
 
     /**
      * Blog Prefix URL used for Calender Hyperlinks
      */
-    private String _blogUrlPrefix;
+    protected String _blogUrlPrefix;
+
+    protected int _currentMonth;
+    protected int _currentDay;
+    protected int _currentYear;
+    protected Calendar _calendar;
+    protected String _requestedDateKey;
+
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      * @param blogProperties Read-only properties for the Blog
-     * @throws BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         // If blog-language is set in blojsom.properties, use it instead
@@ -124,25 +128,18 @@ public class CalendarPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
-        ArrayList updatedEntryList = new ArrayList();
-
-        // Was a category part of the URL? If so we want to create href's based on the category
-        String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
-        if (category == null) {
-            category = "";
-        }
-
         // Default to the Current Month and Year
-        Calendar calendar = new GregorianCalendar(_locale);
-        calendar.setTime(new Date());
-        int currentmonth = calendar.get(Calendar.MONTH);
-        int currentyear = calendar.get(Calendar.YEAR);
+        _calendar = new GregorianCalendar(_locale);
+        _calendar.setTime(new Date());
+        _currentMonth = _calendar.get(Calendar.MONTH);
+        _currentYear = _calendar.get(Calendar.YEAR);
+        _currentDay = _calendar.get(Calendar.DAY_OF_MONTH);
 
         // Determine a calendar-based request
         String year = null;
         String month = null;
         String day = null;
-        String requestedDateKey = null;
+
 
         year = httpServletRequest.getParameter(BlojsomConstants.YEAR_PARAM);
         if (year != null) {
@@ -152,8 +149,8 @@ public class CalendarPlugin implements BlojsomPlugin {
                 year = null;
             } else {
                 try {
-                    currentyear = Integer.parseInt(year);
-                    calendar.set(Calendar.YEAR, currentyear);
+                    _currentYear = Integer.parseInt(year);
+                    _calendar.set(Calendar.YEAR, _currentYear);
                 } catch (NumberFormatException e) {
                     year = "";
                     _logger.error("Invalid Year Param submitted and ignored: " + year);
@@ -167,8 +164,8 @@ public class CalendarPlugin implements BlojsomPlugin {
                 }
                 if (!month.equals("")) {
                     try {
-                        currentmonth = Integer.parseInt(month) - 1; // Damm Sun!
-                        calendar.set(Calendar.MONTH, currentmonth);
+                        _currentMonth = Integer.parseInt(month) - 1; // Damm Sun!
+                        _calendar.set(Calendar.MONTH, _currentMonth);
                     } catch (NumberFormatException e) {
                         month = "";
                         _logger.error("Invalid Month Param submitted and ignored: " + month);
@@ -180,44 +177,20 @@ public class CalendarPlugin implements BlojsomPlugin {
                 } else if (day.length() < 2) {
                     day = "0" + day;
                 }
-            }
-            _logger.debug("Calendar-based request for: " + category + year + month + day);
 
-            requestedDateKey = year + month + day;
-        }
-
-        String _calurl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
-        BlogCalendar _blogCalendar = new BlogCalendar(calendar, _calurl, _locale);
-
-        Calendar entrycalendar = new GregorianCalendar(_locale);
-        if (entries != null && entries.length > 0) {
-            for (int x = 0; x < entries.length; x++) {
-                BlogEntry entry = entries[x];
-                String blogDateKey = BlojsomUtils.getDateKey(entry.getDate());
-                entrycalendar.setTime(entry.getDate());
-                int entrymonth = entrycalendar.get(Calendar.MONTH);
-                int entryear = entrycalendar.get(Calendar.YEAR);
-
-                if (requestedDateKey == null || (blogDateKey.startsWith(requestedDateKey))) {
-                    updatedEntryList.add(entry);
+                if (!day.equals("")) {
+                    try {
+                        _currentDay = Integer.parseInt(day);
+                        _calendar.set(Calendar.DAY_OF_MONTH, _currentDay);
+                    } catch (NumberFormatException e) {
+                        _logger.error("Invalid Day Param submitted and ignored: " + day);
+                    }
                 }
 
-                // If the Entry is is the same month and the same year, then flag that date as having a Entry
-                if ((entrymonth == currentmonth) && (entryear == currentyear)) {
-                    _blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
-                }
+
             }
-        }
 
-        VelocityHelper _vtlhelper = new VelocityHelper(_blogCalendar);
-        _vtlhelper.buildCalendar();
-        context.put(BLOJSOM_CALENDAR, _blogCalendar);
-        context.put(BLOJSOM_CALENDAR_VTLHELPER, _vtlhelper);
-
-        if (updatedEntryList.size() == 0) {
-            entries = new BlogEntry[0];
-        } else {
-            entries = (BlogEntry[]) updatedEntryList.toArray(new BlogEntry[updatedEntryList.size()]);
+            _requestedDateKey = year + month + day;
         }
 
         return entries;
@@ -238,4 +211,5 @@ public class CalendarPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
+
 }
