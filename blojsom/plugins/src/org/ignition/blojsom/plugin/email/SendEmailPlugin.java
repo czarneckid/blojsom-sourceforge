@@ -47,7 +47,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -56,7 +55,7 @@ import java.util.Properties;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.7 2003-04-19 02:45:14 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.8 2003-04-27 16:24:46 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -120,7 +119,7 @@ public class SendEmailPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
-        List _messagelist = (ArrayList) context.get(EmailUtils.BLOJSOM_OUTBOUNDMAIL);
+        List _messagelist = (List) context.get(EmailUtils.BLOJSOM_OUTBOUNDMAIL);
         if (_messagelist != null) {
             for (int x = 0; x < +_messagelist.size(); x++) {
                 EmailMessage _msg = (EmailMessage) _messagelist.get(x);
