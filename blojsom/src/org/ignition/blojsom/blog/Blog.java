@@ -36,6 +36,8 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.*;
 
 /**
@@ -44,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.23 2003-03-05 04:08:14 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.24 2003-03-06 04:06:54 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -788,5 +790,52 @@ public class Blog implements BlojsomConstants {
      */
     public HashMap getBlogProperties() {
         return _blogProperties;
+    }
+
+    /**
+     * Add a comment to a particular blog entry
+     *
+     * @param category Blog entry category
+     * @param permalink Blog entry permalink
+     * @param author Comment author
+     * @param authorEmail Comment author e-mail
+     * @param authorURL Comment author URL
+     * @param comment Comment
+     */
+    public synchronized void addBlogComment(String category, String permalink, String author,
+                                            String authorEmail, String authorURL, String userComment) {
+        BlogComment comment = new BlogComment();
+        comment.setAuthor(author);
+        comment.setAuthorEmail(authorEmail);
+        comment.setAuthorURL(authorURL);
+        comment.setComment(userComment);
+        comment.setCommentDate(new Date());
+
+        String commentDirectory = _blogHome + BlojsomUtils.removeInitialSlash(category) + _blogCommentsDirectory + File.separator + BlojsomUtils.getFilenameForPermalink(permalink) + File.separator;
+        String commentFilename = commentDirectory + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
+        File commentDir = new File(commentDirectory);
+        if (!commentDir.exists()) {
+            if (!commentDir.mkdirs()) {
+                _logger.error("Could not create directory for comments: " + commentDirectory);
+                return;
+            }
+        }
+
+        File commentEntry = new File(commentFilename);
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
+            bw.write(comment.getAuthor());
+            bw.newLine();
+            bw.write(comment.getAuthorEmail());
+            bw.newLine();
+            bw.write(comment.getAuthorURL());
+            bw.newLine();
+            bw.write(comment.getComment());
+            bw.newLine();
+            bw.close();
+            _logger.debug("Added blog comment: " + commentFilename);
+        } catch (IOException e) {
+            _logger.error(e);
+        }
     }
 }
