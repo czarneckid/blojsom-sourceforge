@@ -52,7 +52,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.10 2003-12-17 20:09:34 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.11 2003-12-18 00:28:06 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1150,5 +1150,28 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return result;
+    }
+
+    /**
+     * Add a '/' at the beginning and end of the input string if necessary.
+     *
+     * @since blojsom 2.06
+     * @param input Input string
+     * @return String with a '/' at the beginning and end of the original string, <code>null</code> if the input was <code>null</code>
+     */
+    public static String checkStartingAndEndingSlash(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        if (!input.startsWith("/")) {
+            input = "/" + input;
+        }
+
+        if (!input.endsWith("/")) {
+            input += "/";
+        }
+
+        return input;
     }
 }
