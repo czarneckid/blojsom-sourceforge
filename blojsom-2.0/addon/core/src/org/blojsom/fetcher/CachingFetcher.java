@@ -54,7 +54,7 @@ import java.util.*;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.16 2005-03-11 04:19:16 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.17 2005-03-12 16:27:56 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -273,7 +273,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
     /**
      * Filter blog entries for the flavor
      *
-     * @param blog {@link BlogUser}
+     * @param blog   {@link BlogUser}
      * @param flavor Flavor
      * @return <code>BlogEntry[]</code> for flavor
      * @since blojsom 2.24
@@ -351,46 +351,10 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
         if (event instanceof BlogEntryEvent && !event.isEventHandled()) {
             BlogEntryEvent blogEntryEvent = (BlogEntryEvent) event;
 
-            String cacheRefresh = blogEntryEvent.getBlogUser().getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
-            int refreshPeriod;
-            if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
-                refreshPeriod = DEFAULT_CACHE_REFRESH;
-            }
-            try {
-                refreshPeriod = Integer.parseInt(cacheRefresh);
-            } catch (NumberFormatException e) {
-                refreshPeriod = DEFAULT_CACHE_REFRESH;
-            }
-
-            boolean shouldRefreshCache = false;
-
-            Iterator flavorIterator = blogEntryEvent.getBlogUser().getFlavors().keySet().iterator();
-            while (flavorIterator.hasNext()) {
-                String flavor = (String) flavorIterator.next();
-                if (_ignoreFlavors.indexOf(flavor) == -1) {
-                    shouldRefreshCache = false;
-
-                    try {
-                        if (_cache.getFromCache(blogEntryEvent.getBlogUser().getId(), refreshPeriod) != null) {
-                            shouldRefreshCache = true;
-                        }
-                    } catch (NeedsRefreshException e) {
-                        if (e.getCacheContent() != null) {
-                            shouldRefreshCache = true;
-                        }
-                    }
-
-                    _cache.cancelUpdate(blogEntryEvent.getBlogUser().getId());
-                    if (shouldRefreshCache) {
-                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(blogEntryEvent.getBlogUser(), blogEntryEvent.getBlogUser().getBlog().getBlogDepth()));
-                        allCategoriesFetcherThread.setDaemon(true);
-                        allCategoriesFetcherThread.start();
-                    }
-                }
-            }
-
-            shouldRefreshCache = false;
-
+            Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(blogEntryEvent.getBlogUser(), blogEntryEvent.getBlogUser().getBlog().getBlogDepth()));
+            allCategoriesFetcherThread.setDaemon(true);
+            allCategoriesFetcherThread.start();
+            
             event.setEventHandled(true);
         }
     }
@@ -440,12 +404,14 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
          * @see Runnable#run()
          */
         public void run() {
-            String[] filter = null;
-            BlogEntry[] entries = getEntriesAllCategories(_user, filter, -1, _blogDirectoryDepth);
-            _cache.flushEntry(_user.getId());
-            _cache.putInCache(_user.getId(), entries);
+            synchronized (_cache) {
+                String[] filter = null;
+                BlogEntry[] entries = getEntriesAllCategories(_user, filter, -1, _blogDirectoryDepth);
+                _cache.flushEntry(_user.getId());
+                _cache.putInCache(_user.getId(), entries);
 
-            return;
+                return;
+            }
         }
     }
 }
