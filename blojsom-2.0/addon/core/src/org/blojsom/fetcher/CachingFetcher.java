@@ -39,6 +39,9 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
+import org.blojsom.plugin.admin.event.BlogEntryEvent;
+import org.blojsom.event.BlojsomListener;
+import org.blojsom.event.BlojsomEvent;
 import org.blojsom.blog.*;
 import org.blojsom.util.BlojsomUtils;
 
@@ -47,15 +50,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Iterator;
 
 /**
  * CachingFetcher
- * 
+ *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.13 2005-01-05 02:30:57 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.14 2005-01-06 03:36:53 czarneckid Exp $
  * @since blojsom 2.01
  */
-public class CachingFetcher extends StandardFetcher {
+public class CachingFetcher extends StandardFetcher implements BlojsomListener {
 
     private Log _logger = LogFactory.getLog(CachingFetcher.class);
 
@@ -99,7 +103,7 @@ public class CachingFetcher extends StandardFetcher {
 
     /**
      * Initialize this fetcher. This method only called when the fetcher is instantiated.
-     * 
+     *
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration blojsom configuration information
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
@@ -122,11 +126,13 @@ public class CachingFetcher extends StandardFetcher {
             _logger.error(e);
             throw new BlojsomFetcherException(e);
         }
+
+        blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
     /**
      * Fetch a set of {@link org.blojsom.blog.BlogEntry} objects.
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link BlogUser} instance
@@ -178,7 +184,7 @@ public class CachingFetcher extends StandardFetcher {
 
             if (blog.getLinearNavigationEnabled().booleanValue()) {
                 BlogEntry[] allEntries;
-                
+
                 try {
                     allEntries = (BlogEntry[]) _cache.getFromCache(user.getId() + FLAVOR_KEY + flavor, refreshPeriod);
                     _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
@@ -204,14 +210,14 @@ public class CachingFetcher extends StandardFetcher {
                         BlogEntry blogEntry = allEntries[i];
                         String blogEntryId = blogEntry.getId();
                         if (blogEntryId != null && blogEntryId.equals(permalinkId)) {
-                            if ((i-1) >= 0) {
-                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i-1]);
+                            if ((i - 1) >= 0) {
+                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i - 1]);
                             } else {
                                 context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, null);
                             }
 
-                            if ((i+1) < allEntries.length) {
-                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, allEntries[i+1]);
+                            if ((i + 1) < allEntries.length) {
+                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, allEntries[i + 1]);
                             } else {
                                 context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, null);
                             }
@@ -282,6 +288,59 @@ public class CachingFetcher extends StandardFetcher {
                     return entries;
                 }
             }
+        }
+    }
+
+    /**
+     * Handle an event broadcast from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void handleEvent(BlojsomEvent event) {
+        if (event instanceof BlogEntryEvent && !event.isEventHandled()) {
+            BlogEntryEvent blogEntryEvent = (BlogEntryEvent) event;
+
+            String cacheRefresh = blogEntryEvent.getBlogUser().getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
+            int refreshPeriod;
+            if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
+                refreshPeriod = DEFAULT_CACHE_REFRESH;
+            }
+            try {
+                refreshPeriod = Integer.parseInt(cacheRefresh);
+            } catch (NumberFormatException e) {
+                refreshPeriod = DEFAULT_CACHE_REFRESH;
+            }
+
+            boolean shouldRefreshCache = false;
+
+            Iterator flavorIterator = blogEntryEvent.getBlogUser().getFlavors().keySet().iterator();
+            while (flavorIterator.hasNext()) {
+                String flavor = (String) flavorIterator.next();
+                if (_ignoreFlavors.indexOf(flavor) == -1) {
+                    shouldRefreshCache = false;
+
+                    try {
+                        if (_cache.getFromCache(blogEntryEvent.getBlogUser().getId() + FLAVOR_KEY + flavor, refreshPeriod) != null) {
+                            shouldRefreshCache = true;
+                        }
+                    } catch (NeedsRefreshException e) {
+                        if (e.getCacheContent() != null) {
+                            shouldRefreshCache = true;
+                        }
+                    }
+
+                    _cache.cancelUpdate(blogEntryEvent.getBlogUser().getId() + FLAVOR_KEY + flavor);
+                    if (shouldRefreshCache) {
+                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(blogEntryEvent.getBlogUser(), flavor, blogEntryEvent.getBlogUser().getBlog().getBlogDepth()));
+                        allCategoriesFetcherThread.setDaemon(true);
+                        allCategoriesFetcherThread.start();
+                    }
+                }
+            }
+
+            shouldRefreshCache = false;
+
+            event.setEventHandled(true);
         }
     }
 
