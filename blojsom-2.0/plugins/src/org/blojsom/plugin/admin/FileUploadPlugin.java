@@ -56,7 +56,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.12 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.13 2004-02-16 23:49:21 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -206,7 +206,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
                     // Check for the file upload form item
                     if (!item.isFormField()) {
-                        _logger.debug("Found file item: " + item.getName() + " of type: " + item.getContentType());
+                        String itemNameWithoutPath = BlojsomUtils.getFilenameFromPath(item.getName());
+
+                        _logger.debug("Found file item: " + itemNameWithoutPath + " of type: " + item.getContentType());
 
                         // Is it one of the accepted file types?
                         String fileType = item.getContentType();
@@ -223,11 +225,12 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                             }
 
                             File resourceFile = new File(_blojsomConfiguration.getInstallationDirectory() +
-                                    _resourcesDirectory + user.getId() + "/" + item.getName());
+                                    _resourcesDirectory + user.getId() + "/" + itemNameWithoutPath);
                             try {
                                 item.write(resourceFile);
                             } catch (Exception e) {
                                 _logger.error(e);
+                                addOperationResultMessage(context, "Unknown error in file upload: " + e.getMessage());
                             }
                             _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
                             addOperationResultMessage(context, "Successfully upload resource file: " + item.getName());
@@ -239,6 +242,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                 }
             } catch (FileUploadException e) {
                 _logger.error(e);
+                addOperationResultMessage(context, "Unknown error in file upload: " + e.getMessage());
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
