@@ -56,7 +56,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.3 2003-08-25 03:52:34 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -230,8 +230,12 @@ public class CommentPlugin extends IPBanningPlugin {
                                BlogUser user,
                                Map context,
                                BlogEntry[] entries) throws BlojsomPluginException {
-        context.put(BLOJSOM_COMMENT_PLUGIN_ENABLED, Boolean.valueOf(true));
         Blog blog = user.getBlog();
+        context.put(BLOJSOM_COMMENT_PLUGIN_ENABLED, blog.getBlogCommentsEnabled());
+        if (!blog.getBlogCommentsEnabled().booleanValue()) {
+            _logger.debug("blog comments not enabled for user: " + user.getId());
+            return entries;
+        }
 
         String bannedIPListParam = blog.getBlogProperty(BANNED_IP_ADDRESSES_IP);
         String[] bannedIPList;
