@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.59 2003-03-28 03:51:49 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.60 2003-03-28 04:28:29 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -372,7 +372,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         Integer entriesStart = null;
         Integer entriesEnd = null;
         try {
-            entriesStart = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_START_PARAM)));
+            entriesStart = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_START_PARAM)) - 1);
             _logger.debug("Requested entries start: " + entriesStart.toString());
         } catch (NumberFormatException e) {
             entriesStart = null;
@@ -380,7 +380,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         }
 
         try {
-            entriesEnd = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_END_PARAM)));
+            entriesEnd = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_END_PARAM)) - 1);
             _logger.debug("Requested entries end: " + entriesEnd.toString());
         } catch (NumberFormatException e) {
             entriesEnd = null;
