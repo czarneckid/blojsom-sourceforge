@@ -55,7 +55,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.49 2004-12-11 15:55:29 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.50 2004-12-17 16:45:27 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1646,13 +1646,13 @@ public class BlojsomUtils implements BlojsomConstants {
         String filename;
 
         if (!checkNullOrBlank(title)) {
-            filename = title.replaceAll("\\s", "-");
+            filename = title.replaceAll("\\s", "_");
             filename = filename.replaceAll("'", "");
-            filename = filename.replaceAll("\\p{Punct}", "-");
-            filename = filename.replaceAll("-{2,}", "-");
+            filename = filename.replaceAll("\\p{Punct}", "_");
+            filename = filename.replaceAll("_{2,}", "_");
             String backup = filename;
-            filename = filename.replaceAll("^-{1,}", "");
-            filename = filename.replaceAll("-{1,}$", "");
+            filename = filename.replaceAll("^_{1,}", "");
+            filename = filename.replaceAll("_{1,}$", "");
             if (checkNullOrBlank(filename)) {
                 filename = backup;
             }
