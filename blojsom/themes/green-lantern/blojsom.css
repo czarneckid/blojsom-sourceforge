@@ -18,7 +18,7 @@ h1
 {
 	font-family: Helvetica, Arial, sans-serif;
 	color: #000000;
-	margin-top: pt;
+	margin-top: 0pt;
 	margin-bottom: 2pt;
 	padding-top: 0pt;
 }
@@ -161,12 +161,12 @@ blockquote {
 	margin-bottom: 0px;
 	align: right;
 }
+
 .searchimage
 {
     margin-top: 0px;
 	margin-bottom: 0px;
 	vertical-align: middle;
-	align: right;
 }
 
 #searchbox{
@@ -209,7 +209,6 @@ blockquote {
    border-top:1px solid #000000;
    padding:5px;
    margin-bottom: 15px;
-   align: center;
 }
 
 .calendarcolumn {

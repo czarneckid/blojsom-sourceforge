@@ -18,7 +18,7 @@ h1
 {
 	font-family: Helvetica, Arial, sans-serif;
 	color: #000000;
-	margin-top: pt;
+	margin-top: 0pt;
 	margin-bottom: 2pt;
 	padding-top: 0pt;
 }
@@ -159,7 +159,6 @@ a:hover
     margin-top: 0px;
 	margin-bottom: 0px;
 	vertical-align: middle;
-	align: right;
 }
 
 #searchbox{
@@ -174,7 +173,6 @@ a:hover
 	margin-top:5px;
 	margin-bottom:0px;
 	margin-right:0px;
-	align: right;
 }
 
 .searchform
@@ -202,7 +200,6 @@ a:hover
    border-top:1px solid #000000;
    padding:5px;
    margin-bottom: 15px;
-   align: center;
 }
 
 .calendarcolumn {
@@ -220,23 +217,12 @@ a:hover
    padding:5px;
 }
 
-
-
-
-
-
-
-
 .mastertable {
-      cellspacing: 0px;
-      cellpadding: 0px
       border:  0px;
       width: 100%;
 }
 
 .calendartable {
-   cellspacing: 0px;
-   cellpadding: 0px;
    border: 0px;
    width: 165px;
 }
