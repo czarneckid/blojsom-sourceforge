@@ -7,6 +7,27 @@
     </developers>
 
     <changes>
+        <release version="2.06" date="Available from CVS">
+            <action dev="czarneckid" type="update" context="Core">
+                Updated loading of users so that if an individual user's configuration cannot be loaded, then only
+                that user is not loaded. Previously, blojsom would not start if there was an error in a user's
+                configuration.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Core">
+                Added a couple of new utility methods to BlojsomUtils.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Edit Blog Users plugin to allow a defined set of "administrators" to add and delete users.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Core (add-on)">
+                Added ability to configure FreeMarker dispatcher using a properties configuration file. Use the
+                <tt>freemarker-properties</tt> init-param in <tt>/WEB-INF/web.xml</tt> for the
+                BlojsomServlet and specify the properties file to use. Example: <tt>/WEB-INF/freemarker.properties</tt>.
+            </action>
+        </release>
 
         <release version="2.05" date="December 15, 2003">
             <action dev="intabulas" type="add" context="Core">
