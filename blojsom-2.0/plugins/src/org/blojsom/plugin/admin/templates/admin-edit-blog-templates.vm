@@ -22,6 +22,9 @@
     </div>
 
     <div id="contents">
+
+        #showErrorMessage()
+        
         <!-- Edit blog template form -->
         <div id="mainClm">
             <h2>#adminResource('edit.blog.template.text' 'Update blog template')</h2>
