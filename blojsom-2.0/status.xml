@@ -27,6 +27,11 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
+                Updated edit blog flavors plugin to persist changes to flavor configuration file.
+                Users can now add, modify, and delete flavors.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
                 Updated weblogs ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
                 to signal it should not ping weblogs.com, weblo.gs, and Technorati. Also updated the plugin to
                 ping Technorati.
