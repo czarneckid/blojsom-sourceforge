@@ -8,6 +8,12 @@
 
     <changes>
         <release version="2.11" date="Available from CVS">
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated the Comment and Trackback plugins to support throttling. If throttling is enabled,
+                comments and trackbacks left from a particular IP address must wait a configurable number of
+                minutes before another comment or trackback can be posted.
+            </action>
+            
             <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="886003">
                 Fixed issue where Conditional GET plugin did not take latest entry comments into account when
                 generating information to check to see if it should or should not send a 304 response.
