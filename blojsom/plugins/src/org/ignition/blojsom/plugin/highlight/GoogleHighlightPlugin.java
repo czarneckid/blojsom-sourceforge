@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
  * Based on work from http://www.textism.com/
  *
  * @author Mark Lussier
- * @version $Id: GoogleHighlightPlugin.java,v 1.2 2003-05-04 17:12:47 intabulas Exp $
+ * @version $Id: GoogleHighlightPlugin.java,v 1.3 2003-05-05 00:54:25 intabulas Exp $
  */
 
 public class GoogleHighlightPlugin implements BlojsomPlugin {
@@ -158,7 +158,7 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
                 boolean isHtml = matcher.find();
                 for (int y = 0; y < searchwords.length; y++) {
                     String word = searchwords[y];
-                    if (isHtml) {
+                    if (!isHtml) {
                         entry.setDescription(entry.getDescription().replaceAll(START_BOUNDRY + word + END_BOUNDRY, HIGHLIGHT_PLAINTEXT));
                     } else {
                         entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + START_BOUNDRY + word + END_BOUNDRY, HIGHLIGHT_HTML));
