@@ -33,6 +33,8 @@
 	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
     <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogInformation.getBlogURL() %>?flavor=rss" />
+    <link rel="EditURL" type="application/rsd+xml" title="RSD" href="<%= blogInformation.getBlogURL() %>?flavor=rsd" />
+
     </head>
 
     <body>

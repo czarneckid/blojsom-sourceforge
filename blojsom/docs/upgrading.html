@@ -26,6 +26,15 @@
 <a href="http://sourceforge.net/projects/blojsom/">sourceforge project page</a></p>
 
 <p>
+<p class="weblogtitle">Upgrading blojsom from v1.8.x to v1.9</p>
+1. Update your blojsom-xmlrpc.properties to include a copy of the <tt>blogger=</tt> entry that has a capital B. ie: <tt>Blogger=</tt>
+<p/>
+2. Update your flavor.properties to include <pre>rsd=rsd.vm, text/xml;charset=UTF-8</pre>
+<p/>
+3. Be sure to upload <tt>rsd.vm</tt> or <tt>rsd.jsp</tt> to the appropriate directories on your server
+
+
+
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
 1. A parameter has been added to <i>/WEB-INF/blojsom.properties</i>.<br />
