@@ -14,6 +14,12 @@
                 the current category.
             </action>
 
+            <action dev="czarneckid" type="add" context="Core">
+                Added <code>ResourceManager</code> interface and implementation <code>ResourceBundleResourceManager</code>
+                class which allows language packs to be developed for blojsom for localization. Language packs will be
+                used to develop the administration interface. 
+            </action>
+
             <action dev="intabulas" type="update" context="Core">
                 Added a getISO8601Date() and getRFC822Date() methods to the BlogComment class for supporting Comment API.
             </action>
