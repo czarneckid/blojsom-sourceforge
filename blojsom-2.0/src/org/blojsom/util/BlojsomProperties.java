@@ -46,7 +46,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jorg Prante
- * @version $Id: BlojsomProperties.java,v 1.7 2004-08-11 02:24:28 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.8 2004-09-02 20:04:37 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class BlojsomProperties extends Properties implements BlojsomConstants {
@@ -160,6 +160,7 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
         for (Enumeration e = keys(); e.hasMoreElements();) {
             String key = e.nextElement().toString();
             Object value = get(key);
+            key = BlojsomUtils.replace(key, " ", "\\ ");
             if (value != null && value instanceof ArrayList && allowMultipleValues) {
                 ArrayList values = (ArrayList) value;
                 for (int i = 0; i < values.size(); i++) {
@@ -193,6 +194,7 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
         } else {
             reader = new BufferedReader(new InputStreamReader(in, encoding));
         }
+
         while (true) {
             String line = reader.readLine();
             if (line == null)
@@ -202,7 +204,9 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
                     int len = line.length();
                     int keyIndex;
                     for (keyIndex = 0; keyIndex < len; keyIndex++) {
-                        if (whiteSpaceChars.indexOf(line.charAt(keyIndex)) == -1)
+                        if (line.charAt(keyIndex) == '\\')
+                            keyIndex += 2;
+                        else if (whiteSpaceChars.indexOf(line.charAt(keyIndex)) == -1)
                             break;
                     }
 
@@ -234,6 +238,7 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
                     String value;
 
                     key = line.substring(keyIndex, separatorIndex);
+                    key = BlojsomUtils.replace(key, "\\", "");
                     value = (separatorIndex < len) ? line.substring(valueIndex, len) : "";
 
                     ArrayList values;
