@@ -36,6 +36,7 @@ package org.blojsom.blog;
 
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomConstants;
 import org.blojsom.BlojsomException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,13 +44,14 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.util.Properties;
 
 /**
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.3 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.4 2004-11-22 17:02:59 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -112,22 +114,59 @@ public class FileBackedBlogCategory extends BlogCategory {
     }
 
     /**
-     * Save the blog category. Currently does nothing.
+     * Save the blog category.
      *
      * @since blojsom 1.9.1
      * @param blog Blog
      * @throws BlojsomException If there is an error saving the category
      */
     public void save(Blog blog) throws BlojsomException {
+        File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(_category));
+
+        // If the category does not exist, try and create it
+        if (!blogCategory.exists()) {
+            if (!blogCategory.mkdirs()) {
+                _logger.error("Could not create new blog category at: " + blogCategory.toString());
+
+                return;
+            }
+        }
+
+        // We know the category exists so try and save its meta-data
+        String propertiesExtension = blog.getBlogPropertiesExtensions()[0];
+        File categoryMetaDataFile = new File(blogCategory, "blojsom" + propertiesExtension);
+        Properties categoryMetaData = BlojsomUtils.mapToProperties(_metadata, BlojsomConstants.UTF8);
+        try {
+            FileOutputStream fos = new FileOutputStream(categoryMetaDataFile);
+            categoryMetaData.store(fos, null);
+            fos.close();
+        } catch (IOException e) {
+            _logger.error(e);
+            throw new BlojsomException("Unable to save blog category", e);
+        }
+
+        _logger.debug("Saved blog category: " + blogCategory.toString());
     }
 
     /**
-     * Delete the blog category. Currently does nothing.
+     * Delete the blog category.
      *
      * @since blojsom 1.9.1
      * @param blog Blog
      * @throws BlojsomException If there is an error deleting the category
      */
     public void delete(Blog blog) throws BlojsomException {
+        File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(_category));
+        if (blogCategory.equals(blog.getBlogHome())) {
+            if (!BlojsomUtils.deleteDirectory(blogCategory, false)) {
+                throw new BlojsomException("Unable to delete blog category directory: " + _category);
+            }
+        } else {
+            if (!BlojsomUtils.deleteDirectory(blogCategory)) {
+                throw new BlojsomException("Unable to delete blog category directory: " + _category);                
+            }
+        }
+
+        _logger.debug("Deleted blog category: " + blogCategory.toString());
     }
 }
