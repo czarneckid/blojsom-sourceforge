@@ -52,6 +52,10 @@
                 MetaWeblog API handlers into the base <tt>AbstractBlojsomAPIHandler</tt> class.
             </action>
 
+            <action dev="czarneckid" type="add" context="Extension">
+                Implemented the <tt>getRecentPosts</tt> method to the MetaWeblog API handler.
+            </action>
+
         </release>
 
         <release version="1.9.4" date="July 13, 2003">
