@@ -47,12 +47,12 @@ import java.util.Map;
 /**
  * Generic Referer Plugin
  * <p />
- * This plugin will log to a file all the http referer headers it encounters. It makes no attempt to filter, sort and resolve
- * duplicates. It dumps this log to what ever file you set in the <i>referer-log</i>
+ * This plugin will log to a file all the http referer headers it encounters. It dumps this
+ * log to what ever file you set in the <i>referer-log</i>
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.10 2003-03-15 18:25:40 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.11 2003-03-16 02:08:59 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -80,7 +80,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private Map _refererhistory = null;
 
     /**
-     * Current referer list (will be persisted on destroy()P
+     * Current referer list (will be persisted on destroy())
      */
     private List _referlist = null;
 
@@ -121,7 +121,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
         if ((_referer != null) && (!_referer.startsWith(_blogurlfilter))) {
@@ -134,7 +133,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
                 _refererhistory.put(_referer, new Integer(1));
             }
             _referlist.add(_referer);
-
         }
         context.put(REFERER_CONTEXT_NAME, _refererhistory);
 
@@ -150,8 +148,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     }
 
     /**
-     * Loads the saved referer log from disk after an  blojsom restart. Re-calcs the  count onthe fly.. Kinda slow the
-     * first time through.... Need to maybe make this a properties file to show url=count..
+     * Loads the saved referer log from disk after a blojsom restart.
      *
      * @param refererlog Fully qualified path to the refer log file
      */
@@ -162,13 +159,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
             try {
                 BufferedReader _br = new BufferedReader(new FileReader(_refererfile));
-
                 String _entry = null;
 
                 while (((_entry = _br.readLine()) != null)) {
-
                     if (!_entry.equals(BUG_FIX) && (!_entry.startsWith(_blogurlfilter))) {
-
                         if (_refererhistory.containsKey(_entry)) {
                             int _count = ((Integer) _refererhistory.get(_entry)).intValue();
                             _refererhistory.put(_entry, new Integer(_count + 1));
@@ -178,7 +172,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     }
                 }
                 _br.close();
-
             } catch (IOException e) {
                 _logger.error(e);
             }
@@ -191,7 +184,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-
         // Writer referer cache out to disk
         _logger.info("Writing referer list to " + _refererlog);
 
