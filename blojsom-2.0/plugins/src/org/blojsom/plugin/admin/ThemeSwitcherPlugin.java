@@ -58,7 +58,7 @@ import java.util.Properties;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.2 2004-09-22 17:13:03 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.3 2004-09-24 13:10:15 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -246,8 +246,6 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 } catch (IOException e) {
                     _logger.error(e);
                     addOperationResultMessage(context, "Unable to copy theme templates to user's template directory");
-
-                    return entries;
                 }
 
                 File copyFromResourcesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
@@ -260,7 +258,6 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                     BlojsomUtils.copyDirectory(copyFromResourcesDirectory, copyToResourcesDirectory);
                 } catch (IOException e) {
                     _logger.error(e);
-
                     addOperationResultMessage(context, "Unable to copy theme resources to user's resource directory");
                 }
 
@@ -271,6 +268,8 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 } catch (IOException e) {
                     _logger.error(e);
                     addOperationResultMessage(context, "Unable to write flavor configuration for user");
+
+                    return entries;
                 }
 
                 addOperationResultMessage(context, "Theme switched to: " + theme + " for flavor: " + flavor);
