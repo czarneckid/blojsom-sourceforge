@@ -1,19 +1,33 @@
- <?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>Users Administation Plugin</title>
+        <title>User Administation Plugin</title>
     </header>
 
     <body>
         <section>
             <title>Description</title>
             <p>
-                 The Users Administration plugin allows you to add and delete new blog users dynamically from your
-                 installation of blojsom.
+                XXX
             </p>
         </section>
-        
+        <section>
+            <title>Installation and Setup</title>
+            <p>
+                In your global
+                <em>plugin.properties</em> file, add the following line:
+            </p>
+            <source>
+                edit-blog-users=org.blojsom.plugin.admin.EditBlogUsersPlugin
+            </source>
+        </section>
+        <section>
+            <title>Usage</title>
+            <p>
+                XXX
+            </p>
+        </section>
     </body>
 </document>
 
