@@ -201,7 +201,7 @@ public class BlojsomUtils implements BlojsomConstants {
         if (servletPath == null || "".equals(servletPath)) {
             return blogURL;
         }
-        int servletPathIndex = blogURL.indexOf(servletPath, 6);
+        int servletPathIndex = blogURL.lastIndexOf(servletPath);
         if (servletPathIndex == -1) {
             return blogURL;
         }
