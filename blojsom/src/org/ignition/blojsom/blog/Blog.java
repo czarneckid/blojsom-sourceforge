@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.52 2003-05-21 00:09:34 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.53 2003-05-23 03:36:40 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -286,6 +286,7 @@ public class Blog implements BlojsomConstants {
      * Set the directory where blog entries are stored
      *
      * @param blogHome New directory to use to look for blog entries
+     * @deprecated
      */
     public void setBlogHome(String blogHome) {
         _blogHome = blogHome;
@@ -304,6 +305,7 @@ public class Blog implements BlojsomConstants {
      * Set the list of blog file extensions to look for
      *
      * @param blogFileExtensions New list of blog file extensions
+     * @deprecated
      */
     public void setBlogFileExtensions(String[] blogFileExtensions) {
         _blogFileExtensions = blogFileExtensions;
@@ -322,6 +324,7 @@ public class Blog implements BlojsomConstants {
      * Set the list of blog properties file extensions to look for
      *
      * @param blogPropertiesExtensions New list of blog properties file extensions
+     * @deprecated
      */
     public void setBlogPropertiesExtensions(String[] blogPropertiesExtensions) {
         _blogPropertiesExtensions = blogPropertiesExtensions;
@@ -340,6 +343,7 @@ public class Blog implements BlojsomConstants {
      * Set the septh to which blog entries will be searched
      *
      * @param blogDepth Blog depth
+     * @deprecated
      */
     public void setBlogDepth(int blogDepth) {
         _blogDepth = blogDepth;
@@ -358,6 +362,7 @@ public class Blog implements BlojsomConstants {
      * Set the name of the blog
      *
      * @param blogName Name for the blog
+     * @deprecated
      */
     public void setBlogName(String blogName) {
         _blogName = blogName;
@@ -376,6 +381,7 @@ public class Blog implements BlojsomConstants {
      * Set the description for the blog
      *
      * @param blogDescription Description for the blog
+     * @deprecated
      */
     public void setBlogDescription(String blogDescription) {
         _blogDescription = blogDescription;
@@ -394,6 +400,7 @@ public class Blog implements BlojsomConstants {
      * Set the URL for the blog
      *
      * @param blogURL URL for the blog
+     * @deprecated
      */
     public void setBlogURL(String blogURL) {
         _blogURL = blogURL;
@@ -409,9 +416,10 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
-     * Set the bse URL for the blog
+     * Set the base URL for the blog
      *
      * @param blogBaseURL Base URL for the blog
+     * @deprecated
      */
     public void setBlogBaseURL(String blogBaseURL) {
         _blogBaseURL = blogBaseURL;
@@ -430,6 +438,7 @@ public class Blog implements BlojsomConstants {
      * Set the language for the blog
      *
      * @param blogLanguage Language for the blog
+     * @deprecated
      */
     public void setBlogLanguage(String blogLanguage) {
         _blogLanguage = blogLanguage;
@@ -448,6 +457,7 @@ public class Blog implements BlojsomConstants {
      * Set the number of blog entries that should be retrieved from individual categories
      *
      * @param blogDisplayEntries Number of blog entries that should be retrieved from individual categories
+     * @deprecated
      */
     public void setBlogDisplayEntries(int blogDisplayEntries) {
         _blogDisplayEntries = blogDisplayEntries;
@@ -466,6 +476,7 @@ public class Blog implements BlojsomConstants {
      * Set the list of categories that should be mapped to the default category '/'
      *
      * @param blogDefaultCategoryMappings List of categories
+     * @deprecated
      */
     public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
         _blogDefaultCategoryMappings = blogDefaultCategoryMappings;
@@ -501,6 +512,7 @@ public class Blog implements BlojsomConstants {
      * Set the blog owner's e-mail address
      *
      * @param blogOwnerEmail New e-mail address for the blog owner
+     * @deprecated
      */
     public void setBlogOwnerEmail(String blogOwnerEmail) {
         _blogOwnerEmail = blogOwnerEmail;
@@ -519,6 +531,7 @@ public class Blog implements BlojsomConstants {
      * Set the name of the blog owner
      *
      * @param blogOwner New blog owner's name
+     * @deprecated
      */
     public void setBlogOwner(String blogOwner) {
         _blogOwner = blogOwner;
@@ -548,6 +561,7 @@ public class Blog implements BlojsomConstants {
      * category directories
      *
      * @param blogCommentsDirectory Blog comments directory
+     * @deprecated
      */
     public void setBlogCommentsDirectory(String blogCommentsDirectory) {
         _blogCommentsDirectory = blogCommentsDirectory;
@@ -566,6 +580,7 @@ public class Blog implements BlojsomConstants {
      * Set the list of directories that should be filtered when looking for categories
      *
      * @param blogDirectoryFilter Blog directory filter list
+     * @deprecated
      */
     public void setBlogDirectoryFilter(String[] blogDirectoryFilter) {
         _blogDirectoryFilter = blogDirectoryFilter;
@@ -586,6 +601,7 @@ public class Blog implements BlojsomConstants {
      * category directories
      *
      * @param blogTrackbackDirectory Blog trackbacks directory
+     * @deprecated
      */
     public void setBlogTrackbackDirectory(String blogTrackbackDirectory) {
         _blogTrackbackDirectory = blogTrackbackDirectory;
@@ -606,6 +622,7 @@ public class Blog implements BlojsomConstants {
      * for this blog
      *
      * @param blogFetcher {@link org.ignition.blojsom.fetcher.BlojsomFetcher} class name
+     * @deprecated
      */
     public void setBlogFetcher(String blogFetcher) {
         _blogFetcher = blogFetcher;
@@ -624,6 +641,7 @@ public class Blog implements BlojsomConstants {
      * Set whether or not comments are enabled
      *
      * @param blogCommentsEnabled Comments enabled value
+     * @deprecated
      */
     public void setBlogCommentsEnabled(Boolean blogCommentsEnabled) {
         _blogCommentsEnabled = blogCommentsEnabled;
@@ -642,6 +660,7 @@ public class Blog implements BlojsomConstants {
      * Set whether or not email is enabled
      *
      * @param blogEmailEnabled Email enabled value
+     * @deprecated
      */
     public void setBlogEmailEnabled(Boolean blogEmailEnabled) {
         _blogEmailEnabled = blogEmailEnabled;
@@ -662,6 +681,7 @@ public class Blog implements BlojsomConstants {
      *
      * @since blojsom 1.9
      * @param blogEntryMetaDataExtension File extension for blog entry meta-data
+     * @deprecated
      */
     public void setBlogEntryMetaDataExtension(String blogEntryMetaDataExtension) {
         _blogEntryMetaDataExtension = blogEntryMetaDataExtension;
@@ -682,6 +702,7 @@ public class Blog implements BlojsomConstants {
      *
      * @since blojsom 1.9
      * @param blogFileEncoding File encoding
+     * @deprecated
      */
     public void setBlogFileEncoding(String blogFileEncoding) {
         _blogFileEncoding = blogFileEncoding;
