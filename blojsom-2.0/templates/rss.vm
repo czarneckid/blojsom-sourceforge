@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- name="generator" content="$BLOJSOM_VERSION" -->
-<rss version="0.92">
+<rss version="0.92" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>$BLOJSOM_BLOG.getBlogName()</title>
         <link>$BLOJSOM_BLOG.getBlogURL()</link>
@@ -18,7 +18,7 @@
               <wfw:commentRss>
                   $entry.getEscapedLink()&amp;page=comments&amp;flavor=rss
               </wfw:commentRss>
-            #end  
+            #end
         </item>
         #end
     </channel>

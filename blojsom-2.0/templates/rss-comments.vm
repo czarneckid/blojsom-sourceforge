@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- name="generator" content="$BLOJSOM_VERSION" -->
-<rss version="0.92">
+<rss version="0.92" xmlns:wfw="http://wellformedweb.org/CommentAPI/"xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         #foreach ($entry in $BLOJSOM_ENTRIES)
         <title>$entry.getEscapedTitle()</title>
