@@ -43,12 +43,14 @@ import org.ignition.blojsom.BlojsomException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.37 2003-06-12 02:01:22 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.38 2003-07-03 02:25:49 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -108,6 +110,22 @@ public abstract class BlogEntry implements BlojsomConstants {
      */
     public String getISO8601Date() {
         return BlojsomUtils.getISO8601Date(_entryDate);
+    }
+
+    /**
+     * Return the blog entry date formatted with a specified date format
+     *
+     * @since blojsom 1.9.3
+     * @param format Date format
+     * @return <code>null</code> if the entry date is null, otherwise returns the entry date formatted to the specified format
+     */
+    public String getDateAsFormat(String format) {
+        if (_entryDate == null) {
+            return null;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(_entryDate);
     }
 
     /**
