@@ -49,15 +49,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.9 2004-01-24 22:43:42 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.10 2004-02-06 02:24:16 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -80,6 +78,16 @@ public class CommentPlugin extends IPBanningPlugin {
      * Initialization parameter for the duration of the "remember me" cookies
      */
     private static final String COMMENT_COOKIE_EXPIRATION_DURATION_IP = "plugin-comment-expiration-duration";
+
+    /**
+     * Initialization parameter for the throttling of comments from IP addresses
+     */
+    private static final String COMMENT_THROTTLE_MINUTES_IP = "plugin-comment-throttle";
+
+    /**
+     * Default throttle value for comments from a particular IP address
+     */
+    private static final int COMMENT_THROTTLE_DEFAULT_MINUTES = 5;
 
     /**
      * Request parameter for the "comment"
@@ -166,28 +174,31 @@ public class CommentPlugin extends IPBanningPlugin {
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME = "BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME";
 
+    private Map _ipAddressCommentTimes;
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
+
+        _ipAddressCommentTimes = new HashMap(10);
     }
 
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -317,6 +328,39 @@ public class CommentPlugin extends IPBanningPlugin {
             if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))
                     && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
 
+                // Check for comment throttling
+                String commentThrottleValue = blog.getBlogProperty(COMMENT_THROTTLE_MINUTES_IP);
+                if (!BlojsomUtils.checkNullOrBlank(commentThrottleValue)) {
+                    int commentThrottleMinutes;
+
+                    try {
+                        commentThrottleMinutes = Integer.parseInt(commentThrottleValue);
+                    } catch (NumberFormatException e) {
+                        commentThrottleMinutes = COMMENT_THROTTLE_DEFAULT_MINUTES;
+                    }
+                    _logger.debug("Comment throttling enabled at: " + commentThrottleMinutes + " minutes");
+
+                    remoteIPAddress = httpServletRequest.getRemoteAddr();
+                    if (_ipAddressCommentTimes.containsKey(remoteIPAddress)) {
+                        Calendar currentTime = Calendar.getInstance();
+                        Calendar timeOfLastComment = (Calendar) _ipAddressCommentTimes.get(remoteIPAddress);
+                        long timeDifference = currentTime.getTimeInMillis() - timeOfLastComment.getTimeInMillis();
+
+                        long differenceInMinutes = timeDifference / (60 * 1000);
+                        if (differenceInMinutes < commentThrottleMinutes) {
+                            _logger.debug("Comment throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + commentThrottleMinutes + " minutes");
+
+                            return entries;
+                        } else {
+                            _logger.debug("Comment throttle enabled. Resetting date of last comment to current time");
+                            _ipAddressCommentTimes.put(remoteIPAddress, currentTime);
+                        }
+                    } else {
+                        Calendar calendar = Calendar.getInstance();
+                        _ipAddressCommentTimes.put(remoteIPAddress, calendar);
+                    }
+                }
+
                 author = author.trim();
                 commentText = commentText.trim();
 
@@ -389,17 +433,17 @@ public class CommentPlugin extends IPBanningPlugin {
     /**
      * Send Comment Email to Blog Author
      *
-     * @param category Blog entry category
-     * @param permalink Blog entry permalink
-     * @param author Comment author
+     * @param category    Blog entry category
+     * @param permalink   Blog entry permalink
+     * @param author      Comment author
      * @param authorEmail Comment author e-mail
-     * @param authorURL Comment author URL
+     * @param authorURL   Comment author URL
      * @param userComment Comment
-     * @param context Context
+     * @param context     Context
      */
     private void sendCommentEmail(String title, String category, String permalink, String author,
-                                               String authorEmail, String authorURL, String userComment, Map context,
-                                               String blogURLPrefix, String emailPrefix) {
+                                  String authorEmail, String authorURL, String userComment, Map context,
+                                  String blogURLPrefix, String emailPrefix) {
         String url = blogURLPrefix + BlojsomUtils.removeInitialSlash(category);
         String emailComment = CommentUtils.constructCommentEmail(permalink, author, authorEmail, authorURL, userComment, url);
 
@@ -410,19 +454,19 @@ public class CommentPlugin extends IPBanningPlugin {
     /**
      * Add a comment to a particular blog entry
      *
-     * @param category Blog entry category
-     * @param permalink Blog entry permalink
-     * @param author Comment author
+     * @param category    Blog entry category
+     * @param permalink   Blog entry permalink
+     * @param author      Comment author
      * @param authorEmail Comment author e-mail
-     * @param authorURL Comment author URL
+     * @param authorURL   Comment author URL
      * @param userComment Comment
      * @return BlogComment Entry
      */
     private BlogComment addBlogComment(String category, String permalink, String author,
-                                                    String authorEmail, String authorURL, String userComment,
-                                                    boolean blogCommentsEnabled, String[] blogFileExtensions,
-                                                    String blogHome, String blogCommentsDirectory,
-                                                    String blogFileEncoding) {
+                                       String authorEmail, String authorURL, String userComment,
+                                       boolean blogCommentsEnabled, String[] blogFileExtensions,
+                                       String blogHome, String blogCommentsDirectory,
+                                       String blogFileEncoding) {
         BlogComment comment = null;
         if (blogCommentsEnabled) {
 
