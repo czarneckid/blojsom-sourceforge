@@ -65,10 +65,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -77,7 +74,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.48 2004-07-20 19:29:36 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.49 2004-07-25 16:38:39 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -538,6 +535,13 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.setCharacterEncoding(UTF8);
 
+        // Check for SOAP request
+        if (httpServletRequest.getHeader(HEADER_SOAPACTION) != null) {
+            handleSOAPRequest(httpServletRequest, httpServletResponse);
+
+            return;
+        }
+
         Blog blog = null;
         BlogUser blogUser = null;
         String blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
@@ -720,6 +724,172 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
             } catch (BlojsomException e) {
+                _logger.error(e);
+                httpServletResponse.setStatus(404);
+            }
+        } else {
+            sendAuthenticationRequired(httpServletResponse, blogUser);
+        }
+    }
+
+    /**
+     * Handle a given SOAP request looking for the "SOAPAction" header to decide on which method to execute
+     *
+     * @param httpServletRequest  Request
+     * @param httpServletResponse Response
+     */
+    protected void handleSOAPRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String soapAction = httpServletRequest.getHeader(HEADER_SOAPACTION);
+
+        if (SOAPACTION_PUT.equalsIgnoreCase(soapAction)) {
+            handleSOAPPut(httpServletRequest, httpServletResponse);
+        } else {
+            try {
+                httpServletResponse.sendError(404, "Unable to process SOAP request for unknown action: " + soapAction);
+            } catch (IOException e) {
+                _logger.error(e);
+
+                httpServletResponse.setStatus(404);
+            }
+        }
+    }
+
+    /**
+     * Retrieve an entry body (&lt;entry&gt;...&lt;/entry&gt;) from arbitrary content
+     *
+     * @param content Content
+     * @return Entry body with entry tags included or <code>null</code> if the entry body could not be found
+     */
+    protected String retrieveEntryBody(String content) {
+        String entryStart = "<entry";
+        String entryEnd = "</entry>";
+
+        int entryIndexStart = content.indexOf(entryStart);
+        int entryIndexEnd = content.indexOf(entryEnd);
+        if (entryIndexStart != -1 && entryIndexEnd != -1 && (entryIndexEnd > entryIndexStart)) {
+            return content.substring(entryIndexStart, entryIndexEnd + entryEnd.length());
+        }
+
+        return null;
+    }
+
+    /**
+     * Read all the content from a given input stream for a specified length. Content will be read in
+     * using UTF-8 as the character encoding. If an exception in reading occurs, a <code>null</code> value
+     * is returned.
+     *
+     * @param is     {@link InputStream}
+     * @param length Length of input stream to read
+     * @return Content from input stream up to specified length
+     */
+    protected String readContentFromInputStream(InputStream is, int length) {
+        char[] buffer = new char[0];
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(is, UTF8);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            buffer = new char[length];
+            bufferedReader.read(buffer, 0, length);
+            bufferedReader.close();
+        } catch (IOException e) {
+            _logger.error(e);
+
+            return null;
+        }
+
+        return new String(buffer);
+    }
+
+    /**
+     * Handle a SOAP PUT request
+     *
+     * @param httpServletRequest  Request
+     * @param httpServletResponse Response
+     */
+    protected void handleSOAPPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        Blog blog = null;
+        BlogUser blogUser = null;
+        String blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
+
+        String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
+        String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+        category = BlojsomUtils.urlDecode(category);
+        String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+
+        _logger.info("AtomAPI SOAP PUT Called =================================================");
+        _logger.info("       Path: " + httpServletRequest.getPathInfo());
+        _logger.info("       User: " + user);
+        _logger.info("   Category: " + category);
+        _logger.info("  Permalink: " + permalink);
+
+        if (BlojsomUtils.checkNullOrBlank(user)) {
+            user = _blojsomConfiguration.getDefaultUser();
+        }
+
+        blogUser = loadBlogUser(user);
+        if (blogUser == null) {
+            _logger.error("Unable to configure user: " + user);
+            httpServletResponse.setStatus(404);
+
+            return;
+        }
+
+        blog = blogUser.getBlog();
+        blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
+        if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
+            blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
+        }
+
+        if (isAuthorized(blogUser, httpServletRequest)) {
+            try {
+                String content = readContentFromInputStream(httpServletRequest.getInputStream(), httpServletRequest.getContentLength());
+                if (content != null) {
+                    String entryContent = retrieveEntryBody(content);
+                    if (entryContent != null && entryContent.length() > 0) {
+                        Map fetchMap = new HashMap();
+                        BlogCategory blogCategory = _fetcher.newBlogCategory();
+                        blogCategory.setCategory(category);
+                        blogCategory.setCategoryURL(blog.getBlogURL() + category);
+                        fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+                        fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+                        try {
+                            BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
+
+                            if (entries != null && entries.length > 0) {
+
+                                Entry atomEntry = Sandler.unmarshallEntry(entryContent, new XPPBuilder());
+
+                                BlogEntry entry = entries[0];
+                                Map blogEntryMetaData = entry.getMetaData();
+                                entry.setCategory(category);
+                                entry.setDescription(atomEntry.getContent(0).getBody());
+                                entry.setTitle(atomEntry.getTitle().getBody());
+                                if (atomEntry.getAuthor() != null) {
+                                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
+                                }
+                                entry.setMetaData(blogEntryMetaData);
+                                entry.save(blogUser);
+
+                                //String nonce = AtomUtils.generateNextNonce(blogUser);
+                                //httpServletResponse.setHeader(x, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
+
+                                httpServletResponse.setStatus(204);
+                            } else {
+                                _logger.info("Unable to fetch " + permalink);
+                            }
+                        } catch (BlojsomFetcherException e) {
+                            _logger.error(e);
+                            httpServletResponse.setStatus(404);
+                        } catch (BlojsomException e) {
+                            _logger.error(e);
+                            httpServletResponse.setStatus(404);
+                        }
+                    } else {
+                        httpServletResponse.setStatus(404);
+                    }
+                } else {
+                    httpServletResponse.setStatus(404);
+                }
+            } catch (IOException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
             }
