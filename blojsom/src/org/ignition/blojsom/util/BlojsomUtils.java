@@ -5,6 +5,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.net.URLEncoder;
 
@@ -132,7 +133,10 @@ public class BlojsomUtils {
         while (paramNames.hasMoreElements()) {
             String name = (String) paramNames.nextElement();
             String value = request.getParameter(name);
-            buffer.append(URLEncoder.encode(name)).append("=").append(URLEncoder.encode(value));
+            try {
+                buffer.append(URLEncoder.encode(name, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+            }
             if (paramNames.hasMoreElements()) {
                 buffer.append("&");
             }
