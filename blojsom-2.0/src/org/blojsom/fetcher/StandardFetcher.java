@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.22 2005-01-05 02:32:58 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.23 2005-01-06 15:58:28 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -137,26 +137,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             BlogEntry blogEntry = newBlogEntry();
             BlogCategory blogCategory;
 
-            if ("/".equals(category)) {
-                blogCategory = newBlogCategory();
-                blogCategory.setCategory(category);
-                blogCategory.setCategoryURL(blog.getBlogURL());
+            blogCategory = newBlogCategory();
+            blogCategory.setCategory(category);
+            blogCategory.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category));
 
-                try {
-                    blogCategory.load(blogUser);
-                } catch (BlojsomException e) {
-                    _logger.error(e);
-                }
-            } else {
-                blogCategory = newBlogCategory();
-                blogCategory.setCategory(category);
-                blogCategory.setCategoryURL(blog.getBlogURL() + category);
-
-                try {
-                    blogCategory.load(blogUser);
-                } catch (BlojsomException e) {
-                    _logger.error(e);
-                }
+            try {
+                blogCategory.load(blogUser);
+            } catch (BlojsomException e) {
+                _logger.error(e);
             }
 
             Map entryAttributes = new HashMap();
@@ -224,26 +212,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogEntry = newBlogEntry();
                 BlogCategory blogCategoryForEntry;
 
-                if ("/".equals(category)) {
-                    blogCategoryForEntry = newBlogCategory();
-                    blogCategoryForEntry.setCategory(category);
-                    blogCategoryForEntry.setCategoryURL(blog.getBlogURL());
+                blogCategoryForEntry = newBlogCategory();
+                blogCategoryForEntry.setCategory(category);
+                blogCategoryForEntry.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category));
 
-                    try {
-                        blogCategoryForEntry.load(user);
-                    } catch (BlojsomException e) {
-                        _logger.error(e);
-                    }
-                } else {
-                    blogCategoryForEntry = newBlogCategory();
-                    blogCategoryForEntry.setCategory(category);
-                    blogCategoryForEntry.setCategoryURL(blog.getBlogURL() + category);
-
-                    try {
-                        blogCategoryForEntry.load(user);
-                    } catch (BlojsomException e) {
-                        _logger.error(e);
-                    }
+                try {
+                    blogCategoryForEntry.load(user);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
                 }
 
                 Map entryAttributes = new HashMap();
