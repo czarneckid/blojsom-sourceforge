@@ -7,14 +7,14 @@
     </developers>
 
     <changes>
-        <release version="2.11" date="Available from CVS">
+        <release version="2.11" date="February 9, 2004">
 
             <action dev="intabulas" type="update" context="Core">
-                Added Atom &lt;link/&gt; tag to the Pumpkin theme
+                Added Atom &lt;link/&gt; tag to the Pumpkin theme.
             </action>
 
             <action dev="intabulas" type="update" context="Extension">
-                Updated the sandler library to the new 0.5 release.
+                Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.5 release.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
