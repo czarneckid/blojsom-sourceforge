@@ -40,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.FileBackedBlogEntry;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 
@@ -56,7 +57,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.6 2003-09-24 22:23:02 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.7 2003-09-24 23:19:55 intabulas Exp $
  */
 
 public class XPathPlugin implements BlojsomPlugin {
@@ -103,19 +104,22 @@ public class XPathPlugin implements BlojsomPlugin {
                 Iterator entryIterator = xpathcontext.iterate(xpath);
 
                 while (entryIterator.hasNext()) {
-                    Object obj = entryIterator.next();
-                    _logger.info(obj.toString());
-                    BlogEntry entry = (BlogEntry) obj;
+                    Object object = entryIterator.next();
+                    BlogEntry entry = (FileBackedBlogEntry) object;
                     foundEntries.add(entry);
                 }
             } catch (Exception e) {
-                _logger.error(e.getLocalizedMessage(), e);
+                _logger.error(e.getLocalizedMessage());
             }
 
             if (foundEntries.size() == 0) {
                 results = new BlogEntry[0];
             } else {
-                results = (BlogEntry[]) foundEntries.toArray();
+                results = new BlogEntry[foundEntries.size()];
+                for (int x = 0; x < foundEntries.size(); x++) {
+                    results[x] = (BlogEntry) foundEntries.get(x);
+                }
+
             }
 
         } else {
