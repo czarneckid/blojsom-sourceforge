@@ -29,6 +29,7 @@
   	          <wfw:comment>$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$BLOJSOM_USER$entry.getId()</wfw:comment>
               <wfw:commentRss>$entry.getEscapedLink()&amp;page=comments&amp;flavor=rss2</wfw:commentRss>
             #end
+            #RSSEnclosure($entry)
         </item>
         #end
     </channel>
