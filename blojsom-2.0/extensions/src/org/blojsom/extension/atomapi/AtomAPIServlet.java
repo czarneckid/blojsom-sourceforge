@@ -51,10 +51,12 @@ import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.authentication.AtomAuthentication;
+import org.intabulas.sandler.builders.XPPBuilder;
 import org.intabulas.sandler.elements.Entry;
 import org.intabulas.sandler.exceptions.MarshallException;
 import org.intabulas.sandler.introspection.Introspection;
 import org.intabulas.sandler.introspection.impl.IntrospectionImpl;
+import org.intabulas.sandler.serialization.SerializationException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -63,7 +65,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +75,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.30 2004-04-29 03:15:54 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.31 2004-04-29 14:20:27 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -116,8 +117,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     private boolean isAuthorized(Blog blog, HttpServletRequest httpServletRequest, String verb) {
         boolean result = false;
 
-        if (httpServletRequest.getHeader(ATOMHEADER_AUTHORIZATION) != null) {
-            AtomAuthentication auth = new AtomAuthentication(httpServletRequest.getHeader(ATOMHEADER_AUTHORIZATION));
+        if (httpServletRequest.getHeader(ATOMHEADER_WSSE_AUTHORIZATION) != null) {
+            AtomAuthentication auth = new AtomAuthentication(httpServletRequest.getHeader(ATOMHEADER_WSSE_AUTHORIZATION));
             Map authMap = blog.getAuthorization();
             if (authMap.containsKey(auth.getUsername())) {
                 result = auth.authenticate((String) authMap.get(auth.getUsername()), verb);
@@ -147,12 +148,12 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     private void sendAuthenticationRequired(HttpServletResponse httpServletResponse, BlogUser user) {
         httpServletResponse.setContentType(CONTENTTYPE_HTML);
 
-        // Generate a NextNonce and add it to the header
-        String nonce = AtomUtils.generateNextNonce(user);
-        String relm = MessageFormat.format(AUTHENTICATION_REALM, new Object[]{nonce});
+//        // Generate a NextNonce and add it to the header
+//        String nonce = AtomUtils.generateNextNonce(user);
+//        String relm = MessageFormat.format(AUTHENTICATION_REALM, new Object[]{nonce});
 
         // Send the NextNonce as part of a WWW-Authenticate header
-        httpServletResponse.setHeader(HEADER_WWWAUTHENTICATE, relm);
+        httpServletResponse.setHeader(HEADER_WWWAUTHENTICATE, AUTHENTICATION_REALM);
 
         httpServletResponse.setStatus(401);
     }
@@ -375,6 +376,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             } catch (MarshallException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
+            } catch (SerializationException e) {
+                _logger.error(e);
+                httpServletResponse.setStatus(404);
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
@@ -439,7 +443,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
                 try {
-                    Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream());
+                    Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream(), new XPPBuilder());
 
                     String filename = getBlogEntryFilename(atomEntry.getContent(0).getBody(), blogEntryExtension);
                     String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
@@ -525,7 +529,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                 if (entries != null && entries.length > 0) {
 
-                    Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream());
+                    Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream(), new XPPBuilder());
 
                     BlogEntry entry = entries[0];
                     Map blogEntryMetaData = entry.getMetaData();

@@ -38,7 +38,7 @@ package org.blojsom.extension.atomapi;
  * AtomAPIConstants
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIConstants.java,v 1.1 2004-02-23 18:26:40 intabulas Exp $
+ * @version $Id: AtomAPIConstants.java,v 1.2 2004-04-29 14:20:27 intabulas Exp $
  * @since blojsom 2.0
  */
 public interface AtomAPIConstants {
@@ -61,7 +61,8 @@ public interface AtomAPIConstants {
     /**
      * Authentication realm
      */
-    static final String AUTHENTICATION_REALM = "Atom realm=\"blojsom\", qop=\"atom-auth\", algorith=\"SHA\", nonce=\"{0}\"";
+    //static final String AUTHENTICATION_REALM = "Atom realm=\"blojsom\", qop=\"atom-auth\", algorith=\"SHA\", nonce=\"{0}\"";
+    static final String AUTHENTICATION_REALM = "WSSE realm=\"blojsom\", profile=\"UsernameToken\"";
 
     /**
      * Response header for authentication challenge
@@ -87,6 +88,11 @@ public interface AtomAPIConstants {
      * Atom authorization header
      */
     static final String ATOMHEADER_AUTHORIZATION = "X-Atom-Authorization";
+
+    /**
+     * Atom WSSE authorization header
+     */
+    static final String ATOMHEADER_WSSE_AUTHORIZATION = "X-WSSE";
 
     /**
      * Atom authentication info header
