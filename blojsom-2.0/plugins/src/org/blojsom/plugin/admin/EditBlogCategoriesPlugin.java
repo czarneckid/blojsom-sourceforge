@@ -54,7 +54,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.10 2003-12-23 03:31:25 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.11 2003-12-23 15:08:51 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -119,11 +119,13 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             File existingBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
             if (!BlojsomUtils.deleteDirectory(existingBlogCategory)) {
                 _logger.debug("Unable to delete blog category: " + existingBlogCategory.toString());
+                addOperationResultMessage(context, "Unable to delete blog category: " + blogCategoryName);
             } else {
                 _logger.debug("Deleted blog category: " + existingBlogCategory.toString());
+                addOperationResultMessage(context, "Deleted blog category: " + blogCategoryName);
             }
 
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
         } else if (EDIT_BLOG_CATEGORY_ACTION.equals(action)) {
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
@@ -152,6 +154,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                             categoryPropertiesString.append(key.toString()).append("=").append(categoryProperties.get(key)).append("\r\n");
                         }
                     } catch (IOException e) {
+                        addOperationResultMessage(context, "Unable to load blog category: " + blogCategoryName);
                         _logger.error(e);
                     }
                 }
@@ -168,6 +171,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             // Check for blank or null category
             if (blogCategoryName == null || "".equals(blogCategoryName)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
+                addOperationResultMessage(context, "No blog category specified");
                 return entries;
             }
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
@@ -200,6 +204,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                     }
                 }
             } catch (IOException e) {
+                addOperationResultMessage(context, "Unable to read category metadata from input");
                 _logger.error(e);
             }
 
@@ -207,6 +212,10 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             if (!isUpdatingCategory) {
                 if (!newBlogCategory.mkdirs()) {
                     _logger.error("Unable to add new blog category: " + blogCategoryName);
+                    addOperationResultMessage(context, "Unable to add new blog category: " + blogCategoryName);
+                    httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
+
+                    return entries;
                 } else {
                     _logger.debug("Created blog directory: " + newBlogCategory.toString());
                 }
@@ -224,9 +233,12 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
             if (!isUpdatingCategory) {
                 _logger.debug("Successfully added new blog category: " + blogCategoryName);
+                addOperationResultMessage(context, "Successfully added new blog category: " + blogCategoryName);
             } else {
                 _logger.debug("Successfully updated blog category: " + blogCategoryName);
+                addOperationResultMessage(context, "Successfully updated blog category: " + blogCategoryName);
             }
+
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         }
 
