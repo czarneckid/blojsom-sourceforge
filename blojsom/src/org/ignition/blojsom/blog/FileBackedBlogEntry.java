@@ -46,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.10 2003-06-12 02:07:26 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.11 2003-06-18 23:17:29 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -224,6 +224,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         BlogComment comment = new BlogComment();
         comment.setCommentDateLong(commentFile.lastModified());
         StringBuffer commentDescription = new StringBuffer();
+        String separator = System.getProperty("line.separator");
         String commentLine;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), _blogFileEncoding));
@@ -249,7 +250,7 @@ public class FileBackedBlogEntry extends BlogEntry {
                         }
                     default:
                         {
-                            commentDescription.append(commentLine);
+                            commentDescription.append(commentLine).append(separator);
                         }
                 }
             }
