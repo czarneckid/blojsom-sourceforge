@@ -36,13 +36,16 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.BlogCategory;
+import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.FileInputStream;
+import java.util.*;
 
 
 /**
@@ -51,12 +54,18 @@ import java.io.IOException;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.2 2003-02-25 22:54:13 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.3 2003-02-26 15:56:45 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
     public static final String API_PREFIX = "blogger";
 
+    /** */
+    public static final String MEMBER_URL = "url";
+    /** */
+    public static final String MEMBER_BLOGID = "blogid";
+    /** */
+    public static final String MEMBER_BLOGNAME = "blogName";
 
     private Blog _blog;
     private Log _logger = LogFactory.getLog(BlojsomBloggerAPIHandler.class);
@@ -168,13 +177,51 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
      * @throws XmlRpcException
      * @return
      */
-    public String getUsersBlogs(String appkey, String userid, String password) throws Exception {
-        _logger.info("getUsersBlogs() Called ===[ UNSUPPORTED ]=====");
+    public Object getUsersBlogs(String appkey, String userid, String password) throws Exception {
+        _logger.info("getUsersBlogs() Called ===[ SUPPORTED ]=======");
         _logger.info("     Appkey: " + appkey);
         _logger.info("     UserId: " + userid);
         _logger.info("   Password: " + password);
 
-        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+
+        Vector result = new Vector();
+
+        BlogCategory[] _categories = _blog.getBlogCategories();
+
+        if (_categories != null) {
+
+
+            for (int x = 0; x < _categories.length; x++) {
+                Hashtable _bloglist = new Hashtable(3);
+                BlogCategory _category = _categories[x];
+
+                String _blogid = _category.getCategory();
+                if (_blogid.length() > 1) {
+                    _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                }
+
+                String _description = "";
+                HashMap _metadata = _category.getMetaData();
+                if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
+                    _description = (String) _metadata.get(DESCRIPTION_KEY);
+
+                }
+
+                _bloglist.put(MEMBER_URL, _category.getCategoryURL());
+                _bloglist.put(MEMBER_BLOGID, _blogid);
+                _bloglist.put(MEMBER_BLOGNAME, _description);
+
+                result.add(_bloglist);
+
+
+            }
+
+
+        } else {
+            throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
+        }
+
+        return result;
 
 
     }
@@ -262,7 +309,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             String hashable = content;
 
             if (content.length() > MAX_HASHABLE_LENGTH) {
-                hashable = hashable.substring(0,MAX_HASHABLE_LENGTH);
+                hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
             }
 
 
