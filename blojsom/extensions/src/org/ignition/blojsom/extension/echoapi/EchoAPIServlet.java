@@ -67,7 +67,7 @@ import java.util.Properties;
  * <a href="http://bitworking.org/rfc/draft-gregorio-03.html">http://bitworking.org/rfc/draft-gregorio-03.html</a>
  *
  * @author Mark Lussier
- * @version $Id: EchoAPIServlet.java,v 1.4 2003-07-14 21:49:44 intabulas Exp $
+ * @version $Id: EchoAPIServlet.java,v 1.5 2003-07-15 01:08:34 intabulas Exp $
  */
 public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, EchoConstants {
 
@@ -105,7 +105,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      * @param servletConfig Servlet configuration information
      */
     private void configureAuthorization(ServletConfig servletConfig) {
-        Map _authorization = new HashMap();
+        Map authorization = new HashMap();
 
         String authConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
         Properties authProperties = new Properties();
@@ -117,10 +117,10 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
             while (authIterator.hasNext()) {
                 String userid = (String) authIterator.next();
                 String password = authProperties.getProperty(userid);
-                _authorization.put(userid, password);
+                authorization.put(userid, password);
             }
 
-            if (!_blog.setAuthorization(_authorization)) {
+            if (!_blog.setAuthorization(authorization)) {
                 _logger.error("Authorization table could not be assigned");
             }
 
@@ -136,13 +136,13 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      * @param filename blojsom configuration file to be loaded
      */
     public void processBlojsomCongfiguration(ServletContext context, String filename) {
-        Properties _configuration = new Properties();
-        InputStream _cis = context.getResourceAsStream(filename);
+        Properties configuration = new Properties();
+        InputStream cis = context.getResourceAsStream(filename);
 
         try {
-            _configuration.load(_cis);
-            _cis.close();
-            _blog = new Blog(_configuration);
+            configuration.load(cis);
+            cis.close();
+            _blog = new Blog(configuration);
         } catch (IOException e) {
             _logger.error(e);
         } catch (BlojsomConfigurationException e) {
@@ -193,15 +193,15 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      */
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        String _cfgfile = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
+        String cfgfile = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
 
-        if (_cfgfile == null || _cfgfile.equals("")) {
+        if (cfgfile == null || cfgfile.equals("")) {
             _logger.info("blojsom configuration not specified, using " + DEFAULT_BLOJSOM_CONFIGURATION);
-            _cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
+            cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
         }
 
-        processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
-        processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
+        processBlojsomCongfiguration(servletConfig.getServletContext(), cfgfile);
+        processBlojsomCongfiguration(servletConfig.getServletContext(), cfgfile);
         configureAuthorization(servletConfig);
         configureFetcher(servletConfig);
 
