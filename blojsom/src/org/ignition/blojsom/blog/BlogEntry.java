@@ -218,6 +218,15 @@ public class BlogEntry {
     }
 
     /**
+     * Returns the BlogId  for this entry
+     *
+     * @return Blog Id
+     */
+    public String getId() {
+        return _category +"?permlink=" + _source.getName();
+    }
+
+    /**
      * Returns the contents of the file in a byte array
      *
      * @param file Input file
