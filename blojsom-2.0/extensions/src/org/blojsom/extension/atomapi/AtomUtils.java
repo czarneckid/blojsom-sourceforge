@@ -52,14 +52,12 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.4 2003-09-10 19:15:27 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.5 2003-09-10 21:01:20 intabulas Exp $
  */
 public class AtomUtils {
 
-    public static String generateNextNonce() {
-        //@todo create algorithm format
-        return BlojsomUtils.digestString("Blah", "SHA");
-
+    public static String generateNextNonce(BlogUser user) {
+        return BlojsomUtils.getISO8601Date(new Date()) + ":" + user.getId() + ":hanger1";
     }
 
 

@@ -43,26 +43,25 @@ import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.fetcher.BlojsomFetcherException;
-import org.blojsom.fetcher.StandardFetcher;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.Sandler;
-import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.api.SearchResults;
-import org.intabulas.sandler.introspection.Introspection;
-import org.intabulas.sandler.introspection.impl.IntrospectionImpl;
+import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.elements.Entry;
 import org.intabulas.sandler.exceptions.FeedMarshallException;
+import org.intabulas.sandler.introspection.Introspection;
+import org.intabulas.sandler.introspection.impl.IntrospectionImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.naming.directory.SearchResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +73,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.9 2003-09-10 18:23:35 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.10 2003-09-10 21:01:53 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -84,6 +83,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
     private static final String CONTENTTYPE_ATOM = "application/x.atom+xml";
     private static final String CONTENTTYPE_XML = "application/xml";
+
+
+    private static final String KEY_ATOMALL = "atom-all";
 
     private static final String COMMAND_COMMAND = "command";
 
@@ -158,17 +160,20 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     }
 
 
-    private void sendAuthenticationRequired(HttpServletResponse httpServletResponse) {
+    private void sendAuthenticationRequired(HttpServletResponse httpServletResponse, BlogUser user) {
         httpServletResponse.setContentType("text/html");
-        httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, AUTHENTICATION_REALM);
+        String nonce = AtomUtils.generateNextNonce(user);
+        nonce = BlojsomUtils.digestString(nonce);
+        String relm = MessageFormat.format(AUTHENTICATION_REALM, new Object[]{nonce});
+        httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, relm);
         httpServletResponse.setStatus(401);
     }
 
 
     private boolean isSearchRequest(HttpServletRequest request) {
         Map paramMap = request.getParameterMap();
-        return (paramMap.containsKey("atom-all") || paramMap.containsKey("atom-last") || paramMap.containsKey("start-range")
-                || (request.getQueryString().indexOf("atom-all") != -1));
+        return (paramMap.containsKey(KEY_ATOMALL) || paramMap.containsKey("atom-last") || paramMap.containsKey("start-range")
+                || (request.getQueryString().indexOf(KEY_ATOMALL) != -1));
     }
 
 
@@ -247,7 +252,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
         } else {
-            sendAuthenticationRequired(httpServletResponse);
+            sendAuthenticationRequired(httpServletResponse, blogUser);
         }
 
     }
@@ -338,7 +343,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                 if (entries != null && entries.length > 0) {
                     BlogEntry entry = entries[0];
-                    Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser,  entry);
+                    Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry);
                     content = atomentry.toString();
                     httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                 }
@@ -454,7 +459,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
         } else {
-            sendAuthenticationRequired(httpServletResponse);
+
+            sendAuthenticationRequired(httpServletResponse, blogUser);
         }
 
 
@@ -493,7 +499,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (isAuthorized(blog, httpServletRequest)) {
 
         } else {
-            sendAuthenticationRequired(httpServletResponse);
+            sendAuthenticationRequired(httpServletResponse, blogUser);
         }
 
 
