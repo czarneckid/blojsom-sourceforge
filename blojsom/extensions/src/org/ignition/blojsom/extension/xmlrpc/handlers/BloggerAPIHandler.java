@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.34 2003-07-03 01:12:33 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.35 2003-07-07 01:47:30 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -163,8 +163,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      *
      * @param bloginstance an instance of Blog
      * @see org.ignition.blojsom.blog.Blog
+     * @throws BlojsomException If there is an error setting the blog instance or properties for the handler
      */
-    public void setBlog(Blog bloginstance) {
+    public void setBlog(Blog bloginstance) throws BlojsomException {
         _blog = bloginstance;
         _blogEntryExtension = _blog.getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
         if (_blogEntryExtension == null || "".equals(_blogEntryExtension)) {
@@ -176,8 +177,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
      *
      * @param fetcher {@link BlojsomFetcher} instance
+     * @throws BlojsomException If there is an error in setting the fetcher
      */
-    public void setFetcher(BlojsomFetcher fetcher) {
+    public void setFetcher(BlojsomFetcher fetcher) throws BlojsomException {
         _fetcher = fetcher;
     }
 
