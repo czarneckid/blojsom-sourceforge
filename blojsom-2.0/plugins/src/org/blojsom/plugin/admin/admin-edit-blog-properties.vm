@@ -19,6 +19,7 @@
 
                 <input type="hidden" name="action" value="edit-blog-properties"/>
                 <input type="hidden" name="flavor" value="admin"/>
+                <input type="hidden" name="plugins" value="edit-blog-properties"/>
                 <tr>
                     <td>Blog name</td> <td><input name="blog-name" type="text" size="50" value="$BLOJSOM_BLOG.getBlogName()"/></td>
                 </tr>
@@ -67,10 +68,16 @@
                     <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
                 </tr>
                 <tr>
+                    <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog file extenstions</td> <td><input name="blog-file-extensions" type="text" size="50" value="$BLOJSOM_BLOG.getBlogProperty("blog-file-extensions")"/></td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <center>
                             <input type="submit" name="submit" value="Edit"/>
-                            <input type="reset" name="Reset" value="Reset"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </center>
                     </td>
                 </tr>

@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.7 2003-10-23 00:17:34 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.8 2003-10-23 01:31:27 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -160,7 +160,7 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_BASE_URL_IP, _blogBaseURL);
 
         _blogFileExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
-        _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, _blogFileExtensions);
+        _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
 
         _blogPropertiesExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
         _blogProperties.put(BLOG_PROPERTIES_EXTENSIONS_IP, _blogPropertiesExtensions);
@@ -710,5 +710,15 @@ public class Blog implements BlojsomConstants {
         if (flavorKey.endsWith(BLOG_DEFAULT_CATEGORY_MAPPING_IP)) {
             _blogProperties.put(flavorKey, blogDefaultCategoryMapping);
         }
+    }
+
+    /**
+     * Set the new set of blog file extensions
+     *
+     * @param blogFileExtensions Comma-separated list of blog file extensions
+     */
+    public void setBlogFileExtensions(String blogFileExtensions) {
+        _blogFileExtensions = BlojsomUtils.parseCommaList(blogFileExtensions);
+        _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, blogFileExtensions);
     }
 }
