@@ -1,0 +1,73 @@
+<html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog properties</title>
+    </head>
+
+    <body>
+        <center>
+            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog properties</h3>
+        </center>
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
+        <p />
+        <table border="1">
+            <tr>
+                <th>Blog property</th> <th>Current value</th>
+            </tr>
+            <form name="edit-blog-properties" action="." method="post">
+                <input type="hidden" name="action" value="edit-blog-properties"/>
+                <input type="hidden" name="flavor" value="admin"/>
+                <tr>
+                    <td>Blog name</td> <td><input name="blog-name" type="text" size="50" value="$BLOJSOM_BLOG.getBlogName()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog description</td> <td><input name="blog-description" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDescription()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog URL</td> <td><input name="blog-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogURL()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog base URL</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog country</td> <td><input name="blog-country" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCountry()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog language</td> <td><input name="blog-language" type="text" size="50" value="$BLOJSOM_BLOG.getBlogLanguage()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog depth</td> <td><input name="blog-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog display entries</td> <td><input name="blog-display-entries" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDisplayEntries()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog owner</td> <td><input name="blog-owner" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwner()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog owner e-mail</td> <td><input name="blog-owner-email" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwnerEmail()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog comments enabled?</td> <td><input name="blog-comments-enabled" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCommentsEnabled()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog trackbacks enabled?</td> <td><input name="blog-trackbacks-enabled" type="text" size="50" value="$BLOJSOM_BLOG.getBlogTrackbacksEnabled()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog e-mail comments/trackbacks enabled?</td> <td><input name="blog-email-enabled" type="text" size="50" value="$BLOJSOM_BLOG.getBlogEmailEnabled()"/></td>
+                </tr>
+                <tr>
+                    <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <center>
+                            <input type="submit" name="submit" value="Edit"/>
+                            <input type="reset" name="Reset" value="Reset"/>
+                        </center>
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </body>
+</html>
