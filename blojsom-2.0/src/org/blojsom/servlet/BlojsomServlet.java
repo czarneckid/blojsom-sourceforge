@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.4 2003-08-11 02:03:10 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.5 2003-08-11 13:31:27 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -293,7 +293,11 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             if (userFromPath == null) {
                 user = _defaultUser;
             } else {
-                user = userFromPath;
+                if (!_users.containsKey(userFromPath)) {
+                    user = _defaultUser;
+                } else {
+                    user = userFromPath;
+                }
             }
         }
 
