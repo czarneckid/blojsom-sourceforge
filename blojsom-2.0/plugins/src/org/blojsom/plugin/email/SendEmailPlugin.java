@@ -61,7 +61,7 @@ import java.util.Properties;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.8 2005-02-23 01:56:56 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.9 2005-03-06 18:24:31 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin, EmailConstants {
 
@@ -137,12 +137,14 @@ public class SendEmailPlugin implements BlojsomPlugin, EmailConstants {
         if (blog.getBlogOwner() != null) {
             defaultrecipientname = blog.getBlogOwner();
         }
-        List _messagelist = (List) context.get(EmailUtils.BLOJSOM_OUTBOUNDMAIL);
-        if (_messagelist != null) {
-            for (int x = 0; x < +_messagelist.size(); x++) {
-                EmailMessage _msg = (EmailMessage) _messagelist.get(x);
-                sendMailMessage(_msg, defaultrecipientemail, defaultrecipientname);
 
+        List messageList = (List) context.get(EmailUtils.BLOJSOM_OUTBOUNDMAIL);
+        if (messageList != null) {
+            for (int x = 0; x < + messageList.size(); x++) {
+                EmailMessage message = (EmailMessage) messageList.get(x);
+                if (message != null) {
+                    sendMailMessage(message, defaultrecipientemail, defaultrecipientname);
+                }
             }
         }
 
