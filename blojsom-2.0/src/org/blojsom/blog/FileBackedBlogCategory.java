@@ -35,6 +35,7 @@
 package org.blojsom.blog;
 
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 import org.blojsom.BlojsomException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,7 +49,7 @@ import java.util.Properties;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.2 2003-09-07 23:51:16 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -83,7 +84,7 @@ public class FileBackedBlogCategory extends BlogCategory {
         // Load properties file for category (if present)
         File[] categoryPropertyFiles = blog.listFiles(BlojsomUtils.getExtensionsFilter(propertiesExtensions));
         if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
-            Properties dirProps = new Properties();
+            Properties dirProps = new BlojsomProperties();
             for (int i = 0; i < categoryPropertyFiles.length; i++) {
                 try {
                     FileInputStream _fis = new FileInputStream(categoryPropertyFiles[i]);

@@ -37,6 +37,7 @@ package org.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 import org.blojsom.BlojsomException;
 
 import java.io.*;
@@ -46,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.2 2003-08-10 15:32:17 intabulas Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.3 2003-09-07 23:51:16 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -360,10 +361,12 @@ public class FileBackedBlogEntry extends BlogEntry {
      * Load the meta data for the entry
      *
      * @since blojsom 1.9
-     * @param blogHome Directory where blog entries are stored
-     * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
+     * @param blog Blog information
      */
-    protected void loadMetaData(String blogHome, String blogEntryMetaDataExtension) {
+    protected void loadMetaData(Blog blog) {
+        String blogHome = blog.getBlogHome();
+        String blogEntryMetaDataExtension = blog.getBlogEntryMetaDataExtension();
+
         if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension)) {
             return;
         }
@@ -373,7 +376,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
         if (blogEntryMetaData.exists()) {
             try {
-                Properties entryMetaData = new Properties();
+                Properties entryMetaData = new BlojsomProperties(blog.getBlogFileEncoding());
                 FileInputStream fis = new FileInputStream(blogEntryMetaData);
                 entryMetaData.load(fis);
                 fis.close();
@@ -401,10 +404,12 @@ public class FileBackedBlogEntry extends BlogEntry {
      * Store the meta data for the entry
      *
      * @since blojsom 1.9
-     * @param blogHome Directory where blog entries are stored
-     * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
+     * @param blog Blog information
      */
-    protected void saveMetaData(String blogHome, String blogEntryMetaDataExtension) {
+    protected void saveMetaData(Blog blog) {
+        String blogHome = blog.getBlogHome();
+        String blogEntryMetaDataExtension = blog.getBlogEntryMetaDataExtension();
+
         if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension) || _metaData == null) {
             return;
         }
@@ -413,7 +418,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         File blogEntryMetaData = new File(blogHome + BlojsomUtils.removeInitialSlash(_category) + File.separator + entryFilename + blogEntryMetaDataExtension);
 
         try {
-            Properties entryMetaData = new Properties();
+            Properties entryMetaData = new BlojsomProperties(blog.getBlogFileEncoding());
             FileOutputStream fos = new FileOutputStream(blogEntryMetaData);
             Iterator keys = _metaData.keySet().iterator();
             String key;
@@ -450,7 +455,7 @@ public class FileBackedBlogEntry extends BlogEntry {
                 loadComments();
                 loadTrackbacks();
             }
-            loadMetaData(blog.getBlogHome(), blog.getBlogEntryMetaDataExtension());
+            loadMetaData(blog);
         } catch (IOException e) {
             _logger.error(e);
             throw new BlojsomException(e);
@@ -480,10 +485,10 @@ public class FileBackedBlogEntry extends BlogEntry {
                 bw.write(BlojsomUtils.nullToBlank(_description));
                 bw.close();
             }
+            saveMetaData(blog);
         } catch (IOException e) {
             throw new BlojsomException(e);
         }
-        saveMetaData(blog.getBlogHome(), blog.getBlogEntryMetaDataExtension());
     }
 
     /**
