@@ -42,6 +42,10 @@
             <param-value>/WEB-INF/authorization.properties</param-value>
         </init-param>
         <init-param>
+            <param-name>plugin-referer</param-name>
+            <param-value>/WEB-INF/referer.properties</param-value>
+        </init-param>
+        <init-param>
             <param-name>smtp-server</param-name>
             <param-value>localhost</param-value>
         </init-param>
