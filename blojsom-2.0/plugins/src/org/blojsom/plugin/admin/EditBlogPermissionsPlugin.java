@@ -56,7 +56,7 @@ import java.io.FileOutputStream;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.1 2005-01-23 19:20:49 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.2 2005-01-23 19:54:53 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -176,6 +176,23 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
         }
 
         Map permissions = readPermissionsForBlog(context, user.getId());
+
+        // Sanitize permissions if a user has been deleted
+        Map authorizedUsers = user.getBlog().getAuthorization();
+        Iterator users = permissions.keySet().iterator();
+        List usersToRemove = new ArrayList();
+        while (users.hasNext()) {
+            String userID = (String) users.next();
+            if (!authorizedUsers.containsKey(userID)) {
+                usersToRemove.add(userID);
+            }
+        }
+
+        for (int i = 0; i < usersToRemove.size(); i++) {
+            String userID = (String) usersToRemove.get(i);
+
+            permissions.remove(userID);
+        }
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
