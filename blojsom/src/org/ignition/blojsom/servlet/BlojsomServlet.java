@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.55 2003-03-25 15:52:36 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.56 2003-03-27 02:50:05 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -102,7 +102,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 _logger.error(e);
             }
         }
-
+        _logger.debug("blojsom destroyed");
     }
 
     /**
@@ -335,6 +335,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         if (permalink != null) {
             permalink = BlojsomUtils.getFilenameForPermalink(permalink, _blog.getBlogFileExtensions());
+            permalink = BlojsomUtils.urlDecode(permalink);
             if (permalink == null) {
                 _logger.error("Permalink request for invalid permalink: " + httpServletRequest.getParameter(PERMALINK_PARAM));
             } else {
