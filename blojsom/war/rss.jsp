@@ -6,7 +6,8 @@
                  org.ignition.blojsom.util.BlojsomConstants,
                  java.util.TreeMap,
                  java.util.Iterator,
-                 org.ignition.blojsom.blog.BlogEntry"%>
+                 org.ignition.blojsom.blog.BlogEntry"
+                 session="false"%>
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);

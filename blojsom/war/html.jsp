@@ -3,7 +3,8 @@
                  org.ignition.blojsom.util.BlojsomConstants,
                  java.util.Iterator,
                  org.ignition.blojsom.blog.BlogEntry,
-                 org.ignition.blojsom.blog.BlogCategory"%>
+                 org.ignition.blojsom.blog.BlogCategory"
+                 session="false"%>
 <html>
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
