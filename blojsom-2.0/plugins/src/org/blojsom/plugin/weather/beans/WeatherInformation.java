@@ -41,14 +41,16 @@ import org.w3c.dom.Document;
  * WeatherInformation
  *
  * @author Mark Lussier
- * @version $Id: WeatherInformation.java,v 1.2 2005-01-12 18:24:06 intabulas Exp $
+ * @version $Id: WeatherInformation.java,v 1.3 2005-01-26 23:57:33 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public interface WeatherInformation {
 
 
     /**
-     * @param document
+     * Parse an XML document containing weather related information
+     *
+     * @param document XML document with weather information
      */
     void parseDocument(Document document);
 
@@ -95,10 +97,11 @@ public interface WeatherInformation {
     String getWind();
 
     /**
-     * @return
+     * Get the URL containing a link to weather history information
+     *
+     * @return URL for weather history information
      */
     String getHistoryUrl();
-
 
     /**
      * Gets the URL required to fetch this resource
@@ -106,6 +109,4 @@ public interface WeatherInformation {
      * @return The resource location as a String
      */
     String getProviderUrl();
-
-
 }

@@ -59,7 +59,7 @@ import java.util.Map;
  * WeatherPlugin
  *
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.3 2005-01-12 18:45:47 intabulas Exp $
+ * @version $Id: WeatherPlugin.java,v 1.4 2005-01-26 23:57:33 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -159,9 +159,11 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         WeatherInformation info = (WeatherInformation) _userWeatherMap.get(user);
+
         if (info != null) {
             context.put(WeatherConstants.BLOJSOM_WEATHER_INFORMATION, info);
         }
+
         return entries;
     }
 
@@ -172,7 +174,6 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
-
     }
 
     /**
@@ -205,20 +206,25 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
             _fetcher = new WeatherFetcher();
         }
 
-
+        /**
+         * Collect the weather information
+         *
+         * @param weather {@link Weather}
+         * @return {@link WeatherInformation}
+         */
         private WeatherInformation collectWeatherData(Weather weather) {
-
             WeatherInformation result = null;
+
             try {
-                _logger.info("Fetching forcast for " + weather.getStationCode());
+                _logger.info("Fetching forecast for " + weather.getStationCode());
                 WeatherInformation nws = new NWSInformation(weather.getStationCode());
-                result = _fetcher.retrieveForcast(nws);
+                result = _fetcher.retrieveForecast(nws);
                 _logger.info(result);
             } catch (IOException e) {
                 _logger.error(e);
             }
-            return result;
 
+            return result;
         }
 
         /**
@@ -238,7 +244,7 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
         public void run() {
             try {
                 while (!_finished) {
-                    _logger.debug("Weather plugin is waking up and looking for updated forcasts");
+                    _logger.debug("Weather plugin is waking up and looking for updated forecasts");
                     Iterator userIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
                     while (userIterator.hasNext()) {
                         String user = (String) userIterator.next();
@@ -257,14 +263,10 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
 
                     _logger.debug("Weather plugin off to take a nap");
                     sleep(_pollTime * 1000);
-
                 }
             } catch (InterruptedException e) {
                 _logger.error(e);
             }
         }
-
     }
-
-
 }

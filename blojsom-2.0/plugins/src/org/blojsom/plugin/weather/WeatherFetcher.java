@@ -54,28 +54,28 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * WeatherFetcher
- * Portions taken from the ROME Fetcher (http://rome.dev.java.net)
  *
  * @author Mark Lussier
- * @version $Id: WeatherFetcher.java,v 1.3 2005-01-12 18:45:46 intabulas Exp $
+ * @version $Id: WeatherFetcher.java,v 1.4 2005-01-26 23:57:33 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class WeatherFetcher {
-
-    private URL _stationUrl;
 
     private Log _logger = LogFactory.getLog(WeatherFetcher.class);
 
     private DocumentBuilder _documentBuilder;
 
+    /**
+     * Construct a new instance of the <code>WeatherFetcher</code> class
+     */
     public WeatherFetcher() {
-
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setValidating(false);
         documentBuilderFactory.setIgnoringElementContentWhitespace(true);
         documentBuilderFactory.setIgnoringComments(true);
         documentBuilderFactory.setCoalescing(true);
         documentBuilderFactory.setNamespaceAware(false);
+
         try {
             _documentBuilder = documentBuilderFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
@@ -83,13 +83,20 @@ public class WeatherFetcher {
         }
     }
 
-    public WeatherInformation retrieveForcast(WeatherInformation provider) throws IllegalArgumentException, IOException {
+    /**
+     * Retrieve the {@link WeatherInformation} from a site containing an XML feed of weather information
+     *
+     * @param provider {@link WeatherInformation}
+     * @return {@link WeatherInformation} populated with data
+     * @throws IllegalArgumentException If there is an error parsing weather information
+     * @throws IOException              If there is an error parsing weather information
+     */
+    public WeatherInformation retrieveForecast(WeatherInformation provider) throws IllegalArgumentException, IOException {
+        URL forecastUrl = new URL(provider.getProviderUrl());
+        URLConnection connection = forecastUrl.openConnection();
 
-        URL forcastUrl = new URL(provider.getProviderUrl());
-
-        URLConnection connection = forcastUrl.openConnection();
         if (!(connection instanceof HttpURLConnection)) {
-            throw new IllegalArgumentException(forcastUrl.toExternalForm() + " is not a valid HTTP Url");
+            throw new IllegalArgumentException(forecastUrl.toExternalForm() + " is not a valid HTTP Url");
         }
 
         HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -120,6 +127,7 @@ public class WeatherFetcher {
         } catch (SAXException e) {
             _logger.error(e);
         }
+
         bis.close();
 
         return provider;

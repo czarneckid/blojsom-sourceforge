@@ -39,7 +39,7 @@ package org.blojsom.plugin.weather;
  * WeatherConstants
  *
  * @author Mark Lussier
- * @version $Id: WeatherConstants.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: WeatherConstants.java,v 1.2 2005-01-26 23:57:33 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class WeatherConstants {
@@ -58,5 +58,4 @@ public class WeatherConstants {
      * Context Value holding Weather Information
      */
     public static final String BLOJSOM_WEATHER_INFORMATION = "BLOJSOM_WEATHER_INFORMATION";
-
 }

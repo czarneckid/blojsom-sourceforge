@@ -40,11 +40,10 @@ import org.blojsom.blog.BlogUser;
  * Weather
  *
  * @author Mark Lussier
- * @version $Id: Weather.java,v 1.2 2005-01-12 18:23:23 intabulas Exp $
+ * @version $Id: Weather.java,v 1.3 2005-01-26 23:57:32 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class Weather {
-
 
     private boolean _enabled = false;
     private BlogUser _blogUser;
@@ -52,67 +51,81 @@ public class Weather {
     private String _providerClass;
 
     /**
-     * Public Constructor
+     * Default constructor. Not enabled by default.
      */
     public Weather() {
         _enabled = false;
     }
 
     /**
-     * @return
+     * Get the {@link BlogUser} associated with this weather object
+     *
+     * @return {@link BlogUser} data
      */
     public BlogUser getBlogUser() {
         return _blogUser;
     }
 
     /**
-     * @param blogUser
+     * Set the {@link BlogUser} object for this weather object
+     *
+     * @param blogUser {@link BlogUser}
      */
     public void setBlogUser(BlogUser blogUser) {
         _blogUser = blogUser;
     }
 
     /**
-     * @return
+     * Get the weather station ID for retrieving a feed of weather data
+     *
+     * @return Weather station ID
      */
     public String getStationCode() {
         return _stationCode;
     }
 
     /**
-     * @param stationCode
+     * Set the weather station ID for retrieving a feed of weather data
+     *
+     * @param stationCode Weather station ID
      */
     public void setStationCode(String stationCode) {
         _stationCode = stationCode;
     }
 
     /**
-     * @return
+     * Check to see if this weather object is enabled
+     *
+     * @return <code>true</code> if enabled, <code>false</code> otherwise
      */
     public boolean isEnabled() {
         return _enabled;
     }
 
     /**
-     * @param enabled
+     * Set whether or not this weather object is enabled
+     *
+     * @param enabled <code>true</code> to enable it, <code>false</code> otherwise
      */
     public void setEnabled(boolean enabled) {
         _enabled = enabled;
     }
 
     /**
-     * @return
+     * Retrieve the fully-qualified classname handling the parsing of weather information
+     *
+     * @return Fully-qualified classname handling parsing of weather information
      */
     public String getProviderClass() {
         return _providerClass;
     }
 
     /**
-     * @param providerClass
+     * Set the fully-qualified classname handling the parsing of weather information
+     *
+     * @param providerClass Fully-qualified classname handling parsing of weather information
      */
     public void setProviderClass(String providerClass) {
         _providerClass = providerClass;
     }
-
-
 }

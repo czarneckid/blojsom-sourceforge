@@ -44,7 +44,7 @@ import java.text.MessageFormat;
  * NWSInformation
  *
  * @author Mark Lussier
- * @version $Id: NWSInformation.java,v 1.2 2005-01-12 18:24:06 intabulas Exp $
+ * @version $Id: NWSInformation.java,v 1.3 2005-01-26 23:57:33 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class NWSInformation implements WeatherInformation {
@@ -71,10 +71,10 @@ public class NWSInformation implements WeatherInformation {
 
     private String _temperatureF = "-0 F";
     private String _temperatureC = "-0 C";
-    private String _stationCode = "BLOJ";
-    private String _location = "blojsom, usa";
-    private String _visibility = "forest for the trees";
-    private String _wind = "fast, very fast";
+    private String _stationCode = "";
+    private String _location = "a";
+    private String _visibility = "";
+    private String _wind = "";
     private String _history = "#";
     private Document _document;
 
@@ -89,11 +89,12 @@ public class NWSInformation implements WeatherInformation {
     }
 
     /**
-     * Parse the Weather Document
+     * Parse an XML document containing weather related information
+     *
+     * @param document XML document with weather information
      */
     public void parseDocument(Document document) {
         _document = document;
-
 
         _temperatureC = getValueOfTag(TAG_TEMP_C);
         _temperatureF = getValueOfTag(TAG_TEMP_F);
@@ -102,7 +103,6 @@ public class NWSInformation implements WeatherInformation {
         _visibility = getValueOfTag(TAG_VISIBILITY);
         _wind = getValueOfTag(TAG_WIND_STRING);
         _history = getValueOfTag(TAG_HISTORY);
-
     }
 
     /**
@@ -121,41 +121,72 @@ public class NWSInformation implements WeatherInformation {
                 result = value.getNodeValue();
             }
         }
+
         return result;
     }
 
-
+    /**
+     * Get the Location of the Weather Station
+     *
+     * @return The Weather Station name as a String
+     */
     public String getLocation() {
         return _location;
     }
 
+    /**
+     * Get the Station Id
+     *
+     * @return The Station Id as a String
+     */
     public String getStationCode() {
         return _stationCode;
     }
 
+    /**
+     * Get the current temperature as Farenheit
+     *
+     * @return A String containing the current temperature in Farenheit
+     */
     public String getFahrenheit() {
         return _temperatureF + " F";
     }
 
+    /**
+     * Get the current temperate as Celcius
+     *
+     * @return A String containing the current temperature as Celcius
+     */
     public String getCelcius() {
         return _temperatureC + " C";
     }
 
+    /**
+     * Get the current Visibility
+     *
+     * @return The current visbility as a String
+     */
     public String getVisibility() {
         return _visibility;
     }
 
+    /**
+     * Get the current Wind conditions
+     *
+     * @return The current wind conditions as a String
+     */
     public String getWind() {
         return _wind;
     }
 
     /**
-     * @return
+     * Get the URL containing a link to weather history information
+     *
+     * @return URL for weather history information
      */
     public String getHistoryUrl() {
         return _history;
     }
-
 
     /**
      * Gets the URL required to fetch this resource

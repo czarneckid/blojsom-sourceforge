@@ -49,13 +49,21 @@ import java.util.Properties;
  * WeatherPluginUtils
  *
  * @author Mark Lussier
- * @version $Id: WeatherPluginUtils.java,v 1.2 2005-01-12 18:23:24 intabulas Exp $
+ * @version $Id: WeatherPluginUtils.java,v 1.3 2005-01-26 23:57:33 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPluginUtils {
 
     private static Log _logger = LogFactory.getLog(WeatherPluginUtils.class);
 
+    /**
+     * Read the {@link Weather} configuration information for a given blog
+     *
+     * @param blojsomConfiguration {@link BlojsomConfiguration}
+     * @param servletConfig        {@link ServletConfig}
+     * @param blogUser             {@link BlogUser}
+     * @return {@link Weather} information or <code>null</code> if there is an error reading the configuration settings
+     */
     public static Weather readWeatherSettingsForUser(BlojsomConfiguration blojsomConfiguration, ServletConfig servletConfig,
                                                      BlogUser blogUser) {
         String weatherConfiguration = servletConfig.getInitParameter(WeatherPlugin.PLUGIN_WEATHER_CONFIGURATION_IP);
