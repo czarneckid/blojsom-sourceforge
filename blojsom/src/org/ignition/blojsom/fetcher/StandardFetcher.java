@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.17 2003-05-31 02:09:19 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.18 2003-05-31 18:39:32 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -95,6 +95,16 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     public void init(Blog blog) throws BlojsomFetcherException {
         init(null, blog);
+    }
+
+    /**
+     * Return a new blog entry instance. This methods returns an instance of {@link FileBackedBlogEntry}.
+     *
+     * @since blojsom 1.9
+     * @return Blog entry instance
+     */
+    public BlogEntry newBlogEntry() {
+        return new FileBackedBlogEntry();
     }
 
     /**
