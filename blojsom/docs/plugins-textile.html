@@ -26,6 +26,7 @@
 <a href="javadoc/index.html">javadocs</a> |
 <a href="http://sourceforge.net/projects/blojsom/">sourceforge</a></p>
 
+<p/>
 <center>
 <table align="center" border="1">
 <th colspan="4">Details on:</th>
@@ -78,6 +79,60 @@ In your <i>blojsom.properties</i> be sure to add <tt>.*textile</tt> to the <i>bl
 <p class="weblogtitle">context attributes and types</p>
 <p />
 No context attributes are made available or used by the Textile plugin.
+
+<p />
+<p class="weblogtitle">sample textile document - from <a href="http://www.textism.com/tools/textile/">Textism</a> website</p>
+
+<code>
+<br/>
+h2. This is a title<br/>
+<br/>
+h3. This is a subhead<br/>
+<br/>
+This is some text of dubious character. Isn't the use of "quotes" just lazy writing -- and theft of 'intellectual property' besides? I think the time has come to see a block quote.<br/>
+<br/>
+bq. This is a block quote. I'll admit it's not the most exciting block quote ever devised.<br/>
+<br/>
+Well, that went well. How about we insert an &lt;a href="/" title="watch out"&gt;old-fashioned hypertext link&lt;/a&gt;? Will the quote marks in the tags get messed up? No!<br/>
+<br/>
+"This is a link (optional title)":http://www.textism.com<br/>
+<br/>
+An image:<br/>
+<br/>
+!/common/textist.gif(optional alt text)!<br/>
+<br/>
+# Librarians rule<br/>
+# Yes they do<br/>
+# But you knew that<br/>
+<br/>
+Some more text of dubious character. Here is a noisome string of CAPITAL letters. Here is something we want to _emphasize_.<br/>
+That was a linebreak. And something to indicate *strength*. Of course I could use &lt;em&gt;my own HTML tags&lt;/em&gt; if I &lt;strong&gt;felt&lt;/strong&gt; like it.<br/>
+<br/>
+h3. Coding<br/>
+<br/>
+This &lt;code&gt;is some code, "isn't it"&lt;/code&gt;. Watch those quote marks! Now for some preformatted text:<br/>
+<br/>
+&lt;pre&gt;<br/>
+&lt;code&gt;<br/>
+	$text = str_replace("&lt;p&gt;%::%&lt;/p&gt;","",$text);<br/>
+	$text = str_replace("%::%&lt;/p&gt;","",$text);<br/>
+	$text = str_replace("%::%","",$text);<br/>
+    <br/>
+&lt;/code&gt;<br/>
+&lt;/pre&gt;<br/>
+<br/>
+This isn't code.<br/>
+<br/>
+<br/>
+So you see, my friends:<br/>
+<br/>
+* The time is now<br/>
+* The time is not later<br/>
+* The time is not yesterday<br/>
+* We must act<br/>
+</code>
+<p/>
+
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
