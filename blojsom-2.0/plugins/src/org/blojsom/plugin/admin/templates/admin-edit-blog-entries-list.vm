@@ -12,6 +12,8 @@
         <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
         <p />
 
+        #showErrorMessage()
+
         <!-- Edit blog entries form -->
         <center>
             <h3>Edit entries in an existing blog category</h3>

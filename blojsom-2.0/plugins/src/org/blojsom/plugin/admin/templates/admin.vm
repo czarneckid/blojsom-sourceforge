@@ -9,6 +9,10 @@
         <center>
             <h3>$BLOJSOM_BLOG.getBlogName() - Administration</h3>
         </center>
+
+        #showErrorMessage()
+        <p/>
+
         <ul>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-authorization&action=page">Edit</a> blog authorization.</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-properties&action=page">Edit</a> blog properties.</li>
