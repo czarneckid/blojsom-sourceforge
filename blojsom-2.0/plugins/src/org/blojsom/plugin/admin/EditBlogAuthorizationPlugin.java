@@ -57,7 +57,7 @@ import java.io.FileOutputStream;
  * 
  * @author czarnecki
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.4 2003-12-20 15:34:53 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.5 2003-12-20 18:11:14 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -116,7 +116,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
             return entries;

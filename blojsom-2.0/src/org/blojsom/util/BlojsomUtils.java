@@ -39,6 +39,7 @@ import org.blojsom.blog.FileBackedBlogEntry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -52,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.12 2003-12-18 06:36:50 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.13 2003-12-20 18:11:04 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1188,5 +1189,16 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return false;
+    }
+
+    /**
+     * Set various cache control HTTP headers so that the browser does not try and cache the page
+     *
+     * @since blojsom 2.06
+     * @param httpServletResponse Response
+     */
+    public static void setNoCacheControlHeaders(HttpServletResponse httpServletResponse) {
+        httpServletResponse.setHeader(PRAGMA_HTTP_HEADER, NO_CACHE_HTTP_HEADER_VALUE);
+        httpServletResponse.setHeader(CACHE_CONTROL_HTTP_HEADER, NO_CACHE_HTTP_HEADER_VALUE);
     }
 }

@@ -54,7 +54,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.8 2003-12-20 15:34:53 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.9 2003-12-20 18:11:14 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -96,7 +96,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
             return entries;

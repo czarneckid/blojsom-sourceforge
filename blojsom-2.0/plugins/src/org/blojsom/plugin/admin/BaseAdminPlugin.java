@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.4 2003-11-20 03:00:21 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.5 2003-12-20 18:11:14 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -92,12 +92,15 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
     }
 
     /**
+     * Authenticate the user if their authentication session variable is not present
      *
-     * @param httpServletRequest
-     * @param blog
-     * @return
+     * @param httpServletRequest Request
+     * @param httpServletResponse Response
+     * @param blog Blog information
+     * @return <code>true</code> if the user is authenticated, <code>false</code> otherwise
      */
-    protected boolean authenticateUser(HttpServletRequest httpServletRequest, Blog blog) {
+    protected boolean authenticateUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog) {
+        BlojsomUtils.setNoCacheControlHeaders(httpServletResponse);
         HttpSession httpSession = httpServletRequest.getSession();
 
         // Check first to see if someone has requested to logout
@@ -142,7 +145,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
         } else {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
