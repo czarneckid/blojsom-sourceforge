@@ -31,6 +31,12 @@
                 interface.
             </action>
 
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Excerpt plugin which allows you to add a &lt;div class="excerpt"&gt;&lt;/div&gt; block to
+                your blog entry and have a link automatically inserted to view the full entry. Depends on the
+                show me more plugin.
+            </action>
+
             <action dev="czarneckid" type="add" context="Core">
                 Added GroovyDispatcher to the addon core source tree. This dispatcher would allow you to write
                 templates using <a href="http://groovy.codehaus.org">Groovy</a>.
@@ -38,6 +44,10 @@
 
             <action dev="intabulas" type="update" context="Library">
                 Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Libary">
+                Updated the OSCache library to the new 2.0.2 release.
             </action>
         </release>
  
