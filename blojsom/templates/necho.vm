@@ -23,11 +23,11 @@
         <link>$entry.getLink()</link>
         <id>$entry.getLink()</id>
 
-        <created>$entry.getISO8601Date()</created>
+        <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
         <issued>$entry.getISO8601Date()</issued>
-        <modified>$entry.getISO8601Date()</modified>
+        <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
 
-        <content type="text/html" xml:lang="en-us" mode="escaped">
+        <content type="text/html" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" mode="escaped">
             <![CDATA[ $entry.getDescription() ]]>
         </content>
 
