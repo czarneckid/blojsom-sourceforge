@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.30 2004-09-13 20:27:02 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.31 2004-09-13 20:41:52 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -187,7 +187,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 }
             }
 
-            if (_globalBlogHome != null) {
+            if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome)) {
                 _globalBlogHome = _globalBlogHome.trim();
                 File blogHomeDirectory = new File(_globalBlogHome);
                 if (!blogHomeDirectory.exists()) {
@@ -198,7 +198,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 }
             }
 
-            if (_globalBlogHome != null) {
+            if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome)) {
                 _logger.debug("Using global blog-home directory: " + _globalBlogHome);
             }
         } else {
@@ -242,7 +242,8 @@ public class BlojsomConfiguration implements BlojsomConstants {
                     Blog userBlog = null;
                     try {
                         // If a global blog-home directory has been defined, use it for each user
-                        if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome)) {
+                        if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome) &&
+                                !userProperties.containsKey(BLOG_HOME_IP)) {
                             String usersBlogHome = _globalBlogHome + user + "/";
                             File blogHomeDirectory = new File(usersBlogHome);
                             if (!blogHomeDirectory.exists()) {
