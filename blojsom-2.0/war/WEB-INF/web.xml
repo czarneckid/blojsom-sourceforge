@@ -11,6 +11,16 @@
         <filter-class>org.blojsom.filter.CompressionFilter</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>PermalinkFilter</filter-name>
+        <filter-class>org.blojsom.filter.PermalinkFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>PermalinkFilter</filter-name>
+        <servlet-name>blojsom</servlet-name>
+    </filter-mapping>
+
     <filter-mapping>
         <filter-name>CompressionFilter</filter-name>
         <servlet-name>blojsom</servlet-name>
