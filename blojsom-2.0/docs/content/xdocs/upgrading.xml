@@ -9,6 +9,22 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.08 to blojsom 2.09</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
+                        blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.09.jar,
+                        blojsom-extensions-2.09.jar, blojsom-plugins-2.09.jar files, and blojsom-plugins-templates-2.09.jar.
+                    </p>
+                    <p>
+                        2. Replace the xmlrpc-1.1.jar file with the xmlrpc-1.2b1.jar file in your
+                        <code>/WEB-INF/lib</code> directory.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.07 to blojsom 2.08</title>
                 <section>
                     <title>Library changes</title>
@@ -71,6 +87,19 @@
                         <code>/WEB-INF/lib</code> directory.
                     </p>
                 </section>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. Add the following to your <code>/WEB-INF/velocity.properties</code> file.
+                        <pre>
+                            #
+                            # Velocity macro properties
+                            #
+                            velocimacro.library=org/blojsom/plugin/admin/templates/admin-macros.vm
+                            velocimacro.permissions.allow.inline=true
+                            velocimacro.permissions.allow.inline.local.scope=true
+                        </pre>
+                    </p>
             </section>
             <section>
                 <title>Upgrading from blojsom 2.05 to blojsom 2.06</title>
