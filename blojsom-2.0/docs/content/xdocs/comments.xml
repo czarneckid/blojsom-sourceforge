@@ -74,6 +74,15 @@
                     an integer value in number of seconds until expiration.
                 </p>
             </section>
+            <section>
+                <title>Enabling auto-formatting of comments</title>
+                <p>
+                    Add the following to your <em>/WEB-INF/(user-id)/blog.properties</em> if you would like to
+                    enable auto-formatting of comments. This will turn all newline characters into &lt;br/&gt; tags.
+                    <source>
+                        plugin-comment-autoformat=true
+                    </source>
+                </p>
         </section>
     </body>
 </document>
