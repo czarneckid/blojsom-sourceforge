@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!DOCTYPE web-app
-    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
-    "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_3.dtd">
 
 <web-app>
+
+    <filter>
+        <filter-name>CompressionFilter</filter-name>
+        <filter-class>org.blojsom.filter.CompressionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CompressionFilter</filter-name>
+        <servlet-name>blojsom</servlet-name>
+    </filter-mapping>
 
     <!-- blojsom servlet initialization -->
     <servlet>
@@ -103,7 +113,6 @@
         <load-on-startup>4</load-on-startup>
     </servlet>
 
-
     <!-- blojsom servlet mappings -->
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
@@ -124,7 +133,5 @@
         <servlet-name>blojsomatomapi</servlet-name>
         <url-pattern>/atomapi/*</url-pattern>
     </servlet-mapping>
-
-
 
 </web-app>
