@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("#adminResource('edit.blog.entry.header' 'Edit Blog Entry')")
+#adminPageHeader("#adminResource('edit.blog.entry.header' 'Edit Blog Entry')")    
 
     <div id="header">
         <ul id="primary">
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' '')</a></li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">#adminResource('edit.blog.categories.page.header' '')</a></li>
-            <li><span>Entries</span></li>
+            <li><span>#adminResource('entries.page.header' '')</span></li>
             <ul id="secondary">
                 <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">#adminResource('add.entry.text' '')</a></li>
                 <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=page">#adminResource('edit.and.delete.entries.text' '')</a></li>
