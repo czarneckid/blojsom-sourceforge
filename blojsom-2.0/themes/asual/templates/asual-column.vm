@@ -18,7 +18,7 @@
 						</div>
 						<div>
 								<strong>About:</strong>
-								<p>E-mail: <a href="mailto:$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())">$BLOJSOM_BLOG.getBlogName()</a></p>
+								<p>E-mail: <a href="mailto:$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())">$BLOJSOM_BLOG.getBlogOwner()</a></p>
 						</div>
 						<div>
 							<strong>Categories:</strong>
