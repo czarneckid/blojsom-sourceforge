@@ -4,6 +4,7 @@ package org.ignition.blojsom.util;
  * BlojsomConstants
  *
  * @author David Czarnecki
+ * @author Dan Morrill
  */
 public interface BlojsomConstants {
 
@@ -60,4 +61,14 @@ public interface BlojsomConstants {
      * Value indicating all subdirectories under the blog home should be searched
      */
     public static final int INFINITE_BLOG_DEPTH = -1;
+
+    /**
+     * The properties file key that denotes a blog category description
+     */
+    public static final String DESCRIPTION_KEY = "blojsom.description";
+
+    /**
+     * The properties file key that denotes a blog category name (different from the directory name)
+     */
+    public static final String NAME_KEY = "blojsom.name";
 }
