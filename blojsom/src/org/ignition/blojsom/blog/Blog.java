@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.30 2003-03-16 03:20:03 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.31 2003-03-18 03:02:18 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -67,6 +67,7 @@ public class Blog implements BlojsomConstants {
     private String _blogOwnerEmail;
     private String _blogCommentsDirectory;
     private Boolean _blogCommentsEnabled;
+    private String _blogTrackbackDirectory;
 
     private HashMap _blogProperties;
 
@@ -160,6 +161,7 @@ public class Blog implements BlojsomConstants {
             _blogCommentsDirectory = DEFAULT_COMMENTS_DIRECTORY;
         }
         _logger.debug("blojsom comments directory: " + _blogCommentsDirectory);
+        _blogProperties.put(BLOG_COMMENTS_DIRECTORY_IP, _blogCommentsDirectory);
 
         String commentsDirectoryRegex;
         if (_blogCommentsDirectory.startsWith(".")) {
@@ -168,12 +170,26 @@ public class Blog implements BlojsomConstants {
             commentsDirectoryRegex = ".*/" + _blogCommentsDirectory;
         }
 
+        _blogTrackbackDirectory = blogConfiguration.getProperty(BLOG_TRACKBACK_DIRECTORY_IP);
+        if ((_blogTrackbackDirectory == null) || ("".equals(_blogTrackbackDirectory))) {
+            _blogTrackbackDirectory = DEFAULT_TRACKBACK_DIRECTORY;
+        }
+        _logger.debug("blojsom trackback directory: " + _blogTrackbackDirectory);
+        _blogProperties.put(BLOG_TRACKBACK_DIRECTORY_IP, _blogTrackbackDirectory);
+
+        String trackbackDirectoryRegex;
+        if (_blogTrackbackDirectory.startsWith(".")) {
+            trackbackDirectoryRegex = ".*/\\" + _blogTrackbackDirectory;
+        } else {
+            trackbackDirectoryRegex = ".*/" + _blogTrackbackDirectory;
+        }
+
         String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
         // Add the blog comments directory to the blog directory filter
         if (blogDirectoryFilter == null) {
-            blogDirectoryFilter = commentsDirectoryRegex;
+            blogDirectoryFilter = commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
         } else {
-            blogDirectoryFilter = blogDirectoryFilter + ", " + commentsDirectoryRegex;
+            blogDirectoryFilter = blogDirectoryFilter + ", " + commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
         }
 
         _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
@@ -195,6 +211,7 @@ public class Blog implements BlojsomConstants {
         } else {
             _blogCommentsEnabled = new Boolean(false);
         }
+        _blogProperties.put(BLOG_COMMENTS_ENABLED_IP, _blogCommentsEnabled);
     }
 
     /**
@@ -298,6 +315,7 @@ public class Blog implements BlojsomConstants {
             if (_blogCommentsEnabled.booleanValue()) {
                 blogEntry.loadComments();
             }
+            blogEntry.loadTrackbacks();
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -331,6 +349,7 @@ public class Blog implements BlojsomConstants {
             if (_blogCommentsEnabled.booleanValue()) {
                 blogEntry.loadComments();
             }
+            blogEntry.loadTrackbacks();
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -389,6 +408,7 @@ public class Blog implements BlojsomConstants {
                 if (_blogCommentsEnabled.booleanValue()) {
                     blogEntry.loadComments();
                 }
+                blogEntry.loadTrackbacks();
                 entryArray[i] = blogEntry;
             }
             return entryArray;
@@ -854,7 +874,7 @@ public class Blog implements BlojsomConstants {
             commentDirectory.append(File.separator);
             commentDirectory.append(permalink);
             commentDirectory.append(File.separator);
-            String commentFilename = commentDirectory.toString() + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
+            String commentFilename = commentDirectory.toString() + comment.getCommentDate().getTime() + COMMENT_EXTENSION;
             File commentDir = new File(commentDirectory.toString());
             if (!commentDir.exists()) {
                 if (!commentDir.mkdirs()) {
