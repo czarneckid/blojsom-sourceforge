@@ -49,8 +49,10 @@ import java.util.Map;
 /**
  * Textile Plugin
  *
+ * An implementation of the Textism's Textile. See http://www.textism.com/tools/textile
+ *
  * @author Mark Lussier
- * @version $Id: TextilePlugin.java,v 1.4 2003-05-27 03:27:51 intabulas Exp $
+ * @version $Id: TextilePlugin.java,v 1.5 2003-05-28 13:56:09 intabulas Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
 

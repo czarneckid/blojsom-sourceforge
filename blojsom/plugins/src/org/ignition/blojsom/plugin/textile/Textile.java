@@ -40,19 +40,28 @@ import java.util.regex.Matcher;
 
 /**
  * Textile
+ * An implementation of the Textism's Textile. See http://www.textism.com/tools/textile
+ *
+ * Please also see JTextile http://pipthepixie.tripod.com/code/jtextile.html
  *
  * @author Mark Lussier
- * @version $Id: Textile.java,v 1.4 2003-05-27 03:01:45 intabulas Exp $
+ * @version $Id: Textile.java,v 1.5 2003-05-28 13:56:09 intabulas Exp $
  */
 public class Textile implements TextileConstants {
 
     /**
-     *
+     * Public Constructor
      */
     public Textile() {
     }
 
 
+    /**
+     * Process a textile formatted string
+     *
+     * @param content Textile formatted content
+     * @return Content converted to HTML
+     */
     public String process(String content) {
 
         /**
@@ -127,8 +136,8 @@ public class Textile implements TextileConstants {
 
         for (int x = 0; x < EXP_PHRASE_MODIFIER_SOURCETAGS.length; x++) {
             content.replaceAll("(^|\\s|>)" + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "\\b(.+?)\\b([^\\w\\s]*?)"
-                               + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "([^\\w\\s]{0,2})(\\s|$)?"
-                               , "$1<" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$2$3</" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$4");
+                    + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "([^\\w\\s]{0,2})(\\s|$)?"
+                    , "$1<" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$2$3</" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$4");
         }
 
 
@@ -316,10 +325,10 @@ public class Textile implements TextileConstants {
         content = content.replaceAll("<(\\/?)li(u|o)>", "<$1li>");
 
         //# turn the temp char back to an ampersand entity
-        content = replace(content,"x%x%","&#38;");
+        content = replace(content, "x%x%", "&#38;");
 
         //# Newline linebreaks, just for markup tidiness
-        content= replace(content,"<br />","<br />\n");
+        content = replace(content, "<br />", "<br />\n");
 
 
         return content;
@@ -328,6 +337,7 @@ public class Textile implements TextileConstants {
 
     /**
      * An implementation of the PHP htmlspecialchars()
+     *
      * @param content
      * @param mode
      * @return
@@ -350,6 +360,12 @@ public class Textile implements TextileConstants {
     }
 
 
+    /**
+     * Splits a string into a string array based on a matching regex
+     * @param matchexp Expression to Match
+     * @param content Content to split
+     * @return String array of split content
+     */
     private String[] splitContent(String matchexp, String content) {
 
         int startAt = 0;
