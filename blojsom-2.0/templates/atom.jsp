@@ -53,7 +53,7 @@
         <link rel="alternate" type="text/html" href="<%= blogEntry.getLink() %>"/>
         <modified><%= blogEntry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") %></modified>
         <issued><%= blogEntry.getISO8601Date() %></issued>
-        <id>tag:<%= blogInformation.getBlogOwnerEmail() %>,<%= blogEntry.getDateAsFormat("yyyy-MM-dd") %>:<%= blogEntry.getCategory() %>.<%= blogEntry.getPermalink() %></id>
+        <id>tag:<%= blogInformation.getBlogOwnerEmail() %>,<%= blogEntry.getDateAsFormat("yyyy-MM-dd") %>:<%= blogEntry.getEncodedCategory() %>.<%= blogEntry.getPermalink() %></id>
 
         <!-- entry optional elements -->
         <created><%= blogEntry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") %></created>
