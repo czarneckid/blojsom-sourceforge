@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.2 2003-08-10 21:32:41 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -121,6 +121,12 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_LAST_MODIFIED = "BLOJSOM_LAST_MODIFIED";
+
+    /**
+     * Key under which the blog user will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_USER = "BLOJSOM_USER";
 
     /**
      * Default class for fetching blog entries
