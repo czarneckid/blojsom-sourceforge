@@ -40,6 +40,7 @@ import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.trackback.event.TrackbackAddedEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
@@ -55,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.34 2005-01-19 17:59:06 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.35 2005-01-30 19:04:48 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -164,6 +165,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     public static final String BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY = "BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY";
 
     private Map _ipAddressTrackbackTimes;
+    private BlojsomConfiguration _blojsomConfiguration;
     private BlojsomFetcher _fetcher;
 
     /**
@@ -182,6 +184,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
 
+        _blojsomConfiguration = blojsomConfiguration;
         _ipAddressTrackbackTimes = new HashMap(10);
         String fetcherClassName = blojsomConfiguration.getFetcherClass();
         try {
@@ -469,6 +472,8 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
                 trackback.setBlogEntry(entries[0]);
                 trackbacks.add(trackback);
                 entries[0].setTrackbacks(trackbacks);
+
+                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new TrackbackAddedEvent(this, new Date(), trackback, user));
             } else {
                 httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
             }
