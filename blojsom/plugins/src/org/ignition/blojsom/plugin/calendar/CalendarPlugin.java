@@ -40,6 +40,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.5 2003-03-26 05:36:49 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.6 2003-03-26 15:46:13 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -81,7 +82,7 @@ public class CalendarPlugin implements BlojsomPlugin {
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
         // Default to the Current Month and Year
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         int currentmonth = calendar.get(Calendar.MONTH);
         int currentyear = calendar.get(Calendar.YEAR);
@@ -90,13 +91,29 @@ public class CalendarPlugin implements BlojsomPlugin {
         String navmonth = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
         if (navmonth != null) {
             currentmonth = new Integer(navmonth).intValue();
+            calendar = new GregorianCalendar(currentyear, currentmonth, 1);
         }
 
         // If a Year is seen on the URL, either by design or calnav params, use it!
         String navyear = httpServletRequest.getParameter(BlojsomConstants.YEAR_PARAM);
         if (navyear != null) {
             currentyear = new Integer(navyear).intValue();
+            calendar = new GregorianCalendar(currentyear, currentmonth, 1);
         }
+
+        // Create the Calendar Caption (ie: March 2003) and shove it in the context
+        String caption = BlojsomUtils.getFormattedDate(calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_FORMAT);
+        context.put(BlojsomConstants.BLOJSOM_CALENDAR_CAPTION, caption);
+
+        // Roll the calendar back 1 month (we do not care about the year for this) and grab the short month caption
+        calendar.roll(Calendar.MONTH, -1);
+        String prevmonth = BlojsomUtils.getFormattedDate(calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_SHORTFORMAT);
+        context.put(BlojsomConstants.BLOJSOM_CALENDAR_PREVIOUS, prevmonth);
+
+        // Roll the calendar forward 2 months (to skip current) and grab the short month caption
+        calendar.roll(Calendar.MONTH, 2);
+        String nextmonth = BlojsomUtils.getFormattedDate(calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_SHORTFORMAT);
+        context.put(BlojsomConstants.BLOJSOM_CALENDAR_NEXT, nextmonth);
 
 
         Boolean[] dates = new Boolean[calendar.getMaximum(Calendar.DAY_OF_MONTH)];
@@ -108,11 +125,14 @@ public class CalendarPlugin implements BlojsomPlugin {
                 calendar.setTime(entry.getDate());
                 int entrymonth = calendar.get(Calendar.MONTH);
                 int entryear = calendar.get(Calendar.YEAR);
+
+                // If the Entry is is the same month and the same year, then flag that date as having a Entry
                 if ((entrymonth == currentmonth) && (entryear == currentyear)) {
                     dates[calendar.get(Calendar.DAY_OF_MONTH)] = Boolean.TRUE;
                 }
 
-                // The MB Filter ;) Break on dates EARLIER than current month/year
+                // The MB Filter ;) Break on dates EARLIER than current month/year.. to avoid running though 947
+                // entries.
                 if ((entrymonth < currentmonth) && (entryear <= currentyear)) {
                     break;
                 }
