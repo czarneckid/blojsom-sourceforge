@@ -60,12 +60,28 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.1 2004-04-26 00:37:17 intabulas Exp $
+ * @version $Id: MoblogPlugin.java,v 1.2 2004-04-26 00:49:17 intabulas Exp $
+ * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin {
 
+    /* */
     private static final String BLOG_MOBLOG_CONFIGURATION_IP = "plugin-moblog";
+    /* */
     private static final String DEFAULT_MOBLOG_AUTHORIZATION_FILE = "moblog-authorization.properties";
+    /* */
+    private static final String PROPERTY_AUTHORIZATION = "moblog-authorization";
+    /* */
+    private static final String PROPERTY_HOSTNAME = "moblog-hostname";
+    /* */
+    private static final String PROPERTY_USERID = "moblog-userid";
+    /* */
+    private static final String PROPERTY_PASSWORD = "moblog-password";
+    /* */
+    private static final String PROPERTY_CATEGORY = "moblog-category";
+    /* */
+    private static final String PROPERTY_ENABLED = "moblog-enabled";
+
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
 
@@ -80,6 +96,14 @@ public class MoblogPlugin implements BlojsomPlugin {
     private BlojsomFetcher _fetcher;
 
 
+    /**
+     * Configuires the list of valid Moblog posters for each users blog
+     *
+     * @param servletConfig        Servlet configuration information
+     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} Information
+     * @param user                 the User Id for this Authorzation List
+     * @param authFile             the file that contains this users authorization List;
+     */
     private void configureAuthorization(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration, String user, String authFile) {
 
         if (authFile != null) {
@@ -90,20 +114,18 @@ public class MoblogPlugin implements BlojsomPlugin {
             } else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(ais));
                 String thisLine;
-                List authList = new ArrayList(5);
-
+                List authList = new ArrayList(5); // Seems like a safe #
                 try {
                     while ((thisLine = reader.readLine()) != null) {
                         if (!thisLine.startsWith("#")) {
                             authList.add(thisLine);
-                            _logger.debug("Adding [" + thisLine + "] to the " + user + "moblog list");
+                            //_logger.debug("Adding [" + thisLine + "] to the " + user + "moblog list");
                         }
                     }
                     ais.close();
                 } catch (IOException e) {
                     _logger.error(e.getMessage(), e);
                 }
-
                 _authorizationMap.put(user, authList);
             }
 
@@ -175,7 +197,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                     /**
                      * Configure each blogs authorized users
                      */
-                    String authFile = mobogProperties.getProperty("moblog-authorization", DEFAULT_MOBLOG_AUTHORIZATION_FILE);
+                    String authFile = mobogProperties.getProperty(PROPERTY_AUTHORIZATION, DEFAULT_MOBLOG_AUTHORIZATION_FILE);
                     configureAuthorization(servletConfig, blojsomConfiguration, user, authFile);
 
 
@@ -184,15 +206,15 @@ public class MoblogPlugin implements BlojsomPlugin {
 
                         mailbox.seBlogtUser(blogUser);
 
-                        String hostname = mobogProperties.getProperty("moblog-hostname");
+                        String hostname = mobogProperties.getProperty(PROPERTY_HOSTNAME);
                         if (hostname != null) {
                             mailbox.setHostName(hostname);
                         }
-                        String userid = mobogProperties.getProperty("moblog-userid");
+                        String userid = mobogProperties.getProperty(PROPERTY_USERID);
                         if (userid != null) {
                             mailbox.setUserId(userid);
                         }
-                        String password = mobogProperties.getProperty("moblog-password");
+                        String password = mobogProperties.getProperty(PROPERTY_PASSWORD);
                         if (password != null) {
                             mailbox.setPassword(password);
                         }
@@ -202,7 +224,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                         String resourceUrl = blojsomConfiguration.getQualifiedResourceDirectory();
                         mailbox.setOutputDirectory(resourceUrl + File.separator + user);
 
-                        String blogCategoryName = mobogProperties.getProperty("moblog-category");
+                        String blogCategoryName = mobogProperties.getProperty(PROPERTY_CATEGORY);
                         blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
                         if (!blogCategoryName.endsWith("/")) {
                             blogCategoryName += "/";
@@ -212,7 +234,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                         mailbox.setEntriesDirectory(blogUser.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(blogCategoryName));
 
 
-                        Boolean enabled = Boolean.valueOf(mobogProperties.getProperty("moblog-enabled", "false"));
+                        Boolean enabled = Boolean.valueOf(mobogProperties.getProperty(PROPERTY_ENABLED, "false"));
                         mailbox.setEnabled(enabled.booleanValue());
 
 
@@ -234,6 +256,7 @@ public class MoblogPlugin implements BlojsomPlugin {
         _checker.start();
         _logger.debug("Started moblog plugin.");
     }
+
 
     /**
      * Process the blog entries
@@ -272,6 +295,10 @@ public class MoblogPlugin implements BlojsomPlugin {
         _finished = true;
     }
 
+
+    /**
+     * Thread that polls the mail box's
+     */
     private class MailboxChecker extends Thread {
 
         private List _pollingQueue;
@@ -327,12 +354,12 @@ public class MoblogPlugin implements BlojsomPlugin {
                 // -- Get the message wrappers and process them --
                 Message[] msgs = folder.getMessages();
 
-                _logger.debug("Found " + msgs.length + " messages");
+                _logger.debug("Found [" + msgs.length + "] messages");
 
                 for (int msgNum = 0; msgNum < msgs.length; msgNum++) {
                     String from = ((InternetAddress)
                             msgs[msgNum].getFrom()[0]).getAddress();
-                    _logger.debug("-------- Msg " + msgNum + "--------\n");
+                    _logger.debug("Processing Message #" + msgNum + "\n");
                     if (!checkSender(mailbox.getBlogUser().getId(), from)) {
                         _logger.debug("Unauthorized sender address: " + from);
                         _logger.debug("Deleting message " + msgNum);
@@ -392,6 +419,25 @@ public class MoblogPlugin implements BlojsomPlugin {
                                     String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
 
                                     entry.append("<p /><img src =\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + ".png").append("\" border=\"0\"/ > ");
+                                } else if (bp.isMimeType("image/gif")) {
+                                    _logger.debug("Creating Image");
+                                    InputStream is = bp.getInputStream();
+                                    byte[] gifFile = new
+                                            byte[is.available()];
+                                    is.read(gifFile, 0, is.available());
+                                    is.close();
+                                    String outputFilename =
+                                            BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
+                                    _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
+                                            outputFilename + ".gif");
+                                    FileOutputStream fos = new
+                                            FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + ".gif"));
+                                    fos.write(gifFile);
+                                    fos.close();
+
+                                    String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+
+                                    entry.append("<p /><img src =\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + ".gif").append("\" border=\"0\"/ > ");
                                 } else if (bp.isMimeType("text/plain")) {
                                     InputStream is = bp.getInputStream();
 
@@ -542,6 +588,15 @@ public class MoblogPlugin implements BlojsomPlugin {
         }
     }
 
+
+    /**
+     * Get the blog category. If the category exists, return the
+     * appropriate directory, otherwise return the "root" of this blog.
+     *
+     * @param categoryName Category name
+     * @return A directory into which a blog entry can be placed
+     * @since blojsom 2.14
+     */
     protected File getBlogCategoryDirectory(Blog blog, String categoryName) {
         File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
