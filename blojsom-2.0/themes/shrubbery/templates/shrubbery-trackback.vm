@@ -28,7 +28,7 @@
     <p class="wldl"><a href="$entry.getLink()&amp;tb=y"><img src="$BLOJSOM_SITE_URL/trackback.gif" border="0" /></a>$entry.getLink()&amp;tb=y</p>
     #foreach ($entryTrackback in $entry.getTrackbacks())
         <div class="cs">
-            Trackback from: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>
+            Trackback from: <a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>
             <div class="wldl">Left on: $entryTrackback.getTrackbackDate()</div><br />
             Title: #if ($entryTrackback.getTitle()) $entryTrackback.getTitle() #end<br />
             #if ($entryTrackback.getExcerpt()) $entryTrackback.getExcerpt() #end<br />

@@ -51,7 +51,7 @@
                     String refererKey = (String)_gri.next();
                     BlogReferer referer= (BlogReferer)group.get(refererKey);
                     if( referer.isToday()) {
-                      %><a href="<%= refererKey %>"><%= refererKey %></a>&nbsp;(<%= referer.getCount() %>)<br/><%
+                      %><a href="<%= refererKey %>" rel="nofollow"><%= refererKey %></a>&nbsp;(<%= referer.getCount() %>)<br/><%
                     }
                 }
                %></p><%

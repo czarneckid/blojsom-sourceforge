@@ -24,7 +24,7 @@
 								<div>
 									#foreach ($entryTrackback in $entry.getTrackbacks())
 										<div class="trackback">
-											<div class="info">Left by <span class="author"><a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span> at $entryTrackback.getDateAsFormat("EEE, d MMM h:mm a")</div>
+											<div class="info">Left by <span class="author"><a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span> at $entryTrackback.getDateAsFormat("EEE, d MMM h:mm a")</div>
 											#if ($entryTrackback.getExcerpt())<p class="post">#if($entryTrackback.getTitle())<strong>$entryTrackback.getTitle()</strong><br />#end$entryTrackback.getExcerpt()</p>#end
 
 										</div>

@@ -51,7 +51,7 @@
 											<a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> 
 										#else $entryComment.getAuthor() 
 										#end -
-											<a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a></span>
+											<a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a></span>
 									
 									</p>
 								</div>

@@ -5,7 +5,7 @@
   Trackback for this entry:
   <div id="comment">
     <div id="commentHeader">
-      <span id="commentAuthor"><a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName()) $entryTrackback.getBlogName() #else $entryTrackback.getUrl() #end</a></span>
+      <span id="commentAuthor"><a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName()) $entryTrackback.getBlogName() #else $entryTrackback.getUrl() #end</a></span>
       <span id="commentDate">Left on: $entryTrackback.getTrackbackDate().</span>
     </div>
   #if ($entryTrackback.getTitle())

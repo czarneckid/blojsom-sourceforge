@@ -3,7 +3,7 @@
   <div id="comment">
     <div id="commentHeader">
       <span id="commentAuthor"><a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a>,</span>
-      <span id="commentAuthorUrl"><a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a></span>
+      <span id="commentAuthorUrl"><a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a></span>
       <span id="commentDate">Left on: $entryComment.getCommentDate().</span>
     </div>
     <div id="commentText">$entryComment.getComment()</div>

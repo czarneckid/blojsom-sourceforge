@@ -53,7 +53,7 @@
 	    <div class="comments-body">
 	    <p>$entryComment.getComment()</p>
 	    
-	    <span class="comments-post">Posted by: <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> (<a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>) - 
+	    <span class="comments-post">Posted by: <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> (<a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a>) - 
             Left on: $entryComment.getCommentDate()</span>
         </div>    
     #end

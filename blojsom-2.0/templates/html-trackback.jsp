@@ -113,7 +113,7 @@
                 }
         %>
         <div class="commentstyle">
-            Trackback from: <a href="<%= trackback.getUrl() %>"><%= urlName %></a>
+            Trackback from: <a href="<%= trackback.getUrl() %>" rel="nofollow"><%= urlName %></a>
             <div class="weblogdateline">Left on: <%= trackback.getTrackbackDate() %></div><br/>
             Title: <%= trackbackTitle %><br />
             <%= trackbackExcerpt %><br />

@@ -30,7 +30,7 @@
 
 										<div class="comment">
 											<p class="blue">
-												Left on $entryComment.getDateAsFormat('EEE, d MMM yyyy HH:mm') by #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end #if ($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0) (<a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>) #end
+												Left on $entryComment.getDateAsFormat('EEE, d MMM yyyy HH:mm') by #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end #if ($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0) (<a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a>) #end
 											</p>
 											<p>
 												$entryComment.getComment()

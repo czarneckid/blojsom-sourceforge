@@ -41,7 +41,7 @@ Available categories:
     <p class="weblogdateline"><a href="$entry.getLink()&amp;tb=y"><img src="$BLOJSOM_SITE_URL/trackback.gif" border="0"/></a>&nbsp;$entry.getLink()&amp;tb=y</p>
     #foreach ($entryTrackback in $entry.getTrackbacks())
         <div class="commentstyle">
-            Trackback from: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>
+            Trackback from: <a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>
             <div class="weblogdateline">Left on: $entryTrackback.getTrackbackDate()</div><br/>
             Title: #if ($entryTrackback.getTitle()) $entryTrackback.getTitle() #end<br />
             #if ($entryTrackback.getExcerpt()) $entryTrackback.getExcerpt() #end<br />

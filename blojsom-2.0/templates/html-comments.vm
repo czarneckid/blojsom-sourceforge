@@ -49,7 +49,7 @@ Available categories:
     #foreach ($entryComment in $entry.getComments())
         <div class="commentstyle">
             Comment by: #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end -
-                <a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>
+                <a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a>
             <div class="weblogdateline">Left on: $entryComment.getCommentDate()</div><br/>
             $entryComment.getComment()<br />
         </div>

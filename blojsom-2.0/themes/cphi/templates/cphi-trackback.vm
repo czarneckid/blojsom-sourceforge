@@ -42,7 +42,7 @@
 							</div>
 							<div class="trackback-excerpt">
 								#if ($entryTrackback.getExcerpt()) <p>$entryTrackback.getExcerpt()&nbsp;</p> #end
-								<p><span class="words">From: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span>
+								<p><span class="words">From: <a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span>
 								<span class="datestamp">$entryTrackback.getTrackbackDate()</span></p>
 							</div>
 						#end

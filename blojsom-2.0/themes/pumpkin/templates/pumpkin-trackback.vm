@@ -52,7 +52,7 @@
         <p>Title: #if ($entryTrackback.getTitle()) $entryTrackback.getTitle() #end</p>
 	    <p>#if ($entryTrackback.getExcerpt()) $entryTrackback.getExcerpt() #end</p>
 
-	    <span class="comments-post">Trackback from: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a> -
+	    <span class="comments-post">Trackback from: <a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a> -
             Left on: $entryTrackback.getTrackbackDate()</span>
         </div>
     #end

@@ -32,8 +32,8 @@
 
 										<div class="trackback">
 
-											<span class="blue">Left on $entryTrackback.getDateAsFormat('EEE, d MMM yyyy HH:mm') by <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span>
-											#if ($entryTrackback.getTitle()) <a href="$entryTrackback.getUrl()">$entryTrackback.getTitle()</a> #end<br />
+											<span class="blue">Left on $entryTrackback.getDateAsFormat('EEE, d MMM yyyy HH:mm') by <a href="$entryTrackback.getUrl()" rel="nofollow">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span>
+											#if ($entryTrackback.getTitle()) <a href="$entryTrackback.getUrl()" rel="nofollow">$entryTrackback.getTitle()</a> #end<br />
 											#if ($entryTrackback.getExcerpt()) $entryTrackback.getExcerpt() #end
 
 										</div>

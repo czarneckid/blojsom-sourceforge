@@ -109,7 +109,7 @@
         %>
                 <div class="commentstyle">
             Comment by: <%= commentAuthorLink %> -
-                <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a>
+                <a href="<%= blogComment.getAuthorURL() %>" rel="nofollow"><%= blogComment.getAuthorURL() %></a>
             <div class="weblogdateline">Left on: <%= blogComment.getCommentDate() %></div><br/>
             <%= blogComment.getComment() %><br />
         </div>
