@@ -44,7 +44,7 @@ import java.util.Map;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.5 2003-03-15 00:00:59 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.6 2003-03-15 00:16:56 czarneckid Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -89,8 +89,6 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
 
-            //@todo Decided if we relally want to exand the title
-            //entry.setTitle(entry.getTitle().replaceAll(URL_REGEX, HREF_EXPRESSION));
             entry.setDescription(entry.getDescription().replaceAll(URL_REGEX, HREF_EXPRESSION));
         }
 
@@ -104,21 +102,6 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
-
-
-    /*
-    public static void main(String[] args) {
-
-        String _hyperlink = "this is a test of an http://www.news.com replacement";
-        String _hyperlink2 = "this is a test of an <a href=\"http://www.news.com\" target=\"_blank\">http://www.news.com</a> replacement";
-
-        System.out.println(_hyperlink.replaceAll(URL_REGEX,HREF_EXPRESSION));
-        System.out.println(_hyperlink2.replaceAll(URL_REGEX,HREF_EXPRESSION));
-
-
-
-    }
-      */
 
     /**
      * Called when BlojsomServlet is taken out of service
