@@ -53,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.10 2004-01-20 03:55:58 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.11 2004-06-03 01:26:25 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -182,7 +182,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
         boolean result = false;
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             String category;
             String permalink;
@@ -214,7 +216,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
             }
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -283,7 +285,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             Hashtable userinfo = new Hashtable();
             userinfo.put(MEMBER_EMAIL, _blog.getBlogOwnerEmail());
@@ -303,7 +307,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
             return userinfo;
 
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -324,7 +328,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
             Vector result = new Vector();
 
             BlogCategory[] _categories = _fetcher.fetchCategories(null, _blogUser);
@@ -358,7 +364,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return result;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -386,7 +392,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("    Publish: " + publish);
         _logger.debug("     Content:\n " + content);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             boolean result = false;
 
@@ -425,7 +433,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return result;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -454,7 +462,10 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
         blogid = BlojsomUtils.normalize(blogid);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             String result = null;
 
             // Quick verify that the category is valid
@@ -487,7 +498,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return result;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -511,7 +522,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             String category;
             String permalink;
@@ -550,7 +563,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             } else {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -578,7 +591,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         Vector recentPosts = new Vector();
         blogid = BlojsomUtils.normalize(blogid);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             // Quick verify that the categories are valid
             File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
@@ -620,7 +635,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return recentPosts;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }

@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.14 2004-05-01 14:45:31 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.15 2004-06-03 01:26:25 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -208,7 +208,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             Hashtable result;
 
             BlogCategory[] categories = _fetcher.fetchCategories(null, _blogUser);
@@ -242,7 +245,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return result;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -267,7 +270,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("   Password: " + password);
         _logger.debug("    Publish: " + publish);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             boolean result = false;
 
             String category = null;
@@ -332,7 +338,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return result;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -359,7 +365,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
         blogid = BlojsomUtils.normalize(blogid);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             String result = null;
 
             //Quick verify that the categories are valid
@@ -404,7 +413,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return result;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -428,7 +437,9 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             String category;
             String permalink;
@@ -471,7 +482,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             } else {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -494,7 +505,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             blogid = BlojsomUtils.normalize(blogid);
             BlogCategory category = _fetcher.newBlogCategory();
             category.setCategory(blogid);
@@ -528,7 +542,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             }
 
             return blogEntries;
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
@@ -552,7 +566,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        if (_blog.checkAuthorization(userid, password)) {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(_blogUser);
+            _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             String name = (String) struct.get(MEMBER_NAME);
             _logger.debug("newMediaObject name: " + name);
             String type = (String) struct.get(MEMBER_TYPE);
@@ -592,7 +609,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 _logger.error("MIME type not accepted. Received MIME type: " + type);
                 throw new XmlRpcException(UNKNOWN_EXCEPTION, "MIME type not accepted. Received MIME type: " + type);
             }
-        } else {
+        } catch (BlojsomException e) {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
