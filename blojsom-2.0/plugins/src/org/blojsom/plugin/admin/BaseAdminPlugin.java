@@ -44,6 +44,7 @@ import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -56,9 +57,9 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.8 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.9 2004-02-17 04:28:02 czarneckid Exp $
  */
-public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
+public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
 
     protected static final Log _logger = LogFactory.getLog(BaseAdminPlugin.class);
 
