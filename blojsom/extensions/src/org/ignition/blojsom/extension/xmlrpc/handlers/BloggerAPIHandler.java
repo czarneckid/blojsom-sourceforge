@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.26 2003-05-31 20:11:34 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.27 2003-05-31 20:14:44 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -471,8 +471,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         if (_blog.checkAuthorization(userid, password)) {
             String result = null;
 
-            // Quick verify that the categories are valid
-            File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
+            // Quick verify that the category is valid
+            File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
                 String hashable = content;
@@ -494,6 +494,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
+                    entry.setCategory(blogid);
                     entry.setDescription(content);
                     blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
                     entry.setMetaData(blogEntryMetaData);
@@ -577,6 +578,24 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
+
+    /**
+     * Get the blog category. If the category exists, return the
+     * appropriate directory, otherwise return the "root" of this blog.
+     *
+     * @since blojsom 1.9
+     * @param categoryName Category name
+     * @return A directory into which a blog entry can be placed
+     */
+    protected File getBlogCategoryDirectory(String categoryName) {
+        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
+        if (blogCategory.exists() && blogCategory.isDirectory()) {
+            return blogCategory;
+        }
+        else{
+            return new File(_blog.getBlogHome() + "/");
         }
     }
 }

@@ -57,7 +57,7 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.26 2003-05-31 18:44:28 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.27 2003-05-31 20:14:44 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -270,7 +270,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             String result = null;
 
             //Quick verify that the categories are valid
-            File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
+            File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
                 Hashtable postcontent = struct;
@@ -304,6 +304,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
+                    entry.setCategory(blogid);
                     entry.setDescription(_post.toString());
                     blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
                     entry.setMetaData(blogEntryMetaData);
@@ -358,5 +359,23 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.debug("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+    }
+
+    /**
+     * Get the blog category. If the category exists, return the
+     * appropriate directory, otherwise return the "root" of this blog.
+     *
+     * @since blojsom 1.9
+     * @param categoryName Category name
+     * @return A directory into which a blog entry can be placed
+     */
+    protected File getBlogCategoryDirectory(String categoryName) {
+        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
+        if (blogCategory.exists() && blogCategory.isDirectory()) {
+            return blogCategory;
+        }
+        else{
+            return new File(_blog.getBlogHome() + "/");
+        }
     }
 }

@@ -61,6 +61,9 @@ Plugin changes:<br />
 - Referer plugin filters previously saved referer log through the blacklist filter at startup<br/>
 - Referer plugin now utilizes the new <i>blacklist.filter</i> file to filter referer entries<br/>
 - Referer plugin was doing some detailed logging that it did not need to do so these debug statements have been removed<br/>
+- A new parameter "entry-cutoff-text" was added to the "Show More" plugin so that you can put,
+for example, a tag like &lt;more/&gt; to indicate the cutoff point for the plugin to insert a link
+to the full text of the blog entry.<br />
 - Added <a href="plugins-googlehighlight.html">Google Highlight Plugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query<br/>
 - Added <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</a>
 which simply demonstrates how to sort entries in a different order<br/>
