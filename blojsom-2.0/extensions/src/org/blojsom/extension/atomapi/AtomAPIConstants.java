@@ -38,7 +38,7 @@ package org.blojsom.extension.atomapi;
  * AtomAPIConstants
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIConstants.java,v 1.4 2004-10-26 19:07:20 czarneckid Exp $
+ * @version $Id: AtomAPIConstants.java,v 1.5 2004-10-29 02:01:22 czarneckid Exp $
  * @since blojsom 2.0
  */
 public interface AtomAPIConstants {
@@ -137,10 +137,10 @@ public interface AtomAPIConstants {
     /**
      * SOAPAction header for SOAP AtomAPI client
      */
-    static final String HEADER_SOAPACTION = "SOAPaction";
+    static final String HEADER_SOAPACTION = "Soapaction";
 
     /**
      * SOAP action for a PUT request
      */
-    public static final String SOAPACTION_PUT = "http://schemas.xmlsoap.org/wsdl/http/PUT";
+    public static final String SOAPACTION_PUT = "\"http://schemas.xmlsoap.org/wsdl/http/PUT\"";
 }
