@@ -1,6 +1,14 @@
 <%@ page import="org.ignition.blojsom.blog.BlogEntry,
-                 org.ignition.blojsom.util.BlojsomConstants"
+                 org.ignition.blojsom.util.BlojsomConstants,
+                 org.ignition.blojsom.blog.Blog"
          contentType="text/plain" %>
+
+<% Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG); %>
+<%= blogInformation.getBlogName() %>
+<%= blogInformation.getBlogURL() %>
+<%= blogInformation.getBlogDescription() %>
+
+
 <%
     BlogEntry[] entryArray = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
     if (entryArray != null) {
