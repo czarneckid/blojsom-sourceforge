@@ -28,13 +28,10 @@ Available categories:
 #set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <link rel="service.comment" type="text/xml" href="$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()" title="Comment Interface"/>
-    <div class="entrystyle">
     <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
     <p class="weblogdateline">$entry.getDate()</p>
     <p>$entry.getDescription()</p>
-    </div>
-    <p class="weblogtitle">Comments on this entry</p><br/>
-
+    <p class="weblogtitle">Comments on this entry</p>
     <div class="entrystyle">
     #foreach ($entryComment in $entry.getComments())
         <div class="commentstyle">
