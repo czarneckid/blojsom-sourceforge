@@ -9,6 +9,76 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.05 to blojsom 2.06</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
+                        blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.06.jar,
+                        blojsom-extensions-2.06.jar, blojsom-plugins-2.06.jar files, and blojsom-plugins-templates-2.06.jar.
+                    </p>
+                    <p>
+                        2. Replace the commons-codec-1.1.jar file with the commons-code-1.2.jar file in your
+                        <code>/WEB-INF/lib</code> directory.
+                    </p>
+                </section>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. Add the following to your <code>/WEB-INF/plugin.properties</code> if you would like to
+                        enable web-based administration of blog users, authorization, and plugins.
+                        <pre>
+                            edit-blog-users=org.blojsom.plugin.admin.EditBlogUsersPlugin
+                            edit-blog-authorization=org.blojsom.plugin.admin.EditBlogAuthorizationPlugin
+                            edit-blog-plugins=org.blojsom.plugin.admin.EditBlogPluginsPlugin
+                        </pre>
+                    </p>
+                    <p>
+                        2. Add the following to your <code>/WEB-INF/web.xml</code> file under the init-params for
+                        BlojsomServlet if you are going to be using the administration plugin for editing blog users.
+                        <pre>
+                            &lt;init-param&gt;
+                                &lt;param-name&gt;plugin-admin-edit-users&lt;/param-name&gt;
+                                &lt;param-value&gt;/WEB-INF/plugin-admin-edit-users.properties&lt;/param-value&gt;
+                            &lt;/init-param&gt;
+                        </pre>
+                    </p>
+                    <p>
+                        3. Add the following file to your <code>/WEB-INF</code> directory under the
+                        filename, <code>plugin-admin-edit-users.properties</code> if you are going to be using the
+                        administration plugin for editing blog users.
+                        <pre>
+                            bootstrap-directory=/bootstrap
+                            blog-home-base-directory=/change/me/please
+                            administrators=default
+                        </pre>
+                        <code>bootstrap-directory</code> is the location off your <code>/WEB-INF</code> directory
+                        where the bootstrap properties and templates directory is. This precludes you from adding a
+                        user named "bootstrap". If you would like to add a user named "bootstrap", change the directory
+                        name here and on disk appropriately. <code>blog-home-base-directory</code> is the directory
+                        where users blogs will be stored. A directory with the new user id will be created under this
+                        directory for users you add dynamically to your blojsom installation. <code>administrators</code>
+                        is a comma-separated list of users who are enabled to add and delete users from your
+                        blojsom installation.
+                    </p>
+                    <p>
+                        4. Copy the <code>bootstrap</code> directory under your <code>/WEB-INF</code> directory so
+                        that you have a <code>/WEB-INF/bootstrap</code> directory and a <code>/WEB-INF/bootstrap/templates</code>
+                        directory. This is the directory that contains a bootstrap set of properties files and templates for
+                        adding new users to your blojsom installation.
+                    </p>
+                </section>
+                <section>
+                    <title>Template changes</title>
+                    <p>
+                        1. Replace the <code>rss2.vm</code> or <code>rss2.jsp</code> file (as appropriate) in the
+                        <code>templates</code> directory for those users who have an RSS2 flavor enabled. Added
+                        favorite icon support.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.04 to blojsom 2.05</title>
                 <section>
                     <title>Library changes</title>
