@@ -55,7 +55,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.6 2003-04-15 02:28:07 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.7 2003-04-15 03:23:01 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -192,8 +192,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
-                    //System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
-                    //result = _entry.getSource().delete();
+                    System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
+                    result = _entry.getSource().delete();
+                    // @todo Delete Comment and Trackbacks as well
                 } else {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
