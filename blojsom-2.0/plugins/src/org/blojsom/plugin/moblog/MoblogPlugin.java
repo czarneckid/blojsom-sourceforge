@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.18 2004-09-22 18:30:53 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.19 2004-11-16 01:55:39 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -521,9 +521,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                             }
                         }
 
-                        String filename = BlojsomUtils.digestString(entry.toString());
-                        filename += ".txt";
-
                         // Process subject to change category for moblog post
                         boolean categoryInSubject = false;
                         String categoryFromSubject = null;
@@ -553,10 +550,18 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                         File blogCategory = getBlogCategoryDirectory(blogUser.getBlog(), categoryName);
 
                         if (blogCategory.exists() && blogCategory.isDirectory()) {
+                            String extension = DEFAULT_ENTRY_EXTENSION;
+                            String filename = BlojsomUtils.getBlogEntryFilename(subject, entry.toString());
                             String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
 
                             try {
-                                File sourceFile = new File(outputfile);
+                                File sourceFile = new File(outputfile + extension);
+                                int fileTag = 1;
+                                while (sourceFile.exists()) {
+                                    sourceFile = new File(outputfile + "-" + fileTag + extension);
+                                    fileTag++;
+                                }
+
                                 BlogEntry blogEntry;
                                 blogEntry = _fetcher.newBlogEntry();
 
