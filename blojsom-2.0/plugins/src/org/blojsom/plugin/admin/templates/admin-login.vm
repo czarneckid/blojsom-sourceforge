@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Login")
+#adminPageHeader("#adminResource('login.header' 'Login')")
 
         <center>
             <table>
                 <form name="edit-blog-properties" action="$BLOJSOM_BLOG.getBlogURL()?flavor=admin" method="post">
                     <tr>
-                        <td>Username</td>
+                        <td>#adminResource('username.text' 'Username')</td>
                         <td>
                             <input name="username" type="text" size="25"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>Password</td>
+                        <td>#adminResource('password.text' 'Password')</td>
                         <td>
                             <input name="password" type="password" size="25"/>
                         </td>
@@ -20,8 +20,8 @@
                     <tr>
                         <td colspan="2">
                             <center>
-                                <input type="submit" name="submit" value="Login"/>
-                                <input type="reset" name="Reset" value="Reset"/>
+                                <input type="submit" name="submit" value="#adminResource('login.text' 'Login')"/>
+                                <input type="reset" name="Reset" value="#adminResource('reset.text' 'Reset')"/>
                             </center>
                         </td>
                     </tr>
