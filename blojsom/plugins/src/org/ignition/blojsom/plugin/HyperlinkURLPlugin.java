@@ -43,7 +43,7 @@ import java.util.HashMap;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.2 2003-03-01 19:29:09 intabulas Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.3 2003-03-11 04:23:36 czarneckid Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -84,10 +84,6 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
-        if (entries == null) {
-            return null;
-        }
-
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
 

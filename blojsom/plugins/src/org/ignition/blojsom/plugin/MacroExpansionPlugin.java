@@ -48,7 +48,7 @@ import java.util.regex.Matcher;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-03-01 18:04:32 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.3 2003-03-11 04:23:36 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -134,10 +134,6 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
-        if (entries == null) {
-            return null;
-        }
-
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
             entry.setTitle(replaceMacros(entry.getTitle()));
