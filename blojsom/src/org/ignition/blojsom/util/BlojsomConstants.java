@@ -110,6 +110,11 @@ public interface BlojsomConstants {
     public static final String QUERY_PARAM = "query";
 
     /**
+     * Request parameter for the "plugins"
+     */
+    public static final String PLUGINS_PARAM = "plugins";
+
+    /**
      * Value indicating all subdirectories under the blog home should be searched
      */
     public static final int INFINITE_BLOG_DEPTH = -1;
