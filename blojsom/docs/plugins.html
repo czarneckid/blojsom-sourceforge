@@ -52,7 +52,7 @@ change from its value of <i>/WEB-INF/plugin.properties</i>. Looking at
 <i>plugin.properties</i>, you will see something like:
 <ul>
 <pre>
-hyperlink-url=org.ignition.blojsom.plugin.HyperlinkURLPlugin
+href-hyperlinks=org.ignition.blojsom.plugin.HyperlinkURLPlugin
 macro-expansion=org.ignition.blojsom.plugin.MacroExpansionPlugin
 simple-search=org.ignition.blojsom.plugin.SimpleSearchPlugin
 html.blojsom-plugin-chain=macro-expansion, href-hyperlinks
@@ -72,6 +72,21 @@ plugin before the href hyperlinks plugin for the HTML flavor, we would set the v
 html.blojsom-plugin-chain=macro-expansion, href-hyperlinks
 </pre>
 </ul>
+
+<p class="weblogtitle">blojsom plugin execution</a></p>
+<p/>
+blojsom will not execute any of the plugins if there are no blog entries retrieved for a
+given request.
+<p class="weblogdateline">blojsom plugins override</p>
+You may override the plugins that get executed on a given request. The following table describes the URL parameters that affect the blojsom plugin chain.
+<p />
+<table border="1">
+    <th>URL parameter</th> <th>Accepted values</th> <th>Usage</th>
+    <tr align="center">
+        <td>plugins</td> <td align="left">A comma-separated list of <i>plugin-short-name</i> that will override
+        the plugin chain for the current requested flavor</td> <td>/blog/?plugins=href-hyperlinks,show-me-more</td>
+    </tr>
+</table>
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
