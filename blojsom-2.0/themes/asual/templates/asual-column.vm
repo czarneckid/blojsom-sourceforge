@@ -18,7 +18,7 @@
 						</div>
 						<div>
 								<strong>About:</strong>
-								<p>E-mail: <a href="mailto:$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate("david (at) blojsom (dot) com")">David Czarnecki</a></p>
+								<p>E-mail: <a href="mailto:$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())">$BLOJSOM_BLOG.getBlogName()</a></p>
 						</div>
 						<div>
 							<strong>Categories:</strong>
@@ -31,7 +31,7 @@
 						#if (!$BLOJSOM_PERMALINK && $entryCount > 0)
 						<div>
 							<strong>Recently:</strong>
-							<ul>#foreach($entry in $BLOJSOM_ENTRIES)#set($categoryForEntry = $entry.getBlogCategory().getCategory())#if ($categoryForEntry == "/")#set($categoryForEntry = "")#end#set($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")<li><a href="$entryLink">$entry.getTitle()</a></li>#end </ul>
+							<ul>#foreach($entry in $BLOJSOM_ENTRIES) #friendlyPermalink($entry)<li><a href="$entryLink">$entry.getTitle()</a></li>#end </ul>
 						</div>
 						#end
 						<div>
