@@ -40,9 +40,9 @@ import java.util.Calendar;
 
 /**
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
- *
+ * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.5 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.6 2004-01-13 02:10:04 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -64,7 +64,7 @@ public class VelocityHelper {
 
     /**
      * Public Constructor
-     *
+     * 
      * @param calendar BlogCalendar to render
      */
     public VelocityHelper(BlogCalendar calendar) {
@@ -73,7 +73,7 @@ public class VelocityHelper {
 
     /**
      * Sets the BlogCalendar to render
-     *
+     * 
      * @param calendar BlogCalendar
      */
     public void setCalendar(BlogCalendar calendar) {
@@ -110,8 +110,8 @@ public class VelocityHelper {
 
     /**
      * Get the visual content for a given calendar row
-     *
-     * @param row the row
+     * 
+     * @param row   the row
      * @param clazz the css style apply
      * @return the visual calendar row
      */
@@ -127,7 +127,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to Today
-     *
+     * 
      * @return the today navigation control
      */
     public String getToday() {
@@ -138,7 +138,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to the previous month
-     *
+     * 
      * @return the previous month navigation control
      */
     public String getPreviousMonth() {
@@ -158,29 +158,24 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to the next month
-     *
+     * 
      * @return the next month navigation control
      */
     public String getNextMonth() {
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, 1);
 
-        if ((_calendar.getCalendar().get(Calendar.MONTH) < (_calendar.getToday().get(Calendar.MONTH) + 1)) &&
-                (_calendar.getCalendar().get(Calendar.YEAR) <= _calendar.getToday().get(Calendar.YEAR))) {
-            result.append(HREF_PREFIX);
-            String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                    (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                    -1, _calendar.getCalendar().get(Calendar.YEAR));
+        result.append(HREF_PREFIX);
+        String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                -1, _calendar.getCalendar().get(Calendar.YEAR));
 
-            result.append(nexturl);
-            result.append("\"> ");
-            result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-            result.append(VTL_SPACER).append(VTL_SPACER).append("&gt;").append(HREF_SUFFIX);
-            _calendar.getCalendar().add(Calendar.MONTH, -1);
-        } else {
-            result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-            result.append(VTL_SPACER).append(VTL_SPACER).append("&gt;");
-        }
+        result.append(nexturl);
+        result.append("\"> ");
+        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+        result.append(VTL_SPACER).append(VTL_SPACER).append("&gt;").append(HREF_SUFFIX);
+        _calendar.getCalendar().add(Calendar.MONTH, -1);
+
         return result.toString();
     }
 }
