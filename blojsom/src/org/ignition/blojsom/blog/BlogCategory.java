@@ -49,7 +49,6 @@ public class BlogCategory implements Comparable {
 
     private String _categoryURL;
     private String _category;
-    private int _numOfEntries = 0;
     private Map _metadata = null;
     private String _description = null;
     private String _name = null;
@@ -100,24 +99,6 @@ public class BlogCategory implements Comparable {
      */
     public void setCategory(String _category) {
         this._category = _category;
-    }
-
-    /**
-     * Return the number of entries in this category
-     *
-     * @return Number of category entries
-     */
-    public int getNumberOfEntries() {
-        return _numOfEntries;
-    }
-
-    /**
-     * Set the number of entries in this category
-     *
-     * @param _numOfEntries Number of category entries
-     */
-    public void setNumberOfEntries(int _numOfEntries) {
-        this._numOfEntries = _numOfEntries;
     }
 
     /**
