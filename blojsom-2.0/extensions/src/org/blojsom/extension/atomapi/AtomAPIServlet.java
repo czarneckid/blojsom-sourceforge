@@ -78,7 +78,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.33 2004-05-10 03:24:14 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.34 2004-05-11 00:33:11 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -278,7 +278,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 }
 
                 // Okay now we generate a new NextOnce value, just for saftey sake and shove in into the response
-                String nonce = AtomUtils.generateNextNonce(blogUser);
+                //String nonce = AtomUtils.generateNextNonce(blogUser);
                 //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                 httpServletResponse.setStatus(200);
             } catch (BlojsomFetcherException e) {
@@ -379,70 +379,64 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         if (isAuthorized(blog, httpServletRequest)) {
 
-            _logger.info("Authorized");
+            if (!hasParams) {
+                content = createIntrospectionResponse(blog, blogUser);
+                httpServletResponse.setContentType(CONTENTTYPE_ATOM);
 
-//        if (!hasParams) {
-//            _logger.info("hasParams = True");
-//            content = createIntrospectionResponse(blog, blogUser);
-//            httpServletResponse.setContentType(CONTENTTYPE_XML);
-//
-//        } else if (isSearchRequest(httpServletRequest)) {
-//            _logger.info("isSearch = True");
-//            httpServletResponse.setContentType(CONTENTTYPE_XML);
-//            if (isSearchRequest(httpServletRequest)) {
-//                content = processSearchRequest(httpServletRequest, category, blog, blogUser);
-//            }
-//        } else {
-            _logger.info("Fetching " + permalink);
-            Map fetchMap = new HashMap();
-            BlogCategory blogCategory = _fetcher.newBlogCategory();
-            blogCategory.setCategory(category);
-            blogCategory.setCategoryURL(blog.getBlogURL() + category);
-            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
-            if (permalink != null) {
-                fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
-            }
-            try {
-                BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
-
-                if (entries != null && entries.length > 0) {
-                    BlogEntry entry = entries[0];
-                    Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry);
-
-
-                    String edituri = blog.getBlogBaseURL() + "/atomapi" + entry.getEncodedCategory() + "/?permalink=" + entry.getPermalink();
-                    LinkImpl link = new LinkImpl();
-                    link.setHref(edituri);
-                    link.setRelationship(AtomConstants.Rel.SERVICE_EDIT);
-                    link.setType(AtomConstants.Type.ATOM_XML);
-                    atomentry.addLink(link);
-
-                    content = Sandler.marshallEntry(atomentry);
-                    httpServletResponse.setContentType(CONTENTTYPE_ATOM);
+            } else if (isSearchRequest(httpServletRequest)) {
+                httpServletResponse.setContentType(CONTENTTYPE_XML);
+                if (isSearchRequest(httpServletRequest)) {
+                    content = processSearchRequest(httpServletRequest, category, blog, blogUser);
                 }
-            } catch (MarshallException e) {
-                _logger.error(e);
-                httpServletResponse.setStatus(404);
-            } catch (SerializationException e) {
-                _logger.error(e);
-                httpServletResponse.setStatus(404);
-            } catch (BlojsomFetcherException e) {
-                _logger.error(e);
-                httpServletResponse.setStatus(404);
+            } else {
+                _logger.info("Fetching " + permalink);
+                Map fetchMap = new HashMap();
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(blog.getBlogURL() + category);
+                fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+                if (permalink != null) {
+                    fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+                }
+                try {
+                    BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
+
+                    if (entries != null && entries.length > 0) {
+                        BlogEntry entry = entries[0];
+                        Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry);
+
+
+                        String edituri = blog.getBlogBaseURL() + "/atomapi" + entry.getEncodedCategory() + "/?permalink=" + entry.getPermalink();
+                        LinkImpl link = new LinkImpl();
+                        link.setHref(edituri);
+                        link.setRelationship(AtomConstants.Rel.SERVICE_EDIT);
+                        link.setType(AtomConstants.Type.ATOM_XML);
+                        atomentry.addLink(link);
+
+                        content = Sandler.marshallEntry(atomentry);
+                        httpServletResponse.setContentType(CONTENTTYPE_ATOM);
+                    }
+                } catch (MarshallException e) {
+                    _logger.error(e);
+                    httpServletResponse.setStatus(404);
+                } catch (SerializationException e) {
+                    _logger.error(e);
+                    httpServletResponse.setStatus(404);
+                } catch (BlojsomFetcherException e) {
+                    _logger.error(e);
+                    httpServletResponse.setStatus(404);
+                }
+
             }
 
 
             if (content != null) {
-                _logger.info("Sending a 200");
-                //String nonce = AtomUtils.generateNextNonce(blogUser);
-                //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                 httpServletResponse.setStatus(200);
                 httpServletResponse.setContentLength(content.length());
                 OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
                 osw.write(content);
                 osw.flush();
             } else {
-                _logger.info("Sending a 404");
                 httpServletResponse.setStatus(404);
             }
 
@@ -520,7 +514,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     httpServletResponse.setContentType(CONTENTTYPE_HTML);
                     httpServletResponse.setHeader(HEADER_LOCATION, entry.getEscapedLink());
 
-                    String nonce = AtomUtils.generateNextNonce(blogUser);
+                    //String nonce = AtomUtils.generateNextNonce(blogUser);
                     //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                     httpServletResponse.setStatus(201);
                 } catch (MarshallException e) {
@@ -591,7 +585,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(blogUser);
 
-                    String nonce = AtomUtils.generateNextNonce(blogUser);
+                    //String nonce = AtomUtils.generateNextNonce(blogUser);
                     //httpServletResponse.setHeader(x, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
 
                     httpServletResponse.setStatus(204);
