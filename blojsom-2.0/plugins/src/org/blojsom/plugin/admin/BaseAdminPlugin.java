@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.6 2003-12-23 03:15:37 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.7 2003-12-23 17:59:48 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -64,6 +64,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
     // Constants
     protected static final String BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY = "org.blojsom.plugin.admin.Authenticated";
+    protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY = "org.blojsom.plugin.admin.Username";
     protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM = "username";
     protected static final String BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM = "password";
     protected static final String ACTION_PARAM = "action";
@@ -129,6 +130,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
             // Check the username and password against the blog authorization
             if (blog.checkAuthorization(username, password)) {
                 httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
+                httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
                 _logger.debug("Passed authentication for username: " + username);
                 return true;
             } else {
