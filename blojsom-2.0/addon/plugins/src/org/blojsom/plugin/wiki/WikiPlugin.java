@@ -55,7 +55,8 @@ import java.util.Map;
  * WikiPlugin
  * 
  * @author David Czarnecki 
- * @version $Id: WikiPlugin.java,v 1.3 2003-12-02 03:36:07 czarneckid Exp $
+ * @version $Id: WikiPlugin.java,v 1.4 2003-12-17 20:03:27 czarneckid Exp $
+ * @since blojsom 1.8
  */
 public class WikiPlugin implements BlojsomPlugin {
 
