@@ -69,7 +69,7 @@ import java.util.Properties;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.14 2004-10-28 18:55:37 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.15 2004-11-07 19:17:55 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -256,8 +256,8 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
         byte[] result = xmlRpcServer.execute(httpServletRequest.getInputStream());
         String content = new String(result, UTF8);
-        httpServletResponse.setContentType("text/xml;charset=UTF-8");
-        httpServletResponse.setContentLength(content.length());
+        httpServletResponse.setContentType("text/xml; charset=UTF-8");
+        httpServletResponse.setContentLength(result.length);
         OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
         osw.write(content);
         osw.flush();
