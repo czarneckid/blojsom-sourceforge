@@ -55,7 +55,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Open proxy comment check plugin. This plugin queries the <a href="http://dsbl.org/main">Distributed
+ * Open proxy check plugin for comments and trackbacks. This plugin queries the <a href="http://dsbl.org/main">Distributed
  * Sender Blackhole List</a> if a comment or trackback is submitted. If the IP address of the requesting
  * host is on the blacklist, the comment or trackback is marked for moderation if moderation is enabled,
  * otherwise it is destroyed.
@@ -64,7 +64,7 @@ import java.util.Map;
  * trackback metadata.
  *
  * @author David Czarnecki
- * @version $Id: OpenProxyModerationPlugin.java,v 1.1 2005-01-06 17:10:44 czarneckid Exp $
+ * @version $Id: OpenProxyModerationPlugin.java,v 1.2 2005-01-06 17:14:15 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class OpenProxyModerationPlugin implements BlojsomPlugin {
