@@ -39,9 +39,20 @@ package org.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomConstants.java,v 1.1 2003-09-07 17:29:59 intabulas Exp $
+ * @version $Id: AtomConstants.java,v 1.2 2003-09-07 17:54:54 intabulas Exp $
  */
 public interface AtomConstants {
+
+    /**
+     * Default file extension for blog entries written via AtomAPI
+     */
+    public static final String DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION = ".txt";
+
+
+    /**
+     *
+     */
+    static final String BLOG_ATOMAPI_ENTRY_EXTENSION_IP = "blog-atomapi-entry-extension";
 
     /**
      * Header Value prefix for Basic Relm Auth.. NOTE: THE TRAILING SLASH IS INTENDED!
