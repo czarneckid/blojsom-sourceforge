@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.15 2004-09-15 00:59:34 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.16 2004-09-15 01:02:48 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -196,6 +196,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogConfigurationDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogConfigurationDirectory)) {
                     _logger.error("Unable to remove blog configuration directory: " + blogConfigurationDirectory.toString());
+                    addOperationResultMessage(context, "Unable to remove blog configuration for user: " + blogUserID);                   
                 } else {
                     _logger.debug("Removed blog configuration directory: " + blogConfigurationDirectory.toString());
                 }
@@ -203,12 +204,14 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogDirectory = new File(_blogHomeBaseDirectory + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogDirectory)) {
                     _logger.error("Unable to remove blog directory for user: " + blogDirectory.toString());
+                    addOperationResultMessage(context, "Unable to remove blog directory for user: " + blogUserID);
                 } else {
                     _logger.debug("Removed blog directory: " + blogDirectory.toString());
                 }
 
                 writeBlojsomConfiguration();
                 _logger.debug("Wrote new blojsom configuration after deleting user: " + blogUserID);
+                addOperationResultMessage(context, "Deleted user: " + blogUserID);
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
