@@ -49,7 +49,7 @@ public class CommentPlugin implements BlojsomPlugin {
     /**
      * Request parameter for the "commentText"
      */
-    public static final String COMMENT_TEXT_PARAM = "commentText";
+    private static final String COMMENT_TEXT_PARAM = "commentText";
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
     private Boolean _blogCommentsEnabled;
