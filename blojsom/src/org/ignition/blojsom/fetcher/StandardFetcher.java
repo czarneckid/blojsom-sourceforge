@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.15 2003-05-15 00:45:26 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.16 2003-05-26 19:10:34 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -105,7 +105,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @return Blog entry array containing the single requested permalink entry,
      * or <code>BlogEntry[0]</code> if the permalink entry was not found
      */
-    private BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
+    protected BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         String permalinkEntry = _blog.getBlogHome() + category + permalink;
         File blogFile = new File(permalinkEntry);
@@ -146,7 +146,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @return Blog entry array containing the list of blog entries for the requested category,
      * or <code>BlogEntry[0]</code> if there are no entries for the category
      */
-    private BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int maxBlogEntries) {
+    protected BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int maxBlogEntries) {
         BlogEntry[] entryArray;
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(requestedCategory.getCategory()));
         File[] entries = blogCategory.listFiles(BlojsomUtils.getRegularExpressionFilter(_blog.getBlogFileExtensions()));
@@ -202,7 +202,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @return Blog entry array containing the list of blog entries for the categories
      * or <code>BlogEntry[0]</code> if there are no entries
      */
-    private BlogEntry[] getEntriesAllCategories(String flavor, int maxBlogEntries) {
+    protected BlogEntry[] getEntriesAllCategories(String flavor, int maxBlogEntries) {
         if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
             return getEntriesAllCategories(_blog.getBlogDefaultCategoryMappings(), maxBlogEntries);
         } else {
@@ -231,7 +231,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @return Blog entry array containing the list of blog entries for the categories
      * or <code>BlogEntry[0]</code> if there are no entries
      */
-    private BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int maxBlogEntries) {
+    protected BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int maxBlogEntries) {
         BlogCategory[] blogCategories = null;
 
         if (categoryFilter == null) {
@@ -284,7 +284,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @param httpServletRequest Request
      * @return {@link BlogCategory} of the requested category
      */
-    private BlogCategory getBlogCategory(HttpServletRequest httpServletRequest) {
+    protected BlogCategory getBlogCategory(HttpServletRequest httpServletRequest) {
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
         _logger.debug("blojsom path info: " + requestedCategory);
@@ -392,7 +392,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @param blogDirectory Directory in which the current iteration is running
      * @param categoryList Dynamic list of categories that gets added to as it explores directories
      */
-    private void recursiveCategoryBuilder(int blogDepth, String blogDirectory, ArrayList categoryList) {
+    protected void recursiveCategoryBuilder(int blogDepth, String blogDirectory, ArrayList categoryList) {
         blogDepth++;
         if (_blog.getBlogDepth() != INFINITE_BLOG_DEPTH) {
             if (blogDepth == _blog.getBlogDepth()) {
@@ -432,7 +432,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      *
      * @return List of BlogCategory objects
      */
-    private BlogCategory[] getBlogCategories() {
+    protected BlogCategory[] getBlogCategories() {
         ArrayList categoryList = new ArrayList();
         recursiveCategoryBuilder(-1, _blog.getBlogHome(), categoryList);
         return (BlogCategory[]) (categoryList.toArray(new BlogCategory[categoryList.size()]));
@@ -448,7 +448,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @return List of blog categories or <code>null</code> if "/" category is requested or there
      * are no sub-categories
      */
-    private BlogCategory[] getBlogCategoryHierarchy(BlogCategory currentCategory) {
+    protected BlogCategory[] getBlogCategoryHierarchy(BlogCategory currentCategory) {
         if (currentCategory.getCategory().equals("/")) {
             return null;
         }
