@@ -50,6 +50,13 @@ a:hover
 	text-decoration: underline;
 }
 
+blockquote {
+    border: 2px dotted;
+    background-color: #eee;
+    padding: 15px;
+    margin: 10px 10px;
+    color: #333
+}
 
 
 .navigation
