@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.19 2004-09-01 18:14:06 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.20 2004-09-01 18:35:02 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -700,7 +700,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         }
 
         context.put(STANDARD_FETCHER_DEPTH, new Integer(blogDirectoryDepth));
-        BlogCategory[] allCategories = getBlogCategories(blog, blogDirectoryDepth);
+        BlogCategory[] allCategories = getBlogCategories(blog, INFINITE_BLOG_DEPTH);
         context.put(BLOJSOM_ALL_CATEGORIES, allCategories);
 
         if ("/".equals(category.getCategory())) {
