@@ -10,9 +10,8 @@
 								</tfoot>
 								<tbody>
 									#foreach( $number in [1..6] )
-									<tr>
-										$BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow($number,"calendarcolumn")
-									</tr>
+
+									<tr>$BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow($number,"calendarcolumn")</tr>
 									#end
 								</tbody>
 							</table>

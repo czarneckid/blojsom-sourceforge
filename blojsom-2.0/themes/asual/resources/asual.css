@@ -122,10 +122,12 @@ a:hover {
 	width: 100%;
 	clear: both;
 	float: left;
+	height: 2em;
 }
 #clear {
 	clear: both;
-	height: 10px;
+	height: 0px;
+	overflow: hidden;
 }
 #entries {
 	width: 100%;
@@ -242,7 +244,13 @@ div.entry h3 a:hover {
 }
 div.entry div, div.entry p {
 	line-height: 18px;
-	margin-bottom: 16px;
+	margin-bottom: 1em;
+}
+div.entry p.links a, div.entry p.links a:visited {
+	color: #365483;
+}
+div.entry p.links a:hover {
+	color: #CC0000;
 }
 div.entry span {
 	margin-right: 4px;
@@ -306,12 +314,6 @@ div.trackback {
 }
 img.emoticon {
 	vertical-align: middle
-}
-.links a, .links a:visited {
-	color: #365483;
-}
-.links a:hover {
-	color: #CC0000;
 }
 .blue {
 	display: block;

@@ -4,22 +4,22 @@
 
 							<h3><a href="$entryLink" title="$entry.getTitle()">$entry.getTitle()</a></h3>
 							<p class="links">
-								[<a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getName">#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end </a>] [<a href="$entryLink" title="Permalink">Permalink</a>]
+								[<a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end </a>] [<a href="$entryLink" title="Permalink">Permalink</a>]
 							</p>
 							<div>
 								$entry.getDescription()
 							</div>
 							<p>
-								#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))<span class="blue">Posted on $BLOJSOM_DATE_FORMAT.format( $entry.getDate() ) by $entry.getMetaData().get("blog-entry-author") ($!entry.getMetaData().get("blojsom-plugin-days-since-posted") day(s) old)</span>#end
+								#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))<span class="blue">Posted on $entry.getDateAsFormat('EEE, d MMM yyyy HH:mm') by $entry.getMetaData().get("blog-entry-author") ($!entry.getMetaData().get("blojsom-plugin-days-since-posted") day(s) old)</span>#end
 
 								#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))<span>Comments [<a href="$entryLink?page=comments">$entry.getNumComments()</a>]</span>#end
 
 								#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))<span>Trackbacks [<a href="$entryLink?page=trackback">$entry.getNumTrackbacks()</a>]</span>#end
 
 							</p>
+							<!-- Trackback Auto Discovery -->
 							#set( $totalEntries = $totalEntries + 1)
 							#if ($BLOJSOM_PERMALINK)
-								<!-- Trackback Auto Discovery -->
 								#set( $blogDescription = $entry.getEscapedDescription() )
 								#if ($blogDescription.length() > 255 )
 									#set( $ellipses = "..." )
