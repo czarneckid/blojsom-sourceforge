@@ -63,7 +63,7 @@ import java.util.Properties;
  * FreeMarkerDispatcher
  * 
  * @author czarneckid
- * @version $Id: FreeMarkerDispatcher.java,v 1.6 2005-01-05 02:30:56 czarneckid Exp $
+ * @version $Id: FreeMarkerDispatcher.java,v 1.7 2005-01-11 18:43:01 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FreeMarkerDispatcher implements BlojsomDispatcher {
@@ -179,9 +179,10 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
 
         Writer responseWriter = httpServletResponse.getWriter();
         String flavorTemplateForPage = null;
+        String pageParameter = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest, true);
 
-        if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
-            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest));
+        if (pageParameter != null) {
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, pageParameter);
             _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 

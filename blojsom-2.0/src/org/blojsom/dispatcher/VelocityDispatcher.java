@@ -59,7 +59,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.16 2005-01-05 02:32:54 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.17 2005-01-11 18:43:02 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -188,9 +188,10 @@ public class VelocityDispatcher implements BlojsomDispatcher {
 
         Writer responseWriter = httpServletResponse.getWriter();
         String flavorTemplateForPage = null;
-
-        if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
-            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest));
+        String pageParameter = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest, true);
+        
+        if (pageParameter != null) {
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, pageParameter);
             _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 

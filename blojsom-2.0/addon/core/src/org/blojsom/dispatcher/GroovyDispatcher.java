@@ -61,7 +61,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.13
- * @version $Id: GroovyDispatcher.java,v 1.3 2005-01-05 02:30:56 czarneckid Exp $
+ * @version $Id: GroovyDispatcher.java,v 1.4 2005-01-11 18:43:01 czarneckid Exp $
  */
 public class GroovyDispatcher implements BlojsomDispatcher {
 
@@ -117,8 +117,10 @@ public class GroovyDispatcher implements BlojsomDispatcher {
         }
 
         String flavorTemplateForPage = null;
-        if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
-            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest));
+        String pageParameter = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest, true);
+
+        if (pageParameter != null) {
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, pageParameter);
             _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 

@@ -54,7 +54,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.12 2005-01-05 02:32:54 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.13 2005-01-11 18:43:02 czarneckid Exp $
  */
 public class JSPDispatcher implements BlojsomDispatcher {
 
@@ -116,8 +116,10 @@ public class JSPDispatcher implements BlojsomDispatcher {
         }
 
         String flavorTemplateForPage = null;
-        if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
-            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest));
+        String pageParameter = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest, true);
+
+        if (pageParameter != null) {
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, pageParameter);
             _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 
