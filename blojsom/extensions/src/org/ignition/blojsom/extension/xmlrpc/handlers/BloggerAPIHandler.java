@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.24 2003-05-31 02:09:19 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.25 2003-05-31 18:45:58 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -67,6 +67,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
     private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
     private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
+
+    private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     /**
      * Blogger API "url" key
@@ -220,7 +222,12 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    _entries[0].deleteEntry(_blog);
+                    try {
+                        _entries[0].deleteEntry(_blog);
+                    } catch (BlojsomException e) {
+                        _logger.error(e);
+                        throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                    }
                     result = true;
                 } else {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
@@ -424,6 +431,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                         _entry.saveEntry(_blog);
                         result = true;
                     } catch (BlojsomException e) {
+                        _logger.error(e);
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                     }
                 } else {
@@ -463,7 +471,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         if (_blog.checkAuthorization(userid, password)) {
             String result = null;
 
-            //Quick verify that the categories are valid
+            // Quick verify that the categories are valid
             File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
@@ -479,34 +487,19 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 try {
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), _blog.getBlogFileEncoding()));
-                    bw.write(content);
-                    bw.close();
+                    File sourceFile = new File(outputfile);
+                    BlogEntry entry = _fetcher.newBlogEntry();
+                    HashMap attributeMap = new HashMap();
+                    HashMap blogEntryMetaData = new HashMap();
+
+                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
+                    entry.setAttributes(attributeMap);
+                    entry.setDescription(content);
+                    blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
+                    entry.setMetaData(blogEntryMetaData);
+                    entry.saveEntry(_blog);
                     result = postid;
-
-
-                    // Filename for Entry Meta Data - We do this since BlogEntry only loads and does not save....
-                    String metaFile = _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid)
-                            + baseFilename + _blog.getBlogEntryMetaDataExtension();
-
-                    File blogEntryMetaData = new File(metaFile);
-                    Properties metaProps = new Properties();
-                    // If any meta data exists, load it first..
-                    if (blogEntryMetaData.exists()) {
-                        FileInputStream fis = new FileInputStream(blogEntryMetaData);
-                        metaProps.load(fis);
-                        fis.close();
-                    }
-
-                    // Add the posters ID as the entry author
-                    metaProps.put(BlojsomConstants.BLOG_METADATA_ENTRY_AUTHOR, userid);
-
-                    FileOutputStream fos = new FileOutputStream(blogEntryMetaData, false);
-                    metaProps.store(fos, BlojsomConstants.BLOG_METADATA_HEADER);
-                    fos.close();
-
-
-                } catch (IOException e) {
+                } catch (BlojsomException e) {
                     _logger.error(e);
                     throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                 }
@@ -543,7 +536,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
         if (_blog.checkAuthorization(userid, password)) {
 
-            //Quick verify that the categories are valid
+            // Quick verify that the categories are valid
             File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
             if (blogCategoryFile.exists() && blogCategoryFile.isDirectory()) {
 
