@@ -205,7 +205,7 @@
     <!-- =================================================================== -->
     <!-- Copies the shrubbery theme                                          -->
     <!-- =================================================================== -->
-    <target name="shrubbery">
+    <target name="copy-shrubbery-theme">
         <tstamp/>
         <copy todir="${build.dir}">
             <fileset dir="${themes.dir}/shrubbery">
@@ -220,5 +220,52 @@
             </fileset>
         </copy>
     </target>
+
+    <!-- =================================================================== -->
+    <!-- Copies the secondwave theme                                         -->
+    <!-- =================================================================== -->
+    <target name="copy-green-lantern-theme">
+        <tstamp/>
+        <copy todir="${war.dir}">
+            <fileset dir="${themes.dir}/green-lantern">
+                <include name="**/*.css"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Copies the eclipse theme                                            -->
+    <!-- =================================================================== -->
+    <target name="copy-eclipse-theme">
+        <tstamp/>
+        <copy todir="${build.dir}">
+            <fileset dir="${themes.dir}/eclipse">
+                <include name="**/*.vm"/>
+            </fileset>
+        </copy>
+        <copy todir="${war.dir}">
+            <fileset dir="${themes.dir}/eclipse">
+                <include name="**/*.css"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Copies the secondwave theme                                         -->
+    <!-- =================================================================== -->
+    <target name="copy-secondwave-theme">
+        <tstamp/>
+        <copy todir="${build.dir}">
+            <fileset dir="${themes.dir}/secondwave">
+                <include name="**/*.vm"/>
+            </fileset>
+        </copy>
+        <copy todir="${war.dir}">
+            <fileset dir="${themes.dir}/secondwave">
+                <include name="**/*.css"/>
+            </fileset>
+        </copy>
+    </target>
+
 </project>
 
