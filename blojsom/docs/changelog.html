@@ -16,14 +16,20 @@
 <p class="weblogdateline">Available from CVS</p>
 <p />
 General:<br />
+- blojsom now requires Java 1.4.x as it now uses some of the Java 1.4 regular expression support <br />
 - Added the blojsom <i>favicon.ico</i> file and references in the html JSP and Velocity templates <br />
 - <i>main.css</i> was renamed to <i>blojsom.css</i> to avoid potential conflicts with existing style sheets <br />
 - <i>dispatcher-map.properties</i> was changed to <i>dispatcher.properties</i> <br />
 - Added <tt>Blog(Properties blogConfiguration)</tt> to the <tt>Blog</tt> class and removed previous <tt>Blog</tt> constructor <br />
-- Removed intermediate category output in HTML JSP template <br />
+- Removed intermediate category output in html JSP template <br />
+- <i>blog-file-extensions</i> now takes a comma-separated list of regular expressions, rather than simply file extensions<br />
+- Added <i>blog-directory-filter</i> to <i>blojsom.properties</i>, which takes a comma-separated list of regular expressions for directories to filter when generating the category list<br />
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=689070&group_id=72754">BUG 689070</a>: ClassCastException in rss.jsp<br />
+<p />
+The following RFEs were addressed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=684341&group_id=72754&atid=535589">RFE 684341</a>: blog-file-extensions -> blog-file-name-pattern<br />
 <p>
 <p class="weblogtitle">blojsom 1.2</p>
 <p class="weblogdateline">February 17, 2003</p>
