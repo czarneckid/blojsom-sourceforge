@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.22 2005-01-11 14:56:28 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.23 2005-01-19 17:54:47 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -293,6 +293,9 @@ public class FileBackedBlogEntry extends BlogEntry {
         } catch (IOException e) {
             _logger.error(e);
         }
+
+        comment.setBlogEntry(this);
+
         return comment;
     }
 
@@ -385,6 +388,7 @@ public class FileBackedBlogEntry extends BlogEntry {
                         }
                 }
             }
+
             trackback.setId(trackbackFile.getName());
             br.close();
 
@@ -401,6 +405,9 @@ public class FileBackedBlogEntry extends BlogEntry {
         } catch (IOException e) {
             _logger.error(e);
         }
+
+        trackback.setBlogEntry(this);
+        
         return trackback;
     }
 
@@ -517,7 +524,8 @@ public class FileBackedBlogEntry extends BlogEntry {
                 setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(_category.substring(0, _category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(_source.getName()));
             }
 
-            setBlogCategory(blogCategoryForEntry);
+            blogCategoryForEntry.setBlogEntry(this);
+            _blogCategory = blogCategoryForEntry;
         }
     }
 
