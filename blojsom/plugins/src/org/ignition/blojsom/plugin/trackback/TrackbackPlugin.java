@@ -84,13 +84,13 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * Key under which the trackback return code will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    private static final String BLOJSOM_TRACKBACK_RETURN_CODE = "BLOJSOM_TRACKBACK_RETURN_CODE";
+    public static final String BLOJSOM_TRACKBACK_RETURN_CODE = "BLOJSOM_TRACKBACK_RETURN_CODE";
 
     /**
      * Key under which the trackback error message will be placed
      * (example: on the request for the JSPDispatcher)
      */
-    private static final String BLOJSOM_TRACKBACK_MESSAGE = "BLOJSOM_TRACKBACK_MESSAGE";
+    public static final String BLOJSOM_TRACKBACK_MESSAGE = "BLOJSOM_TRACKBACK_MESSAGE";
 
     /**
      * Trackback success page
@@ -153,6 +153,11 @@ public class TrackbackPlugin implements BlojsomPlugin {
             }
             if (excerpt == null) {
                 excerpt = "";
+            } else {
+                if (excerpt.length() >= 255) {
+                    excerpt = excerpt.substring(0,252);
+                    excerpt += "...";
+                }
             }
             if (blogName == null) {
                 blogName = "";
@@ -167,8 +172,6 @@ public class TrackbackPlugin implements BlojsomPlugin {
             } else {
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
             }
-        } else {
-            _logger.debug("Trackback plugin error: url, category, permalink, or tb was null or not present");
         }
 
         return entries;
