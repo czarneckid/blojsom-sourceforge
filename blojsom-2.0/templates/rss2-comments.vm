@@ -9,6 +9,7 @@
         <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
 		<dc:creator>$BLOJSOM_BLOG.getBlogOwnerEmail()</dc:creator>
 		<generator>$BLOJSOM_VERSION</generator>
+		<docs>http://backend.userland.com/rss</docs>
 
         #foreach ($entryComment in $entry.getComments())
         <item>
