@@ -53,15 +53,24 @@ blog-entry-meta-data-extension=.meta
 This should be an extension separate from the extensions for blog entries (<i>blog-file-extensions</i>)
 and separate from the extension for category meta-data (<i>blog-properties-extensions</i>).
 <p/>
+
 5. Be sure to upload <tt>blacklist.filters</tt> if you want to use any of the content filtering features. You can edit
-this yourself to add any other filters, they are just regular expressions
+this yourself to add any other filters, they are just regular expressions.
 <p/>
 
-6. Add the following to <i>/WEB-INF/blojsom.properties</i> to enable blacklist filtering
+6. Add the following to <i>/WEB-INF/blojsom.properties</i> to enable blacklist filtering.
 <pre>
 blog-blacklist-file=<i>Path to the uploaded blacklist.filters</i>
 </pre>
 
+7. A parameter has been added to <i>/WEB-INF/blojsom.properties</i>.<br />
+<i>blog-file-encoding</i> is not required, however you can add the following line to the
+<i>/WEB-INF/blojsom.properties</i> file for completeness. By default, blojsom will use UTF-8
+as the file encoding.<br />
+For example:
+<pre>
+blog-file-encoding=
+</pre>
 
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
