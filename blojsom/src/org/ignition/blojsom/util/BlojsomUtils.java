@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -50,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.36 2003-03-27 01:55:10 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.37 2003-03-27 02:49:33 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -497,6 +498,20 @@ public class BlojsomUtils implements BlojsomConstants {
             return URLEncoder.encode(input, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return input;
+        }
+    }
+
+    /**
+     * Return a URL decoded string
+     *
+     * @param input Input string
+     * @return URL decoded string or <code>null</code> if there is a decoding exception
+     */
+    public static final String urlDecode(String input) {
+        try {
+            return URLDecoder.decode(input, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
         }
     }
 
