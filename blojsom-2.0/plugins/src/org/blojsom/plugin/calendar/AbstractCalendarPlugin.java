@@ -42,7 +42,6 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +53,7 @@ import java.util.*;
  * to filter content.
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.3 2003-08-18 02:19:35 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -132,7 +131,6 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
         Blog blog = user.getBlog();
         Locale locale = Locale.getDefault();
-        String _blogUrlPrefix;
 
         // If blog-language is set in blojsom.properties, use it instead
         String localeLanguage = blog.getBlogLanguage();
@@ -143,17 +141,8 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
         }
         context.put(BLOJSOM_CALENDAR_LOCALE, locale);
 
-        _blogUrlPrefix = blog.getBlogURL();
-
         String requestedDateKey;
-
-        // Was a category part of the URL? If so we want to create href's based on the category
-        String requestedCategory = httpServletRequest.getPathInfo();
-        if (requestedCategory == null) {
-            requestedCategory = "";
-        }
-
-        String calendarUrl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(requestedCategory);
+        String calendarUrl = httpServletRequest.getRequestURL().toString();
 
         // Default to the Current Month and Year
         Calendar calendar = new GregorianCalendar(locale);
