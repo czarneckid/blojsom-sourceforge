@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.23 2004-08-28 16:54:44 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.24 2004-09-12 22:57:52 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -78,6 +78,7 @@ public class Blog implements BlojsomConstants {
     private String _blogFileEncoding;
     private String _blogDefaultFlavor;
     private Boolean _linearNavigationEnabled;
+    private Boolean _xmlrpcEnabled;
 
     private Map _blogProperties;
 
@@ -271,6 +272,13 @@ public class Blog implements BlojsomConstants {
         String linearNavigationEnabled = blogConfiguration.getProperty(LINEAR_NAVIGATION_ENABLED_IP);
         _linearNavigationEnabled = Boolean.valueOf(linearNavigationEnabled);
         _blogProperties.put(LINEAR_NAVIGATION_ENABLED_IP, _linearNavigationEnabled);
+
+        String xmlrpcEnabled = blogConfiguration.getProperty(XMLRPC_ENABLED_IP);
+        if (BlojsomUtils.checkNullOrBlank(xmlrpcEnabled)) {
+            xmlrpcEnabled = "true";
+        }
+        _xmlrpcEnabled = Boolean.valueOf(xmlrpcEnabled);
+        _blogProperties.put(XMLRPC_ENABLED_IP, _xmlrpcEnabled);
 
         _logger.info("blojsom home: " + _blogHome);
     }
@@ -867,5 +875,26 @@ public class Blog implements BlojsomConstants {
     public void setLinearNavigationEnabled(Boolean linearNavigationEnabled) {
         _linearNavigationEnabled = linearNavigationEnabled;
         _blogProperties.put(LINEAR_NAVIGATION_ENABLED_IP, _linearNavigationEnabled);
+    }
+
+    /**
+     * Is XML-RPC enabled for this blog?
+     *
+     * @return <code>true</code> if XML-RPC is enabled, <code>false</code> otherwise
+     * @since blojsom 2.19
+     */
+    public Boolean getXmlrpcEnabled() {
+        return _xmlrpcEnabled;
+    }
+
+    /**
+     * Set whether or not XML-RPC is enabled
+     *
+     * @param xmlrpcEnabled <code>true</code> if XML-RPC is enabled, <code>false</code> otherwise
+     * @since blojsom 2.19
+     */
+    public void setXmlrpcEnabled(Boolean xmlrpcEnabled) {
+        _xmlrpcEnabled = xmlrpcEnabled;
+        _blogProperties.put(XMLRPC_ENABLED_IP, _xmlrpcEnabled);
     }
 }
