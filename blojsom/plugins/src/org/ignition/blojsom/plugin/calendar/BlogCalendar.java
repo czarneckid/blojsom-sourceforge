@@ -49,36 +49,54 @@ import java.util.Arrays;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.1 2003-03-27 02:07:42 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.2 2003-03-27 04:28:57 intabulas Exp $
  */
 public class BlogCalendar {
 
     private Log _logger = LogFactory.getLog(BlogCalendar.class);
+
 
     private Calendar _calendar;
     private Date _today;
     private DateFormatSymbols _symbols;
     private Locale _local;
     private Boolean[] _dayswithentry;
+    private String[] _shortdownames;
+    private String _blogURL;
+    private int currentmonth;
+    private int currentyear;
 
+    // [Row][Col]
+    private String[][] visualcalendar = new String[6][7];
 
     /**
      *
      * @param calendar
      */
-    public BlogCalendar(Calendar calendar) {
-        this(calendar, Locale.getDefault());
+    public BlogCalendar(Calendar calendar, String blogurl) {
+        this(calendar, blogurl, Locale.getDefault());
     }
 
-    public BlogCalendar(Calendar calendar, Locale locale) {
+    public BlogCalendar(Calendar calendar, String blogurl, Locale locale) {
         _local = locale;
         _calendar = calendar;
         _today = new Date();
         _symbols = new DateFormatSymbols(_local);
+        _blogURL = blogurl;
+
+        currentmonth = calendar.get(Calendar.MONTH) + 1 ;// Damm Java!
+        currentyear = calendar.get(Calendar.YEAR);
 
 
         _dayswithentry = new Boolean[_calendar.getMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(_dayswithentry, Boolean.FALSE);
+
+        _shortdownames = new String[7];
+        String[] downames = _symbols.getShortWeekdays();
+        for (int x = 0; x < _shortdownames.length; x++) {
+            _shortdownames[x] = downames[x + 1];
+        }
+
     }
 
     public String getCaption() {
@@ -86,30 +104,30 @@ public class BlogCalendar {
     }
 
     public int getFirstDayOfMonth() {
-       _calendar.set( Calendar.DAY_OF_MONTH, 1 );
-        return _calendar.get( Calendar.DAY_OF_WEEK);
+        _calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return _calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     public int getDaysInMonth() {
         return _calendar.getMaximum(Calendar.DAY_OF_MONTH);
     }
 
-    public void setEntryForDOM( int dom ) {
+    public void setEntryForDOM(int dom) {
         _dayswithentry[dom - 1] = new Boolean(true);
     }
 
-    public void removetEntryForDOM( int dom ) {
+    public void removetEntryForDOM(int dom) {
         _dayswithentry[dom - 1] = new Boolean(false);
     }
 
-    public boolean dayHasEntry( int dom ) {
-        return ((Boolean)_dayswithentry[dom-1]).booleanValue();
+    public boolean dayHasEntry(int dom) {
+        Boolean hasEntry = _dayswithentry[dom - 1];
+        return hasEntry.booleanValue();
     }
 
     public Boolean[] getEntryDates() {
         return _dayswithentry;
     }
-
 
 
     public String getMonthName(int month) {
@@ -137,11 +155,49 @@ public class BlogCalendar {
     }
 
     public String getShortDayOfWeekName(int dow) {
-        return getShortDayOfWeekNames()[dow];
+        return _shortdownames[dow - 1];
     }
 
     public String[] getShortDayOfWeekNames() {
-        return _symbols.getShortWeekdays();
+        return _shortdownames;
+    }
+
+
+    // == Render Helper
+
+    public void buildCalendar() {
+        int fdow = getFirstDayOfMonth() - 1;
+        int ldom = getDaysInMonth();
+        int dowoffset = 0;
+        for (int x = 0; x < 6; x++) {
+            for (int y = 0; y < 7; y++) {
+                if ((x == 0 && y < fdow) || (dowoffset >= ldom)) {
+                    visualcalendar[x][y] = "&nbsp;";
+                } else {
+                    dowoffset += 1;
+                    if (!dayHasEntry(dowoffset)) {
+                        visualcalendar[x][y] = new Integer(dowoffset).toString();
+                    } else {
+                        StringBuffer _url = new StringBuffer("<a href=\"").append(_blogURL);
+                        _url.append("?month=").append(currentmonth);
+                        _url.append("?year=").append(currentyear);
+                        _url.append("?day=").append(dowoffset);
+                        _url.append("\">").append(dowoffset).append("</a>");
+                        visualcalendar[x][y] = _url.toString();
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    public String getVisualCalendarRow(int row, String clazz) {
+        StringBuffer result = new StringBuffer();
+        for (int x = 0; x < 7; x++) {
+            result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
+        }
+        return result.toString();
     }
 
 

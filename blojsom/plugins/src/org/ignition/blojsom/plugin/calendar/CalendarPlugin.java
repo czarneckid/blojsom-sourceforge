@@ -52,7 +52,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.7 2003-03-27 02:07:42 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.8 2003-03-27 04:28:57 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -62,6 +62,7 @@ public class CalendarPlugin implements BlojsomPlugin {
      * Locale to use for the Calendar.
      */
     private Locale _locale = Locale.getDefault();
+    private String _blogUrlPrefix;
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -76,6 +77,8 @@ public class CalendarPlugin implements BlojsomPlugin {
         if ( locale != null ) {
              _locale = new Locale(locale);
         }
+
+        _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
     }
 
     /**
@@ -90,6 +93,11 @@ public class CalendarPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
+
+        String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
+        if ( category == null) {
+            category = "/";
+        }
 
         // Default to the Current Month and Year
         Calendar calendar = new GregorianCalendar(_locale);
@@ -112,7 +120,8 @@ public class CalendarPlugin implements BlojsomPlugin {
 
         }
 
-        BlogCalendar _blogCalendar = new BlogCalendar(calendar, _locale);
+        String _calurl =_blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
+        BlogCalendar _blogCalendar = new BlogCalendar(calendar, _calurl, _locale);
 
         Calendar entrycalendar = new GregorianCalendar(_locale);
         if (entries != null && entries.length > 0) {
@@ -135,6 +144,7 @@ public class CalendarPlugin implements BlojsomPlugin {
             }
         }
 
+        _blogCalendar.buildCalendar();
         context.put(BlojsomConstants.BLOJSOM_CALENDAR, _blogCalendar);
         return entries;
     }
