@@ -51,7 +51,7 @@ import java.util.regex.Matcher;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.7 2003-03-23 19:27:47 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.8 2003-03-25 04:23:27 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -88,6 +88,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(macroConfiguration);
         try {
             macroProperties.load(is);
+            is.close();
             Iterator handlerIterator = macroProperties.keySet().iterator();
             while (handlerIterator.hasNext()) {
                 String keyword = (String) handlerIterator.next();

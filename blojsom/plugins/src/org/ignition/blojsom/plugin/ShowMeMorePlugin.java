@@ -48,7 +48,7 @@ import java.util.Map;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.5 2003-03-23 19:27:47 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.6 2003-03-25 04:23:27 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -83,6 +83,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(showMeMoreConfiguration);
         try {
             showMeMoreProperties.load(is);
+            is.close();
             _moreText = showMeMoreProperties.getProperty(SHOW_ME_MORE_TEXT);
             _cutoff = Integer.parseInt(showMeMoreProperties.getProperty(ENTRY_LENGTH_CUTOFF));
         } catch (IOException e) {

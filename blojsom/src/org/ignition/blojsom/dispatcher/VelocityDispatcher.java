@@ -56,7 +56,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.9 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.10 2003-03-25 04:25:22 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -82,6 +82,7 @@ public class VelocityDispatcher implements GenericDispatcher {
         try {
             velocityProperties.load(is);
             Velocity.init(velocityProperties);
+            is.close();
         } catch (Exception e) {
             _logger.error(e);
         }

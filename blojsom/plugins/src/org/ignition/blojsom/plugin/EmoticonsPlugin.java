@@ -49,7 +49,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.5 2003-03-23 19:27:47 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.6 2003-03-25 04:23:20 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -130,6 +130,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(emoticonsConfiguration);
         try {
             _emoticonsProperties.load(is);
+            is.close();
         } catch (IOException e) {
             throw new BlojsomPluginException(e);
         }
