@@ -42,7 +42,7 @@
                 <section>
                     <title>Template changes</title>
                     <p>
-                        1. Replace the <code>atom.vm</code> file (as appropriate) in the
+                        1. Replace the <code>atom.vm</code> or <code>atom.jsp</code> file (as appropriate) in the
                         <code>templates</code> directory for those users who have an Atom flavor enabled. Alternatively,
                         users can login to edit their Atom template via the web administration interface and change the
                         text for <code>$entry.getCategory()</code> in the &lt;id&gt; tag to
