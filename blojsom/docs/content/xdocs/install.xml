@@ -188,11 +188,10 @@ manipulate your blog to add, update, and remove blog entries and categories.
 of that blog entry. The filename of the blog entry will be used in generating a "permalink" (a permanent link) to that individual blog entry.
 </p>
 <ul><li>
-<code>
+<source>
 This is a blog entry title
-
 And everything after will show up as the body for the blog entry
-</code>
+</source>
 					</li>
 				</ul>
 
