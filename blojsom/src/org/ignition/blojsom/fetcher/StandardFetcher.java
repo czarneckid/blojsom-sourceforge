@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.10 2003-04-26 23:35:29 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.11 2003-04-29 01:29:00 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -524,7 +524,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * <td><code>null</code></td> <td>return all categories</td>
      * </tr>
      * <tr>
-     * <td>"FETCHER_CATEGORY" (<code>BlogCategory</code>)</td> <td>return all categories</td>
+     * <td>"FETCHER_CATEGORY" (<code>BlogCategory</code>)</td> <td>Up the hierarchy, only
+     * the parent categories are returned. Down the hierarchy from the current category, all
+     * children are returned while obeying the <code>blog-directory-depth</code> parameter.</td>
      * </tr>
      * </table>
      *
