@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.7 2003-10-07 16:11:21 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.8 2003-10-09 14:25:26 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -121,14 +121,6 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_LAST_MODIFIED = "BLOJSOM_LAST_MODIFIED";
-
-
-    /**
-     * Key under which the the indication to compress the stream will be placed
-     * This was done to avoid an api change
-     */
-    public static final String BLOJSOM_COMPRESSED = "BLOJSOM_COMPRESSED";
-
 
     /**
      * Key under which the blog user will be placed
@@ -253,11 +245,6 @@ public interface BlojsomConstants {
      * HTTP Header Name representing the Last Modified Timstamp of the blog (GMT Based)
      */
     public static final String HTTP_LASTMODIFIED = "Last-Modified";
-
-    /**
-     * HTTP Header Name representing the Acceptable Encoding
-     */
-    public static final String HTTP_ACCEPTENCODING = "Accept-Encoding";
 
     /**
      * HTTP Header Name representing the ETag of the blog
