@@ -192,6 +192,30 @@
 
 #macro(Resource $item)$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/$item#end
 
+#macro(MonthlyArchive $startingMonth $startingYear)
+<ul>
+    #set ($currentMonth = $BLOJSOM_CALENDAR.getCurrentMonth() + 1)
+    #set ($totalMonths = 12)
+    #set ($currentYear = $BLOJSOM_CALENDAR.getCurrentYear())
+    #set ($padding = 0)
+    #foreach ($year in [$currentYear..$startingYear])
+        #set ($monthIndex = 1)
+        #if ($year == $startingYear)
+            #set($monthIndex = $startingMonth)
+        #end
+        #if ($year == $currentYear)
+            #set($totalMonths = $currentMonth)
+        #else
+            #set ($totalMonths = 12)
+        #end
+        #foreach ($month in [$totalMonths..$monthIndex])
+            #set ($calMonth = $month - 1)
+    <li><a href="#BlogURL()$year/#if($month < 10)$padding#end$month/">$BLOJSOM_CALENDAR.getMonthName($calMonth) $year</a><li>
+        #end
+    #end
+</ul>
+#end
+
 ###############################################
 ## Plugin Macros
 ###############################################
