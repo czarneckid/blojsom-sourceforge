@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+<document> 
+  <header> 
+    <title>Blojsom - Comments</title> 
+    <authors>
+      <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>      
+    </authors>
+  </header> 
+  <body> 
+    <section>
+      <title>Comments</title>
+      <p>
+Starting with blojsom 1.5, you have the ability to allow users to comment on your blog entries. By default,
+comments are enabled in the <i>blojsom.properties</i> that ships with blojsom.
+</p><p>
+As indicated in the <link href="site:install">installation</link> documentation, the value for the <i>blog-comments-enabled</i>
+parameter can be either <i>true</i> or <i>false</i>. If set to true, blog comments are enabled globally
+on your blog. If set to false, no user may comment on blog entries.
+</p><p>
+The <i>blog-comments-directory</i> parameter indicates the directory where blog comments
+will be written to under the blog category directories.  This directory is automatically
+added to the list of directories that get filtered by blojsom.
+</p><p>
+When users are taken to the comments page for a blog entry, they are presented with a form
+where they can enter their name, e-mail address, URL (for a homepage or their own blog), and
+a comment. Users must enter, at a minimum, their name and a comment. Their e-mail address
+and URL are optional.
+</p>
+<section><title>Disabling comments on individual entries</title>
+<p>
+If comments are enabled on your blog, but you do not want to allow users to comment on
+an individual entry, you can do so by making that entry <i>read-only</i>. blojsom uses
+this to indicate whether or not it should allow users to comment on an entry. If a blog
+entry is writable, users may comment on that entry.
+</p>
+</section>
+<section><title>Comment API support</title>
+<p>
+As of blojsom 1.8, support for the <link href="http://wellformedweb.org/story/9">Comment API</link>
+has been added to blojsom.
+</p>
+</section>
+<section><title>Banning IP addresses from commenting</title>
+<p>
+In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
+and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
+addresses is controlled by the <i>blog-banned-ip-addresses</i> parameter in <i>/WEB-INF/blojsom.properties</i>.
+As an example, the following will ban you from posting locally.
+</p>
+<source>
+blog-banned-ip-addresses=127\\.0\\.0\\.1
+</source>
+</section>
+    </section>
+  </body>
+</document>
