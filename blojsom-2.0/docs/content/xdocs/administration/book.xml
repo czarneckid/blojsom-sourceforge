@@ -20,6 +20,7 @@ site.xml. -->
         <menu-item label="Properties" href="admin-blog-properties.html"/>
         <menu-item label="Templates" href="admin-blog-templates.html"/>
         <menu-item label="File Upload" href="admin-file-upload.html"/>
+        <menu-item label="Forgotten Password" href="admin-forgotten-password.html"/>  
         <menu-item label="Users" href="admin-blog-users.html"/>
     </menu>
 </book>
