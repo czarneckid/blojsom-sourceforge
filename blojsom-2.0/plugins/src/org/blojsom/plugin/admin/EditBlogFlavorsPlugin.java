@@ -55,12 +55,15 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.14 2005-01-30 17:39:34 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.15 2005-04-01 22:57:09 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(EditBlogFlavorsPlugin.class);
+
+    private static final String PROTECTED_FLAVORS_IP = "protected-flavors";
+    private static final String DEFAULT_PROTECTED_FLAVORS = "admin";
 
     // Pages
     private static final String EDIT_BLOG_FLAVORS_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-flavors";
@@ -163,6 +166,15 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             return entries;
         }
 
+        String protectedFlavors = user.getBlog().getBlogProperty(PROTECTED_FLAVORS_IP);
+        if (BlojsomUtils.checkNullOrBlank(protectedFlavors)) {
+            protectedFlavors = DEFAULT_PROTECTED_FLAVORS;
+        }
+
+        if (protectedFlavors.indexOf(DEFAULT_PROTECTED_FLAVORS) == -1) {
+            protectedFlavors = protectedFlavors + " " + DEFAULT_PROTECTED_FLAVORS;
+        }
+
         addFlavorInformationToContext(user, context);
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
@@ -240,6 +252,13 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (flavorName.equalsIgnoreCase(user.getBlog().getBlogDefaultFlavor())) {
                 _logger.debug("Cannot delete the default flavor");
                 addOperationResultMessage(context, "Cannot delete the default flavor");
+
+                return entries;
+            }
+
+            if (protectedFlavors.indexOf(flavorName) != -1) {
+                _logger.debug("Cannot delete protected flavor: " + flavorName);
+                addOperationResultMessage(context, "Cannot delete protected flavor: " + flavorName);
 
                 return entries;
             }
