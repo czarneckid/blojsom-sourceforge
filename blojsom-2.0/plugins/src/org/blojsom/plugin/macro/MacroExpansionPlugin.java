@@ -60,14 +60,16 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.7 2004-04-23 02:11:19 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.8 2004-06-09 03:12:53 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
-    private static final String BLOG_MACRO_CONFIGURATION_IP = "plugin-macros-expansion";
+    public static final String BLOG_MACRO_CONFIGURATION_IP = "plugin-macros-expansion";
 
     private Log _logger = LogFactory.getLog(MacroExpansionPlugin.class);
-    private Map _userMacros;
+    private BlojsomConfiguration _blojsomConfiguration;
+    private ServletConfig _servletConfig;
+    private String _macroConfiguration;
 
     /**
      * Regular expression to identify macros as $MACRO$ and DOES NOT ignore escaped $'s
@@ -81,72 +83,36 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     }
 
     /**
-     * Load the macro mappings
-     *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     */
-    private void loadMacros(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        String macroConfiguration = servletConfig.getInitParameter(BLOG_MACRO_CONFIGURATION_IP);
-        if (BlojsomUtils.checkNullOrBlank(macroConfiguration)) {
-            throw new BlojsomPluginException("No value given for: " + BLOG_MACRO_CONFIGURATION_IP + " configuration parameter");
-        }
-
-        String[] users = blojsomConfiguration.getBlojsomUsers();
-        _userMacros = new HashMap(users.length);
-        for (int i = 0; i < users.length; i++) {
-            String user = users[i];
-            Properties macroProperties = new BlojsomProperties();
-            String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + macroConfiguration;
-            InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
-            if (is == null) {
-                _logger.info("No macro configuration file found: " + configurationFile);
-            } else {
-                try {
-                    macroProperties.load(is);
-                    is.close();
-                    Iterator handlerIterator = macroProperties.keySet().iterator();
-                    HashMap macros = new HashMap(macroProperties.keySet().size());
-                    while (handlerIterator.hasNext()) {
-                        String keyword = (String) handlerIterator.next();
-                        macros.put(keyword, macroProperties.get(keyword));
-                        _logger.info("User: " + user + ". Adding macro [" + keyword + "] with value of [" + macroProperties.get(keyword) + "]");
-                    }
-                    _userMacros.put(user, macros);
-                } catch (IOException e) {
-                    _logger.error(e);
-                    throw new BlojsomPluginException(e);
-                }
-            }
-        }
-    }
-
-    /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        loadMacros(servletConfig, blojsomConfiguration);
+        _blojsomConfiguration = blojsomConfiguration;
+        _servletConfig = servletConfig;
+        _macroConfiguration = servletConfig.getInitParameter(BLOG_MACRO_CONFIGURATION_IP);
+        if (BlojsomUtils.checkNullOrBlank(_macroConfiguration)) {
+            throw new BlojsomPluginException("No value given for: " + BLOG_MACRO_CONFIGURATION_IP + " configuration parameter");
+        }
     }
 
     /**
      * Expand macro tokens in an entry
      *
-     * @param userId User id
      * @param content Entry to process
+     * @param macros  Macros to expand in the content
      * @return The macro expanded string
      */
-    private String replaceMacros(String userId, String content) {
+    private String replaceMacros(String content, Map macros) {
         if (BlojsomUtils.checkNullOrBlank(content)) {
             return content;
         }
-        
+
         Pattern macroPattern = Pattern.compile(MACRO_REGEX);
         Matcher matcher = macroPattern.matcher(content);
 
-        HashMap macros = (HashMap) _userMacros.get(userId);
         while (matcher.find()) {
             String token = matcher.group();
             String macro = token.substring(1, token.length() - 1);
@@ -159,13 +125,42 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     }
 
     /**
+     * Read in the macros from the specified configuration file in the user's directory
+     *
+     * @param userId             User ID
+     * @param macroConfiguration Macro configuration file
+     * @return Macros as a {@link Map}
+     * @throws BlojsomPluginException If there is an error reading in the macros
+     */
+    private Map readMacros(String userId, String macroConfiguration) throws BlojsomPluginException {
+        Map macros = new HashMap();
+        Properties macroProperties = new BlojsomProperties();
+        String configurationFile = _blojsomConfiguration.getBaseConfigurationDirectory() + userId + '/' + macroConfiguration;
+        InputStream is = _servletConfig.getServletContext().getResourceAsStream(configurationFile);
+        if (is == null) {
+            _logger.info("No macro configuration file found: " + configurationFile);
+        } else {
+            try {
+                macroProperties.load(is);
+                is.close();
+                macros = BlojsomUtils.propertiesToMap(macroProperties);
+            } catch (IOException e) {
+                _logger.error(e);
+                throw new BlojsomPluginException(e);
+            }
+        }
+
+        return macros;
+    }
+
+    /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -175,17 +170,12 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
                                Map context,
                                BlogEntry[] entries) throws BlojsomPluginException {
         String userId = user.getId();
-
-        // If we don't find the user id as a key into the user macros, then there was no
-        // configuration file for us to load so we just return the entries
-        if (!_userMacros.containsKey(userId)) {
-            return entries;
-        }
+        Map macros = readMacros(userId, _macroConfiguration);
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            entry.setTitle(replaceMacros(userId, entry.getTitle()));
-            entry.setDescription(replaceMacros(userId, entry.getDescription()));
+            entry.setTitle(replaceMacros(entry.getTitle(), macros));
+            entry.setDescription(replaceMacros(entry.getDescription(), macros));
         }
 
         return entries;
