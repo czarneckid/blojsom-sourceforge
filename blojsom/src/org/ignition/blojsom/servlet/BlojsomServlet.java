@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.60 2003-03-28 04:28:29 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.61 2003-03-29 17:54:45 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -343,21 +343,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        // Determine if the user wants to override the number of displayed entries
-        String entriesParam = httpServletRequest.getParameter(ENTRIES_PARAM);
-        Integer entriesToDisplay = null;
-        if (entriesParam != null || !"".equals(entriesParam)) {
-            try {
-                entriesToDisplay = new Integer(Integer.parseInt(entriesParam));
-                if (entriesToDisplay.intValue() <= 0) {
-                    entriesToDisplay = new Integer(-1);
-                }
-                _logger.debug("Overriding display entries: " + entriesToDisplay.intValue());
-            } catch (NumberFormatException e) {
-                entriesToDisplay = null;
-            }
-        }
-
         // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
         if (flavor == null) {
@@ -368,58 +353,16 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        // Check to see if we have a start and end range for entries (e.g. for pagination)
-        Integer entriesStart = null;
-        Integer entriesEnd = null;
-        try {
-            entriesStart = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_START_PARAM)) - 1);
-            _logger.debug("Requested entries start: " + entriesStart.toString());
-        } catch (NumberFormatException e) {
-            entriesStart = null;
-            _logger.debug("Requested entries start invalid");
-        }
-
-        try {
-            entriesEnd = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_END_PARAM)) - 1);
-            _logger.debug("Requested entries end: " + entriesEnd.toString());
-        } catch (NumberFormatException e) {
-            entriesEnd = null;
-            _logger.debug("Requested entries end invalid");
-        }
-
         BlogEntry[] entries;
 
         // Check for a permalink entry request
         if (permalink != null) {
             entries = _blog.getPermalinkEntry(category, permalink);
         } else {
-            if  (requestedCategory.equals("/")) {
-                if (entriesToDisplay == null) {
-                    // If either the start point or end point is null, get entries for all categories as normal
-                    if (entriesStart == null || entriesEnd == null) {
-                        _logger.debug("Retrieving entries for all categories for flavor: " + flavor);
-                        entries = _blog.getEntriesAllCategories(flavor);
-                    } else {
-                        _logger.debug("Retrieving entries for all categories with start/end for flavor: " + flavor);
-                        entries = _blog.getEntriesAllCategories(flavor, entriesStart.intValue(), entriesEnd.intValue());
-                    }
-                } else {
-                    entries = _blog.getEntriesAllCategories(flavor, entriesToDisplay.intValue());
-                }
-                // Check for the requested category
+            if (requestedCategory.equals("/")) {
+                entries = _blog.getEntriesAllCategories(flavor, -1);
             } else {
-                if (entriesToDisplay == null) {
-                    // If either the start point or end point is null, get entries for category as normal
-                    if (entriesStart == null || entriesEnd == null) {
-                        _logger.debug("Retrieving entries for category: " + category.toString());
-                        entries = _blog.getEntriesForCategory(category);
-                    } else {
-                        _logger.debug("Retrieving entries with start/end for category: " + category.toString());
-                        entries = _blog.getEntriesForCategory(category, entriesStart.intValue(), entriesEnd.intValue());
-                    }
-                } else {
-                    entries = _blog.getEntriesForCategory(category, entriesToDisplay.intValue());
-                }
+                entries = _blog.getEntriesForCategory(category, -1);
             }
         }
 
