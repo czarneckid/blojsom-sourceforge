@@ -55,7 +55,7 @@ import java.io.IOException;
  * @author David Czarnecki
  * @author Jšrg Prante
  * @since blojsom 2.01
- * @version $Id: BlojsomProperties.java,v 1.1 2003-09-07 23:50:17 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.2 2003-11-11 02:43:22 czarneckid Exp $
  */
 public class BlojsomProperties extends Properties {
 
@@ -126,8 +126,8 @@ public class BlojsomProperties extends Properties {
         writer.write("#" + new Date().toString());
         writer.newLine();
         for (Enumeration e = keys(); e.hasMoreElements();) {
-            String key = (String) e.nextElement();
-            writer.write(key + "=" + (String) get(key));
+            String key = e.nextElement().toString();
+            writer.write(key + "=" + get(key).toString());
             writer.newLine();
         }
         writer.flush();
