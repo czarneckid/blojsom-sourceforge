@@ -9,7 +9,7 @@
     <property name="version" value="1.0"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
-    <property name="war.file" value="${distro.dir}/${name}-${version}.war"/>
+    <property name="war.file" value="${distro.dir}/${name}.war"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="src.dir" value="${basedir}/src"/>
     <property name="webinf.dir" value="${basedir}/war/WEB-INF"/>
