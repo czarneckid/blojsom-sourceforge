@@ -51,12 +51,14 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.5 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.6 2004-03-24 02:34:15 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -66,6 +68,8 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     private static final String ENTRY_LENGTH_CUTOFF = "entry-length-cutoff";
     private static final String ENTRY_TEXT_CUTOFF = "entry-text-cutoff";
     private static final String SHOW_ME_MORE_TEXT = "show-me-more-text";
+    private static final String ENTRY_TEXT_CUTOFF_START = "entry-text-cutoff-start";
+    private static final String ENTRY_TEXT_CUTOFF_END = "entry-text-cutoff-end";
     private static final String SHOW_ME_MORE_PARAM = "smm";
     private static final int ENTRY_TEXT_CUTOFF_DEFAULT = 400;
 
@@ -80,7 +84,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
@@ -105,13 +109,15 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                     is.close();
                     String moreText = showMeMoreProperties.getProperty(SHOW_ME_MORE_TEXT);
                     String textCutoff = showMeMoreProperties.getProperty(ENTRY_TEXT_CUTOFF);
+                    String textCutoffStart = showMeMoreProperties.getProperty(ENTRY_TEXT_CUTOFF_START);
+                    String textCutoffEnd = showMeMoreProperties.getProperty(ENTRY_TEXT_CUTOFF_END);
                     int cutoff;
                     try {
                         cutoff = Integer.parseInt(showMeMoreProperties.getProperty(ENTRY_LENGTH_CUTOFF));
                     } catch (NumberFormatException e) {
                         cutoff = ENTRY_TEXT_CUTOFF_DEFAULT;
                     }
-                    ShowMeMoreConfiguration showMeMore = new ShowMeMoreConfiguration(cutoff, textCutoff, moreText);
+                    ShowMeMoreConfiguration showMeMore = new ShowMeMoreConfiguration(cutoff, textCutoff, moreText, textCutoffStart, textCutoffEnd);
                     _showMeMoreConfiguration.put(user, showMeMore);
                 } catch (IOException e) {
                     _logger.error(e);
@@ -124,11 +130,11 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -149,13 +155,32 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                 int cutoff = showMeMoreConfiguration.getCutoff();
                 String textCutoff = showMeMoreConfiguration.getTextCutoff();
                 String moreText = showMeMoreConfiguration.getMoreText();
+                String textCutoffStart = showMeMoreConfiguration.getTextCutoffStart();
+                String textCutoffEnd = showMeMoreConfiguration.getTextCutoffEnd();
 
                 for (int i = 0; i < entries.length; i++) {
                     BlogEntry entry = entries[i];
                     String description = entry.getDescription();
                     StringBuffer partialDescription = new StringBuffer();
                     int indexOfCutoffText;
-                    if (textCutoff != null || !"".equals(textCutoff)) {
+
+                    if (!BlojsomUtils.checkNullOrBlank(textCutoffStart) && !BlojsomUtils.checkNullOrBlank(textCutoffEnd)) {
+                        StringBuffer showMeMoreText = new StringBuffer("<a href=\"");
+                        showMeMoreText.append(entry.getLink());
+                        showMeMoreText.append("&amp;");
+                        showMeMoreText.append(SHOW_ME_MORE_PARAM);
+                        showMeMoreText.append("=y\">");
+                        showMeMoreText.append(moreText);
+                        showMeMoreText.append("</a>");
+                        Pattern cutoffPattern = Pattern.compile("(" + textCutoffStart + ".*?" + textCutoffEnd + ").*?", Pattern.DOTALL | Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+                        Matcher cutoffMatcher = cutoffPattern.matcher(description);
+                        if (cutoffMatcher.find()) {
+                            description = cutoffMatcher.replaceAll(showMeMoreText.toString());
+                            entry.setDescription(description);
+                        }
+                    }
+
+                    if (!BlojsomUtils.checkNullOrBlank(textCutoff)) {
                         indexOfCutoffText = description.indexOf(textCutoff);
                         if (indexOfCutoffText != -1) {
                             partialDescription.append(description.substring(0, indexOfCutoffText));
@@ -220,18 +245,24 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
         private int _cutoff;
         private String _textCutoff;
         private String _moreText;
+        private String _textCutoffStart;
+        private String _textCutoffEnd;
 
         /**
          * Default constructor
          *
-         * @param cutoff Cutoff length
-         * @param textCutoff Cutoff string
-         * @param moreText Text to insert when making a cut
+         * @param cutoff          Cutoff length
+         * @param textCutoff      Cutoff string
+         * @param moreText        Text to insert when making a cut
+         * @param textCutoffStart Start tag for cutting parts of entries
+         * @param textCutoffEnd   End tag for cutting parts of entries
          */
-        public ShowMeMoreConfiguration(int cutoff, String textCutoff, String moreText) {
+        public ShowMeMoreConfiguration(int cutoff, String textCutoff, String moreText, String textCutoffStart, String textCutoffEnd) {
             _cutoff = cutoff;
             _textCutoff = textCutoff;
             _moreText = moreText;
+            _textCutoffStart = textCutoffStart;
+            _textCutoffEnd = textCutoffEnd;
         }
 
         /**
@@ -259,6 +290,24 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
          */
         public String getMoreText() {
             return _moreText;
+        }
+
+        /**
+         * Start tag for cutting parts of entries
+         *
+         * @return Start tag for cutting parts of entries
+         */
+        public String getTextCutoffStart() {
+            return _textCutoffStart;
+        }
+
+        /**
+         * End tag for cutting parts of entries
+         *
+         * @return End tag for cutting parts of entries
+         */
+        public String getTextCutoffEnd() {
+            return _textCutoffEnd;
         }
     }
 }
