@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.17 2004-07-27 03:37:30 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.18 2004-08-04 00:44:41 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -680,6 +680,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             String name = (String) struct.get(MEMBER_NAME);
+            name = BlojsomUtils.getFilenameFromPath(name);
             _logger.debug("newMediaObject name: " + name);
             String type = (String) struct.get(MEMBER_TYPE);
             _logger.debug("newMediaObject type: " + type);
@@ -705,7 +706,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                     bos.close();
 
                     Hashtable returnStruct = new Hashtable(1);
-                    String mediaURL = _blog.getBlogBaseURL() + _staticURLPrefix + _blogUser.getId() + "/" + name;
+                    String mediaURL = _blog.getBlogBaseURL() + _staticURLPrefix + BlojsomUtils.removeTrailingSlash(_blogUser.getId()) + "/" + name;
                     _logger.debug("newMediaObject URL: " + mediaURL);
                     returnStruct.put(MEMBER_URL, mediaURL);
 
