@@ -45,7 +45,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.4 2003-05-15 00:46:20 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.5 2003-05-16 02:25:23 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -374,15 +374,15 @@ public class FileBackedBlogEntry extends BlogEntry {
                 entryMetaData.load(fis);
                 fis.close();
 
-                Enumeration keys = entryMetaData.keys();
-
+                Iterator keys = entryMetaData.keySet().iterator();
                 String key;
+
                 if (_metaData == null) {
                     _metaData = new HashMap(5);
                 }
 
-                while (keys.hasMoreElements()) {
-                    key = (String) keys.nextElement();
+                while (keys.hasNext()) {
+                    key = (String) keys.next();
                     _metaData.put(key, entryMetaData.getProperty(key));
                 }
 
@@ -390,6 +390,41 @@ public class FileBackedBlogEntry extends BlogEntry {
             } catch (IOException e) {
                 _logger.error("Failed loading meta-data from: " + blogEntryMetaData.toString());
             }
+        }
+    }
+
+    /**
+     * Store the meta data for the entry
+     *
+     * @since blojsom 1.9
+     * @param blogHome Directory where blog entries are stored
+     * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
+     */
+    public void saveMetaData(String blogHome, String blogEntryMetaDataExtension) {
+        if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension) || _metaData == null) {
+            return;
+        }
+
+        String entryFilename = BlojsomUtils.getFilename(_source.getName());
+        File blogEntryMetaData = new File(blogHome + BlojsomUtils.removeInitialSlash(_category) + entryFilename + blogEntryMetaDataExtension);
+
+        try {
+            Properties entryMetaData = new Properties();
+            FileOutputStream fos = new FileOutputStream(blogEntryMetaData);
+            Iterator keys = _metaData.keySet().iterator();
+            String key;
+
+            while (keys.hasNext()) {
+                key = (String) keys.next();
+                entryMetaData.put(key, _metaData.get(key));
+            }
+
+            entryMetaData.store(fos, null);
+            fos.close();
+
+            _logger.debug("Saved meta-data to: " + blogEntryMetaData.toString());
+        } catch (IOException e) {
+            _logger.error("Failed saving meta-data to: " + blogEntryMetaData.toString());
         }
     }
 }
