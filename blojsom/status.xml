@@ -18,6 +18,23 @@
                 Refactored method to get a blog entry filename from within the Blogger and
                 MetaWeblog API handlers into the base <tt>AbstractBlojsomAPIHandler</tt> class.
             </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Duration of "remember me" cookies for the comment plugin can be configured
+                via the <i>plugin-comment-expiration-duration</i> parameter in
+                <i>/WEB-INF/blojsom.properties</i>.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Core">
+                The country code for the blog can be configured via the <i>blog-country</i>
+                parameter in <i>/WEB-INF/blojsom.properties</i>.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Core">
+                Trackbacks can be enabled or disabled via the <i>blog-trackbacks-enabled</i>
+                parameter in <i>/WEB-INF/blojsom.properties</i>. This is now a required parameter
+                for trackbacks to be enabled or disabled.
+            </action>
         </release>
 
         <release version="1.9.4" date="July 13, 2003">
