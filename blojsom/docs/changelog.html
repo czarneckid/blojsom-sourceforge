@@ -26,6 +26,8 @@ General:<br />
 a request attribute to indicate whether or not comments are enabled for this blog<br />
 - Enhanced security of permalinks such that only permalinks matching one of the
 <i>blog-file-extensions</i> will be returned<br />
+- Methods on <tt>Blog</tt> that returned <tt>BlogEntry[]</tt> now return <tt>BlogEntry[0]</tt>
+in the cases where the method would return <tt>null</tt><br />
 - XML-RPC Handler supporting a subset of the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a><br />
 <p />
 The following bugs were fixed:<br />
