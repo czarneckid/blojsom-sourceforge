@@ -30,7 +30,7 @@ public class BlojsomConstants {
 
     /**
      * Value under which the blog site will be place
-     * (example: on the request for the JSPDispatcher
+     * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
 
