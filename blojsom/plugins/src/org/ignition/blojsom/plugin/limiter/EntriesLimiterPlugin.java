@@ -51,7 +51,7 @@ import java.util.Map;
  * EntriesLimiterPlugin
  *
  * @author David Czarnecki
- * @version $Id: EntriesLimiterPlugin.java,v 1.1 2003-03-29 17:53:02 czarneckid Exp $
+ * @version $Id: EntriesLimiterPlugin.java,v 1.2 2003-03-31 03:47:53 czarneckid Exp $
  */
 public class EntriesLimiterPlugin implements BlojsomPlugin {
 
@@ -106,7 +106,7 @@ public class EntriesLimiterPlugin implements BlojsomPlugin {
                 }
                 _logger.debug("Overriding display entries: " + blogDisplayEntries);
             } catch (NumberFormatException e) {
-                _logger.debug("Invalid display entries value. Using: " + blogDisplayEntries);
+                _logger.debug("Invalid display entries value or no value supplied. Using: " + blogDisplayEntries);
             }
         }
 
