@@ -25,13 +25,25 @@
 
 <p class="weblogtitle">blojsom theme architecture</p>
 <p/>
-A big phrase for such a small think ;)
+A big phrase for such a small thing <img border="0" src="happy.gif" />. Themes are simply alternate templates and style
+sheets that tell blojsom how to render a different presentation. Creating new themes is quick, easy and fun.
 
 <p class="weblogtitle">installing blojsom themes</a></p>
 <p/>
+Starting with release 1.7, blojsom ships with an alternate theme called <b>SecondWave</b>. For those who care, it is both
+a pun on the fact that it's the 2nd template for blojsom as well as homage to a greate sci-channel show. SecondWave is a
+Velocity only template. To install the template simply<p/>
+1. Copy the all SecondWave files (secondwave*.vm) from <i>$BLOJSOM_INSTALL_DIR</i>/themes/secndwave to your
+</i>/WEB-INF/classes</i> directory on your server.<p/>
+2. Copy the <i>blojsom-secondwave.css</i> stylesheet from <i>$BLOJSOM_INSTALL_DIR</i>/themes/secndwave to your to webapp
+directory on your sever. <br/>&nbsp;&nbsp;&nbsp;&nbsp;<b>NOTE:</b> We do not mean <i>/WEB-INF</i> but the same directory in which <i>/WEB-INF</i> lives<p/>
+All that is left to do is tell blojsom to use the new  template.
 
 <p class="weblogtitle">configuring the active theme</a></p>
 <p/>
+All you need to do to enable your template is to edit your <i>/WEB-INF/flavor.properties</i> and edit the value for the html flavor<p>
+As an example, for SecondWave the line should read: <pre>html=secondwave.vm, text/html</pre><p/>
+That's it, your blog has a brand new look!
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 

@@ -47,18 +47,20 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.13 2003-03-25 22:56:04 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.14 2003-03-25 23:31:06 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -293,14 +295,13 @@ public class CommentPlugin implements BlojsomPlugin {
     }
 
 
-
     /**
      * Return an escaped string where <meta, <link tags are escaped
      *
      * @param input Unescaped string
      * @return Escaped string containing HTML equivalents for &amp;, &lt;, and &gt;
      */
-    public String escapeString(String input) {
+    private String escapeString(String input) {
         if (input == null) {
             return null;
         }
