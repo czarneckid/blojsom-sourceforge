@@ -54,7 +54,7 @@ Search:&nbsp;&nbsp;<input size="13" type="text" name="query" value=""/>&nbsp;
 <td valign="top" align="center" >
 
 <div class="calendarbox">
-<table cellspacing="0" cellpadding="0" border="0" width="150"><tr><td colspan="7" class="calendarcaption"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+<table cellspacing="0" cellpadding="0" border="0" width="165"><tr><td colspan="7" class="calendarcaption"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>
