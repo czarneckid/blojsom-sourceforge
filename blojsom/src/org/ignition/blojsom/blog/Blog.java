@@ -40,10 +40,7 @@ import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Blog
@@ -51,7 +48,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.51 2003-05-20 02:53:18 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.52 2003-05-21 00:09:34 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -530,10 +527,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Returns a read-only view of the properties for this blog
      *
-     * @return HashMap of blog properties
+     * @return Map of blog properties
      */
-    public HashMap getBlogProperties() {
-        return _blogProperties;
+    public Map getBlogProperties() {
+        return Collections.unmodifiableMap(_blogProperties);
     }
 
     /**
@@ -688,5 +685,20 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogFileEncoding(String blogFileEncoding) {
         _blogFileEncoding = blogFileEncoding;
+    }
+
+    /**
+     * Return a named property from the blog properties
+     *
+     * @since blojsom 1.9
+     * @param propertyName Name of the property to retrieve
+     * @return Property value as a string or <code>null</code> if the property is not found
+     */
+    public String getBlogProperty(String propertyName) {
+        if (_blogProperties.containsKey(propertyName)) {
+            return _blogProperties.get(propertyName).toString();
+        }
+
+        return null;
     }
 }
