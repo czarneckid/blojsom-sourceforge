@@ -36,6 +36,33 @@ Available categories:
     #end
     </div>
     #set( $totalEntries = $totalEntries + 1)
+    <hr />
+    <table>
+        <form name="commentform" method="post" action=".">
+            <input type="hidden" name="comment" value="y"/>
+            <input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()"/><br />
+            <input type="hidden" name="permalink" value="$entry.getPermalink()"/> <br />
+            <tr>
+                <td>Author:</td><td><input type="text" name="author" value=""/></td>
+            </tr>
+            <tr>
+                <td>E-mail:</td><td><input type="text" name="authorEmail" value=""/></td>
+            </tr>
+            <tr>
+                <td>URL: </td><td><input type="text" name="authorURL" value=""/></td>
+            </tr>
+            <tr>
+                <td>Comment:</td><td><textarea name="commentText" value="" rows="5" columns="90"></textarea></td>
+            </tr>
+            <p />
+            <tr>
+                <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
+                <input type="reset" name="reset" value="Reset"/>
+                </td>
+            </tr>
+        </form>
+    </table>
+    <p />
 #end
 #if ($totalEntries > 0)
     Available categories:
