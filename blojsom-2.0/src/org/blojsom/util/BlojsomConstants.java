@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.52 2004-11-03 01:15:28 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.53 2004-11-16 01:52:28 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -304,6 +304,11 @@ public interface BlojsomConstants {
      * Default extension for metadata
      */
     public static final String DEFAULT_METADATA_EXTENSION = ".meta";
+
+    /**
+     * Default extension for entries
+     */
+    public static final String DEFAULT_ENTRY_EXTENSION = ".html"; 
 
     /**
      * Line separator for the system
