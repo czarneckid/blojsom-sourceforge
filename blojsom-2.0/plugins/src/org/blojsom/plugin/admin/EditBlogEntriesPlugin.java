@@ -60,7 +60,7 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.21 2004-03-01 01:39:16 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.22 2004-03-17 05:44:05 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -539,9 +539,11 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * @param blog
-     * @param entry
-     * @param blogTrackbackURLs
+     * Send trackback pings to a comma-separated list of trackback URLs
+     *
+     * @param blog Blog information
+     * @param entry Blog entry
+     * @param blogTrackbackURLs Trackback URLs
      */
     private void sendTrackbackPings(Blog blog, BlogEntry entry, String blogTrackbackURLs) {
         // Build the URL parameters for the trackback ping URL
@@ -561,7 +563,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             _logger.error(e);
         }
 
-        String[] trackbackURLs = BlojsomUtils.parseCommaList(blogTrackbackURLs);
+        String[] trackbackURLs = BlojsomUtils.parseDelimitedList(blogTrackbackURLs, " \t\n\f\r");
         if (trackbackURLs != null && trackbackURLs.length > 0) {
             for (int i = 0; i < trackbackURLs.length; i++) {
                 String trackbackURL = trackbackURLs[i].trim();
@@ -601,11 +603,13 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * @param blog
-     * @param blogPingURLs
+     * Send "pings" to a blog service such as weblogs.com
+     *
+     * @param blog Blog information
+     * @param blogPingURLs Ping URLs
      */
     private void sendBlogPings(Blog blog, String blogPingURLs) {
-        String[] pingURLs = BlojsomUtils.parseCommaList(blogPingURLs);
+        String[] pingURLs = BlojsomUtils.parseDelimitedList(blogPingURLs, " \t\n\f\r");
         EditBlogEntriesPluginAsyncCallback editBlogEntriesPluginAsyncCallback = new EditBlogEntriesPluginAsyncCallback();
         Vector params = new Vector();
         params.add(blog.getBlogName());
