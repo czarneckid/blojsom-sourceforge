@@ -32,12 +32,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.plugin;
+package org.ignition.blojsom.plugin.macro;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.plugin.BlojsomPlugin;
+import org.ignition.blojsom.plugin.BlojsomPluginException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +57,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.9 2003-03-25 15:52:46 intabulas Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.1 2003-03-28 22:06:50 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -109,7 +111,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      * @param blogProperties Read-only properties for the Blog
-     * @throws BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         _macros = new HashMap(10);
@@ -145,7 +147,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws BlojsomPluginException If there is an error processing the blog entries
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
@@ -161,7 +163,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
     }
@@ -169,7 +171,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
     }

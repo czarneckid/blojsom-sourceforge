@@ -32,10 +32,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.plugin;
+package org.ignition.blojsom.plugin.emoticons;
 
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.plugin.BlojsomPlugin;
+import org.ignition.blojsom.plugin.BlojsomPluginException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +52,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.8 2003-03-27 20:03:31 intabulas Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.1 2003-03-28 22:06:51 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -122,7 +124,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      * @param blogProperties Read-only properties for the Blog
-     * @throws BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         String emoticonsConfiguration = servletConfig.getInitParameter(EMOTICONS_CONFIGURATION_IP);
@@ -147,7 +149,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws BlojsomPluginException If there is an error processing the blog entries
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
@@ -208,7 +210,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
     }
@@ -216,7 +218,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
     }

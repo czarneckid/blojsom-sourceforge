@@ -32,48 +32,66 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.plugin;
+package org.ignition.blojsom.plugin.showmore;
 
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.plugin.BlojsomPlugin;
+import org.ignition.blojsom.plugin.BlojsomPluginException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
- * Hyperlink HREFing Plugin
+ * ShowMeMorePlugin
  *
- * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.9 2003-03-25 15:52:47 intabulas Exp $
+ * @author David Czarnecki
+ * @version $Id: ShowMeMorePlugin.java,v 1.1 2003-03-28 22:06:49 czarneckid Exp $
  */
-public class HyperlinkURLPlugin implements BlojsomPlugin {
+public class ShowMeMorePlugin implements BlojsomPlugin {
+
+    private static final String SHOW_ME_MORE_CONFIG_IP = "plugin-showmemore";
+    private static final String ENTRY_LENGTH_CUTOFF = "entry-length-cutoff";
+    private static final String SHOW_ME_MORE_TEXT = "show-me-more-text";
+    private static final String SHOW_ME_MORE_PARAM = "smm";
+
+    private int _cutoff;
+    private String _moreText;
 
     /**
-     * Protocol support for HREF links
+     * Default constructor
      */
-    private static final String URL_PROTOCOLS = "((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file)";
-
-    /**
-     * Regular expression to identify URLs in the entry
-     */
-    private static final String URL_REGEX = "(^|[ t\rn])" + URL_PROTOCOLS
-            + ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
-
-    /**
-     * The resulting replace string for formatting the href
-     */
-    private static final String HREF_EXPRESSION = " <a href=\"$2\" target=\"_blank\">$2</a>";
+    public ShowMeMorePlugin() {
+    }
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      * @param blogProperties Read-only properties for the Blog
-     * @throws BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+        String showMeMoreConfiguration = servletConfig.getInitParameter(SHOW_ME_MORE_CONFIG_IP);
+        if (showMeMoreConfiguration == null || "".equals(showMeMoreConfiguration)) {
+            throw new BlojsomPluginException("No value given for: " + SHOW_ME_MORE_CONFIG_IP + " configuration parameter");
+        }
+
+        Properties showMeMoreProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(showMeMoreConfiguration);
+        try {
+            showMeMoreProperties.load(is);
+            is.close();
+            _moreText = showMeMoreProperties.getProperty(SHOW_ME_MORE_TEXT);
+            _cutoff = Integer.parseInt(showMeMoreProperties.getProperty(ENTRY_LENGTH_CUTOFF));
+        } catch (IOException e) {
+            throw new BlojsomPluginException(e);
+        }
     }
 
     /**
@@ -84,23 +102,37 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws BlojsomPluginException If there is an error processing the blog entries
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        for (int i = 0; i < entries.length; i++) {
-            BlogEntry entry = entries[i];
-
-            entry.setDescription(entry.getDescription().replaceAll(URL_REGEX, HREF_EXPRESSION));
+        String wantsToSeeMore = httpServletRequest.getParameter(SHOW_ME_MORE_PARAM);
+        if ("y".equalsIgnoreCase(wantsToSeeMore)) {
+            return entries;
+        } else {
+            for (int i = 0; i < entries.length; i++) {
+                BlogEntry entry = entries[i];
+                String description = entry.getDescription();
+                if (description.length() > _cutoff) {
+                    StringBuffer partialDescription = new StringBuffer(description.substring(0, _cutoff));
+                    partialDescription.append("&nbsp; <a href=\"");
+                    partialDescription.append(entry.getLink());
+                    partialDescription.append("&amp;");
+                    partialDescription.append(SHOW_ME_MORE_PARAM);
+                    partialDescription.append("=y\">");
+                    partialDescription.append(_moreText);
+                    partialDescription.append("</a>");
+                    entry.setDescription(partialDescription.toString());
+                }
+            }
+            return entries;
         }
-
-        return entries;
     }
 
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
     }
@@ -108,7 +140,7 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
     }
