@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.49 2003-03-19 04:01:41 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.50 2003-03-20 01:38:52 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -270,8 +270,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         configureFlavors(servletConfig);
         configureDispatchers(servletConfig);
         configurePlugins(servletConfig);
-
-        _logger.info("blojsom home: " + _blog.getBlogHome());
     }
 
     /**
@@ -504,5 +502,4 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         GenericDispatcher dispatcher = (GenericDispatcher) _templateDispatchers.get(templateExtension);
         dispatcher.dispatch(httpServletRequest, httpServletResponse, context, flavorTemplate, flavorContentType);
     }
-
 }

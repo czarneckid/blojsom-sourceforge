@@ -44,7 +44,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.33 2003-03-19 04:03:14 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.34 2003-03-20 01:39:23 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -210,6 +210,8 @@ public class Blog implements BlojsomConstants {
             _blogCommentsEnabled = new Boolean(false);
         }
         _blogProperties.put(BLOG_COMMENTS_ENABLED_IP, _blogCommentsEnabled);
+
+        _logger.info("blojsom home: " + _blogHome);
     }
 
     /**
@@ -853,5 +855,4 @@ public class Blog implements BlojsomConstants {
     public Boolean areCommentsEnabled() {
         return _blogCommentsEnabled;
     }
-
 }
