@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.62 2005-03-06 01:13:35 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.63 2005-03-10 04:51:29 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -2005,5 +2005,27 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return text.replaceAll("\\<.*?\\>","");
+    }
+
+    /**
+     * Convert a <code>String[]</code> to a <code>List</code>
+     *
+     * @param input <code>String[]</code>
+     * @return <code>List</code> from string array
+     * @since blojsom 2.24
+     */
+    public static List arrayToList(String[] input) {
+        if (input == null || input.length == 0) {
+            return new ArrayList();
+        } else {
+            ArrayList value = new ArrayList(input.length);
+            
+            for (int i = 0; i < input.length; i++) {
+                String s = input[i];
+                value.add(s);
+            }
+
+            return value;
+        }
     }
 }
