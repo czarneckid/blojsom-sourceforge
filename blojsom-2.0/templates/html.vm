@@ -50,10 +50,12 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
             Posted by: <b>$entry.getMetaData().get("blog-entry-author")</b><br />
         #end
     #end
-    #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+    #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
     Comments [<a href="$entry.getLink()&amp;page=comments">$entry.getNumComments()</a>] |
     #end
+    #if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))
     Trackbacks [<a href="$entry.getLink()&amp;page=trackback">$entry.getNumTrackbacks()</a>]
+    #end
     </p>
     #set( $totalEntries = $totalEntries + 1)
     #if ($BLOJSOM_PERMALINK)

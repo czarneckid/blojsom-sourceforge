@@ -10,7 +10,8 @@
                  org.blojsom.plugin.referer.BlogReferer,
                  org.blojsom.plugin.calendar.BlogCalendar,
                  org.blojsom.plugin.calendar.AbstractCalendarPlugin,
-                 org.blojsom.plugin.calendar.VelocityHelper"
+                 org.blojsom.plugin.calendar.VelocityHelper,
+                 org.blojsom.util.BlojsomUtils"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
@@ -24,6 +25,7 @@
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
     BlogCategory requestedCategory = (BlogCategory) request.getAttribute(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
     boolean blogCommentsEnabled = ((Boolean) request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED)).booleanValue();
+    boolean blogTrackbacksEnabled = ((Boolean) request.getAttribute("BLOJSOM_TRACKBACK_PLUGIN_ENABLED")).booleanValue();
 
     StringBuffer catStringBuf = new StringBuffer(20);
     String blogName = null;
@@ -99,10 +101,12 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
                 }
             }
         %>
-        <% if (blogCommentsEnabled && blogEntry.supportsComments()) { %>
+        <% if (blogCommentsEnabled && blogEntry.supportsComments() && !BlojsomUtils.checkMapForKey(blogEntry.getMetaData(), "blog-entry-comments-disabled")) { %>
         Comments [<a href="<%= blogEntry.getLink() %>&amp;page=comments"><%= blogEntry.getNumComments() %></a>] |
         <% } %>
+        <% if (blogTrackbacksEnabled && blogEntry.supportsTrackbacks() && !BlojsomUtils.checkMapForKey(blogEntry.getMetaData(), "blog-entry-trackbacks-disabled")) { %>
         Trackbacks [<a href="<%= blogEntry.getLink() %>&amp;page=trackback"><%= blogEntry.getNumTrackbacks() %></a>]
+        <% } %>
         </p>
 
         <% if ( entryArray.length == 1 ) {
