@@ -28,6 +28,12 @@
 <a href="http://sourceforge.net/projects/blojsom/">sourceforge</a></p>
 
 <p>
+<p class="weblogtitle">Upgrading blojsom from v1.9.2 to 1.9.3</p>
+<p />
+1. If you are using the Velocity templates, then t
+
+
+<p>
 <p class="weblogtitle">Upgrading blojsom from v1.9.1 to 1.9.2</p>
 <p />
 No changes required
@@ -110,6 +116,19 @@ These files are used no matter what your main HTML template file is named. These
 files named <tt>html-trackback-sucess.vm</tt> and <tt>html-trackback-error.vm</tt> in previous versions. You may
 move the <tt>html-trackback-success.vm</tt> and <tt>html-trackback-error.vm</tt> files to <tt>trackback-success.vm</tt> and
 <tt>trackback-error.vm</tt>, respectively.
+
+<p/>
+10. Add the following to the appropriate comments template for your system if you would like the
+check for the "Remember Me" functionality to persist.
+<p/>
+For Velocity, add the following to the "remember" checkbox before the closing /&gt;.
+<pre>
+#if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)CHECKED#end
+</pre>
+For JSP, add the following to the "remember" checkbox before the closing /&gt;.
+<pre>
+&lt;% if (commentRememberMe != null && !"".equals(commentRememberMe)) { %&gt;CHECKED&lt;% } %&gt;
+</pre>
 
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
