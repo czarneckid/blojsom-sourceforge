@@ -84,7 +84,10 @@
                         <td>#adminResource('comment.expiration.duration.text' 'Duration before comment cookies expire')</td> <td><input name="plugin-comment-expiration-duration" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-expiration-duration")"/></td>
                     </tr>
                     <tr>
-                        <td>#adminResource('comment.throttle.text' 'Comment throttle minutes')</td> <td><input name="plugin-comment-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-throttle")"/></td>
+                        <td>#adminResource('comment.throttle.text' 'Comment throttle (in minutes)')</td> <td><input name="plugin-comment-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-throttle")"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('comment.expiration.days.text' 'Comment expiration (in days)')</td> <td><input name="plugin-comment-days-expiration" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-days-expiration")"/></td>
                     </tr>
                     <tr>
                         #set ($selectListName = "plugin-comment-autoformat")
@@ -94,7 +97,10 @@
                         <td>#adminResource('trackback.prefix.text' 'Prefix for trackback e-mail')</td> <td><input name="plugin-trackback-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-email-prefix")"/></td>
                     </tr>
                     <tr>
-                        <td>#adminResource('trackback.throttle.text' 'Trackback throttle minutes')</td> <td><input name="plugin-trackback-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-throttle")"/></td>
+                        <td>#adminResource('trackback.throttle.text' 'Trackback throttle (in minutes)')</td> <td><input name="plugin-trackback-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-throttle")"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('trackback.expiration.days.text' 'Trackback expiration (in days)')</td> <td><input name="plugin-trackback-days-expiration" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-days-expiration")"/></td>
                     </tr>
                     <tr>
                         <td>#adminResource('ping.urls.text' 'URLs to ping when adding or editing a new entry')</td> <td><textarea name="blog-ping-urls" rows="6" cols="50">$!BLOJSOM_BLOG.getBlogProperty("blog-ping-urls")</textarea></td>

@@ -61,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.18 2004-04-08 01:34:12 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.19 2004-04-18 20:51:08 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -157,12 +157,16 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogProperty(CommentPlugin.COMMENT_COOKIE_EXPIRATION_DURATION_IP, blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_THROTTLE_MINUTES_IP, httpServletRequest);
             blog.setBlogProperty(CommentPlugin.COMMENT_THROTTLE_MINUTES_IP, blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_DAYS_EXPIRATION_IP, httpServletRequest);
+            blog.setBlogProperty(CommentPlugin.COMMENT_DAYS_EXPIRATION_IP, blogPropertyValue);
 
             // Trackback plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_THROTTLE_MINUTES_IP, httpServletRequest);
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_THROTTLE_MINUTES_IP, blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_PREFIX_IP, httpServletRequest);
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_PREFIX_IP, blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_DAYS_EXPIRATION_IP, httpServletRequest);
+            blog.setBlogProperty(TrackbackPlugin.TRACKBACK_DAYS_EXPIRATION_IP, blogPropertyValue);
 
             // Weblogs Ping plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(WeblogsPingPlugin.BLOG_PING_URLS_IP, httpServletRequest);
