@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.46 2004-07-20 15:56:26 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.47 2004-07-20 16:52:13 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -490,8 +490,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                         BlogEntry entry = entries[0];
                         Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
 
-
-                        String edituri = blog.getBlogBaseURL() + httpServletRequest.getServletPath() + entry.getEncodedCategory() + "/?permalink=" + entry.getPermalink();
+                        String edituri = blog.getBlogBaseURL() + httpServletRequest.getServletPath() + "/" + blogUser.getId() + entry.getId();
                         LinkImpl link = new LinkImpl();
                         link.setHref(edituri);
                         link.setRelationship(AtomConstants.Rel.SERVICE_EDIT);
