@@ -56,7 +56,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.12 2003-04-08 05:08:37 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.13 2003-04-08 05:13:37 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -422,30 +422,23 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             if (blogCategoryFile.exists() && blogCategoryFile.isDirectory()) {
 
                 BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + BlojsomUtils.removeInitialSlash(blogid));
-                BlogEntry[] entries = _blog.getEntriesForCategory(blogCategory);
+                BlogEntry[] entries = _blog.getEntriesForCategory(blogCategory, numposts);
 
 
                 if (entries != null && entries.length > 0) {
-                    // if it's zero or -1, <metallica>show'em all</metallica>
-                    if (numposts == 0 || numposts == -1) {
-                        numposts = entries.length;
-                    }
-
                     for (int x = 0; x < entries.length; x++) {
                         BlogEntry entry = entries[x];
-                        if (x < numposts) {
-                            Hashtable entrystruct = new Hashtable();
+                        Hashtable entrystruct = new Hashtable();
 
-                            entrystruct.put(MEMBER_POSTID, blogid + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
-                            entrystruct.put(MEMBER_BLOGID, blogid);
-                            entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
-                            entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                            entrystruct.put(MEMBER_CONTENT, entry.getEscapedDescription());
-                            entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
-                            entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
-                            entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
-                            recentPosts.add(entrystruct);
-                        }
+                        entrystruct.put(MEMBER_POSTID, blogid + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
+                        entrystruct.put(MEMBER_BLOGID, blogid);
+                        entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
+                        entrystruct.put(MEMBER_URL, entry.getEscapedLink());
+                        entrystruct.put(MEMBER_CONTENT, entry.getEscapedDescription());
+                        entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
+                        entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
+                        entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
+                        recentPosts.add(entrystruct);
                     }
                 }
             }
