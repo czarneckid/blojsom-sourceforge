@@ -41,7 +41,7 @@ import org.w3c.dom.Document;
  * WeatherInformation
  *
  * @author Mark Lussier
- * @version $Id: WeatherInformation.java,v 1.3 2005-01-26 23:57:33 czarneckid Exp $
+ * @version $Id: WeatherInformation.java,v 1.4 2005-02-09 18:59:17 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public interface WeatherInformation {
@@ -109,4 +109,13 @@ public interface WeatherInformation {
      * @return The resource location as a String
      */
     String getProviderUrl();
+
+    /**
+     * Get the value for a given tag from the parsed XML weather information
+     *
+     * @param tag Tag to retrieve
+     * @return Value of tag or <code>null</code> if the tag is not present
+     * @since blojsom 2.24
+     */
+    String getValueForTag(String tag);
 }
