@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.38 2005-03-11 17:36:28 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.39 2005-03-12 16:26:58 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -574,8 +574,6 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 throw new BlojsomConfigurationException(e);
             }
         } else {
-            _logger.error("Unable to load blog configuration for blog: " + blogUser.getId());
-
             throw new BlojsomConfigurationException("Unable to load blog configuration for blog: " + blogUser.getId());
         }
 
