@@ -32,9 +32,11 @@ package org.ignition.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.util.BlojsomConstants;
 
 import java.io.*;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * BlogEntry
@@ -44,6 +46,8 @@ import java.util.Date;
 public class BlogEntry {
 
     private Log _logger = LogFactory.getLog(BlogEntry.class);
+
+    public static final String RFC_822_FORMAT = "yyyy-MM-dd'T'kk:mmZZZZZ";
 
     private String _title;
     private String _link;
@@ -84,6 +88,16 @@ public class BlogEntry {
      */
     public Date getDate() {
         return _entryDate;
+    }
+
+    /**
+     * Return the entry date as a RFC-822 Date
+     *
+     * @return Date of the blog entry formatted as an RFC-822 Date
+     */
+    public String getDateAsRFC822() {
+        SimpleDateFormat sdf = new SimpleDateFormat( RFC_822_FORMAT);
+        return sdf.format(_entryDate);
     }
 
     /**

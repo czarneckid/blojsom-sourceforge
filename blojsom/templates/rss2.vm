@@ -14,7 +14,7 @@
             <link>$entry.getEscapedLink()</link>
             <description>$entry.getEscapedDescription()</description>
             <guid isPermaLink="true">$entry.getLink()</guid>
-			<pubDate>$entry.getDate()</pubDate>
+			<pubDate>$entry.getDateAsRFC822()</pubDate>
         </item>
         #end
     </channel>
