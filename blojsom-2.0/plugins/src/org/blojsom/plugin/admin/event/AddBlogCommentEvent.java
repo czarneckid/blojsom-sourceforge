@@ -40,16 +40,16 @@ import org.blojsom.blog.BlogUser;
 import java.util.Date;
 
 /**
- * AddBlogCommentEvent
+ * AddBlogCommentEvent indicates an event where a comment has been added to the system.
  *
  * @author Mark Lussier
- * @version $Id: AddBlogCommentEvent.java,v 1.1 2005-01-19 19:21:27 intabulas Exp $
+ * @version $Id: AddBlogCommentEvent.java,v 1.2 2005-01-30 18:18:56 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class AddBlogCommentEvent extends BlogCommentEvent {
 
     /**
-     * Create a new event indicating something happened with an entry in the system.
+     * Create a new event indicating an event where a comment has been added to the system.
      *
      * @param source      Source of the event
      * @param timestamp   Event timestamp
