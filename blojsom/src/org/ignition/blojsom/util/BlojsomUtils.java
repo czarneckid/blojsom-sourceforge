@@ -35,11 +35,11 @@
 package org.ignition.blojsom.util;
 
 import org.ignition.blojsom.blog.FileBackedBlogEntry;
+import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.ServletConfig;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.52 2003-05-16 20:56:15 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.53 2003-05-24 17:46:12 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -755,5 +755,50 @@ public class BlojsomUtils implements BlojsomConstants {
             toHexValue(buf1, i * 2, 2, buf[i + offset]);
         }
         return new String(buf1);
+    }
+
+    /**
+     * Try to load a properties file from disk
+     *
+     * @param servletConfig Servlet configuration
+     * @param configurationIP Name of the file to load the properties from
+     * @param required If the properties file required.
+     * @since blojsom 1.9
+     *
+     * @return Properties from the file. NEVER returns null.
+     * @throws BlojsomException If there is an I/O error or if configurationIP is
+     * 		   not set and required == true.
+     */
+    public static Properties loadProperties(ServletConfig servletConfig, String configurationIP, boolean required)
+            throws BlojsomException {
+        String configuration =
+                servletConfig.getInitParameter(configurationIP);
+
+        Properties properties = new Properties();
+
+        if (configuration == null || "".equals(configuration)) {
+            if (required) {
+                throw new BlojsomException("No value given for: " + configurationIP +  " configuration parameter");
+            } else {
+                return properties;
+            }
+        }
+
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(configuration);
+
+        try {
+            properties.load(is);
+        } catch (IOException e) {
+            throw new BlojsomException(e);
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                throw new BlojsomException(e);
+            }
+
+        }
+
+        return properties;
     }
 }
