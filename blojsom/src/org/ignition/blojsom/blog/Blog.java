@@ -36,8 +36,6 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.*;
 
 /**
@@ -46,7 +44,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.32 2003-03-19 03:24:25 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.33 2003-03-19 04:03:14 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -856,63 +854,4 @@ public class Blog implements BlojsomConstants {
         return _blogCommentsEnabled;
     }
 
-    /**
-     * Add a comment to a particular blog entry
-     *
-     * @param category Blog entry category
-     * @param permalink Blog entry permalink
-     * @param author Comment author
-     * @param authorEmail Comment author e-mail
-     * @param authorURL Comment author URL
-     * @param comment Comment
-     */
-    public synchronized void addBlogComment(String category, String permalink, String author,
-                                            String authorEmail, String authorURL, String userComment) {
-        if (_blogCommentsEnabled.booleanValue()) {
-            BlogComment comment = new BlogComment();
-            comment.setAuthor(author);
-            comment.setAuthorEmail(authorEmail);
-            comment.setAuthorURL(authorURL);
-            comment.setComment(userComment);
-            comment.setCommentDate(new Date());
-
-            StringBuffer commentDirectory = new StringBuffer();
-            String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, _blogFileExtensions);
-            if (permalinkFilename == null) {
-                _logger.debug("Invalid permalink comment for: " + permalink);
-                return;
-            }
-            commentDirectory.append(_blogHome);
-            commentDirectory.append(BlojsomUtils.removeInitialSlash(category));
-            commentDirectory.append(_blogCommentsDirectory);
-            commentDirectory.append(File.separator);
-            commentDirectory.append(permalink);
-            commentDirectory.append(File.separator);
-            String commentFilename = commentDirectory.toString() + comment.getCommentDate().getTime() + COMMENT_EXTENSION;
-            File commentDir = new File(commentDirectory.toString());
-            if (!commentDir.exists()) {
-                if (!commentDir.mkdirs()) {
-                    _logger.error("Could not create directory for comments: " + commentDirectory);
-                    return;
-                }
-            }
-
-            File commentEntry = new File(commentFilename);
-            try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
-                bw.write(comment.getAuthor());
-                bw.newLine();
-                bw.write(comment.getAuthorEmail());
-                bw.newLine();
-                bw.write(comment.getAuthorURL());
-                bw.newLine();
-                bw.write(comment.getComment());
-                bw.newLine();
-                bw.close();
-                _logger.debug("Added blog comment: " + commentFilename);
-            } catch (IOException e) {
-                _logger.error(e);
-            }
-        }
-    }
 }
