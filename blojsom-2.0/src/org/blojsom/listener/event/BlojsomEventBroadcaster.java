@@ -36,13 +36,14 @@
 package org.blojsom.listener.event;
 
 import org.blojsom.listener.BlojsomListener;
+import org.blojsom.listener.BlojsomFilter;
 
 /**
  * BlojsomEventBroadcaster
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEventBroadcaster.java,v 1.1 2004-08-26 01:57:45 czarneckid Exp $
+ * @version $Id: BlojsomEventBroadcaster.java,v 1.2 2004-08-30 04:26:21 czarneckid Exp $
  */
 public interface BlojsomEventBroadcaster {
 
@@ -52,6 +53,15 @@ public interface BlojsomEventBroadcaster {
      * @param listener {@link BlojsomListener}
      */
     public void addListener(BlojsomListener listener);
+
+    /**
+     * Add a listener to this event broadcaster. Events are filtered using the {@link BlojsomFilter} instance
+     * passed to this method.
+     *
+     * @param listener {@link BlojsomListener}
+     * @param filter {@link BlojsomFilter} used to filter events
+     */
+    public void addListener(BlojsomListener listener, BlojsomFilter filter);
 
     /**
      * Remove a listener from this event broadcaster
