@@ -42,6 +42,7 @@ import org.blojsom.plugin.common.IPBanningPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.CookieUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.Cookie;
@@ -56,7 +57,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.3 2003-08-25 03:52:34 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.4 2003-10-15 01:22:08 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -175,46 +176,6 @@ public class CommentPlugin extends IPBanningPlugin {
     }
 
     /**
-     * Return a cookie given a particular key
-     *
-     * @param httpServletRequest Request
-     * @param cookieKey Cookie key
-     * @return <code>Cookie</code> of the requested key or <code>null</code> if no cookie
-     * under that name is found
-     */
-    private Cookie getCommentCookie(HttpServletRequest httpServletRequest, String cookieKey) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if (cookies == null) {
-            return null;
-        }
-
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if (cookie.getName().equals(cookieKey)) {
-                return cookie;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Add a cookie with a key and value to the response
-     *
-     * @param httpServletResponse Response
-     * @param cookieKey Cookie key
-     * @param cookieValue Cookie value
-     */
-    private void addCommentCookie(HttpServletResponse httpServletResponse,
-                                  int cookieExpiration,
-                                  String cookieKey,
-                                  String cookieValue) {
-        Cookie cookie = new Cookie(cookieKey, cookieValue);
-        cookie.setMaxAge(cookieExpiration);
-        httpServletResponse.addCookie(cookie);
-    }
-
-    /**
      * Process the blog entries
      *
      * @param httpServletRequest Request
@@ -296,7 +257,7 @@ public class CommentPlugin extends IPBanningPlugin {
 
         // Check to see if the person has requested they be "remembered" and if so
         // extract their information from the appropriate cookies
-        Cookie authorCookie = getCommentCookie(httpServletRequest, COOKIE_AUTHOR);
+        Cookie authorCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_AUTHOR);
         if ((authorCookie != null) && ((author == null) || "".equals(author))) {
             author = authorCookie.getValue();
             _logger.debug("Pulling author from cookie: " + author);
@@ -306,7 +267,7 @@ public class CommentPlugin extends IPBanningPlugin {
                 context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR, author);
             }
 
-            Cookie authorEmailCookie = getCommentCookie(httpServletRequest, COOKIE_EMAIL);
+            Cookie authorEmailCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_EMAIL);
             if ((authorEmailCookie != null) && ((authorEmail == null) || "".equals(authorEmail))) {
                 authorEmail = authorEmailCookie.getValue();
                 _logger.debug("Pulling author email from cookie: " + authorEmail);
@@ -317,7 +278,7 @@ public class CommentPlugin extends IPBanningPlugin {
                 }
             }
 
-            Cookie authorUrlCookie = getCommentCookie(httpServletRequest, COOKIE_URL);
+            Cookie authorUrlCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_URL);
             if ((authorUrlCookie != null) && ((authorURL == null) || "".equals(authorURL))) {
                 authorURL = authorUrlCookie.getValue();
                 _logger.debug("Pulling author URL from cookie: " + authorURL);
@@ -328,7 +289,7 @@ public class CommentPlugin extends IPBanningPlugin {
                 }
             }
 
-            Cookie rememberMeCookie = getCommentCookie(httpServletRequest, COOKIE_REMEMBER_ME);
+            Cookie rememberMeCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_REMEMBER_ME);
             if ((rememberMeCookie != null) && ((rememberMe == null) || "".equals(rememberMe))) {
                 rememberMe = rememberMeCookie.getValue();
                 if (rememberMe == null) {
@@ -398,13 +359,13 @@ public class CommentPlugin extends IPBanningPlugin {
 
                 // If we're asked to remember the person, then add the appropriate cookies
                 if ((remember != null) && (!"".equals(remember))) {
-                    addCommentCookie(httpServletResponse, _cookieExpiration, COOKIE_AUTHOR, author);
+                    CookieUtils.addCookie(httpServletResponse, _cookieExpiration, COOKIE_AUTHOR, author);
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR, author);
-                    addCommentCookie(httpServletResponse, _cookieExpiration, COOKIE_EMAIL, authorEmail);
+                    CookieUtils.addCookie(httpServletResponse, _cookieExpiration, COOKIE_EMAIL, authorEmail);
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL, authorEmail);
-                    addCommentCookie(httpServletResponse, _cookieExpiration, COOKIE_URL, authorURL);
+                    CookieUtils.addCookie(httpServletResponse, _cookieExpiration, COOKIE_URL, authorURL);
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
-                    addCommentCookie(httpServletResponse, _cookieExpiration, COOKIE_REMEMBER_ME, "true");
+                    CookieUtils.addCookie(httpServletResponse, _cookieExpiration, COOKIE_REMEMBER_ME, "true");
                     context.put(BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME, "true");
                 }
             }
