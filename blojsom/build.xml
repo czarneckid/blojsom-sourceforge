@@ -6,7 +6,7 @@
 <project name="blojsom" default="compile" basedir=".">
 
     <property name="name" value="blojsom"/>
-    <property name="version" value="1.9.1"/>
+    <property name="version" value="1.9.2"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
     <property name="war.file" value="${distro.dir}/${name}.war"/>
@@ -31,6 +31,15 @@
     <property name="templates.jar" value="${name}-templates.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
 
+    <!-- Add-on properties -->
+    <property name="addon.extensions.src.dir" value="${basedir}/addon/extensions/src"/>
+    <property name="addon.plugins.src.dir" value="${basedir}/addon/plugins/src"/>
+    <property name="addon.core.src.dir" value="${basedir}/addon/core/src"/>
+
+    <property name="addon.core.jar" value="${webinf.lib.dir}/${name}-addon-core.jar"/>
+    <property name="addon.plugins.jar" value="${webinf.lib.dir}/${name}-addon-plugins.jar"/>
+    <property name="addon.extensions.jar" value="${webinf.lib.dir}/${name}-addon-extensions.jar"/>
+
     <property name="debug" value="on"/>
     <property name="deprecation" value="on"/>
     <property name="optimize" value="on"/>
@@ -54,6 +63,9 @@
         <pathelement path="${src.dir}"/>
         <pathelement path="${plugins.src.dir}"/>
         <pathelement path="${extensions.src.dir}"/>
+        <pathelement path="${addon.core.src.dir}"/>
+        <pathelement path="${addon.plugins.src.dir}"/>
+        <pathelement path="${addon.extensions.src.dir}"/>
     </path>
 
     <!-- =================================================================== -->
@@ -128,6 +140,45 @@
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${extensions.jar}" basedir="${compile.dir}" />
+        <delete dir="${compile.dir}"/>
+
+        <!-- Add-on core -->
+        <delete dir="${compile.dir}"/>
+        <mkdir dir="${compile.dir}"/>
+        <javac srcdir="${addon.core.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <jar file="${addon.core.jar}" basedir="${compile.dir}" />
+        <delete dir="${compile.dir}"/>
+
+        <!-- Add-on plugins -->
+        <delete dir="${compile.dir}"/>
+        <mkdir dir="${compile.dir}"/>
+        <javac srcdir="${addon.plugins.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <jar file="${addon.plugins.jar}" basedir="${compile.dir}" />
+        <delete dir="${compile.dir}"/>
+
+        <!-- Add-on extensions -->
+        <delete dir="${compile.dir}"/>
+        <mkdir dir="${compile.dir}"/>
+        <javac srcdir="${addon.extensions.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <jar file="${addon.extensions.jar}" basedir="${compile.dir}" />
         <delete dir="${compile.dir}"/>
     </target>
 
