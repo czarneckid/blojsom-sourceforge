@@ -51,6 +51,7 @@ import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.authentication.AtomAuthentication;
+import org.intabulas.sandler.authentication.AuthenticationException;
 import org.intabulas.sandler.builders.XPPBuilder;
 import org.intabulas.sandler.elements.Entry;
 import org.intabulas.sandler.exceptions.MarshallException;
@@ -75,7 +76,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.31 2004-04-29 14:20:27 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.32 2004-05-09 18:08:51 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -121,7 +122,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             AtomAuthentication auth = new AtomAuthentication(httpServletRequest.getHeader(ATOMHEADER_WSSE_AUTHORIZATION));
             Map authMap = blog.getAuthorization();
             if (authMap.containsKey(auth.getUsername())) {
-                result = auth.authenticate((String) authMap.get(auth.getUsername()), verb);
+                try {
+                    result = auth.authenticate((String) authMap.get(auth.getUsername()), verb);
+                } catch (AuthenticationException e) {
+                    _logger.error(e.getMessage(), e);
+                }
             } else {
                 _logger.info("Unable to locate user [" + auth.getUsername() + "] in authorization table");
             }
