@@ -59,7 +59,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.30 2005-01-30 19:28:00 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.31 2005-03-16 03:20:29 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -535,7 +535,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                         String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
 
                         if (_blogEmailEnabled.booleanValue()) {
-                            sendCommentEmail(_emailPrefix, title, emailComment, context);
+                            sendCommentEmail(_emailPrefix, title, emailComment, context, (String) entries[0].getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR), blog);
                         }
                     }
                 } else {
@@ -567,9 +567,13 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
      * @param title Entry title
      * @param comment Comment text
      * @param context Context
+     * @param author Author of entry
+     * @param blog {@link Blog} information
      */
-    public void sendCommentEmail(String emailPrefix, String title, String comment, Map context) {
-        EmailUtils.notifyBlogAuthor(emailPrefix + title, comment, context);
+    public void sendCommentEmail(String emailPrefix, String title, String comment, Map context, String author, Blog blog) {
+        String recipientEmail = blog.getAuthorizedUserEmail(author);
+
+        EmailUtils.notifyBlogAuthor(emailPrefix + title, comment, context, recipientEmail);
     }
 
 

@@ -56,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.35 2005-01-30 19:04:48 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.36 2005-03-16 03:20:30 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -454,7 +454,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
                 String emailTrackback = mergeTemplate(TRACKBACK_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
 
                 if (_blogEmailEnabled.booleanValue()) {
-                    sendTrackbackEmail(_emailPrefix, entries[0].getTitle(), emailTrackback, context);
+                    sendTrackbackEmail(_emailPrefix, entries[0].getTitle(), emailTrackback, context, (String) entries[0].getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR), blog);
                 }
             } else {
                 _logger.info("Trackback meta-data contained destroy key. Trackback was not saved");
@@ -572,9 +572,13 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
      * @param title       Entry title
      * @param trackback   Trackback text
      * @param context     Context
+     * @param author Author of entry
+     * @param blog {@link Blog} information
      */
-    public void sendTrackbackEmail(String emailPrefix, String title, String trackback, Map context) {
-        EmailUtils.notifyBlogAuthor(emailPrefix + title, trackback, context);
+    public void sendTrackbackEmail(String emailPrefix, String title, String trackback, Map context, String author, Blog blog) {
+        String recipientEmail = blog.getAuthorizedUserEmail(author);
+
+        EmailUtils.notifyBlogAuthor(emailPrefix + title, trackback, context, recipientEmail);
     }
 
     /**

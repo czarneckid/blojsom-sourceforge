@@ -37,6 +37,7 @@ package org.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
+import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.event.BlojsomEventBroadcaster;
 import org.blojsom.event.BlojsomListener;
 import org.blojsom.util.BlojsomConstants;
@@ -53,7 +54,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.39 2005-03-12 16:26:58 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.40 2005-03-16 03:18:45 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -69,7 +70,8 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _resourceDirectory;
     private String _qualifiedResourceDirectory;
     private String _resourceManager;
-    private String _authorizationProvider;
+    private String _authorizationProviderClass;
+    private static AuthorizationProvider _authorizationProvider = null;
     private String _globalBlogHome;
     private static BlojsomEventBroadcaster _eventBroadcaster = null;
     private String _installedLocales;
@@ -270,17 +272,31 @@ public class BlojsomConfiguration implements BlojsomConstants {
         }
         _logger.debug("Using resource manager: " + _resourceManager);
 
-        _authorizationProvider = getBlojsomPropertyAsString(BLOJSOM_AUTHORIZATION_PROVIDER_IP);
-        if (BlojsomUtils.checkNullOrBlank(_authorizationProvider)) {
-            _authorizationProvider = DEFAULT_AUTHORIZATION_PROVIDER;
-        }
-        _logger.debug("Using authorization provider: " + _authorizationProvider);
-
         _installedLocales = getBlojsomPropertyAsString(BLOJSOM_INSTALLED_LOCALES_IP);
         if (BlojsomUtils.checkNullOrBlank(_installedLocales)) {
             _installedLocales = BLOG_LANGUAGE_DEFAULT + "_" + BLOG_COUNTRY_DEFAULT;
         }
         _logger.debug("Using installed locales: " + _installedLocales);
+
+        _authorizationProviderClass = getBlojsomPropertyAsString(BLOJSOM_AUTHORIZATION_PROVIDER_IP);
+        if (BlojsomUtils.checkNullOrBlank(_authorizationProviderClass)) {
+            _authorizationProviderClass = DEFAULT_AUTHORIZATION_PROVIDER;
+        }
+        _logger.debug("Using authorization provider: " + _authorizationProviderClass);
+
+         try {
+            Class authorizationProviderClass = Class.forName(_authorizationProviderClass);
+            _authorizationProvider = (AuthorizationProvider) authorizationProviderClass.newInstance();
+            _authorizationProvider.init(_servletConfig, this);
+        } catch (ClassNotFoundException e) {
+            throw new BlojsomConfigurationException(e);
+        } catch (InstantiationException e) {
+            throw new BlojsomConfigurationException(e);
+        } catch (IllegalAccessException e) {
+            throw new BlojsomConfigurationException(e);
+        } catch (BlojsomConfigurationException e) {
+            throw new BlojsomConfigurationException(e);
+        }
     }
 
     /**
@@ -450,7 +466,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
      * @since blojsom 2.16
      */
     public String getAuthorizationProvider() {
-        return _authorizationProvider;
+        return _authorizationProviderClass;
     }
 
     /**
@@ -559,6 +575,8 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 userBlog = new Blog(userProperties);
                 blogUser.setBlog(userBlog);
 
+                _authorizationProvider.loadAuthenticationCredentials(blogUser);
+                
                 _logger.debug("Added blojsom blog: " + blogUser.getId());
 
                 // Ensure the resource directory for the user physically exists
