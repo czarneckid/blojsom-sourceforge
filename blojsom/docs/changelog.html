@@ -45,6 +45,21 @@ file encoding<br />
 exception classes to subclass from this root exception class<br />
 - Added <tt>Blog</tt> as a parameter to the <tt>GenericDispatcher.init()</tt> method<br />
 - All setXXX methods in the <tt>Blog</tt> class have been deprecated.<br />
+- Added <tt>loadEntry(Blog blog)</tt>, <tt>saveEntry(Blog blog)</tt>,  and <tt>deleteEntry(Blog blog)</tt>
+to the <tt>BlogEntry</tt> class. These are overridden in a concrete implementation like <tt>FileBackedBlogEntry</tt> of this class
+to persist the blog entry<br />
+- Added <tt>setAttribute(Map attributeMap)</tt> to the <tt>BlogEntry</tt> class. Concrete implementations of
+this class such as the <tt>FileBackedBlogEntry</tt> can use this method to allow attributes to be set
+on the subclass that are not defined in the <tt>BlogEntry</tt> class<br />
+- Added <tt>public abstract BlogEntry newBlogEntry()</tt> method to the <tt>BlojsomFetcher</tt> class.
+This method is intended to be used to retrieve a new <tt>BlogEntry</tt> class appropriate for
+the particular Fetcher class that is used by the blog. For example, in the <tt>StandardFetcher</tt>
+class, this method will return an instance of <tt>FileBackedBlogEntry</tt><br />
+- Changed various methods in the <tt>StandardFetcher</tt> class to be <tt>protected</tt> so that
+they can be overridden by subclasses<br />
+- Changed Blogger and MetaWeblog API handlers to use the new persistence methods on the
+<tt>BlogEntry</tt> class. This removes any strict dependency on these APIs from knowledge of the
+type of blog entry it is dealing with<br />
 
 <p />
 Extension changes:<br />
