@@ -115,10 +115,32 @@ public class BlojsomUtils {
             return null;
         }
 
-        String unescaped = input.replaceAll("&", "&amp;");
-        unescaped = input.replaceAll("<", "&lt;");
-        unescaped = unescaped.replaceAll(">", "&gt;");
+        String unescaped = replace(input, "&", "&amp;");
+        unescaped = replace(unescaped, "<", "&lt;");
+        unescaped = replace(unescaped, ">", "&gt;");
         return unescaped;
+    }
+
+    /**
+     * Replace any occurances of a string pattern within a string with a different string.
+     *
+     * @param str The source string.  This is the string that will be searched and have the replacements
+     * @param pattern The pattern to look for in str
+     * @param replace The string to insert in the place of <i>pattern</i>
+     * @return String with replace occurences
+     */
+    public static String replace(String str, String pattern, String replace) {
+        int s = 0;
+        int e = 0;
+        StringBuffer result = new StringBuffer();
+
+        while ((e = str.indexOf(pattern, s)) >= 0) {
+            result.append(str.substring(s, e));
+            result.append(replace);
+            s = e + pattern.length();
+        }
+        result.append(str.substring(s));
+        return result.toString();
     }
 
     /**
