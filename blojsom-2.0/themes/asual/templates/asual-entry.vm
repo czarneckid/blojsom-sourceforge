@@ -4,7 +4,7 @@
 
 							<h3><a href="$entryLink" title="$entry.getTitle()">$entry.getTitle()</a></h3>
 							<p class="links">
-								[<a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#Categoryname($entry.getBlogCategory())#end</a>] [<a href="$entryLink" title="Permalink">Permalink</a>]
+								[<a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#CategoryName($entry.getBlogCategory())</a>] [<a href="$entryLink" title="Permalink">Permalink</a>]
 							</p>
 							<div>
 								$entry.getDescription()
