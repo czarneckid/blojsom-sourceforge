@@ -99,6 +99,9 @@
         <delete file="${core.jar}"/>
         <delete file="${plugins.jar}"/>
         <delete file="${extensions.jar}"/>
+        <delete file="${addon.core.jar}"/>
+        <delete file="${addon.extensions.jar}"/>
+        <delete file="${addon.plugins.jar}"/>
         <delete file="${webinf.lib.dir}/${templates.jar}"/>
         <delete file="${war.file}"/>
     </target>
