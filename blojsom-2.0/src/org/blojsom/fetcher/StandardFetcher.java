@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.24 2005-01-11 02:52:10 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.25 2005-03-22 04:24:52 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -405,8 +405,10 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
                 if (permalinkEntry.length > 0 && allEntries.length > 0) {
                     String permalinkId = permalinkEntry[0].getId();
-                    for (int i = 0; i < allEntries.length; i++) {
-                        BlogEntry blogEntry = allEntries[i];
+                    BlogEntry blogEntry;
+
+                    for (int i = allEntries.length - 1; i >= 0; i--) {
+                        blogEntry = allEntries[i];
                         String blogEntryId = blogEntry.getId();
                         if (blogEntryId != null && blogEntryId.equals(permalinkId)) {
                             if ((i - 1) >= 0) {

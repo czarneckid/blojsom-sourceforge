@@ -54,7 +54,7 @@ import java.util.*;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.18 2005-03-12 20:28:36 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.19 2005-03-22 04:23:30 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -168,7 +168,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
                     String permalinkId = permalinkEntry[0].getId();
                     BlogEntry blogEntry;
 
-                    for (int i = 0; i < allEntries.length; i++) {
+                    for (int i = allEntries.length - 1; i >= 0; i--) {
                         blogEntry = allEntries[i];
                         String blogEntryId = blogEntry.getId();
 
