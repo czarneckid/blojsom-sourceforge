@@ -89,6 +89,21 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 
+<!--    <servlet>-->
+<!--        <servlet-name>blojsomatomapi</servlet-name>-->
+<!--        <servlet-class>org.blojsom.extension.atomapi.AtomAPIServlet</servlet-class>-->
+<!--        <init-param>-->
+<!--            <param-name>blojsom-configuration</param-name>-->
+<!--            <param-value>/WEB-INF/blojsom.properties</param-value>-->
+<!--        </init-param>-->
+<!--        <init-param>-->
+<!--            <param-name>blog-authorization</param-name>-->
+<!--            <param-value>authorization.properties</param-value>-->
+<!--        </init-param>        -->
+<!--        <load-on-startup>4</load-on-startup>-->
+<!--    </servlet>-->
+
+
     <!-- blojsom servlet mappings -->
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
@@ -104,5 +119,12 @@
         <servlet-name>blojsomcommentapi</servlet-name>
         <url-pattern>/commentapi/*</url-pattern>
     </servlet-mapping>
+
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>blojsomatomapi</servlet-name>-->
+<!--        <url-pattern>/atomapi/*</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    -->
+
 
 </web-app>
