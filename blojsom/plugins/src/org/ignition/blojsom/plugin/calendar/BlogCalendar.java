@@ -37,7 +37,6 @@ package org.ignition.blojsom.plugin.calendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.util.BlojsomConstants;
 
 import java.text.DateFormatSymbols;
 import java.util.*;
@@ -46,12 +45,11 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.6 2003-03-27 15:27:25 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.7 2003-03-28 01:07:03 czarneckid Exp $
  */
 public class BlogCalendar {
 
     private Log _logger = LogFactory.getLog(BlogCalendar.class);
-
 
     private Calendar _calendar;
     private Calendar _today;
@@ -71,6 +69,12 @@ public class BlogCalendar {
         this(calendar, blogurl, Locale.getDefault());
     }
 
+    /**
+     *
+     * @param calendar
+     * @param blogurl
+     * @param locale
+     */
     public BlogCalendar(Calendar calendar, String blogurl, Locale locale) {
         _locale = locale;
         _calendar = calendar;
@@ -82,7 +86,6 @@ public class BlogCalendar {
         currentmonth = calendar.get(Calendar.MONTH) + 1;// Damm Java!
         currentyear = calendar.get(Calendar.YEAR);
 
-
         _dayswithentry = new Boolean[_calendar.getMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(_dayswithentry, Boolean.FALSE);
 
@@ -91,88 +94,171 @@ public class BlogCalendar {
         for (int x = 0; x < _shortdownames.length; x++) {
             _shortdownames[x] = downames[x + 1];
         }
-
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCaption() {
-        return BlojsomUtils.getFormattedDate(_calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_FORMAT);
+        return BlojsomUtils.getFormattedDate(_calendar.getTime(), CalendarPlugin.BLOJSOM_CALENDAR_FORMAT);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getFirstDayOfMonth() {
         _calendar.set(Calendar.DAY_OF_MONTH, 1);
         return _calendar.get(Calendar.DAY_OF_WEEK);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDaysInMonth() {
         return _calendar.getMaximum(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     *
+     * @param dom
+     */
     public void setEntryForDOM(int dom) {
         _dayswithentry[dom - 1] = new Boolean(true);
     }
 
+    /**
+     *
+     * @param dom
+     */
     public void removetEntryForDOM(int dom) {
         _dayswithentry[dom - 1] = new Boolean(false);
     }
 
+    /**
+     *
+     * @param dom
+     * @return
+     */
     public boolean dayHasEntry(int dom) {
         Boolean hasEntry = _dayswithentry[dom - 1];
         return hasEntry.booleanValue();
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean[] getEntryDates() {
         return _dayswithentry;
     }
 
+    /**
+     *
+     * @param month
+     * @return
+     */
     public String getMonthName(int month) {
         return getMonthNames()[month];
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getMonthNames() {
         return _symbols.getMonths();
     }
 
+    /**
+     *
+     * @param month
+     * @return
+     */
     public String getShortMonthName(int month) {
         return getShortMonthNames()[month];
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getShortMonthNames() {
         return _symbols.getShortMonths();
     }
 
+    /**
+     *
+     * @param dow
+     * @return
+     */
     public String getDayOfWeekName(int dow) {
         return getDayOfWeekNames()[dow];
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getDayOfWeekNames() {
         return _symbols.getWeekdays();
     }
 
+    /**
+     *
+     * @param dow
+     * @return
+     */
     public String getShortDayOfWeekName(int dow) {
         return _shortdownames[dow - 1];
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getShortDayOfWeekNames() {
         return _shortdownames;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public int getCurrentMonth() {
         return currentmonth;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCurrentYear() {
         return currentyear;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCalendarUrl() {
         return _blogURL;
     }
 
+    /**
+     *
+     * @return
+     */
     public Calendar getCalendar() {
         return _calendar;
     }
 
+    /**
+     *
+     * @return
+     */
     public Calendar getToday() {
         return _today;
     }

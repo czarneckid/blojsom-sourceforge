@@ -43,7 +43,7 @@ import java.util.Calendar;
  * VelocityHelper
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.2 2003-03-27 22:41:40 intabulas Exp $
+ * @version $Id: VelocityHelper.java,v 1.3 2003-03-28 01:07:03 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -52,20 +52,31 @@ public class VelocityHelper {
     // [Row][Col]
     private String[][] visualcalendar = new String[6][7];
 
-
-    public VelocityHelper(){
-
+    /**
+     *
+     */
+    public VelocityHelper() {
     }
 
-    public VelocityHelper(BlogCalendar calendar){
+    /**
+     *
+     * @param calendar
+     */
+    public VelocityHelper(BlogCalendar calendar) {
         _calendar = calendar;
     }
 
-    public void setCalendar(BlogCalendar calendar){
+    /**
+     *
+     * @param calendar
+     */
+    public void setCalendar(BlogCalendar calendar) {
         _calendar = calendar;
     }
 
-
+    /**
+     *
+     */
     public void buildCalendar() {
         int fdow = _calendar.getFirstDayOfMonth() - 1;
         int ldom = _calendar.getDaysInMonth();
@@ -81,17 +92,21 @@ public class VelocityHelper {
                     } else {
                         StringBuffer _url = new StringBuffer("<a href=\"");
                         String _calurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), _calendar.getCurrentMonth(), dowoffset, _calendar.getCurrentYear());
-                        _url.append( _calurl);
+                        _url.append(_calurl);
                         _url.append("\">").append(dowoffset).append("</a>");
                         visualcalendar[x][y] = _url.toString();
                     }
                 }
             }
         }
-
     }
 
-
+    /**
+     *
+     * @param row
+     * @param clazz
+     * @return
+     */
     public String getCalendarRow(int row, String clazz) {
         StringBuffer result = new StringBuffer();
         for (int x = 0; x < 7; x++) {
@@ -100,13 +115,20 @@ public class VelocityHelper {
         return result.toString();
     }
 
-
+    /**
+     *
+     * @return
+     */
     public String getToday() {
         StringBuffer result = new StringBuffer();
         result.append("<a href=\"").append(_calendar.getCalendarUrl()).append("\">Today</a>");
         return result.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPreviousMonth() {
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, -1);
@@ -122,11 +144,15 @@ public class VelocityHelper {
         return result.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNextMonth() {
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, 1);
 
-        if ((_calendar.getCalendar().get(Calendar.MONTH) < (_calendar.getToday().get(Calendar.MONTH)+1)) &&
+        if ((_calendar.getCalendar().get(Calendar.MONTH) < (_calendar.getToday().get(Calendar.MONTH) + 1)) &&
                 (_calendar.getCalendar().get(Calendar.YEAR) <= _calendar.getToday().get(Calendar.YEAR))) {
             result.append("<a href=\"");
             String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
@@ -139,14 +165,8 @@ public class VelocityHelper {
             result.append("&nbsp;&nbsp;&gt; </a>");
             _calendar.getCalendar().add(Calendar.MONTH, -1);
         } else {
-            result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH))).append("&nbsp;&nbsp;>" );
+            result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH))).append("&nbsp;&nbsp;>");
         }
         return result.toString();
     }
-
-
-
-
-
-
 }

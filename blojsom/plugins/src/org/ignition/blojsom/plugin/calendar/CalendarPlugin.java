@@ -52,11 +52,35 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.13 2003-03-27 17:38:18 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.14 2003-03-28 01:07:03 czarneckid Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(CalendarPlugin.class);
+
+    /**
+     * Key under which the blog calendar will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_CALENDAR = "BLOJSOM_CALENDAR";
+
+    /**
+     * Key under which the blog calendar vtl helper will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_CALENDAR_VTLHELPER = "BLOJSOM_CALENDAR_VTLHELPER";
+
+    /**
+     * Format String for Calendar Month
+     * (Example: March 2003)
+     */
+    public static final String BLOJSOM_CALENDAR_FORMAT = "MMMMM yyyy";
+
+    /**
+     * Short Format String for Previous/Next Calendar Month(s)
+     * (Example: Mar)
+     */
+    public static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
 
     /**
      * Locale to use for the Calendar.
@@ -114,9 +138,6 @@ public class CalendarPlugin implements BlojsomPlugin {
         int currentmonth = calendar.get(Calendar.MONTH);
         int currentyear = calendar.get(Calendar.YEAR);
 
-
-
-
         // Determine a calendar-based request
         String year = null;
         String month = null;
@@ -130,7 +151,6 @@ public class CalendarPlugin implements BlojsomPlugin {
             if (year.length() != 4) {
                 year = null;
             } else {
-
                 try {
                     currentyear = Integer.parseInt(year);
                     calendar.set(Calendar.YEAR, currentyear);
@@ -166,7 +186,6 @@ public class CalendarPlugin implements BlojsomPlugin {
             requestedDateKey = year + month + day;
         }
 
-
         String _calurl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
         BlogCalendar _blogCalendar = new BlogCalendar(calendar, _calurl, _locale);
 
@@ -183,19 +202,17 @@ public class CalendarPlugin implements BlojsomPlugin {
                     updatedEntryList.add(entry);
                 }
 
-
                 // If the Entry is is the same month and the same year, then flag that date as having a Entry
                 if ((entrymonth == currentmonth) && (entryear == currentyear)) {
                     _blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
                 }
-
             }
         }
 
         VelocityHelper _vtlhelper = new VelocityHelper(_blogCalendar);
         _vtlhelper.buildCalendar();
-        context.put(BlojsomConstants.BLOJSOM_CALENDAR, _blogCalendar);
-        context.put(BlojsomConstants.BLOJSOM_CALENDAR_VTLHELPER, _vtlhelper);
+        context.put(BLOJSOM_CALENDAR, _blogCalendar);
+        context.put(BLOJSOM_CALENDAR_VTLHELPER, _vtlhelper);
 
         if (updatedEntryList.size() == 0) {
             entries = new BlogEntry[0];
