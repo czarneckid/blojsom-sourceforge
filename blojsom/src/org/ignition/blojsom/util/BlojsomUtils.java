@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.24 2003-03-05 04:05:46 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.25 2003-03-05 19:32:12 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -392,7 +392,14 @@ public class BlojsomUtils implements BlojsomConstants {
         if (indexOfSlash == -1) {
             return permalink;
         } else {
-            return permalink.substring(indexOfSlash + 1, permalink.length());
+            String sanitizedPermalink = permalink.substring(indexOfSlash + 1, permalink.length());
+            if (sanitizedPermalink.startsWith("..")) {
+                sanitizedPermalink = sanitizedPermalink.substring(2, sanitizedPermalink.length());
+            } else if (sanitizedPermalink.startsWith(".")) {
+                sanitizedPermalink = sanitizedPermalink.substring(1, sanitizedPermalink.length());
+            }
+
+            return sanitizedPermalink;
         }
     }
 
