@@ -79,7 +79,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.10 2005-01-05 02:31:14 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.11 2005-01-18 03:29:07 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -148,6 +148,10 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
             Properties userProperties = new BlojsomProperties();
             InputStream is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + userID + '/' + BLOG_DEFAULT_PROPERTIES);
 
+            if (is == null) {
+                return null;
+            }
+            
             userProperties.load(is);
             is.close();
             Blog userBlog = null;

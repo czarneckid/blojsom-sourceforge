@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.56 2005-01-06 03:40:04 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.57 2005-01-18 03:28:51 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -196,6 +196,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             Properties userProperties = new BlojsomProperties();
             InputStream is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + userID + '/' + BLOG_DEFAULT_PROPERTIES);
 
+            if (is == null) {
+                return null;
+            }
+            
             userProperties.load(is);
             is.close();
             Blog userBlog = null;
