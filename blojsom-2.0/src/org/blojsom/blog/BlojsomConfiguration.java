@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.37 2005-03-10 04:57:23 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.38 2005-03-11 17:36:28 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -427,6 +427,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
      *
      * @return Map of {@link BlogUser} objects
      * @deprecated
+     * @see {@link #getBlojsomUsers()}  
      */
     public Map getBlogUsers() {
         return _blogUsers;
