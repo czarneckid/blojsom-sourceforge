@@ -21,7 +21,7 @@
     </todo>
 
     <changes>
-        <!-- Add new releases here -->    a
+        <!-- Add new releases here -->    
         <release version="1.9.3" date="July 6, 2003">
             <action dev="czarneckid" type="remove" context="General">
                 Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
