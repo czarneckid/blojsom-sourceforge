@@ -46,10 +46,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletConfig;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Iterator;
-import java.util.HashMap;
+import java.util.*;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +56,7 @@ import java.io.FileOutputStream;
  *
  * @since blojsom 2.06
  * @author czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.9 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.10 2005-02-04 04:19:04 czarneckid Exp $
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
@@ -117,6 +114,8 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
             _logger.error(e);
             throw new BlojsomPluginException(e);
         }
+
+        _plugins = new TreeMap(_plugins);
     }
 
     /**
@@ -149,7 +148,7 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
         // Create the plugin chain map
         Iterator flavorIterator = user.getFlavors().keySet().iterator();
         Map userPluginChain = user.getPluginChain();
-        Map updatedPluginChain = new HashMap();
+        Map updatedPluginChain = new TreeMap();
 
         while (flavorIterator.hasNext()) {
             String flavor = (String) flavorIterator.next();
@@ -215,7 +214,7 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, "Unable to update plugin configuration");
             }
 
-            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP, pluginChainForContext);
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP, new TreeMap(pluginChainForContext));
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PLUGINS_PAGE);
         }
 
