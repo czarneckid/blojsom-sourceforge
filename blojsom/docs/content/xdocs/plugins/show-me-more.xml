@@ -2,10 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>Show Me More Plugin</title>
-        <authors>
-            <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>
-        </authors>
+        <title>show me more plugin</title>
     </header>
 
     <body>

@@ -4,31 +4,34 @@
     <developers>
         <person name="David Czarnecki" email="czarneckid@users.sourceforge.net" id="czarneckid"/>
         <person name="Mark Lussier" email="intabulas@users.sourceforge.net" id="intabulas"/>
-        <person name="Nick Chalko" email="nick@chalko.com" id="chalko"/>
     </developers>
 
-    <todo>
-        <!-- Add todo items. @context is an arbitrary string. Eg:
-        <actions priority="high">
-          <action context="code" dev="SN">
-          </action>
-        </actions>
-        <actions priority="medium">
-          <action context="docs" dev="open">
-          </action>
-        </actions>
-        -->
-    </todo>
-
     <changes>
-         
-         <release version="1.9.4" date="dev">
-            <action dev="chalko" type="change" context="General">
-               The blojsom site is now built with forrest.
+
+        <release version="1.9.4" date="July 13, 2003">
+            <action dev="chalko" type="update" context="General">
+                The blojsom site is now built with forrest.
             </action>
             <action dev="intabulas" type="add" context="Core">
                 Added  the ability to disable the setting of the LastModified and ETag header by sending
                 <i>lastmodified=true/false</i> on the request
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Added <link href="http://www.intertwingly.net/wiki/pie/FrontPage">NEcho</link> 0.1 template to CVS
+            </action>
+            <action dev="czarneckid" type="update" context="Extension">
+                Changed <tt>AbstractBlojsomAPIHandler</tt> to throw <tt>BlojsomException</tt> for the
+<tt>setBlog()</tt> and <tt>setFetcher()</tt> methods
+            </action>
+            <action dev="czarneckid" type="update" context="Extension">
+                Implemented <tt>getPost()</tt> and <tt>newMediaObject()</tt> for the MetaWeblog API
+handler
+            </action>
+            <action dev="czarneckid" type="add" context="Library">
+                Added Jakarta Commons Codec 1.1 library
+            </action>
+            <action dev="czarneckid" type="update" context="Library">
+                Upgraded the <link href="http://sf.net/projects/textile4j">textile4j</link> jar to the latest version
             </action>
         </release>
 
@@ -100,7 +103,7 @@
 
             <action dev="czarneckid" type="add" context="Plugin">
                 Added new
-                <a href="plugins-dateformat.html">Date Format plugin</a> to allow for configuration of blog date formatting
+                <link href="plugins/date.html">Date Format plugin</link> to allow for configuration of blog date formatting
             </action>
             <action dev="czarneckid" type="update" context="Plugin">
                 Added a new base class
@@ -108,14 +111,14 @@
                 Comments and Trackback plugin now subclass from. This base plugin provides the capability to check
                 if an IP address is banned or not through its
                 <tt>boolean isIPBanned(String ipAddress)</tt> method. Check the
-                <a href="upgrading.html">upgrading</a> instructions for information on how to ban IP addresses
+                <link href="upgrading.html">upgrading</link> instructions for information on how to ban IP addresses
             </action>
             <action dev="intabulas" type="update" context="Plugin">
                 Textile code removed and replaced with textile4j.jar
             </action>
             <action dev="intabulas" type="update" context="Plugin">
                 The Textile plugin had a bug when processing qtag's. This was found during the
-                <a href="http://sf.net/projects/textile4j">textile4j</a> breakout
+                <link href="http://sf.net/projects/textile4j">textile4j</link> breakout
             </action>
             <action dev="czarneckid" type="update" context="Plugin">
                 The prefix for the Comment and Trackback plugins is configurable via the
@@ -140,8 +143,8 @@
             </action>
             <action dev="czarneckid" type="add" context="General">
                 New
-                <a href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</a> (RSD) flavor provides support for tools like
-                <a href="http://www.audblog.com">AudBlog</a>
+                <link href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</link> (RSD) flavor provides support for tools like
+                <link href="http://www.audblog.com">AudBlog</link>
             </action>
             <action dev="czarneckid" type="update" context="Core">
                 Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from
@@ -149,11 +152,11 @@
             </action>
             <action dev="czarneckid" type="add" context="General">
                 Added "Eclipse" theme courtesy of
-                <a href="http://dmartin.org/blog/">Dan Martin</a>
+                <link href="http://dmartin.org/blog/">Dan Martin</link>
             </action>
             <action dev="czarneckid" type="add" context="General">
                 Added "Shrubbery" theme courtesy of
-                <a href="http://acrump.info/blog/">Andrew Crump</a>
+                <link href="http://acrump.info/blog/">Andrew Crump</link>
             </action>
             <action dev="czarneckid" type="update" context="Core">
                 Normalized mechanism for blojsom to share certain templates across themes (e.g. trackback success and failure pages)
@@ -231,7 +234,7 @@
             <action dev="intabulas" type="add" context="Extension">
                 Implementation of the Blogger API
                 <tt>getUserInfo()</tt> method to allow services like
-                <a href="http://www.audblog.com">AudBlog</a> to work
+                <link href="http://www.audblog.com">AudBlog</link> to work
             </action>
             <action dev="czarneckid" type="update" context="Extension">
                 File extension for entries posted via XML-RPC is now configurable via the
@@ -266,22 +269,22 @@
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
                 Added
-                <a href="plugins-googlehighlight.html">Google Highlight Plugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query
+                <link href="plugins/google-highlight.html">Google Highlight Plugin</link> which will automaticaly highlight search words in your blog if the refer comes from a google query
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
                 Added
-                <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</a>
+                <link href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</link>
                 which simply demonstrates how to sort entries in a different order
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
                 Added
-                <a href="plugins-preview.html">Preview Plugin</a>
+                <link href="plugins/preview.html">Preview Plugin</link>
                 (courtesy of Nick Chalko) which allows you to "hide" entries by including a configurable prefix
                 at the beginning of the title of your blog entries
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
                 Added
-                <a href="plugins-textile.html">Textile Plugin</a> which allows you to write entries using
+                <link href="plugins/textile.html">Textile Plugin</link> which allows you to write entries using
                 the Textile syntax
             </action>
 
@@ -313,7 +316,7 @@
         <release version="1.8" date="April 28, 2003">
             <action dev="czarneckid" type="add" context="Extension">
                 Support for the
-                <a href="http://wellformedweb.org/story/9">CommentAPI</a> has been added. This API allows comment on blog entries from within aggregators
+                <link href="http://wellformedweb.org/story/9">CommentAPI</link> has been added. This API allows comment on blog entries from within aggregators
             </action>
             <action dev="czarneckid" type="update" context="General">
                 Trackback auto-discovery content (commented rdf document) has been added to permalink views, comment view and trackback views
@@ -344,16 +347,16 @@
             </action>
             <action dev="czarneckid" type="update" context="General">
                 RSS 2.0 feeds now include
-                <a href="http://dublincore.org/">Dublin Core</a> &lt;creator/&gt; and &lt;publisher/&gt; elements
+                <link href="http://dublincore.org/">Dublin Core</link> &lt;creator/&gt; and &lt;publisher/&gt; elements
             </action>
             <action dev="czarneckid" type="update" context="General">
                 RSS version changed to 0.92 as this is the version of the RSS specification output with the RSS flavor
             </action>
             <action dev="czarneckid" type="add" context="Core">
                 Added the
-                <a href="javadoc/org/ignition/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</a> interface and
+                <link href="javadoc/org/ignition/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</link> interface and
                 the
-                <a href="javadoc/org/ignition/blojsom/fetcher/StandardFetcher.html">StandardFetcher</a> implementation of that interface.
+                <link href="javadoc/org/ignition/blojsom/fetcher/StandardFetcher.html">StandardFetcher</link> implementation of that interface.
                 The
                 <tt>BlojsomFetcher</tt> interface was added to allow for abstraction of the underlying datasource from
                 which blojsom retrieves categories and entries. This would allow implementations to be written which
@@ -439,25 +442,25 @@
         <release version="1.7" date="April 3, 2003">
             <action dev="czarneckid" type="add" context="General">
                 Added a new Search image to pretty up the search dialog. Thanks to Mark Pierce of
-                <a href="http://www.omnimondo.com">Omnimodo</a> for the image
+                <link href="http://www.omnimondo.com">Omnimodo</link> for the image
             </action>
             <action dev="czarneckid" type="update" context="Plugins">
-                <a href="plugins-referer.html">Referer plugin</a> has been re-written to allow tracking and totaling by flavor, as well as only showing today's referer's. See the
-                <a href="plugins-referer.html">Referer plugin documentation</a> for more detail
+                <link href="plugins/referer.html">Referer plugin</link> has been re-written to allow tracking and totaling by flavor, as well as only showing today's referer's. See the
+                <link href="plugins/referer.html">Referer plugin documentation</link> for more detail
             </action>
             <action dev="czarneckid" type="add" context="General">
                 Added a referer history page that display's all referer's (grouped by flavor) with no date filtering
             </action>
             <action dev="czarneckid" type="add" context="Plugins">
                 New
-                <a href="plugins-calendar.html">Calendar plugin</a> that renders a visual calendar into your blog, hyperlinking dates that have entries
+                <link href="plugins/calendar.html">Calendar plugin</link> that renders a visual calendar into your blog, hyperlinking dates that have entries
             </action>
             <action dev="czarneckid" type="update" context="Plugins">
                 Calendar navigation code has moved to the new Calendar Filter plugin. If you want to continue to have calendar url navigation on your blog, please be sure to add this plugin to the start of your flavor plugin chain
             </action>
             <action dev="czarneckid" type="add" context="General">
                 New alternate theme for blojsom called 'SecondWave'. See
-                <a href="themes.html">themes</a> on how to install and configure this new theme
+                <link href="themes.html">themes</link> on how to install and configure this new theme
             </action>
             <action dev="czarneckid" type="update" context="General">
                 New search input form in the HTML template to allow users to search your blog entries. This is simply a front end to the Simple Search plugin
@@ -553,7 +556,7 @@
             <action dev="czarneckid" type="update" context="General">
                 Clarified "BLOJSOM_DATE" and "BLOJSOM_DATE_IS8601" to be of type
                 <tt>java.lang.String</tt> in
-                <a href="customization.html">customization</a>
+                <link href="customization.html">customization</link>
             </action>
             <action dev="czarneckid" type="add" context="Plugins">
                 Added Emoticons plugin
@@ -583,7 +586,7 @@
             </action>
             <action dev="czarneckid" type="add" context="Plugins">
                 Trackback support added. See the
-                <a href="trackbacks.html">trackbacks</a> documentation for more
+                <link href="trackbacks.html">trackbacks</link> documentation for more
                 information on Trackback support in blojsom
             </action>
             <action dev="czarneckid" type="update" context="General">
@@ -601,7 +604,7 @@
                 Added "entries" URL parameter to override the number of entries displayed on a page.
                 <i>entries=&lt;-1 or integer greater than 0&gt;</i>. This parameter is listed with the
                 other URL parameters accepted by blojsom in the
-                <a href="installation.html">installation</a>
+                <link href="installation.html">installation</link>
                 documentation
             </action>
             <action dev="czarneckid" type="update" context="Plugins">
@@ -629,7 +632,7 @@
             </action>
             <action dev="czarneckid" type="add" context="Core">
                 Added support for comments. See the
-                <a href="comments.html">comments</a> document for more information on configuring comments
+                <link href="comments.html">comments</link> document for more information on configuring comments
             </action>
             <action dev="czarneckid" type="update" context="General">
                 <font color="red">NOTE:</font> You will need to add two parameters,
@@ -646,7 +649,7 @@
             </action>
             <action dev="czarneckid" type="add" context="General">
                 Added "BLOJSOM_COMMENTS_ENABLED" (see
-                <a href="customization.html">customization</a>) as
+                <link href="customization.html">customization</link>) as
                 a request attribute to indicate whether or not comments are enabled for this blog
             </action>
             <action dev="czarneckid" type="update" context="Core">
@@ -663,7 +666,7 @@
             </action>
             <action dev="czarneckid" type="add" context="Extensions">
                 XML-RPC Handler supporting a subset of the
-                <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>
+                <link href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</link>
             </action>
             <action dev="czarneckid" type="add" context="Plugins">
                 Added "Referer Log" plugin
@@ -691,12 +694,12 @@
                 "BLOG_SITE_URL" no longer contains a trailing "/"
             </action>
             <action dev="czarneckid" type="add" context="Extension">
-                <a href="xmlrpc.html">XML-RPC Interface</a> (Additional Servlet) supporting a subset of the
-                <a href="http://plant.blogger.com/api/index.html">Blogger API</a>
+                <link href="xmlrpc.html">XML-RPC Interface</link> (Additional Servlet) supporting a subset of the
+                <link href="http://plant.blogger.com/api/index.html">Blogger API</link>
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
                 Initial
-                <a href="plugins.html">Plugin API</a> for blojsom
+                <link href="plugins.html">Plugin API</link> for blojsom
             </action>
 
             <action dev="czarneckid" type="fix" context="Core" fixes-bug="692640">
@@ -812,7 +815,7 @@
             <action dev="czarneckid" type="add" context="Core">
                 <i>blog-default-category-mapping</i> was added to
                 <i>blojsom.properties</i> to specify all (by leaving the parameter blank) or a subset (see
-                <a href="customization.html">customization</a>) of your blog directories that should be aggregated when requesting the default or "/" category
+                <link href="customization.html">customization</link>) of your blog directories that should be aggregated when requesting the default or "/" category
             </action>
 
             <action dev="czarneckid" type="fix" context="Core" fixes-bug="684666">
@@ -825,14 +828,14 @@
                 blojsom configuration parameters were moved from
                 <i>/WEB-INF/web.xml</i> to
                 <i>/WEB-INF/blojsom.properties</i>. This allows other projects such as
-                <a href="http://sourceforge.net/projects/blojsim">blojsim</a> to share blojsom configuration information
+                <link href="http://sourceforge.net/projects/blojsim">blojsim</link> to share blojsom configuration information
             </action>
             <action dev="czarneckid" type="update" context="General">
                 All of the blog-related functionality (e.g. building the blog entry map, looking up blog entries for a category, etc...) has been refactored into the Blog class. BlojsomServlet is now only concerned with processing requests for the blog
             </action>
             <action dev="czarneckid" type="add" context="General">
                 A per-category meta-data facility was added. This functionality is described in the
-                <a href="customization.html">customization</a> documentation
+                <link href="customization.html">customization</link> documentation
             </action>
             <action dev="czarneckid" type="add" context="General">
                 Calendar-based navigation is now supported in blojsom. This means that users can add "year=YYYY", "month="MM", and "day=DD" parameters when requesting entries per blog category to see entries that fall under a particular date range. The year must be provided, but a user can narrow down the list of entries by providing a month and a day

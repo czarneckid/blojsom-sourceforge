@@ -2,10 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>Preview Plugin</title>
-        <authors>
-            <person id="nchalko" name="Nick Chalko" email="nchalko@users.sf.net"/>
-        </authors>
+        <title>preview plugin</title>
     </header>
 
     <body>

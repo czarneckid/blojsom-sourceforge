@@ -2,10 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "http://cvs.apache.org/viewcvs.cgi/*checkout*/xml-forrest/src/resources/schema/dtd/document-v12.dtd?rev=HEAD&content-type=text/plain">
 <document>
     <header>
-        <title>blojsom- Contributed</title>
-        <authors>
-            <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>
-        </authors>
+        <title>external contributions</title>
     </header>
     <body>
         <section>
@@ -42,15 +39,26 @@
                 </source>
             </section>
             <section>
-                <title>Share your contributions</title>
+                <title>pop2blog, blucene, blauth, bledit</title>
                 <p>
-                    Have you written a plugin, extension, or any other piece of nifty source code you're willing to
-                    share with the
-                    <link href="http://blojsom.sf.net">blojsom</link> community? Well, then
-                    <link href="mailto:czarneckid@users.sourceforge.net">drop me an e-mail</link>
-                    and I'll get you added to this page.
+                    A number of plugins are being developed by Pierre-Alexander Losson over at
+                    <link href="http://sourceforge.net/projects/pop2blog">pop2blog</link>.
+                    pop2blog handles moblogging support. blucene provides for Lucene-backed
+                    searching for your blog. blauth handles authorization and makes some
+                    authorization information available to the templates. Finally, bledit will
+                    allow you to edit your blog through your web browser.
                 </p>
             </section>
+        </section>
+        <section>
+            <title>Share your contributions</title>
+            <p>
+                Have you written a plugin, extension, or any other piece of nifty source code you're willing to
+                share with the
+                <link href="http://blojsom.sf.net">blojsom</link> community? Well, then
+                <link href="mailto:czarneckid@users.sourceforge.net">drop me an e-mail</link>
+                and I'll get you added to this page.
+            </p>
         </section>
     </body>
 </document>

@@ -2,10 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>Date Format Plugin</title>
-        <authors>
-            <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>
-        </authors>
+        <title>date format plugin</title>
     </header>
 
     <body>
