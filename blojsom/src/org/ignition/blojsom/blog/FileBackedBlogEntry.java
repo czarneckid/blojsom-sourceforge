@@ -46,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.8 2003-05-31 18:42:17 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.9 2003-05-31 20:12:42 intabulas Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -470,7 +470,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_source.getAbsolutePath(), false), blog.getBlogFileEncoding()));
-            if (_title == null) {
+            if (_title == null || "".equals(_title)) {
                 bw.write(BlojsomUtils.nullToBlank(_description));
                 bw.close();
             } else {
