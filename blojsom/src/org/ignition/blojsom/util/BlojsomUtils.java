@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.38 2003-03-27 03:22:29 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.39 2003-03-27 04:43:23 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -490,7 +490,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return an input string URL encoded
      *
-     * @param url Input string
+     * @param input Input string
      * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
      */
     public static final String urlEncode(String input) {
@@ -521,6 +521,23 @@ public class BlojsomUtils implements BlojsomConstants {
         } catch (UnsupportedEncodingException e) {
             return null;
         }
+    }
+
+
+    /**
+     * Create a Calendar Navigatation URL
+     * @param prefix Any URL Prefix
+     * @param month Month of navigation
+     * @param day Day of navigation
+     * @param year Year of navigation
+     * @return Properly formatted calendar navigation url
+     */
+    public static String getCalendarNavigationUrl( String prefix, int month, int day, int year) {
+        StringBuffer dateurl= new StringBuffer(prefix);
+        dateurl.append("?month=").append(month);
+        dateurl.append("&day=").append(day);
+        dateurl.append("&year=").append(year);
+        return dateurl.toString();
     }
 
     /**
