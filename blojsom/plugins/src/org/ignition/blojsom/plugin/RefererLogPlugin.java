@@ -37,8 +37,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +49,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.5 2003-03-14 16:29:48 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.6 2003-03-14 16:49:50 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -60,6 +59,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private static final String HEADER_REFERER = "referer";
     private static final String REFERER_LOG_IP = "referer-log";
     private static final String REFERER_CONTEXT_NAME = "REFERER_HISTORY";
+    private static final String BUG_FIX = "null";
 
     /**
      * Fully qualified filename to write refere's to
@@ -82,6 +82,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         _refererlog = servletConfig.getInitParameter(REFERER_LOG_IP);
         _refererhistory = new HashMap(20);
+        loadRefererLog(_refererlog);
     }
 
     /**
@@ -96,14 +97,18 @@ public class RefererLogPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
-        if ( _refererhistory.containsKey(_referer)) {
-            int _count = ((Integer)_refererhistory.get(_referer)).intValue();
-            _refererhistory.put(_referer, new Integer(_count));
-        } else {
-            _refererhistory.put(_referer, new Integer(1));
-        }
-
         if (_refererlog != null) {
+
+            _logger.info("HTTP Referer is " + _referer);
+
+            if (_refererhistory.containsKey(_referer)) {
+                int _count = ((Integer) _refererhistory.get(_referer)).intValue();
+                _refererhistory.put(_referer, new Integer(_count + 1));
+            } else {
+                _refererhistory.put(_referer, new Integer(1));
+            }
+
+
             try {
                 String output = _referer + "\n";
                 FileOutputStream _fos = new FileOutputStream(_refererlog, true);
@@ -112,8 +117,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            _logger.info("HTTP Referer is " + _referer);
         }
 
         context.put(REFERER_CONTEXT_NAME, _refererhistory);
@@ -127,6 +130,46 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
+
+    }
+
+
+    /**
+     * Loads the saved referer log from disk after an  blojsom restart. Re-calcs the  count onthe fly.. Kinda slow the
+     * first time through.... Need to maybe make this a properties file to show url=count..
+     *
+     * @param refererlog Fully qualified path to the refer log file
+     */
+    protected void loadRefererLog(String refererlog) {
+        File _refererfile = new File(refererlog);
+
+        if (_refererfile.exists()) {
+
+            try {
+                _logger.info("Loading saved referer log from [" + _refererfile + "]");
+                BufferedReader _br = new BufferedReader(new FileReader(_refererfile));
+
+                String _entry = null;
+
+                while (((_entry = _br.readLine()) != null)) {
+
+                    if (!_entry.equals(BUG_FIX)) {
+
+                        if (_refererhistory.containsKey(_entry)) {
+                            int _count = ((Integer) _refererhistory.get(_entry)).intValue();
+                            _refererhistory.put(_entry, new Integer(_count + 1));
+                        } else {
+                            _refererhistory.put(_entry, new Integer(1));
+                        }
+                    }
+                }
+                _br.close();
+
+            } catch (IOException e) {
+                _logger.error(e);
+            }
+        }
+
 
     }
 }
