@@ -41,13 +41,14 @@ import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
-import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger v1.0 API
@@ -55,9 +56,9 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.35 2003-07-07 01:47:30 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.36 2003-07-15 00:17:36 czarneckid Exp $
  */
-public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
+public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
 
@@ -138,10 +139,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * Blogger API "lastname" key
      */
     private static final String MEMBER_LASTNAME = "lastname";
-
-    private Blog _blog;
-    private BlojsomFetcher _fetcher;
-    private String _blogEntryExtension;
 
     /**
      * Default constructor
@@ -483,14 +480,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
-                String hashable = content;
-
-                if (content.length() > MAX_HASHABLE_LENGTH) {
-                    hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-                }
-
-                String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
-                String filename = baseFilename + _blogEntryExtension;
+                String filename = getBlogEntryFilename(content);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 

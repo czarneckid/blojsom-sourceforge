@@ -36,18 +36,19 @@ package org.ignition.blojsom.extension.xmlrpc.handlers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.Base64;
+import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
-import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -58,9 +59,9 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.35 2003-07-13 01:01:05 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.36 2003-07-15 00:17:36 czarneckid Exp $
  */
-public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
+public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
@@ -116,9 +117,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
     public static final String API_PREFIX = "metaWeblog";
 
-    private Blog _blog;
-    private BlojsomFetcher _fetcher;
-    private String _blogEntryExtension;
     private String _uploadDirectory;
     private HashMap _acceptedMimeTypes;
     private String _staticURLPrefix;
@@ -371,14 +369,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     title = "No Title";
                 }
 
-                String hashable = description;
-
-                if (description.length() > MAX_HASHABLE_LENGTH) {
-                    hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-                }
-
-                String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
-                String filename = baseFilename + _blogEntryExtension;
+                String filename = getBlogEntryFilename(description);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 

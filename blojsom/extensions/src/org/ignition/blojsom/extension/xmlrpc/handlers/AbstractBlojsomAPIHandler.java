@@ -34,18 +34,21 @@
  */
 package org.ignition.blojsom.extension.xmlrpc.handlers;
 
-import org.ignition.blojsom.blog.Blog;
-import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.BlojsomException;
+import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
+import org.ignition.blojsom.fetcher.BlojsomFetcher;
+import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 
 /**
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.6 2003-07-07 01:43:26 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.7 2003-07-15 00:17:36 czarneckid Exp $
  */
-public abstract class AbstractBlojsomAPIHandler  {
+public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
     public static final int    AUTHORIZATION_EXCEPTION = 0001;
     public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid Username and/or Password";
@@ -61,6 +64,10 @@ public abstract class AbstractBlojsomAPIHandler  {
 
     public static final int    NOBLOGS_EXCEPTION = 3000;
     public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
+
+    protected Blog _blog;
+    protected BlojsomFetcher _fetcher;
+    protected String _blogEntryExtension;
 
     /**
      * Attach a blog instance to the API Handler so that it can interact with the blog
@@ -85,5 +92,23 @@ public abstract class AbstractBlojsomAPIHandler  {
      * @throws BlojsomException If there is an error in setting the fetcher
      */
     public abstract void setFetcher(BlojsomFetcher fetcher) throws BlojsomException;
+
+    /**
+     * Return a filename appropriate for the blog entry content
+     *
+     * @param content Blog entry content
+     * @return Filename for the new blog entry
+     */
+    protected String getBlogEntryFilename(String content) {
+        String hashable = content;
+
+        if (content.length() > MAX_HASHABLE_LENGTH) {
+            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+        }
+
+        String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
+        String filename = baseFilename + _blogEntryExtension;
+        return filename;
+    }
 }
 
