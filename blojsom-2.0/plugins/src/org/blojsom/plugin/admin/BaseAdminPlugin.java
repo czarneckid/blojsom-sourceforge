@@ -57,7 +57,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.16 2005-01-23 19:23:28 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.17 2005-01-23 23:34:19 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -186,6 +186,19 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         } else {
             return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
+    }
+
+    /**
+     * Retrieve the current authorized username for this session
+     *
+     * @param httpServletRequest Request
+     * @param blog {@link Blog}
+     * @return Authorized username for this session or <code>null</code> if no user is currently authorized 
+     */
+    protected String getUsernameFromSession(HttpServletRequest httpServletRequest, Blog blog) {
+        String username = (String) httpServletRequest.getSession().getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
+
+        return username;
     }
 
     /**
