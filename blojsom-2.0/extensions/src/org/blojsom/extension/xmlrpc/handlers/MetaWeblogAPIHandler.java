@@ -58,7 +58,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.4 2003-10-17 01:48:06 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.5 2003-12-10 03:00:53 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -355,7 +355,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             String result = null;
 
             //Quick verify that the categories are valid
-            File blogCategory = getBlogCategoryDirectory(blogid);
+            File blogCategory = getBlogCategoryDirectory(blogid, _blog);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
 
                 Hashtable postcontent = struct;
@@ -566,23 +566,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
-        }
-    }
-
-    /**
-     * Get the blog category. If the category exists, return the
-     * appropriate directory, otherwise return the "root" of this blog.
-     *
-     * @since blojsom 1.9
-     * @param categoryName Category name
-     * @return A directory into which a blog entry can be placed
-     */
-    protected File getBlogCategoryDirectory(String categoryName) {
-        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
-        if (blogCategory.exists() && blogCategory.isDirectory()) {
-            return blogCategory;
-        } else {
-            return new File(_blog.getBlogHome() + "/");
         }
     }
 }

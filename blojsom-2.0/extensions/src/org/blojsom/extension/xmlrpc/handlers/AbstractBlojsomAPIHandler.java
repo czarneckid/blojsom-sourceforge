@@ -36,18 +36,21 @@ package org.blojsom.extension.xmlrpc.handlers;
 
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.Blog;
 import org.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
 
+import java.io.File;
+
 
 /**
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.2 2003-10-17 01:48:06 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.3 2003-12-10 03:00:53 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -110,6 +113,24 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
         String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
         String filename = baseFilename + _blogEntryExtension;
         return filename;
+    }
+
+    /**
+     * Get the blog category. If the category exists, return the
+     * appropriate directory, otherwise return the "root" of this blog.
+     *
+     * @since blojsom 1.9
+     * @param categoryName Category name
+     * @param blog Blog information
+     * @return A directory into which a blog entry can be placed
+     */
+    protected File getBlogCategoryDirectory(String categoryName, Blog blog) {
+        File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
+        if (blogCategory.exists() && blogCategory.isDirectory()) {
+            return blogCategory;
+        } else {
+            return new File(blog.getBlogHome() + "/");
+        }
     }
 }
 
