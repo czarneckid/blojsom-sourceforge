@@ -55,7 +55,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.47 2004-11-24 17:49:09 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.48 2004-12-03 14:33:36 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1191,6 +1191,8 @@ public class BlojsomUtils implements BlojsomConstants {
                     convertedProperties.put(key, arrayOfStringsToString((String[]) value));
                 } else if (key != null && value != null) {
                     convertedProperties.put(key, value.toString());
+                } else if (key != null && value == null) {
+                    convertedProperties.put(key, "");
                 }
             }
 
