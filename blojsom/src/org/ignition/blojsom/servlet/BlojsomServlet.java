@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.35 2003-03-05 04:09:42 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.36 2003-03-06 04:08:22 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -271,7 +271,17 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      * @throws ServletException If there is an error processing the request
      * @throws IOException If there is an error in IO
      */
-    public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM))) {
+            String author = httpServletRequest.getParameter(AUTHOR_PARAM);
+            String authorEmail = httpServletRequest.getParameter(AUTHOR_EMAIL_PARAM);
+            String authorURL = httpServletRequest.getParameter(AUTHOR_URL_PARAM);
+            String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
+            String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
+            String category = httpServletRequest.getParameter(CATEGORY_PARAM);
+            _blog.addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
+        }
+
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
         if (blogSiteURL.endsWith("/")) {
             blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length() - 1);
