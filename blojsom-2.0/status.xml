@@ -38,6 +38,11 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
+                Updated Google Highlight plugin to check for potential NullPointerException when no search query
+                is matched from the regular expression.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
                 Updated Edit Blog Entries plugin so that entries without titles would not use the entire
                 description as the title.
             </action>
