@@ -52,7 +52,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.8 2003-03-27 04:28:57 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.9 2003-03-27 04:43:34 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -77,7 +77,6 @@ public class CalendarPlugin implements BlojsomPlugin {
         if ( locale != null ) {
              _locale = new Locale(locale);
         }
-
         _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
     }
 
@@ -95,8 +94,8 @@ public class CalendarPlugin implements BlojsomPlugin {
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
         String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
-        if ( category == null) {
-            category = "/";
+        if ( category == null ) {
+            category = "";
         }
 
         // Default to the Current Month and Year

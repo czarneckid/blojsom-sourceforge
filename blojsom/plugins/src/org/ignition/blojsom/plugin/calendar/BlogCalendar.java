@@ -49,7 +49,7 @@ import java.util.Arrays;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.2 2003-03-27 04:28:57 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.3 2003-03-27 04:43:34 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -178,10 +178,8 @@ public class BlogCalendar {
                     if (!dayHasEntry(dowoffset)) {
                         visualcalendar[x][y] = new Integer(dowoffset).toString();
                     } else {
-                        StringBuffer _url = new StringBuffer("<a href=\"").append(_blogURL);
-                        _url.append("?month=").append(currentmonth);
-                        _url.append("?year=").append(currentyear);
-                        _url.append("?day=").append(dowoffset);
+                        StringBuffer _url = new StringBuffer("<a href=\"");
+                        _url.append( BlojsomUtils.getCalendarNavigationUrl(_blogURL, currentmonth, dowoffset, currentyear) );
                         _url.append("\">").append(dowoffset).append("</a>");
                         visualcalendar[x][y] = _url.toString();
                     }
