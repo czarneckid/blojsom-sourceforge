@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+<document>
+    <header>
+        <title>Web-based Administration</title>
+    </header>
+
+    <body>
+        <section>
+            <title>Web-based Administration Overview</title>
+            <p>
+                blojsom uses a set of plugins to add web-based administration capabilities where you are able to
+                edit authorized users who can post to your blog, modify blog properties, add/edit/delete entries,
+                add/edit/delete blog categories, modify flavors, modify plugin chains, modify templates,
+                upload files to your blog, and modify users of your blojsom installation.
+            </p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+<document>
+    <header>
+        <title>{NAME} Plugin</title>
+    </header>
+
+    <body>
+        <section>
+            <title>Description</title>
+            <p>
+                TBD.
+            </p>
+
+        </section>
+        <section>
+            <title>Installation and Setup</title>
+            <p>
+                In your global
+                <em>plugin.properties</em> file, add the following line:
+            </p>
+            <source>
+                short-name=package.name
+            </source>
+
+            <p>
+                TBD.
+            </p>
+        </section>
+        <section>
+            <title>Usage</title>
+
+            <section>
+                <title>Usage</title>
+                <p>
+                    TBD.
+                </p>
+            </section>
+        </section>
+    </body>
+</document>
+
