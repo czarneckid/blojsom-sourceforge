@@ -52,7 +52,7 @@ import java.util.Properties;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.8 2004-06-17 03:28:32 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.9 2004-06-18 00:17:56 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -171,13 +171,23 @@ public class CachingFetcher extends StandardFetcher {
 
             if (blog.getLinearNavigationEnabled().booleanValue()) {
                 BlogEntry[] allEntries;
+                
                 try {
                     allEntries = (BlogEntry[]) _cache.getFromCache(user.getId() + FLAVOR_KEY + flavor, refreshPeriod);
                     _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
-
                 } catch (NeedsRefreshException e) {
                     allEntries = (BlogEntry[]) e.getCacheContent();
-                    _logger.debug("Returned entries from expired cache for user/flavor: " + user.getId() + " / " + flavor);
+
+                    if (allEntries == null) {
+                        allEntries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
+                        _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, allEntries);
+                    } else {
+                        _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
+                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth));
+                        allCategoriesFetcherThread.start();
+
+                        _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
+                    }
                 }
 
                 if (permalinkEntry.length > 0 && allEntries.length > 0) {
