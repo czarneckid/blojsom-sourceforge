@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog entries</title>
+    </head>
+
+    <body>
+        <center>
+            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog entries</h3>
+        </center>
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
+        <p />
+
+        <!-- Edit blog entries form -->
+        <center>
+            <h3>Edit entries in an existing blog category</h3>
+            <table border="1">
+                <form name="edit-blog-entries" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="edit-blog-entries"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <tr>
+                        <td>Blog category</td>
+                        <td>
+                            <select name="blog-category-name">
+                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+                                <option value="$blogCategory.getCategory()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Edit entries in category"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+    </body>
+</html>

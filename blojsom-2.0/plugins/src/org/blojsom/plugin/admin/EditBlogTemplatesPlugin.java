@@ -55,7 +55,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.3 2003-11-13 00:54:48 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.4 2003-11-20 03:01:11 czarneckid Exp $
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
@@ -66,8 +66,8 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     private String _baseConfigurationDirectory;
 
     // Pages
-    private static final String EDIT_BLOG_TEMPLATES_PAGE = "/org/blojsom/plugin/admin/admin-edit-blog-templates";
-    private static final String EDIT_BLOG_TEMPLATE_PAGE = "/org/blojsom/plugin/admin/admin-edit-blog-template";
+    private static final String EDIT_BLOG_TEMPLATES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-templates";
+    private static final String EDIT_BLOG_TEMPLATE_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-template";
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES";

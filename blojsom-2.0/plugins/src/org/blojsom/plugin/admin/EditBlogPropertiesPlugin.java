@@ -55,18 +55,18 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.6 2003-11-11 01:30:20 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.7 2003-11-20 03:01:12 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
     private static Log _logger = LogFactory.getLog(EditBlogPropertiesPlugin.class);
 
-    private static final String EDIT_BLOG_PROPERTIES_PAGE = "/org/blojsom/plugin/admin/admin-edit-blog-properties";
+    private static final String EDIT_BLOG_PROPERTIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-properties";
     private static final String EDIT_BLOG_PROPERTIES_ACTION = "edit-blog-properties";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP";
 
     /**
-     *
+     * Default constructor.
      */
     public EditBlogPropertiesPlugin() {
     }

@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.3 2003-10-23 01:30:02 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.4 2003-11-20 03:00:21 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -66,8 +66,8 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
     protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM = "username";
     protected static final String BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM = "password";
     protected static final String ACTION_PARAM = "action";
-    protected static final String ADMIN_ADMINISTRATION_PAGE = "/org/blojsom/plugin/admin/admin";
-    protected static final String ADMIN_LOGIN_PAGE = "/org/blojsom/plugin/admin/admin-login";
+    protected static final String ADMIN_ADMINISTRATION_PAGE = "/org/blojsom/plugin/admin/templates/admin";
+    protected static final String ADMIN_LOGIN_PAGE = "/org/blojsom/plugin/admin/templates/admin-login";
     protected static final String LOGIN_ACTION = "login";
     protected static final String LOGOUT_ACTION = "logout";
     protected static final String PAGE_ACTION = "page";
@@ -75,7 +75,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
     protected BlojsomConfiguration _blojsomConfiguration;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public BaseAdminPlugin() {
     }

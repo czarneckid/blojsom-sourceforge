@@ -54,15 +54,15 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.6 2003-11-13 00:54:48 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.7 2003-11-20 03:01:12 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
     private static Log _logger = LogFactory.getLog(EditBlogCategoriesPlugin.class);
 
     // Pages
-    private static final String EDIT_BLOG_CATEGORIES_PAGE = "/org/blojsom/plugin/admin/admin-edit-blog-categories";
-    private static final String EDIT_BLOG_CATEGORY_PAGE = "/org/blojsom/plugin/admin/admin-edit-blog-category";
+    private static final String EDIT_BLOG_CATEGORIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-categories";
+    private static final String EDIT_BLOG_CATEGORY_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-category";
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME";
@@ -79,7 +79,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_CATEGORY_META_DATA = "blog-category-meta-data";
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public EditBlogCategoriesPlugin() {
     }
@@ -107,9 +107,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             _logger.debug("User requested edit categories page");
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
         } else if (DELETE_BLOG_CATEGORY_ACTION.equals(action)) {
-            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             _logger.debug("User request blog category delete action");
-            _logger.debug("Normalized category name: " + BlojsomUtils.normalize(blogCategoryName));
+            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
 
             File existingBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
             if (!BlojsomUtils.deleteDirectory(existingBlogCategory)) {
@@ -121,6 +121,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (EDIT_BLOG_CATEGORY_ACTION.equals(action)) {
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
             _logger.debug("Editing blog category: " + blogCategoryName);
 
             File existingBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
