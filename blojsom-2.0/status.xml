@@ -7,7 +7,7 @@
     </developers>
 
     <changes>
-        <release version="2.12" date="Available from CVS">
+        <release version="2.12" date="February 19, 2004">
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated the Edit Blog Properties plugin to allow the "blog-default-category-mapping" property to
                 be configured. Also addressed an issue where the StandardFetcher would not pickup this property.
