@@ -120,7 +120,7 @@
 #end
 
 #macro(XMLRPCLink $entry $xmlrpcurl)
-    #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+    #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #if ("" == $xmlrpcurl)
         #set($xmlrpcurl = "xmlrpc")
@@ -129,7 +129,7 @@
 #end
 
 #macro(DatelessFriendlyPermalink $entry)
-    #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+    #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getPermalink()")
 #end
