@@ -43,7 +43,7 @@ import java.util.Locale;
  * ResourceManager
  *
  * @author David Czarnecki
- * @version $Id: ResourceManager.java,v 1.3 2004-11-02 21:13:33 czarneckid Exp $
+ * @version $Id: ResourceManager.java,v 1.4 2004-11-16 16:09:01 czarneckid Exp $
  * @since blojsom 2.13
  */
 public interface ResourceManager {
@@ -64,6 +64,17 @@ public interface ResourceManager {
      * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
      */
     public String getString(String resourceID, String resource, String fallback);
+
+    /**
+     * Retrieve a string from a given resource bundle for the particular language and country locale.
+     *
+     * @param resourceID Resource ID to retrieve from the resource bundle
+     * @param resource   Full-qualified resource bundle from which to retrieve the resource ID
+     * @param fallback   Fallback string to use if the given resource ID cannot be found
+     * @param language   Language code
+     * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
+     */
+    public String getString(String resourceID, String resource, String fallback, String language);    
 
     /**
      * Retrieve a string from a given resource bundle for the particular language and country locale.

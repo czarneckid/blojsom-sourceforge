@@ -50,7 +50,7 @@ import java.util.ResourceBundle;
  * ResourceBundleResourceManager
  *
  * @author David Czarnecki
- * @version $Id: ResourceBundleResourceManager.java,v 1.3 2004-11-02 21:13:33 czarneckid Exp $
+ * @version $Id: ResourceBundleResourceManager.java,v 1.4 2004-11-16 16:09:15 czarneckid Exp $
  * @since blojsom 2.13
  */
 public class ResourceBundleResourceManager implements BlojsomConstants, ResourceManager {
@@ -108,6 +108,19 @@ public class ResourceBundleResourceManager implements BlojsomConstants, Resource
         }
 
         return fallback;
+    }
+
+    /**
+     * Retrieve a string from a given resource bundle for the particular language and country locale.
+     *
+     * @param resourceID Resource ID to retrieve from the resource bundle
+     * @param resource   Full-qualified resource bundle from which to retrieve the resource ID
+     * @param fallback   Fallback string to use if the given resource ID cannot be found
+     * @param language   Language code
+     * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
+     */
+    public String getString(String resourceID, String resource, String fallback, String language) {
+        return getString(resourceID, resource, fallback, new Locale(language));
     }
 
     /**
