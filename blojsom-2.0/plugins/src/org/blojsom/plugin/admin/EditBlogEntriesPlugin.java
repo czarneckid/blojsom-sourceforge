@@ -68,7 +68,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.30 2004-09-30 18:42:54 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.31 2004-10-07 03:00:52 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -78,7 +78,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     // XML-RPC constants
     public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
 
-    private static final int MAXIMUM_FILENAME_LENGTH = 64;
+    protected static final int MAXIMUM_FILENAME_LENGTH = 64;
 
     /**
      * Default file extension for blog entries written via XML-RPC
@@ -92,9 +92,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String ADD_BLOG_ENTRY_PAGE = "/org/blojsom/plugin/admin/templates/admin-add-blog-entry";
 
     // Constants
-    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
-    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY";
-    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY";
+    protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
+    protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY";
+    protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY";
 
     // Actions
     private static final String EDIT_BLOG_ENTRIES_ACTION = "edit-blog-entries";
@@ -107,18 +107,18 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String DELETE_BLOG_TRACKBACKS = "delete-blog-trackbacks";
 
     // Form elements
-    private static final String BLOG_CATEGORY_NAME = "blog-category-name";
-    private static final String BLOG_ENTRY_ID = "blog-entry-id";
-    private static final String BLOG_ENTRY_TITLE = "blog-entry-title";
-    private static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
-    private static final String BLOG_COMMENT_ID = "blog-comment-id";
-    private static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
-    private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
-    private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
-    private static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
-    private static final String PING_BLOG_URLS = "ping-blog-urls";
+    protected static final String BLOG_CATEGORY_NAME = "blog-category-name";
+    protected static final String BLOG_ENTRY_ID = "blog-entry-id";
+    protected static final String BLOG_ENTRY_TITLE = "blog-entry-title";
+    protected static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
+    protected static final String BLOG_COMMENT_ID = "blog-comment-id";
+    protected static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
+    protected static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
+    protected static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
+    protected static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
+    protected static final String PING_BLOG_URLS = "ping-blog-urls";
 
-    private BlojsomFetcher _fetcher;
+    protected BlojsomFetcher _fetcher;
 
     /**
      * Default constructor.
@@ -615,7 +615,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
      * @param entry Blog entry
      * @param blogTrackbackURLs Trackback URLs
      */
-    private void sendTrackbackPings(Blog blog, BlogEntry entry, String blogTrackbackURLs) {
+    protected void sendTrackbackPings(Blog blog, BlogEntry entry, String blogTrackbackURLs) {
         // Build the URL parameters for the trackback ping URL
         StringBuffer trackbackPingURLParameters = new StringBuffer();
         try {
