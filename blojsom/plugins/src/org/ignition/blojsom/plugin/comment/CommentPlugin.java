@@ -60,7 +60,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.15 2003-03-26 02:58:30 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.16 2003-03-26 03:02:54 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -221,7 +221,7 @@ public class CommentPlugin implements BlojsomPlugin {
         if (_blogCommentsEnabled.booleanValue()) {
 
             //Escape out any HTML in the post;
-            userComment = escapeString(userComment);
+            userComment = BlojsomUtils.escapeMetaAndLink(userComment);
 
             comment = new BlogComment();
             comment.setAuthor(author);
@@ -293,21 +293,4 @@ public class CommentPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
-
-    /**
-     * Return an escaped string where &lt;meta, &lt;link tags are escaped
-     *
-     * @param input Unescaped string
-     * @return Escaped string where &lt;meta, &lt;link tags are escaped
-     */
-    private String escapeString(String input) {
-        if (input == null) {
-            return null;
-        }
-
-        String cleanedInput = input.replaceAll("<[mM][eE][tT][aA]", "&lt;meta");
-        cleanedInput = cleanedInput.replaceAll("<[lL][iI][nN][kK]", "&lt;link");
-        return cleanedInput;
-    }
-
 }

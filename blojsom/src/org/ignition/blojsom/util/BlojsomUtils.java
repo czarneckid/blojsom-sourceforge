@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.32 2003-03-25 22:57:10 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.33 2003-03-26 03:02:47 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -271,6 +271,22 @@ public class BlojsomUtils implements BlojsomConstants {
         unescaped = replace(unescaped, "<", "&lt;");
         unescaped = replace(unescaped, ">", "&gt;");
         return unescaped;
+    }
+
+    /**
+     * Return an escaped string where &lt;meta, &lt;link tags are escaped
+     *
+     * @param input Unescaped string
+     * @return Escaped string where &lt;meta, &lt;link tags are escaped
+     */
+    public static String escapeMetaAndLink(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        String cleanedInput = input.replaceAll("<[mM][eE][tT][aA]", "&lt;meta");
+        cleanedInput = cleanedInput.replaceAll("<[lL][iI][nN][kK]", "&lt;link");
+        return cleanedInput;
     }
 
     /**

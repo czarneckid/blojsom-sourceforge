@@ -59,7 +59,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.10 2003-03-25 15:52:44 intabulas Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.11 2003-03-26 03:03:03 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -222,6 +222,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
     private synchronized Integer addTrackback(Map context, String category, String permalink, String title,
                                               String excerpt, String url, String blogName) {
         Trackback trackback = new Trackback();
+        excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
         trackback.setTitle(title);
         trackback.setExcerpt(excerpt);
         trackback.setUrl(url);
