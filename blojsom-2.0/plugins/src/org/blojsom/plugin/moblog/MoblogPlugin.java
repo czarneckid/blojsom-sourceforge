@@ -60,12 +60,14 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.4 2004-04-26 19:25:57 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.5 2004-04-27 00:29:58 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
+
+    private static final String POP3_STORE = "pop3";
 
     /**
      * Moblog confifguration parameter for web.xml
@@ -357,7 +359,7 @@ public class MoblogPlugin implements BlojsomPlugin {
             Store store = null;
             String subject = null;
             try {
-                store = _popSession.getStore("pop3");
+                store = _popSession.getStore(POP3_STORE);
                 store.connect(mailbox.getHostName(), mailbox.getUserId(), mailbox.getPassword());
 
                 // -- Try to get hold of the default folder --

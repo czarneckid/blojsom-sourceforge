@@ -41,15 +41,17 @@ import org.blojsom.blog.BlogUser;
  * This file is a container for everything the thread will need to connect to and to store into
  *
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.4 2004-04-26 15:26:22 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.5 2004-04-27 00:29:58 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
 
+    private static final String DEFAULT_FOLDER = "INBOX";
+
     private String _hostName = null;
     private String _userId = null;
     private String _password = null;
-    private String _folder = "INBOX";
+    private String _folder = DEFAULT_FOLDER;
     private String _outputDirectory;
     private String _entriesDirectory;
     private String _categoryName;
