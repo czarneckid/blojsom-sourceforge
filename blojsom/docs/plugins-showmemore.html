@@ -17,10 +17,63 @@
 <ul>
 <p class="navigation">Details on: <a href="plugins-hyperlink.html">hyperlink URL plugin</a> |
 <a href="plugins-macro.html">macro expansion plugin</a> |
-<a href="plugins-showmemore.html">"show me more" plugin</a> |
+<a href="plugins-showmemore.html">"More ..." plugin</a> |
 <a href="plugins-simplesearch.html">simple search plugin</a>
 </p>
 </ul>
+
+<p class="weblogtitle">description</a>
+<p />
+The "More ..." plugin will truncate long entries and add a hyperlink to the
+description so that the user can view the full text of the entry.
+
+<p class="weblogtitle">installation and setup</a>
+<p />
+In your <i>plugin.properties</i> file, add the following line:
+<pre>
+show-me-more=org.ignition.blojsom.plugin.ShowMeMorePlugin
+</pre>
+
+You may then add "show-me-more" to one of the flavor-based plugin chains. For example:
+<pre>
+html.blojsom-plugin-chain=show-me-more
+</pre>
+
+The "more ..." plugin has its own configuration file that is referenced in <i>web.xml</i>. For example:
+<pre>
+    &lt;init-param&gt;
+        &lt;param-name&gt;plugin-showmemore&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/showmemore.properties&lt;/param-value&gt;
+    &lt;/init-param&gt;
+</pre>
+<p />
+
+The <i>showmemore.properties</i> contains two configurable parameters:
+<pre>
+entry-length-cutoff=400
+show-me-more-text=More ...
+</pre>
+
+<i>entry-length-cutoff</i> defines the number of characters after which the link to view the
+full text of the entry will be placed.<br />
+<i>show-me-more-text</i> controls the text of the hyperlink to view the full text of the entry.
+
+<p class="weblogtitle">usage and URL parameters</a>
+<p />
+<p class="weblogdateline">usage</p>
+There is nothing special you have to do to your blog entries. Blog entries that are shorter
+than the length defined in <i>entry-length-cutoff</i> will not have a link added to their
+description.
+<p />
+<p class="weblogdateline">usage parameters</p>
+The following table describes the URL parameters that affect the output of the "more ..." plugin.
+<p />
+<table border="1">
+    <th>URL parameter</th> <th>Accepted values</th> <th>Usage</th>
+    <tr align="center">
+        <td>smm</td> <td align="left">If "smm" is set to "y", the plugin will not be executed on entries. This is used when generating the link to the entry with the full description.</td> <td>/blog/?smm=y</td>
+    </tr>
+</table>
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>

@@ -17,24 +17,62 @@
 <ul>
 <p class="navigation">Details on: <a href="plugins-hyperlink.html">hyperlink URL plugin</a> |
 <a href="plugins-macro.html">macro expansion plugin</a> |
-<a href="plugins-showmemore.html">"show me more" plugin</a> |
+<a href="plugins-showmemore.html">"More ..." plugin</a> |
 <a href="plugins-simplesearch.html">simple search plugin</a>
 </p>
 </ul>
 <p class="weblogtitle">macro expansion plugin</p>
 <p/>
 
-The macro expansion plugin will extract tokens from a blog entry and replace them with other content. This is a greate
-timesaver when you can simply enter <b>$HOME$</b> in your blog entry and macro plugin will convert that to
-<a href="http://www.javaslash.org/blog">My Blog Home</a> as an example.<br/>
+<p class="weblogtitle">description</a>
+<p />
+The macro expansion plugin expands <i>$macro$</i> references that it finds in your blog description and expands
+them into its full form.
+<p />
+It is a timesaver plugin to save you from repeatedly typing in
+portions of blog entries that you use over and over again. For example, you might want to be
+able to expand friend's names into URLs that point to their blogs.
 
-<p class="weblogtitle">managing your macros</p><br/>
+<p class="weblogtitle">installation and setup</a>
+<p />
+In your <i>plugin.properties</i> file, add the following line:
+<pre>
+macro-expansion=org.ignition.blojsom.plugin.MacroExpansionPlugin
+</pre>
 
-The file <i>/WEB-INF/macros.properties</i> contains simple name=value pairs that represent the token and the value to
-replace it with. It can be simple text expanstion or a full &lt;a href="http://www.news.com"&gt;NEWS!&lt;/a&gt; URL<br/><br/>
-When you write your entries, simply surround your macro tokens with the <b>$</b> symbol. An example is <b>$blogsom$</b>
-(tokens are case insensative)
-<br/><br/>
+You may then add "macro-expansion" to one of the flavor-based plugin chains. For example:
+<pre>
+html.blojsom-plugin-chain=macro-expansion
+</pre>
+
+The macro expansion plugin has its own configuration file that is referenced in <i>web.xml</i>. For example:
+<pre>
+    &lt;init-param&gt;
+        &lt;param-name&gt;plugin-macros-expansion&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/macros.properties&lt;/param-value&gt;
+    &lt;/init-param&gt;
+</pre>
+<p />
+
+The <i>macros.properties</i> contains <i>key=value</i> pairs like the following:
+<pre>
+blojsom=http://blojsom.sf.net
+ypm=Yeah, Pretty Much
+</pre>
+
+<p class="weblogtitle">usage and URL parameters</a>
+<p />
+<p class="weblogdateline">usage</p>
+In your entries, simply reference your macros using the <i>$macro$</i> syntax. The <i>$macro$</i> references
+are also case insensitive.
+<p />
+
+For example, "... and then he said, $ypm$ " in your blog description would expand to
+"... and then he said, Yeah, Pretty Much "
+<p />
+<p class="weblogdateline">usage parameters</p>
+There are no URL parameters to control the operation of the macro expansion plugin.
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 

@@ -17,17 +17,45 @@
 <ul>
 <p class="navigation">Details on: <a href="plugins-hyperlink.html">hyperlink URL plugin</a> |
 <a href="plugins-macro.html">macro expansion plugin</a> |
-<a href="plugins-showmemore.html">"show me more" plugin</a> |
+<a href="plugins-showmemore.html">"More ..." plugin</a> |
 <a href="plugins-simplesearch.html">simple search plugin</a>
 </p>
 </ul>
 <p class="weblogtitle">hyperlink plugin</p>
 <p/>
-The hyperlink url plugin is a simple handy utility that will identify any valid url in a blog entry and automatically
-convert it into a clickable hyperlink. The plugin uses a regular expression to identify the  urls and is smart enough to
-ignore existing href tags. So when your posting your entries you no longer have to  take time to wrap a href around urls.
+The hyperlink plugin will identify any valid url in a blog entry and automatically
+convert it into a clickable hyperlink.
+<p />
+The plugin uses a regular expression to identify the  urls and is smart enough to
+ignore existing href tags. So when you're posting your entries you no longer have to take the time to wrap an href around urls.
 A great time saver!<br/>
 
+<p class="weblogtitle">description</a>
+<p />
+The hyperlink plugin looks for hyperlinks that do not have &lt;a&gt; tags and converts the
+hyperlink to a clickable link.
+
+<p class="weblogtitle">installation and setup</a>
+<p />
+In your <i>plugin.properties</i> file, add the following line:
+<pre>
+href-hyperlinks=org.ignition.blojsom.plugin.HyperlinkURLPlugin
+</pre>
+
+You may then add "href-hyperlinks" to one of the flavor-based plugin chains. For example:
+<pre>
+html.blojsom-plugin-chain=href-hyperlinks
+</pre>
+
+<p class="weblogtitle">usage and usage parameters</a>
+
+<p />
+<p class="weblogdateline">usage</p>
+In your entries, simply type in a URL like http://blojsom.sf.net and it will be converted
+to <a href="http://blojsom.sf.net">http://blojsom.sf.net</a>.
+<p />
+<p class="weblogdateline">usage parameters</p>
+There are no URL parameters to control the operation of the hyperlink plugin.
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
