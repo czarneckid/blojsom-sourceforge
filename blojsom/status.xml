@@ -23,6 +23,14 @@
                 "Show Me More" plugin. If the plugin is used in a particular plugin chain,
                 this variable will be populated with a <tt>Boolean</tt> object set to true.
             </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added meta plugin.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added associated categories plugin.
+            </action>
         </release>
 
         <release version="1.9.5" date="July 27, 2003">
