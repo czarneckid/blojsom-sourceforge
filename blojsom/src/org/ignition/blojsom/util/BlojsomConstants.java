@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.34 2003-03-23 19:30:44 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.35 2003-03-24 17:13:47 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -91,6 +91,13 @@ public interface BlojsomConstants {
      * (example: on the request for the JSP dispatcher)
      */
     public static final String BLOJSOM_COMMENTS_ENABLED = "BLOJSOM_COMMENTS_ENABLED";
+
+
+    /**
+     * Key under which whether or not email messages will be sent to the blog author
+     */
+    public static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
+
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
@@ -229,5 +236,6 @@ public interface BlojsomConstants {
     static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
     static final String BLOG_TRACKBACK_DIRECTORY_IP = "blog-trackbacks-directory";
     static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
+    static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
 }

@@ -36,6 +36,7 @@ package org.ignition.blojsom.plugin.comment;
 
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.plugin.email.EmailUtils;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.BlogComment;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -57,7 +58,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.6 2003-03-23 19:27:33 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.7 2003-03-24 17:13:47 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -88,9 +89,11 @@ public class CommentPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
     private Boolean _blogCommentsEnabled;
+    private Boolean _blogEmailEnabled;
     private String[] _blogFileExtensions;
     private String _blogHome;
     private String _blogCommentsDirectory;
+    private String _blogUrlPrefix;
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -103,8 +106,11 @@ public class CommentPlugin implements BlojsomPlugin {
         _blogFileExtensions = (String[]) blogProperties.get(BlojsomConstants.BLOG_FILE_EXTENSIONS_IP);
         _blogHome = (String) blogProperties.get(BlojsomConstants.BLOG_HOME_IP);
         _blogCommentsEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_COMMENTS_ENABLED_IP);
+        _blogEmailEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_EMAIL_ENABLED_IP);
         _blogCommentsDirectory = (String) blogProperties.get(BlojsomConstants.BLOG_COMMENTS_DIRECTORY_IP);
+        _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
     }
+
 
     /**
      * Process the blog entries
@@ -124,17 +130,65 @@ public class CommentPlugin implements BlojsomPlugin {
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
+
+            String title = entries[0].getTitle();
+
             if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))
                     && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
                 if (!category.endsWith("/")) {
                     category += "/";
                 }
                 addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
+
+                if (_blogEmailEnabled.booleanValue()) {
+                    sendCommentEmail(title,category, permalink, author, authorEmail, authorURL, commentText, context);
+                }
+
+
             }
         }
 
         return entries;
     }
+
+
+    /**
+     * Send Comment Email to Blog Author
+     *
+     * @param category Blog entry category
+     * @param permalink Blog entry permalink
+     * @param author Comment author
+     * @param authorEmail Comment author e-mail
+     * @param authorURL Comment author URL
+     * @param userComment Comment
+     * @param context Context
+     */
+    private synchronized void sendCommentEmail(String title,String category, String permalink, String author,
+                                               String authorEmail, String authorURL, String userComment, Map context) {
+
+        StringBuffer _emailcomment = new StringBuffer();
+        _emailcomment.append("Comment on: ").append(_blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
+        _emailcomment.append("?permalink=").append(permalink).append("&page=comments").append("\n");
+
+
+        if (author != null && !author.equals("")) {
+            _emailcomment.append("Comment by: ").append(author).append("\n");
+        }
+        if (authorEmail != null && !authorEmail.equals("")) {
+            _emailcomment.append("            ").append(authorEmail).append("\n");
+        }
+        if (authorURL != null &&  !authorURL.equals("")) {
+            _emailcomment.append("            ").append(authorURL).append("\n");
+        }
+
+        _emailcomment.append("\n==[ Comment ]==========================================================").append("\n\n");
+
+        _emailcomment.append(userComment);
+
+        EmailUtils.notifyBlogAuthor("[blojsom] Comment on " + title, _emailcomment.toString(), context);
+
+    }
+
 
     /**
      * Add a comment to a particular blog entry
@@ -147,7 +201,7 @@ public class CommentPlugin implements BlojsomPlugin {
      * @param userComment Comment
      */
     private synchronized void addBlogComment(String category, String permalink, String author,
-                                            String authorEmail, String authorURL, String userComment) {
+                                             String authorEmail, String authorURL, String userComment) {
         if (_blogCommentsEnabled.booleanValue()) {
             BlogComment comment = new BlogComment();
             comment.setAuthor(author);
@@ -198,6 +252,8 @@ public class CommentPlugin implements BlojsomPlugin {
             } catch (IOException e) {
                 _logger.error(e);
             }
+
+
         }
     }
 

@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.35 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.36 2003-03-24 17:13:47 intabulas Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -70,6 +70,7 @@ public class Blog implements BlojsomConstants {
     private String _blogOwnerEmail;
     private String _blogCommentsDirectory;
     private Boolean _blogCommentsEnabled;
+    private Boolean _blogEmailEnabled;
     private String _blogTrackbackDirectory;
 
     private HashMap _blogProperties;
@@ -215,6 +216,16 @@ public class Blog implements BlojsomConstants {
             _blogCommentsEnabled = new Boolean(false);
         }
         _blogProperties.put(BLOG_COMMENTS_ENABLED_IP, _blogCommentsEnabled);
+
+
+        String blogEmailEnabled = blogConfiguration.getProperty(BLOG_EMAIL_ENABLED_IP);
+        if ("true".equalsIgnoreCase(blogEmailEnabled)) {
+            _blogEmailEnabled = new Boolean(true);
+        } else {
+            _blogEmailEnabled = new Boolean(false);
+        }
+        _blogProperties.put(BLOG_EMAIL_ENABLED_IP, _blogEmailEnabled);
+
 
         _logger.info("blojsom home: " + _blogHome);
     }
