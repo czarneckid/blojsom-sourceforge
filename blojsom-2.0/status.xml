@@ -8,7 +8,7 @@
 
     <changes>
 
-        <release version="2.05" date="In CVS">
+        <release version="2.05" date="December 15, 2003">
             <action dev="intabulas" type="add" context="Core">
                 Added "Pumpkin" theme based on <link href="http://www.cocoadevcentral.com">Cocoa Dev Central</link>
             </action>
