@@ -52,7 +52,7 @@ import java.util.Properties;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.16 2004-04-19 18:05:39 intabulas Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.17 2004-04-20 01:24:41 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -124,6 +124,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
         // Ensure the resource directory physically exists
         _qualifiedResourceDirectory = servletConfig.getServletContext().getRealPath(_resourceDirectory);
+        _logger.debug("Using qualified resource directory: " + _qualifiedResourceDirectory);
 
         _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
