@@ -215,6 +215,7 @@ public class BlogEntry {
                     hasLoadedTitle = true;
                 } else {
                     description.append(line);
+                    description.append("\n");
                 }
             }
             br.close();
