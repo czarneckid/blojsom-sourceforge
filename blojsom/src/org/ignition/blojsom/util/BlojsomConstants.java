@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.68 2003-07-14 21:48:54 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.69 2003-07-20 22:04:47 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -215,6 +215,11 @@ public interface BlojsomConstants {
     public static final String BLOG_LANGUAGE_DEFAULT = "en";
 
     /**
+     * Default country for blog if none supplied (US)
+     */
+    public static final String BLOG_COUNTRY_DEFAULT = "US";
+
+    /**
      * Default number of blog entries to display (-1 indicates all entries will be displayed)
      */
     public static final int BLOG_ENTRIES_DISPLAY_DEFAULT = -1;
@@ -277,6 +282,7 @@ public interface BlojsomConstants {
     static final String BLOG_NAME_IP = "blog-name";
     static final String BLOG_DEPTH_IP = "blog-directory-depth";
     static final String BLOG_LANGUAGE_IP = "blog-language";
+    static final String BLOG_COUNTRY_IP = "blog-country";
     static final String BLOG_DESCRIPTION_IP = "blog-description";
     static final String BLOG_URL_IP = "blog-url";
     static final String BLOG_BASE_URL_IP = "blog-base-url";
@@ -291,6 +297,7 @@ public interface BlojsomConstants {
     static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
     static final String BLOG_TRACKBACK_DIRECTORY_IP = "blog-trackbacks-directory";
     static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
+    static final String BLOG_TRACKBACKS_ENABLED_IP = "blog-trackbacks-enabled";
     static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
     static final String BLOG_FETCHER_IP = "blog-fetcher";
