@@ -54,13 +54,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 /**
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.15 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.16 2004-01-12 04:03:55 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -101,6 +103,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
     private static final String BLOG_COMMENT_ID = "blog-comment-id";
     private static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
+    private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
 
     private BlojsomFetcher _fetcher;
 
@@ -340,7 +343,22 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             Map entryMetaData = new HashMap();
             String username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
             entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, username);
-            entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+
+            String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);
+            if (!BlojsomUtils.checkNullOrBlank(entryPublishDateTime)) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                try {
+                    Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
+                    _logger.debug("Publishing blog entry at: " + publishDateTime.toString());
+                    entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(publishDateTime.getTime()).toString());
+                } catch (ParseException e) {
+                    _logger.error(e);
+                    entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                }
+            } else {
+                entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+            }
+
             entry.setMetaData(entryMetaData);
 
             String blogEntryExtension = user.getBlog().getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
