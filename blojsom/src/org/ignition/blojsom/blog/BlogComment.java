@@ -35,7 +35,7 @@ import java.util.Date;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.1 2003-03-04 03:31:29 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.2 2003-03-06 16:05:06 intabulas Exp $
  */
 public class BlogComment {
 
@@ -44,6 +44,7 @@ public class BlogComment {
     private String _authorURL;
     private String _comment;
     private Date _commentDate;
+    private long _commentDateLong;
 
     /**
      * Default constructor
@@ -139,5 +140,23 @@ public class BlogComment {
      */
     public void setCommentDate(Date commentDate) {
         _commentDate = commentDate;
+    }
+
+    /**
+     * Get the date of this comment as a Long.
+     * Used for Last-Modified
+     *
+     * @return the comment date as a Long
+     */
+    public long getCommentDateLong() {
+        return _commentDateLong;
+    }
+
+    /**
+     * Set the Comment Date as a Long
+     * @param commentDateLong the comment file's lastModified()
+     */
+    public void setCommentDateLong(long commentDateLong) {
+        _commentDateLong = commentDateLong;
     }
 }

@@ -43,7 +43,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.19 2003-03-06 04:07:34 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.20 2003-03-06 16:05:04 intabulas Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -432,6 +432,7 @@ public class BlogEntry implements BlojsomConstants {
     private BlogComment loadComment(File commentFile) {
         int commentSwitch = 0;
         BlogComment comment = new BlogComment();
+        comment.setCommentDateLong(commentFile.lastModified());
         StringBuffer commentDescription = new StringBuffer();
         String commentLine;
         try {

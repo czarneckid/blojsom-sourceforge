@@ -31,10 +31,7 @@ package org.ignition.blojsom.servlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ignition.blojsom.blog.Blog;
-import org.ignition.blojsom.blog.BlogCategory;
-import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.BlojsomConfigurationException;
+import org.ignition.blojsom.blog.*;
 import org.ignition.blojsom.dispatcher.GenericDispatcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -55,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.36 2003-03-06 04:08:22 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.37 2003-03-06 16:04:54 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -412,10 +409,26 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         }
 
         String _blogdate = null;
+
         // If we have entries, construct a last modified on the most recent
         // Additional  set the blog date
+
+        /**
+         * Last-Modified Code: If this page is showing comments (page=) then base the last modified  off
+         * the most recent comment,  otherwise base it off the most recent blog entry
+         */
+
         if ((entries != null) && (entries.length > 0)) {
-            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, entries[0].getLastModified());
+            BlogEntry _entry = entries[0];
+            long _lastmodified;
+
+            if ((httpServletRequest.getParameter(PAGE_PARAM) != null) && (_entry.getNumComments() > 0)) {
+                BlogComment _comment = _entry.getCommentsAsArray()[0];
+                _lastmodified = _comment.getCommentDateLong();
+            } else {
+                _lastmodified = _entry.getLastModified();
+            }
+            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
             _blogdate = entries[0].getISO8601Date();
         } else {
             _blogdate = BlojsomUtils.getRFC822Date(new Date());
