@@ -32,6 +32,7 @@ site.xml. -->
         <menu-item label="Send Email" href="send-email.html"/>
         <menu-item label="Show Me More" href="show-me-more.html"/>
         <menu-item label="Textile" href="textile.html"/>
+        <menu-item label="Trackback Auto-discovery" href="trackback-autodiscovery.html"/>
         <menu-item label="Weblogs Ping" href="weblogs-ping.html"/>
         <menu-item label="XPath and XPath Search" href="xpath.html"/>
     </menu>

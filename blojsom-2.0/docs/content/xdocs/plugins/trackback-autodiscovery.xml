@@ -10,8 +10,8 @@
             <title>Description</title>
             <p>
                 The trackback auto-discovery plugin implements the
-                <a href="http://www.movabletype.org/docs/mttrackback.html#autodiscovery%20of%20trackback%20ping%20urls">auto-discovery mechanism from the</a>
-                MovableType Trackback Technical Specification.
+                <a href="http://www.movabletype.org/docs/mttrackback.html#autodiscovery%20of%20trackback%20ping%20urls">auto-discovery mechanism</a>
+                from the MovableType Trackback Technical Specification.
             </p>
 
             <section>
@@ -52,7 +52,8 @@
                         meta-data "auto-trackback" which must have a value of <code>true</code> for the plugin to
                         execute the auto-discovery process on the blog entry. After completing trackback auto-discovery, the
                         plugin will write the meta-data "auto-trackback-complete" with a value of <code>true</code> back
-                        to that entry.
+                        to that entry. Note that the auto-trackback plugin should be placed after the meta plugin in one
+                        of the flavor-based plugin chains where the auto-trackback plugin is used.
                     </p>
                 </section>
                 <section>
