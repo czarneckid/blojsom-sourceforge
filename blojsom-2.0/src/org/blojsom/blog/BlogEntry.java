@@ -38,19 +38,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.6 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.7 2004-03-09 01:47:16 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -62,8 +62,8 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     protected String _category;
     protected Date _entryDate;
     protected long _lastModified;
-    protected ArrayList _comments;
-    protected ArrayList _trackbacks;
+    protected List _comments;
+    protected List _trackbacks;
     protected BlogCategory _blogCategory;
     protected Map _metaData;
 
@@ -293,19 +293,19 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Get the comments
      *
-     * @return ArrayList of comments
+     * @return List of comments
      */
-    public ArrayList getComments() {
+    public List getComments() {
         return _comments;
     }
 
     /**
-     * Set the comments for this blog entry. The comments must be an <code>ArrayList</code>
-     * of {@link BlogComment}. This method will not writeback or change the comments
+     * Set the comments for this blog entry. The comments must be an <code>List</code>
+     * of {@link BlogComment}. This method will not writeback or change the comments on disk.
      *
      * @param comments Comments for this entry
      */
-    public void setComments(ArrayList comments) {
+    public void setComments(List comments) {
         _comments = comments;
     }
 
@@ -346,19 +346,19 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     /**
      * Get the trackbacks
      *
-     * @return ArrayList of trackbacks
+     * @return List of trackbacks
      */
-    public ArrayList getTrackbacks() {
+    public List getTrackbacks() {
         return _trackbacks;
     }
 
     /**
-     * Set the trackbacks for this blog entry. The trackbacks must be an <code>ArrayList</code>
-     * of {@link Trackback}. This method will not writeback or change the trackbacks
+     * Set the trackbacks for this blog entry. The trackbacks must be an <code>List</code>
+     * of {@link Trackback}. This method will not writeback or change the trackbacks to disk.
      *
      * @param trackbacks Trackbacks for this entry
      */
-    public void setTrackbacks(ArrayList trackbacks) {
+    public void setTrackbacks(List trackbacks) {
         _trackbacks = trackbacks;
     }
 
