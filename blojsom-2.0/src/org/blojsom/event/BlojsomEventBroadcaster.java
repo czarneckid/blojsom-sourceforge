@@ -3,7 +3,6 @@
  * All rights reserved.
  *
  * Portions Copyright (c) 2003-2004  by Mark Lussier
- * Adapted code from Chris Nokleberg (http://sixlegs.com/)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,7 +39,7 @@ package org.blojsom.event;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEventBroadcaster.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
+ * @version $Id: BlojsomEventBroadcaster.java,v 1.2 2004-08-31 20:36:44 czarneckid Exp $
  */
 public interface BlojsomEventBroadcaster {
 

@@ -3,7 +3,6 @@
  * All rights reserved.
  *
  * Portions Copyright (c) 2003-2004  by Mark Lussier
- * Adapted code from Chris Nokleberg (http://sixlegs.com/)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -49,7 +48,7 @@ import java.util.*;
  * removed at the same time an event is being broadcast.
  *
  * @author David Czarnecki
- * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
+ * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.2 2004-08-31 20:36:44 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
