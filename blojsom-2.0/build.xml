@@ -364,6 +364,8 @@
                 <!-- Base files -->
                 <include name="build.xml"/>
                 <include name="LICENSE"/>
+                <include name="forrest-targets.ent"/>
+                <include name="forrest.properties"/>
 
                 <!-- Source directories -->
                 <include name="addon/**"/>
