@@ -40,6 +40,7 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
@@ -53,13 +54,18 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.13 2003-04-13 18:20:16 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.14 2003-04-15 02:28:01 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
+
+    private static final String FETCHER_CATEGORY_STRING = "FETCHER_CATEGORY_STRING";
+    private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
 
     public static final String API_PREFIX = "metaWeblog";
 
     private Blog _blog;
+    private BlojsomFetcher _fetcher;
+
     private Log _logger = LogFactory.getLog(MetaWeblogAPIHandler.class);
 
     /**
@@ -88,6 +94,14 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _blog = bloginstance;
     }
 
+    /**
+     * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
+     *
+     * @param fetcher {@link BlojsomFetcher} instance
+     */
+    public void setFetcher(BlojsomFetcher fetcher) {
+        _fetcher = fetcher;
+    }
 
     /**
      * Authenticates a user and returns the categories available in the blojsom
@@ -107,7 +121,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         if (_blog.checkAuthorization(userid, password)) {
             Hashtable result;
 
-            BlogCategory[] _categories = _blog.getBlogCategories();
+            BlogCategory[] _categories = _fetcher.fetchCategories(null);
 
             if (_categories != null) {
                 result = new Hashtable(_categories.length);
@@ -174,7 +188,11 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 category = postid.substring(0, pos);
                 permalink = postid.substring(pos + match.length());
 
-                BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
+                HashMap fetchMap = new HashMap();
+                fetchMap.put(FETCHER_CATEGORY_STRING, category);
+                fetchMap.put(FETCHER_PERMALINK, permalink);
+                BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
+
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
 

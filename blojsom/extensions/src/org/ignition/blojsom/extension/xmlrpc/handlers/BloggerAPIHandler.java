@@ -40,7 +40,7 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.BlogComment;
+import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
@@ -55,11 +55,17 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.5 2003-04-13 22:59:53 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.6 2003-04-15 02:28:07 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
     public static final String API_PREFIX = "blogger";
+
+    private static final String FETCHER_CATEGORY_STRING = "FETCHER_CATEGORY_STRING";
+    private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
+    private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
+    private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
+    private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
 
     /**
      * Blogger API "url" key
@@ -107,10 +113,10 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      */
     private static final String MEMBER_AUTHOREMAIL = "authorEmail";
 
-    private static final String ALTERNATE_EOL = "<br/>";
-
-
     private Blog _blog;
+
+    private BlojsomFetcher _fetcher;
+
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
 
     /**
@@ -138,6 +144,14 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _blog = bloginstance;
     }
 
+    /**
+     * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
+     *
+     * @param fetcher {@link BlojsomFetcher} instance
+     */
+    public void setFetcher(BlojsomFetcher fetcher) {
+        _fetcher = fetcher;
+    }
 
     /**
      * Delete a Post
@@ -171,7 +185,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 category = postid.substring(0, pos);
                 permalink = postid.substring(pos + match.length());
 
-                BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
+                HashMap fetchMap = new HashMap();
+                fetchMap.put(FETCHER_CATEGORY_STRING, category);
+                fetchMap.put(FETCHER_PERMALINK, permalink);
+                BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
+
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     //System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
@@ -274,7 +292,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         if (_blog.checkAuthorization(userid, password)) {
             Vector result = new Vector();
 
-            BlogCategory[] _categories = _blog.getBlogCategories();
+            BlogCategory[] _categories = _fetcher.fetchCategories(null);
 
             if (_categories != null) {
                 for (int x = 0; x < _categories.length; x++) {
@@ -345,7 +363,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 category = postid.substring(0, pos);
                 permalink = postid.substring(pos + match.length());
 
-                BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
+                HashMap fetchMap = new HashMap();
+                fetchMap.put(FETCHER_CATEGORY_STRING, category);
+                fetchMap.put(FETCHER_PERMALINK, permalink);
+                BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
+
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     try {
@@ -464,13 +486,17 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + requestedCategory);
 
                 BlogEntry[] entries;
+                HashMap fetchMap = new HashMap();
 
                 if (requestedCategory == null || "".equals(requestedCategory)) {
-                    entries = _blog.getEntriesAllCategories(DEFAULT_FLAVOR_HTML, numposts);
+                    fetchMap.put(FETCHER_FLAVOR, DEFAULT_FLAVOR_HTML);
+                    fetchMap.put(FETCHER_NUM_POSTS_INTEGER, new Integer(numposts));
+                    entries = _fetcher.fetchEntries(fetchMap);
                 } else {
-                    entries = _blog.getEntriesForCategory(blogCategory, numposts);
+                    fetchMap.put(FETCHER_CATEGORY, blogCategory);
+                    fetchMap.put(FETCHER_NUM_POSTS_INTEGER, new Integer(numposts));
+                    entries = _fetcher.fetchEntries(fetchMap);
                 }
-
 
                 if (entries != null && entries.length > 0) {
                     for (int x = 0; x < entries.length; x++) {
@@ -495,5 +521,4 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
-
 }
