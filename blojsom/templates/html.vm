@@ -48,7 +48,7 @@
   <p class="weblogtitle">referers:</p>
   #set($refererEntries = 0)
   #foreach( $entry in $REFERER_HISTORY.keySet())
-      <p class="weblogdateline">$entry ($REFERER_HISTORY.get($entry))</p>
+      <p class="weblogdateline"><a href="$entry">$entry</a> ($REFERER_HISTORY.get($entry))</p>
       #set($refererEntries = $refererEntries +  1)
   #end
 #end
