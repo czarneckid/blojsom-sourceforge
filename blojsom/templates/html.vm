@@ -30,7 +30,7 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 #set( $totalEntries = 0)
 <table cellspacing="0" cellpadding=0 border="0" width="100%">
 <tr>
-<td width="100%">
+<td width="100%" valign="top">
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="entrystyle">
     <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()" title="Permalink to this blojsom entry">Permalink</a>]</span> </p>
