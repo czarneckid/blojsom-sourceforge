@@ -59,20 +59,17 @@ import java.util.*;
  * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.18 2003-12-05 04:09:42 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.19 2003-12-17 20:06:19 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
     // BlojsomServlet initialization properties from web.xml
-    private final static String BLOJSOM_FLAVOR_CONFIGURATION_IP = "flavor-configuration";
     private final static String BLOJSOM_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-configuration";
-    private final static String BLOJSOM_PLUGIN_CONFIGURATION_IP = "plugin-configuration";
 
     private Log _logger = LogFactory.getLog(BlojsomServlet.class);
 
     private Map _plugins;
     private Map _dispatchers;
-
 
     /**
      * Create a new blojsom servlet instance
@@ -127,14 +124,14 @@ public class BlojsomServlet extends BlojsomBaseServlet {
      */
     private void configureFlavors(ServletConfig servletConfig) throws ServletException {
         String flavorConfiguration = servletConfig.getInitParameter(BLOJSOM_FLAVOR_CONFIGURATION_IP);
-        Iterator usersIterator = _users.keySet().iterator();
+        Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
         BlogUser blogUser;
         while (usersIterator.hasNext()) {
             Map flavors = new HashMap();
             Map flavorToTemplateMap = new HashMap();
             Map flavorToContentTypeMap = new HashMap();
             String user = (String) usersIterator.next();
-            blogUser = (BlogUser) _users.get(user);
+            blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
 
             Properties flavorProperties = new Properties();
             InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + flavorConfiguration);
@@ -154,7 +151,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 blogUser.setFlavors(flavors);
                 blogUser.setFlavorToTemplate(flavorToTemplateMap);
                 blogUser.setFlavorToContentType(flavorToContentTypeMap);
-                _users.put(user, blogUser);
+                _blojsomConfiguration.getBlogUsers().put(user, blogUser);
             } catch (IOException e) {
                 _logger.error(e);
                 throw new ServletException(e);
@@ -176,7 +173,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         }
 
         // Load the plugin chains for the individual users
-        Iterator usersIterator = _users.keySet().iterator();
+        Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
         Iterator pluginIterator;
         BlogUser blogUser;
         Properties pluginProperties;
@@ -184,7 +181,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         while (usersIterator.hasNext()) {
             Map pluginChainMap = new HashMap();
             String user = (String) usersIterator.next();
-            blogUser = (BlogUser) _users.get(user);
+            blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
 
             InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + pluginConfiguration);
             pluginProperties = new Properties();
@@ -200,7 +197,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                     }
                 }
                 blogUser.setPluginChain(pluginChainMap);
-                _users.put(user, blogUser);
+                _blojsomConfiguration.getBlogUsers().put(user, blogUser);
             } catch (IOException e) {
                 _logger.error(e);
                 throw new ServletException(e);
@@ -298,10 +295,10 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         if (user == null || "".equals(user)) {
             String userFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
             if (userFromPath == null) {
-                user = _defaultUser;
+                user = _blojsomConfiguration.getDefaultUser();
             } else {
-                if (!_users.containsKey(userFromPath)) {
-                    user = _defaultUser;
+                if (!_blojsomConfiguration.getBlogUsers().containsKey(userFromPath)) {
+                    user = _blojsomConfiguration.getDefaultUser();
                 } else {
                     user = userFromPath;
                 }
@@ -309,12 +306,12 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         }
 
         // Make sure the user exists and if not, return a 404
-        if (!_users.containsKey(user)) {
+        if (!_blojsomConfiguration.getBlogUsers().containsKey(user)) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;
         }
 
-        BlogUser blogUser = (BlogUser) _users.get(user);
+        BlogUser blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         Blog blog = blogUser.getBlog();
 
         // Determine the requested flavor
