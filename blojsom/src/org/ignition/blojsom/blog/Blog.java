@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.40 2003-03-31 03:46:08 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.41 2003-04-01 02:00:39 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -59,6 +59,7 @@ public class Blog implements BlojsomConstants {
     private String _blogName;
     private String _blogDescription;
     private String _blogURL;
+    private String _blogBaseURL;
     private String _blogLanguage;
     private String[] _blogFileExtensions;
     private String[] _blogPropertiesExtensions;
@@ -137,6 +138,16 @@ public class Blog implements BlojsomConstants {
             _blogURL += "/";
         }
         _blogProperties.put(BLOG_URL_IP, _blogURL);
+
+        _blogBaseURL = blogConfiguration.getProperty(BLOG_BASE_URL_IP);
+        if (_blogBaseURL == null) {
+            _logger.error("No value supplied for blog-base-url");
+            throw new BlojsomConfigurationException("No value supplied for blog-base-url");
+        }
+        if (!_blogBaseURL.endsWith("/")) {
+            _blogBaseURL += "/";
+        }
+        _blogProperties.put(BLOG_BASE_URL_IP, _blogBaseURL);
 
         _blogFileExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
         _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, _blogFileExtensions);
@@ -696,6 +707,25 @@ public class Blog implements BlojsomConstants {
     public void setBlogURL(String blogURL) {
         _blogURL = blogURL;
     }
+
+    /**
+     * Base URL for the blog
+     *
+     * @return Blog base URL
+     */
+    public String getBlogBaseURL() {
+        return _blogBaseURL;
+    }
+
+    /**
+     * Set the bse URL for the blog
+     *
+     * @param blogBaseURL Base URL for the blog
+     */
+    public void setBlogBaseURL(String blogBaseURL) {
+        _blogBaseURL = blogBaseURL;
+    }
+
 
     /**
      * Language of the blog
