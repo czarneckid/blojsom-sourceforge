@@ -47,7 +47,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.30 2003-04-27 16:42:20 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.31 2003-05-07 02:28:11 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -365,7 +365,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     }
 
     /**
-     * Return meta data for this blog entry
+     * Return meta data for this blog entry. This method may return <code>null</code>.
      *
      * @since blojsom 1.8
      * @return Meta data
@@ -376,6 +376,7 @@ public abstract class BlogEntry implements BlojsomConstants {
 
     /**
      * Set the meta-data associated with this blog entry
+     *
      * @param metaData Meta-data
      * @since blojsom 1.8
      */
