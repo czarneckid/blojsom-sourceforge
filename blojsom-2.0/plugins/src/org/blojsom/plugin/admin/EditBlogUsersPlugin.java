@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.1 2003-12-17 20:17:23 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.2 2003-12-18 00:28:47 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -128,12 +128,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             if (_blogHomeBaseDirectory == null || "".equals(_blogHomeBaseDirectory)) {
                 throw new BlojsomPluginException("No blog base home directory specified.");
             }
-            if (!_blogHomeBaseDirectory.startsWith("/")) {
-                _blogHomeBaseDirectory = "/" + _blogHomeBaseDirectory;
-            }
-            if (!_blogHomeBaseDirectory.endsWith("/")) {
-                _blogHomeBaseDirectory += "/";
-            }
+            _blogHomeBaseDirectory = BlojsomUtils.checkStartingAndEndingSlash(_blogHomeBaseDirectory);
 
             String administratorProperty = configurationProperties.getProperty(ADMINISTRATORS_IP);
             String[] administrators = BlojsomUtils.parseCommaList(administratorProperty);
@@ -241,6 +236,13 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                         return entries;
+                    } else {
+                        if (!blogURL.endsWith("/")) {
+                            blogURL += "/";
+                        }
+                        if (!blogBaseURL.endsWith("/")) {
+                            blogBaseURL += "/";
+                        }
                     }
 
                     // Check to see that the password and password check are equal

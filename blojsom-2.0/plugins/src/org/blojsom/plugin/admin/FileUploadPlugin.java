@@ -59,7 +59,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.3 2003-12-17 20:15:49 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.4 2003-12-18 00:28:39 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -139,12 +139,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                 _resourcesDirectory = DEFAULT_RESOURCES_DIRECTORY;
             }
 
-            if (_resourcesDirectory.startsWith("/")) {
-                _resourcesDirectory = BlojsomUtils.removeInitialSlash(_resourcesDirectory);
-            }
-            if (!_resourcesDirectory.endsWith("/")) {
-                _resourcesDirectory += "/";
-            }
+            _resourcesDirectory = BlojsomUtils.checkStartingAndEndingSlash(_resourcesDirectory);
             _logger.debug("Using resources directory: " + _resourcesDirectory);
         } catch (BlojsomException e) {
             _logger.error(e);

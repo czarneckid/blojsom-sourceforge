@@ -51,7 +51,7 @@ import java.io.IOException;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.9 2003-12-17 20:11:18 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.10 2003-12-18 00:29:02 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -92,12 +92,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
         if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
             _baseConfigurationDirectory = BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY;
         } else {
-            if (!_baseConfigurationDirectory.startsWith("/")) {
-                _baseConfigurationDirectory = '/' + _baseConfigurationDirectory;
-            }
-            if (!_baseConfigurationDirectory.endsWith("/")) {
-                _baseConfigurationDirectory += "/";
-            }
+            _baseConfigurationDirectory = BlojsomUtils.checkStartingAndEndingSlash(_baseConfigurationDirectory);
         }
         _logger.debug("Using base configuration directory: " + _baseConfigurationDirectory);
 
