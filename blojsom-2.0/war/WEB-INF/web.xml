@@ -55,6 +55,10 @@
             <param-value>authorization.properties</param-value>
         </init-param>
         <init-param>
+            <param-name>blog-permissions</param-name>
+            <param-value>permissions.properties</param-value>
+        </init-param>
+        <init-param>
             <param-name>smtp-server</param-name>
             <param-value>localhost</param-value>
         </init-param>
@@ -108,6 +112,10 @@
             <param-name>blog-authorization</param-name>
             <param-value>authorization.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>blog-permissions</param-name>
+            <param-value>permissions.properties</param-value>
+        </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
 
@@ -135,6 +143,10 @@
         <init-param>
             <param-name>blog-authorization</param-name>
             <param-value>authorization.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>blog-permissions</param-name>
+            <param-value>permissions.properties</param-value>
         </init-param>
         <load-on-startup>4</load-on-startup>
     </servlet>
