@@ -54,7 +54,7 @@ import java.io.IOException;
  * and the JSP/Servlet/J2EE community.
  *
  * @since blojsom 2.10
- * @version $Id: CompressionFilter.java,v 1.7 2004-01-26 22:40:08 czarneckid Exp $
+ * @version $Id: CompressionFilter.java,v 1.8 2004-02-20 00:10:37 czarneckid Exp $
  */
 public class CompressionFilter implements Filter, BlojsomConstants {
 
@@ -81,19 +81,25 @@ public class CompressionFilter implements Filter, BlojsomConstants {
      */
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
-        if (req instanceof HttpServletRequest) {
-            HttpServletRequest request = (HttpServletRequest) req;
-            HttpServletResponse response = (HttpServletResponse) res;
-            String ae = request.getHeader("accept-encoding");
-            if (ae != null && ae.indexOf("gzip") != -1) {
-                _logger.debug("GZIP supported, compressing.");
-                GZIPResponseWrapper wrappedResponse =  new GZIPResponseWrapper(response);
-                chain.doFilter(req, wrappedResponse);
-                wrappedResponse.finishResponse();
-                return;
-            }
+        try {
+            if (req instanceof HttpServletRequest) {
+                HttpServletRequest request = (HttpServletRequest) req;
+                HttpServletResponse response = (HttpServletResponse) res;
+                String ae = request.getHeader("accept-encoding");
+                if (ae != null && ae.indexOf("gzip") != -1) {
+                    _logger.debug("GZIP supported, compressing.");
+                    GZIPResponseWrapper wrappedResponse =  new GZIPResponseWrapper(response);
+                    chain.doFilter(req, wrappedResponse);
+                    wrappedResponse.finishResponse();
+                    return;
+                }
 
-            chain.doFilter(req, res);
+                chain.doFilter(req, res);
+            }
+        } catch (IOException e) {
+            _logger.error(e);
+        } catch (ServletException e) {
+            _logger.error(e);
         }
     }
 
