@@ -57,7 +57,7 @@ import java.util.Vector;
  * <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">MovableType API</a> handler
  *
  * @author David Czarnecki
- * @version $Id: MovableTypeAPIHandler.java,v 1.2 2005-01-05 02:31:17 czarneckid Exp $
+ * @version $Id: MovableTypeAPIHandler.java,v 1.3 2005-01-27 01:25:31 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class MovableTypeAPIHandler extends AbstractBlojsomAPIHandler {
@@ -74,6 +74,8 @@ public class MovableTypeAPIHandler extends AbstractBlojsomAPIHandler {
     protected static final String MEMBER_PING_TITLE = "pingTitle";
     protected static final String MEMBER_PING_URL = "pingURL";
     protected static final String MEMBER_PING_IP = "pingIP";
+
+    private static final String MOVABLETYPE_API_PERMISSION = "post_via_movabletype_api";
 
     protected static final String API_PREFIX = "mt";
 
@@ -133,6 +135,7 @@ public class MovableTypeAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, username, password);
+            checkXMLRPCPermission(username, MOVABLETYPE_API_PERMISSION);
 
             // Quick verify that the category is valid
             File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogID));
@@ -198,6 +201,7 @@ public class MovableTypeAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, username, password);
+            checkXMLRPCPermission(username, MOVABLETYPE_API_PERMISSION);
 
             Vector result;
 
@@ -259,7 +263,8 @@ public class MovableTypeAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, username, password);
-
+            checkXMLRPCPermission(username, MOVABLETYPE_API_PERMISSION);
+                   
             String category;
             String permalink;
             String match = "?" + PERMALINK_PARAM + "=";

@@ -56,7 +56,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.21 2005-01-16 22:21:17 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.22 2005-01-27 01:25:31 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -135,6 +135,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
     public static final String API_PREFIX = "blogger";
 
+    private static final String BLOGGER_API_PERMISSION = "post_via_blogger_api";
+
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
 
     /**
@@ -186,6 +188,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             Hashtable userinfo = new Hashtable();
             userinfo.put(MEMBER_EMAIL, _blog.getBlogOwnerEmail());
@@ -229,6 +232,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
+
             Vector result = new Vector();
 
             BlogCategory[] _categories = _fetcher.fetchCategories(null, _blogUser);
@@ -315,6 +320,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             String result = null;
 
@@ -394,6 +400,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             boolean result = false;
 
@@ -471,6 +478,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             String category;
             String permalink;
@@ -539,6 +547,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             String category;
             String permalink;
@@ -607,6 +616,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             // Quick verify that the categories are valid
             File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));

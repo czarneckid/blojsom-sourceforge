@@ -59,7 +59,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.28 2005-01-16 22:22:45 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.29 2005-01-27 01:25:31 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -140,6 +140,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
      */
     private static final String MEMBER_URL = "url";
 
+    private static final String METAWEBLOG_API_PERMISSION = "post_via_metaweblog_api";
+
     public static final String API_PREFIX = "metaWeblog";
 
     private String _uploadDirectory;
@@ -177,7 +179,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         if (BlojsomUtils.checkNullOrBlank(_blogEntryExtension)) {
             _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
         }
-
 
         _uploadDirectory = _configuration.getQualifiedResourceDirectory();
         if (BlojsomUtils.checkNullOrBlank(_uploadDirectory)) {
@@ -225,6 +226,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             Vector result = new Vector();
             BlogCategory[] _categories = _fetcher.fetchCategories(null, _blogUser);
@@ -280,6 +282,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             Hashtable result;
 
@@ -352,6 +355,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             String result = null;
 
@@ -430,6 +434,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             boolean result = false;
 
@@ -525,6 +530,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             String category;
             String permalink;
@@ -597,6 +603,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             String category;
             String permalink;
@@ -660,6 +667,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
             blogid = BlojsomUtils.normalize(blogid);
             BlogCategory category = _fetcher.newBlogCategory();
@@ -721,7 +729,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
-
+            checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
+                   
             String name = (String) struct.get(MEMBER_NAME);
             name = BlojsomUtils.getFilenameFromPath(name);
             _logger.debug("newMediaObject name: " + name);
