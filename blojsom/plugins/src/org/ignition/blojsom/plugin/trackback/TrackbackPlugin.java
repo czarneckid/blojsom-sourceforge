@@ -59,7 +59,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.14 2003-03-27 03:57:20 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.15 2003-04-04 02:54:07 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -137,7 +137,6 @@ public class TrackbackPlugin implements BlojsomPlugin {
         _blogTrackbackDirectory = (String) blogProperties.get(BlojsomConstants.BLOG_TRACKBACK_DIRECTORY_IP);
         _blogEmailEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_EMAIL_ENABLED_IP);
         _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
-
     }
 
     /**
@@ -302,7 +301,6 @@ public class TrackbackPlugin implements BlojsomPlugin {
     private synchronized void sendTrackbackEmail(String entryTitle, String title, String category, String permalink, String url,
                                                  String excerpt, String blogName, Map context) {
 
-
         StringBuffer _trackback = new StringBuffer();
         _trackback.append("Trackback on: ").append(_blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
         _trackback.append("?permalink=").append(permalink).append("&page=comments").append("\n");
@@ -324,8 +322,6 @@ public class TrackbackPlugin implements BlojsomPlugin {
         }
 
         EmailUtils.notifyBlogAuthor("[blojsom] Trackback on: " + entryTitle, _trackback.toString(), context);
-
-
     }
 
 
