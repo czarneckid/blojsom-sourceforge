@@ -291,7 +291,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, entries[0].getLastModified());
             _blogdate = entries[0].getISO8601Date();
         } else {
-            _blogdate = BlojsomUtils.getRFC822Date( new Date());
+            _blogdate = BlojsomUtils.getRFC822Date(new Date());
         }
 
         // Setup the context for the dispatcher
