@@ -39,7 +39,7 @@ package org.blojsom.util;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BlojsomMetaDataConstants.java,v 1.2 2004-01-11 04:04:12 czarneckid Exp $
+ * @version $Id: BlojsomMetaDataConstants.java,v 1.3 2004-02-17 03:28:29 czarneckid Exp $
  */
 public interface BlojsomMetaDataConstants {
 
@@ -62,4 +62,14 @@ public interface BlojsomMetaDataConstants {
      * Entry meta-data key for entry time
      */
     public static final String BLOG_ENTRY_METADATA_TIMESTAMP = "blog-entry-metadata-timestamp";
+
+    /**
+     * Entry metadata key for disabling comments
+     */
+    public static final String BLOG_METADATA_COMMENTS_DISABLED = "blog-entry-comments-disabled";
+
+    /**
+     * Entry metadata key for disabling trackbacks
+     */
+    public static final String BLOG_METADATA_TRACKBACKS_DISABLED = "blog-entry-trackbacks-disabled";
 }
