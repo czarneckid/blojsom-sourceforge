@@ -55,7 +55,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.1 2003-08-12 02:50:14 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.2 2003-08-14 01:12:44 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -166,7 +166,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                             partialDescription.append(moreText);
                             partialDescription.append("</a>");
                             entry.setDescription(partialDescription.toString());
-                        } else if (description.length() > cutoff) {
+                        } else if ((cutoff > 0) && (description.length() > cutoff)) {
                             partialDescription.append(description.substring(0, cutoff));
                             partialDescription.append("&nbsp; <a href=\"");
                             partialDescription.append(entry.getLink());
@@ -177,6 +177,16 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                             partialDescription.append("</a>");
                             entry.setDescription(partialDescription.toString());
                         }
+                    } else if ((cutoff > 0) && (description.length() > cutoff)) {
+                        partialDescription.append(description.substring(0, cutoff));
+                        partialDescription.append("&nbsp; <a href=\"");
+                        partialDescription.append(entry.getLink());
+                        partialDescription.append("&amp;");
+                        partialDescription.append(SHOW_ME_MORE_PARAM);
+                        partialDescription.append("=y\">");
+                        partialDescription.append(moreText);
+                        partialDescription.append("</a>");
+                        entry.setDescription(partialDescription.toString());
                     }
                 }
 
