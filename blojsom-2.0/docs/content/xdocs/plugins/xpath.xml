@@ -21,7 +21,7 @@
                 <title>Installation and Setup</title>
                 <p>
                     In your global
-                    <em>plugin.properties</em> file, add the following line:
+                    <code>plugin.properties</code> file, add the following line:
                 </p>
                 <source>
                     xpath=org.blojsom.plugin.trackback.XPathPlugin
@@ -69,7 +69,7 @@
                         <tr>
                             <td>query</td>
                             <td>XPath query</td>
-                            <td>Same as the Simple Search plugin </td>
+                            <td>Same as the Simple Search plugin if using the XPath Search plugin.</td>
                         </tr>
                     </table>
                 </section>
