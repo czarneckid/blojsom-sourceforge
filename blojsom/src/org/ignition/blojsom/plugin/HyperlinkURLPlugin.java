@@ -43,7 +43,7 @@ import java.util.HashMap;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.4 2003-02-26 02:38:52 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.5 2003-02-26 15:58:04 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -56,7 +56,7 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      * Regular expression to identify URLs in the entry
      */
     private static final String URL_REGEX = "(^|[ t\rn])" + URL_PROTOCOLS
-            +  ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
+            + ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
 
     /**
      * The resulting replace string for formatting the href
@@ -105,4 +105,19 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
+
+
+    /*
+    public static void main(String[] args) {
+
+        String _hyperlink = "this is a test of an http://www.news.com replacement";
+        String _hyperlink2 = "this is a test of an <a href=\"http://www.news.com\" target=\"_blank\">http://www.news.com</a> replacement";
+
+        System.out.println(_hyperlink.replaceAll(URL_REGEX,HREF_EXPRESSION));
+        System.out.println(_hyperlink2.replaceAll(URL_REGEX,HREF_EXPRESSION));
+
+
+
+    }
+      */
 }
