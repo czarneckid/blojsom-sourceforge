@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.53 2003-03-24 22:21:45 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.54 2003-03-25 00:57:23 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -117,6 +117,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         try {
             configurationProperties.load(is);
             _blog = new Blog(configurationProperties);
+            is.close();
         } catch (IOException e) {
             _logger.error(e);
         } catch (BlojsomConfigurationException e) {
@@ -141,6 +142,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(flavorConfiguration);
         try {
             flavorProperties.load(is);
+            is.close();
             Iterator flavorIterator = flavorProperties.keySet().iterator();
             while (flavorIterator.hasNext()) {
                 String flavor = (String) flavorIterator.next();
@@ -167,6 +169,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(authConfiguration);
         try {
             authProperties.load(is);
+            is.close();
             Iterator authIterator = authProperties.keySet().iterator();
             while (authIterator.hasNext()) {
                 String userid = (String) authIterator.next();
@@ -197,6 +200,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(templateConfiguration);
         try {
             templateMapProperties.load(is);
+            is.close();
             Iterator templateIterator = templateMapProperties.keySet().iterator();
             while (templateIterator.hasNext()) {
                 String templateExtension = (String) templateIterator.next();
@@ -231,6 +235,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(pluginConfiguration);
         try {
             pluginProperties.load(is);
+            is.close();
             Iterator pluginIterator = pluginProperties.keySet().iterator();
             while (pluginIterator.hasNext()) {
                 String plugin = (String) pluginIterator.next();
