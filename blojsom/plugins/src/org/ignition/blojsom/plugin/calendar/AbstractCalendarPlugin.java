@@ -48,9 +48,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
+ * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins
+ * to filter content
+ *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.7 2003-04-03 03:02:27 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.8 2003-04-03 03:07:03 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 

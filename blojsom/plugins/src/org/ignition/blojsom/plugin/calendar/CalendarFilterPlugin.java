@@ -46,10 +46,11 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
- * CalendarFilterPlugin filters entries based on the calendar navigation parameters in the URL
+ * CalendarFilterPlugin filters entries based on the calendar navigation parameters
+ * in the URL
  *
  * @author Mark Lussier
- * @version $Id: CalendarFilterPlugin.java,v 1.2 2003-03-31 16:16:13 intabulas Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.3 2003-04-03 03:02:53 czarneckid Exp $
  */
 
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
