@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.61 2005-01-23 19:17:15 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.62 2005-01-31 02:38:54 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -236,6 +236,16 @@ public interface BlojsomConstants {
     public static final String TRACKBACK_EXTENSION = ".tb";
 
     /**
+     * Default directory for adding pingbacks
+     */
+    public static final String DEFAULT_PINGBACKS_DIRECTORY = ".pingbacks";
+
+    /**
+     * Reserved file extension for blojsom pingbacks
+     */
+    public static final String PINGBACK_EXTENSION = ".pb";
+
+    /**
      * Value indicating all subdirectories under the blog home should be searched
      */
     public static final int INFINITE_BLOG_DEPTH = -1;
@@ -379,8 +389,10 @@ public interface BlojsomConstants {
     public static final String BLOG_OWNER_EMAIL = "blog-owner-email";
     public static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
     public static final String BLOG_TRACKBACK_DIRECTORY_IP = "blog-trackbacks-directory";
+    public static final String BLOG_PINGBACKS_DIRECTORY_IP = "blog-pingbacks-directory";
     public static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
     public static final String BLOG_TRACKBACKS_ENABLED_IP = "blog-trackbacks-enabled";
+    public static final String BLOG_PINGBACKS_ENABLED_IP = "blog-pingbacks-enabled"; 
     public static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
     public static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
     public static final String BLOG_ENTRY_META_DATA_EXTENSION_IP = "blog-entry-meta-data-extension";
