@@ -34,10 +34,18 @@
 <p/>
 
 General:<br/>
+- Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
+Blogger 2 API or even develop Blogger to support the Blogger 2 API in favor of the Echo API<br/>
+- Added <tt>getDateAsFormat(String format)</tt> method to <tt>BlogEntry</tt> class<br/>
 
 <p />
 Extension changes:<br />
-- Added support for the <a href="http://www.blogger.com/developers/api/documentation20.html">Blogger 2 API</a> with the <tt>Blogger2APIHandler</tt> class<br/>
+<strike>- Added support for the <a href="http://www.blogger.com/developers/api/documentation20.html">Blogger 2 API</a> with the <tt>Blogger2APIHandler</tt> class</strike><br/>
+
+<p />
+Plugin changes:<br />
+- The date format plugin was changed so that the date format object returned uses the locale that
+is constructed from the blog language set in <i>/WEB-INF/blojsom.properties</i>
 
 <p />
 The following bugs were fixed:<br />
