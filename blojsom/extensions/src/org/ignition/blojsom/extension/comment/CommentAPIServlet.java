@@ -74,7 +74,7 @@ import java.util.Properties;
  * Comment API Specification can be found at http://wellformedweb.org/story/9
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.2 2003-04-19 02:45:07 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.3 2003-04-20 16:39:29 intabulas Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
@@ -345,14 +345,15 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
 
     /**
+     * Sends the comment as an Email to the Blog Author
      *
-     * @param title
-     * @param category
-     * @param permalink
-     * @param author
-     * @param authorEmail
-     * @param authorURL
-     * @param userComment
+     * @param title Entry title that this comment is for
+     * @param category Category for the entry
+     * @param permalink Permalink to the origional entry
+     * @param author Name of person commenting
+     * @param authorEmail Email address of the person commenting
+     * @param authorURL Homepage URL for the person commenting
+     * @param userComment The comment
      */
     private synchronized void sendCommentEmail(String title, String category, String permalink, String author,
                                                String authorEmail, String authorURL, String userComment) {

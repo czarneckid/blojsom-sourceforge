@@ -51,7 +51,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.46 2003-04-19 02:44:46 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.47 2003-04-20 16:39:25 intabulas Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -594,20 +594,20 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
-     * Get the class name of the {@link BlojsomFetcher} used to fetch categories and entries
+     * Get the class name of the {@link org.ignition.blojsom.fetcher.BlojsomFetcher} used to fetch categories and entries
      * for this blog
      *
-     * @return {@link BlojsomFetcher} class name
+     * @return {@link org.ignition.blojsom.fetcher.BlojsomFetcher} class name
      */
     public String getBlogFetcher() {
         return _blogFetcher;
     }
 
     /**
-     * Set the class name of the {@link BlojsomFetcher} used to fetch categories and entries
+     * Set the class name of the {@link org.ignition.blojsom.fetcher.BlojsomFetcher} used to fetch categories and entries
      * for this blog
      *
-     * @param blogFetcher {@link BlojsomFetcher} class name
+     * @param blogFetcher {@link org.ignition.blojsom.fetcher.BlojsomFetcher} class name
      */
     public void setBlogFetcher(String blogFetcher) {
         _blogFetcher = blogFetcher;
