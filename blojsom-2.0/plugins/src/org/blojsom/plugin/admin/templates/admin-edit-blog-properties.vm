@@ -96,15 +96,24 @@
                         <td>#adminResource('blog.encoding.text' 'Blog encoding')</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
                     </tr>
                     <tr>
-                        <td>#adminResource('blog.language.text' 'Blog language code')</td> <td><input name="blog-language" type="text" size="50" value="$BLOJSOM_BLOG.getBlogLanguage()"/></td>
+                        #set ($selectListName = "blog-language")
+                        <td>#adminResource('blog.language.text' 'Blog language code')</td> <td>#selectList($selectListName $!BLOJSOM_BLOG.getBlogLanguage() $BLOJSOM_JVM_LANGUAGES)</td>
                     </tr>
                     <tr>
-                        <td>#adminResource('blog.country.text' 'Blog country code')</td> <td><input name="blog-country" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCountry()"/></td>
+                        #set ($selectListName = "blog-country")
+                        <td>#adminResource('blog.country.text' 'Blog country code')</td> <td>#selectList($selectListName $!BLOJSOM_BLOG.getBlogCountry() $BLOJSOM_JVM_COUNTRIES)</td>
                     </tr>
                     <tr>
                         #set ($selectListName = "blog-administration-locale")
                         <td>#adminResource('blog.administration.locale.text' 'Locale setting for administration console')</td> <td>#selectList($selectListName $!BLOJSOM_BLOG.getBlogAdministrationLocaleAsString() $BLOJSOM_INSTALLED_LOCALES)</td>
                     </tr>
+
+                    <!--
+                    <tr>
+                        #set ($selectListName = "blog-timezone-id")
+                        <td>#adminResource('blog.timezone.text' 'Time zone')</td> <td>#selectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("blog-timezone-id") $BLOJSOM_JVM_TIMEZONES)</td>
+                    </tr>
+                    -->
 
                     <!-- Internal aggregator settings -->
                     <tr>

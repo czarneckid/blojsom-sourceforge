@@ -64,7 +64,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.26 2004-11-16 17:46:55 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.27 2004-11-17 19:47:22 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -74,6 +74,9 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_PROPERTIES_ACTION = "edit-blog-properties";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP";
     private static final String BLOJSOM_INSTALLED_LOCALES = "BLOJSOM_INSTALLED_LOCALES";
+    private static final String BLOJSOM_JVM_LANGUAGES = "BLOJSOM_JVM_LANGUAGES";
+    private static final String BLOJSOM_JVM_COUNTRIES = "BLOJSOM_JVM_COUNTRIES";
+    private static final String BLOJSOM_JVM_TIMEZONES = "BLOJSOM_JVM_TIMEZONES";
 
     /**
      * Default constructor.
@@ -258,6 +261,9 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP, categoryMapping);
         context.put(BLOJSOM_INSTALLED_LOCALES, _blojsomConfiguration.getInstalledLocalesAsStrings());
+        context.put(BLOJSOM_JVM_LANGUAGES, BlojsomUtils.getLanguagesForSystem(blog.getBlogAdministrationLocale()));
+        context.put(BLOJSOM_JVM_COUNTRIES, BlojsomUtils.getCountriesForSystem(blog.getBlogAdministrationLocale()));
+        context.put(BLOJSOM_JVM_TIMEZONES, BlojsomUtils.getTimeZonesForSystem(blog.getBlogAdministrationLocale()));
 
         return entries;
     }
