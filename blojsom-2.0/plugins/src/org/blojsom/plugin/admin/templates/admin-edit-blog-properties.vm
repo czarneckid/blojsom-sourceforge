@@ -1,94 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog properties</title>
-    </head>
+#adminPageHeader("Blog Properties")
 
-    <body>
+        <div id="sideBar">
+            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        </div>
+
         <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog properties</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
+            <table>
+                <tr>
+                    <th>Blog property</th> <th>Current value</th>
+                </tr>
 
-        #showErrorMessage()
-        <p/>
+                <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
 
-        <table border="1">
-            <tr>
-                <th>Blog property</th> <th>Current value</th>
-            </tr>
-            <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
-
-                <input type="hidden" name="action" value="edit-blog-properties"/>
-                <input type="hidden" name="flavor" value="admin"/>
-                <input type="hidden" name="plugins" value="edit-blog-properties"/>
-                <tr>
-                    <td>Blog name</td> <td><input name="blog-name" type="text" size="50" value="$BLOJSOM_BLOG.getBlogName()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog description</td> <td><input name="blog-description" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDescription()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog URL</td> <td><input name="blog-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogURL()" disabled="true"/></td>
-                </tr>
-                <tr>
-                    <td>Blog base URL</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()" disabled="true"/></td>
-                </tr>
-                <tr>
-                    <td>Blog country</td> <td><input name="blog-country" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCountry()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog language</td> <td><input name="blog-language" type="text" size="50" value="$BLOJSOM_BLOG.getBlogLanguage()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog depth</td> <td><input name="blog-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
-                </tr>
-                #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP.keySet())
-                        <tr>
-                            <td>$flavor default category mapping</td> <td><input name="${flavor}.blog-default-category-mapping" type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP.get($flavor)"/></td>
-                        </tr>
-                #end
-                <tr>
-                    <td>Blog display entries</td> <td><input name="blog-display-entries" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDisplayEntries()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog owner</td> <td><input name="blog-owner" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwner()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog owner e-mail</td> <td><input name="blog-owner-email" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwnerEmail()"/></td>
-                </tr>
-                <tr>
-                    #set ($selectListName = "blog-comments-enabled")
-                    <td>Blog comments enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogCommentsEnabled())</td>
-                </tr>
-                <tr>
-                    #set ($selectListName = "blog-trackbacks-enabled")
-                    <td>Blog trackbacks enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogTrackbacksEnabled())</td>
-                </tr>
-                <tr>
-                    #set ($selectListName = "blog-email-enabled")
-                    <td>Blog e-mail comments/trackbacks enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogEmailEnabled())</td>
-                </tr>
-                <tr>
-                    <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
-                </tr>
-                <tr>
-                    <td>Blog file extenstions</td> <td><input name="blog-file-extensions" type="text" size="50" value="$BLOJSOM_BLOG.getBlogProperty("blog-file-extensions")"/></td>
-                </tr>
-                <tr>
-                    <td>Blog default flavor</td> <td><input name="blog-default-flavor" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDefaultFlavor()"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <center>
+                    <input type="hidden" name="action" value="edit-blog-properties"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-properties"/>
+                    <tr>
+                        <td>Blog name</td> <td><input name="blog-name" type="text" size="50" value="$BLOJSOM_BLOG.getBlogName()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog description</td> <td><input name="blog-description" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDescription()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog URL</td> <td><input name="blog-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogURL()" disabled="true"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog base URL</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()" disabled="true"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog country</td> <td><input name="blog-country" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCountry()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog language</td> <td><input name="blog-language" type="text" size="50" value="$BLOJSOM_BLOG.getBlogLanguage()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog depth</td> <td><input name="blog-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
+                    </tr>
+                    #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP.keySet())
+                            <tr>
+                                <td>$flavor default category mapping</td> <td><input name="${flavor}.blog-default-category-mapping" type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP.get($flavor)"/></td>
+                            </tr>
+                    #end
+                    <tr>
+                        <td>Blog display entries</td> <td><input name="blog-display-entries" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDisplayEntries()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog owner</td> <td><input name="blog-owner" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwner()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog owner e-mail</td> <td><input name="blog-owner-email" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwnerEmail()"/></td>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "blog-comments-enabled")
+                        <td>Blog comments enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogCommentsEnabled())</td>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "blog-trackbacks-enabled")
+                        <td>Blog trackbacks enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogTrackbacksEnabled())</td>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "blog-email-enabled")
+                        <td>Blog e-mail comments/trackbacks enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogEmailEnabled())</td>
+                    </tr>
+                    <tr>
+                        <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog file extenstions</td> <td><input name="blog-file-extensions" type="text" size="50" value="$BLOJSOM_BLOG.getBlogProperty("blog-file-extensions")"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog default flavor</td> <td><input name="blog-default-flavor" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDefaultFlavor()"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
                             <input type="submit" name="submit" value="Edit blog properties"/>
                             <input type="reset" name="reset" value="Reset"/>
-                        </center>
-                    </td>
-                </tr>
-            </form>
-        </table>
-    </body>
-</html>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+
+#adminPageFooter()

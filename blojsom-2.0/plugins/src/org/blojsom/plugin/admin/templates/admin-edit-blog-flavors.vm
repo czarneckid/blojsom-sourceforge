@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Add blog flavor</title>
-    </head>
+#adminPageHeader("Edit Flavors")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Add blog flavor</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
-
-        #showErrorMessage()
+        <div id="sideBar">
+            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        </div>
 
         <!-- Add blog flavor form -->
-        <center>
-            <h3>Add a blog flavor</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Add a blog flavor</h2>
+            <table>
                 <form name="add-blog-flavor" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-flavor"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -46,20 +38,18 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Add blog flavor"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Add blog flavor"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
+        </div>
 
         <!-- Modify blog flavor form -->
-        <center>
-            <h3>Modify a blog flavor</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Modify a blog flavor</h2>
+            <table>
                 <form name="modify-blog-flavor" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="modify-blog-flavor"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -94,20 +84,18 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Modify blog flavor"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Modify blog flavor"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
+        </div>
 
         <!-- Delete blog flavor form -->
-        <center>
-            <h3>Delete a blog flavor</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Delete a blog flavor</h2>
+            <table>
                 <form name="delete-blog-flavor" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-flavor"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -124,14 +112,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Delete blog flavor"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Delete blog flavor"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-    </body>
-</html>
+        </div>
+
+#adminPageFooter()

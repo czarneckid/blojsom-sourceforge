@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog plugins</title>
-    </head>
+#adminPageHeader("Edit Plugin Chains")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog plugins</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
-
-        #showErrorMessage()
-
-        Available plugins:
-        <ul>
-            #foreach ($plugin in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS.keySet())
-            <li>$plugin</li>
-            #end
-        </ul>
-        <table border="1">
+    <div id="mainClm">
+        <table>
             <tr>
                 <th>Flavor</th> <th>Plugin chain map</th>
             </tr>
@@ -35,13 +18,25 @@
                 #end
                 <tr>
                     <td colspan="2">
-                        <center>
-                            <input type="submit" name="submit" value="Edit blog plugin chains"/>
-                            <input type="reset" name="reset" value="Reset"/>
-                        </center>
+                        <input type="submit" name="submit" value="Edit blog plugin chains"/>
+                        <input type="reset" name="reset" value="Reset"/>
                     </td>
                 </tr>
             </form>
         </table>
-    </body>
-</html>
+    </div>
+
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+
+        <p/>
+
+        <h6>Available Plugins</h6>
+        <ul>
+            #foreach ($plugin in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS.keySet())
+            <li>$plugin</li>
+            #end
+        </ul>
+    </div>
+
+#adminPageFooter()

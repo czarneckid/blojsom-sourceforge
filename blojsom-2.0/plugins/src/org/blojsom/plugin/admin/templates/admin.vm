@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Administration</title>
-    </head>
+#adminPageHeader("Administration Console")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Administration</h3>
-        </center>
-
-        #showErrorMessage()
-        <p/>
-
+    <div id="mainClm">
         <ul>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-authorization&action=page">Edit</a> blog authorization.</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-properties&action=page">Edit</a> blog properties.</li>
@@ -28,5 +18,6 @@
 
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&action=logout">Logout</a> of administration console.</li>
         </ul>
-    </body>
-</html>
+    </div>
+
+#adminPageFooter()

@@ -1,8 +1,27 @@
+#macro(adminPageHeader $page)
+    <html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - $page</title>
+        <link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-admin.css" />
+        <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
+    </head>
+
+    <body>
+        <div id="header">
+            <h1>$page</h1>
+            <p id="description">#showErrorMessage()</p>
+        </div>
+#end
+
+#macro(adminPageFooter)
+        </body>
+    </html>
+#end
+
 #macro(showErrorMessage)
     #if ($BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT)
-    <p>
-        <h4><font color="red">Status</font>: $BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT</h4>
-    </p>
+        <font color="red">Status</font>: $BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT
     #end
 #end
 

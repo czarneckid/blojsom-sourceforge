@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog authorization</title>
-    </head>
+#adminPageHeader("Authorization")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog authorization</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
-
-        #showErrorMessage()
+        <div id="sideBar">
+            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        </div>
 
         <!-- Add blog user authorization form -->
-        <center>
-            <h3>Add a new authorized user to the current blog</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Add a new authorized user to the current blog</h2>
+            <table>
                 <form name="add-blog-authorization" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -34,23 +26,21 @@
                         <td>Authorized user password (again)</td>
                         <td><input type="password" size="15" name="blog-user-password-check"/></td>
                     </tr>
+                    <tr />
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Add authorized user"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Add authorized user"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
+        </div>
 
         <!-- Modify blog user authorization form -->
-        <center>
-            <h3>Modify an existing authorized user to the current blog</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Modify an existing authorized user to the current blog</h2>
+            <table>
                 <form name="add-blog-authorization" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -73,23 +63,21 @@
                         <td>Authorized user password (again)</td>
                         <td><input type="password" size="15" name="blog-user-password-check"/></td>
                     </tr>
+                    <tr />
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Modify authorized user"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Modify authorized user"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
+        </div>
 
         <!-- Delete blog user authorization form -->
-        <center>
-            <h3>Delete an authorized user from the current blog</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Delete an authorized user from the current blog</h2>
+            <table>
                 <form name="delete-blog-user" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -104,17 +92,15 @@
                             </select>
                         </td>
                     </tr>
+                    <tr />
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Delete authorized user"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Delete authorized user"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
-    </body>
-</html>
+        </div>
+
+#adminPageFooter()

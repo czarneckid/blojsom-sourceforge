@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Update blog category</title>
-    </head>
+#adminPageHeader("Update Blog Category")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Update blog category</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
-
-        #showErrorMessage()
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+    </div>
 
         <!-- Update blog category form -->
-        <center>
-            <h3>Update an existing blog category</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Update an existing blog category</h2>
+            <table>
                 <form name="update-blog-category" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="update-blog-category"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -34,15 +26,12 @@
 
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Update category"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Update category"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
-    </body>
-</html>
+        </div>
+
+#adminPageFooter()

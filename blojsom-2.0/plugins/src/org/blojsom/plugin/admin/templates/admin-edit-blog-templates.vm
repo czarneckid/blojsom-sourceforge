@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog templates</title>
-    </head>
+#adminPageHeader("Templates")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog templates</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
-
-        #showErrorMessage()
-        <p/>
+        <div id="sideBar">
+            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        </div>
 
         <!-- Edit blog template form -->
-        <center>
-            <h3>Edit a blog template</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Edit a blog template</h2>
+            <table>
                 <form name="edit-blog-template" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="edit-blog-template"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -35,15 +26,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Edit template"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Edit template"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
-    </body>
-</html>
+        </div>
+
+#adminPageFooter()

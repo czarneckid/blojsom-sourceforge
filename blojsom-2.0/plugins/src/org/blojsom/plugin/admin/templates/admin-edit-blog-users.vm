@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html>
 
-    <head>
-        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog users</title>
-    </head>
+#adminPageHeader("Users")
 
-    <body>
-        <center>
-            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog users</h3>
-        </center>
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
-        <p />
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+    </div>
 
         <!-- Add blog user form -->
-        <center>
-            <h3>Add a new blog user</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Add a new blog user</h2>
+            <table>
                 <form name="add-blog-user" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-user"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -42,21 +36,18 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Add user"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Add user"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
+        </div>
 
         <!-- Delete blog user form -->
-        <center>
-            <h3>Delete an existing blog user</h3>
-            <table border="1">
+        <div id="mainClm">
+            <h2>Delete an existing blog user</h2>
+            <table>
                 <form name="delete-blog-user" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-user"/>
                     <input type="hidden" name="flavor" value="admin"/>
@@ -73,15 +64,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Delete user"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
+                            <input type="submit" name="submit" value="Delete user"/>
+                            <input type="reset" name="reset" value="Reset"/>
                         </td>
                     </tr>
                 </form>
             </table>
-        </center>
-        <p/>
-    </body>
-</html>
+        </div>
+
+#adminPageFooter()
