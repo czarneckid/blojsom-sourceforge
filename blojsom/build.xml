@@ -146,6 +146,7 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
+            excludes="**/Test*"
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
