@@ -10,47 +10,19 @@
         <servlet-name>blojsom</servlet-name>
         <servlet-class>org.ignition.blojsom.servlet.BlojsomServlet</servlet-class>
         <init-param>
-            <param-name>blog-home</param-name>
-            <param-value>/Users/czarneck/Projects/blojsom/blog/</param-value>
-        </init-param>
-        <init-param>
-            <param-name>velocity-properties</param-name>
-            <param-value>/WEB-INF/velocity.properties</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-directory-depth</param-name>
-            <param-value>5</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-language</param-name>
-            <param-value>en</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-name</param-name>
-            <param-value>David Czarnecki's Blog</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-description</param-name>
-            <param-value>A blog to test blojsom and all of it's marevelous capabilities</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-reload-check</param-name>
-            <param-value>300000</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-url</param-name>
-            <param-value>http://localhost:8080/blojsom/blog/</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blog-file-extensions</param-name>
-            <param-value>.html, .txt</param-value>
+            <param-name>blog-configuration</param-name>
+            <param-value>/WEB-INF/blojsom.properties</param-value>
         </init-param>
         <init-param>
             <param-name>blog-flavor-configuration</param-name>
             <param-value>/WEB-INF/flavor.properties</param-value>
         </init-param>
         <init-param>
-            <param-name>template-map-properties</param-name>
+            <param-name>velocity-properties</param-name>
+            <param-value>/WEB-INF/velocity.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dispatcher-map-configuration</param-name>
             <param-value>/WEB-INF/dispatcher-map.properties</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
