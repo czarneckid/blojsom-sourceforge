@@ -2,16 +2,18 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>{NAME} Plugin</title>
+        <title>Flavors Administation Plugin</title>
     </header>
 
     <body>
         <section>
             <title>Description</title>
             <p>
-                TBD.
+                The Flavors Administration plugin allows you to add new flavors, modify existing flavors,
+                and delete flavors from your blog. Flavors are used to display entries from your blog in a particular
+                format. The flavors that you can add or modify on your blog must use existing templates in the
+                individual templates directory.
             </p>
-
         </section>
         <section>
             <title>Installation and Setup</title>
@@ -20,22 +22,15 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                short-name=package.name
+                edit-blog-flavors=org.blojsom.plugin.admin.EditBlogFlavorsPlugin
             </source>
-
-            <p>
-                TBD.
-            </p>
         </section>
         <section>
             <title>Usage</title>
-
-            <section>
-                <title>Usage</title>
-                <p>
-                    TBD.
-                </p>
-            </section>
+            <p>
+                After logging into the administration console, you may click on the link to "Edit Blog Flavors"
+                and you will be able to add, modify, and delete flavors.
+            </p>
         </section>
     </body>
 </document>

@@ -2,16 +2,17 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>{NAME} Plugin</title>
+        <title>Plugins Administation Plugin</title>
     </header>
 
     <body>
         <section>
             <title>Description</title>
             <p>
-                TBD.
+                The Plugins Administration plugin allows you to modify the plugins executed for the individual
+                flavors of your blog. This is useful when you want to change how blog entries are processed before
+                they are rendered in a particular flavor.
             </p>
-
         </section>
         <section>
             <title>Installation and Setup</title>
@@ -20,22 +21,17 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                short-name=package.name
+                edit-blog-plugins=org.blojsom.plugin.admin.EditBlogPluginsPlugin
             </source>
-
-            <p>
-                TBD.
-            </p>
         </section>
         <section>
             <title>Usage</title>
-
-            <section>
-                <title>Usage</title>
-                <p>
-                    TBD.
-                </p>
-            </section>
+            <p>
+                After logging into the administration console, you may click on the link to "Edit Blog Plugin Chains"
+                and you will be able to modify the plugins executed for the individual flavors on your blog. Each
+                entry for the flavor is a comma-separated list of plugin short names. A list of plugin short names
+                is shown at the top of the page.
+            </p>
         </section>
     </body>
 </document>
