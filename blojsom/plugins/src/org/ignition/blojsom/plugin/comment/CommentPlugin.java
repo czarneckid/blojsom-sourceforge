@@ -61,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.24 2003-04-10 14:21:12 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.25 2003-04-10 14:37:35 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -391,7 +391,12 @@ public class CommentPlugin implements BlojsomPlugin {
             commentDirectory.append(File.separator);
             commentDirectory.append(permalinkFilename);
             commentDirectory.append(File.separator);
-            String commentFilename = commentDirectory.toString() + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
+
+            String commentHashable = author + userComment;
+            String hashedComment = BlojsomUtils.digestString(commentHashable).toUpperCase();
+
+
+            String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
             File commentDir = new File(commentDirectory.toString());
             if (!commentDir.exists()) {
                 if (!commentDir.mkdirs()) {
@@ -401,20 +406,26 @@ public class CommentPlugin implements BlojsomPlugin {
             }
 
             File commentEntry = new File(commentFilename);
-            try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
-                bw.write(comment.getAuthor());
-                bw.newLine();
-                bw.write(comment.getAuthorEmail());
-                bw.newLine();
-                bw.write(comment.getAuthorURL());
-                bw.newLine();
-                bw.write(comment.getComment());
-                bw.newLine();
-                bw.close();
-                _logger.debug("Added blog comment: " + commentFilename);
-            } catch (IOException e) {
-                _logger.error(e);
+
+            if (!commentEntry.exists()) {
+                try {
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
+                    bw.write(comment.getAuthor());
+                    bw.newLine();
+                    bw.write(comment.getAuthorEmail());
+                    bw.newLine();
+                    bw.write(comment.getAuthorURL());
+                    bw.newLine();
+                    bw.write(comment.getComment());
+                    bw.newLine();
+                    bw.close();
+                    _logger.debug("Added blog comment: " + commentFilename);
+                } catch (IOException e) {
+                    _logger.error(e);
+                    return null;
+                }
+            } else {
+                _logger.error("Duplicate comment submission detected, ignoring subsequent submission");
                 return null;
             }
         }
