@@ -42,14 +42,14 @@
             </p>
             <p>
                 In your individual
-                <em>blog.properties</em> file, add the following line:
+                <code>blog.properties</code> file, add the following line:
             </p>
             <source>
                 blog-email-enabled=true
             </source>
             <p>
                 The Send Email plugin requires the smtp server be defined in
-                <em>web.xml</em>. For example:
+                <code>web.xml</code>. For example:
             </p>
             <source>
                 &lt;init-param&gt;

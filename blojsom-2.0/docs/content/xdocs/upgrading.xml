@@ -23,7 +23,16 @@
                 <section>
                     <title>Properties changes</title>
                     <p>
-                        1. Add the following to your
+                        1. Add the following to your <code>/WEB-INF/blojsom.properties</code>.
+                        <pre>
+                            blojsom-resource-directory=/resources/
+                        </pre>
+                        This is the directory that will be created off of the installation directory for storing
+                        resources for each user. If this property is left out, it will default to
+                        <code>/resources/</code>.
+                    </p>
+                    <p>
+                        2. Add the following to your
                         <code>/WEB-INF/plugin.properties</code> if you would like to
                         enable the forgotten password plugin.
                         <pre>

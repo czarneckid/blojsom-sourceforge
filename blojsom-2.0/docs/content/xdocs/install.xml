@@ -90,6 +90,27 @@
                             <code>/WEB-INF/default/templates/html.vm</code>.
                         </td>
                     </tr>
+                    <tr>
+                        <td>blojsom-resource-manager</td>
+                        <td>org.blojsom.util.resources.ResourceBundleResourceManager</td>
+                        <td>This parameter will be used by blojsom to retrieve resources that are used in localizing
+                        parts of the interface such as the administration console.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>blojsom-resource-manager-bundles</td>
+                        <td></td>
+                        <td>A comma-separated list of resource bundles that the resource manager should load on
+                            initialization.</td>
+                    </tr>
+                    <tr>
+                        <td>blojsom-resource-directory</td>
+                        <td>/resources/</td>
+                        <td>blojsom uses this parameter to create a directory off of the installation directory.
+                        Under this directory, a directory will be created for each user using their userid, where resources will
+                        be stored for individual users. This is used in the MetaWeblog API and by the File Upload
+                        plugin.</td>
+                    </tr>
                 </table>
                 <p>
                     4. If you have added users to the
