@@ -46,7 +46,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jorg Prante
- * @version $Id: BlojsomProperties.java,v 1.8 2004-09-02 20:04:37 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.9 2004-11-05 03:58:32 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class BlojsomProperties extends Properties implements BlojsomConstants {
@@ -161,8 +161,8 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
             String key = e.nextElement().toString();
             Object value = get(key);
             key = BlojsomUtils.replace(key, " ", "\\ ");
-            if (value != null && value instanceof ArrayList && allowMultipleValues) {
-                ArrayList values = (ArrayList) value;
+            if (value != null && value instanceof List && allowMultipleValues) {
+                List values = (List) value;
                 for (int i = 0; i < values.size(); i++) {
                     value = values.get(i);
                     writer.write(key + "=" + value);
@@ -241,12 +241,12 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
                     key = BlojsomUtils.replace(key, "\\", "");
                     value = (separatorIndex < len) ? line.substring(valueIndex, len) : "";
 
-                    ArrayList values;
+                    List values;
                     if (containsKey(key) && allowMultipleValues) {
                         Object previousValue = get(key);
 
                         if (previousValue instanceof List) {
-                            values = (ArrayList) previousValue;
+                            values = (List) previousValue;
                             values.add(value);
                         } else {
                             values = new ArrayList(1);
