@@ -34,7 +34,11 @@ Available categories:
     <p class="weblogbottomline">
     #if ($entry.getMetaData())
         #if ($entry.getMetaData().get("blog-entry-author"))
-            Posted by: <b>$entry.getMetaData().get("blog-entry-author")</b><br />
+            Posted by: <b>$entry.getMetaData().get("blog-entry-author")</b>
+            #if ($entry.getMetaData().get("blog-entry-protocol"))
+               &nbsp;via&nbsp;<b>$entry.getMetaData().get("blog-entry-protocol")</b>
+            #end
+            <br />
         #end
     #end
     </p>
