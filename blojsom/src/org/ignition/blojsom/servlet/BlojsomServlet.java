@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.dispatcher.GenericDispatcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -56,18 +57,6 @@ import java.util.Properties;
  * @author David Czarnecki
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
-
-    // Blog initialization parameters from blojsom.properties
-    private final static String BLOG_HOME_IP = "blog-home";
-    private final static String BLOG_NAME_IP = "blog-name";
-    private final static String BLOG_DEPTH_IP = "blog-directory-depth";
-    private final static String BLOG_LANGUAGE_IP = "blog-language";
-    private final static String BLOG_DESCRIPTION_IP = "blog-description";
-    private final static String BLOG_URL_IP = "blog-url";
-    private final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
-    private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
-    private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
-    private static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
 
     // BlojsomServlet initialization properties from web.xml
     private final static String BLOG_FLAVOR_CONFIGURATION_IP = "blog-flavor-configuration";
@@ -107,69 +96,12 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         InputStream is = servletConfig.getServletContext().getResourceAsStream(blojsomConfiguration);
         try {
             configurationProperties.load(is);
-
-            String blogHome = configurationProperties.getProperty(BLOG_HOME_IP);
-            if (blogHome == null) {
-                _logger.error("No value supplied for blog-home");
-                throw new ServletException("No valued supplied for blog-home");
-            }
-            if (!blogHome.endsWith("/")) {
-                blogHome += "/";
-            }
-
-            String blogLanguage = configurationProperties.getProperty(BLOG_LANGUAGE_IP);
-            if (blogLanguage == null) {
-                _logger.warn("No value supplied for blog-language. Defaulting to: " + BLOG_LANGUAGE_DEFAULT);
-                blogLanguage = BLOG_LANGUAGE_DEFAULT;
-            }
-
-            String blogDescription = configurationProperties.getProperty(BLOG_DESCRIPTION_IP);
-            if (blogDescription == null) {
-                _logger.warn("No value supplied for blog-description");
-                blogDescription = "";
-            }
-
-            String blogName = configurationProperties.getProperty(BLOG_NAME_IP);
-            if (blogName == null) {
-                _logger.warn("No value supplied for blog-name");
-                blogName = "";
-            }
-
-            int blogDepth = Integer.parseInt(configurationProperties.getProperty(BLOG_DEPTH_IP, Integer.toString(INFINITE_BLOG_DEPTH)));
-
-            String blogURL = configurationProperties.getProperty(BLOG_URL_IP);
-            if (blogURL == null) {
-                _logger.error("No value supplied for blog-url");
-                throw new ServletException("No value supplied for blog-url");
-            }
-            if (!blogURL.endsWith("/")) {
-                blogURL += "/";
-            }
-
-            // The following parameters will either be removed or changed
-            String[] blogFileExtensions = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOG_FILE_EXTENSIONS_IP));
-            String[] blogPropertiesExtensions = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
-            _blog = new Blog(blogHome, blogName, blogDescription, blogURL, blogLanguage,
-                    blogFileExtensions, blogPropertiesExtensions, blogDepth);
-
-            int blogDisplayEntries = Integer.parseInt(configurationProperties.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
-            _blog.setBlogDisplayEntries(blogDisplayEntries);
-
-            String blogDefaultCategoryMapping = configurationProperties.getProperty(BLOG_DEFAULT_CATEGORY_MAPPING_IP);
-            String[] blogDefaultCategoriesMap;
-            if (blogDefaultCategoryMapping == null) {
-                blogDefaultCategoriesMap = null;
-                _logger.debug("No mapping supplied for the default category '/'");
-            } else {
-                blogDefaultCategoriesMap = BlojsomUtils.parseCommaList(blogDefaultCategoryMapping);
-                _logger.debug(blogDefaultCategoriesMap.length + " directories mapped to the default category '/'");
-                if (blogDefaultCategoriesMap.length == 0) {
-                    blogDefaultCategoriesMap = null;
-                }
-            }
-            _blog.setBlogDefaultCategoryMappings(blogDefaultCategoriesMap);
+            _blog = new Blog(configurationProperties);
         } catch (IOException e) {
             _logger.error(e);
+        } catch (BlojsomConfigurationException e) {
+            _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
