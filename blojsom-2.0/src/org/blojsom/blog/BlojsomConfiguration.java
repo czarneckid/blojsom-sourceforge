@@ -52,7 +52,7 @@ import java.util.Properties;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.15 2004-04-15 00:49:57 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.16 2004-04-19 18:05:39 intabulas Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -66,6 +66,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _installationDirectory;
     private String _templatesDirectory;
     private String _resourceDirectory;
+    private String _qualifiedResourceDirectory;
     private String _resourceManager;
 
     private Map _blogUsers;
@@ -122,7 +123,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
         _logger.debug("Using resources directory: " + _resourceDirectory);
 
         // Ensure the resource directory physically exists
-        String resourceUrl = servletConfig.getServletContext().getRealPath(_resourceDirectory);
+        _qualifiedResourceDirectory = servletConfig.getServletContext().getRealPath(_resourceDirectory);
 
         _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
@@ -161,7 +162,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
 
                 // Ensure the resource directory for the user physically exists
-                File resourceDirectory = new File(resourceUrl + File.separator + user);
+                File resourceDirectory = new File(_qualifiedResourceDirectory + File.separator + user);
                 if (!resourceDirectory.exists()) {
                     _logger.debug("Creating resource directory for user " + user);
                     resourceDirectory.mkdirs();
@@ -286,6 +287,17 @@ public class BlojsomConfiguration implements BlojsomConstants {
     public String getResourceDirectory() {
         return _resourceDirectory;
     }
+
+    /**
+     * Get the fully qualified directory where resources will be located off the installed directory.
+     *
+     * @return Resources directory
+     * @since blojsom 2.14
+     */
+    public String getQualifiedResourceDirectory() {
+        return _qualifiedResourceDirectory;
+    }
+
 
     /**
      * Get the list of users for this blojsom instance returned as a String[]
