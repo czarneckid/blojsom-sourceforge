@@ -49,7 +49,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.1 2003-03-26 04:25:27 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.2 2003-03-26 04:31:39 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -79,8 +79,15 @@ public class CalendarPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
+        // Default to the Current Month
         calendar.setTime(new Date());
         int currentmonth = calendar.get(Calendar.MONTH);
+
+        // If one is seen on the URL, either by design or calnav params, use it!
+        String navmonth = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
+        if( navmonth != null ) {
+            currentmonth = new Integer(navmonth).intValue();
+        }
 
         Boolean[] dates = new Boolean[calendar.getMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(dates, Boolean.FALSE);
