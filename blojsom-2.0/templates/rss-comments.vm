@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="$BLOJSOM_VERSION" -->
+<rss version="0.92">
+    <channel>
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        <title>$entry.getEscapedTitle()</title>
+        <link>$entry.getEscapedLink()</link>
+        <description>$entry.getEscapedDescription()</description>
+        <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
+        #if ($entry.getMetaData())
+            #if ($entry.getMetaData().get("blog-entry-author"))
+                <dc:creator>$entry.getMetaData().get("blog-entry-author")</dc:creator>
+            #end
+        #end
+
+        #foreach ($entryComment in $entry.getComments())
+        <item>
+           <title>$entry.getEscapedTitle()</title>
+           <link>$entry.getEscapedLink()</link>
+           <description>$entryComment.getComment()</description>
+           <!--<dc:date>$entryComment.getISO8601Date()</dc:date>-->
+           <dc:creator>$entryComment.getAuthor()</dc:creator>
+        </item>
+        #end
+        #end
+    </channel>
+</rss>
+
+
