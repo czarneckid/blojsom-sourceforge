@@ -38,8 +38,8 @@ package org.blojsom.util;
  * BlojsomMetaDataConstants
  *
  * @author David Czarnecki
+ * @version $Id: BlojsomMetaDataConstants.java,v 1.4 2004-04-26 00:37:17 intabulas Exp $
  * @since blojsom 2.04
- * @version $Id: BlojsomMetaDataConstants.java,v 1.3 2004-02-17 03:28:29 czarneckid Exp $
  */
 public interface BlojsomMetaDataConstants {
 
@@ -47,6 +47,13 @@ public interface BlojsomMetaDataConstants {
      * Entry Meta Data Key for Poster
      */
     public static final String BLOG_ENTRY_METADATA_AUTHOR = "blog-entry-author";
+
+    /**
+     * Extended Entry Meta Data Key for Poster
+     * Used to store private meta-data so that the default templates wont render it, like an email address
+     */
+    public static final String BLOG_ENTRY_METADATA_AUTHOR_EXT = "blog-entry-author-ext";
+
 
     /**
      * Entry MetaData File Header
