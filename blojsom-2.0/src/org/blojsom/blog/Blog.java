@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.5 2003-10-21 03:35:58 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.6 2003-10-22 02:43:35 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -183,6 +183,7 @@ public class Blog implements BlojsomConstants {
             }
         }
         _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, _blogDefaultCategoryMappings);
+        _blogProperties.put(DEFAULT_FLAVOR_HTML + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP, blogDefaultCategoryMapping);
 
         _blogCommentsDirectory = blogConfiguration.getProperty(BLOG_COMMENTS_DIRECTORY_IP);
         if ((_blogCommentsDirectory == null) || ("".equals(_blogCommentsDirectory))) {
