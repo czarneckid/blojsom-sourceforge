@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.15 2004-02-27 03:09:27 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.16 2004-04-23 22:14:53 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -141,7 +141,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      */
     protected void reloadSource(Blog blog) throws IOException {
         boolean hasLoadedTitle = false;
-        String lineSeparator = System.getProperty("line.separator");
+        String lineSeparator = LINE_SEPARATOR;
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(_source), blog.getBlogFileEncoding()));
@@ -240,7 +240,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         BlogComment comment = new BlogComment();
         comment.setCommentDateLong(commentFile.lastModified());
         StringBuffer commentDescription = new StringBuffer();
-        String separator = System.getProperty("line.separator");
+        String separator = LINE_SEPARATOR;
         String commentLine;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), blogFileEncoding));
@@ -274,6 +274,15 @@ public class FileBackedBlogEntry extends BlogEntry {
             comment.setCommentDate(new Date(commentFile.lastModified()));
             comment.setId(commentFile.getName());
             br.close();
+
+            // Load comment meta-data if available
+            File commentMetaData = new File(BlojsomUtils.getFilename(commentFile.toString()) + ".meta");
+            if (commentMetaData.exists()) {
+                _logger.debug("Loading comment meta-data: " + commentMetaData.toString());
+                Properties commentMetaDataProperties = new BlojsomProperties();
+                commentMetaDataProperties.load(new FileInputStream(commentMetaData));
+                comment.setMetaData(BlojsomUtils.propertiesToMap(commentMetaDataProperties));
+            }
         } catch (IOException e) {
             _logger.error(e);
         }
@@ -371,6 +380,15 @@ public class FileBackedBlogEntry extends BlogEntry {
             }
             trackback.setId(trackbackFile.getName());
             br.close();
+
+            // Load trackback meta-data if available
+            File trackbackMetaData = new File(BlojsomUtils.getFilename(trackbackFile.toString()) + ".meta");
+            if (trackbackMetaData.exists()) {
+                _logger.debug("Loading trackback meta-data: " + trackbackMetaData.toString());
+                Properties trackbackMetaDataProperties = new BlojsomProperties();
+                trackbackMetaDataProperties.load(new FileInputStream(trackbackMetaData));
+                trackback.setMetaData(BlojsomUtils.propertiesToMap(trackbackMetaDataProperties));
+            }
         } catch (IOException e) {
             _logger.error(e);
         }
