@@ -16,6 +16,10 @@
                 Updated edit blog entries plugin to use the username of the person logged into the administration
                 interface as the entry author when adding entries.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated file upload plugin to allow for deleting of files from the resources directory.
+            </action>
         </release>
 
         <release version="2.06" date="December 22, 2003">
