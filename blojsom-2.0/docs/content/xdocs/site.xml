@@ -43,7 +43,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     </administration>
 
     <developer label="Developer" href="javadoc/">
-        <javadocs label="JavaDocs" href="javadoc/index.html"/>
+        <javadocs label="JavaDocs" href="index.html"/>
     </developer>
 
 </site>
