@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.17 2004-08-31 17:56:46 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.18 2004-09-03 17:46:58 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -74,7 +74,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String[] DEFAULT_ACCEPTED_FILE_TYPES = {"image/jpeg", "image/gif", "image/png"};
     private static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
     private static final String INVALID_FILE_EXTENSIONS_IP = "invalid-file-extensions";
-    private static final String[] DEFAULT_INVALID_FILE_EXTENSIONS = {".jsp", ".jspf", ".jspi", ".php", ".cgi"};
+    private static final String[] DEFAULT_INVALID_FILE_EXTENSIONS = {".jsp", ".jspf", ".jspi", ".jspx", ".php", ".cgi"};
 
     // Pages
     private static final String FILE_UPLOAD_PAGE = "/org/blojsom/plugin/admin/templates/admin-file-upload";
