@@ -53,7 +53,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.18 2005-01-25 18:44:33 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.19 2005-01-25 20:55:49 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -135,7 +135,11 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         blogTemplate = BlojsomUtils.normalize(blogTemplate);
         lastSeparator = blogTemplate.lastIndexOf(File.separator);
         if (lastSeparator == -1) {
-            return null;
+            if (templateFilename != null) {
+                return templateFilename;
+            } else {
+                return null;
+            }
         } else {
             blogTemplate = blogTemplate.substring(0, lastSeparator + 1) + templateFilename;
         }
@@ -143,6 +147,13 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         return blogTemplate;
     }
 
+    /**
+     * Put the list of template files in the context
+     *
+     * @param templatesDirectory Templates directory
+     * @param context Context
+     * @since blojsom 2.23
+     */
     protected void putTemplatesInContext(File templatesDirectory, Map context) {
         List templateFiles = new ArrayList();
         BlojsomUtils.listFilesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateFiles);
@@ -152,6 +163,13 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templates);
     }
 
+    /**
+     * Put the list of template directories in the context
+     *
+     * @param templatesDirectory Templates directory
+     * @param context Context
+     * @since blojsom 2.23
+     */
     protected void putTemplateDirectoriesInContext(File templatesDirectory, Map context) {
         List templateDirectories = new ArrayList();
         BlojsomUtils.listDirectoriesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateDirectories);
