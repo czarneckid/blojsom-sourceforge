@@ -60,7 +60,7 @@ import java.util.*;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.3 2003-03-31 03:22:52 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.4 2003-03-31 23:12:52 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -85,12 +85,18 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private static final String REFERER_LOG_HEADER = "blojsom referer log";
 
     /**
+     *
+     */
+    public static final String HITCOUNTER_KEY  = ".hitcounter";
+
+    /**
      * Format used to store last refer date for a given url
      */
     public static final String REFERER_DATE_FORMAT = "yyyy-MM-dd";
 
-    private static final int FIELD_DATE = 0;
-    private static final int FIELD_COUNT = 1;
+    private static final int FIELD_FLAVOR = 0;
+    private static final int FIELD_DATE = 1;
+    private static final int FIELD_COUNT = 2;
 
     /**
      * Fully qualified filename to write referers to
@@ -248,10 +254,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
                 Enumeration _refererenum = _refererproperties.keys();
                 while (_refererenum.hasMoreElements()) {
                     String _key = (String) _refererenum.nextElement();
-                    int pos = _key.indexOf('.');
-                    String _flavor = _key.substring(0, pos);
-                    String _url = _key.substring(pos + 1);
-                    String[] _details = BlojsomUtils.parseCommaList(_refererproperties.getProperty(_key));
+                    String[] _details = BlojsomUtils.parseDelimitedList(_key, ".");
+
+                    String _flavor = _details[FIELD_FLAVOR];
+                    String _url = (String)_refererproperties.get( _key);
 
                     _logger.info("Loading [" + _url + "] "
                             + "Flavor [" + _flavor + "] "
@@ -279,6 +285,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
         }
     }
 
+
+    // flavor.lasthit.count=url
+
+
     /**
      * Called when BlojsomServlet is taken out of service
      *
@@ -295,14 +305,17 @@ public class RefererLogPlugin implements BlojsomPlugin {
             String groupflavor = (String) _groupiterator.next();
             BlogRefererGroup group = (BlogRefererGroup) _referergroups.get(groupflavor);
             if (group.isHitCounter()) {
-                _refererproperties.put(groupflavor + ".hitcounter", getRefererDate(group.getLastHit()) + "," + group.getRefererCount());
+
+                _refererproperties.put(groupflavor + "." + getRefererDate(group.getLastHit()) + "." + getRefererDate(group.getLastHit()), HITCOUNTER_KEY);
+                //_refererproperties.put(groupflavor + ".hitcounter", getRefererDate(group.getLastHit()) + "," + group.getRefererCount());
             } else {
                 Iterator _flavoriterator = group.keySet().iterator();
                 while (_flavoriterator.hasNext()) {
                     String flavorkey = (String) _flavoriterator.next();
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
-                    _refererproperties.put(groupflavor + "." + BlojsomUtils.escapeString(referer.getUrl()),
-                            getRefererDate(referer.getLastReferal()) + "," + referer.getRefererCount());
+
+                    _refererproperties.put(groupflavor +"." + getRefererDate(referer.getLastReferal()) + "." + referer.getRefererCount(),
+                                           referer.getUrl());
                 }
             }
         }
