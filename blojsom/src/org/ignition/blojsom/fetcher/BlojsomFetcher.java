@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.3 2003-04-23 01:33:10 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.4 2003-04-23 02:02:32 czarneckid Exp $
  */
 public interface BlojsomFetcher {
 
@@ -60,14 +60,6 @@ public interface BlojsomFetcher {
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomFetcherException;
-
-    /**
-     * Initialize this fetcher. This method only called when the fetcher is instantiated.
-     *
-     * @param blog {@link Blog} instance
-     * @throws BlojsomFetcherException If there is an error initializing the fetcher
-     */
-    public void init(Blog blog) throws BlojsomFetcherException;
 
     /**
      * Fetch a set of {@link BlogEntry} objects.
