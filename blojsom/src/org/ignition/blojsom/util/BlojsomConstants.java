@@ -56,6 +56,11 @@ public interface BlojsomConstants {
     public static final String FLAVOR_PARAM = "flavor";
 
     /**
+     * Request parameter for a "permalink"
+     */
+    public static final String PERMALINK_PARAM = "permalink";
+
+    /**
      * Request parameter for the "year"
      */
     public static final String YEAR_PARAM = "year";

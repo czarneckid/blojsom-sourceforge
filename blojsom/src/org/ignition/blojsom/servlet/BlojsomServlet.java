@@ -227,7 +227,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
 
         // Determine if a permalink has been requested
-        String permalink = httpServletRequest.getParameter("permalink");
+        String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         if (permalink != null) {
             _logger.debug("Permalink request for: " + permalink);
         }
