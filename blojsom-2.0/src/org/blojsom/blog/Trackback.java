@@ -43,17 +43,18 @@ import java.util.Map;
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.7 2005-01-05 02:32:53 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.8 2005-01-19 17:52:43 czarneckid Exp $
  */
 public class Trackback {
 
-    private String _title;
-    private String _excerpt;
-    private String _url;
-    private String _blogName;
-    private long _trackbackDateLong;
-    private String _id;
-    private Map _metaData;
+    protected String _title;
+    protected String _excerpt;
+    protected String _url;
+    protected String _blogName;
+    protected long _trackbackDateLong;
+    protected String _id;
+    protected Map _metaData;
+    protected BlogEntry _blogEntry;
 
     /**
      * Default constructor
@@ -242,5 +243,25 @@ public class Trackback {
         } catch (IllegalArgumentException e) {
             return trackbackDate.toString();
         }
+    }
+
+    /**
+     * Retrieve the {@link BlogEntry} associated with this trackback
+     *
+     * @return {@link BlogEntry}
+     * @since blojsom 2.23
+     */
+    public BlogEntry getBlogEntry() {
+        return _blogEntry;
+    }
+
+    /**
+     * Set the {@link BlogEntry} associated with this trackback
+     *
+     * @param blogEntry {@link BlogEntry}
+     * @since blojsom 2.23
+     */
+    public void setBlogEntry(BlogEntry blogEntry) {
+        _blogEntry = blogEntry;
     }
 }

@@ -46,7 +46,7 @@ import java.util.*;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.8 2005-01-18 03:29:55 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.9 2005-01-19 17:52:42 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -58,6 +58,7 @@ public abstract class BlogCategory implements Comparable {
     protected String _description = null;
     protected String _name = null;
     protected List _subcategories;
+    protected BlogEntry _blogEntry;
 
     /**
      * Create a new BlogCategory.
@@ -358,5 +359,25 @@ public abstract class BlogCategory implements Comparable {
      */
     public void setSubcategories(List subcategories) {
         _subcategories = subcategories;
+    }
+
+    /**
+     * Retrieve the {@link BlogEntry} associated with this category
+     *
+     * @return {@link BlogEntry}
+     * @since blojsom 2.23
+     */
+    public BlogEntry getBlogEntry() {
+        return _blogEntry;
+    }
+
+    /**
+     * Set the {@link BlogEntry} associated with this category
+     *
+     * @param blogEntry {@link BlogEntry}
+     * @since blojsom 2.23
+     */
+    public void setBlogEntry(BlogEntry blogEntry) {
+        _blogEntry = blogEntry;
     }
 }

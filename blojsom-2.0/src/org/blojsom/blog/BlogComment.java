@@ -45,18 +45,19 @@ import java.util.Map;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.9 2005-01-05 02:32:50 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.10 2005-01-19 17:52:43 czarneckid Exp $
  */
 public class BlogComment {
 
-    private String _author;
-    private String _authorEmail;
-    private String _authorURL;
-    private String _comment;
-    private Date _commentDate;
-    private long _commentDateLong;
-    private String _id;
-    private Map _metaData;
+    protected String _author;
+    protected String _authorEmail;
+    protected String _authorURL;
+    protected String _comment;
+    protected Date _commentDate;
+    protected long _commentDateLong;
+    protected String _id;
+    protected Map _metaData;
+    protected BlogEntry _blogEntry;
 
     /**
      * Default constructor
@@ -258,5 +259,25 @@ public class BlogComment {
         } catch (IllegalArgumentException e) {
             return _commentDate.toString();
         }
+    }
+
+    /**
+     * Retrieve the {@link BlogEntry} associated with this comment
+     *
+     * @return {@link BlogEntry}
+     * @since blojsom 2.23
+     */
+    public BlogEntry getBlogEntry() {
+        return _blogEntry;
+    }
+
+    /**
+     * Set the {@link BlogEntry} associated with this comment
+     *
+     * @param blogEntry {@link BlogEntry}
+     * @since blojsom 2.23
+     */
+    public void setBlogEntry(BlogEntry blogEntry) {
+        _blogEntry = blogEntry;
     }
 }
