@@ -57,14 +57,12 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.27 2003-05-31 20:14:44 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.28 2003-05-31 20:24:10 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
-
-    private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     public static final String API_PREFIX = "metaWeblog";
 

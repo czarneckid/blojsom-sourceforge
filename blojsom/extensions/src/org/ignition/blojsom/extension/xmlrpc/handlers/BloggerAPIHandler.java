@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.27 2003-05-31 20:14:44 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.28 2003-05-31 20:24:10 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -68,7 +68,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
     private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
 
-    private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     /**
      * Blogger API "url" key

@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.60 2003-05-23 01:57:30 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.61 2003-05-31 20:24:07 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -237,6 +237,12 @@ public interface BlojsomConstants {
      * Entry MetaData File Header
      */
     public static final String BLOG_METADATA_HEADER = "blojsom entry metadata";
+
+    /**
+     * Entry Attribute for File()
+     */
+    public static final String SOURCE_ATTRIBUTE = "blog-entry-source";
+
 
     // Blog initialization parameters from blojsom.properties
     static final String BLOG_HOME_IP = "blog-home";
