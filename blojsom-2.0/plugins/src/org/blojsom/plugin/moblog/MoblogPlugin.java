@@ -60,10 +60,10 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.7 2004-04-27 17:13:18 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.8 2004-04-27 23:59:01 czarneckid Exp $
  * @since blojsom 2.14
  */
-public class MoblogPlugin implements BlojsomPlugin {
+public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
 
@@ -570,7 +570,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                                         InputStream is = bp.getInputStream();
 
                                         BufferedReader reader = new
-                                                BufferedReader(new InputStreamReader(is));
+                                                BufferedReader(new InputStreamReader(is, UTF8));
                                         String thisLine;
 
                                         while ((thisLine = reader.readLine()) !=
@@ -599,7 +599,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                             if ((mimeType != null) && (textMimeTypes.containsKey(mimeType))) {
                                 InputStream is = email.getInputStream();
 
-                                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(is, UTF8));
                                 String thisLine;
 
                                 while ((thisLine = reader.readLine()) != null) {
