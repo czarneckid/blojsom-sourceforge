@@ -46,6 +46,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+import net.sf.textile4j.Textile;
+
 /**
  * Textile Plugin
  *
@@ -53,7 +55,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 1.9
- * @version $Id: TextilePlugin.java,v 1.6 2003-05-29 04:10:29 czarneckid Exp $
+ * @version $Id: TextilePlugin.java,v 1.7 2003-06-11 00:11:27 intabulas Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
 
