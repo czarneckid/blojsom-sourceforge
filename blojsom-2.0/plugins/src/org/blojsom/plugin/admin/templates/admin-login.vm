@@ -4,7 +4,7 @@
 
         <center>
             <table>
-                <form name="edit-blog-properties" action="$BLOJSOM_BLOG.getBlogURL()?flavor=admin" method="post">
+                <form name="blojsom-login" action="$BLOJSOM_BLOG.getBlogURL()?flavor=admin" method="post">
                     <tr>
                         <td>#adminResource('username.text' 'Username')</td>
                         <td>
