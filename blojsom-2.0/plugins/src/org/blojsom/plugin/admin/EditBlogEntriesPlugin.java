@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.32 2004-10-20 17:01:56 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.33 2004-11-05 02:23:39 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -748,7 +748,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         // Build the URL parameters for the trackback ping URL
         StringBuffer trackbackPingURLParameters = new StringBuffer();
         try {
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(entry.getLink(), UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(entry.getLink());
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(entry.getTitle(), UTF8));
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
 
@@ -772,7 +772,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     trackbackPingURL.append("?");
                 }
 
-                trackbackPingURL = new StringBuffer(BlojsomUtils.replace(trackbackPingURL.toString(), "&amp;", "&"));
                 trackbackPingURL.append(trackbackPingURLParameters);
                 _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
 

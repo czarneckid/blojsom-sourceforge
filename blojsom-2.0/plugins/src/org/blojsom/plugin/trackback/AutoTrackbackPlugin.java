@@ -44,7 +44,6 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.10 2004-04-18 20:37:48 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.11 2004-11-05 02:23:47 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -98,7 +97,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
         try {
             // Build the URL parameters for the trackback ping URL
             StringBuffer trackbackPingURLParameters = new StringBuffer();
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(blogEntry.getLink(), UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(blogEntry.getLink());
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(blogEntry.getTitle(), UTF8));
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
 
@@ -155,7 +154,6 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                                 if (trackbackPingURL.indexOf("?") == -1) {
                                                     trackbackPingURL.append("?");
                                                 }
-                                                trackbackPingURL = new StringBuffer(BlojsomUtils.replace(trackbackPingURL.toString(), "&amp;", "&"));
                                                 trackbackPingURL.append(trackbackPingURLParameters);
 
                                                 _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
