@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.18 2003-05-31 18:39:32 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.19 2003-06-01 20:40:45 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -118,6 +118,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     protected BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         permalink = BlojsomUtils.urlDecode(permalink);
+        if (!category.endsWith("/")) {
+            category += "/";
+        }
         String permalinkEntry = _blog.getBlogHome() + category + permalink;
         File blogFile = new File(permalinkEntry);
         if (!blogFile.exists()) {
