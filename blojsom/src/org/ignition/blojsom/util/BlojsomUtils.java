@@ -30,6 +30,54 @@ public class BlojsomUtils {
     }
 
     /**
+     * Return a file filter which only returns directories that are not one of a list
+     * of excluded directories
+     *
+     * @param excludedDirectories List of directories to exclude
+     * @return File filter appropriate for filtering only directories
+     */
+    public static FileFilter getDirectoryFilter(final String[] excludedDirectories) {
+        return new FileFilter() {
+            public boolean accept(File pathname) {
+                if (!pathname.isDirectory()) {
+                    return false;
+                } else {
+                    for (int i = 0; i < excludedDirectories.length; i++) {
+                        String excludedDirectory = excludedDirectories[i];
+                        if (pathname.toString().matches(excludedDirectory)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Return a file filter which takes a list of regular expressions to look for
+     *
+     * @param extensions List of regular expressions for files to retrieve
+     * @return File filter appropriate for filtering out a set of files based on regular expressions
+     */
+    public static FileFilter getRegularExpressionFilter(final String[] expressions) {
+        return new FileFilter() {
+            public boolean accept(File pathname) {
+                for (int i = 0; i < expressions.length; i++) {
+                    if (pathname.isDirectory()) {
+                        return false;
+                    }
+                    String expression = expressions[i];
+                    if (pathname.getName().matches(expression)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
+
+    /**
      * Return a file filter which takes a list of file extensions to look for
      *
      * @param extensions List of file extensions
