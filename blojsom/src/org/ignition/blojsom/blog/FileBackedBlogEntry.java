@@ -34,20 +34,18 @@
  */
 package org.ignition.blojsom.blog;
 
-import org.ignition.blojsom.util.BlojsomUtils;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 /**
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.1 2003-04-17 02:34:12 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.2 2003-05-06 02:22:00 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -207,7 +205,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param commentFile Comment file
      * @return BlogComment Blog comment loaded from disk
      */
-    private BlogComment loadComment(File commentFile) {
+    protected BlogComment loadComment(File commentFile) {
         int commentSwitch = 0;
         BlogComment comment = new BlogComment();
         comment.setCommentDateLong(commentFile.lastModified());
@@ -293,7 +291,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param trackbackFile Trackback file
      * @return Trackback Trackback loaded from disk
      */
-    private Trackback loadTrackback(File trackbackFile) {
+    protected Trackback loadTrackback(File trackbackFile) {
         int trackbackSwitch = 0;
         Trackback trackback = new Trackback();
         trackback.setTrackbackDateLong(trackbackFile.lastModified());
@@ -341,5 +339,42 @@ public class FileBackedBlogEntry extends BlogEntry {
             _logger.error(e);
         }
         return trackback;
+    }
+
+    /**
+     * Load the meta data for the entry
+     *
+     * @since blojsom 1.9
+     * @param blogHome Directory where blog entries are stored
+     * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
+     */
+    public void loadMetaData(String blogHome, String blogEntryMetaDataExtension) {
+        String entryFilename = BlojsomUtils.getFilename(_source.getName());
+        File blogEntryMetaData = new File(blogHome + BlojsomUtils.removeInitialSlash(_category) + entryFilename + blogEntryMetaDataExtension);
+
+        if (blogEntryMetaData.exists()) {
+            try {
+                Properties entryMetaData = new Properties();
+                FileInputStream fis = new FileInputStream(blogEntryMetaData);
+                entryMetaData.load(fis);
+                fis.close();
+
+                Enumeration keys = entryMetaData.keys();
+
+                String key;
+                if (_metaData == null) {
+                    _metaData = new HashMap(5);
+                }
+
+                while (keys.hasMoreElements()) {
+                    key = (String) keys.nextElement();
+                    _metaData.put(key, entryMetaData.getProperty(key));
+                }
+
+                _logger.debug("Loaded meta-data from: " + blogEntryMetaData.toString());
+            } catch (IOException e) {
+                _logger.error("Failed loading meta-data from: " + blogEntryMetaData.toString());
+            }
+        }
     }
 }
