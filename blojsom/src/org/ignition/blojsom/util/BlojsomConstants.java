@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.55 2003-05-01 14:31:40 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.56 2003-05-06 02:20:52 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -252,4 +252,5 @@ public interface BlojsomConstants {
     static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
     static final String BLOG_FETCHER_IP = "blog-fetcher";
+    static final String BLOG_ENTRY_META_DATA_EXTENSION_IP = "blog-entry-meta-data-extension";
 }
