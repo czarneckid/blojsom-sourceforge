@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.33 2004-08-11 02:22:23 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.34 2004-09-01 17:13:05 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -106,7 +106,7 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     private static final ThreadLocal RFC_822_DATE_FORMAT_OBJECT = new ThreadLocal() {
         protected Object initialValue() {
-            return new SimpleDateFormat(RFC_822_DATE_FORMAT);
+            return new SimpleDateFormat(RFC_822_DATE_FORMAT, Locale.US);
         }
     };
 
