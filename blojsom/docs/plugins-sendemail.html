@@ -88,6 +88,19 @@ The Send Email plugin requires the smtp server be defined in <i>web.xml</i>. For
 <p class="weblogdateline">usage parameters</p>
 There are no URL parameters to control the operation of the Send Email plugin.
 
+<p class="weblogtitle">context attributes and types</p>
+<p />
+The following table describes the context attributes that are available and their associated type.
+<p />
+<table border="1">
+    <th>Context key</th> <th>Input or Output</th> <th>Type</th> <th>Description</th>
+    <tr>
+        <td>BLOJSOM_OUTBOUNDMAIL</td> <td>Input</td> <td><tt>java.util.List</tt> of
+        <tt>org.ignition.blojsom.plugin.email.EmailMessage</tt> objects</td> <td>Contains the list of e-mail
+        messages that should be sent by the plugin</td>
+    </tr>
+</table>
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
