@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathSearchPlugin.java,v 1.2 2003-09-26 17:06:26 intabulas Exp $
+ * @version $Id: XPathSearchPlugin.java,v 1.3 2003-09-26 17:07:17 intabulas Exp $
  */
 
 public class XPathSearchPlugin extends SimpleSearchPlugin {
@@ -81,7 +81,6 @@ public class XPathSearchPlugin extends SimpleSearchPlugin {
         if (query != null) {
 
             // because I have added a leading space by mistake
-
             query = query.trim();
 
             if (query.startsWith("/")) {
