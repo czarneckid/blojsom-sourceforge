@@ -23,6 +23,7 @@
     <property name="templates.dir" value="${basedir}/templates"/>
     <property name="core.jar" value="${webinf.lib.dir}/${name}-core.jar"/>
     <property name="templates.jar" value="${name}-templates.jar"/>
+    <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
 
     <property name="debug" value="on"/>
     <property name="deprecation" value="on"/>
@@ -105,6 +106,13 @@
             sourcepath="${src.dir}">
             <classpath refid="build.classpath"/>
         </javadoc>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Creates a ZIP of the documentation for the website                  -->
+    <!-- =================================================================== -->
+    <target name="website-docs" depends="javadoc" description="Creates a ZIP for the blojsom website">
+        <zip zipfile="${website.zip}" basedir="${basedir}/docs"/>
     </target>
 </project>
 
