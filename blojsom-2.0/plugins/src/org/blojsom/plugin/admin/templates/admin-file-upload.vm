@@ -12,6 +12,8 @@
         <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
         <p />
 
+        #showErrorMessage()
+
         <!-- File upload form -->
         <center>
             <h3>Upload a file</h3>

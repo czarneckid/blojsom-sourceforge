@@ -57,7 +57,7 @@ import java.io.FileOutputStream;
  * 
  * @author czarnecki
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.6 2003-12-23 01:57:00 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.7 2003-12-23 03:21:21 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -114,7 +114,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
             return entries;
@@ -150,14 +150,18 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                     try {
                         writeAuthorizationConfiguration(authorizationMap, user.getId());
+                        addOperationResultMessage(context, "Successfully updated authorization configuration adding user: " + blogUserID);
                         _logger.debug("Wrote new authorization configuration for user: " + user.getId());
                     } catch (IOException e) {
+                        addOperationResultMessage(context, "Unable to update authorization configuration adding user: " + blogUserID);
                         _logger.error(e);
                     }
                 } else {
+                    addOperationResultMessage(context, "Password and password check not equal");
                     _logger.debug("Password and password check not equal for add/modify authorization action");
                 }
             } else {
+                addOperationResultMessage(context, "Missing parameters from the request to complete action");
                 _logger.debug("Missing parameters from the request to complete add/modify authorization action");
             }
         } else if (DELETE_BLOG_AUTHORIZATION_ACTION.equals(action)) {
@@ -172,12 +176,15 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                 try {
                     writeAuthorizationConfiguration(authorizationMap, user.getId());
+                    addOperationResultMessage(context, "Successfully updated authorization configuration deleting user: " + blogUserID);
                     _logger.debug("Wrote new authorization configuration for user: " + user.getId());
                 } catch (IOException e) {
                     // @todo In the event we have an error writing the configuration, do we want to restore the user? We would need to save their information first.
+                    addOperationResultMessage(context, "Unable to update authorization configuration deleting user: " + blogUserID);
                     _logger.error(e);
                 }
             } else {
+                addOperationResultMessage(context, "No blog user id to delete from authorization");
                 _logger.debug("No blog user id to delete from authorization");
             }
         }
