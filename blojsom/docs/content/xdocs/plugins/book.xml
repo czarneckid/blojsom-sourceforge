@@ -14,9 +14,9 @@ site.xml. -->
         <menu-item label="Index" href="site:index"/>
     </menu>
 
-
     <menu label="Plugins">
         <menu-item label="Overview" href="site:plugins/index"/>
+        <menu-item label="associated categories" href="associated-categories.html"/>
         <menu-item label="calendar" href="calendar.html"/>
         <menu-item label="date format" href="date.html"/>
         <menu-item label="emoticons" href="emoticons.html"/>
@@ -24,6 +24,7 @@ site.xml. -->
         <menu-item label="google highlight" href="google-highlight.html"/>
         <menu-item label="hyperlink URL " href="hyperlink-URL.html"/>
         <menu-item label="macro expansion" href="macro-expansion.html"/>
+        <menu-item label="meta data" href="meta.html"/>
         <menu-item label="preview" href="preview.html"/>
         <menu-item label="referer" href="referer.html"/>
         <menu-item label="simple search" href="simple-search.html"/>
@@ -32,6 +33,5 @@ site.xml. -->
         <menu-item label="textile" href="textile.html"/>
         <menu-item label="weblogs ping" href="weblogs-ping.html"/>
     </menu>
-
 
 </book>
