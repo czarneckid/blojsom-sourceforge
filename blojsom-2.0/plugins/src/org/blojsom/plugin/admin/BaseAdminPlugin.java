@@ -57,7 +57,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.17 2005-01-23 23:34:19 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.18 2005-02-17 02:30:05 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -246,7 +246,12 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
         } else {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+            if (!BlojsomUtils.checkNullOrBlank(page)) {
+                httpServletRequest.setAttribute(PAGE_PARAM, page);
+            } else {
+                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            }
         }
 
         return entries;

@@ -60,7 +60,7 @@ import java.io.File;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.5 2005-01-23 23:35:06 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.6 2005-02-17 02:25:46 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -105,14 +105,6 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
         String selection = BlojsomUtils.getRequestValue(SELECTION_PARAM, httpServletRequest);
         context.put(BOOKMARKLET_PLUGIN_SELECTION, selection);
 
-        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
-        if (!checkPermission(user, null, username, USE_BOOKMARKLET_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
-            addOperationResultMessage(context, "You are not allowed to use the bookmarklet");
-
-            return entries;
-        }
-
         if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request action");
             httpServletRequest.setAttribute(PAGE_PARAM, BOOKMARKLET_PAGE);
@@ -126,6 +118,15 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                 addOperationResultMessage(context, "Unable to authenticate user");
             } else {
                 _logger.debug("User requested bookmarklet add blog entry action");
+
+                String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+                if (!checkPermission(user, null, username, USE_BOOKMARKLET_PERMISSION)) {
+                    httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+                    addOperationResultMessage(context, "You are not allowed to use the bookmarklet");
+
+                    return entries;
+                }
+                
                 Blog blog = user.getBlog();
 
                 String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
