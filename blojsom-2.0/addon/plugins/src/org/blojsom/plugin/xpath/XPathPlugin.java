@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.3 2003-09-24 04:43:40 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.4 2003-09-24 13:25:48 intabulas Exp $
  */
 
 public class XPathPlugin implements BlojsomPlugin {
@@ -87,7 +87,7 @@ public class XPathPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
-        BlogEntry[] results = entries;
+        BlogEntry[] results = null;
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
         if (xpath != null) {
@@ -102,7 +102,7 @@ public class XPathPlugin implements BlojsomPlugin {
             }
 
             if (foundEntries.size() == 0) {
-                results = entries;
+                results = new BlogEntry[0];
             } else {
                 results = (BlogEntry[]) foundEntries.toArray();
             }
