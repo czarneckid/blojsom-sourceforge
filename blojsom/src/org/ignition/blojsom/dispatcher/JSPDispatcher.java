@@ -37,6 +37,8 @@ package org.ignition.blojsom.dispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +53,7 @@ import java.io.IOException;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.7 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.8 2003-05-22 04:49:43 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -68,8 +70,10 @@ public class JSPDispatcher implements GenericDispatcher {
      * Initialization method for blojsom dispatchers
      *
      * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param blog {@link Blog} information
+     * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig) {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomException {
         _logger.debug("Initialized JSP dispatcher");
         _context = servletConfig.getServletContext();
     }

@@ -40,6 +40,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -53,7 +55,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.15 2003-05-12 01:52:14 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.16 2003-05-22 04:49:37 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -71,8 +73,10 @@ public class VelocityDispatcher implements GenericDispatcher {
      * Initialization method for blojsom dispatchers
      *
      * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param blog {@link Blog} information
+     * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig) {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomException {
         String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
         Properties velocityProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(velocityConfiguration);

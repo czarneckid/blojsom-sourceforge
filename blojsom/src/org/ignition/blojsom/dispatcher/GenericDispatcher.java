@@ -35,6 +35,8 @@
 package org.ignition.blojsom.dispatcher;
 
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +49,7 @@ import java.io.IOException;
  * GenericDispatcher
  *
  * @author David Czarnecki
- * @version $Id: GenericDispatcher.java,v 1.5 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: GenericDispatcher.java,v 1.6 2003-05-22 04:49:17 czarneckid Exp $
  */
 public interface GenericDispatcher extends BlojsomConstants {
 
@@ -55,8 +57,10 @@ public interface GenericDispatcher extends BlojsomConstants {
      * Initialization method for blojsom dispatchers
      *
      * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param blog {@link Blog} information
+     * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig);
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomException;
 
     /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
