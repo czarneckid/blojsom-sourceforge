@@ -27,6 +27,10 @@
     		<description><%= blogEntry.getEscapedDescription() %></description>
             <guid isPermaLink="true"><%= blogEntry.getEscapedLink() %></guid>
 			<pubDate><%= blogEntry.getRFC822Date() %></pubDate>
+			<wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+                 <%= blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%>
+            </wfw:comment>
+
     	</item>
     <%
             }
