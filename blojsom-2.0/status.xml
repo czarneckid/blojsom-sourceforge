@@ -27,6 +27,10 @@
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Simple Search plugin so that the search is case insensitive.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Macro Expansion plugin to check for null or blank in the title or description. 
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
