@@ -49,7 +49,7 @@ import java.util.Locale;
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.2 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.3 2004-01-13 02:10:51 czarneckid Exp $
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
@@ -82,10 +82,9 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
                 BlogEntry entry = entries[x];
                 entrycalendar.setTime(entry.getDate());
                 int entrymonth = entrycalendar.get(Calendar.MONTH);
-                int entryear = entrycalendar.get(Calendar.YEAR);
-
+                int entryyear = entrycalendar.get(Calendar.YEAR);
                 // If the Entry is is the same month and the same year, then flag that date as having a Entry
-                if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryear == blogCalendar.getCurrentYear())) {
+                if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryyear == blogCalendar.getCurrentYear())) {
                     blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
                 }
             }
