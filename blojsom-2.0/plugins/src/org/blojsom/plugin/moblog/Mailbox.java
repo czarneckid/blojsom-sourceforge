@@ -41,7 +41,7 @@ import org.blojsom.blog.BlogUser;
  * This file is a container for everything the thread will need to connect to and to store into
  *
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.3 2004-04-26 02:43:04 intabulas Exp $
+ * @version $Id: Mailbox.java,v 1.4 2004-04-26 15:26:22 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -57,17 +57,18 @@ public class Mailbox {
     private boolean _enabled;
     private BlogUser _user;
 
-
     /**
-     * 
+     * Default constructor.
      */
     public Mailbox() {
     }
 
     /**
-     * @param hostname
-     * @param userid
-     * @param password
+     * Construct a new mailbox for a given hostname, user, and password.
+     *
+     * @param hostname Mailbox hostname
+     * @param userid Mailbox user id
+     * @param password Mailbox user password
      */
     public Mailbox(String hostname, String userid, String password) {
         _hostName = hostname;
@@ -76,140 +77,179 @@ public class Mailbox {
     }
 
     /**
-     * @return
+     * Retrieve the mailbox hostname
+     *
+     * @return Mailbox hostname (e.g. mail.domain.com)
      */
     public String getHostName() {
         return _hostName;
     }
 
     /**
-     * @param hostName
+     * Set the mailbox hostname
+     *
+     * @param hostName Mailbox hostname (e.g. mail.domain.com)
      */
     public void setHostName(String hostName) {
         _hostName = hostName;
     }
 
     /**
-     * @return
+     * Retreive the mailbox user id
+     *
+     * @return Mailbox user id
      */
     public String getUserId() {
         return _userId;
     }
 
     /**
-     * @param userId
+     * Set the mailbox user id
+     *
+     * @param userId Mailbox user id
      */
     public void setUserId(String userId) {
         _userId = userId;
     }
 
     /**
-     * @return
+     * Retrieve the mailbox user password
+     *
+     * @return Mailbox user password
      */
     public String getPassword() {
         return _password;
     }
 
     /**
-     * @param password
+     * Set the mailbox user password
+     *
+     * @param password Mailbox user password
      */
     public void setPassword(String password) {
         _password = password;
     }
 
     /**
-     * @return
+     * Retrieve the mail folder
+     *
+     * @return Mail folder
      */
     public String getFolder() {
         return _folder;
     }
 
     /**
-     * @param folder
+     * Set the mail folder
+     *
+     * @param folder Mail folder
      */
     public void setFolder(String folder) {
         _folder = folder;
     }
 
     /**
-     * @return
+     * Retrieve the output directory where attachments will be written
+     *
+     * @return Output directory
      */
     public String getOutputDirectory() {
         return _outputDirectory;
     }
 
     /**
-     * @param outputDirectory
+     * Set the output directory where attachments will be written
+     * @param outputDirectory Output directory
      */
     public void setOutputDirectory(String outputDirectory) {
         _outputDirectory = outputDirectory;
     }
 
     /**
-     * @return
+     * Retrieve the URL prefix for linking to attachments
+     *
+     * @return URL prefix (e.g. http://www.blog.com/resources/)
      */
     public String getUrlPrefix() {
         return _urlPrefix;
     }
 
     /**
-     * @param urlPrefix
+     * Set the URL prefix for linking to attachments
+     *
+     * @param urlPrefix (e.g. http://www.blog.com/resources/)
      */
     public void setUrlPrefix(String urlPrefix) {
         _urlPrefix = urlPrefix;
     }
 
     /**
-     * @return
+     * Retrive the directory where new blog entries will be created
+     *
+     * @return Entries directory
      */
     public String getEntriesDirectory() {
         return _entriesDirectory;
     }
 
     /**
-     * @param entriesDirectory
+     * Set the directory where new blog entries will be created
+     *
+     * @param entriesDirectory Entries directory
      */
     public void setEntriesDirectory(String entriesDirectory) {
         _entriesDirectory = entriesDirectory;
     }
 
     /**
-     * @return
+     * Retrieve the category name for new moblog entries
+     *
+     * @return Category name
      */
     public String getCategoryName() {
         return _categoryName;
     }
 
     /**
-     * @param categoryName
+     * Set the category name for new moblog entries
+     *
+     * @param categoryName Category name
      */
     public void setCategoryName(String categoryName) {
         _categoryName = categoryName;
     }
 
     /**
-     * @return
+     * Retrieve whether or not this mailbox is enabled
+     *
+     * @return <code>true</code> if the mailbox is enabled, <code>false</code> otherwise
      */
     public boolean isEnabled() {
         return _enabled;
     }
 
     /**
-     * @param enabled
+     * Set whether or not this mailbox is enabled
+     *
+     * @param enabled <code>true</code> if the mailbox is enabled, <code>false</code> otherwise
      */
     public void setEnabled(boolean enabled) {
         _enabled = enabled;
     }
 
     /**
-     * @return
+     * Retrive the {@link BlogUser} for this mailbox
+     *
+     * @return {@link BlogUser}
      */
     public BlogUser getBlogUser() {
         return _user;
     }
 
     /**
-     * @param user
+     * Set the {@link BlogUser} for this mailbox
+     *
+     * @param user {@link BlogUser}
      */
     public void setBlogUser(BlogUser user) {
         this._user = user;
