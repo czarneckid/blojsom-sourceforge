@@ -1,5 +1,7 @@
 package org.ignition.blojsom.util;
 
+import org.ignition.blojsom.blog.BlogEntry;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
@@ -200,8 +202,16 @@ public class BlojsomUtils {
      */
     public static Comparator FILE_TIME_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
-            File f1 = (File) o1;
-            File f2 = (File) o2;
+            File f1;
+            File f2;
+
+            if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
+                f1 = ((BlogEntry) o1).getSource();
+                f2 = ((BlogEntry) o2).getSource();
+            } else {
+                f1 = (File) o1;
+                f2 = (File) o2;
+            }
 
             if (f1.lastModified() > f2.lastModified()) {
                 return -1;
