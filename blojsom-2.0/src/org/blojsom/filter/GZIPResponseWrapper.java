@@ -53,7 +53,7 @@ import java.io.PrintWriter;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
- * @version $Id: GZIPResponseWrapper.java,v 1.3 2005-01-05 02:32:59 czarneckid Exp $
+ * @version $Id: GZIPResponseWrapper.java,v 1.4 2005-02-10 21:43:53 czarneckid Exp $
  * @since blojsom 2.10
  */
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {
@@ -93,7 +93,6 @@ public class GZIPResponseWrapper extends HttpServletResponseWrapper {
                 stream.close();
             }
         }
-
     }
 
     /**
@@ -150,4 +149,6 @@ public class GZIPResponseWrapper extends HttpServletResponseWrapper {
      */
     public void setContentLength(int length) {
     }
+
+
 }
