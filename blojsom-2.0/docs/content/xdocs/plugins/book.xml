@@ -18,6 +18,7 @@ site.xml. -->
         <menu-item label="Overview" href="site:plugins/index"/>
         <menu-item label="Associated Categories" href="associated-categories.html"/>
         <menu-item label="Calendar" href="calendar.html"/>
+        <menu-item label="Chronological" href="chronological.html"/>  
         <menu-item label="Date Format" href="date.html"/>
         <menu-item label="Emoticons" href="emoticons.html"/>
         <menu-item label="Entries Limiter" href="entries-limiter.html"/>
