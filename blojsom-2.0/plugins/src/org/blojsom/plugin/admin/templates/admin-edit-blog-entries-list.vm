@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Edit Blog Entries")
+#adminPageHeader("#adminResource('edit.blog.entries.page.header' 'Edit Blog Entries')")
 
     <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
     </div>
 
         <!-- Edit blog entries form -->
         <div id="mainClm">
-            <h2>Edit entries in an existing blog category</h2>
+            <h2>#adminResource('edit.entries.in.category.text' 'Edit entry in an existing blog category')</h2>
             <table>
                 <form name="edit-blog-entry" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="edit-blog-entry"/>
@@ -16,7 +16,7 @@
                     <input type="hidden" name="plugins" value="edit-blog-entries"/>
                     <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
                     <tr>
-                        <td>Blog entry</td>
+                        <td>#adminResource('blog.entry.text' 'Blog entry')</td>
                         <td>
                             <select name="blog-entry-id">
                             #foreach ($blogEntry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
@@ -27,8 +27,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Select entry to edit"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('edit.blog.entry.text' 'Edit blog entry')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
@@ -37,7 +37,7 @@
 
         <!-- Delete blog entries form -->
         <div id="mainClm">
-            <h2>Delete an entry in an existing blog category</h2>
+            <h2>#adminResource('delete.existing.entry.in.category.text' 'Delete an entry in an existing blog category')</h2>
             <table>
                 <form name="delete-blog-entry" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-entry"/>
@@ -45,7 +45,7 @@
                     <input type="hidden" name="plugins" value="edit-blog-entries"/>
                     <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
                     <tr>
-                        <td>Blog entry</td>
+                        <td>#adminResource('blog.entry.text' 'Blog entry')</td>
                         <td>
                             <select name="blog-entry-id">
                             #foreach ($blogEntry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
@@ -56,8 +56,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Select entry to delete"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('delete.blog.entry.text' 'Delete blog entry')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
