@@ -14,7 +14,7 @@
          xmlns:dc="http://purl.org/dc/elements/1.1/"
          xmlns="http://purl.org/rss/1.0/">
 
-	<channel rdf:about="$BLOJSOM_BLOG.getBlogURL()">
+	<channel rdf:about="<%= blogInformation.getBlogURL() %>">
         <title><%= blogInformation.getBlogName() %></title>
         <link><%= blogInformation.getBlogURL() %></link>
         <description><%= blogInformation.getBlogDescription() %></description>
