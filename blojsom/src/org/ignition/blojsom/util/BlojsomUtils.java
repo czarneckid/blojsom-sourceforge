@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.34 2003-03-26 03:17:59 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.35 2003-03-26 15:45:24 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -106,6 +106,17 @@ public class BlojsomUtils implements BlojsomConstants {
         return sdf.format(date);
     }
 
+    /**
+     * Return a date formatted date
+     *
+     * @param date Date
+     * @param format Date Format String
+     * @return Date formatted date
+     */
+    public static String getFormattedDate(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
 
     /**
      * Return a date in ISO 8601 style
