@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.50 2004-10-10 18:23:19 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.51 2004-10-18 18:46:14 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -280,7 +280,7 @@ public interface BlojsomConstants {
     /**
      * RFC 822 style date format
      */
-    public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy kk:mm:ss Z";
+    public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
 
     /**
      * ISO 8601 style date format
