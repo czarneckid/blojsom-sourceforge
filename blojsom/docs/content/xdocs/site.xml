@@ -15,7 +15,7 @@ See http://xml.apache.org/forrest/linking.html for more info
 -->
 
 
-<site label="Blojsom" href="" xmlns="http://apache.org/forrest/linkmap/1.0">
+<site label="blojsom" href="" xmlns="http://apache.org/forrest/linkmap/1.0">
 
   <about label="About">
     <index label="Index" href="index.html"/>
