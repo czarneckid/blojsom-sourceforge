@@ -217,6 +217,11 @@ public class BlogCategory implements Comparable {
         if ((s != null) && (!"".equals(s))) {
             _description = s;
         }
+
+        s = (String) _metadata.get(BlojsomConstants.NAME_KEY);
+        if ((s != null) && (!"".equals(s))) {
+            _name = s;
+        }
     }
 
     /**
