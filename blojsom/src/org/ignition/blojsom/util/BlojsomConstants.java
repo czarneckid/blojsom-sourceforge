@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.23 2003-03-01 20:20:13 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.24 2003-03-04 03:30:25 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -79,6 +79,16 @@ public interface BlojsomConstants {
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
      */
     public static final String DEFAULT_FLAVOR_HTML = "html";
+
+    /**
+     * Default directory for adding comments
+     */
+    public static final String DEFAULT_COMMENTS_DIRECTORY = ".comments";
+
+    /**
+     * Reserved file extension for blojsom comments
+     */
+    public static final String COMMENT_EXTENSION = ".cmt";
 
     /**
      * Request parameter for the requested "flavor"
@@ -159,20 +169,21 @@ public interface BlojsomConstants {
 
 
     // Blog initialization parameters from blojsom.properties
-    final static String BLOG_HOME_IP = "blog-home";
-    final static String BLOG_NAME_IP = "blog-name";
-    final static String BLOG_DEPTH_IP = "blog-directory-depth";
-    final static String BLOG_LANGUAGE_IP = "blog-language";
-    final static String BLOG_DESCRIPTION_IP = "blog-description";
-    final static String BLOG_URL_IP = "blog-url";
-    final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
-    final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
+    static final String BLOG_HOME_IP = "blog-home";
+    static final String BLOG_NAME_IP = "blog-name";
+    static final String BLOG_DEPTH_IP = "blog-directory-depth";
+    static final String BLOG_LANGUAGE_IP = "blog-language";
+    static final String BLOG_DESCRIPTION_IP = "blog-description";
+    static final String BLOG_URL_IP = "blog-url";
+    static final String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
+    static final String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
     static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
     static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
     static final String BLOG_AUTHORIZATION_IP = "blog-authorization";
-
     static final String BLOG_OWNER = "blog-owner";
     static final String BLOG_OWNER_EMAIL = "blog-owner-email";
+    static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
+
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
 }
