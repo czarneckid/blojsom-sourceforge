@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.19 2004-04-23 22:16:24 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.20 2004-04-23 22:22:47 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -554,6 +554,7 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
             comment.setAuthorURL(authorURL);
             comment.setComment(userComment);
             comment.setCommentDate(new Date());
+            comment.setMetaData(commentMetaData);
 
             StringBuffer commentDirectory = new StringBuffer();
             String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blogFileExtensions);

@@ -56,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.20 2004-04-23 22:16:21 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.21 2004-04-23 22:22:46 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -437,6 +437,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         trackback.setUrl(url);
         trackback.setBlogName(blogName);
         trackback.setTrackbackDateLong(new Date().getTime());
+        trackback.setMetaData(trackbackMetaData);
 
         StringBuffer trackbackDirectory = new StringBuffer();
         String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blogFileExtensions);
