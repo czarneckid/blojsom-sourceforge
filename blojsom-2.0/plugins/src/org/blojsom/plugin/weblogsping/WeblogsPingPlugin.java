@@ -53,23 +53,26 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Map;
 import java.util.Vector;
+import java.util.HashMap;
 
 /**
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.2 2003-08-11 02:05:14 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.3 2003-10-07 01:20:44 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WeblogsPingPlugin.class);
 
-    private static final String DEFAULT_WEBLOGS_URL = "http://rpc.weblogs.com:80/RPC2";
+    private static final String WEBLOGS_PING_URL = "http://rpc.weblogs.com:80/RPC2";
+    private static final String WEBLO_GS_PING_URL = "http://ping.blo.gs/";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
 
     private WeblogsPingPluginAsyncCallback _callbackHandler;
-    private Date _lastPingDate;
+
+    private Map _userLastPingMap;
 
     /**
      * Default constructor
@@ -86,7 +89,12 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         _callbackHandler = new WeblogsPingPluginAsyncCallback();
-        _lastPingDate = new Date();
+        _userLastPingMap = new HashMap(5);
+        String user;
+        for (int i = 0; i < blojsomConfiguration.getBlojsomUsers().length; i++) {
+            user = blojsomConfiguration.getBlojsomUsers()[i];
+            _userLastPingMap.put(user, new Date());
+        }
     }
 
     /**
@@ -114,16 +122,20 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
             // Pull the latest entry, check its date to see if its newer than the lastPingDate, and
             // if so, ping weblogs.com
             BlogEntry entry = entries[0];
-            if (_lastPingDate.before(entry.getDate())) {
-                synchronized (_lastPingDate) {
-                    _lastPingDate = entry.getDate();
-                }
+            Date lastPingDate = (Date) _userLastPingMap.get(user.getId());
+            if (lastPingDate.before(entry.getDate())) {
+                lastPingDate = entry.getDate();
+                _userLastPingMap.put(user.getId(), lastPingDate);
 
                 try {
-                    XmlRpcClient client = new XmlRpcClient(DEFAULT_WEBLOGS_URL);
+                    XmlRpcClient client = new XmlRpcClient(WEBLOGS_PING_URL);
                     Vector params = new Vector();
                     params.add(blog.getBlogName());
                     params.add(blog.getBlogURL());
+                    // Ping weblogs.com
+                    client.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                    client = new XmlRpcClient(WEBLO_GS_PING_URL);
+                    // Ping weblo.gs
                     client.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
                 } catch (IOException e) {
                     _logger.error(e);
