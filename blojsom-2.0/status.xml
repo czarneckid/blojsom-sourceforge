@@ -8,7 +8,7 @@
 
     <changes>
 
-        <release version="2.02" date="dev">
+        <release version="2.02" date="September 28, 2003">
             <action dev="czarneckid" type="update" context="Core">
                 Updated <tt>BlojsomConfiguration</tt> to automatically determine blojsom installation directory.
             </action>
@@ -21,23 +21,23 @@
                 Updated <a href="http://sandler.sf.net">sandler</a> to 0.2.
             </action>
 
+            <action dev="czarneckid" type="update" context="Library">
+                Updated OSCache to 2.0.
+            </action>
+
             <action dev="czarneckid" type="add" context="Plugin">
-                Added Trackback Auto-Discovery plugin to allow for a simple way to automatically extract URLs from
+                Added <link href="plugins/trackback-autodiscovery.html">Trackback Auto-Discovery</a> plugin to allow for a simple way to automatically extract URLs from
                 your blog entries, identify those URLs with trackback links, and finally to send a trackback ping to each
                 URL.
             </action>
 
             <action dev="czarneckid" type="add" context="Plugin">
-                Added Simple Obfuscation plugin to allow for the obfuscation of data. For example, this can
+                Added <link href="plugins/obfuscation.html">Simple Obfuscation</a> plugin to allow for the obfuscation of data. For example, this can
                 be used for obfuscating e-mail addresses on the comment page.
             </action>
 
             <action dev="intabulas" type="add" context="Plugin">
-                Added XPath and XPathSearch plugin to allow for XPath queries to be made against a blog.
-            </action>
-
-            <action dev="czarneckid" type="update" context="Library">
-                Updated OSCache to 2.0.
+                Added Added <link href="plugins/xpath.html">XPath and XPathSearch</a> plugins to allow for XPath queries to be made against a blog.
             </action>
         </release>
 
