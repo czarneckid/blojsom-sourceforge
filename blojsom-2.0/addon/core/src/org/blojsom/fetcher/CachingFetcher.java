@@ -52,7 +52,7 @@ import java.util.Properties;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.10 2004-07-01 03:17:48 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.11 2004-07-30 03:38:06 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -141,6 +141,11 @@ public class CachingFetcher extends StandardFetcher {
         int blogDirectoryDepth = ((Integer) context.get(STANDARD_FETCHER_DEPTH)).intValue();
         context.remove(STANDARD_FETCHER_DEPTH);
         Blog blog = user.getBlog();
+
+        // Check to see if the requested flavor should be ignored
+        if (_ignoreFlavors.indexOf(flavor) != -1) {
+            return new BlogEntry[0];
+        }
 
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);

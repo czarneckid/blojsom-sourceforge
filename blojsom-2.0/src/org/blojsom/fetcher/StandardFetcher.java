@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.17 2004-07-08 00:52:43 intabulas Exp $
+ * @version $Id: StandardFetcher.java,v 1.18 2004-07-30 03:38:06 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -59,9 +59,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     protected Log _logger = LogFactory.getLog(StandardFetcher.class);
 
     protected static final String DEPTH_PARAM = "depth";
+    protected static final String IGNORE_FLAVORS_PARAM = "ignore-flavors";
+    protected static final String DEFAULT_IGNORE_FLAVORS = "admin";
 
     protected static final String STANDARD_FETCHER_CATEGORY = "STANDARD_FETCHER_CATEGORY";
     protected static final String STANDARD_FETCHER_DEPTH = "STANDARD_FETCHER_DEPTH";
+
+    protected String _ignoreFlavors = DEFAULT_IGNORE_FLAVORS;
 
     /**
      * Default constructor
@@ -77,6 +81,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomFetcherException {
+        String ignoreFlavors = blojsomConfiguration.getBlojsomPropertyAsString(IGNORE_FLAVORS_PARAM);
+        if (!BlojsomUtils.checkNullOrBlank(ignoreFlavors)) {
+            _ignoreFlavors = ignoreFlavors;
+        }
+        _logger.debug("Ignoring flavors: " + _ignoreFlavors);
+
         _logger.debug("Initialized standard fetcher");
     }
 
@@ -429,6 +439,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         int blogDirectoryDepth = ((Integer) context.get(STANDARD_FETCHER_DEPTH)).intValue();
         context.remove(STANDARD_FETCHER_DEPTH);
         Blog blog = user.getBlog();
+
+        // Check to see if the requested flavor should be ignored
+        if (_ignoreFlavors.indexOf(flavor) != -1) {
+            return new BlogEntry[0];
+        }
 
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
