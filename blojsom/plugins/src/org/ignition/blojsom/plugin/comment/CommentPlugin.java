@@ -58,7 +58,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.8 2003-03-24 18:55:26 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.9 2003-03-25 01:19:05 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -138,10 +138,14 @@ public class CommentPlugin implements BlojsomPlugin {
                 if (!category.endsWith("/")) {
                     category += "/";
                 }
-                addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
+
+                BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
+                if ( _comment != null ) {
+                    entries[0].getComments().add(_comment);
+                }
 
                 if (_blogEmailEnabled.booleanValue()) {
-                    sendCommentEmail(title,category, permalink, author, authorEmail, authorURL, commentText, context);
+                    sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
                 }
 
 
@@ -163,7 +167,7 @@ public class CommentPlugin implements BlojsomPlugin {
      * @param userComment Comment
      * @param context Context
      */
-    private synchronized void sendCommentEmail(String title,String category, String permalink, String author,
+    private synchronized void sendCommentEmail(String title, String category, String permalink, String author,
                                                String authorEmail, String authorURL, String userComment, Map context) {
 
         StringBuffer _emailcomment = new StringBuffer();
@@ -177,7 +181,7 @@ public class CommentPlugin implements BlojsomPlugin {
         if (authorEmail != null && !authorEmail.equals("")) {
             _emailcomment.append("            ").append(authorEmail).append("\n");
         }
-        if (authorURL != null &&  !authorURL.equals("")) {
+        if (authorURL != null && !authorURL.equals("")) {
             _emailcomment.append("            ").append(authorURL).append("\n");
         }
 
@@ -199,11 +203,13 @@ public class CommentPlugin implements BlojsomPlugin {
      * @param authorEmail Comment author e-mail
      * @param authorURL Comment author URL
      * @param userComment Comment
+     * @return BlogComment Entry
      */
-    private synchronized void addBlogComment(String category, String permalink, String author,
-                                             String authorEmail, String authorURL, String userComment) {
+    private synchronized BlogComment addBlogComment(String category, String permalink, String author,
+                                                    String authorEmail, String authorURL, String userComment) {
+        BlogComment comment = null;
         if (_blogCommentsEnabled.booleanValue()) {
-            BlogComment comment = new BlogComment();
+            comment = new BlogComment();
             comment.setAuthor(author);
             comment.setAuthorEmail(authorEmail);
             comment.setAuthorURL(authorURL);
@@ -214,14 +220,14 @@ public class CommentPlugin implements BlojsomPlugin {
             String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, _blogFileExtensions);
             if (permalinkFilename == null) {
                 _logger.debug("Invalid permalink comment for: " + permalink);
-                return;
+                return null;
             }
             commentDirectory.append(_blogHome);
             commentDirectory.append(BlojsomUtils.removeInitialSlash(category));
             File blogEntry = new File(commentDirectory.toString() + File.separator + permalink);
             if (!blogEntry.exists()) {
                 _logger.error("Trying to create comment for invalid blog entry: " + permalink);
-                return;
+                return null;
             }
             commentDirectory.append(_blogCommentsDirectory);
             commentDirectory.append(File.separator);
@@ -232,7 +238,7 @@ public class CommentPlugin implements BlojsomPlugin {
             if (!commentDir.exists()) {
                 if (!commentDir.mkdirs()) {
                     _logger.error("Could not create directory for comments: " + commentDirectory);
-                    return;
+                    return null;
                 }
             }
 
@@ -254,7 +260,11 @@ public class CommentPlugin implements BlojsomPlugin {
             }
 
 
+
+
         }
+
+        return comment;
     }
 
     /**
