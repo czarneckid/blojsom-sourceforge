@@ -56,7 +56,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.14 2003-04-13 03:36:54 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.15 2003-04-13 04:03:59 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -420,8 +420,17 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
             if (blogCategoryFile.exists() && blogCategoryFile.isDirectory()) {
 
-                BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + BlojsomUtils.removeInitialSlash(blogid));
-                BlogEntry[] entries = _blog.getEntriesForCategory(blogCategory, numposts);
+                String requestedCategory = BlojsomUtils.removeInitialSlash(blogid);
+                BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + requestedCategory);
+
+                BlogEntry[] entries;
+
+                if (requestedCategory == null || "".equals(requestedCategory)) {
+                    entries = _blog.getEntriesAllCategories(DEFAULT_FLAVOR_HTML, numposts);
+                } else {
+                    entries = _blog.getEntriesForCategory(blogCategory, numposts);
+                }
+
 
 
                 if (entries != null && entries.length > 0) {
