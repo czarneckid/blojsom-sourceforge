@@ -56,6 +56,7 @@ import org.intabulas.sandler.authentication.AuthenticationException;
 import org.intabulas.sandler.builders.XPPBuilder;
 import org.intabulas.sandler.elements.Entry;
 import org.intabulas.sandler.elements.Feed;
+import org.intabulas.sandler.elements.Link;
 import org.intabulas.sandler.elements.impl.LinkImpl;
 import org.intabulas.sandler.exceptions.MarshallException;
 import org.intabulas.sandler.serialization.SerializationException;
@@ -68,10 +69,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * AtomAPIServlet
@@ -79,7 +77,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.45 2004-07-20 15:05:05 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.46 2004-07-20 15:56:26 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -617,7 +615,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.save(blogUser);
                     entry.load(blogUser);
 
-
                     StringBuffer editURI = new StringBuffer();
                     editURI.append(blog.getBlogURL());
                     String entryId = entry.getId();
@@ -625,10 +622,20 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                     atomEntry.setId(editURI.toString());
                     httpServletResponse.setContentType(CONTENTTYPE_ATOM);
-                    httpServletResponse.setHeader(HEADER_LOCATION, editURI.toString());
+
                     httpServletResponse.setStatus(201);
 
                     atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
+                    Collection links = atomEntry.getLinks();
+                    Iterator linksIterator = links.iterator();
+                    while (linksIterator.hasNext()) {
+                        Link link = (Link) linksIterator.next();
+                        if (AtomConstants.Rel.SERVICE_EDIT.equals(link.getRelationship())) {
+                            httpServletResponse.setHeader(HEADER_LOCATION, link.getEscapedHref());
+                            break;
+                        }
+                    }
+
                     OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
                     osw.write(Sandler.marshallEntry(atomEntry, true));
                     osw.flush();
