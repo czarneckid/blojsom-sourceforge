@@ -38,7 +38,7 @@ package org.ignition.blojsom.extension.echoapi;
  * EchoConstants
  *
  * @author Mark Lussier
- * @version $Id: EchoConstants.java,v 1.4 2003-07-14 21:49:44 intabulas Exp $
+ * @version $Id: EchoConstants.java,v 1.5 2003-07-15 15:50:37 intabulas Exp $
  */
 public interface EchoConstants {
 
@@ -112,7 +112,31 @@ public interface EchoConstants {
      */
     public static final String ECHO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
+    /**
+     * Header Value prefix for Basic Relm Auth.. NOTE: THE TRAILING SLASH IS INTENDED!
+     */
+    public static final String BASE64_AUTH_PREFIX = "Basic ";
 
+    /**
+     * Authentication Relm
+     */
+    public static final String AUTHENTICATION_RELM = "basic realm=\"blojsom\"";
+
+
+    /**
+     * Resonse Header for Authentication Challenge
+     */
+    public static final String HEADER_AUTHCHALLENGE = "WWW-Authenticate";
+
+    /**
+     * Resonse Header for Path
+     */
+    public static final String HEADER_LOCATION = "Location";
+
+    /**
+     * Inbound Request Header with Authentication Credentials
+     */
+    public static final String HEADER_AUTHORIZATION = "Authorization";
 
 
 }

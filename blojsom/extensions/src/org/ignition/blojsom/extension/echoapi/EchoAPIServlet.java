@@ -67,7 +67,7 @@ import java.util.Properties;
  * <a href="http://bitworking.org/rfc/draft-gregorio-03.html">http://bitworking.org/rfc/draft-gregorio-03.html</a>
  *
  * @author Mark Lussier
- * @version $Id: EchoAPIServlet.java,v 1.7 2003-07-15 14:53:37 intabulas Exp $
+ * @version $Id: EchoAPIServlet.java,v 1.8 2003-07-15 15:50:37 intabulas Exp $
  */
 public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, EchoConstants {
 
@@ -79,11 +79,6 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
-
-
-    private static final String HEADER_LOCATION = "Location";
-    private static final String HEADER_AUTHORIZATION = "Authorization";
-
 
     private static final String CONTENTTYPE_ECHO = "application/not-echo+xml";
 
@@ -218,7 +213,11 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
     private String extractAuthorization(HttpServletRequest httpServletRequest) {
         String result = null;
         String auth = httpServletRequest.getHeader(HEADER_AUTHORIZATION);
-        if ((auth != null) && !"".equals(auth)) {
+
+        if ((auth != null)) {
+            if (auth.startsWith(BASE64_AUTH_PREFIX)) {
+                auth = auth.substring(BASE64_AUTH_PREFIX.length());
+            }
             result = new String(Base64.decode(auth.getBytes()));
         }
         return result;
@@ -230,22 +229,32 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      * @param httpServletRequest Request
      * @return
      */
-    public boolean isAuthorized(HttpServletRequest httpServletRequest) {
+    private boolean isAuthorized(HttpServletRequest httpServletRequest) {
         boolean result = false;
         String realmAuth = extractAuthorization(httpServletRequest);
-        _logger.info("Processing Authorization for [" + realmAuth + "]");
         if (realmAuth != null && !"".equals(realmAuth)) {
             int pos = realmAuth.indexOf(":");
             if (pos > 0) {
                 String username = realmAuth.substring(0, pos);
                 String password = realmAuth.substring(pos + 1);
                 result = _blog.checkAuthorization(username, password);
+                if (!result) {
+                    _logger.info("Unable to authenticate user [" + username + "] w/password [" + password + "]");
+                }
+
             }
 
         }
 
         return result;
 
+    }
+
+
+    private void sendAuthenticationRequired(HttpServletResponse httpServletResponse) {
+        httpServletResponse.setContentType("text/html");
+        httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, AUTHENTICATION_RELM);
+        httpServletResponse.setStatus(401);
     }
 
 
@@ -263,10 +272,9 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
         if (isAuthorized(httpServletRequest)) {
 
+
         } else {
-            httpServletResponse.setContentType("text/html");
-            httpServletResponse.setHeader("WWW-Authenticate", "basic realm=\"blojsom\"");
-            httpServletResponse.setStatus(401);
+            sendAuthenticationRequired(httpServletResponse);
         }
 
     }
@@ -336,6 +344,8 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
         if (isAuthorized(httpServletRequest)) {
 
+        } else {
+            sendAuthenticationRequired(httpServletResponse);
         }
 
 
@@ -355,6 +365,8 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
         if (isAuthorized(httpServletRequest)) {
 
+        } else {
+            sendAuthenticationRequired(httpServletResponse);
         }
 
 
