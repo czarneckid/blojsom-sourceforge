@@ -15,6 +15,14 @@
                 </ul>
             </section>
             <section>
+                <title>General notes</title>
+                <p>
+                    If any of the options don't make sense, you probably don't need to change them. If
+                    you do feel you need to change an option and it still doesn't make sense as to what you
+                    are changing, let us know and we'll clarify the documentation.
+                </p>
+            </section>
+            <section>
                 <title>Installation and default configuration</title>
                 <p>
                     1. Download
@@ -30,7 +38,76 @@
                 </p>
                 <p>
                     3. Configure the
-                    <em>WEB-INF/blojsom.properties</em> file for your blog.
+                    <em>/WEB-INF/blojsom.properties</em> file which contains global properties
+                    for blojsom.
+                </p>
+                <table>
+                    <tr>
+                        <th>Configuration parameter</th>
+                        <th>Default value</th>
+                        <th>Usage</th>
+                    </tr>
+                    <tr>
+                        <td>blojsom-users</td>
+                        <td></td>
+                        <td>Comma-separated list of users with blogs for this blojsom installation. This list
+ will be used to initialize the individual user blogs.</td>
+                    </tr>
+                    <tr>
+                        <td>blojsom-default-user</td>
+                        <td></td>
+                        <td>This option provides legacy blojsom (i.e. pre 2.0) installations a way of preserving
+ their current installations. Set the name of the default user from one of the user ids in the
+                            <em>blojsom-users</em> property. The default
+                            user will not have to enter their user id in the URL for the blojsom installation to
+                            request their blog. For example,
+                            <em>http://localhost:8080/blojsom/blog/</em> would point
+                            to the blog of the default user where
+                            <em>http://localhost:8080/blojsom/blog/david/</em> would
+                            point to the blog for the user
+                            <em>david</em>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>blojsom-configuration-base-directory</td>
+                        <td>/WEB-INF/</td>
+                        <td>Directory off the base WAR directory where blojsom will look for certain properties
+                        files and user directories.</td>
+                    </tr>
+                    <tr>
+                        <td>blojsom-fetcher</td>
+                        <td><code>org.blojsom.fetcher.StandardFetcher</code></td>
+                        <td>Fully qualified class name of the
+                            <code>BlojsomFetcher</code> class responsible for "fetching" blog categories and entries
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>blojsom-templates-directory</td>
+                        <td>/templates/</td>
+                        <td>This parameter will be used by blojsom to generate the proper path from which
+                        to retrieve the page templates for the individual users. For example, in a default blojsom
+ installation, requesting the default flavor (HTML) for the default user would cause the dispatcher to look for
+                            <em>/WEB-INF/default/templates/html.vm</em>.
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    4. If you have added users to the
+                    <em>blojsom-users</em> property, you will need to create directories
+                    off the directory indicated in
+                    <em>blojsom-configuration-base-directory</em> for each of the users.
+                    It is recommended that you initially create another user and copy all of the directories and files
+                    from the default user directory into this new user's directory. You would then set the
+                    <em>blojsom-default-user</em> to the appropriate user id you just created and remove the default
+ user id from the <em>blojsom-users</em> configuration property. This allows you to keep the default
+                    user directory as a set of template directories and files when adding new users to your blojsom
+                    installation.
+                </p>
+                <p>
+                    5. Configure the appropriate
+                    <em>/WEB-INF/(user-id)/blog.properties</em> file for your blog. This will need to be done for each
+                    of the users that you have indicated in the
+                    <em>blojsom-users</em> property.
                 </p>
                 <table>
                     <tr>
@@ -42,7 +119,7 @@
                         <td>blog-home</td>
                         <td></td>
                         <td>Points to the directory where your blog entries will be located
-                            <br/>
+                            <br/><br/>
                             For example:
                             <em>/my/home/directory/blog</em>
                             <p>NOTE:
@@ -82,16 +159,18 @@
                         <td>blog-base-url</td>
                         <td></td>
                         <td>Base URL for your blog
-                            <br/>For example:
+                            <br/><br/>For example:
                             <em>http://localhost:8080/blojsom</em>
                         </td>
                     </tr>
                     <tr>
                         <td>blog-url</td>
                         <td></td>
-                        <td>URL for your blog
-                            <br/>For example:
-                            <em>http://localhost:8080/blojsom/blog/</em>
+                        <td>URL for your blog. This URL should include the appropriate user id otherwise links
+                            will be generated for the default user's blog.
+                            <br/><br/>For example:
+                            <em>http://localhost:8080/blojsom/blog/david/</em>
+                            <br/><br/>
                             NOTE:
                             The default
                             <em>servlet-mapping</em> configured in the
@@ -179,15 +258,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>blog-fetcher</td>
-                        <td>
-                            <code>org.ignition.blojsom.fetcher.StandardFetcher</code>
-                        </td>
-                        <td>Fully qualified class name of the
-                            <code>BlojsomFetcher</code> class responsible for "fetching" blog categories and entries
-                        </td>
-                    </tr>
-                    <tr>
                         <td>blog-file-encoding</td>
                         <td>
                             <code>UTF-8</code>
@@ -196,9 +266,7 @@
                     </tr>
                     <tr>
                         <td>blog-blacklist-file</td>
-                        <td>
-                            <code>/WEB-INF/blacklist.filters</code>
-                        </td>
+                        <td></td>
                         <td>Points to the file containing the blacklist regular expressions</td>
                     </tr>
                     <tr>
@@ -208,22 +276,32 @@
                         </td>
                         <td>File extension used by the XML-RPC extension when writing entries to disk</td>
                     </tr>
+                    <tr>
+                        <td>blog-banned-ip-addresses</td>
+                        <td></td>
+                        <td>Comma-separated list of regular expressions IP addresses that you would like to
+ be banned. Presently, this is only used by the Comment and Trackback plugins.</td>
+                    </tr>
                 </table>
                 <p>
-                    4. Start your application server. On startup, blojsom will log messages to the console to
+                    6. Start your application server. On startup, blojsom will log messages to the console to
                     indicate what it is doing. Configuring blojsom's log capability is described on
                     the
                     <link href="custom.html">customization</link> page.
                 </p>
                 <p>
-                    5. Start your browser and open the URL to your blog. Example:
+                    7. Start your browser and open the URL to your blog. Example:
                     <em>http://localhost:8080/blojsom/blog/</em>.
-                    Your new blog should show up in your browser. Now you're ready to create categories and entries for your blog.
+                    The default user's blog should show up in your browser. If you have created other users, you
+                    can browse their blogs by including the appropriate user id at the end of this blog URL.
+                    Now you're ready to create categories and entries for your blog.
                 </p>
             </section>
             <section>
                 <title>Adding, removing, and updating blog entries and categories</title>
                 <p>
+                    The following applies to each of the individual user blogs you have setup for your blojsom
+                    installation.<br /><br />
                     blojsom uses the filesystem as its database. In blojsom, files matching the files indicated in the
                     <em>blog-file-extensions</em> configuration property will be picked up as your
                     blog entries. Directories that blojsom discovers under
@@ -303,13 +381,13 @@
                         <td>flavor</td>
                         <td>html</td>
                         <td>blojsom includes an "html", "rss", "rss2", and "rdf" flavor, but you may add or remove flavors from blojsom as appropriate.</td>
-                        <td>/blog/?flavor=rss</td>
+                        <td>/blog/david/?flavor=rss</td>
                     </tr>
                     <tr>
                         <td>permalink</td>
                         <td></td>
                         <td>Permalinks are generated by blojsom to point to an individual blog entry.</td>
-                        <td>/blog/?permalink=my-first-entry.html</td>
+                        <td>/blog/david/?permalink=my-first-entry.html</td>
                     </tr>
                 </table>
 
