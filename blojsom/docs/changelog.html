@@ -33,6 +33,8 @@
 General:<br />
 - An ETag header is now generated along with the Last-Modified header<br/>
 - New <a href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</a> (RSD) flavor provides support for tools like <a href="http://www.audblog.com">AudBlog</a><br/>
+- Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from <i>blog-entry-filename.properties</i><br />
+- Added "Eclipse" theme courtesy of <a href="http://dmartin.org/blog/">Dan Martin</a><br />
 <p />
 Extension changes:<br />
 - Implementation of the Blogger API getUserInfo() method to allow services like <a href="http://www.audblog.com">AudBlog</a> to work<br/>
@@ -46,10 +48,6 @@ which simply demonstrates how to sort entries in a different order<br/>
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=730576&group_id=72754&atid=535586">BUG 730576</a>: Blogger API getRecentPosts sends invalid dateCreated<br/>
-
-<p />
-The following RFEs were addressed:<br />
-- <br/>
 
 <p class="weblogtitle">blojsom 1.8 (codename: (Mr.)Belvedere)</p>
 <p class="weblogdateline">April 28, 2003 (tag: <b>blojsom-1_8-final</b>)</p>

@@ -29,7 +29,9 @@
 <p>
 <p class="weblogtitle">Upgrading blojsom from v1.8.x to v1.9</p>
 <p />
-1. Update <i>/WEB-INF/blojsom-xmlrpc.properties</i> to include a copy of the <tt>blogger=</tt> entry that has a capital B.
+1. Update <i>/WEB-INF/blojsom-xmlrpc.properties</i> to include a copy of the <tt>blogger=</tt>
+entry that has a capital B. This is only required if you are using a service like
+<a href="http://www.audblog.com">AudBlog</a> which specifically sends over the string "Blogger".
 <pre>
 Blogger=org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
 </pre>
@@ -42,8 +44,12 @@ If you are using the JSP dispatcher, instead include
 <p/>
 
 3. Be sure to upload <tt>rsd.vm</tt> or <tt>rsd.jsp</tt> to the appropriate directories on your server
+<p />
 
-
+4. If you want to use per-entry meta-data, add the following to <i>/WEB-INF/blojsom.properties</i>
+<pre>
+blog-entry-meta-data-extension=.properties
+</pre>
 
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
