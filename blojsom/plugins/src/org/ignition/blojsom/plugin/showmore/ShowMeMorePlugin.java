@@ -51,7 +51,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.7 2003-08-01 21:57:09 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.8 2003-08-01 22:00:14 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -62,7 +62,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     private static final String SHOW_ME_MORE_PARAM = "smm";
     private static final int ENTRY_TEXT_CUTOFF_DEFAULT = -1;
 
-    private static final String BLOJSOM_SMM_PLUGIN_ENABLED = "BLOJSOM_SMM_PLUGIN_ENABLED";
+    private static final String BLOJSOM_PLUGIN_SMM_ENABLED = "BLOJSOM_PLUGIN_SMM_ENABLED";
 
     private int _cutoff;
     private String _textCutoff;
@@ -117,7 +117,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String wantsToSeeMore = httpServletRequest.getParameter(SHOW_ME_MORE_PARAM);
-        context.put(BLOJSOM_SMM_PLUGIN_ENABLED, Boolean.TRUE);
+        context.put(BLOJSOM_PLUGIN_SMM_ENABLED, Boolean.TRUE);
         if ("y".equalsIgnoreCase(wantsToSeeMore)) {
             return entries;
         } else {
