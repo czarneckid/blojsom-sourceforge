@@ -35,8 +35,9 @@
 package org.blojsom.util;
 
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.FileBackedBlogEntry;
+import org.blojsom.fetcher.BlojsomFetcher;
+import org.blojsom.fetcher.BlojsomFetcherException;
+import org.blojsom.blog.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.59 2005-01-25 18:43:50 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.60 2005-01-31 01:01:21 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1050,7 +1051,7 @@ public class BlojsomUtils implements BlojsomConstants {
         if (is == null) {
             throw new BlojsomException("Could not load configuration file: " + configuration);
         }
-        
+
         try {
             properties.load(is);
         } catch (IOException e) {
@@ -1087,7 +1088,7 @@ public class BlojsomUtils implements BlojsomConstants {
         if (is == null) {
             throw new BlojsomException("Unable to load configuration file: " + configurationFile);
         }
-        
+
         try {
             properties.load(is);
         } catch (IOException e) {
@@ -1355,7 +1356,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Delete a directory (or file) and any sub-directories underneath the directory
      *
-     * @param directoryOrFile Directory or file to be deleted
+     * @param directoryOrFile       Directory or file to be deleted
      * @param removeDirectoryOrFile If the directory of file should be deleted in addition to the sub-directories
      * @return <code>true</code> if the directory (or file) could be deleted, <code>false</code> otherwise
      * @since blojsom 2.21
@@ -1894,9 +1895,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * List the files in a sub-directory of a given directory and strip the parent directory from the path
      * of the files added to the list.
      *
-     * @param directory Sub-directory to start looking for files
+     * @param directory       Sub-directory to start looking for files
      * @param parentDirectory Parent directory to strip
-     * @param files List of files to add to
+     * @param files           List of files to add to
      * @since blojsom 2.23
      */
     public static void listFilesInSubdirectories(File directory, String parentDirectory, List files) {
@@ -1916,9 +1917,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * List the sub-directories in a sub-directory of a given directory and strip the parent directory from the path
      * of the directories added to the list.
      *
-     * @param directory Sub-directory to start looking for files
+     * @param directory       Sub-directory to start looking for files
      * @param parentDirectory Parent directory to strip
-     * @param directories List of directories to add to
+     * @param directories     List of directories to add to
      * @since blojsom 2.23
      */
     public static void listDirectoriesInSubdirectories(File directory, String parentDirectory, List directories) {
@@ -1932,5 +1933,53 @@ public class BlojsomUtils implements BlojsomConstants {
                 directories.add(new File(directory.getPath().substring(parentDirectory.length())));
             }
         }
+    }
+
+    /**
+     * Fetch an {@link org.blojsom.blog.BlogEntry} given a category and permalink
+     *
+     * @param fetcher   {@link org.blojsom.fetcher.BlojsomFetcher}
+     * @param blogUser  {@link org.blojsom.blog.BlogUser}
+     * @param category  Category
+     * @param permalink Entry
+     * @return {@link org.blojsom.blog.BlogEntry}
+     * @throws BlojsomFetcherException If there is an error loading the entry
+     * @since blojsom 2.23
+     */
+    public static BlogEntry fetchEntry(BlojsomFetcher fetcher, BlogUser blogUser, String category, String permalink) throws BlojsomFetcherException {
+        BlogEntry fetchedEntry = null;
+
+        BlogCategory blogCategory;
+        blogCategory = fetcher.newBlogCategory();
+        blogCategory.setCategory(category);
+        blogCategory.setCategoryURL(blogUser.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(category));
+
+        Map fetchMap = new HashMap();
+        fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+        fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+
+        BlogEntry[] entries = fetcher.fetchEntries(fetchMap, blogUser);
+        if (entries != null && entries.length == 1) {
+            fetchedEntry = entries[0];
+        } else {
+            throw new BlojsomFetcherException("Unable to retrieve entry: " + permalink + " from category: " + category);
+        }
+
+        return fetchedEntry;
+    }
+
+    /**
+     * Strip all HTML from a given piece of text
+     *
+     * @param text Text
+     * @return text stripped of HTML between &lt; and &gt; tags or <code>null</code> if input was null or blank if input was blank
+     * @since blojsom 2.23
+     */
+    public static String stripHTML(String text) {
+        if (checkNullOrBlank(text)) {
+            return text;
+        }
+
+        return text.replaceAll("\\<.*?\\>","");
     }
 }
