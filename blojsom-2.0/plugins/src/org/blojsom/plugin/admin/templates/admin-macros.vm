@@ -22,13 +22,42 @@
         <div id="header">
             <h1>$page</h1>
         </div>
-        
+
         <div id="main">
+#end
+
+#macro(AdministrationHeader $page)
+<html>
+<head>
+<title>$BLOJSOM_BLOG.getBlogName() - $page</title>
+<!-- CSS -->
+<style type="text/css" media="screen">
+@import "$BLOJSOM_SITE_URL/administration/blojsom-administration.css";
+</style>
+<link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
+<!-- JAVASCRIPT -->
+<script type="text/javascript">
+        function reloadPreviewDiv() {
+            var previewString = document.getElementById('blog-entry-description').value;
+            document.getElementById('blog-entry-preview').innerHTML = previewString;
+        }
+
+        function loadPreviewText() {
+            document.getElementById('blog-entry-preview').innerHTML = document.getElementById('blog-entry-description').value;
+        }
+        </script>
+
+<script type="text/javascript" src="$BLOJSOM_SITE_URL/administration/blojsom-menu.js"></script>
+</head>
 #end
 
 #macro(adminPageFooter)
         </div>
     </body>
+</html>
+#end
+
+#macro(AdministrationFooter)
 </html>
 #end
 
