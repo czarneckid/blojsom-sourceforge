@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.46 2004-09-12 18:38:44 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.47 2004-09-12 22:58:27 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -376,6 +376,7 @@ public interface BlojsomConstants {
     public static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
     public static final String BLOG_DEFAULT_FLAVOR_IP = "blog-default-flavor";
     public static final String LINEAR_NAVIGATION_ENABLED_IP = "linear-navigation-enabled";
+    public static final String XMLRPC_ENABLED_IP = "xmlrpc-enabled"; 
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";
