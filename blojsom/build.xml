@@ -13,6 +13,8 @@
     <property name="compile.dir" value="${basedir}/classes"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="src.dir" value="${basedir}/src"/>
+    <property name="plugins.src.dir" value="${basedir}/plugins/src"/>
+    <property name="extensions.src.dir" value="${basedir}/extensions/src"/>
     <property name="war.dir" value="${basedir}/war"/>
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
@@ -22,6 +24,8 @@
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
     <property name="core.jar" value="${webinf.lib.dir}/${name}-core.jar"/>
+    <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins.jar"/>
+    <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions.jar"/>
     <property name="templates.jar" value="${name}-templates.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
 
@@ -61,6 +65,7 @@
     <!-- Compiles the source code                                            -->
     <!-- =================================================================== -->
     <target name="compile" depends="prepare" description="Compiles the class files">
+        <!-- Core -->
         <javac srcdir="${src.dir}"
             destdir="${compile.dir}"
             debug="${debug}"
@@ -68,7 +73,31 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <jar file="${core.jar}" basedir="${compile.dir}"  />
+        <jar file="${core.jar}" basedir="${compile.dir}" />
+
+        <!-- Plugins -->
+        <delete dir="${compile.dir}"/>
+        <mkdir dir="${compile.dir}"/>
+        <javac srcdir="${plugins.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <jar file="${plugins.jar}" basedir="${compile.dir}" />
+
+        <!-- Extensions -->
+        <delete dir="${compile.dir}"/>
+        <mkdir dir="${compile.dir}"/>
+        <javac srcdir="${extensions.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <jar file="${extensions.jar}" basedir="${compile.dir}" />
     </target>
 
     <!-- =================================================================== -->
