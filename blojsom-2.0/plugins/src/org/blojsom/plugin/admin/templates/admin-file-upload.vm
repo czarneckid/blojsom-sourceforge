@@ -16,7 +16,7 @@
         <center>
             <h3>Upload a file</h3>
             <table border="1">
-                <form name="upload-file" action=".?flavor=admin&plugins=file-upload" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                <form name="upload-file" action=".?flavor=admin&plugins=file-upload&action=upload-file" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                     <tr>
                         <td>File to upload</td>
                         <td><input type="file" size="50" name="upload-file"/></td>

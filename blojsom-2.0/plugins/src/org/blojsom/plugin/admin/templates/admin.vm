@@ -19,7 +19,7 @@
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=page">Edit</a> blog entries.</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">Edit</a> blog categories.</li>
 
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&page=file-upload">Upload</a> files to your blog.</li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=file-upload&action=page">Upload</a> files to your blog.</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-users&action=page">Edit</a> blog users for this installation.</li>
 
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&action=logout">Logout</a> of administration console.</li>

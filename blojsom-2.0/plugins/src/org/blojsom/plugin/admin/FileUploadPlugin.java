@@ -49,17 +49,14 @@ import org.blojsom.BlojsomException;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Properties;
-import java.util.List;
-import java.util.Iterator;
+import java.util.*;
 import java.io.File;
 
 /**
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.6 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.7 2003-12-22 16:54:20 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -78,11 +75,17 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String RESOURCES_DIRECTORY_IP = "resources-directory";
     private static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
 
+    // Pages
+    private static final String FILE_UPLOAD_PAGE = "/org/blojsom/plugin/admin/templates/admin-file-upload";
+
+    // Actions
+    private static final String UPLOAD_FILE_ACTION = "upload-file";
+
     private String _installationDirectory;
     private String _temporaryDirectory;
     private long _maximumUploadSize;
     private int _maximumMemorySize;
-    private String[] _acceptedFileTypes;
+    private Map _acceptedFileTypes;
     private String _resourcesDirectory;
 
     /**
@@ -127,12 +130,18 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             _logger.debug("Using maximum memory size: " + _maximumMemorySize);
 
             String acceptedFileTypes = configurationProperties.getProperty(ACCEPTED_FILE_TYPES_IP);
+            String[] parsedListOfTypes;
             if (acceptedFileTypes == null || "".equals(acceptedFileTypes)) {
-                _acceptedFileTypes = DEFAULT_ACCEPTED_FILE_TYPES;
+                parsedListOfTypes = DEFAULT_ACCEPTED_FILE_TYPES;
             } else {
-                _acceptedFileTypes = BlojsomUtils.parseCommaList(acceptedFileTypes);
+                parsedListOfTypes = BlojsomUtils.parseCommaList(acceptedFileTypes);
             }
-            _logger.debug("Using accepted file types: " + BlojsomUtils.arrayOfStringsToString(_acceptedFileTypes));
+            _acceptedFileTypes = new HashMap(parsedListOfTypes.length);
+            for (int i = 0; i < parsedListOfTypes.length; i++) {
+                String type = parsedListOfTypes[i];
+                _acceptedFileTypes.put(type, type);
+            }
+            _logger.debug("Using accepted file types: " + BlojsomUtils.arrayOfStringsToString(parsedListOfTypes));
 
             _resourcesDirectory = configurationProperties.getProperty(RESOURCES_DIRECTORY_IP);
             if (_resourcesDirectory == null || "".equals(_resourcesDirectory)) {
@@ -165,57 +174,65 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             return entries;
         }
 
-        // Create a new disk file upload and set its parameters
-        DiskFileUpload diskFileUpload = new DiskFileUpload();
-        diskFileUpload.setRepositoryPath(_temporaryDirectory);
-        diskFileUpload.setSizeThreshold(_maximumMemorySize);
-        diskFileUpload.setSizeMax(_maximumUploadSize);
+        String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
+        if (BlojsomUtils.checkNullOrBlank(action)) {
+            _logger.debug("User did not request edit action");
 
-        try {
-            List items = diskFileUpload.parseRequest(httpServletRequest);
-            Iterator itemsIterator = items.iterator();
-            while (itemsIterator.hasNext()) {
-                FileItem item = (FileItem) itemsIterator.next();
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+        } else if (PAGE_ACTION.equals(action)) {
+            _logger.debug("User requested file upload page");
 
-                // Check for the file upload form item
-                if (!item.isFormField()) {
-                    _logger.debug("Found file item: " + item.getName() + " of type: " + item.getContentType());
+            httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
+        } else if (UPLOAD_FILE_ACTION.equals(action)) {
+            _logger.debug("User requested file upload action");
 
-                    // Is it one of the accepted file types?
-                    String fileType = item.getContentType();
-                    boolean isAcceptedFileType = false;
-                    for (int i = 0; i < _acceptedFileTypes.length; i++) {
-                        String acceptedFileType = _acceptedFileTypes[i];
-                        if (acceptedFileType.equals(fileType)) {
-                            isAcceptedFileType = true;
-                            continue;
-                        }
-                    }
+            // Create a new disk file upload and set its parameters
+            DiskFileUpload diskFileUpload = new DiskFileUpload();
+            diskFileUpload.setRepositoryPath(_temporaryDirectory);
+            diskFileUpload.setSizeThreshold(_maximumMemorySize);
+            diskFileUpload.setSizeMax(_maximumUploadSize);
 
-                    // If so, upload the file to the resources directory
-                    if (isAcceptedFileType) {
-                        File resourceDirectory = new File(_installationDirectory + _resourcesDirectory + user.getId() + "/");
-                        if (!resourceDirectory.exists()) {
-                            if (!resourceDirectory.mkdirs()) {
-                                _logger.error("Unable to create resource directory for user: " + resourceDirectory.toString());
-                                return entries;
-                            } else {
-                                File resourceFile = new File(_installationDirectory + _resourcesDirectory + user.getId() + "/" + item.getName());
-                                try {
-                                    item.write(resourceFile);
-                                } catch (Exception e) {
-                                    _logger.error(e);
+            try {
+                List items = diskFileUpload.parseRequest(httpServletRequest);
+                Iterator itemsIterator = items.iterator();
+                while (itemsIterator.hasNext()) {
+                    FileItem item = (FileItem) itemsIterator.next();
+
+                    // Check for the file upload form item
+                    if (!item.isFormField()) {
+                        _logger.debug("Found file item: " + item.getName() + " of type: " + item.getContentType());
+
+                        // Is it one of the accepted file types?
+                        String fileType = item.getContentType();
+                        boolean isAcceptedFileType = _acceptedFileTypes.containsKey(fileType);
+
+                        // If so, upload the file to the resources directory
+                        if (isAcceptedFileType) {
+                            File resourceDirectory = new File(_installationDirectory + _resourcesDirectory + user.getId() + "/");
+                            if (!resourceDirectory.exists()) {
+                                if (!resourceDirectory.mkdirs()) {
+                                    _logger.error("Unable to create resource directory for user: " + resourceDirectory.toString());
+                                    return entries;
                                 }
-                                _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
                             }
+
+                            File resourceFile = new File(_installationDirectory + _resourcesDirectory + user.getId() + "/" + item.getName());
+                            try {
+                                item.write(resourceFile);
+                            } catch (Exception e) {
+                                _logger.error(e);
+                            }
+                            _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
+                        } else {
+                            _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
                         }
-                    } else {
-                        _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
                     }
                 }
+            } catch (FileUploadException e) {
+                _logger.error(e);
             }
-        } catch (FileUploadException e) {
-            _logger.error(e);
+
+            httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
         }
 
         return entries;
