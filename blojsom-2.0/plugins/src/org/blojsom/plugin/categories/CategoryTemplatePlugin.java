@@ -51,9 +51,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * Category page plugin allows you to define a separate template for each category in your blog using
- * the {@link org.blojsom.util.BlojsomConstants#PAGE_PARAM}. In your category meta-data, include a
- * property called <code>page</code> which is set to the name of a template. If the template name starts with
+ * Category template plugin allows you to define a separate template for each category in your blog using
+ * the <code>category.template</code> meta-data. In your category meta-data, include a
+ * property called <code>category.template</code> which is set to the name of a template. If the template name starts with
  * a '/', blojsom will try to load the name of template using the extension of the template name for the
  * current flavor. If the template name does not start with a '/', blojsom will try to load the name of the
  * template for the current flavor + '-' + category page template name + extension of the template name
@@ -65,28 +65,30 @@ import java.util.Map;
  * <p/>
  * If your category meta-data contains the following:
  * <p/>
- * <code>page=/another-page</code>
+ * <code>category.template=/another-page</code>
  * <p/>
  * blojsom will try to load <code>another-page.vm</code> located in the blog's <code>templates</code> directory.
  * <p/>
  * If your category meta-data contains the following:
  * <p/>
- * <code>page=another-page</code>
+ * <code>category.template=another-page</code>
  * <p/>
  * blojsom will try to load <code>asual-another-page.vm</code> located in the blog's <code>templates</code> directory.  
  *
  * @author David Czarnecki
- * @version $Id: CategoryPagePlugin.java,v 1.1 2005-01-11 03:55:52 czarneckid Exp $
+ * @version $Id: CategoryTemplatePlugin.java,v 1.1 2005-01-11 16:46:12 czarneckid Exp $
  * @since blojsom 2.23
  */
-public class CategoryPagePlugin implements BlojsomPlugin, BlojsomConstants {
+public class CategoryTemplatePlugin implements BlojsomPlugin, BlojsomConstants {
 
-    protected static Log _logger = LogFactory.getLog(CategoryPagePlugin.class);
+    private static final String CATEGORY_TEMPLATE_METADATA = "category.template";
+
+    protected static Log _logger = LogFactory.getLog(CategoryTemplatePlugin.class);
 
     /**
-     * Construct a new category page plugin
+     * Construct a new category template plugin
      */
-    public CategoryPagePlugin() {
+    public CategoryTemplatePlugin() {
     }
 
     /**
@@ -98,6 +100,7 @@ public class CategoryPagePlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        _logger.debug("Initialized category template plugin");
     }
 
     /**
@@ -114,8 +117,8 @@ public class CategoryPagePlugin implements BlojsomPlugin, BlojsomConstants {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         BlogCategory blogCategory = (BlogCategory) context.get(BLOJSOM_REQUESTED_CATEGORY);
-        if (BlojsomUtils.checkMapForKey(blogCategory.getMetaData(), PAGE_PARAM)) {
-            String pageForCategory = (String) blogCategory.getMetaData().get(PAGE_PARAM);
+        if (BlojsomUtils.checkMapForKey(blogCategory.getMetaData(), CATEGORY_TEMPLATE_METADATA)) {
+            String pageForCategory = (String) blogCategory.getMetaData().get(CATEGORY_TEMPLATE_METADATA);
             pageForCategory = BlojsomUtils.normalize(pageForCategory);
 
             httpServletRequest.setAttribute(PAGE_PARAM, pageForCategory);
