@@ -42,7 +42,7 @@
                     </tr>
                     <tr>
                         <td>#adminResource('mailbox.password.text' 'Password')</td>
-                        <td><input type="text" size="60" name="moblog-password" value="$!BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getPassword()"/></td>
+                        <td><input type="password" size="60" name="moblog-password" value="$!BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getPassword()"/></td>
                     </tr>
                     <tr>
                         <td>#adminResource('mailbox.category.text' 'Moblog category')</td>
