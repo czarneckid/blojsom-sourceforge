@@ -52,7 +52,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.3 2003-03-02 23:51:30 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.4 2003-03-08 22:57:59 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -93,7 +93,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @param blogid Dummy Value for Blojsom
      * @param userid Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @throws org.apache.xmlrpc.XmlRpcException
+     * @throws Exception
      * @return
      */
     public Object getCategories(String blogid, String userid, String password) throws Exception {
@@ -162,47 +162,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("   Password: " + password);
         _logger.info("    Publish: " + publish);
 
-        boolean result = false;
-
-        String category;
-        String permalink;
-        String match = "?" + PERMALINK_PARAM + "=";
-
-        int pos = postid.indexOf(match);
-        if (pos != -1) {
-            category = postid.substring(0, pos);
-            permalink = postid.substring(pos + match.length());
-
-
-            Hashtable postcontent = (Hashtable) struct;
-
-            String _title = (String) postcontent.get("title");
-            String _description = (String) postcontent.get("description");
-            if (_title == null) {
-                _title = "No Title";
-            }
-
-            StringBuffer _post = new StringBuffer();
-            _post.append(_title).append("\n").append(_description);
-
-
-            BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
-            if (_entries != null && _entries.length > 0) {
-                BlogEntry _entry = _entries[0];
-                try {
-                    FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath());
-                    _fos.write(_post.toString().getBytes());
-                    _fos.close();
-                    result = true;
-                } catch (IOException e) {
-                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
-                }
-            } else {
-                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
-            }
-        }
-
-        return result;
+        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+        //throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
 
     }
 
@@ -218,7 +179,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @throws org.apache.xmlrpc.XmlRpcException
      * @return
      */
-    public String newPost(String blogid, String userid, String password, Object struct, boolean publish) throws Exception {
+    public String newPost(String blogid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
         _logger.info("newPost() Called ===========[ SUPPORTED ]=====");
         _logger.info("     BlogId: " + blogid);
         _logger.info("     UserId: " + userid);
@@ -231,7 +192,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
 
-            Hashtable postcontent = (Hashtable) struct;
+            Hashtable postcontent =  struct;
 
             String _title = (String) postcontent.get("title");
             String _description = (String) postcontent.get("description");
@@ -245,7 +206,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             if (_description.length() > MAX_HASHABLE_LENGTH) {
                 hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
             }
-
 
             String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
             String outputfile = blogCategory.getAbsolutePath() + "/" + filename;
