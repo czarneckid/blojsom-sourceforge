@@ -42,6 +42,7 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +59,7 @@ import java.util.regex.Matcher;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.7 2004-04-13 00:08:02 intabulas Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.8 2004-04-23 02:11:14 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -98,7 +99,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
         _showMeMoreConfiguration = new HashMap(users.length);
         for (int i = 0; i < users.length; i++) {
             String user = users[i];
-            Properties showMeMoreProperties = new Properties();
+            Properties showMeMoreProperties = new BlojsomProperties();
             String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + showMeMoreConfiguration;
             InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
             if (is == null) {

@@ -43,6 +43,7 @@ import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: RefererLogPlugin.java,v 1.5 2004-04-13 00:07:40 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.6 2004-04-23 02:11:19 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -211,7 +212,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
         File _refererfile = new File(refererlog);
 
         if (_refererfile.exists()) {
-            Properties _refererproperties = new Properties();
+            Properties _refererproperties = new BlojsomProperties();
 
             try {
                 InputStream is = new FileInputStream(_refererfile);
@@ -266,7 +267,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
         // For each user, try to load the referer properties file
         for (int i = 0; i < users.length; i++) {
             String user = users[i];
-            Properties refererProperties = new Properties();
+            Properties refererProperties = new BlojsomProperties();
             String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + refererConfiguration;
             InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
             if (is == null) {
@@ -416,7 +417,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
             String refererlog = refererLogConfiguration.getRefererLog();
 
             // Writer referer cache out to disk
-            Properties refererProperties = new Properties();
+            Properties refererProperties = new BlojsomProperties();
 
             Iterator groupiterator = refererGroups.keySet().iterator();
             while (groupiterator.hasNext()) {
