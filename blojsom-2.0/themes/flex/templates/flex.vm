@@ -159,7 +159,7 @@
       <div id="aboutMe">
         <div id="aboutMeText">
           <p>
-            <a href="http://blojsom.sf.net">blojsom</a> developer.
+              Describe yourself.
           </p>
         </div>
         <div id="closeButton"><a href="javascript:closeAboutWindow();" onclick="javascript:closeAboutWindow();">close</a></div>

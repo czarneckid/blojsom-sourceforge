@@ -122,20 +122,7 @@
       <div id="aboutMe">
         <div id="aboutMeText">
           <p>
-            I'm a Senior Software Engineer working for <a href="http://www.manheim.com">Manheim Auctions</a>
-            in Atlanta.  Before that I worked at VerticalOne (now <a href="http://www.yodlee.com">Yodlee</a>).
-          </p>
-          <p>
-            Outside of work, I've contributed to some open source projects, mostly to
-            <a href="http://www.jedit.org">jEdit</a>.  I'm also working one two of my
-            own (<b class="bold">Jane</b> and <b class="bold">TroubleScope</b>).
-          </p>
-          <p>
-            I currently reside in Roswell, GA, with my wife and more pets than I care
-            to disclose.
-          </p>
-          <p>
-            You can contact me at <b class="bold">cyu77 AT yahoo DOT com</b>
+              Describe yourself.
           </p>
         </div>
         <div id="closeButton"><a href="javascript:closeAboutWindow();" onclick="javascript:closeAboutWindow();">close</a></div>
