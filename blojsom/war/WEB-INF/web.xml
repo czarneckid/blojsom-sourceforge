@@ -41,6 +41,10 @@
             <param-name>blog-authorization</param-name>
             <param-value>/WEB-INF/authorization.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>plugin-emoticons</param-name>
+            <param-value>/WEB-INF/emoticons.properties</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -73,6 +77,5 @@
         <servlet-name>blojsomxmlrpc</servlet-name>
         <url-pattern>/xmlrpc/*</url-pattern>
     </servlet-mapping>
-
 
 </web-app>
