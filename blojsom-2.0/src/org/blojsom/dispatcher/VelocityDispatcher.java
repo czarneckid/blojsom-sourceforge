@@ -64,7 +64,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.19 2005-03-05 20:09:45 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.20 2005-03-11 17:39:51 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -237,7 +237,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
 
             _logger.debug("Dispatched to flavor template: " + flavorTemplate);
         }
-
+        
         responseWriter.flush();
     }
 
