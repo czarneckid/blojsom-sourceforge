@@ -2,7 +2,9 @@
 <!DOCTYPE faqs PUBLIC "-//APACHE//DTD FAQ V1.2//EN" "dtd/faq-v12.dtd">
 
 <faqs title="Frequently Asked Questions">
-
+    <authors>
+      <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>      
+    </authors>
   <part id="general">
     <title>General</title>
     <faq id="name">
