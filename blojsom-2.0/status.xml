@@ -43,6 +43,10 @@
                 show me more plugin.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated administration pages to use localized properties files for text.
+            </action>
+
             <action dev="czarneckid" type="add" context="Core">
                 Added GroovyDispatcher to the addon core source tree. This dispatcher would allow you to write
                 templates using <a href="http://groovy.codehaus.org">Groovy</a>.
