@@ -1,130 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
 
-<head>
-<title>$BLOJSOM_BLOG.getBlogName()</title>
-<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-secondwave.css" />
-<link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
+
+<!--
+
+  Template based on the great http://www.cocoadevcentral.com/ template. I could not find exact authorship to quote
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head> <title>$BLOJSOM_BLOG.getBlogName()</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="$BLOJSOM_SITE_URL/pumpkin.css" />
+<link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" type="image/x-icon" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
 <link rel="EditURL" type="application/rsd+xml" title="RSD" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rsd" />
-
 </head>
-
-<h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
-<h3>$BLOJSOM_BLOG.getBlogDescription()</h3>
-
-Available categories:
-#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
-#end
 
 <body>
 
-#set( $totalEntries = 0)
-#foreach ($entry in $BLOJSOM_ENTRIES)
-    <link rel="service.comment" type="text/xml" href="$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()" title="Comment Interface"/>
-    <div class="entrystyle2">
-    <p class="weblogtitle2">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
-    <p class="weblogdateline">$entry.getDate()</p>
-    <p>$entry.getDescription()</p>
-    </div>
-    <p class="weblogbottomline">
-    #if ($entry.getMetaData())
-        #if ($entry.getMetaData().get("blog-entry-author"))
-            Posted by: <b>$entry.getMetaData().get("blog-entry-author")</b>
-            #if ($entry.getMetaData().get("blog-entry-protocol"))
-               &nbsp;via&nbsp;<b>$entry.getMetaData().get("blog-entry-protocol")</b>
-            #end
-            <br />
-        #end
-    #end
-    </p>
-    <p class="weblogtitle">Comments on this entry</p><br/>
+<div id="banner">
+<h1><a href="$BLOJSOM_BLOG.getBlogURL()" accesskey="1">$BLOJSOM_BLOG.getBlogName()</a></h1>
+<span class="description">$BLOJSOM_BLOG.getBlogDescription()</span>
+</div>
 
-    #foreach ($entryComment in $entry.getComments())
-        <div class="commentstyle2">
-            Comment by: <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> -
-                <a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>
-            <div class="weblogdateline">Left on: $entryComment.getCommentDate()</div><br/>
-            $entryComment.getComment()<br />
-        </div>
-    #end
 
-    #set( $totalEntries = $totalEntries + 1)
-    #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
-    <hr />
-    <table>
-        <form name="commentform" method="post" action=".">
-            <input type="hidden" name="comment" value="y"/>
-            <input type="hidden" name="page" value="comments"/>
-            <input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()"/><br />
-            <input type="hidden" name="permalink" value="$entry.getPermalink()"/> <br />
-            <tr>
-                <td>Author (<font color="red">*</font>):</td><td><input type="text" name="author" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end"/></td>
-            </tr>
-            <tr>
-                <td>E-mail:</td><td><input type="text" name="authorEmail" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end"/></td>
-            </tr>
-            <tr>
-                <td>URL: </td><td><input type="text" name="authorURL" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end"/></td>
-            </tr>
-            <tr>
-                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
-            </tr>
-            <p />
-            <tr>
-                <td>Remember me?</td> <td><input type="checkbox" name="remember" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)CHECKED#end/></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
-                <input type="reset" name="reset" value="Reset"/>
-                </td>
-            </tr>
-        </form>
-    </table>
-    #end
-    <p />
 
-    <!-- Trackback Auto Discovery -->
-    #set( $blogDescription = $entry.getEscapedDescription() )
-    #if ($blogDescription.length() > 255 )
-        #set( $ellipses = "..." )
-        #set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
-    #end
+<div id="content">
+
+<div class="blog">
+    #set( $totalEntries = 0)
+    
+    #foreach ($entry in $BLOJSOM_ENTRIES) 
+	<div class="blogbody">
+	
 <!--
-    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-             xmlns:dc="http://purl.org/dc/elements/1.1/"
-             xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
-        <rdf:Description
-             rdf:about="$entry.getLink()"
-             dc:identifer="$entry.getLink()"
-             dc:title="$entry.getTitle()"
-             dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
-             dc:description="$blogDescription"
-             dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
-             dc:date="$entry.getISO8601Date()"
-             trackback:ping="$entry.getLink()&tb=y" />
-     </rdf:RDF>
+	<a name="000076"></a>
 -->
+	<h3 class="title"><a href="$entry.getLink()">$entry.getTitle()</a></h3>
 
-#end
+	$entry.getDescription() 
+	
+	<div class="posted">
+	 [<a href="$entry.getBlogCategory().getCategoryURL()">#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end</a>]<br />
+     &raquo;&nbsp;Posted	
+	 #if ($entry.getMetaData())
+        #if ($entry.getMetaData().get("blog-entry-author"))
+            &nbsp;by: <b>$entry.getMetaData().get("blog-entry-author")</b>
+        #end
+     #end
+	 &nbsp;on $entry.getDate()
+     </div>
+     
+     
+     <div class="comments-head">
+		<a name="comments"></a>Comments
+	</div>
+	
 
-#if ($totalEntries > 0)
-    Available categories:
-    #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-        [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
+	
+	 #foreach ($entryComment in $entry.getComments())
+	    <div class="comments-body">
+	    <p>$entryComment.getComment()</p>
+	    
+	    <span class="comments-post">Posted by: <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> (<a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>) - 
+            Left on: $entryComment.getCommentDate()</span>
+        </div>    
     #end
+    
+    
+    #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+     <div class="comments-head">
+		Post a Comment
+	</div>
+	
+		<div class="comments-body">
+				<form method="post" action="." name="commentsform">
+				<input type="hidden" name="comment" value="y" />
+				<input type="hidden" name="page" value="comments" />
+	 	 		<input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()"/>
+                <input type="hidden" name="permalink" value="$entry.getPermalink()"/> <br />
+				
+				<label for="author">Author:</label><br />
+				<input id="author" name="author" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end"/><br /><br />
+				
+				<label for="email">E-mail:</label><br />
+				<input type="text" name="authorEmail" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end"/><br /><br />
+				
+				<label for="url">URL:</label><br />
+				<input type="text" name="authorURL" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end"/><br /><br />
+				
+				<label for="text">Comment:</label><br />
+				<textarea name="commentText" value="" rows="7" cols="55"></textarea><br /><br />
+				
+				<input type="checkbox"  name="remember" /><label for="bakecookie" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)CHECKED#end>Remember me?</label><br /><br />
+				
+				<input type="submit" name="submit" value="Submit Comment" />
+				<input type="submit" name="reset" value="Reset" /><br /><br />
+				
+				</form>
+				
+		</div>
+	
+    #end
+	
+</div>
 #end
+</div>
+</div>
 
-<p />
-<a href="http://blojsom.sf.net"><img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" border="0" alt="Powered By blojsom" /></a>&nbsp;&nbsp;
-<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss"><img src="$BLOJSOM_SITE_URL/xml.gif" border="0" alt="RSS Feed"/></a>&nbsp;
-<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2"><img src="$BLOJSOM_SITE_URL/rss.gif" border="0" alt="RSS2 Feed"/></a>&nbsp;
-<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf"><img src="$BLOJSOM_SITE_URL/rdf.gif" border="0" alt="RDF Feed"/></a>
+
+<!-- Side Bar -->
+<div id="links">
+
+
+<div class="sidetitle" style="margin-top:0px;">
+Search
+</div>
+ 
+<div class="side">
+<form method="post" action=".">
+<label for="search" accesskey="4">Search this site:</label><br />
+<input id="search" name="query" size="22" type="text"/> <input type="submit" value=" Go " />
+</form>
+</div>
+
+
+<div class="sidetitle" style="margin-top:5px;" >
+Calendar Navigation
+</div>
+
+<div class="side">
+
+<!-- -->
+
+</div>
+
+<div class="sidetitle" style="margin-top:5px;" >
+Categories
+</div>
+
+<div class="side">
+
+#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+    <a href="$blogCategory.getCategoryURL()">&raquo; #if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a><br />
+#end</p>
+
+</div>
+
+
+<div class="syndicate">
+Syndicate this site in <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss">RSS 0.92</a>, <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2">RSS 2.0</a> or <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf">RDF</a>.<br /><br />
+
+<a href="http://blojsom.sf.net" title="All Your Blog Are Belong To Us" target="_blank"><img
+src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" height="31" width="88" alt="Powered By blojsom" border="0" align="left" /></a>
+
+<!-- Creative Commons License -->
+<a href="http://creativecommons.org/licenses/by-nc-sa/1.0"><img alt="Creative Commons
+License" src="http://creativecommons.org/images/public/somerights.gif" border="0" align="right" /></a><br clear="all" /><br/>
+This work is licensed under a
+<a href="http://creativecommons.org/licenses/by-nc-sa/1.0">Creative Commons License</a>.
+<!-- /Creative Commons License -->
+
+
+</div>
+
+
+</div>
+<!-- /Side Bar -->
+
 
 </body>
-
 </html>
