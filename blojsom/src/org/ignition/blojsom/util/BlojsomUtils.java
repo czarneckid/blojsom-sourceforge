@@ -150,6 +150,22 @@ public class BlojsomUtils {
     }
 
     /**
+     * Return a string of "YYYYMD"
+     *
+     * @param date Date from which to extract "key"
+     * @return String of "YYYYMD"
+     */
+    public static String getDateKey(Date date) {
+        StringBuffer value = new StringBuffer();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        value.append(calendar.get(Calendar.YEAR));
+        value.append(calendar.get(Calendar.MONTH) + 1);
+        value.append(calendar.get(Calendar.DAY_OF_MONTH));
+        return value.toString();
+    }
+
+    /**
      * Remove the initial "/" from a string
      *
      * @param input Input string
