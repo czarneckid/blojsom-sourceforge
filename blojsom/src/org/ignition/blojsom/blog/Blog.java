@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.36 2003-03-24 17:13:47 intabulas Exp $
+ * @version $Id: Blog.java,v 1.37 2003-03-27 01:54:40 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -321,7 +321,7 @@ public class Blog implements BlojsomConstants {
             BlogEntry blogEntry = new BlogEntry();
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
-            blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
+            blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
             try {
                 blogEntry.reloadSource();
             } catch (IOException e) {
@@ -355,7 +355,7 @@ public class Blog implements BlojsomConstants {
             BlogEntry blogEntry = new BlogEntry();
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
-            blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
+            blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
             try {
                 blogEntry.reloadSource();
             } catch (IOException e) {
@@ -414,7 +414,7 @@ public class Blog implements BlojsomConstants {
                 blogEntry = new BlogEntry();
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
-                blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + entry.getName());
+                blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
                 try {
                     blogEntry.reloadSource();
                 } catch (IOException e) {

@@ -48,7 +48,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.24 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.25 2003-03-27 01:54:40 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -236,7 +236,7 @@ public class BlogEntry implements BlojsomConstants {
      * @return Blog Id
      */
     public String getId() {
-        return _category + "?" + PERMALINK_PARAM + "=" + _source.getName();
+        return _category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(_source.getName());
     }
 
     /**
@@ -245,7 +245,7 @@ public class BlogEntry implements BlojsomConstants {
      * @return Permalink name
      */
     public String getPermalink() {
-        return _source.getName();
+        return BlojsomUtils.urlEncode(_source.getName());
     }
 
     /**
