@@ -40,14 +40,14 @@ package org.ignition.blojsom.plugin.email;
  * Session instance held by SendEmailPlugin.
  *
  * @author Mark Lussier
- * @version $Id: EmailMessage.java,v 1.2 2003-03-31 02:57:31 czarneckid Exp $
+ * @version $Id: EmailMessage.java,v 1.3 2003-08-04 15:04:49 intabulas Exp $
  */
 public class EmailMessage {
 
-    String _from;
-    String _to;
-    String _subject;
-    String _message;
+    private String _from;
+    private String _to;
+    private String _subject;
+    private String _message;
 
     /**
      * Email message constructor
