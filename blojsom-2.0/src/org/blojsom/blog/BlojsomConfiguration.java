@@ -36,12 +36,12 @@ package org.blojsom.blog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
+import org.blojsom.event.BlojsomEventBroadcaster;
+import org.blojsom.event.BlojsomListener;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.listener.event.BlojsomEventBroadcaster;
-import org.blojsom.listener.BlojsomListener;
-import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import java.io.File;
@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.26 2004-08-28 16:53:05 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.27 2004-08-31 20:17:58 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {

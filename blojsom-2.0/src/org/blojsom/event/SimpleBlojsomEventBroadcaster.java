@@ -33,10 +33,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.listener.event;
+package org.blojsom.event;
 
-import org.blojsom.listener.BlojsomListener;
-import org.blojsom.listener.BlojsomFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,13 +43,13 @@ import java.util.*;
 /**
  * SimpleBlojsomEventBroadcaster.
  * <p></p>
- * Events are broadcast to each listener in a separate thread so that the broadcaster is not a bottleneck.
- * No defined order is set for how each listener will receive an event, so you should not assume any order
- * in listeners being called. No steps are taken to ensure a listener does not receive an event if it is
+ * Events are broadcast to each event in a separate thread so that the broadcaster is not a bottleneck.
+ * No defined order is set for how each event will receive an event, so you should not assume any order
+ * in listeners being called. No steps are taken to ensure a event does not receive an event if it is
  * removed at the same time an event is being broadcast.
  *
  * @author David Czarnecki
- * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.4 2004-08-31 13:16:02 czarneckid Exp $
+ * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
@@ -69,7 +67,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
     }
 
     /**
-     * Add a listener to this event broadcaster
+     * Add a event to this event broadcaster
      *
      * @param listener {@link BlojsomListener}
      */
@@ -88,25 +86,25 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
 
         _listeners.add(handler);
         _listenerToHandler.put(listener.getClass().getName(), handler);
-        _logger.debug("Added listener: " + listener.getClass().getName() + " with process all events filter");
+        _logger.debug("Added event: " + listener.getClass().getName() + " with process all events filter");
     }
 
     /**
-     * Add a listener to this event broadcaster. Events are filtered using the {@link org.blojsom.listener.BlojsomFilter} instance
+     * Add a event to this event broadcaster. Events are filtered using the {@link org.blojsom.event.BlojsomFilter} instance
      * passed to this method.
      *
-     * @param listener {@link org.blojsom.listener.BlojsomListener}
-     * @param filter   {@link org.blojsom.listener.BlojsomFilter} used to filter events
+     * @param listener {@link BlojsomListener}
+     * @param filter   {@link BlojsomFilter} used to filter events
      */
     public void addListener(BlojsomListener listener, BlojsomFilter filter) {
         EventHandler handler = new EventHandler(listener, filter);
         _listeners.add(handler);
         _listenerToHandler.put(listener.getClass().getName(), handler);
-        _logger.debug("Added listener: " + listener.getClass().getName() + " with filter: " + filter.getClass().getName());
+        _logger.debug("Added event: " + listener.getClass().getName() + " with filter: " + filter.getClass().getName());
     }
 
     /**
-     * Remove a listener from this event broadcaster
+     * Remove a event from this event broadcaster
      *
      * @param listener {@link BlojsomListener}
      */
@@ -117,7 +115,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
             _listenerToHandler.remove(listener.getClass().getName());
         }
 
-        _logger.debug("Removed listener: " + listener.getClass().getName());
+        _logger.debug("Removed event: " + listener.getClass().getName());
     }
 
     /**
@@ -140,7 +138,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
         protected BlojsomFilter _filter;
 
         /**
-         * Create a new event handler with listener and filter instances.
+         * Create a new event handler with event and filter instances.
          *
          * @param listener {@link BlojsomListener}
          * @param filter {@link BlojsomFilter}

@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.44 2004-08-26 01:57:45 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.45 2004-08-31 20:17:20 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -346,7 +346,7 @@ public interface BlojsomConstants {
     // blojsom listener and event configuration parameters
     public static final String BLOJSOM_LISTENER_CONFIGURATION_IP = "listener-configuration";
     public static final String BLOJSOM_BROADCASTER_IP = "blojsom-broadcaster";
-    public static final String BLOJSOM_DEFAULT_BROADCASTER = "org.blojsom.listener.event.SimpleBlojsomEventBroadcaster";
+    public static final String BLOJSOM_DEFAULT_BROADCASTER = "org.blojsom.event.SimpleBlojsomEventBroadcaster";
 
     // Blog initialization parameters from blog.properties
     public static final String BLOG_HOME_IP = "blog-home";

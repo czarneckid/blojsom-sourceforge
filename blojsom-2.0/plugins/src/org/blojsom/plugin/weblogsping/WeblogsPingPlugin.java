@@ -42,8 +42,8 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.listener.BlojsomListener;
-import org.blojsom.listener.event.BlojsomEvent;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
@@ -66,7 +66,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.13 2004-08-30 17:56:38 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.14 2004-08-31 20:19:03 czarneckid Exp $
  * @since blojsom 1.9.2
  */
 public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
@@ -198,7 +198,7 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
     /**
      * Handle an event broadcast from another component
      *
-     * @param event {@link org.blojsom.listener.event.BlojsomEvent} to be handled
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
      */
     public void handleEvent(BlojsomEvent event) {
         if (event instanceof AddBlogEntryEvent || event instanceof UpdatedBlogEntryEvent) {

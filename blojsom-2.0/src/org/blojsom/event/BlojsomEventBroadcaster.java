@@ -33,29 +33,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.listener.event;
-
-import org.blojsom.listener.BlojsomListener;
-import org.blojsom.listener.BlojsomFilter;
+package org.blojsom.event;
 
 /**
  * BlojsomEventBroadcaster
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEventBroadcaster.java,v 1.2 2004-08-30 04:26:21 czarneckid Exp $
+ * @version $Id: BlojsomEventBroadcaster.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
  */
 public interface BlojsomEventBroadcaster {
 
     /**
-     * Add a listener to this event broadcaster
+     * Add a event to this event broadcaster
      *
      * @param listener {@link BlojsomListener}
      */
     public void addListener(BlojsomListener listener);
 
     /**
-     * Add a listener to this event broadcaster. Events are filtered using the {@link BlojsomFilter} instance
+     * Add a event to this event broadcaster. Events are filtered using the {@link BlojsomFilter} instance
      * passed to this method.
      *
      * @param listener {@link BlojsomListener}
@@ -64,7 +61,7 @@ public interface BlojsomEventBroadcaster {
     public void addListener(BlojsomListener listener, BlojsomFilter filter);
 
     /**
-     * Remove a listener from this event broadcaster
+     * Remove a event from this event broadcaster
      *
      * @param listener {@link BlojsomListener}
      */
@@ -73,7 +70,7 @@ public interface BlojsomEventBroadcaster {
     /**
      * Broadcast an event to all listeners
      *
-     * @param event {@link BlojsomEvent} to be broadcast to all listeners
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be broadcast to all listeners
      */
     public void broadcastEvent(BlojsomEvent event);
 }

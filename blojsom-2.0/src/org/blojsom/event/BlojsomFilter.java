@@ -1,9 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
- * Adapted code from Chris Nokleberg (http://sixlegs.com/)
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,23 +32,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.listener;
-
-import org.blojsom.listener.event.BlojsomEvent;
+package org.blojsom.event;
 
 /**
- * BlojsomListener
+ * BlojsomFilter
  *
  * @author David Czarnecki
+ * @version $Id: BlojsomFilter.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
  * @since blojsom 2.18
- * @version $Id: BlojsomListener.java,v 1.1 2004-08-26 01:57:45 czarneckid Exp $
  */
-public interface BlojsomListener {
+public interface BlojsomFilter {
 
     /**
-     * Handle an event broadcast from another component
+     * Determines whether or not a particular event should be processed
      *
-     * @param event {@link BlojsomEvent} to be handled
+     * @param event {@link BlojsomEvent} to be processed
+     * @return <code>true</code> if the event should be processed, <code>false</code> otherwise
      */
-    public void handleEvent(BlojsomEvent event);
+    public boolean processEvent(BlojsomEvent event);
 }

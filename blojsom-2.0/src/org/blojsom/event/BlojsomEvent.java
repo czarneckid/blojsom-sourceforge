@@ -32,7 +32,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.listener.event;
+package org.blojsom.event;
 
 import java.util.Date;
 
@@ -41,7 +41,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEvent.java,v 1.3 2004-08-30 14:51:27 czarneckid Exp $
+ * @version $Id: BlojsomEvent.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
  */
 public class BlojsomEvent {
 
