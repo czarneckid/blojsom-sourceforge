@@ -65,12 +65,13 @@
             for (int j = 0; j < blogComments.size(); j++) {
                 BlogComment blogComment = (BlogComment) blogComments.get(j);
         %>
-        <p>
+        <div class="commentstyle">
             Comment by: <a href="mailto:<%= blogComment.getAuthorEmail() %>"><%= blogComment.getAuthor() %></a> -
-                <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a><br />
-            <span class="weblogdateline">Left on: <%= blogComment.getCommentDate() %><span><br/><br />
+                <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a>
+            <div class="weblogdateline">Left on: <%= blogComment.getCommentDate() %><span><br/>
             <%= blogComment.getComment() %><br />
-        </p>
+        </div>
+
         <%
                     }
         %>
