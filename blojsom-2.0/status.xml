@@ -14,6 +14,10 @@
                 exists. Its value contains a long value indicating the date and time of the original timestamp. This
                 meta-data is now populated through the Blogger, MetaWeblog, and Atom API handlers.
             </action>
+
+            <action dev="czarneckid" type="add" context="Plugins">
+                Added Base Admin and Edit Blog Properties plugins.
+            </action>
         </release>
 
         <release version="2.03" date="October 15, 2003">
