@@ -29,11 +29,21 @@
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="theme-switcher"/>
                     <tr>
+                        <td>#adminResource('current.html.theme' 'Current html theme')</td>
+                        <td><b>$CURRENT_HTML_THEME</b></td>
+                    </tr>
+                    <tr>
                         <td>#adminResource('available.themes.text' 'Available themes')</td>
                         <td>
                             <select name="theme">
                             #foreach ($theme in $THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES)
-                            <option value="$theme">$theme</option>
+                                #set ($selected="")
+                                #set ($mark="")
+                                #if ($CURRENT_HTML_THEME.equals($theme)) 
+                                    #set ($selected="SELECTED")
+                                    #set ($mark=" (current)")
+                                #end
+                                <option value="$theme" $selected>$theme $mark</option>
                             #end
                             </select>
                         </td>

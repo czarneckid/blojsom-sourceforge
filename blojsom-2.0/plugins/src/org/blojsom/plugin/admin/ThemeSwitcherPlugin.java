@@ -58,7 +58,7 @@ import java.util.Properties;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.3 2004-09-24 13:10:15 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.4 2004-12-27 18:48:47 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -72,6 +72,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
     private static final String THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES = "THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES";
     private static final String THEME_SWITCHER_PLUGIN_FLAVORS = "THEME_SWITCHER_PLUGIN_FLAVORS";
     private static final String THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR = "THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR";
+    private static final String CURRENT_HTML_THEME = "CURRENT_HTML_THEME";
 
     // Actions
     private static final String SWITCH_THEME_ACTION = "switch-theme";
@@ -148,7 +149,6 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 }
             }
         }
-
         return (String[]) themes.toArray(new String[themes.size()]);
     }
 
@@ -166,7 +166,6 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
 
         while (flavorIterator.hasNext()) {
             String flavor = (String) flavorIterator.next();
-
             flavorProperties.setProperty(flavor, flavorToTemplateMap.get(flavor) + ", " + flavorToContentTypeMap.get(flavor));
         }
 
@@ -200,26 +199,28 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
             context.put(THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES, getAvailableThemes());
             context.put(THEME_SWITCHER_PLUGIN_FLAVORS, user.getFlavors());
             context.put(THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR, user.getBlog().getBlogDefaultFlavor());
-
+            String currentHtmlFlavor = (String) user.getFlavorToTemplate().get("html");
+            currentHtmlFlavor = currentHtmlFlavor.substring(0, currentHtmlFlavor.indexOf('.'));
+            context.put(CURRENT_HTML_THEME, currentHtmlFlavor);
+            
             if (SWITCH_THEME_ACTION.equals(action)) {
                 String theme = BlojsomUtils.getRequestValue(THEME, httpServletRequest);
                 String flavor = BlojsomUtils.getRequestValue(FLAVOR, httpServletRequest);
 
                 if (BlojsomUtils.checkNullOrBlank(theme) || BlojsomUtils.checkNullOrBlank(flavor)) {
                     addOperationResultMessage(context, "No theme or flavor selected");
-
                     return entries;
                 }
 
                 if ("admin".equalsIgnoreCase(flavor)) {
                     addOperationResultMessage(context, "Theme cannot be changed for admin flavor");
-
                     return entries;
                 }
 
                 File copyFromTemplatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
                         _blojsomConfiguration.getBaseConfigurationDirectory() + _themesDirectory + theme + "/" +
                         _blojsomConfiguration.getTemplatesDirectory());
+
                 File[] templateFiles = copyFromTemplatesDirectory.listFiles();
                 String mainTemplate = null;
                 if (templateFiles != null && templateFiles.length > 0) {
@@ -271,6 +272,10 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
 
                     return entries;
                 }
+
+                currentHtmlFlavor = (String) user.getFlavorToTemplate().get("html");
+                currentHtmlFlavor = currentHtmlFlavor.substring(0, currentHtmlFlavor.indexOf('.'));
+                context.put(CURRENT_HTML_THEME, currentHtmlFlavor);
 
                 addOperationResultMessage(context, "Theme switched to: " + theme + " for flavor: " + flavor);
             }
