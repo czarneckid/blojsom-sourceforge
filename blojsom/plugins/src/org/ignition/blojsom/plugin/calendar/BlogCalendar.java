@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.10 2003-03-31 16:16:13 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.11 2003-03-31 16:23:37 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -253,7 +253,7 @@ public class BlogCalendar {
      * @return current month as an int (as defined by Calendar)
      */
     public int getCurrentMonth() {
-        return currentmonth;
+        return currentmonth ;
     }
 
     /**
