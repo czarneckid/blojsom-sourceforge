@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.11 2003-10-07 16:11:15 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.12 2003-10-07 16:17:35 intabulas Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -282,7 +282,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         boolean compressResponse = false;
         String acceptableEncoding = httpServletRequest.getHeader(HTTP_ACCEPTENCODING);
         if (acceptableEncoding != null && (acceptableEncoding.indexOf("gzip") > -1)) {
-            _logger.info("Found Accept-Endoding Header of = " + acceptableEncoding);
+            _logger.info("Found Accept-Encoding Header of = " + acceptableEncoding);
             String[] encodingParams = acceptableEncoding.split(",");
             for (int x = 0; x < encodingParams.length; x++) {
                 String encodingParam = encodingParams[x];
