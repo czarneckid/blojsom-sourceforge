@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.36 2004-04-30 05:18:32 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.37 2004-05-27 00:37:27 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -272,7 +272,7 @@ public interface BlojsomConstants {
      * UTC style date format
      * @since blojsom 1.9.4
      */
-    public static final String UTC_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ss'Z'";
+    public static final String UTC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
      * If a entry is longer that this length, then when any content hashing is performed, it is
