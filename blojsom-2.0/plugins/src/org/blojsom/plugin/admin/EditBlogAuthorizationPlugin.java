@@ -58,7 +58,7 @@ import java.util.TreeMap;
  * EditBlogAuthorizationPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.17 2005-03-06 01:22:41 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.18 2005-03-20 16:13:25 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -160,7 +160,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     }
 
                     if (user.getBlog().getUseEncryptedPasswords().booleanValue()) {
-                        blogUserPassword = BlojsomUtils.digestString(blogUserPassword);
+                        blogUserPassword = BlojsomUtils.digestString(blogUserPassword, user.getBlog().getDigestAlgorithm());
                     }
 
                     Blog blog = user.getBlog();
