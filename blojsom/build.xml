@@ -46,6 +46,15 @@
     </path>
 
     <!-- =================================================================== -->
+    <!-- Sourcepath (for javadoc)                                            -->
+    <!-- =================================================================== -->
+    <path id="source.path">
+        <pathelement path="${src.dir}"/>
+        <pathelement path="${plugins.src.dir}"/>
+        <pathelement path="${extensions.src.dir}"/>
+    </path>
+
+    <!-- =================================================================== -->
     <!-- Prepares the build process                                          -->
     <!-- =================================================================== -->
     <target name="prepare">
@@ -59,6 +68,21 @@
             </fileset>
         </copy>
         <jar file="${webinf.lib.dir}/${templates.jar}" basedir="${templates.dir}"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Cleans up generated stuff                                           -->
+    <!-- =================================================================== -->
+    <target name="clean" description="Removes generated files">
+        <delete dir="${compile.dir}"/>
+        <delete dir="${build.dir}"/>
+        <delete dir="${javadoc.dir}"/>
+        <delete dir="${distro.dir}"/>
+        <delete file="${core.jar}"/>
+        <delete file="${plugins.jar}"/>
+        <delete file="${extensions.jar}"/>
+        <delete file="${webinf.lib.dir}/${templates.jar}"/>
+        <delete file="${war.file}"/>
     </target>
 
     <!-- =================================================================== -->
@@ -101,19 +125,6 @@
     </target>
 
     <!-- =================================================================== -->
-    <!-- Cleans up generated stuff                                           -->
-    <!-- =================================================================== -->
-    <target name="clean" description="Removes generated files">
-        <delete dir="${compile.dir}"/>
-        <delete dir="${build.dir}"/>
-        <delete dir="${javadoc.dir}"/>
-        <delete dir="${distro.dir}"/>
-        <delete file="${core.jar}"/>
-        <delete file="${webinf.lib.dir}/${templates.jar}"/>
-        <delete file="${war.file}"/>
-    </target>
-
-    <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
     <target name="war" depends="clean,prepare,compile">
@@ -123,7 +134,7 @@
     <!-- =================================================================== -->
     <!-- Creates the API documentation                                       -->
     <!-- =================================================================== -->
-    <target name="javadoc" depends="prepare" description="Creates the API documentation">
+    <target name="javadoc" description="Creates the API documentation">
         <mkdir dir="${javadoc.dir}"/>
         <javadoc packagenames="org.*"
             destdir="${javadoc.dir}"
@@ -131,9 +142,9 @@
             version="true"
             use="true"
             windowtitle="${name} ${version} API"
-            doctitle="${name} ${version} API"
-            sourcepath="${src.dir}">
+            doctitle="${name} ${version} API">
             <classpath refid="build.classpath"/>
+            <sourcepath refid="source.path"/>
         </javadoc>
     </target>
 
