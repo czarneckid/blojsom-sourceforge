@@ -36,24 +36,24 @@ package org.blojsom.plugin.common;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.VelocityContext;
-import org.blojsom.blog.BlojsomConfiguration;
+import org.apache.velocity.app.VelocityEngine;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
-import java.util.Properties;
-import java.util.Map;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * VelocityPlugin
  *
  * @author David Czarnecki
- * @version $Id: VelocityPlugin.java,v 1.2 2005-01-05 02:31:41 czarneckid Exp $
+ * @version $Id: VelocityPlugin.java,v 1.3 2005-03-05 18:19:55 czarneckid Exp $
  */
 public abstract class VelocityPlugin extends IPBanningPlugin {
 
