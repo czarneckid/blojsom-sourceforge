@@ -130,7 +130,6 @@ a:hover {
 #contentHeadLeft {
 	background: #285090 url(ocean-headleft.jpg) no-repeat;
 	height: 28px;
-	margin: 0 -22px;
 	padding-left: 22px;
 }
 #contentHeadCenter {
@@ -159,7 +158,6 @@ a:hover {
 #contentFootLeft {
 	background: #285090 url(ocean-footleft.jpg) no-repeat;
 	height: 28px;
-	margin: 0 -22px;
 	padding-left: 22px;
 	clear: both;
 }
@@ -515,4 +513,5 @@ img.emoticons {
 }
 .clear {
 	clear: both;
+	height: 0;
 }

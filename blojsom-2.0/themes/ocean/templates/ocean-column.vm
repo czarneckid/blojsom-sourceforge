@@ -1,24 +1,35 @@
 								#macro(multilineLink $textArray)
-									#set($words = "")
-									#set($multilineText = "")
+									#set($count = 0)
 									#foreach($word in $textArray)
-										#set($words = "$words $word")
-										#if($words.length() > 20)
-											#if($multilineText == "")
-												#set($multilineText = "<span>$word</span><span class='break'></span><br /><span>")
+										#set($count = $count + 1)
+									#end
+									#if ($count > 1)
+										#set($words = "")
+										#set($multilineText = "")
+										#foreach($word in $textArray)
+											#set($words = "$words $word")
+											#if($words.length() > 20)
+												#if($multilineText == "")
+													#set($multilineText = "<span>$word</span><span class='break'></span><br /><span>")
+												#else
+													#set($multilineText = "$multilineText</span><span class='break'></span><br /><span>$word")
+												#end
+												#set($words = "")
 											#else
-												#set($multilineText = "$multilineText</span><span class='break'></span><br /><span>$word")
-											#end
-											#set($words = "")
-										#else
-											#if($multilineText == "")
-												#set($multilineText = "<span>$word")
-											#else
-												#set($multilineText = "$multilineText $word")
+												#if($multilineText == "")
+													#set($multilineText = "<span>$word")
+												#else
+													#set($multilineText = "$multilineText $word")
+												#end
 											#end
 										#end
+										#set($multilineText = "$multilineText</span>")
+									#else
+										#foreach($word in $textArray)
+											#set($multilineText = "<span>$word</span>")
+										#end
 									#end
-									#set($multilineText = "$multilineText</span>")
+
 								#end
 
 								<div id="calendar">
@@ -88,4 +99,5 @@
 									</div>
 
 								</div>
+
 
