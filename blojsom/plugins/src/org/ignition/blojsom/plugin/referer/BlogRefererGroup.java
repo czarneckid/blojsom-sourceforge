@@ -43,18 +43,22 @@ import java.util.Set;
  * BlogRefererGroup
  *
  * @author Mark Lussier
- * @version $Id: BlogRefererGroup.java,v 1.2 2003-03-28 21:20:20 intabulas Exp $
+ * @version $Id: BlogRefererGroup.java,v 1.3 2003-03-29 18:07:17 intabulas Exp $
  */
 public class BlogRefererGroup {
 
     private Map _groups;
     private int _grouptotal = 0;
+    private boolean _hitcount = false;
+    private boolean _today = false;
+    private Date _lasthit;
 
     /**
      *
      */
-    public BlogRefererGroup() {
+    public BlogRefererGroup(boolean ishotcount) {
         _groups = new HashMap(25);
+        _hitcount = ishotcount;
     }
 
     /**
@@ -73,6 +77,23 @@ public class BlogRefererGroup {
         }
 
         _grouptotal += 1;
+
+    }
+
+
+    public void addHitCount(Date date) {
+        addHitCount(date, 1);
+    }
+
+    public void addHitCount(Date date, int count) {
+        if (_lasthit == null) {
+            _lasthit = date;
+        }
+        if (date.compareTo(_lasthit) > 0) {
+            _lasthit = date;
+        }
+        _today = determineToday();
+        _grouptotal += count;
 
     }
 
@@ -127,6 +148,18 @@ public class BlogRefererGroup {
      */
     public int getRefererCount() {
         return _grouptotal;
+    }
+
+    public boolean isHitCounter() {
+        return _hitcount;
+    }
+
+    private boolean determineToday() {
+        return (RefererLogPlugin.getRefererDate(new Date()).equals(RefererLogPlugin.getRefererDate(_lasthit)));
+    }
+
+    public Date getLastHit() {
+        return _lasthit;
     }
 
 
