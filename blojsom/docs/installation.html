@@ -33,7 +33,10 @@ for blojsom will be "blojsom". <br /><p />
 <table border="1">
     <th>Configuration parameter</th> <th>Default value</th> <th>Usage</th>
     <tr align="center">
-        <td>blog-home</td> <td></td> <td align="left">Points to the directory where your blog entries will be located</td>
+        <td>blog-home</td> <td></td> <td align="left">Points to the directory where your blog entries will be located
+        <p /><font color="red">NOTE:</font><br />This parameter should point to the directory where your blog entries
+        will be kept. It should exist outside the web application root directory. For example:<p />
+        <i>/my/home/directory/blog</i> </td>
     </tr>
     <tr align="center">
         <td>blog-directory-depth</td> <td>-1</td> <td align="left">Indicates the number of levels deep that blojsom should traverse in <i>blog-home</i> to look for entries. A value of -1 indicates that blojsom should traverse all directories</td>
@@ -48,7 +51,12 @@ for blojsom will be "blojsom". <br /><p />
         <td>blog-description</td> <td></td> <td align="left">A concise description of your blog</td>
     </tr>
     <tr align="center">
-        <td>blog-url</td> <td></td> <td align="left">URL for your blog<br />Example: <i>http://localhost:8080/blojsom/blog/</i></td>
+        <td>blog-url</td> <td></td> <td align="left">URL for your blog<br />For example: <i>http://localhost:8080/blojsom/blog/</i>
+        <p /><font color="red">NOTE:</font><br />
+        The default <i>servlet-mapping</i> configured in the <i>web.xml</i> for blojsom is set
+        to pass all requests for <i>/blog/*</i> to blojsom. If you change the mapping in the
+        <i>web.xml</i> file, then you will need to make sure that change is reflected in the URL
+        for your blog.</td>
     </tr>
     <tr align="center">
         <td>blog-file-extensions</td> <td></td> <td align="left">Customize the regular expressions to identify file extensions blojsom uses for blog entries. By default, blojsom will look for .txt and .html file extensions in the blog directories for entries</td>
