@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.27 2004-05-22 19:47:25 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.28 2004-07-13 01:14:26 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -433,6 +433,14 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
             if (code.intValue() == 0) {
                 httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_SUCCESS_PAGE);
+
+                // Add the trackback to the list of trackbacks for the entry
+                List trackbacks = entries[0].getTrackbacks();
+                if (trackbacks == null) {
+                    trackbacks = new ArrayList();
+                }
+                trackbacks.add(trackback);
+                entries[0].setTrackbacks(trackbacks);
             } else {
                 httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
             }
@@ -527,9 +535,9 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
      * Send the trackback e-mail to the blog author
      *
      * @param emailPrefix E-mail prefix
-     * @param title Entry title
-     * @param trackback Trackback text
-     * @param context Context
+     * @param title       Entry title
+     * @param trackback   Trackback text
+     * @param context     Context
      */
     public void sendTrackbackEmail(String emailPrefix, String title, String trackback, Map context) {
         EmailUtils.notifyBlogAuthor(emailPrefix + title, trackback, context);
