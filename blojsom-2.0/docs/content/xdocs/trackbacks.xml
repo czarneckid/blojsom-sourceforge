@@ -58,8 +58,8 @@
                 In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
                 and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
                 addresses is controlled by the
-                <em>blog-banned-ip-addresses</em> parameter in
-                <em>/WEB-INF/blojsom.properties</em>.
+                <em>blog-banned-ip-addresses</em> parameter in your individual
+                <em>/WEB-INF/(user-id)/blog.properties</em>.
                 As an example, the following will ban you from posting locally.
             </p>
             <source>

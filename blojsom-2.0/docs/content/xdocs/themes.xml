@@ -30,8 +30,8 @@
             </p>
             <ol>
                 <li>Copy the all SecondWave files (secondwave*.vm) from
-                    <em>$BLOJSOM_INSTALL_DIR</em>/themes/secondwave to your
-                    <em>/WEB-INF/classes</em> directory on your server.
+                    <em>$BLOJSOM_INSTALL_DIR</em>/themes/secondwave to your individual
+                    <em>/WEB-INF/(user-id)/templates</em> directory on your server.
                 </li>
                 <li>Copy the
                     <em>blojsom-secondwave.css</em> stylesheet from
@@ -50,8 +50,8 @@
         <section>
             <title>Configuring the active theme</title>
             <p>
-                All you need to do to enable your template is to edit your
-                <em>/WEB-INF/flavor.properties</em>
+                All you need to do to enable your template is to edit your individual
+                <em>/WEB-INF/(user-id)flavor.properties</em>
                 and edit the value for the html flavor
             </p>
             <p>

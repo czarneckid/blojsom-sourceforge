@@ -13,8 +13,8 @@
             </p>
             <p>
                 By default, the
-                <em>blog-default-category-mapping</em> property in
-                <em>blojsom.properties</em>
+                <em>blog-default-category-mapping</em> property in your individual
+                <em>blog.properties</em>
                 does not contain a value. This means that all your blog categories will be aggregated if someone
                 requests the default or "/" category. blojsom will obey the
                 <em>blog-directory-depth</em> parameter
@@ -54,8 +54,8 @@
             <source>
                 rss.blog-default-category-mapping=/blojsom, /java
             </source>
-            <p>to your
-                <em>blojsom.properties</em> file. In this case, the "/blojsom" and "/java" categories will be
+            <p>to your individual
+                <em>blog.properties</em> file. In this case, the "/blojsom" and "/java" categories will be
                 aggregated if someone requests the RSS flavor for the default or "/" category.
 
             </p>
@@ -127,8 +127,8 @@
             <title>blojsom category meta-data</title>
             <p>
                 In blojsom 1.1, a per-category meta-data facility was added to blojsom. A configuration
-                property in
-                <em>blojsom.properties</em> was added,
+                property in your individual
+                <em>blog.properties</em> was added,
                 <em>blojsom-properties-extensions</em>, which
                 defaults to
                 <em>.properties</em>. As blojsom traverses the blog home directory looking for entries,
@@ -174,8 +174,8 @@
             <title>blojsom entry meta-data</title>
             <p>
                 In blojsom 1.9, a per-entry meta-data facility was added to blojsom. A configuration property
-                in
-                <em>blojsom.properties</em> was added,
+                in your individual
+                <em>blog.properties</em> was added,
                 <em>blog-entry-meta-data-extension</em>. There is no
                 default value for this property. If it is left blank, blojsom will not try to look for meta-data
                 for a blog entry. blojsom looks for the appropriate meta-data file by taking the blog entry
