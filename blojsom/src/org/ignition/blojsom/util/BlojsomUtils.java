@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.46 2003-04-22 01:17:48 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.47 2003-04-24 01:53:10 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -168,6 +168,9 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static FileFilter getRegularExpressionFilter(final String[] expressions) {
         return new FileFilter() {
+
+            private Date today = new Date();
+
             public boolean accept(File pathname) {
                 for (int i = 0; i < expressions.length; i++) {
                     if (pathname.isDirectory()) {
@@ -175,7 +178,11 @@ public class BlojsomUtils implements BlojsomConstants {
                     }
                     String expression = expressions[i];
                     if (pathname.getName().matches(expression)) {
-                        return true;
+                        if (pathname.lastModified() <= today.getTime()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
                 return false;
