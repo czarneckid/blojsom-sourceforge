@@ -77,6 +77,7 @@
                         <td><input type="checkbox" name="blog-entry-trackbacks-disabled" value="y"
                             #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getMetaData() && $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getMetaData().containsKey("blog-entry-trackbacks-disabled")) CHECKED #end/></td>
                     </tr>
+                    #DisplayTemplateAdditions()
                     <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('update.blog.entry.text' 'Update blog entry')"/>

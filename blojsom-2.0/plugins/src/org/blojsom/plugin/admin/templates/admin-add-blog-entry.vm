@@ -91,6 +91,7 @@
                         <td>#adminResource('blog.proposed.name.text' 'Proposed name')</td>
                         <td><input type="text" size="30" name="blog-entry-proposed-name"/></td>
                     </tr>
+                    #DisplayTemplateAdditions()
                     <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('add.blog.entry.text' 'Add blog entry')"/>
