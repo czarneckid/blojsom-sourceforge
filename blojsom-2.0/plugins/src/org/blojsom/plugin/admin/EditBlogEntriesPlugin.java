@@ -61,8 +61,8 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.19 2004-02-17 04:28:34 czarneckid Exp $
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.18 2004-02-17 02:49:10 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -116,9 +116,10 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link BlojsomConfiguration} information
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
@@ -240,6 +241,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
+            String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
+            String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             _logger.debug("Blog entry id: " + blogEntryId);
 
             BlogCategory category;
@@ -257,6 +260,25 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     BlogEntry entryToUpdate = entries[0];
                     entryToUpdate.setTitle(blogEntryTitle);
                     entryToUpdate.setDescription(blogEntryDescription);
+
+                    Map entryMetaData = entryToUpdate.getMetaData();
+                    if (entryMetaData == null) {
+                        entryMetaData = new HashMap();
+                    }
+
+                    if (!BlojsomUtils.checkNullOrBlank(allowComments)) {
+                        entryMetaData.put(BLOG_METADATA_COMMENTS_DISABLED, "y");
+                    } else {
+                        entryMetaData.remove(BLOG_METADATA_COMMENTS_DISABLED);
+                    }
+
+                    if (!BlojsomUtils.checkNullOrBlank(allowTrackbacks)) {
+                        entryMetaData.put(BLOG_METADATA_TRACKBACKS_DISABLED, "y");
+                    } else {
+                        entryMetaData.remove(BLOG_METADATA_TRACKBACKS_DISABLED);
+                    }
+
+                    entryToUpdate.setMetaData(entryMetaData);
                     entryToUpdate.save(user);
                     _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
                     StringBuffer entryLink = new StringBuffer();
@@ -330,6 +352,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
+            String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
+            String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
 
             BlogCategory category;
             category = _fetcher.newBlogCategory();
@@ -359,6 +383,14 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 }
             } else {
                 entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+            }
+
+            if (!BlojsomUtils.checkNullOrBlank(allowComments)) {
+                entryMetaData.put(BLOG_METADATA_COMMENTS_DISABLED, "y");
+            }
+
+            if (!BlojsomUtils.checkNullOrBlank(allowTrackbacks)) {
+                entryMetaData.put(BLOG_METADATA_TRACKBACKS_DISABLED, "y");
             }
 
             entry.setMetaData(entryMetaData);
@@ -404,7 +436,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
             if (blogCommentIDs != null && blogCommentIDs.length > 0) {
                 File commentsDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogCommentsDirectory()
-                    + File.separatorChar + blogEntryId + File.separatorChar);
+                        + File.separatorChar + blogEntryId + File.separatorChar);
                 File blogCommentToDelete;
                 for (int i = 0; i < blogCommentIDs.length; i++) {
                     String blogCommentID = blogCommentIDs[i];
@@ -437,7 +469,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String[] blogTrackbackIDs = httpServletRequest.getParameterValues(BLOG_TRACKBACK_ID);
             if (blogTrackbackIDs != null && blogTrackbackIDs.length > 0) {
                 File trackbacksDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogTrackbackDirectory()
-                    + File.separatorChar + blogEntryId + File.separatorChar);
+                        + File.separatorChar + blogEntryId + File.separatorChar);
                 File blogTrackbackToDelete;
                 for (int i = 0; i < blogTrackbackIDs.length; i++) {
                     String blogTrackbackID = blogTrackbackIDs[i];
@@ -461,7 +493,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     /**
      * Return a filename appropriate for the blog entry content
      *
-     * @param content Blog entry content
+     * @param content            Blog entry content
      * @param blogEntryExtension Extension to be used for the blog entry filename
      * @return Filename for the new blog entry
      */
