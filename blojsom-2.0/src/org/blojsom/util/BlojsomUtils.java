@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.25 2004-04-26 00:24:00 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.26 2004-04-26 01:58:58 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1343,5 +1343,22 @@ public class BlojsomUtils implements BlojsomConstants {
         int endYear = calendarEndDate.get(Calendar.YEAR);
 
         return Math.abs((endDay - startDay) + ((endYear - startYear) * 365));
+    }
+
+    /**
+     * Return a filename with the date as a long value before the file extension.
+     *
+     * @param filename Filename with extension
+     * @return Filename as {filename}-{date}.{file extension} or <code>null</code> if there was no file extension
+     */
+    public static File getFilenameForDate(String filename) {
+        String filenameWithoutExtension = getFilename(filename);
+        String fileExtension = getFileExtension(filename);
+
+        if (fileExtension == null) {
+            return null;
+        } else {
+            return new File(filenameWithoutExtension + "-" + new Date().getTime() + "." + fileExtension);
+        }
     }
 }
