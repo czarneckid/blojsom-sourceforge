@@ -35,13 +35,14 @@
 package org.ignition.blojsom.extension.xmlrpc.handlers;
 
 import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.fetcher.BlojsomFetcher;
 
 
 /**
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.4 2003-03-23 19:27:13 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.5 2003-04-15 02:28:47 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 
@@ -74,5 +75,12 @@ public abstract class AbstractBlojsomAPIHandler  {
      * @return The API Name (ie: blogger)
      */
     public abstract String getName();
+
+    /**
+     * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
+     *
+     * @param fetcher {@link BlojsomFetcher} instance
+     */
+    public abstract void setFetcher(BlojsomFetcher fetcher);
 }
 
