@@ -108,6 +108,15 @@ public class BlogEntry {
     }
 
     /**
+     * Title for the entry where the &lt;, &gt;, and &amp; characters are escaped
+     *
+     * @return Escaped entry title
+     */
+    public String getEscapedTitle() {
+        return BlojsomUtils.escapeString(_title);
+    }
+
+    /**
      * Permalink for the blog entry
      *
      * @return Blog entry permalink

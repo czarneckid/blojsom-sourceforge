@@ -25,7 +25,7 @@
                 BlogEntry blogEntry = blogEntries[i];
     %>
     	<item>
-    		<title><%= blogEntry.getTitle() %></title>
+    		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
     	</item>
