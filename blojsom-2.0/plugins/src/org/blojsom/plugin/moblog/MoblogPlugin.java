@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.17 2004-08-31 13:16:02 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.18 2004-09-22 18:30:53 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -99,9 +99,9 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
     private static final String POP3_STORE = "pop3";
 
     /**
-     * Default poll time (5 minutes)
+     * Default poll time (10 minutes)
      */
-    private static final int DEFAULT_POLL_TIME = 360;
+    private static final int DEFAULT_POLL_TIME = 720;
 
     /**
      * Moblog confifguration parameter for web.xml
