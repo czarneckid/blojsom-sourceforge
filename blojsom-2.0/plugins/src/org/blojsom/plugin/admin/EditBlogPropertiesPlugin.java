@@ -58,7 +58,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.14 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.15 2004-02-18 00:59:37 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -158,6 +158,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
                     blog.setBlogDefaultCategoryMappingForFlavor(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP, flavorCategoryMapping);
                 }
             }
+
+            String categoryMapping = BlojsomUtils.getRequestValue(BLOG_DEFAULT_CATEGORY_MAPPING_IP, httpServletRequest);
+            categoryMapping = BlojsomUtils.normalize(categoryMapping);
+            blog.setBlogDefaultCategoryMappings(BlojsomUtils.parseCommaList(categoryMapping));
 
             user.setBlog(blog);
 
