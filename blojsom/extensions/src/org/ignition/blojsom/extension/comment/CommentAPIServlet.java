@@ -71,10 +71,10 @@ import java.util.Properties;
 /**
  * blojsom Comment API Implementation
  *
- * Comment API Specification can be found at http://wellformedweb.org/story/9
+ * Comment API Specification can be found at <a href="http://wellformedweb.org/story/9">http://wellformedweb.org/story/9</a>
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.4 2003-04-21 01:09:14 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.5 2003-04-22 01:52:14 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
