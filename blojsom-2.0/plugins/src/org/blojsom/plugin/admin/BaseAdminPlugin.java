@@ -52,7 +52,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.1 2003-10-21 03:34:33 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.2 2003-10-22 02:40:33 czarneckid Exp $
  */
 public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -99,11 +99,11 @@ public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants
         // Check first to see if someone has requested to logout
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action != null && LOGOUT_ACTION.equals(action)) {
-            httpSession.removeAttribute(BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY);
+            httpSession.removeAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY);
         }
 
         // Otherwise, check for the authenticated key and if not authenticated, look for a "username" and "password" parameter
-        if (httpSession.getAttribute(BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY) == null) {
+        if (httpSession.getAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY) == null) {
             String username = httpServletRequest.getParameter(BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM);
             String password = httpServletRequest.getParameter(BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM);
 
@@ -114,7 +114,7 @@ public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants
 
             // Check the username and password against the blog authorization
             if (blog.checkAuthorization(username, password)) {
-                httpSession.setAttribute(BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
+                httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
                 _logger.debug("Passed authentication for username: " + username);
                 return true;
             } else {
@@ -122,7 +122,7 @@ public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants
                 return false;
             }
         } else {
-            return ((Boolean) httpSession.getAttribute(BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
+            return ((Boolean) httpSession.getAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
     }
 
