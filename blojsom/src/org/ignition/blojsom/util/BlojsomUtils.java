@@ -38,6 +38,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * BlojsomUtils
@@ -366,4 +368,70 @@ public class BlojsomUtils implements BlojsomConstants {
             return s1.compareTo(s2);
         }
     };
+
+    static final byte HEX_DIGITS[] = {
+        (byte) '0', (byte) '1', (byte) '2', (byte) '3',
+        (byte) '4', (byte) '5', (byte) '6', (byte) '7',
+        (byte) '8', (byte) '9', (byte) 'a', (byte) 'b',
+        (byte) 'c', (byte) 'd', (byte) 'e', (byte) 'f'
+    };
+
+
+    /**
+     * Performs an MD5 Digest onthe given String content
+     *
+     * @param data Content to digest
+     * @return The Hash as Hex String
+     */
+    public static String digestString(String data) {
+        try {
+            MessageDigest _md = MessageDigest.getInstance("MD5");
+            _md.update(data.getBytes());
+            byte[] _digest = _md.digest();
+            String _ds = toHexString(_digest, 0, _digest.length);
+            return _ds;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+
+    /**
+     * Convert Byte Array to Hex Value
+     * @param buf Byte Array to convert to Hex Value
+     * @param offset Starting Offset for Conversion
+     * @param length Length to convery
+     * @param value Hex Value
+     */
+    private static void toHexValue(byte[] buf, int offset, int length, int value) {
+        do {
+            buf[offset + --length] = HEX_DIGITS[value & 0x0f];
+            value >>>= 4;
+        } while (value != 0 && length > 0);
+
+        while (--length >= 0) {
+            buf[offset + length] = HEX_DIGITS[0];
+        }
+    }
+
+
+    /**
+     * Convert a Byte  Array to a Hex String
+     * @param buf Byte Array to convert to Hex String
+     * @param offset Starting Offset for Conversion
+     * @param length Length to convery
+     * @return A Hex String representing the byte array
+     */
+    public static String toHexString(byte[] buf, int offset, int length) {
+        byte[] buf1 = new byte[length * 2];
+        for (int i = 0; i < length; i++) {
+            toHexValue(buf1, i * 2, 2, buf[i + offset]);
+        }
+        return new String(buf1);
+    }
+
+
 }
