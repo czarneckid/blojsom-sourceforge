@@ -52,14 +52,14 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.3 2003-09-25 15:07:32 intabulas Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
     /**
      * Request parameter for the "query"
      */
-    private static final String QUERY_PARAM = "query";
+    public static final String QUERY_PARAM = "query";
 
     private Log _logger = LogFactory.getLog(SimpleSearchPlugin.class);
 
