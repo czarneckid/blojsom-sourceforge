@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.7 2003-10-21 03:35:24 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.8 2003-10-21 03:37:45 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -929,12 +929,17 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Turn an array of strings into a single string separated by commas
+     * Turn an array of strings into a single string separated by commas. If the incoming array is null, this
+     * method returns the <code>null</code> string.
      *
      * @param array Array of strings
-     * @return Single string containing all the strings from the original array separated by commas
+     * @return Single string containing all the strings from the original array separated by commas, or <code>null</code> if the input was null.
      */
     public static String arrayOfStringsToString(String[] array) {
+        if (array == null) {
+            return null;
+        }
+
         StringBuffer result = new StringBuffer();
         String element;
         for (int i = 0; i < array.length; i++) {
