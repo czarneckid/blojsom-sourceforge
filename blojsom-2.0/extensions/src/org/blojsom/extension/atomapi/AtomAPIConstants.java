@@ -38,7 +38,7 @@ package org.blojsom.extension.atomapi;
  * AtomAPIConstants
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIConstants.java,v 1.3 2004-07-25 16:35:23 czarneckid Exp $
+ * @version $Id: AtomAPIConstants.java,v 1.4 2004-10-26 19:07:20 czarneckid Exp $
  * @since blojsom 2.0
  */
 public interface AtomAPIConstants {
@@ -46,7 +46,7 @@ public interface AtomAPIConstants {
     /**
      * Default file extension for blog entries written via AtomAPI
      */
-    static final String DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION = ".txt";
+    static final String DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION = ".html";
 
     /**
      * Initialization parameter for setting blog entries written via AtomAPI

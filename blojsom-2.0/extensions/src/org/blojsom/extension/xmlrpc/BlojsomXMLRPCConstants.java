@@ -38,14 +38,14 @@ package org.blojsom.extension.xmlrpc;
  * BlojsomXMLRPCConstants
  *
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCConstants.java,v 1.3 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCConstants.java,v 1.4 2004-10-26 19:08:19 czarneckid Exp $
  */
 public interface BlojsomXMLRPCConstants {
 
     /**
      * Default file extension for blog entries written via XML-RPC
      */
-    public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
+    public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".html";
 
     /**
      * Default XML-RPC handler key for the Apache XML-RPC library
