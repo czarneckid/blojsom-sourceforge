@@ -57,12 +57,18 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.30 2003-06-12 02:08:40 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.31 2003-07-06 22:25:39 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
+
+    private static final String MEMBER_DESCRIPTION = "description";
+    private static final String MEMBER_HTML_URL = "htmlUrl";
+    private static final String MEMBER_RSS_URL = "rssUrl";
+    private static final String MEMBER_TITLE = "title";
+    private static final String MEMBER_LINK = "link";
 
     public static final String API_PREFIX = "metaWeblog";
 
@@ -128,31 +134,31 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         if (_blog.checkAuthorization(userid, password)) {
             Hashtable result;
 
-            BlogCategory[] _categories = _fetcher.fetchCategories(null);
+            BlogCategory[] categories = _fetcher.fetchCategories(null);
 
-            if (_categories != null) {
-                result = new Hashtable(_categories.length);
+            if (categories != null) {
+                result = new Hashtable(categories.length);
 
-                for (int x = 0; x < _categories.length; x++) {
-                    Hashtable _catlist = new Hashtable(3);
-                    BlogCategory _category = _categories[x];
+                for (int x = 0; x < categories.length; x++) {
+                    Hashtable catlist = new Hashtable(3);
+                    BlogCategory category = categories[x];
 
-                    String _blogid = _category.getCategory();
-                    if (_blogid.length() > 1) {
-                        _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                    String categoryId = category.getCategory();
+                    if (categoryId.length() > 1) {
+                        categoryId = BlojsomUtils.removeInitialSlash(categoryId);
                     }
 
-                    String _description = "No Category Metadata Found";
-                    Map _metadata = _category.getMetaData();
-                    if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
-                        _description = (String) _metadata.get(DESCRIPTION_KEY);
+                    String description = "No Category Metadata Found";
+                    Map metadata = category.getMetaData();
+                    if (metadata != null && metadata.containsKey(DESCRIPTION_KEY)) {
+                        description = (String) metadata.get(DESCRIPTION_KEY);
                     }
 
-                    _catlist.put("description", _description);
-                    _catlist.put("htmlUrl", _category.getCategoryURL());
-                    _catlist.put("rssUrl", _category.getCategoryURL() + "?flavor=rss");
+                    catlist.put(MEMBER_DESCRIPTION, description);
+                    catlist.put(MEMBER_HTML_URL, category.getCategoryURL());
+                    catlist.put(MEMBER_RSS_URL, category.getCategoryURL() + "?flavor=rss");
 
-                    result.put(_blogid, _catlist);
+                    result.put(categoryId, catlist);
                 }
             } else {
                 throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
@@ -204,30 +210,30 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 Map fetchMap = new HashMap();
                 fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
-                BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
+                BlogEntry[] entries = _fetcher.fetchEntries(fetchMap);
 
-                if (_entries != null && _entries.length > 0) {
-                    BlogEntry _entry = _entries[0];
+                if (entries != null && entries.length > 0) {
+                    BlogEntry entry = entries[0];
 
                     try {
                         Hashtable postcontent = struct;
 
-                        String _title = (String) postcontent.get("title");
-                        String _description = (String) postcontent.get("description");
+                        String title = (String) postcontent.get(MEMBER_TITLE);
+                        String description = (String) postcontent.get(MEMBER_DESCRIPTION);
 
-                        if (_title == null) {
-                            _title = "No Title";
+                        if (title == null) {
+                            title = "No Title";
                         }
 
-                        String hashable = _description;
+                        String hashable = description;
 
-                        if (_description.length() > MAX_HASHABLE_LENGTH) {
+                        if (description.length() > MAX_HASHABLE_LENGTH) {
                             hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
                         }
 
-                        _entry.setTitle(_title);
-                        _entry.setDescription(_description);
-                        _entry.save(_blog);
+                        entry.setTitle(title);
+                        entry.setDescription(description);
+                        entry.save(_blog);
                         result = true;
                     } catch (BlojsomException e) {
                         _logger.error(e);
@@ -275,16 +281,16 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
                 Hashtable postcontent = struct;
 
-                String _title = (String) postcontent.get("title");
-                String _description = (String) postcontent.get("description");
+                String title = (String) postcontent.get(MEMBER_TITLE);
+                String description = (String) postcontent.get(MEMBER_DESCRIPTION);
 
-                if (_title == null) {
-                    _title = "No Title";
+                if (title == null) {
+                    title = "No Title";
                 }
 
-                String hashable = _description;
+                String hashable = description;
 
-                if (_description.length() > MAX_HASHABLE_LENGTH) {
+                if (description.length() > MAX_HASHABLE_LENGTH) {
                     hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
                 }
 
@@ -293,8 +299,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
-                StringBuffer _post = new StringBuffer();
-                _post.append(_title).append("\n").append(_description);
+                StringBuffer post = new StringBuffer();
+                post.append(title).append("\n").append(description);
 
                 try {
                     File sourceFile = new File(outputfile);
@@ -305,7 +311,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
                     entry.setCategory(blogid);
-                    entry.setDescription(_post.toString());
+                    entry.setDescription(post.toString());
                     blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(_blog);
@@ -334,7 +340,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @throws XmlRpcException
      */
     public Object getPost(String postid, String userid, String password) throws Exception {
-        _logger.debug("getPost() Called =========[ UNSUPPORTED ]=====");
+        _logger.debug("getPost() Called =========[ SUPPORTED ]=====");
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
