@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
+	<head>
+		#parse( "asual-head.vm" )
+	</head>
+	<body>
+		<div id="main">
+			<!-- Header -->
+			#parse( "asual-header.vm" )
+			<!-- Content -->
+			<div id="content">
+				<div id="chead"></div>
+				<div id="cbody">
+					#parse( "asual-nav.vm" )
+					<!-- Entries -->
+					<div id="entries">
+						#set( $totalEntries = 0)
+						#foreach ($entry in $BLOJSOM_ENTRIES)
+							#parse( "asual-entry.vm" )
+							<p>[<a href="$entryLink?tb=y" title="Trackback">Trackback</a>]</p>
+							<div>
+								#foreach ($entryTrackback in $entry.getTrackbacks())
+
+									<div class="trackback">
+
+										<span class="blue">Left on $BLOJSOM_DATE_FORMAT.format( $entryTrackback.getTrackbackDate() ) by <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span>
+										#if ($entryTrackback.getTitle()) <a href="$entryTrackback.getUrl()">$entryTrackback.getTitle()</a> #end<br />
+										#if ($entryTrackback.getExcerpt()) $entryTrackback.getExcerpt() #end
+
+									</div>
+								#end
+
+							</div>
+						#end
+
+					</div>
+					<div id="column">
+						#parse( "asual-column.vm" )
+					</div>
+				</div>
+				<div id="cfoot"></div>
+			</div>
+			<!-- Footer -->
+			#parse( "asual-footer.vm" )
+		</div>
+	</body>
+</html>
+

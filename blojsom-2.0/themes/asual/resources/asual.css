@@ -1,0 +1,313 @@
+body {
+	font: 70% 'Lucida Sans Unicode', 'Lucida Grande', 'Bitstream Vera Sans', 'Trebuchet MS', Geneva, Arial, sans-serif;
+	background: #FFFFFF url(asual-bg.jpg) repeat-x;
+	color: #000000;
+	text-align: center;
+}
+body, div, h1, h2, h3, h4, p, form, img, ul, li {
+	margin: 0;
+	padding: 0;
+}
+img {
+	border: 0;
+}
+input, textarea, select {
+	font: 100% 'Lucida Sans Unicode', 'Lucida Grande', 'Bitstream Vera Sans', 'Trebuchet MS', Geneva, Arial, sans-serif;
+}
+textarea {
+	width: 300px;
+}
+a {
+	color: #365483;
+}
+a:visited {
+	color: #333333;
+}
+a:hover {
+	color: #CC0000;
+}
+#main {
+	width: 760px;
+	margin: 0 auto;
+	text-align: left;
+	clear: both;
+}
+#header{
+	width: 760px;
+	height: 80px;
+}
+#header h1 {
+	float: left;
+	margin: 26px 0 16px 36px;
+	display: inline;
+	font-size: 100%;
+}
+#header h1 a {
+	font-size: 200%;
+	display: block;
+	text-decoration: none;
+	color: #365483;
+	margin-left: -1px;
+}
+#header h1 a:hover {
+	color: #CC0000;
+}
+#header h1 span {
+	font-size: 120%;
+	font-weight: normal;
+}
+#footer {
+	width: 760px;
+	clear: both;
+	margin-bottom: 30px;
+}
+#footer p {
+	font-size: 84%;
+}
+#copyright {
+	float: left;
+	padding-left: 36px;
+}
+#info {
+	float: right;
+	padding-right: 38px;
+}
+#info a {
+	color: #000000;
+}
+#info a:hover {
+	color: #365483;
+}
+#content {
+	width: 760px;
+	background: url(asual-content.jpg) repeat-y;
+	clear: both;
+}
+#content h3 {
+	font-size: 120%;
+	color: #365483;
+}
+#chead {
+	background: #FFFFFF url(asual-chead.jpg) no-repeat;
+	width: 760px;
+	height: 28px;
+}
+#cfoot {
+	background: #FFFFFF url(asual-cfoot.jpg) no-repeat left bottom;
+	width: 760px;
+	height: 26px;
+	clear: both;
+	margin-top: 10px;
+}
+#cbody {
+	background: url(asual-cbody.jpg) repeat-x;
+	width: auto;
+	height: 200px;
+	margin: 0 11px;
+	padding: 0 25px;
+}
+#cbody h2 {
+	font-size: 140%;
+	font-weight: normal;
+	float: left;
+	margin-bottom: 10px;
+}
+#cbody h2 a {
+	color: #333333;
+	text-decoration: none;
+}
+#cbody h2 a:hover {
+	color: #CC0000;
+}
+#nav {
+	float: right;
+	margin-bottom: 10px;
+}
+#clear {
+	clear: both;
+}
+#entries {
+	width: 100%;
+	float: left; 
+	clear: both;
+	margin: 10px -22em 0 0;
+}
+#column {
+	width: 20em; 
+	float: right;
+	margin-top: 10px;
+}
+#column div {
+	display: block;
+	margin-bottom: 20px;
+}
+#column ul {
+	list-style: none;
+}
+#holder {
+	float: right;
+}
+#holder a {
+	color: #365483;
+}
+#holder a:hover {
+	color: #CC0000;
+}
+#calendar {
+	background: #F4F9FD;
+	border: 1px solid #365483;
+	width: auto;
+	padding: 5px;
+}
+#calendar caption {
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+	color: #365483;
+	margin: 0 auto 5px;
+}
+#calendar thead th {
+	text-align: center;
+	width: 15%;	
+}
+#calendar tfoot td {
+	text-align: center;
+}
+#calendar tfoot a {
+	color: #365483;
+}
+#calendar tfoot a:hover {
+	color: #CC0000;
+}
+#calendar tbody td {
+	text-align: center;
+}
+#calendar tbody a {
+	background: #365483;
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+	color: #FFFFFF;
+	display: block;
+}
+#calendar tbody a:hover {
+	color: #FFFFFF;
+	background: #CC0000;
+}
+#searchbox {
+	clear: right;
+	float: right;
+	width: 14em;
+	text-align: right;
+	border: 0;
+	margin: 26px 34px 0 0;
+	display: inline;
+}
+#searchlabel {
+	margin: 0 0 4px 0;
+}
+#searchimg {
+	float: right;
+	margin-right: 2px;
+}
+#searchimg input {
+	border: 0;
+	padding: 0;
+}
+#searchfield {
+	float: right;
+}
+#searchfield input {
+	border: 1px solid #365483;
+	width: 10em;
+	padding: 1px;
+}
+#blojsom {
+	margin-top: 40px;
+}
+div.entry {
+	padding: 0;
+	margin: 0 23em 3em 0;
+}
+div.entry h3 {
+	border-bottom: 1px solid #365483;
+}
+div.entry h3 a, div.entry h3 a:visited {
+	color: #365483;
+	text-decoration: none;
+}
+div.entry h3 a:hover {
+	color: #CC0000;
+}
+div.entry div, div.entry p {
+	line-height: 18px;
+	margin-bottom: 16px;
+}
+div.entry span {
+	margin-right: 4px;
+}
+div.entry li {
+	padding-left: 10px;
+	list-style: none;
+	background: url(asual-disc.jpg) no-repeat 0 50%;
+}
+div.comment {
+	padding: 0;
+	margin: 0 0 20px 0;
+}
+div.trackback {
+	margin: 20px 0;
+}
+#comments {
+	padding: 0;
+	margin: 0 23em 3em 0;
+}
+#comments h3 {
+	font-size: 100%;
+	font-weight: bold;
+	color: #000000;
+	padding: 10px 0;
+	clear: both;
+}
+#commentform {
+	display: block;
+	margin-top: 10px;
+	padding-top: 20px;
+	border-top: 1px solid #365483;
+}
+#commentform .label {
+	width: 8em;
+	float: left;
+	clear: both;
+	margin-bottom: 5px;
+}
+#commentform .input {
+	width: 240px;
+	float: left;
+	margin-bottom: 5px;
+}
+#commentform .fixed {
+	width: 240px;
+}
+#commentform textarea {
+	overflow: auto;
+}
+#commentPreview {
+	margin-bottom: 20px;
+}
+img.emoticon {
+	vertical-align: middle
+}
+.links a, .links a:visited {
+	color: #365483;
+}
+.links a:hover {
+	color: #CC0000;
+}
+.blue {
+	display: block;
+	color: #365483;
+}
+.red {
+	color: #CC0000;
+}

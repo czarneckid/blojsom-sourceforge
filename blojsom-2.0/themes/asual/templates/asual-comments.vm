@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
+	<head>
+		#parse( "asual-head.vm" )
+		<script type="text/javascript">
+			function reloadPreviewDiv() {
+				var previewString = document.getElementById("commentText").value;
+				document.getElementById("commentPreview").innerHTML = previewString;
+			}
+		</script>
+	</head>
+	<body>
+		<div id="main">
+			<!-- Header -->
+			#parse( "asual-header.vm" )
+			<!-- Content -->
+			<div id="content">
+				<div id="chead"></div>
+				<div id="cbody">
+					#parse( "asual-nav.vm" )
+					<!-- Entries -->
+					<div id="entries">
+						#set( $totalEntries = 0)
+						#foreach ($entry in $BLOJSOM_ENTRIES)
+							#parse( "asual-entry.vm" )
+							<div id="comments">
+								#if ($entry.getComments())<h3>Comments on this entry:</h3>#end
+								#foreach ($entryComment in $entry.getComments())
+
+									<div class="comment">
+										<p class="blue">
+											Left on $BLOJSOM_DATE_FORMAT.format( $entryComment.getCommentDate() ) by #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end #if ($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0) (<a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>) #end
+										</p>
+										<p>
+											$entryComment.getComment()
+										</p>
+									</div>
+
+								#end
+								#set( $totalEntries = $totalEntries + 1)
+								#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+
+									<form id="commentform" method="post" action=".">
+											<p>
+												<input type="hidden" name="comment" value="y" />
+												<input type="hidden" name="page" value="comments" />
+												<input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()" />
+												<input type="hidden" name="permalink" value="$entry.getPermalink()" />
+											</p>
+											<p class="label">Author (<span class="red">*</span>):</p>
+											<p class="input"><input type="text" name="author" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end" class="fixed" /></p>
+
+											<p class="label">E-mail:</p>
+											<p class="input"><input type="text" name="authorEmail" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end" class="fixed" /></p>
+
+											<p class="label">URL: </p>
+											<p class="input"><input type="text" name="authorURL" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end" class="fixed" /></p>
+
+											<p class="label">Comment (<span class="red">*</span>):</p>
+											<p class="input"><textarea name="commentText" id="commentText" rows="7" cols="55" onkeyup="reloadPreviewDiv();" class="fixed"></textarea></p>
+
+											<p class="label">&nbsp;</p>
+											<p class="input"><input type="checkbox" name="remember" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)checked #end /> Remember me?</p>
+
+											<p class="label">&nbsp;</p>
+											<p class="input"><input type="submit" name="submit" value="Comment" /><input type="reset" name="reset" value="Reset" /></p>
+									</form>
+
+									<h3>Live Comment Preview:</h3>
+									<div id="commentPreview">&nbsp;</div>
+
+								#end
+
+							</div>
+						#end
+
+					</div>
+					<div id="column">
+						#parse( "asual-column.vm" )
+					</div>
+				</div>
+				<div id="cfoot"></div>
+			</div>
+			<!-- Footer -->
+			#parse( "asual-footer.vm" )
+		</div>
+	</body>
+</html>
+
