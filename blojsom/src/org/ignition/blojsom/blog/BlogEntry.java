@@ -48,7 +48,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.35 2003-05-31 18:40:45 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.36 2003-05-31 21:28:46 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -399,6 +399,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     /**
      * Set any attributes of the blog entry using data from the map.
      *
+     * @since blojsom 1.9
      * @param attributeMap Attributes
      */
     public void setAttributes(Map attributeMap) {
