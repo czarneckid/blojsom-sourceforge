@@ -366,7 +366,7 @@
     
     <!-- deploy the site -->
      <target name="deploysite"
-  		if="forrest.site.work.dir" >
+  		 >
   		
    <!-- property to build and deploy the forrest site -->
     <property name="forrest.site.dir" location="build/site"/>
