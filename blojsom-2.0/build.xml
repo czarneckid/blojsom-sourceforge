@@ -462,7 +462,7 @@
         </zip>
     </target>
 
-    <target name="create-distribution" depends="clean, war, create-addon-bundle, create-source-distribution, create-themes-bundle"
+    <target name="create-distribution" depends="clean, create-addon-bundle, create-source-distribution, create-themes-bundle"
         description="Create the WAR, add-on bundle, and source distribution">
     </target>
 
