@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.28 2004-11-22 17:00:50 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.29 2004-11-24 15:25:46 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -972,5 +972,15 @@ public class Blog implements BlojsomConstants {
     public void setBlogAdministrationLocale(String blogAdministrationLocale) {
         _blogAdministrationLocale = blogAdministrationLocale;
         _blogProperties.put(BLOG_ADMINISTRATION_LOCALE_IP, _blogAdministrationLocale);
+    }
+
+    /**
+     * Retrive a {@link Locale} object from the blog's language and country settings
+     *
+     * @return {@link Locale} object from the blog's language and country settings
+     * @since blojsom 2.21
+     */
+    public Locale getBlogLocale() {
+        return new Locale(_blogLanguage, _blogCountry);
     }
 }
