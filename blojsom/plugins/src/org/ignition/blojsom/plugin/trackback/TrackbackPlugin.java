@@ -56,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.20 2003-04-19 02:44:46 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.21 2003-05-12 01:43:06 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -100,12 +100,12 @@ public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
     /**
      * Trackback success page
      */
-    private static final String TRACKBACK_SUCCESS_PAGE = "trackback-success";
+    private static final String TRACKBACK_SUCCESS_PAGE = "/trackback-success";
 
     /**
      * Trackback failure page
      */
-    private static final String TRACKBACK_FAILURE_PAGE = "trackback-failure";
+    private static final String TRACKBACK_FAILURE_PAGE = "/trackback-failure";
 
     private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
 
