@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.53 2003-05-24 17:46:12 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.54 2003-05-25 15:54:29 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -578,7 +578,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         try {
-            return URLEncoder.encode(input, "UTF-8");
+            return URLEncoder.encode(input, UTF8);
         } catch (UnsupportedEncodingException e) {
             return input;
         }
@@ -596,7 +596,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         try {
-            return URLDecoder.decode(input, "UTF-8");
+            return URLDecoder.decode(input, UTF8);
         } catch (UnsupportedEncodingException e) {
             return null;
         }
@@ -762,7 +762,7 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param servletConfig Servlet configuration
      * @param configurationIP Name of the file to load the properties from
-     * @param required If the properties file required.
+     * @param required If the properties file is required
      * @since blojsom 1.9
      *
      * @return Properties from the file. NEVER returns null.
