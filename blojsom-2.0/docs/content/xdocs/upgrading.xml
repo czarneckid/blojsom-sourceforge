@@ -9,6 +9,18 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.11 to blojsom 2.12</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
+                        blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.12.jar,
+                        blojsom-extensions-2.12.jar, blojsom-plugins-2.12.jar files, and blojsom-plugins-templates-2.12.jar.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.10 to blojsom 2.11</title>
                 <section>
                     <title>Library changes</title>
