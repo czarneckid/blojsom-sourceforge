@@ -44,6 +44,7 @@ import org.ignition.blojsom.blog.FileBackedBlogEntry;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 
 import java.io.*;
 import java.util.*;
@@ -54,9 +55,11 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.21 2003-05-15 00:49:37 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.22 2003-05-22 03:11:12 czarneckid Exp $
  */
-public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
+public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
+
+    private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
 
     public static final String API_PREFIX = "blogger";
 
@@ -69,7 +72,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * Blogger API "url" key
      */
     private static final String MEMBER_URL = "url";
-
 
     /**
      * Blogger API "blogid" key
@@ -100,7 +102,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * Blogger API "dateCreated" key
      */
     private static final String MEMBER_DATECREATED = "dateCreated";
-
 
     /**
      * Blogger API "authorName" key
@@ -137,13 +138,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      */
     private static final String MEMBER_LASTNAME = "lastname";
 
-
     private Blog _blog;
-
     private BlojsomFetcher _fetcher;
-
-    private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
-
+    private String _blogEntryExtension;
 
     /**
      * Default constructor
@@ -168,6 +165,10 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      */
     public void setBlog(Blog bloginstance) {
         _blog = bloginstance;
+        _blogEntryExtension = _blog.getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
+        if (_blogEntryExtension == null || "".equals(_blogEntryExtension)) {
+            _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
+        }
     }
 
     /**
@@ -195,7 +196,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             }
             directory.delete();
         }
-
     }
 
     /**
@@ -514,7 +514,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 }
 
                 String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
-                String filename = baseFilename + ".txt";
+                String filename = baseFilename + _blogEntryExtension;
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 

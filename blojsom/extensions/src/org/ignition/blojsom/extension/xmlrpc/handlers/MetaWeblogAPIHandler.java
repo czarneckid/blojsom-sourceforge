@@ -44,6 +44,7 @@ import org.ignition.blojsom.blog.FileBackedBlogEntry;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 
 import java.io.*;
 import java.util.Hashtable;
@@ -57,9 +58,9 @@ import java.util.Properties;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.21 2003-05-15 00:49:36 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.22 2003-05-22 03:11:24 czarneckid Exp $
  */
-public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
+public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
@@ -68,6 +69,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
     private Blog _blog;
     private BlojsomFetcher _fetcher;
+    private String _blogEntryExtension;
 
     private Log _logger = LogFactory.getLog(MetaWeblogAPIHandler.class);
 
@@ -94,6 +96,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      */
     public void setBlog(Blog bloginstance) {
         _blog = bloginstance;
+        _blogEntryExtension = _blog.getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
+        if (_blogEntryExtension == null || "".equals(_blogEntryExtension)) {
+            _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
+        }
     }
 
     /**
@@ -281,7 +287,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 }
 
                 String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
-                String filename = baseFilename + ".txt";
+                String filename = baseFilename + _blogEntryExtension;
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
