@@ -80,7 +80,7 @@
              dc:description="<%=blogDescription%>"
              dc:creator="<%= blogInformation.getBlogOwner() %>"
              dc:date="<%= blogEntry.getISO8601Date()%>"
-             trackback:ping="<%= blogEntry.getLink()%>&amp;tb=y" />
+             trackback:ping="<%= blogEntry.getLink()%>&tb=y" />
      </rdf:RDF>
 -->
 

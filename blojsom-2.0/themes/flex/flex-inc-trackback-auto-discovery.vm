@@ -16,6 +16,6 @@
             dc:description="$blogDescription"
             dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
             dc:date="$entry.getISO8601Date()"
-            trackback:ping="$entry.getLink()&amp;tb=y" />
+            trackback:ping="$entry.getLink()&tb=y" />
       </rdf:RDF>
 -->
