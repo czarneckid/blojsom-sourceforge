@@ -27,6 +27,13 @@
                 to be consistent with the naming convention in other classes.
             </action>
 
+            <action dev="czarneckid" type="update" context="Core">
+                The <i>blog-directory-depth</i> parameter can now be overridden by
+                specifying "depth" as a URL parameter. If this URL parameter is not present, it will
+                use the value of the <i>blog-directory-depth</i> parameter that has been
+                specified in <i>/WEB-INF/blojsom.properties</i>.
+            </action>
+
             <!-- Plugin changes -->
             <action dev="czarneckid" type="add" context="Plugin">
                 Duration of "remember me" cookies for the comment plugin can be configured

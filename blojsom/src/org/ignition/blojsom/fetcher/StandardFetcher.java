@@ -55,19 +55,21 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.25 2003-06-17 03:56:30 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.26 2003-07-22 01:38:21 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
     protected Log _logger = LogFactory.getLog(StandardFetcher.class);
     protected Blog _blog;
 
+    protected static final String DEPTH_PARAM = "depth";
     protected static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     protected static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
     protected static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
     protected static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
 
     protected static final String STANDARD_FETCHER_CATEGORY = "STANDARD_FETCHER_CATEGORY";
+    protected static final String STANDARD_FETCHER_DEPTH = "STANDARD_FETCHER_DEPTH";
 
     /**
      * Default constructor
@@ -239,12 +241,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      *
      * @param flavor Requested flavor
      * @param maxBlogEntries Maximum number of entries to retrieve per category
+     * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return Blog entry array containing the list of blog entries for the categories
      * or <code>BlogEntry[0]</code> if there are no entries
      */
-    protected BlogEntry[] getEntriesAllCategories(String flavor, int maxBlogEntries) {
+    protected BlogEntry[] getEntriesAllCategories(String flavor, int maxBlogEntries, int blogDirectoryDepth) {
         if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
-            return getEntriesAllCategories(_blog.getBlogDefaultCategoryMappings(), maxBlogEntries);
+            return getEntriesAllCategories(_blog.getBlogDefaultCategoryMappings(), maxBlogEntries, blogDirectoryDepth);
         } else {
             String flavorMappingKey = flavor + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
             String categoryMappingForFlavor = (String) _blog.getBlogProperties().get(flavorMappingKey);
@@ -256,7 +259,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 _logger.debug("Fallback to default category mappings for flavor: " + flavor);
                 categoryMappingsForFlavor = _blog.getBlogDefaultCategoryMappings();
             }
-            return getEntriesAllCategories(categoryMappingsForFlavor, maxBlogEntries);
+            return getEntriesAllCategories(categoryMappingsForFlavor, maxBlogEntries, blogDirectoryDepth);
         }
     }
 
@@ -268,14 +271,15 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @param categoryFilter If <code>null</code>, a list of all the categories is retrieved, otherwise only
      * the categories in the list will be used to search for entries
      * @param maxBlogEntries Maximum number of blog entries to retrieve from each category
+     * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return Blog entry array containing the list of blog entries for the categories
      * or <code>BlogEntry[0]</code> if there are no entries
      */
-    protected BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int maxBlogEntries) {
+    protected BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int maxBlogEntries, int blogDirectoryDepth) {
         BlogCategory[] blogCategories = null;
 
         if (categoryFilter == null) {
-            blogCategories = getBlogCategories();
+            blogCategories = getBlogCategories(blogDirectoryDepth);
         } else {
             blogCategories = new BlogCategory[categoryFilter.length];
             for (int i = 0; i < categoryFilter.length; i++) {
@@ -372,6 +376,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                                     Map context) throws BlojsomFetcherException {
         BlogCategory category = (BlogCategory) context.get(STANDARD_FETCHER_CATEGORY);
         context.remove(STANDARD_FETCHER_CATEGORY);
+        int blogDirectoryDepth = ((Integer) context.get(STANDARD_FETCHER_DEPTH)).intValue();
+        context.remove(STANDARD_FETCHER_DEPTH);
 
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
@@ -391,7 +397,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return getPermalinkEntry(category, permalink);
         } else {
             if (category.getCategory().equals("/")) {
-                return getEntriesAllCategories(flavor, -1);
+                return getEntriesAllCategories(flavor, -1, blogDirectoryDepth);
             } else {
                 return getEntriesForCategory(category, -1);
             }
@@ -429,7 +435,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         if (fetchParameters.containsKey(FETCHER_CATEGORY) && fetchParameters.containsKey(FETCHER_PERMALINK)) {
             return getPermalinkEntry((BlogCategory) fetchParameters.get(FETCHER_CATEGORY), (String) fetchParameters.get(FETCHER_PERMALINK));
         } else if (fetchParameters.containsKey(FETCHER_FLAVOR) && fetchParameters.containsKey(FETCHER_NUM_POSTS_INTEGER)) {
-            return getEntriesAllCategories((String) fetchParameters.get(FETCHER_FLAVOR), ((Integer) fetchParameters.get(FETCHER_NUM_POSTS_INTEGER)).intValue());
+            return getEntriesAllCategories((String) fetchParameters.get(FETCHER_FLAVOR), ((Integer) fetchParameters.get(FETCHER_NUM_POSTS_INTEGER)).intValue(), _blog.getBlogDepth());
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY) && fetchParameters.containsKey(FETCHER_NUM_POSTS_INTEGER)) {
             return getEntriesForCategory((BlogCategory) fetchParameters.get(FETCHER_CATEGORY), ((Integer) fetchParameters.get(FETCHER_NUM_POSTS_INTEGER)).intValue());
         }
@@ -441,13 +447,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * Build a list of blog categories recursively
      *
      * @param blogDepth Depth at which the current iteration is running
+     * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @param blogDirectory Directory in which the current iteration is running
      * @param categoryList Dynamic list of categories that gets added to as it explores directories
      */
-    protected void recursiveCategoryBuilder(int blogDepth, String blogDirectory, ArrayList categoryList) {
+    protected void recursiveCategoryBuilder(int blogDepth, int blogDirectoryDepth, String blogDirectory, ArrayList categoryList) {
         blogDepth++;
-        if (_blog.getBlogDepth() != INFINITE_BLOG_DEPTH) {
-            if (blogDepth == _blog.getBlogDepth()) {
+        if (blogDirectoryDepth != INFINITE_BLOG_DEPTH) {
+            if (blogDepth == blogDirectoryDepth) {
                 return;
             }
         }
@@ -478,7 +485,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         } else {
             for (int i = 0; i < directories.length; i++) {
                 File directory = directories[i];
-                recursiveCategoryBuilder(blogDepth, directory.toString(), categoryList);
+                recursiveCategoryBuilder(blogDepth, blogDirectoryDepth, directory.toString(), categoryList);
             }
         }
     }
@@ -486,11 +493,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Return a list of categories for the blog that are appropriate in a hyperlink
      *
+     * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return List of BlogCategory objects
      */
-    protected BlogCategory[] getBlogCategories() {
+    protected BlogCategory[] getBlogCategories(int blogDirectoryDepth) {
         ArrayList categoryList = new ArrayList();
-        recursiveCategoryBuilder(-1, _blog.getBlogHome(), categoryList);
+        recursiveCategoryBuilder(-1, blogDirectoryDepth, _blog.getBlogHome(), categoryList);
         return (BlogCategory[]) (categoryList.toArray(new BlogCategory[categoryList.size()]));
     }
 
@@ -499,12 +507,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * the "/" category is requested, <code>null</code> is returned. Up the hierarchy, only
      * the parent categories are returned. Down the hierarchy from the current category, all
      * children are returned while obeying the <code>blog-directory-depth</code> parameter.
-     * @param currentCategory Current category in the blog category hierarchy
      *
+     * @param currentCategory Current category in the blog category hierarchy
+     * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return List of blog categories or <code>null</code> if "/" category is requested or there
      * are no sub-categories
      */
-    protected BlogCategory[] getBlogCategoryHierarchy(BlogCategory currentCategory) {
+    protected BlogCategory[] getBlogCategoryHierarchy(BlogCategory currentCategory, int blogDirectoryDepth) {
         if (currentCategory.getCategory().equals("/")) {
             return null;
         }
@@ -529,7 +538,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             }
         }
 
-        recursiveCategoryBuilder(-1, _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(currentCategory.getCategory()), categoryList);
+        recursiveCategoryBuilder(-1, blogDirectoryDepth,  _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(currentCategory.getCategory()), categoryList);
         for (int i = 0; i < categoryList.size(); i++) {
             category = (BlogCategory) categoryList.get(i);
             if (!category.getCategory().equals(currentCategory.getCategory())) {
@@ -573,10 +582,23 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         context.put(STANDARD_FETCHER_CATEGORY, category);
         context.put(BLOJSOM_REQUESTED_CATEGORY, category);
 
+        String depthParam;
+        int blogDirectoryDepth = _blog.getBlogDepth();
+        depthParam = httpServletRequest.getParameter(DEPTH_PARAM);
+        if (depthParam != null || !"".equals(depthParam)) {
+            try {
+                blogDirectoryDepth = Integer.parseInt(depthParam);
+            } catch (NumberFormatException e) {
+                blogDirectoryDepth = _blog.getBlogDepth();
+            }
+        }
+
+        context.put(STANDARD_FETCHER_DEPTH, new Integer(blogDirectoryDepth));
+
         if (category.getCategory().equals("/")) {
-            categories = getBlogCategories();
+            categories = getBlogCategories(blogDirectoryDepth);
         } else {
-            categories = getBlogCategoryHierarchy(category);
+            categories = getBlogCategoryHierarchy(category, blogDirectoryDepth);
         }
 
         return categories;
@@ -610,13 +632,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     public BlogCategory[] fetchCategories(Map fetchParameters) throws BlojsomFetcherException {
         if (fetchParameters == null) {
-            return getBlogCategories();
+            return getBlogCategories(_blog.getBlogDepth());
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY)) {
             BlogCategory category = (BlogCategory) fetchParameters.get(FETCHER_CATEGORY);
             if (category.getCategory().equals("/")) {
-                return getBlogCategories();
+                return getBlogCategories(_blog.getBlogDepth());
             } else {
-                return getBlogCategoryHierarchy(category);
+                return getBlogCategoryHierarchy(category, _blog.getBlogDepth());
             }
         }
 
