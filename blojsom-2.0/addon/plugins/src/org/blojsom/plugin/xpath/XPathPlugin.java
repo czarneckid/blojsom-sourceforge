@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.11 2003-09-27 12:52:52 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.12 2003-09-29 01:07:40 czarneckid Exp $
  */
 public class XPathPlugin implements BlojsomPlugin {
 
@@ -91,8 +91,6 @@ public class XPathPlugin implements BlojsomPlugin {
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
         if (xpath != null && !"".equals(xpath)) {
-
-            // because I have added a leading space by mistake
             xpath = xpath.trim();
 
             _logger.debug("Attempting xpath query with: " + xpath);
@@ -108,7 +106,7 @@ public class XPathPlugin implements BlojsomPlugin {
                     foundEntries.add(entry);
                 }
             } catch (Exception e) {
-                _logger.error(e.getLocalizedMessage());
+                _logger.error(e);
             }
 
             if (foundEntries.size() == 0) {

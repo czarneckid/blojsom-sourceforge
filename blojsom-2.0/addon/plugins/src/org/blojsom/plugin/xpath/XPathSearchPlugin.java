@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathSearchPlugin.java,v 1.4 2003-09-27 12:51:08 intabulas Exp $
+ * @version $Id: XPathSearchPlugin.java,v 1.5 2003-09-29 01:07:40 czarneckid Exp $
  */
 
 public class XPathSearchPlugin extends SimpleSearchPlugin {
@@ -79,27 +79,21 @@ public class XPathSearchPlugin extends SimpleSearchPlugin {
         String query = httpServletRequest.getParameter(QUERY_PARAM);
 
         if (query != null) {
-
-            // because I have added a leading space by mistake
             query = query.trim();
-
             if (query.startsWith("/")) {
-
-
                 _logger.debug("Attempting xpath query with: " + query);
                 BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
                 List foundEntries = new ArrayList();
                 JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
                 try {
                     Iterator entryIterator = xpathcontext.iterate(query);
-
                     while (entryIterator.hasNext()) {
                         Object object = entryIterator.next();
                         BlogEntry entry = (BlogEntry) object;
                         foundEntries.add(entry);
                     }
                 } catch (Exception e) {
-                    _logger.error(e.getLocalizedMessage());
+                    _logger.error(e);
                 }
 
                 if (foundEntries.size() == 0) {
@@ -118,9 +112,5 @@ public class XPathSearchPlugin extends SimpleSearchPlugin {
         }
 
         return results;
-
-
     }
-
-
 }
