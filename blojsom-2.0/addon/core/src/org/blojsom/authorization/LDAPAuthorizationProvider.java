@@ -75,7 +75,7 @@ import java.util.Map;
  * http://www.mozilla.org/directory/.
  *
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.3 2005-02-25 04:30:14 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.4 2005-03-06 01:20:03 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider implements BlojsomConstants {
@@ -190,18 +190,22 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
             _logger.error(msg);
             throw new BlojsomException(msg);
         }
-		// otherwise, only the blog owner is allowed to login
-		else if (!blogUser.getId().equals(username)) {
-			String msg = username + " is not the owner of this blog, and only the owner (" + blogUser.getId() + ") is authorized to use this blog.";
-			_logger.error(msg);
-			throw new BlojsomException(msg);
-		}
+        // otherwise, only the blog owner is allowed to login
+        else if (!blogUser.getId().equals(username)) {
+            String msg = username + " is not the owner of this blog, and only the owner (" + blogUser.getId() + ") is authorized to use this blog.";
+            _logger.error(msg);
+            throw new BlojsomException(msg);
+        }
 
         try {
             LDAPConnection ldapConnection = new LDAPConnection();
 
             // Connect to the directory server
             ldapConnection.connect(getServer(), getPort());
+
+            if (blogUser.getBlog().getUseEncryptedPasswords().booleanValue()) {
+                password = BlojsomUtils.digestString(password);
+            }
 
             // Use simple authentication. The first argument
             // specifies the version of the LDAP protocol used.
@@ -252,7 +256,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
             String dn = res.next().getDN();
             ldapConnection.disconnect();
             _logger.debug("Successfully got user DN '" + dn + "' via LDAP.");
-            
+
             return dn;
         } catch (LDAPException e) {
             // Some exception occurred above; the search for the dn failed.
