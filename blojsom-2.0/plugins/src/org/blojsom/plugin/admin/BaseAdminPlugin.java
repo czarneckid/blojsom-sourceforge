@@ -36,19 +36,20 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
+import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.*;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
-import org.blojsom.authorization.AuthorizationProvider;
-import org.blojsom.BlojsomException;
+import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.resources.ResourceManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -56,7 +57,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.13 2004-11-16 03:12:30 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.14 2004-12-21 02:31:02 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -83,6 +84,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected ServletConfig _servletConfig;
     protected BlojsomConfiguration _blojsomConfiguration;
     protected AuthorizationProvider _authorizationProvider;
+    protected ResourceManager _resourceManager;
 
     /**
      * Default constructor.
@@ -112,6 +114,26 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         } catch (IllegalAccessException e) {
             throw new BlojsomPluginException(e);
         } catch (BlojsomConfigurationException e) {
+            throw new BlojsomPluginException(e);
+        }
+
+        String resourceManagerClass = _blojsomConfiguration.getResourceManager();
+
+        try {
+            Class resourceManagerClazz = Class.forName(resourceManagerClass);
+            _resourceManager = (ResourceManager) resourceManagerClazz.newInstance();
+            _resourceManager.init(_blojsomConfiguration);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (BlojsomException e) {
+            _logger.error(e);
             throw new BlojsomPluginException(e);
         }
     }
