@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.37 2003-03-27 02:49:33 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.38 2003-03-27 03:22:29 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -491,9 +491,13 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return an input string URL encoded
      *
      * @param url Input string
-     * @return URL encoded string or the original string if there is an encoding exception
+     * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
      */
     public static final String urlEncode(String input) {
+        if (input == null) {
+            return null;
+        }
+
         try {
             return URLEncoder.encode(input, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -505,9 +509,13 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return a URL decoded string
      *
      * @param input Input string
-     * @return URL decoded string or <code>null</code> if there is a decoding exception
+     * @return URL decoded string or <code>null</code> if either the input was null or there is a decoding exception
      */
     public static final String urlDecode(String input) {
+        if (input == null) {
+            return null;
+        }
+
         try {
             return URLDecoder.decode(input, "UTF-8");
         } catch (UnsupportedEncodingException e) {
