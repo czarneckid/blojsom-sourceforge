@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.55 2005-01-05 18:34:39 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.56 2005-01-06 03:40:04 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -138,6 +138,51 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     }
 
     /**
+     * Configure the flavors for the blog which map flavor values like "html" and "rss" to
+     * the proper template and content type
+     *
+     * @param servletConfig Servlet configuration information
+     * @param blogUser {@link BlogUser} information
+     * @since blojsom 2.22
+     */
+    protected void configureFlavorsForUser(ServletConfig servletConfig, BlogUser blogUser) throws ServletException {
+        String flavorConfiguration = servletConfig.getInitParameter(BLOJSOM_FLAVOR_CONFIGURATION_IP);
+        if (BlojsomUtils.checkNullOrBlank(flavorConfiguration)) {
+            flavorConfiguration = DEFAULT_FLAVOR_CONFIGURATION_FILE;
+        }
+
+        Map flavors = new HashMap();
+        Map flavorToTemplateMap = new HashMap();
+        Map flavorToContentTypeMap = new HashMap();
+        String user = blogUser.getId();
+
+        Properties flavorProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + flavorConfiguration);
+        try {
+            flavorProperties.load(is);
+            is.close();
+            _logger.debug("Loaded flavor information for user: " + user);
+
+            Iterator flavorIterator = flavorProperties.keySet().iterator();
+            while (flavorIterator.hasNext()) {
+                String flavor = (String) flavorIterator.next();
+                String[] flavorMapping = BlojsomUtils.parseCommaList(flavorProperties.getProperty(flavor));
+                flavors.put(flavor, flavor);
+                flavorToTemplateMap.put(flavor, flavorMapping[0]);
+                flavorToContentTypeMap.put(flavor, flavorMapping[1]);
+
+            }
+
+            blogUser.setFlavors(flavors);
+            blogUser.setFlavorToTemplate(flavorToTemplateMap);
+            blogUser.setFlavorToContentType(flavorToContentTypeMap);
+        } catch (IOException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        }
+    }
+
+    /**
      * Loads a {@link BlogUser} object for a given user ID
      *
      * @param userID User ID
@@ -171,12 +216,15 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
             userBlog = new Blog(userProperties);
             blogUser.setBlog(userBlog);
-
+            configureFlavorsForUser(_servletConfig, blogUser);
             _logger.debug("Configured blojsom user: " + blogUser.getId());
         } catch (BlojsomConfigurationException e) {
             _logger.error(e);
             return null;
         } catch (IOException e) {
+            _logger.error(e);
+            return null;
+        } catch (ServletException e) {
             _logger.error(e);
             return null;
         }
