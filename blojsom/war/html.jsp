@@ -1,7 +1,13 @@
 <%@ page import="org.ignition.blojsom.blog.Blog,
 		 org.ignition.blojsom.util.BlojsomConstants,
 		 org.ignition.blojsom.blog.BlogEntry,
-		 org.ignition.blojsom.blog.BlogCategory"
+		 org.ignition.blojsom.blog.BlogCategory,
+                 java.util.Map,
+                 java.util.HashMap,
+                 org.ignition.blojsom.plugin.referer.RefererLogPlugin,
+                 java.util.Iterator,
+                 org.ignition.blojsom.plugin.referer.BlogRefererGroup,
+                 org.ignition.blojsom.plugin.referer.BlogReferer"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
@@ -92,11 +98,43 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
     }
 %>
 
-    <p />
+    <p>
     <a href="http://blojsom.sf.net"><img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" alt="Powered By blojsom"/></a>&nbsp;&nbsp;
     <a href="<%= requestedCategory.getCategoryURL() %>?flavor=rss"><img src="<%= blogSiteURL %>/xml.gif" border="0" alt="RSS Feed"/></a>&nbsp;
     <a href="<%= requestedCategory.getCategoryURL() %>?flavor=rss2"><img src="<%= blogSiteURL %>/rss.gif" border="0" alt="RSS2 Feed"/></a>&nbsp;
     <a href="<%= requestedCategory.getCategoryURL() %>?flavor=rdf"><img src="<%= blogSiteURL %>/rdf.gif" border="0" alt="RDF Feed"/></a>
+    <p>
+
+
+<!-- Optional Code if you are using the referer plugin -->
+<% Map  refererGroups = (HashMap)request.getAttribute(RefererLogPlugin.REFERER_CONTEXT_NAME);
+
+    if( refererGroups != null ) {
+        Iterator _rgi  = refererGroups.keySet().iterator();
+        while ( _rgi.hasNext() ) {
+            String groupKey = (String)_rgi.next();
+            BlogRefererGroup group = (BlogRefererGroup)refererGroups.get(groupKey);
+            if (group.isHitCounter()) {
+            %> <p class="weblogtitle2"><%=groupKey%> hits:&nbsp;<a href="<%= blogInformation.getBlogURL()%>?&amp;page=referers" title="Referer History"><%= group.getReferralCount()%></a></p><p/><%
+            } else{
+            %> <p class="weblogtitle2"><%=groupKey%> referers today&nbsp;<span class="refererhistory">(<a href="<%= blogInformation.getBlogURL()%>?&amp;page=referers" title="Referer History"><%= group.getReferralCount()%> overall</a>)</span></p>
+               <p class="weblogdateline"> <%
+                Iterator _gri  = group.keySet().iterator();
+                while ( _gri.hasNext() ) {
+                    String refererKey = (String)_gri.next();
+                    BlogReferer referer= (BlogReferer)group.get(refererKey);
+                    if( referer.isToday()) {
+                      %><a href="<%= refererKey %>"><%= refererKey %></a>&nbsp;(<%= referer.getCount() %>)<br/><%
+                    }
+              %></p><%
+
+            }
+
+        }
+        }
+    }
+%>
+
 
     </body>
 </html>
