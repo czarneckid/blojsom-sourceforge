@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.39 2003-03-26 15:17:11 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.40 2003-03-26 15:44:43 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -77,6 +77,12 @@ public interface BlojsomConstants {
      * Key under which the blog calendar next month value will be placed
      */
     public static final String BLOJSOM_CALENDAR_NEXT = "BLOJSOM_CALENDAR_NEXT";
+
+    /**
+     * Key under which the blog calendar title will be placed
+     */
+    public static final String BLOJSOM_CALENDAR_CAPTION = "BLOJSOM_CALENDAR_CAPTION";
+
 
     /**
      * Format String for Calendar Month
