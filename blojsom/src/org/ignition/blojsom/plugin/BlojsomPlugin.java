@@ -40,7 +40,7 @@ import java.util.Map;
  * BlojsomPlugin
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPlugin.java,v 1.4 2003-03-14 04:13:25 czarneckid Exp $
+ * @version $Id: BlojsomPlugin.java,v 1.5 2003-03-15 00:00:28 czarneckid Exp $
  */
 public interface BlojsomPlugin {
 
@@ -70,4 +70,11 @@ public interface BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException;
+
+    /**
+     * Called when BlojsomServlet is taken out of service
+     *
+     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     */
+    public void destroy() throws BlojsomPluginException;
 }

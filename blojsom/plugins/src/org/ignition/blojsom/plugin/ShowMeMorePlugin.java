@@ -43,7 +43,7 @@ import java.util.Map;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.2 2003-03-14 04:13:16 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.3 2003-03-15 00:00:58 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -120,5 +120,13 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
+    }
+
+    /**
+     * Called when BlojsomServlet is taken out of service
+     *
+     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     */
+    public void destroy() throws BlojsomPluginException {
     }
 }

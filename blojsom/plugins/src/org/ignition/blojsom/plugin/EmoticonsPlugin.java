@@ -165,4 +165,12 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
+
+    /**
+     * Called when BlojsomServlet is taken out of service
+     *
+     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     */
+    public void destroy() throws BlojsomPluginException {
+    }
 }

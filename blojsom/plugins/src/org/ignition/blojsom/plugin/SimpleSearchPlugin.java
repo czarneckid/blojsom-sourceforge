@@ -45,7 +45,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.4 2003-03-14 04:13:16 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.5 2003-03-15 00:00:57 czarneckid Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -111,5 +111,13 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
+    }
+
+    /**
+     * Called when BlojsomServlet is taken out of service
+     *
+     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     */
+    public void destroy() throws BlojsomPluginException {
     }
 }

@@ -49,7 +49,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.7 2003-03-14 17:56:24 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.8 2003-03-15 00:00:58 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -97,7 +97,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
-        if (_referer != null  ) {
+        if (_referer != null) {
 
             _logger.info("HTTP Referer is " + _referer);
 
@@ -107,7 +107,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
             } else {
                 _refererhistory.put(_referer, new Integer(1));
             }
-
 
             try {
                 String output = _referer + "\n";
@@ -169,7 +168,13 @@ public class RefererLogPlugin implements BlojsomPlugin {
                 _logger.error(e);
             }
         }
+    }
 
-
+    /**
+     * Called when BlojsomServlet is taken out of service
+     *
+     * @throws BlojsomPluginException If there is an error in finalizing this plugin
+     */
+    public void destroy() throws BlojsomPluginException {
     }
 }
