@@ -55,7 +55,7 @@ import java.util.Map;
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.2 2004-01-05 01:18:20 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.3 2004-01-05 01:28:00 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -73,7 +73,7 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     *
+     * 
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws org.blojsom.plugin.BlojsomPluginException
@@ -86,11 +86,11 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
         _defaultConditionalGetFlavors.put("rss", "rss");
         _defaultConditionalGetFlavors.put("rss2", "rss2");
         _defaultConditionalGetFlavors.put("atom", "atom");
-   }
+    }
 
     /**
      * Process the blog entries
-     *
+     * 
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -110,10 +110,12 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
             if (_defaultConditionalGetFlavors.containsKey(flavor)) {
                 Date latestEntryDate = entries[0].getDate();
                 try {
-                    Date ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
-                    if (latestEntryDate.compareTo(ifModifiedSinceDate) <= 0) {
-                        _logger.debug("Returning 304 response for flavor: " + flavor);
-                        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                    if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
+                        Date ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
+                        if (latestEntryDate.compareTo(ifModifiedSinceDate) <= 0) {
+                            _logger.debug("Returning 304 response for flavor: " + flavor);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                        }
                     }
                 } catch (IllegalArgumentException e) {
                     _logger.error(e);
@@ -128,7 +130,7 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
-     *
+     * 
      * @throws org.blojsom.plugin.BlojsomPluginException
      *          If there is an error performing cleanup for this plugin
      */
@@ -138,7 +140,7 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
     /**
      * Called when BlojsomServlet is taken out of service
-     *
+     * 
      * @throws org.blojsom.plugin.BlojsomPluginException
      *          If there is an error in finalizing this plugin
      */
