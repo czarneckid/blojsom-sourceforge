@@ -42,6 +42,18 @@
                     this to indicate whether or not it should allow users to comment on an entry. If a blog
                     entry is writable, users may comment on that entry.
                 </p>
+                <p>
+                    Comments can also be disabled on individual entries throug the web administration interface.
+                    If you are adding or editing an entry, you can check a box to indicate that comments are
+                    not enabled on a single entry.
+                </p>
+                <p>
+                    Finally, if you are running the Meta plugin before the Comments plugin, you can add metadata
+                    to the entry to disable comments. The metadata key to disable comments
+                    would be specified as "meta-blog-entry-comments-disabled=y" in your blog entry. You would do
+                    this if you were not editing your blog through the web administration interface or you edit
+                    your blog entries from the command-line.
+                </p>
             </section>
             <section>
                 <title>Banning IP addresses from commenting and comment throttling</title>
