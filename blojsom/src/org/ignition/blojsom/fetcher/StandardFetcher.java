@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.19 2003-06-01 20:40:45 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.20 2003-06-10 04:11:17 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -285,7 +285,15 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     protected BlogCategory getBlogCategory(HttpServletRequest httpServletRequest) {
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
+        requestedCategory = BlojsomUtils.normalize(requestedCategory);
         _logger.debug("blojsom path info: " + requestedCategory);
+
+        String categoryParameter = httpServletRequest.getParameter(CATEGORY_PARAM);
+        if (!(categoryParameter == null) && !("".equals(categoryParameter))) {
+            categoryParameter = BlojsomUtils.normalize(categoryParameter);
+            _logger.debug("category parameter override: " + categoryParameter);
+            requestedCategory = categoryParameter;
+        }
 
         if (requestedCategory == null) {
             requestedCategory = "/";
