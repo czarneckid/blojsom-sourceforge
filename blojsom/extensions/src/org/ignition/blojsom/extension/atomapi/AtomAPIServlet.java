@@ -68,7 +68,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @since blojsom 1.9.5
- * @version $Id: AtomAPIServlet.java,v 1.4 2003-07-20 20:51:02 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.5 2003-08-04 14:55:26 intabulas Exp $
  */
 public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, AtomConstants {
 
@@ -201,7 +201,7 @@ public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, Ato
         configureAuthorization(servletConfig);
         configureFetcher(servletConfig);
 
-        _logger.info("AtomAPI initialized, home is [" + _blog.getBlogHome() + "]");
+        _logger.info("AtomAPI initialized, home is [" + _blog.getBlogHome() + ']');
 
     }
 
