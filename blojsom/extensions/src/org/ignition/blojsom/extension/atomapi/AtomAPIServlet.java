@@ -64,10 +64,10 @@ import java.util.Properties;
  * AtomAPIServlet
  *
  * Implementation of J.C. Gregorio's AtomAPI
- * <a href="http://bitworking.org/rfc/draft-gregorio-04.html">http://bitworking.org/rfc/draft-gregorio-04.html</a>
+ * <a href="http://bitworking.org/rfc/draft-gregorio-05.html">http://bitworking.org/rfc/draft-gregorio-05.html</a>
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.1 2003-07-18 01:20:55 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.2 2003-07-18 16:17:23 intabulas Exp $
  */
 public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, AtomConstants {
 
@@ -80,7 +80,7 @@ public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, Ato
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
 
-    private static final String CONTENTTYPE_ATOM = "application/not-atom+xml";
+    private static final String CONTENTTYPE_ATOM = "application/atom+xml";
 
     private Log _logger = LogFactory.getLog(AtomAPIServlet.class);
 
