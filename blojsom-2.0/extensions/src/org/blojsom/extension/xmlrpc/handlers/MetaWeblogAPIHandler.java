@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.16 2004-07-25 02:00:05 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.17 2004-07-27 03:37:30 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -222,37 +222,13 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
             _authorizationProvider.authorize(_blogUser, null, userid, password);
+
             Vector result = new Vector();
-
-            BlogCategory[] _categories = _fetcher.fetchCategories(null, _blogUser);
-
-            if (_categories != null) {
-                for (int x = 0; x < _categories.length; x++) {
-                    Hashtable _bloglist = new Hashtable(3);
-                    BlogCategory _category = _categories[x];
-
-                    String _blogid = _category.getCategory();
-                    if (_blogid.length() > 1) {
-                        _blogid = BlojsomUtils.removeInitialSlash(_blogid);
-                    }
-
-                    String _description = "";
-                    Map _metadata = _category.getMetaData();
-                    if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
-                        _description = (String) _metadata.get(NAME_KEY);
-                    } else {
-                        _description = _blogid;
-                    }
-
-                    _bloglist.put(MEMBER_URL, _category.getCategoryURL());
-                    _bloglist.put(MEMBER_BLOGID, _blogid);
-                    _bloglist.put(MEMBER_BLOGNAME, _description);
-
-                    result.add(_bloglist);
-                }
-            } else {
-                throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
-            }
+            Hashtable bloglist = new Hashtable(3);
+            bloglist.put(MEMBER_URL, _blog.getBlogURL());
+            bloglist.put(MEMBER_BLOGID, _blogUser.getId());
+            bloglist.put(MEMBER_BLOGNAME, _blog.getBlogName());
+            result.add(bloglist);
 
             return result;
         } catch (BlojsomException e) {
@@ -296,10 +272,12 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                         categoryId = BlojsomUtils.removeInitialSlash(categoryId);
                     }
 
-                    String description = "No Category Metadata Found";
+                    String description;
                     Map metadata = category.getMetaData();
                     if (metadata != null && metadata.containsKey(DESCRIPTION_KEY)) {
                         description = (String) metadata.get(DESCRIPTION_KEY);
+                    } else {
+                        description = category.getEncodedCategory();
                     }
 
                     catlist.put(MEMBER_DESCRIPTION, description);
@@ -436,6 +414,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             } else if (pos != -1) {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
+                category = BlojsomUtils.urlDecode(category);
                 permalink = postid.substring(pos + match.length());
             }
 
@@ -515,6 +494,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             if (pos != -1) {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
+                category = BlojsomUtils.urlDecode(category);
                 permalink = postid.substring(pos + match.length());
 
                 BlogCategory blogCategory = _fetcher.newBlogCategory();
@@ -586,6 +566,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             if (pos != -1) {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
+                category = BlojsomUtils.urlDecode(category);
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
