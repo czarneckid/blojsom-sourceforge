@@ -92,7 +92,7 @@ Available categories:
              dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
              dc:description="$blogDescription"
              dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
-             dc:date="$entry.getISO8601Date"
+             dc:date="$entry.getISO8601Date()"
              trackback:ping="$entry.getLink()&amp;tb=y" />
      </rdf:RDF>
 -->
