@@ -74,7 +74,16 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 %>
 		<div class="entrystyle">
 		<p class="weblogtitle"><%= blogEntry.getTitle() %> <span class="smalltext">[<a href="<%= blogEntry.getLink() %>" title="Permalink to this blojsom entry">Permalink</a>]</span></p>
-		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
+		<p class="weblogdateline"><%= blogEntry.getDate() %><br />
+        <%
+            String categoryName;
+            if (blogEntry.getBlogCategory().getName() != null) {
+                categoryName = blogEntry.getBlogCategory().getName();
+            } else {
+                categoryName = blogEntry.getCategory();
+            }
+        %>
+        Category [<%= categoryName %>]</p>
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
         <p class="weblogbottomline">
