@@ -2,7 +2,6 @@
 
 #adminPageHeader("#adminResource('add.blog.entry.header' 'Add Blog Entry')")
 
-
     <div id="sideBar">
         <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
     </div>
@@ -19,10 +18,21 @@
                         <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
                         <td><input type="text" size="50" name="blog-entry-title"/></td>
                     </tr>
+                    <tr><td></td><td>
+                        <div id="quicktags">
+                        Quicktags: <script src="$BLOJSOM_BLOG.getBlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
+                        <script language="JavaScript" type="text/javascript">edToolbar();</script>
+                        </div></td>
+                    </tr>
                     <tr>
                         <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
                         <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();"></textarea></td>
                     </tr>
+                    <script type="text/javascript" language="JavaScript">
+                        <!--
+                        edCanvas = document.getElementById('blog-entry-description');
+                        //-->
+                    </script>
                     <tr></tr>
                     <tr>
                         <td colspan="2"><h4>Preview</h4></td>
