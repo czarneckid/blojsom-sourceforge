@@ -1,5 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>$BLOJSOM_BLOG.getBlogName()</title>
@@ -28,7 +30,7 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
     [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
 #end</p>
 #set( $totalEntries = 0)
-<table cellspacing="0" cellpadding=0 border="0" width="100%">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr>
 <td width="100%" valign="top">
 #foreach ($entry in $BLOJSOM_ENTRIES)
@@ -51,13 +53,13 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 <td valign="top" align="center" width="200">
 
 <div class="calendarbox">
-<div align="center"><table cellspacing="0" cellpadding=0 border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+<div align="center"><table cellspacing="0" cellpadding="0" border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>
 #foreach( $downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())
         #if($downame)
-		<td width="19" height="10" align="center" style="font-size:9px">$downame&nbsp;</td>
+		<td width="19"  align="center" style="font-size:9px">$downame&nbsp;</td>
 		#end
 #end
 </tr>
