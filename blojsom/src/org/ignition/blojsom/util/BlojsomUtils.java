@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.35 2003-03-26 15:45:24 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.36 2003-03-27 01:55:10 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -483,6 +483,20 @@ public class BlojsomUtils implements BlojsomConstants {
             }
 
             return sanitizedPermalink;
+        }
+    }
+
+    /**
+     * Return an input string URL encoded
+     *
+     * @param url Input string
+     * @return URL encoded string or the original string if there is an encoding exception
+     */
+    public static final String urlEncode(String input) {
+        try {
+            return URLEncoder.encode(input, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return input;
         }
     }
 
