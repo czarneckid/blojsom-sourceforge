@@ -57,7 +57,7 @@ import java.util.*;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.14 2003-04-25 03:13:29 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.15 2003-04-27 02:26:26 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -91,7 +91,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Hit counter key
      */
-    public static final String HITCOUNTER_KEY  = ".hitcounter";
+    private static final String HITCOUNTER_KEY  = ".hitcounter";
 
     /**
      * Format used to store last refer date for a given url
