@@ -12,7 +12,15 @@
 		<dc:creator>$BLOJSOM_BLOG.getBlogOwnerEmail()</dc:creator>
 		<dc:date>$BLOJSOM_DATE_ISO8601</dc:date>
 		<dc:language>$BLOJSOM_BLOG.getBlogLanguage()</dc:language>
-	</channel>
+
+        <items>
+        <rdf:Seq>
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+            <rdf:li rdf:resource="$entry.getEscapedLink()" />
+        #end
+        </rdf:Seq>
+        </items>
+    </channel>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
 	<item rdf:about="$entry.getEscapedLink()">

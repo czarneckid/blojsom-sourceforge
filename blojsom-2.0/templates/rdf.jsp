@@ -22,6 +22,21 @@
 		<dc:creator><%= blogInformation.getBlogOwnerEmail() %></dc:creator>
 		<dc:date><%= blogDate %></dc:date>
         <dc:language><%= blogInformation.getBlogLanguage() %></dc:language>
+
+        <%
+        if (blogEntries != null) {
+            for (int i = 0; i < blogEntries.length; i++) {
+                BlogEntry blogEntry = blogEntries[i];
+        %>        
+        <items>
+        <rdf:Seq>
+            <rdf:li rdf:resource="<%= blogEntry.getEscapedLink() %>" />
+        </rdf:Seq>
+        </items>
+        <%
+            }
+        }
+        %>
 	</channel>
 
     <%
@@ -29,7 +44,7 @@
             for (int i = 0; i < blogEntries.length; i++) {
                 BlogEntry blogEntry = blogEntries[i];
     %>
-    	<item rdf:about="<%= blogEntry.getEscapedLink() %>">>
+    	<item rdf:about="<%= blogEntry.getEscapedLink() %>">
     		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
