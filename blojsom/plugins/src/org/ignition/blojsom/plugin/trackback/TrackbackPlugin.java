@@ -59,7 +59,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.12 2003-03-27 03:23:17 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.13 2003-03-27 03:26:27 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -240,7 +240,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
 
         trackbackDirectory.append(_blogHome);
         trackbackDirectory.append(BlojsomUtils.removeInitialSlash(category));
-        File blogEntry = new File(trackbackDirectory.toString() + File.separator + permalink);
+        File blogEntry = new File(trackbackDirectory.toString() + File.separator + permalinkFilename);
         if (!blogEntry.exists()) {
             _logger.error("Trying to create trackback for invalid blog entry: " + permalink);
             context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trying to create trackback for invalid permalink");
@@ -248,7 +248,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
         }
         trackbackDirectory.append(_blogTrackbackDirectory);
         trackbackDirectory.append(File.separator);
-        trackbackDirectory.append(permalink);
+        trackbackDirectory.append(permalinkFilename);
         trackbackDirectory.append(File.separator);
         String trackbackFilename = trackbackDirectory.toString() + trackback.getTrackbackDateLong() + BlojsomConstants.TRACKBACK_EXTENSION;
         File trackbackDir = new File(trackbackDirectory.toString());
