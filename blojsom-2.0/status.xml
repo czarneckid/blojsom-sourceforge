@@ -12,6 +12,22 @@
             <action dev="intabulas" type="add" context="Core">
                 Added "Pumpkin" theme based on <link href="http://www.cocoadevcentral.com">Cocoa Dev Central</link>
             </action>
+
+            <action dev="czarneckid" type="update" context="Core">
+                Added <tt>supportsTrackbacks</tt> method to <tt>BlogEntry</tt>.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugins">
+                Removed <tt>synchronized</tt> methods from Comment and Trackback plugins.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugins">
+                Moved administration plugin Velocity templates to separate directory under admin plugin package.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugins">
+                Added File Upload plugin to allow you to upload resources to your blog from the web administration console.
+            </action>
         </release>
         
         
