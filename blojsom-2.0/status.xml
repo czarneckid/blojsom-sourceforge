@@ -7,6 +7,16 @@
     </developers>
 
     <changes>
+        <release version="2.10" date="January 26, 2004">
+            <action dev="czarneckid" type="updated" context="Core">
+                Updated Compression (GZIP) filter code.
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="884895">
+                Fixed issue where category with space character breaks permalinks.
+            </action>
+        </release>
+
         <release version="2.09" date="January 20, 2004">
             <action dev="czarneckid" type="update" context="Core">
                 Modified setting of link to correctly encode '/'.
