@@ -28,7 +28,7 @@
 ^http:\\/\\/radio.userland.com\\/newsAggregator
 
 ##
-# These, while javas site, mainly aggregate links or newsgroups
+# These, while javas sites, mainly aggregate links or newsgroups feeds
 ##
 ^http:\\/\\/.*javablogs.*
 ^http:\\/\\/.*javacrawl.*
