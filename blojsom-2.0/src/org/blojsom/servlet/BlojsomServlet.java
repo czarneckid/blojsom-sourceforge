@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.31 2005-03-10 04:58:44 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.32 2005-03-10 15:16:13 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -352,6 +352,11 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + user);
 
             return;
+        }
+
+        // If the blog ID isn't in the known list of blog IDs, add it
+        if (!_blojsomConfiguration.checkBlogIDExists(blogUser.getId())) {
+            _blojsomConfiguration.addBlogID(blogUser.getId());
         }
 
         configureFlavorsForBlog(_servletConfig, blogUser);
