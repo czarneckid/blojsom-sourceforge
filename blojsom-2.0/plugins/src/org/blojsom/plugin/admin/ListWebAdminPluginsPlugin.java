@@ -56,12 +56,15 @@ import java.util.HashMap;
  * List Web Admin Plugins Plugin
  *
  * @author David Czarnecki
- * @version $Id: ListWebAdminPluginsPlugin.java,v 1.1 2004-06-09 03:14:12 czarneckid Exp $
+ * @version $Id: ListWebAdminPluginsPlugin.java,v 1.2 2004-06-10 01:17:44 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class ListWebAdminPluginsPlugin extends BaseAdminPlugin {
 
     private static Log _logger = LogFactory.getLog(ListWebAdminPluginsPlugin.class);
+
+    private static final String BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST = "BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST";
+    private static final String LIST_WEB_ADMIN_PLUGINS_PAGE = "/org/blojsom/plugin/admin/templates/admin-list-web-admin-plugins";
 
     private Map _plugins;
 
@@ -134,6 +137,8 @@ public class ListWebAdminPluginsPlugin extends BaseAdminPlugin {
         if (ADMIN_LOGIN_PAGE.equals(page)) {
             return entries;
         } else {
+            httpServletRequest.setAttribute(PAGE_PARAM, LIST_WEB_ADMIN_PLUGINS_PAGE);
+            context.put(BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST, _plugins);
         }
 
         return entries;
