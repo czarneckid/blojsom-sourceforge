@@ -9,6 +9,69 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.04 to blojsom 2.05</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
+                        blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.05.jar,
+                        blojsom-extensions-2.05.jar, blojsom-plugins-2.05.jar files, and blojsom-plugins-templates-2.05.jar.
+                    </p>
+                    <p>
+                        2. Add the commons-fileupload-1.0.jar file to your <code>/WEB-INF/lib</code> directory.
+                    </p>
+                </section>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. Add the following to your <code>/WEB-INF/plugin.properties</code> if you would like to
+                        enable web-based administration of blog entry editing, flavor editing, and file upload.
+                        <pre>
+                            edit-blog-entries=org.blojsom.plugin.admin.EditBlogEntriesPlugin
+                            file-upload=org.blojsom.plugin.admin.FileUploadPlugin
+                            edit-blog-flavors=org.blojsom.plugin.admin.EditBlogFlavorsPlugin
+                        </pre>
+                    </p>
+                    <p>
+                        2. Add the following you your <code>/WEB-INF/web.xml</code> file under the init-params
+                        for BlojsomServlet.
+                        <pre>
+                            &lt;init-param&gt;
+                                &lt;param-name&gt;plugin-admin-upload&lt;/param-name&gt;
+                                &lt;param-value&gt;plugin-admin-upload.properties&lt;/param-value&gt;
+                            &lt;/init-param&gt;
+                        </pre>
+                    </p>
+                    <p>
+                        3. Add the following file to your <code>/WEB-INF</code> directory under the
+                        filename, <code>plugin-admin-upload.properties</code>.
+                        <pre>
+                            temporary-directory=/tmp
+                            maximum-upload-size=100000
+                            maximum-memory-size=50000
+                            accepted-file-types=image/jpeg, image/gif, image/png
+                            resources-directory=/resources/
+                        </pre>
+                    </p>
+                    <p>
+                        4. Add the following to your <code>/WEB-INF/xmlrpc.properties</code> to set a default
+                        handler for the XML-RPC servlet. The value for the "$default" key is the short name for one
+                        of the blojsom XML-RPC handlers.
+                        <pre>
+                            $default=blogger
+                        </pre>
+                    </p>
+                </section>
+                <section>
+                    <title>Template changes</title>
+                    <p>
+                        1. Replace the <code>atom.vm</code> or <code>atom.jsp</code> file (as appropriate) in the
+                        <code>templates</code> directory for those users who have an Atom flavor enabled.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.03 to blojsom 2.04</title>
                 <section>
                     <title>Library changes</title>
