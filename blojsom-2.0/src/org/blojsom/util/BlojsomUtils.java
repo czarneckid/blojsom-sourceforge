@@ -56,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.58 2005-01-25 02:23:44 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.59 2005-01-25 18:43:50 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1896,7 +1896,7 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param directory Sub-directory to start looking for files
      * @param parentDirectory Parent directory to strip
-     * @param files List of files to add
+     * @param files List of files to add to
      * @since blojsom 2.23
      */
     public static void listFilesInSubdirectories(File directory, String parentDirectory, List files) {
@@ -1908,6 +1908,28 @@ public class BlojsomUtils implements BlojsomConstants {
         } else {
             if (directory.getPath().startsWith(parentDirectory)) {
                 files.add(new File(directory.getPath().substring(parentDirectory.length() + 1)));
+            }
+        }
+    }
+
+    /**
+     * List the sub-directories in a sub-directory of a given directory and strip the parent directory from the path
+     * of the directories added to the list.
+     *
+     * @param directory Sub-directory to start looking for files
+     * @param parentDirectory Parent directory to strip
+     * @param directories List of directories to add to
+     * @since blojsom 2.23
+     */
+    public static void listDirectoriesInSubdirectories(File directory, String parentDirectory, List directories) {
+        if (directory.isDirectory()) {
+            String[] children = directory.list();
+            for (int i = 0; i < children.length; i++) {
+                listDirectoriesInSubdirectories(new File(directory, children[i]), parentDirectory, directories);
+            }
+
+            if (directory.getPath().startsWith(parentDirectory)) {
+                directories.add(new File(directory.getPath().substring(parentDirectory.length())));
             }
         }
     }
