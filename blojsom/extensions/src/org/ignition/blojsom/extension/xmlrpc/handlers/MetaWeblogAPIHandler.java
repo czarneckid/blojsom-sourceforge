@@ -46,11 +46,10 @@ import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.*;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -58,12 +57,14 @@ import java.util.Properties;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.25 2003-05-31 02:17:37 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.26 2003-05-31 18:44:28 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
+
+    private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     public static final String API_PREFIX = "metaWeblog";
 
@@ -229,6 +230,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                         _entry.saveEntry(_blog);
                         result = true;
                     } catch (BlojsomException e) {
+                        _logger.error(e);
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                     }
                 } else {
@@ -295,33 +297,20 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 _post.append(_title).append("\n").append(_description);
 
                 try {
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), _blog.getBlogFileEncoding()));
-                    bw.write(_post.toString());
-                    bw.close();
+                    File sourceFile = new File(outputfile);
+                    BlogEntry entry = _fetcher.newBlogEntry();
+                    HashMap attributeMap = new HashMap();
+                    HashMap blogEntryMetaData = new HashMap();
+
+                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
+                    entry.setAttributes(attributeMap);
+                    entry.setDescription(_post.toString());
+                    blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
+                    entry.setMetaData(blogEntryMetaData);
+                    entry.saveEntry(_blog);
                     result = postid;
-
-                    // Filename for Entry Meta Data - We do this since BlogEntry only loads and does not save....
-                    String metaFile = _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid)
-                            + baseFilename + _blog.getBlogEntryMetaDataExtension();
-
-                    File blogEntryMetaData = new File(metaFile);
-                    Properties metaProps = new Properties();
-                    // If any meta data exists, load it first..
-                    if (blogEntryMetaData.exists()) {
-                        FileInputStream fis = new FileInputStream(blogEntryMetaData);
-                        metaProps.load(fis);
-                        fis.close();
-                    }
-
-                    // Add the posters ID as the entry author
-                    metaProps.put(BlojsomConstants.BLOG_METADATA_ENTRY_AUTHOR, userid);
-
-                    FileOutputStream fos = new FileOutputStream(blogEntryMetaData, false);
-                    metaProps.store(fos, BlojsomConstants.BLOG_METADATA_HEADER);
-                    fos.close();
-
-
-                } catch (IOException e) {
+                } catch (BlojsomException e) {
+                    _logger.error(e);
                     throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                 }
             }
