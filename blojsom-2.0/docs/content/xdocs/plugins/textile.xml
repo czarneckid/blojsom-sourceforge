@@ -41,14 +41,18 @@
                 <strong>.textile</strong> to identify blog entries that should be passed through
                 the plugin for processing, so be sure your entries end with this extension if you want this
                 plugin to work correctly.
-
+            </p>
+            <p>
+                The textile plugin can also be run on entries not ending in a <strong>.textile</strong> extension
+                by using the metadata plugin before the textile plugin in one of the flavor-based plugin chains.
+                The metadata key for the textile plugin would be specified as <em>meta-run-textile=y</em> on a
+                separate line in your blog entry text.
             </p>
         </section>
         <section>
             <title>context attributes and types</title>
             <p>
                 No context attributes are made available or used by the Textile plugin.
-
             </p>
         </section>
         <section>
@@ -109,8 +113,6 @@
                 * The time is not yesterday
                 * We must act
             </source>
-
-
         </section>
     </body>
 </document>
