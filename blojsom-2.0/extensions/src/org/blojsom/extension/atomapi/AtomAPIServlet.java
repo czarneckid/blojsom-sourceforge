@@ -68,7 +68,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.6 2003-09-08 00:01:11 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.7 2003-09-08 01:44:47 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -179,11 +179,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
         if (user == null || "".equals(user)) {
-            //@todo
-        } else {
-            blogUser = (BlogUser) _users.get(user);
-            blog = blogUser.getBlog();
+            user = _defaultUser;
         }
+        blogUser = (BlogUser) _users.get(user);
+        blog = blogUser.getBlog();
 
 
         if (isAuthorized(blog, httpServletRequest)) {
@@ -213,6 +212,16 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
+        if (user == null || "".equals(user)) {
+            user = _defaultUser;
+        }
+        blogUser = (BlogUser) _users.get(user);
+        blog = blogUser.getBlog();
+        blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
+        if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
+            blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
+        }
+
 
         _logger.info("AtomAPI GET Called =====[ SUPPORTED ]=====");
         _logger.info("       Path: " + httpServletRequest.getPathInfo());
@@ -221,22 +230,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
 
-        if (user == null || "".equals(user)) {
-            //@todo
-        } else {
-            blogUser = (BlogUser) _users.get(user);
-            blog = blogUser.getBlog();
-            blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
-            if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
-                blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
-            }
-        }
-
 
         // NOTE: Assumes that the getPathInfo() returns only category data
         
         if (isAuthorized(blog, httpServletRequest)) {
-
 
             Map fetchMap = new HashMap();
             BlogCategory blogCategory = _fetcher.newBlogCategory();
@@ -296,15 +293,13 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
         if (user == null || "".equals(user)) {
-            //@todo
-        } else {
-            blogUser = (BlogUser) _users.get(user);
-            blog = blogUser.getBlog();
-            blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
-            if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
-                blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
-            }
-
+            user = _defaultUser;
+        }
+        blogUser = (BlogUser) _users.get(user);
+        blog = blogUser.getBlog();
+        blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
+        if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
+            blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
         }
 
 
@@ -387,12 +382,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
         if (user == null || "".equals(user)) {
-            //@todo
-        } else {
-            blogUser = (BlogUser) _users.get(user);
-            blog = blogUser.getBlog();
+            user = _defaultUser;
         }
-
+        blogUser = (BlogUser) _users.get(user);
+        blog = blogUser.getBlog();
 
         if (isAuthorized(blog, httpServletRequest)) {
 
