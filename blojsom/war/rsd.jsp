@@ -8,7 +8,7 @@
 
 <rsd version="1.0" xmlns="http://archipelago.phrasewise.com/rsd">
     <service>
-        <engineName>blojsom 2.0</engineName>
+        <engineName>blojsom 1.9</engineName>
         <engineLink>http://blojsom.sf.net</engineLink>
         <homePageLink><%= blogInformation.getBlogURL() %></homePageLink>
         <apis>
