@@ -48,6 +48,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 
 /**
@@ -55,7 +56,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.2 2003-11-29 16:20:11 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.3 2004-01-08 01:31:59 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -169,6 +170,7 @@ public class EmailUtils {
             message.addRecipient(Message.RecipientType.TO, _msgto);
             message.setSubject(emailmessage.getSubject());
             message.setText(emailmessage.getMessage());
+            message.setSentDate(new Date());
 
             _logger.info("Sending Email to  " + _msgto.getAddress());
 
