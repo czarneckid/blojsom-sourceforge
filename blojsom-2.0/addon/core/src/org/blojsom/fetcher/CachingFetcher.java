@@ -49,41 +49,29 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
 
 /**
  * CachingFetcher
- *
+ * 
  * @author David Czarnecki
+ * @version $Id: CachingFetcher.java,v 1.2 2003-11-14 04:45:54 czarneckid Exp $
  * @since blojsom 2.01
- * @version $Id: CachingFetcher.java,v 1.1 2003-09-05 02:44:44 czarneckid Exp $
  */
 public class CachingFetcher extends StandardFetcher {
 
-    /**
-     * Default refresh period for refreshing the cache (5 minutes)
-     */
+    /** Default refresh period for refreshing the cache (5 minutes) */
     private static final int DEFAULT_CACHE_REFRESH = 300;
 
-    /**
-     * Initialization parameter for web.xml
-     */
+    /** Initialization parameter for web.xml */
     private static final String OSCACHE_PROPERTIES_IP = "oscache-properties";
 
-    /**
-     * Parameter for blog.properties for user to control cache refresh period
-     */
+    /** Parameter for blog.properties for user to control cache refresh period */
     private static final String CACHING_FETCHER_REFRESH = "caching-fetcher-refresh";
 
-    /**
-     * Default location for oscache.properties
-     */
+    /** Default location for oscache.properties */
     private static final String OSCACHE_PROPERTIES_DEFAULT = "/WEB-INF/oscache.properties";
 
-    /**
-     * Internal key for cache for flavor
-     */
+    /** Internal key for cache for flavor */
     private static final String FLAVOR_KEY = "__FLAVOR__";
 
-    /**
-     * Internal key for cache for category
-     */
+    /** Internal key for cache for category */
     private static final String CATEGORY_KEY = "__CATEGORY__";
 
     protected GeneralCacheAdministrator _cache;
@@ -96,8 +84,8 @@ public class CachingFetcher extends StandardFetcher {
 
     /**
      * Initialize this fetcher. This method only called when the fetcher is instantiated.
-     *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * 
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration blojsom configuration information
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
@@ -121,12 +109,12 @@ public class CachingFetcher extends StandardFetcher {
 
     /**
      * Fetch a set of {@link org.blojsom.blog.BlogEntry} objects.
-     *
-     * @param httpServletRequest Request
+     * 
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param flavor Flavor
-     * @param context Context
+     * @param user                {@link BlogUser} instance
+     * @param flavor              Flavor
+     * @param context             Context
      * @return Blog entries retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
      */
@@ -173,8 +161,15 @@ public class CachingFetcher extends StandardFetcher {
                     _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
                     return entries;
                 } catch (NeedsRefreshException e) {
-                    entries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
-                    _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, entries);
+                    entries = (BlogEntry[]) e.getCacheContent();
+                    if (entries == null) {
+                        entries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
+                        _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, entries);
+                    } else {
+                        AllCategoriesFetcherThread allCategoriesFetcherThread = new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth);
+                        allCategoriesFetcherThread.start();
+                    }
+
                     return entries;
                 }
             } else {
@@ -183,11 +178,107 @@ public class CachingFetcher extends StandardFetcher {
                     _logger.debug("Returned entries from cache for user/category: " + user.getId() + " / " + category.getCategory());
                     return entries;
                 } catch (NeedsRefreshException e) {
-                    entries = getEntriesForCategory(user, category, -1);
-                    _cache.putInCache(user.getId() + CATEGORY_KEY + category.getCategory(), entries);
+                    entries = (BlogEntry[]) e.getCacheContent();
+                    if (entries == null) {
+                        entries = getEntriesForCategory(user, category, -1);
+                        _cache.putInCache(user.getId() + CATEGORY_KEY + category.getCategory(), entries);
+                    } else {
+                        SingleCategoryFetcherThread singleCategoryFetcherThread = new SingleCategoryFetcherThread(user, category);
+                        singleCategoryFetcherThread.start();
+                    }
+
                     return entries;
                 }
             }
+        }
+    }
+
+    /**
+     * AllCategoriesFetcherThread
+     *
+     * @since blojsom 2.05
+     */
+    private class AllCategoriesFetcherThread extends Thread {
+
+        private BlogUser _user;
+        private String _flavor;
+        private int _blogDirectoryDepth;
+
+        /**
+         * Default constructor.
+         *
+         * @param user Blog user
+         * @param flavor Flavor
+         * @param blogDirectoryDepth Blog directory depth
+         */
+        public AllCategoriesFetcherThread(BlogUser user, String flavor, int blogDirectoryDepth) {
+            _user = user;
+            _flavor = flavor;
+            _blogDirectoryDepth = blogDirectoryDepth;
+        }
+
+        /**
+         * If this thread was constructed using a separate
+         * <code>Runnable</code> run object, then that
+         * <code>Runnable</code> object's <code>run</code> method is called;
+         * otherwise, this method does nothing and returns.
+         * <p/>
+         * Subclasses of <code>Thread</code> should override this method.
+         * 
+         * @see Thread#start()
+         * @see Thread#stop()
+         * @see Thread#Thread(ThreadGroup,
+                *      Runnable, String)
+         * @see Runnable#run()
+         */
+        public void run() {
+            BlogEntry[] entries = getEntriesAllCategories(_user, _flavor, -1, _blogDirectoryDepth);
+            _cache.putInCache(_user.getId() + FLAVOR_KEY + _flavor, entries);
+
+            _logger.debug("Updated blog entries in cache for flavor:" + _user.getId() + FLAVOR_KEY + _flavor);
+        }
+    }
+
+    /**
+     * SingleCategoryFetcherThread
+     *
+     * @since blojsom 2.05
+     */
+    private class SingleCategoryFetcherThread extends Thread {
+
+        private BlogUser _user;
+        private BlogCategory _category;
+
+        /**
+         * Default constructor.
+         *
+         * @param user Blog user
+         * @param category Blog category
+         */
+        public SingleCategoryFetcherThread(BlogUser user, BlogCategory category) {
+            _user = user;
+            _category = category;
+        }
+
+        /**
+         * If this thread was constructed using a separate
+         * <code>Runnable</code> run object, then that
+         * <code>Runnable</code> object's <code>run</code> method is called;
+         * otherwise, this method does nothing and returns.
+         * <p/>
+         * Subclasses of <code>Thread</code> should override this method.
+         * 
+         * @see Thread#start()
+         * @see Thread#stop()
+         * @see Thread#Thread(ThreadGroup,
+                *      Runnable, String)
+         * @see Runnable#run()
+         */
+        public void run() {
+            BlogEntry[] entries = getEntriesForCategory(_user, _category, -1);
+            _cache.putInCache(_user.getId() + CATEGORY_KEY + _category.getCategory(), entries);
+
+            _logger.debug("Updated blog entries in cache for category: " + _user.getId() + CATEGORY_KEY + _category.getCategory());
         }
     }
 }
