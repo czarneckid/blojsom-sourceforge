@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: RefererLogPlugin.java,v 1.6 2004-04-23 02:11:19 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.7 2004-08-03 20:37:05 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -534,48 +534,54 @@ public class RefererLogPlugin implements BlojsomPlugin {
         }
 
         /**
+         * Retrieve the list of blacklist patterns
          *
-         * @return
+         * @return Blacklist patterns
          */
         public List getBlacklistPatterns() {
             return _blacklistPatterns;
         }
 
         /**
+         * Retrieve the absolute log file filename
          *
-         * @return
+         * @return Log file filename
          */
         public String getRefererLog() {
             return _refererLog;
         }
 
         /**
+         * Retrieve the URL of the blog to be filtered
          *
-         * @return
+         * @return URL of the blog to be filtered
          */
         public String getBlogUrlFilter() {
             return _blogUrlFilter;
         }
 
         /**
+         * Retrieve the referer log groups
          *
-         * @return
+         * @return Referer log groups
          */
         public Map getRefererGroups() {
             return _refererGroups;
         }
 
         /**
+         * Retrieve the flavors that are hit counters and not referer loggers
          *
-         * @return
+         * @return Flavors that are hit counters and not referer loggers
          */
         public List getHitCountFlavors() {
             return _hitCountFlavors;
         }
 
         /**
-         *
-         * @return
+         * Retrieve the max length for storing referer URLs
+         * 
+         * @return Max length for storing referer URLs
          */
         public int getRefererMaxLength() {
             return _refererMaxLength;

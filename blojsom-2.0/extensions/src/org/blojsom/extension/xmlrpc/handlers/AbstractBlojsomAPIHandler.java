@@ -52,7 +52,7 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.7 2004-06-03 01:24:28 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.8 2004-08-03 20:37:49 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -87,6 +87,11 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      */
     public abstract void setBlogUser(BlogUser blogUser) throws BlojsomException;
 
+    /**
+     * Sets the {@link AuthorizationProvider} for the XML-RPC handler
+     *
+     * @param authorizationProvider {@link AuthorizationProvider}
+     */
     public void setAuthorizationProvider(AuthorizationProvider authorizationProvider) {
         _authorizationProvider = authorizationProvider;
     }
