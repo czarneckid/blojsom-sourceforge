@@ -8,9 +8,9 @@
 
     <changes>
 
-        <release version="2.01" date="dev">
+        <release version="2.01" date="September 9, 2003">
             <action dev="czarneckid" type="update" context="Build">
-                Added forrest information to build of source distribution.
+                Added forrest files to build of source distribution.
             </action>
 
             <action dev="czarneckid" type="update" context="Core">
@@ -39,6 +39,18 @@
             <action dev="intabulas" type="update" context="Core">
                 Updated BlojsomUtils to allow for other algorithms to be used when generating a string using
                 a digest algorithm.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Build">
+                Added missing files to build of source distribution.
+            </action>
+
+            <action dev="intabulas" type="add" context="Library">
+                Added sandler 0.1 library.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Templates">
+                Updated Atom templates to use escaped title and also added non-empty copyright.
             </action>
         </release>
 
