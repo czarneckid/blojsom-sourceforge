@@ -109,7 +109,7 @@
                         <pre>
                             &lt;init-param&gt;
                                 &lt;param-name&gt;plugin-admin-upload&lt;/param-name&gt;
-                                &lt;param-value&gt;plugin-admin-upload.properties&lt;/param-value&gt;
+                                &lt;param-value&gt;/WEB-INF/plugin-admin-upload.properties&lt;/param-value&gt;
                             &lt;/init-param&gt;
                         </pre>
                     </p>
