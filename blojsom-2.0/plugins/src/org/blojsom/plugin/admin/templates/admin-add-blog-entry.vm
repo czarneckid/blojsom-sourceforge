@@ -15,7 +15,6 @@
                     <input type="hidden" name="action" value="add-blog-entry"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
                     <tr>
                         <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
                         <td><input type="text" size="50" name="blog-entry-title"/></td>
@@ -35,6 +34,16 @@
                         </td>
                     </tr>
                     <tr></tr>
+                    <tr>
+                        <td>#adminResource('category.text' 'Category')</td>
+                        <td>
+                            <select name="blog-category-name">
+                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+                                <option value="$blogCategory.getCategory()" #if ($blogCategory.getCategory().equals($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY)) selected #end>#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <td>#adminResource('blog.entry.trackbackURLs.text' 'Blog trackback URLs')</td>
                         <td><textarea rows="3" cols="80" name="blog-trackback-urls"></textarea></td>
