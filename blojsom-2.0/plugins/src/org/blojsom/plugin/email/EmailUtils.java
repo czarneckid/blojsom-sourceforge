@@ -56,7 +56,7 @@ import java.util.Date;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.4 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.5 2004-01-24 22:41:25 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -162,7 +162,8 @@ public class EmailUtils {
             InternetAddress _msgfrom;
 
             /* Create the From Address */
-            _msgfrom = EmailUtils.constructSenderAddress(emailmessage.getFrom(), "blojsom", defaultaddress.getAddress());
+            _msgfrom = constructSenderAddress(emailmessage.getFrom(), "blojsom", defaultaddress.getAddress());
+
             /* Create the To Address */
             _msgto = defaultaddress;
 
