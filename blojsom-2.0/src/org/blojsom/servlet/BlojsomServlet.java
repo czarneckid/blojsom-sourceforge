@@ -60,7 +60,7 @@ import java.util.*;
  * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.24 2004-04-24 15:15:55 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.25 2004-06-03 01:20:40 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -284,7 +284,6 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         configureDispatchers(servletConfig);
         configureFlavors(servletConfig);
         configurePlugins(servletConfig);
-        configureAuthorization(servletConfig);
         configureResourceManager();
 
         _logger.debug("blojsom: All Your Blog Are Belong To Us");
