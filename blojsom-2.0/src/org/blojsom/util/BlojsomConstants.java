@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.38 2004-05-27 03:44:43 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.39 2004-06-03 01:14:31 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -290,7 +290,12 @@ public interface BlojsomConstants {
      */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    public static final String WHITESPACE = " \t\n\f\r";    
+    public static final String WHITESPACE = " \t\n\f\r";
+
+    /**
+     * Default authorization provider
+     */
+    public static final String DEFAULT_AUTHORIZATION_PROVIDER = "org.blojsom.authorization.PropertiesAuthorizationProvider";
 
     /**
      * Various HTTP caching headers
@@ -321,6 +326,7 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP = "blojsom-resource-manager-bundles";
     public static final String BLOJSOM_RESOURCE_MANAGER_CONTEXT_KEY = "BLOJSOM_RESOURCE_MANAGER";
     public static final String BLOG_DEFAULT_PROPERTIES = "blog.properties";
+    public static final String BLOJSOM_AUTHORIZATION_PROVIDER_IP = "blojsom-authorization-provider";
 
     // Blog initialization parameters from blog.properties
     public static final String BLOG_HOME_IP = "blog-home";
