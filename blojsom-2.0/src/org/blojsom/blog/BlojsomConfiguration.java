@@ -34,24 +34,25 @@
  */
 package org.blojsom.blog;
 
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
-import java.io.InputStream;
-import java.io.IOException;
 
 /**
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.13 2004-03-13 17:15:36 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.14 2004-04-09 18:46:00 intabulas Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -64,6 +65,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _fetcherClass;
     private String _installationDirectory;
     private String _templatesDirectory;
+    private String _resourceDirectory;
     private String _resourceManager;
 
     private Map _blogUsers;
@@ -108,6 +110,21 @@ public class BlojsomConfiguration implements BlojsomConstants {
         }
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
+        _resourceDirectory = getBlojsomPropertyAsString(BLOJSOM_RESOURCE_DIRECTORY_IP);
+        if (BlojsomUtils.checkNullOrBlank(_resourceDirectory)) {
+            _resourceDirectory = BLOJSOM_DEFAULT_RESOURCE_DIRECTORY;
+        } else {
+            if (!_resourceDirectory.startsWith("/")) {
+                _resourceDirectory = '/' + _resourceDirectory;
+            }
+
+        }
+        _logger.debug("Using resources directory: " + _resourceDirectory);
+
+        // Ensure the resource directory physically exists
+        String resourceUrl = servletConfig.getServletContext().getRealPath(_resourceDirectory);
+
+
         _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
         InputStream is;
@@ -142,6 +159,16 @@ public class BlojsomConfiguration implements BlojsomConstants {
                     _logger.error(e);
                     _logger.error("Marking user as invalid: " + blogUser.getId());
                 }
+
+
+                // Ensure the resource directory for the user physically exists
+                File resourceDirectory = new File(resourceUrl + File.separator + user);
+                if (!resourceDirectory.exists()) {
+                    _logger.debug("Creating resource directory for user " + user);
+                    resourceDirectory.mkdirs();
+                }
+
+
             }
 
             // Determine and set the default user
@@ -254,6 +281,16 @@ public class BlojsomConfiguration implements BlojsomConstants {
     }
 
     /**
+     * Get the directory where resources will be located off the installed directory.
+     *
+     * @return Resources directory
+     * @since blojsom 2.14
+     */
+    public String getResourceDirectory() {
+        return _resourceDirectory;
+    }
+
+    /**
      * Get the list of users for this blojsom instance returned as a String[]
      * 
      * @return List of users as a String[]
@@ -274,8 +311,8 @@ public class BlojsomConfiguration implements BlojsomConstants {
     /**
      * Get the name of the resource manager class
      *
-     * @since blojsom 2.13
      * @return Classname of the resource manager
+     * @since blojsom 2.13
      */
     public String getResourceManager() {
         return _resourceManager;

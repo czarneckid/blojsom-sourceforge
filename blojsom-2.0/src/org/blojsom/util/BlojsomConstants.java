@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.33 2004-04-01 03:10:24 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.34 2004-04-09 18:46:09 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -307,8 +307,10 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP = "blojsom-configuration-base-directory";
     public static final String BLOJSOM_INSTALLATION_DIRECTORY_IP = "blojsom-installation-directory";
     public static final String BLOJSOM_TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
+    public static final String BLOJSOM_RESOURCE_DIRECTORY_IP = "blojsom-resource-directory";
     public static final String BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY = "/WEB-INF/";
     public static final String BLOJSOM_DEFAULT_TEMPLATES_DIRECTORY = "/templates";
+    public static final String BLOJSOM_DEFAULT_RESOURCE_DIRECTORY = "/resources";
     public static final String BLOJSOM_RESOURCE_MANAGER_IP = "blojsom-resource-manager";
     public static final String BLOJSOM_DEFAULT_RESOURCE_MANAGER = "org.blojsom.util.resources.ResourceBundleResourceManager";
     public static final String BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP = "blojsom-resource-manager-bundles";
