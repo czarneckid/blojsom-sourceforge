@@ -59,7 +59,7 @@ import java.io.FileOutputStream;
  *
  * @since blojsom 2.06
  * @author czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.1 2003-12-19 20:15:21 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.2 2003-12-20 15:34:53 czarneckid Exp $
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
@@ -131,7 +131,11 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
 
         // Create the plugin chain map
         Iterator flavorIterator = user.getFlavors().keySet().iterator();

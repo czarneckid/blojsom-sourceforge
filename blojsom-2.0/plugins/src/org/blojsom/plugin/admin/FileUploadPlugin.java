@@ -59,7 +59,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.4 2003-12-18 00:28:39 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.5 2003-12-20 15:34:53 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -159,7 +159,11 @@ public class FileUploadPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
 
         // Create a new disk file upload and set its parameters
         DiskFileUpload diskFileUpload = new DiskFileUpload();

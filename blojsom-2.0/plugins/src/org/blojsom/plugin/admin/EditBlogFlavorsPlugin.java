@@ -58,7 +58,7 @@ import java.io.FileOutputStream;
  * EditBlogFlavorsPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.3 2003-12-18 17:43:02 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.4 2003-12-20 15:34:53 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -121,7 +121,11 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
 
         // Put the available flavors in the context for the edit flavors template
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS, user.getFlavors());

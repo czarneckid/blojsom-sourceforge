@@ -55,7 +55,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.4 2003-11-20 03:01:11 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.5 2003-12-20 15:34:53 czarneckid Exp $
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
@@ -115,7 +115,11 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action == null || "".equals(action)) {

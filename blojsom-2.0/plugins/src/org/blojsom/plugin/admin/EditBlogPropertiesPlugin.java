@@ -58,7 +58,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.8 2003-12-05 04:10:42 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.9 2003-12-20 15:34:53 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -86,7 +86,11 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
 
         Blog blog = user.getBlog();
         Map flavorMap;
