@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.79 2003-06-16 01:15:11 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.80 2003-07-08 02:26:15 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -429,59 +429,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        String blogdate = null;
-        String blogISO8601Date = null;
-        Date blogDateObject = null;
-
-        // If we have entries, construct a last modified on the most recent entry
-        // Additionally, set the blog date
-        if ((entries != null) && (entries.length > 0)) {
-            BlogEntry _entry = entries[0];
-            long _lastmodified;
-
-            if (_entry.getNumComments() > 0) {
-                BlogComment _comment = _entry.getCommentsAsArray()[_entry.getNumComments() - 1];
-                _lastmodified = _comment.getCommentDateLong();
-                _logger.debug("Adding last-modified header for most recent entry comment");
-            } else {
-                _lastmodified = _entry.getLastModified();
-                _logger.debug("Adding last-modified header for most recent blog entry");
-            }
-
-            // Check for the Last-Modified object from one of the plugins
-            if (httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED) != null) {
-                Long lastModified = (Long) httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED);
-                if (lastModified.longValue() > _lastmodified) {
-                    _lastmodified = lastModified.longValue();
-                }
-            }
-
-            // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
-            String etagLastModified = BlojsomUtils.getISO8601Date(new Date(_lastmodified));
-            httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
-
-            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
-            blogdate = entries[0].getRFC822Date();
-            blogISO8601Date = entries[0].getISO8601Date();
-            blogDateObject = entries[0].getDate();
-        } else {
-            _logger.debug("Adding last-modified header for current date");
-            Date today = new Date();
-            blogdate = BlojsomUtils.getRFC822Date(today);
-            blogISO8601Date = BlojsomUtils.getISO8601Date(today);
-            blogDateObject = today;
-            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, today.getTime());
-            // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
-            httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
-        }
-
         // Finish setting up the context for the dispatcher
         context.put(BLOJSOM_BLOG, _blog);
         context.put(BLOJSOM_SITE_URL, _blog.getBlogBaseURL());
         context.put(BLOJSOM_ENTRIES, entries);
-        context.put(BLOJSOM_DATE, blogdate);
-        context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
-        context.put(BLOJSOM_DATE_OBJECT, blogDateObject);
         context.put(BLOJSOM_CATEGORIES, categories);
         context.put(BLOJSOM_COMMENTS_ENABLED, _blog.getBlogCommentsEnabled());
 
