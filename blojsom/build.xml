@@ -23,6 +23,7 @@
     <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
+    <property name="themes.dir" value="${basedir}/themes"/>
     <property name="core.jar" value="${webinf.lib.dir}/${name}-core.jar"/>
     <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins.jar"/>
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions.jar"/>
@@ -132,7 +133,9 @@
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
     <target name="war" depends="clean,prepare,compile">
+        <copydir src="${themes.dir}" dest="${war.dir}/themes"/>
         <jar jarfile="${war.file}" basedir="${war.dir}"/>
+        <delete dir="${war.dir}/themes"/>
     </target>
 
     <!-- =================================================================== -->
