@@ -99,7 +99,7 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 
             String blogDescription =  blogEntry.getEscapedDescription();
             if ( blogDescription.length() > 255 ) {
-                blogDescription = blogDescription.substring(0,252)+ "..";
+                blogDescription = blogDescription.substring(0,252)+ "...";
             }
         %>
         <!-- Trackback Auto Discovery -->

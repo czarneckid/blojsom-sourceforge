@@ -65,7 +65,7 @@
         <%
             String blogDescription =  blogEntry.getEscapedDescription();
             if ( blogDescription.length() > 255 ) {
-                blogDescription = blogDescription.substring(0,252)+ "..";
+                blogDescription = blogDescription.substring(0,252)+ "...";
             }
         %>
         <!-- Trackback Auto Discovery -->
