@@ -88,6 +88,17 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
         <p class="weblogbottomline">
+        <%
+            Map entryMetaData;
+            entryMetaData = blogEntry.getMetaData();
+            if (entryMetaData != null) {
+                if (entryMetaData.containsKey("blog-entry-author")) {
+        %>
+                    Posted by: <b><%= entryMetaData.get("blog-entry-author") %></b><br />
+        <%
+                }
+            }
+        %>
         <% if (blogCommentsEnabled && blogEntry.supportsComments()) { %>
         Comments [<a href="<%= blogEntry.getLink() %>&amp;page=comments"><%= blogEntry.getNumComments() %></a>] |
         <% } %>
