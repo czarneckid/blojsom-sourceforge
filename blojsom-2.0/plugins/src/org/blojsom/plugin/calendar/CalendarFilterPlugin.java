@@ -48,7 +48,7 @@ import java.util.*;
  * in the URL
  *
  * @author Mark Lussier
- * @version $Id: CalendarFilterPlugin.java,v 1.2 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.3 2004-10-27 19:43:45 czarneckid Exp $
  */
 
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
@@ -76,7 +76,7 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
         ArrayList updatedEntryList = new ArrayList();
 
-        Calendar entrycalendar = new GregorianCalendar(locale);
+        Calendar entrycalendar = Calendar.getInstance(locale);
         if (entries != null && entries.length > 0) {
             for (int x = 0; x < entries.length; x++) {
                 BlogEntry entry = entries[x];

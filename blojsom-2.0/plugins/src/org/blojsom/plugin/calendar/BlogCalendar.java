@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.3 2004-01-13 02:08:00 czarneckid Exp $
+ * @version $Id: BlogCalendar.java,v 1.4 2004-10-27 19:43:45 czarneckid Exp $
  */
 public class BlogCalendar {
 
@@ -80,7 +80,7 @@ public class BlogCalendar {
     public BlogCalendar(Calendar calendar, String blogurl, Locale locale) {
         _locale = locale;
         _calendar = calendar;
-        _today = new GregorianCalendar(_locale);
+        _today = Calendar.getInstance(_locale);
         _today.setTime(new Date());
         _symbols = new DateFormatSymbols(_locale);
         _blogURL = blogurl;
