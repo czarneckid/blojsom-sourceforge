@@ -339,7 +339,11 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_BLOG, _blog);
         context.put(BLOJSOM_SITE_URL, blogSiteURL);
         context.put(BLOJSOM_ENTRIES, entries);
-        context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
+        if (requestedCategory.equals("/")) {
+            context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
+        } else {
+            context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategoryHierarchy(category));
+        }
         context.put(BLOJSOM_REQUESTED_CATEGORY, requestedCategory);
 
         // Forward the request on to the template for the requested flavor
