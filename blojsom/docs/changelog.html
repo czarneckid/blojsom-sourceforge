@@ -33,6 +33,9 @@ method is called each plugin request after the plugin's <tt>process</tt> method 
 - Modified RDF flavor templates to correctly use the ISO 8601 date format<br />
 - Clarified "BLOJSOM_DATE" and "BLOJSOM_DATE_IS8601" to be of type <tt>java.lang.String</tt> in <a href="customization.html">customization</a><br />
 - Added Emoticons Plugin<br />
+- Added code to the plugins that take configuration parameters to throw a
+<tt>BlojsomPluginException</tt> in <tt>init()</tt> if the required configuration
+parameter is not present<br />
 - Changed blojsom.css to reduce the spacing between blog entries<br />
 - Velocity templates can now be found in <i>/WEB-INF/classes</i>. They are no longer
 built and bundled as <i>/WEB-INF/lib/blojsom-templates.jar</i> since that way was not amenable to
