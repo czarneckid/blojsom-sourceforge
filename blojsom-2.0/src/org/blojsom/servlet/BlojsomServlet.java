@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.16 2003-11-13 00:54:38 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.17 2003-12-05 01:54:21 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -319,11 +319,11 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
         // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
-        if (flavor == null) {
-            flavor = DEFAULT_FLAVOR_HTML;
+        if (flavor == null || "".equals(flavor)) {
+            flavor = blog.getBlogDefaultFlavor();
         } else {
             if (blogUser.getFlavors().get(flavor) == null) {
-                flavor = DEFAULT_FLAVOR_HTML;
+                flavor = blog.getBlogDefaultFlavor();
             }
         }
 
