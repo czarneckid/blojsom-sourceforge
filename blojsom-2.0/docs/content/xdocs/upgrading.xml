@@ -9,6 +9,46 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.03 to blojsom 2.04</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, and blojsom-plugins-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.04.jar,
+                        blojsom-extensions-2.04.jar, and blojsom-plugins-2.04.jar files.
+                    </p>
+                    <p>
+                        2. Add the blojsom-plugins-templates-2.04.jar file to your <code>/WEB-INF/lib</code> directory.
+                    </p>
+                </section>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. Add the following to your <code>/WEB-INF/plugin.properties</code>.
+                        <pre>
+                            admin=org.blojsom.plugin.admin.BaseAdminPlugin
+                            edit-blog-properties=org.blojsom.plugin.admin.EditBlogPropertiesPlugin
+                            edit-blog-categories=org.blojsom.plugin.admin.EditBlogCategoriesPlugin
+                            edit-blog-templates=org.blojsom.plugin.admin.EditBlogTemplatesPlugin
+                        </pre>
+                    </p>
+                    <p>
+                        2. Add the following to your <code>/WEB-INF/(user-id)/plugin.properties</code> file if you
+                        would like to enable blog administration for an individual user.
+                        <pre>
+                            admin.blojsom-plugin-chain=admin
+                        </pre>
+                    </p>
+                    <p>
+                        3. Add the following to your <code>/WEB-INF/(user-id)/plugin.properties</code> file if you
+                        would like to enable blog administration for an individual user.
+                        <pre>
+                            admin=admin.vm, text/html;charset=UTF-8
+                        </pre>
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.01 to blojsom 2.02</title>
                 <section>
                     <title>Properties file changes</title>
