@@ -69,12 +69,12 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- * Blojsom Comment API Implementation
+ * blojsom Comment API Implementation
  *
  * Comment API Specification can be found at http://wellformedweb.org/story/9
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.3 2003-04-20 16:39:29 intabulas Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.4 2003-04-21 01:09:14 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
@@ -104,7 +104,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
     public CommentAPIServlet() {
     }
 
-
     /**
      * Load blojsom configuration information
      *
@@ -131,8 +130,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
             if (_blog.getBlogProperties().containsKey(BlojsomConstants.BLOG_OWNER)) {
                 _defaultrecipientname = (String) _blog.getBlogProperties().get(BlojsomConstants.BLOG_OWNER);
             }
-
-
         } catch (IOException e) {
             _logger.error(e);
         } catch (BlojsomConfigurationException e) {
@@ -140,16 +137,14 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
         }
     }
 
-
     /**
-     * Initialize the blojsom XML-RPC servlet
+     * Initialize the blojsom Comment API servlet
      *
      * @param servletConfig Servlet configuration information
      * @throws javax.servlet.ServletException If there is an error initializing the servlet
      */
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-
 
         String _hostname = servletConfig.getInitParameter(SendEmailPlugin.SMTPSERVER_IP);
         if (_hostname != null) {
@@ -166,9 +161,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
         }
 
         processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
-
     }
-
 
     /**
      * Service a Comment API request
@@ -179,7 +172,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
      * @throws IOException If there is an error during I/O
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
         String commentAuthor = null;
         String commentEmail = null;
         String commentLink = null;
@@ -189,7 +181,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
         if (_blog.getBlogCommentsEnabled().booleanValue() && httpServletRequest.getContentLength() > 0) {
 
             String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
-
 
             try {
                 DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -219,7 +210,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
                         }
                     }
                 }
-
             } catch (ParserConfigurationException e) {
                 _logger.error(e);
             } catch (FactoryConfigurationError factoryConfigurationError) {
@@ -332,7 +322,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
                     _logger.error("Duplicate comment submission detected, ignoring subsequent submission");
                     httpServletResponse.setStatus(403);
                 }
-
                 httpServletResponse.setStatus(200);
             } else {
                 httpServletResponse.setStatus(403);
@@ -340,9 +329,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
         } else {
             httpServletResponse.setStatus(403);
         }
-
     }
-
 
     /**
      * Sends the comment as an Email to the Blog Author
@@ -368,7 +355,6 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
         }
-
     }
 
     /**
@@ -376,7 +362,5 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
      */
     public void destroy() {
     }
-
-
 }
 
