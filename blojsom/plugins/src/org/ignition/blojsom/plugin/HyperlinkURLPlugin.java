@@ -34,63 +34,36 @@ package org.ignition.blojsom.plugin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.util.HashMap;
 
 /**
- * Macro Expansion Plugin
+ * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.5 2003-02-26 02:38:52 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.1 2003-02-26 21:49:42 czarneckid Exp $
  */
-public class MacroExpansionPlugin implements BlojsomPlugin {
-
-    private static final String BLOG_MACRO_CONFIGURATION_IP = "blog-macros-expansion";
-
-    private Log _logger = LogFactory.getLog(MacroExpansionPlugin.class);
-    private Map _macros;
+public class HyperlinkURLPlugin implements BlojsomPlugin {
 
     /**
-     * Regular expression to identify macros as $MACRO$ and DOES NOT ignore escaped $'s
+     * Protocol support for HREF links
      */
-    private static final String MACRO_REGEX = "(\\$[^\\$]*\\$)";
-    private Pattern _macro;
+    private static final String URL_PROTOCOLS = "((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file)";
 
     /**
-     * Default constructor. Compiles the macro regular expression pattern, $MACRO$
+     * Regular expression to identify URLs in the entry
      */
-    public MacroExpansionPlugin() {
-        _macro = Pattern.compile(MACRO_REGEX);
-    }
+    private static final String URL_REGEX = "(^|[ t\rn])" + URL_PROTOCOLS
+            + ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
 
     /**
-     * Load the macro mappings
-     *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * The resulting replace string for formatting the href
      */
-    private void loadMacros(ServletConfig servletConfig) {
-        String macroConfiguration = servletConfig.getInitParameter(BLOG_MACRO_CONFIGURATION_IP);
-        Properties macroProperties = new Properties();
-        InputStream is = servletConfig.getServletContext().getResourceAsStream(macroConfiguration);
-        try {
-            macroProperties.load(is);
-            Iterator handlerIterator = macroProperties.keySet().iterator();
-            while (handlerIterator.hasNext()) {
-                String keyword = (String) handlerIterator.next();
-                _macros.put(keyword, macroProperties.get(keyword));
-                _logger.info("Adding macro [" + keyword + "] with value of [" + macroProperties.get(keyword) + "]");
-            }
-        } catch (IOException e) {
-            _logger.error(e);
-        }
-    }
+    private static final String HREF_EXPRESSION = " <a href=\"$2\" target=\"_blank\">$2</a>";
+
+    private Log _logger = LogFactory.getLog(HyperlinkURLPlugin.class);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -100,33 +73,10 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
-        _macros = new HashMap(10);
-
-        loadMacros(servletConfig);
     }
 
     /**
-     * Expand macro tokens in an entry
-     *
-     * @param content Entry to process
-     * @return The macro expanded string
-     */
-    private String replaceMacros(String content) {
-        Matcher _matcher = _macro.matcher(content);
-
-        while (_matcher.find()) {
-            String _token = _matcher.group();
-            String _macro = _token.substring(1, _token.length() - 1).toLowerCase();
-            if (_macros.containsKey(_macro)) {
-                content = BlojsomUtils.replace(content, _token, (String) _macros.get(_macro));
-            }
-        }
-
-        return content;
-    }
-
-    /**
-     * Process the blog entries. Expands any macros in title and body.
+     * Process the blog entries
      *
      * @param httpServletRequest Request
      * @param entries Blog entries retrieved for the particular request
@@ -140,8 +90,9 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            entry.setTitle(replaceMacros(entry.getTitle()));
-            entry.setDescription(replaceMacros(entry.getDescription()));
+
+            entry.setTitle(entry.getTitle().replaceAll(URL_REGEX, HREF_EXPRESSION));
+            entry.setDescription(entry.getDescription().replaceAll(URL_REGEX, HREF_EXPRESSION));
         }
 
         return entries;
@@ -154,6 +105,19 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
+
+
+    /*
+    public static void main(String[] args) {
+
+        String _hyperlink = "this is a test of an http://www.news.com replacement";
+        String _hyperlink2 = "this is a test of an <a href=\"http://www.news.com\" target=\"_blank\">http://www.news.com</a> replacement";
+
+        System.out.println(_hyperlink.replaceAll(URL_REGEX,HREF_EXPRESSION));
+        System.out.println(_hyperlink2.replaceAll(URL_REGEX,HREF_EXPRESSION));
+
+
+
+    }
+      */
 }
-
-
