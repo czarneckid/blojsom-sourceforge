@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.12 2004-10-06 02:22:56 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.13 2004-11-16 03:12:30 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -133,12 +133,12 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         // Check first to see if someone has requested to logout
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action != null && LOGOUT_ACTION.equals(action)) {
-            httpSession.removeAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY);
+            httpSession.removeAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY);
             httpSession.removeAttribute(BLOJSOM_USER_AUTHENTICATED);
         }
 
         // Otherwise, check for the authenticated key and if not authenticated, look for a "username" and "password" parameter
-        if (httpSession.getAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY) == null) {
+        if (httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY) == null) {
             String username = httpServletRequest.getParameter(BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM);
             String password = httpServletRequest.getParameter(BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM);
 
@@ -151,8 +151,8 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
             try {
                 _authorizationProvider.loadAuthenticationCredentials(blogUser);
                 _authorizationProvider.authorize(blogUser, null, username, password);
-                httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
-                httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
+                httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
+                httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
                 httpSession.setAttribute(BLOJSOM_USER_AUTHENTICATED, Boolean.TRUE);
                 _logger.debug("Passed authentication for username: " + username);
                 return true;
@@ -162,7 +162,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 return false;
             }
         } else {
-            return ((Boolean) httpSession.getAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
+            return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
     }
 

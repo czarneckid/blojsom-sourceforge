@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.25 2004-10-05 02:47:46 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.26 2004-11-16 03:10:15 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -58,6 +58,7 @@ public class Blog implements BlojsomConstants {
     private String _blogName;
     private String _blogDescription;
     private String _blogURL;
+    private String _blogAdminURL;
     private String _blogBaseURL;
     private String _blogCountry;
     private String _blogLanguage;
@@ -152,6 +153,17 @@ public class Blog implements BlojsomConstants {
             }
         }
         _blogProperties.put(BLOG_URL_IP, _blogURL);
+
+        _blogAdminURL = blogConfiguration.getProperty(BLOG_ADMIN_URL_IP);
+        if (BlojsomUtils.checkNullOrBlank(_blogAdminURL)) {
+            _logger.warn("No value supplied for blog-admin-url");
+            _blogAdminURL = _blogURL;
+        } else {
+            if (!_blogAdminURL.endsWith("/")) {
+                _blogAdminURL += "/";
+            }
+        }
+        _blogProperties.put(BLOG_ADMIN_URL_IP, _blogAdminURL);
 
         _blogBaseURL = blogConfiguration.getProperty(BLOG_BASE_URL_IP);
         if (BlojsomUtils.checkNullOrBlank(_blogBaseURL)) {
@@ -443,6 +455,16 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Admin URL for the blog
+     *
+     * @return Blog admin URL
+     * @since blosjom 2.21
+     */
+    public String getBlogAdminURL() {
+        return _blogAdminURL;
+    }
+
+    /**
      * Base URL for the blog
      * 
      * @return Blog base URL
@@ -685,6 +707,17 @@ public class Blog implements BlojsomConstants {
     public void setBlogURL(String blogURL) {
         _blogURL = blogURL;
         _blogProperties.put(BLOG_URL_IP, blogURL);
+    }
+
+    /**
+     * Set the new admin URL for the blog
+     *
+     * @param blogAdminURL Blog admin URL
+     * @since blojsom 2.21
+     */
+    public void setAdminBlogURL(String blogAdminURL) {
+        _blogAdminURL = blogAdminURL;
+        _blogProperties.put(BLOG_ADMIN_URL_IP, blogAdminURL);
     }
 
     /**

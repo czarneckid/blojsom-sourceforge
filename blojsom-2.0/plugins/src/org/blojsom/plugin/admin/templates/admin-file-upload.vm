@@ -3,21 +3,21 @@
 #adminPageHeader("#adminResource('file.upload.header' 'File Upload')")
 
     <ul id="globalnav">
-        <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a></li>
-        <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">Categories</a></li>
-        <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">Entries</a></li>
+        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin">Administration</a></li>
+        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-categories&action=page">Categories</a></li>
+        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry&blog-category-name=/">Entries</a></li>
         <li><a href="#" class="here">Weblog Settings</a></li>
         <ul>
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-authorization&action=page">Authorization</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-authorization&action=page">Authorization</a></li>
             <li><a href="#" class="here">Files</a></li>
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-flavors&action=page">Flavors</a></li>
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-properties&action=page">Properties</a></li>
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-templates&action=page">Templates</a></li>
-            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-users&action=page">Users</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-flavors&action=page">Flavors</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-properties&action=page">Properties</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-templates&action=page">Templates</a></li>
+            <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-users&action=page">Users</a></li>
         </ul>
-        <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-plugins&action=page">Plugin Settings</a></li>
+        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=edit-blog-plugins&action=page">Plugin Settings</a></li>
         <li><a href="$BLOJSOM_BLOG.getBlogURL()">#adminResource('view.site.text' '')</a></li>
-        <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&action=logout">Logout</a></li>
+        <li><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&action=logout">Logout</a></li>
     </ul>
 
     <div id="contents">

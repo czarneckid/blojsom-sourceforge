@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.53 2004-11-16 01:52:28 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.54 2004-11-16 03:10:16 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -367,6 +367,7 @@ public interface BlojsomConstants {
     public static final String BLOG_COUNTRY_IP = "blog-country";
     public static final String BLOG_DESCRIPTION_IP = "blog-description";
     public static final String BLOG_URL_IP = "blog-url";
+    public static final String BLOG_ADMIN_URL_IP = "blog-admin-url"; 
     public static final String BLOG_BASE_URL_IP = "blog-base-url";
     public static final String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
     public static final String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
