@@ -8,7 +8,7 @@
 
     <changes>
 
-        <release version="2.03" date="dev">
+        <release version="2.03" date="October 15, 2003">
             <action dev="czarneckid" type="update" context="Build">
                 Added version number to JAR files.
             </action>
