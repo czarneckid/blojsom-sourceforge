@@ -34,10 +34,8 @@
  */
 package org.ignition.blojsom.blog;
 
-import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.BlojsomException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,11 +46,10 @@ import java.util.Properties;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.4 2003-06-12 02:06:43 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.5 2003-08-04 15:27:39 intabulas Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
-    private Log _logger = LogFactory.getLog(FileBackedBlogCategory.class);
 
     /**
      * Create a new FileBackedBlogCategory.

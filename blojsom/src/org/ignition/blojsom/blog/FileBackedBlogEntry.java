@@ -34,10 +34,8 @@
  */
 package org.ignition.blojsom.blog;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.BlojsomException;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.*;
 import java.util.*;
@@ -46,12 +44,11 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.13 2003-08-04 15:26:44 intabulas Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.14 2003-08-04 15:27:57 intabulas Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
 
-    private Log _logger = LogFactory.getLog(FileBackedBlogEntry.class);
 
     private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
