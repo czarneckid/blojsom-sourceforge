@@ -151,7 +151,7 @@ Categories
 
 
 <div class="syndicate">
-Syndicate this site in <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss">RSS 0.92</a>, <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2">RSS 2.0</a> or <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf">RDF</a>.<br /><br />
+Syndicate in <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom">Atom</a>, <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss">RSS 0.92</a>, <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2">RSS 2.0</a> or <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf">RDF</a>.<br /><br />
 
 <a href="http://blojsom.sf.net" title="All Your Blog Are Belong To Us" target="_blank"><img
 src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" height="31" width="88" alt="Powered By blojsom" border="0" align="left" /></a>
