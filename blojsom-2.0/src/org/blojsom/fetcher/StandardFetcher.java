@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.11 2004-01-20 03:45:55 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.12 2004-01-26 22:45:02 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -356,6 +356,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             requestedCategory += "/";
         }
 
+        requestedCategory = BlojsomUtils.urlDecode(requestedCategory);
         _logger.debug("User requested category: " + requestedCategory);
         FileBackedBlogCategory category = new FileBackedBlogCategory(requestedCategory, blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
 

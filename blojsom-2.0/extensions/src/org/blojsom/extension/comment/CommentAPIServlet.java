@@ -76,7 +76,7 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.6 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.7 2004-01-26 22:44:37 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -149,13 +149,16 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         if (userFromPath == null) {
             user = _blojsomConfiguration.getDefaultUser();
             requestedCategory = httpServletRequest.getPathInfo();
+            requestedCategory = BlojsomUtils.urlDecode(requestedCategory);
         } else {
             if (!_blojsomConfiguration.getBlogUsers().containsKey(userFromPath)) {
                 user = _blojsomConfiguration.getDefaultUser();
                 requestedCategory = httpServletRequest.getPathInfo();
+                requestedCategory = BlojsomUtils.urlDecode(requestedCategory);
             } else {
                 user = userFromPath;
                 requestedCategory = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+                requestedCategory = BlojsomUtils.urlDecode(requestedCategory);
             }
         }
         requestedCategory = BlojsomUtils.normalize(requestedCategory);

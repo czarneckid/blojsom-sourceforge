@@ -75,7 +75,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.26 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.27 2004-01-26 22:44:25 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -239,6 +239,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
         String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+        category = BlojsomUtils.urlDecode(category);
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
         _logger.info("AtomAPI Delete Called ================================================");
@@ -318,6 +319,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
         String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+        category = BlojsomUtils.urlDecode(category);
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
         if (BlojsomUtils.checkNullOrBlank(user)) {
@@ -408,6 +410,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
         String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+        category = BlojsomUtils.urlDecode(category);
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
         _logger.info("AtomAPI POST Called =================================================");
@@ -491,6 +494,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         String permalink = BlojsomUtils.getRequestValue(PERMALINK_PARAM, httpServletRequest);
         String category = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+        category = BlojsomUtils.urlDecode(category);
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
         _logger.info("AtomAPI PUT Called ==================================================");
