@@ -40,58 +40,112 @@ package org.ignition.blojsom.plugin.email;
  * Session instance held by SendEmailPlugin.
  *
  * @author Mark Lussier
- * @version $Id: EmailMessage.java,v 1.1 2003-03-24 17:13:47 intabulas Exp $
+ * @version $Id: EmailMessage.java,v 1.2 2003-03-31 02:57:31 czarneckid Exp $
  */
 public class EmailMessage {
+
     String _from;
     String _to;
     String _subject;
     String _message;
 
-    public EmailMessage( String subject, String message ) {
+    /**
+     * Email message constructor
+     * 
+     * @param subject E-mail subject
+     * @param message E-mail message
+     */
+    public EmailMessage(String subject, String message) {
         _from = null;
         _to = null;
         _subject = subject;
         _message = message;
     }
 
-    public EmailMessage( String from, String to, String subject, String message ) {
+    /**
+     * E-mail message constructor
+     *
+     * @param from From
+     * @param to To
+     * @param subject E-mail subject
+     * @param message E-mail message
+     */
+    public EmailMessage(String from, String to, String subject, String message) {
         _from = from;
         _to = to;
         _subject = subject;
         _message = message;
     }
 
+    /**
+     * Get the from: address for the e-mail
+     *
+     * @return From: address
+     */
     public String getFrom() {
         return _from;
     }
 
+    /**
+     * Set the from: address for the e-mail
+     *
+     * @param from From: address
+     */
     public void setFrom(String from) {
         _from = from;
     }
 
+    /**
+     * Get the to: address for the e-mail
+     *
+     * @return To: address
+     */
     public String getTo() {
         return _to;
     }
 
+    /**
+     * Set the to: address for the e-mail
+     *
+     * @param to To: address
+     */
     public void setTo(String to) {
         _to = to;
     }
 
+    /**
+     * Get the subject of the e-mail
+     *
+     * @return E-mail subject
+     */
     public String getSubject() {
         return _subject;
     }
 
+    /**
+     * Set the subject of the e-mail
+     *
+     * @param subject E-mail subject
+     */
     public void setSubject(String subject) {
         _subject = subject;
     }
 
+    /**
+     * Get the e-mail message content
+     *
+     * @return Message content
+     */
     public String getMessage() {
         return _message;
     }
 
+    /**
+     * Set the message content for the e-mail
+     *
+     * @param message Message content
+     */
     public void setMessage(String message) {
         _message = message;
     }
-
 }

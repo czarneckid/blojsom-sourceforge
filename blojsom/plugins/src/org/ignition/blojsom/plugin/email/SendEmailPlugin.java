@@ -57,23 +57,19 @@ import java.util.*;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.2 2003-03-25 15:52:45 intabulas Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.3 2003-03-31 02:57:31 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
-
-    /**
-     *
-     */
     private Log _logger = LogFactory.getLog(SendEmailPlugin.class);
 
     /**
-     *
+     * SMTP server initialization parameter
      */
     private static final String SMTPSERVER_IP = "smtp-server";
 
     /**
-     *
+     * SMTP session name
      */
     private static final String SESSION_NAME = "mail.smtp.host";
 
@@ -135,17 +131,16 @@ public class SendEmailPlugin implements BlojsomPlugin {
             }
         }
 
-
         return entries;
     }
 
 
     /**
      * Send the email message
-     * @param emailmessage
+     *
+     * @param emailmessage Email message
      */
     private void sendMailMessage(EmailMessage emailmessage) {
-
         try {
             MimeMessage message = new MimeMessage(_mailsession);
             InternetAddress _msgto;
@@ -165,13 +160,11 @@ public class SendEmailPlugin implements BlojsomPlugin {
 
             /* Send the email. BLOCKING CALL!! */
             Transport.send(message);
-
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
         } catch (MessagingException e) {
             _logger.error(e);
         }
-
     }
 
 
@@ -190,5 +183,4 @@ public class SendEmailPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
-
 }

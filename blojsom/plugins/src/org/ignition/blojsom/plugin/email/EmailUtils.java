@@ -47,7 +47,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.1 2003-03-24 17:13:47 intabulas Exp $
+ * @version $Id: EmailUtils.java,v 1.2 2003-03-31 02:57:31 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -71,6 +71,7 @@ public class EmailUtils {
     /**
      * Send notification email to the Blog Author. This utilizes two values in blojsom.properties to determine the name
      * and email address to use
+     *
      * @param subject Subject of the message being sent
      * @param message The message text
      * @param context The context Map for putting the messages
@@ -87,6 +88,7 @@ public class EmailUtils {
     /**
      * Helper method to create the recipient email address for a giving email message. This will default to the blog
      * author is no recipient email is provided.
+     *
      * @param recipient Email address of message recipient
      * @param defaultname Default recipient name
      * @param defaultemail Default recipient email
@@ -111,6 +113,7 @@ public class EmailUtils {
     /**
      * Helper method to create the sender email address for a giving email message. This will default to the blog
      * author is no recipient email is provided.
+     *
      * @param sender Email address of message sender
      * @param defaultname Default sender name
      * @param defaultemail Default email name
@@ -131,6 +134,4 @@ public class EmailUtils {
 
         return result;
     }
-
-
 }
