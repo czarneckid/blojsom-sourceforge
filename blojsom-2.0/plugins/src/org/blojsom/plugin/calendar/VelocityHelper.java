@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.12 2004-11-22 03:01:39 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.13 2004-11-30 01:48:07 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -55,6 +55,7 @@ public class VelocityHelper {
 
     private String HREF_PREFIX = "<a href=\"";
     private String HREF_SUFFIX = "</a>";
+    private String _today = "Today";
 
     /**
      * Public Constructor
@@ -158,7 +159,7 @@ public class VelocityHelper {
      */
     public String getToday() {
         StringBuffer result = new StringBuffer();
-        result.append(HREF_PREFIX).append(_calendar.getCalendarUrl()).append("\">Today").append(HREF_SUFFIX);
+        result.append(HREF_PREFIX).append(_calendar.getCalendarUrl()).append("\">").append(_today).append(HREF_SUFFIX);
         return result.toString();
     }
 
@@ -308,5 +309,15 @@ public class VelocityHelper {
         _calendar.getCalendar().add(Calendar.MONTH, -1);
 
         return result.toString();
+    }
+
+    /**
+     * Set the text displayed for the "Today" link
+     *
+     * @param today Text for "Today" link
+     * @since blojsom 2.22
+     */
+    public void setTodayText(String today) {
+        _today = today;
     }
 }
