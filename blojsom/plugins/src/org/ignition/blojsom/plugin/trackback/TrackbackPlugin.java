@@ -59,7 +59,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.11 2003-03-26 03:03:03 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.12 2003-03-27 03:23:17 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -231,6 +231,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
 
         StringBuffer trackbackDirectory = new StringBuffer();
         String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, _blogFileExtensions);
+        permalinkFilename = BlojsomUtils.urlDecode(permalinkFilename);
         if (permalinkFilename == null) {
             _logger.debug("Invalid permalink trackback for: " + permalink);
             context.put(BLOJSOM_TRACKBACK_MESSAGE, "Invalid permalink trackback for: " + permalink);
