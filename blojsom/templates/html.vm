@@ -4,7 +4,7 @@
 <title>$BLOJSOM_BLOG.getBlogName()</title>
 </head>
 
-<link rel="stylesheet" href="$BLOJSOM_SITE_URL/main.css" />
+<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom.css" />
 
 <h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
 <h3>$BLOJSOM_BLOG.getBlogDescription()</h3>

@@ -28,7 +28,7 @@
 
     <head>
 	<title><%= blogInformation.getBlogName() %></title>
-	<link rel="stylesheet" href="<%= blogSiteURL %>/main.css" />
+	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
     </head>
 
     <body>
