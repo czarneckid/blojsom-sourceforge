@@ -239,6 +239,31 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Retrieve a permalink entry from the entries for a given category
+     *
+     * @param category Requested category as a String
+     * @param permalink Permalink entry requested
+     * @return Blog entry array containing the single requested permalink entry,
+     * or <code>null</code> if the permalink entry was not found
+     */
+    public BlogEntry[] getPermalinkEntry(String category, String permalink) {
+        String permalinkEntry = _blogHome + BlojsomUtils.removeInitialSlash(category) + permalink;
+        File blogFile = new File(permalinkEntry);
+        if (!blogFile.exists()) {
+            return null;
+        } else {
+            BlogEntry[] entryArray = new BlogEntry[1];
+            BlogEntry blogEntry = new BlogEntry();
+            blogEntry.setSource(blogFile);
+            blogEntry.setCategory(category);
+            blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
+            blogEntry.reloadSource();
+            entryArray[0] = blogEntry;
+            return entryArray;
+        }
+    }
+
+    /**
      * Retrieve all of the entries for a requested category. Uses the value of the blog display entries
      * to pass to getEntriesForCategory(BlogCategory, int)
      *
