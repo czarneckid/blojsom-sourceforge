@@ -19,6 +19,10 @@
                         blojsom-extensions-2.14.jar, blojsom-plugins-2.14.jar files, blojsom-resources-2.14.jar, 
                         and blojsom-plugins-templates-2.14.jar.
                     </p>
+                    <p>
+                        2. Replace the velocity-1.3.1.jar file with the velocity-1.4.jar file in your
+                        <code>/WEB-INF/lib</code> directory.
+                    </p>
                 </section>
                 <section>
                     <title>Properties changes</title>
