@@ -1,4 +1,4 @@
-   Trackback on: $!BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getLink()
+   Trackback on: $!BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getLink()&page=trackback
 
  Trackback from: <a href="mailto:$!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getUrl()">$!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogName()</a>
 Trackback title: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getTitle()

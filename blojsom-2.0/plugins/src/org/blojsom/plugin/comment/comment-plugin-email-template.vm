@@ -1,4 +1,4 @@
-Comment on: $BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getLink()
+Comment on: $BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getLink()&page=comments
 
 Comment by: <a href="mailto:$!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthorEmail()">$!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthor()</a> - $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthorURL()
    Left on: $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getCommentDate()
