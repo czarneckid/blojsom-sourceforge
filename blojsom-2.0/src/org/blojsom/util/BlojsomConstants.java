@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.30 2004-03-13 17:15:36 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.31 2004-03-15 02:06:44 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -310,7 +310,7 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_RESOURCE_MANAGER_IP = "blojsom-resource-manager";
     public static final String BLOJSOM_DEFAULT_RESOURCE_MANAGER = "org.blojsom.util.resources.ResourceBundleResourceManager";
     public static final String BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP = "blojsom-resource-manager-bundles";
-    public static final String BLOJSOM_RESOURCE_MANAGER_CONTEXT_KEY = "org.blojsom.util.resources.ResourceManager";
+    public static final String BLOJSOM_RESOURCE_MANAGER_CONTEXT_KEY = "BLOJSOM_RESOURCE_MANAGER";
     public static final String BLOG_DEFAULT_PROPERTIES = "blog.properties";
 
     // Blog initialization parameters from blog.properties
