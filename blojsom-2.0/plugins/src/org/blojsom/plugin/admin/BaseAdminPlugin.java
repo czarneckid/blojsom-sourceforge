@@ -38,6 +38,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
@@ -46,15 +48,17 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * BaseAdminPlugin
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.2 2003-10-22 02:40:33 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.3 2003-10-23 01:30:02 czarneckid Exp $
  */
-public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
+public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
     protected static final Log _logger = LogFactory.getLog(BaseAdminPlugin.class);
 
@@ -71,7 +75,7 @@ public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants
     protected BlojsomConfiguration _blojsomConfiguration;
 
     /**
-     *
+     * Default constructor
      */
     public BaseAdminPlugin() {
     }
@@ -124,6 +128,27 @@ public abstract class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants
         } else {
             return ((Boolean) httpSession.getAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
+    }
+
+    /**
+     * Process the blog entries
+     *
+     * @param httpServletRequest Request
+     * @param httpServletResponse Response
+     * @param user {@link org.blojsom.blog.BlogUser} instance
+     * @param context Context
+     * @param entries Blog entries retrieved for the particular request
+     * @return Modified set of blog entries
+     * @throws BlojsomPluginException If there is an error processing the blog entries
+     */
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        if (!authenticateUser(httpServletRequest, user.getBlog())) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+        } else {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+        }
+
+        return entries;
     }
 
     /**
