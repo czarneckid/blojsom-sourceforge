@@ -36,21 +36,20 @@ package org.ignition.blojsom.blog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.BlojsomException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.38 2003-07-03 02:25:49 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.39 2003-07-06 16:33:04 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -117,15 +116,20 @@ public abstract class BlogEntry implements BlojsomConstants {
      *
      * @since blojsom 1.9.3
      * @param format Date format
-     * @return <code>null</code> if the entry date is null, otherwise returns the entry date formatted to the specified format
+     * @return <code>null</code> if the entry date or format is null, otherwise returns the entry date formatted to the specified format. If the format is invalid, returns <tt>entryDate.toString()</tt>
      */
     public String getDateAsFormat(String format) {
-        if (_entryDate == null) {
+        if (_entryDate == null || format == null) {
             return null;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(_entryDate);
+        SimpleDateFormat sdf = null;
+        try {
+            sdf = new SimpleDateFormat(format);
+            return sdf.format(_entryDate);
+        } catch (IllegalArgumentException e) {
+            return _entryDate.toString();
+        }
     }
 
     /**
