@@ -335,18 +335,20 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         }
 
         // Invoke the plugins in the order in which they were specified
-        for (int i = 0; i < _pluginChain.length; i++) {
-            String plugin = _pluginChain[i];
-            if (_plugins.containsKey(plugin)) {
-                BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
-                try {
-                    entries = blojsomPlugin.process(httpServletRequest, entries);
-                    blojsomPlugin.cleanup();
-                } catch (BlojsomPluginException e) {
-                    _logger.error(e);
+        if (entries != null) {
+            for (int i = 0; i < _pluginChain.length; i++) {
+                String plugin = _pluginChain[i];
+                if (_plugins.containsKey(plugin)) {
+                    BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
+                    try {
+                        entries = blojsomPlugin.process(httpServletRequest, entries);
+                        blojsomPlugin.cleanup();
+                    } catch (BlojsomPluginException e) {
+                        _logger.error(e);
+                    }
+                } else {
+                    _logger.error("No plugin loaded for: " + plugin);
                 }
-            } else {
-                _logger.error("No plugin loaded for: " + plugin);
             }
         }
 
