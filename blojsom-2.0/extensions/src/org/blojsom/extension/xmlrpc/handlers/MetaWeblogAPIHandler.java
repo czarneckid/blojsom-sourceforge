@@ -58,7 +58,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.9 2004-01-18 20:30:14 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.10 2004-01-18 20:32:05 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -532,7 +532,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 BlogEntry entry;
                 for (int i = 0; i < entries.length; i++) {
                     entry = entries[i];
-                    postcontent = new Hashtable(3);
+                    postcontent = new Hashtable(7);
                     postcontent.put(MEMBER_TITLE, entry.getTitle());
                     postcontent.put(MEMBER_LINK, entry.getPermalink());
                     postcontent.put(MEMBER_DESCRIPTION, entry.getDescription());
