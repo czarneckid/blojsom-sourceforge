@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.72 2003-04-19 02:44:42 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.73 2003-04-22 02:13:04 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -375,6 +375,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         BlogEntry[] entries = null;
         BlogCategory[] categories = null;
 
+        // Fetch the categories and entries for the request
         try {
             categories = _fetcher.fetchCategories(httpServletRequest, httpServletResponse, flavor, context);
             entries = _fetcher.fetchEntries(httpServletRequest, httpServletResponse, flavor, context);
@@ -418,6 +419,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         String blogdate = null;
         String blogISO8601Date = null;
         Date blogDateObject = null;
+
         // If we have entries, construct a last modified on the most recent entry
         // Additionally, set the blog date
         if ((entries != null) && (entries.length > 0)) {

@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.7 2003-04-19 14:38:17 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.8 2003-04-22 02:13:11 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -317,19 +317,23 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * components such as the XML-RPC handlers that cannot generate servlet request and
      * response objects, but still need to be able to fetch entries. Implementations of this
      * method <b>must</b> be explicit about the exact parameter names and types that are
-     * expected to return an appropriate set of {@link BlogEntry} objects.
-     *
-     * String "FETCHER_CATEGORY"
-     * String "FETCHER_PERMALINK"
-     *  - @todo XXX
-     *
-     * String "FETCHER_FLAVOR"
-     * String "FETCHER_NUM_POSTS_INTEGER"
-     *  - @todo XXX
-     *
-     * String "FETCHER_CATEGORY"
-     * String "FETCHER_NUM_POSTS_INTEGER"
-     *  - @todo XXX
+     * expected to return an appropriate set of {@link BlogEntry} objects. The following
+     * table describes the parameters accepted by this method and their return value. The value
+     * for <code>fetchParameters</code> may represent the keys and data types that should be
+     * present in the <code>fetchParameters</code> map to return the proper data.
+     * <p />
+     * <table border="1">
+     * <th><code>fetchParameters</code> value</th> <th>Return value</th>
+     * <tr>
+     * <td>"FETCHER_CATEGORY" (<code>BlogCategory</code>) and "FETCHER_PERMALINK" (<code>String</code>)</td> <td>return a single <code>BlogEntry</code> for the requested permalink</td>
+     * </tr>
+     * <tr>
+     * <td>"FETCHER_CATEGORY" (<code>BlogCategory</code>) and "FETCHER_NUM_POSTS_INTEGER" (<code>Integer</code>)</td> <td>return entries for the requested category up to the value indicated by the number of entries</td>
+     * </tr>
+     * <tr>
+     * <td>"FETCHER_FLAVOR" (<code>String</code>) and "FETCHER_NUM_POSTS_INTEGER" (<code>Integer</code>)</td> <td>return all entries for the default category ("/") for the requested flavor up to the value indicated by the number of entries</td>
+     * </tr>
+     * </table>
      *
      * @param fetchParameters Parameters which will be used to retrieve blog entries
      * @return Blog entries retrieved for the particular request
@@ -499,9 +503,17 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * components such as the XML-RPC handlers that cannot generate servlet request and
      * response objects, but still need to be able to fetch categories. Implementations of this
      * method <b>must</b> be explicit about the exact parameter names and types that are
-     * expected to return an appropriate set of {@link BlogCategory} objects.
-     *
-     * null - return all categories
+     * expected to return an appropriate set of {@link BlogCategory} objects. The following
+     * table describes the parameters accepted by this method and their return value. The value
+     * for <code>fetchParameters</code> may represent the keys and data types that should be
+     * present in the <code>fetchParameters</code> map to return the proper data.
+     * <p />
+     * <table border="1">
+     * <th><code>fetchParameters</code> value</th> <th>Return value</th>
+     * <tr>
+     * <td><code>null</code></td> <td>return all categories</td>
+     * </tr>
+     * </table>
      *
      * @param fetchParameters Parameters which will be used to retrieve blog entries
      * @return Blog categories retrieved for the particular request
