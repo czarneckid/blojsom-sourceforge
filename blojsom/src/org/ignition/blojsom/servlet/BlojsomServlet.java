@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.56 2003-03-27 02:50:05 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.57 2003-03-27 16:40:45 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -343,10 +343,14 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
+
+        // Moved to Calendar Plugin... Leaving here just in  case
+        /*
         // Determine a calendar-based request
         String year = null;
         String month = null;
         String day = null;
+
 
         year = httpServletRequest.getParameter(YEAR_PARAM);
         if (year != null) {
@@ -370,7 +374,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
             _logger.debug("Calendar-based request for: " + requestedCategory + year + month + day);
         }
-
+          */
         // Determine if the user wants to override the number of displayed entries
         String entriesParam = httpServletRequest.getParameter(ENTRIES_PARAM);
         Integer entriesToDisplay = null;
@@ -402,11 +406,18 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         if (permalink != null) {
             entries = _blog.getPermalinkEntry(category, permalink);
         } else {
+
+            // Moved to Calendar Plugin... Leaving here just in  case
+            /*
             // Check to see if we have requested entries by calendar
             if (year != null) {
                 entries = _blog.getEntriesForDate(category, flavor, year, month, day);
                 // Check for the default category
             } else if (requestedCategory.equals("/")) {
+           */
+
+            if  (requestedCategory.equals("/")) {
+
                 if (entriesToDisplay == null) {
                     entries = _blog.getEntriesAllCategories(flavor);
                 } else {
