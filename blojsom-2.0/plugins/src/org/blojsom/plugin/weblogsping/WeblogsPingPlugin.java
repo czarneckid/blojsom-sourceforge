@@ -66,7 +66,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.12 2004-08-30 14:54:06 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.13 2004-08-30 17:56:38 czarneckid Exp $
  * @since blojsom 1.9.2
  */
 public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
@@ -79,7 +79,7 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
 
     public static final String BLOG_PING_URLS_IP = "blog-ping-urls";
-    private static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
+    public static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
 
     private WeblogsPingPluginAsyncCallback _callbackHandler;
 
