@@ -17,6 +17,7 @@ Available categories:
 
 <body>
 
+#set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="entrystyle">
     <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
@@ -24,13 +25,16 @@ Available categories:
     <p>$entry.getDescription()</p>
     </div>
     <p class="weblogbottomline"></p>
+    $totalEntries = $totalEntries + 1
 #end
 
 <p />
 
-Available categories:
-#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
+#if ($totalEntries > 0)
+    Available categories:
+    #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+        [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
+    #end
 #end
 
 <p />
