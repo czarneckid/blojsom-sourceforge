@@ -76,7 +76,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.37 2004-06-03 01:28:03 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.38 2004-06-14 12:57:09 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -97,11 +97,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
     /**
-     *
      * @param servletConfig
-     * @throws BlojsomException
+     * @throws ServletException
      */
-    protected void configureAuthorzation(ServletConfig servletConfig) throws BlojsomException {
+    protected void configureAuthorzation(ServletConfig servletConfig) throws ServletException {
         try {
             Class authorizationProviderClass = Class.forName(_blojsomConfiguration.getAuthorizationProvider());
             _authorizationProvider = (AuthorizationProvider) authorizationProviderClass.newInstance();
@@ -126,6 +125,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
         configureBlojsom(servletConfig);
+        configureAuthorzation(servletConfig);
+
 
         _logger.info("AtomAPI initialized");
     }
@@ -155,7 +156,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             Map authMap = blog.getAuthorization();
             if (authMap.containsKey(auth.getUsername())) {
                 try {
-                    result = auth.authenticate(BlojsomUtils.parseCommaList((String)authMap.get(auth.getUsername()))[0]);
+                    result = auth.authenticate(BlojsomUtils.parseCommaList((String) authMap.get(auth.getUsername()))[0]);
                 } catch (AuthenticationException e) {
                     _logger.error(e.getMessage(), e);
                 }
