@@ -13,7 +13,7 @@
                 not load properties in UTF-8. The default for the <code>BlojsomProperties</code> class in loading
                 properties is now UTF-8.
             </action>
-            
+
             <action dev="czarneckid" type="update" context="Core">
                 Updated Velocity and FreeMarker dispatchers to allow for sharing of Velocity and
                 FreeMarker templates, respectively, across users.
@@ -102,7 +102,13 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Template">
-                Updated RDF JSP and Velocity templates to add missing items element inside the channel element.
+                Updated RDF JSP and Velocity templates to add missing items element inside the channel element. Also
+                updated JSP templates to use an appropriate content type and character set declaration.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Template">
+                Updated Flex theme templates where the default/ directory was removed which caused incorrect loading
+                of some pages.
             </action>
 
             <action dev="czarneckid" type="update" context="Library">
