@@ -48,7 +48,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.36 2003-05-31 21:28:46 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.37 2003-06-12 02:01:22 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -412,7 +412,7 @@ public abstract class BlogEntry implements BlojsomConstants {
      * @param blog Blog
      * @throws BlojsomException If there is an error loading the entry
      */
-    public abstract void loadEntry(Blog blog) throws BlojsomException;
+    public abstract void load(Blog blog) throws BlojsomException;
 
     /**
      * Save the blog entry.
@@ -421,7 +421,7 @@ public abstract class BlogEntry implements BlojsomConstants {
      * @param blog Blog
      * @throws BlojsomException If there is an error saving the entry
      */
-    public abstract void saveEntry(Blog blog) throws BlojsomException;
+    public abstract void save(Blog blog) throws BlojsomException;
 
     /**
      * Delete the blog entry.
@@ -430,5 +430,5 @@ public abstract class BlogEntry implements BlojsomConstants {
      * @param blog Blog
      * @throws BlojsomException If there is an error deleting the entry
      */
-    public abstract void deleteEntry(Blog blog) throws BlojsomException;
+    public abstract void delete(Blog blog) throws BlojsomException;
 }
