@@ -20,6 +20,26 @@
                     </p>
                 </section>
                 <section>
+                    <title>Plugin changes</title>
+                    <p>
+                        1. Updated the Wiki and Textile plugins to also check for metadata to specify whether or not processing
+                        should occur on a particular entry. You need to run the Meta plugin before either of these plugins in
+                        one of your plugin chains. The metadata key for the Wiki plugin would be specified as "meta-run-wiki=y"
+                        on a separate line in your blog entry text. The metadata key for the Textile plugin would be specified
+                        as "meta-run-textile=y" on a separate line in your blog entry text.
+                    </p>
+                </section>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. Add the following to your <code>/WEB-INF/(user-id)/blog.properties</code> if you would like to
+                        enable auto-formatting of comments.
+                        <pre>
+                            plugin-comment-autoformat=true
+                        </pre>
+                    </p>
+                </section>
+                <section>
                     <title>Template changes</title>
                     <p>
                         1. Replace the <code>atom.vm</code> file (as appropriate) in the
@@ -527,7 +547,7 @@
                             1. Change the <code>blog-configuration</code> init-param
                             to <code>blojsom-configuration</code>. This parameter's value will stay
                             <code>/WEB-INF/blojsom.properties</code>.
-                        </p>                        
+                        </p>
                     </section>
                 </p>
             </section>
