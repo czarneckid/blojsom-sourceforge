@@ -71,7 +71,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private Map _flavors;
     private Map _templateDispatchers;
     private Map _plugins;
-    private String[] _pluginChain;
+    private Map _pluginChainMap;
+    //private String[] _pluginChain;
 
     private Log _logger = LogFactory.getLog(BlojsomServlet.class);
 
@@ -157,8 +158,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 _authorization.put(userid, password);
             }
 
-            if ( !_blog.setAuthorization( _authorization)) {
-              _logger.error("Authorization table could not be assigned");
+            if (!_blog.setAuthorization(_authorization)) {
+                _logger.error("Authorization table could not be assigned");
             }
 
         } catch (IOException e) {
@@ -209,6 +210,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private void configurePlugins(ServletConfig servletConfig) {
         String pluginConfiguration = servletConfig.getInitParameter(BLOG_PLUGIN_CONFIGURATION_IP);
         _plugins = new HashMap();
+        _pluginChainMap = new HashMap();
         Properties pluginProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(pluginConfiguration);
         try {
@@ -216,8 +218,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             Iterator pluginIterator = pluginProperties.keySet().iterator();
             while (pluginIterator.hasNext()) {
                 String plugin = (String) pluginIterator.next();
-                if (plugin.equals(BLOJSOM_PLUGIN_CHAIN)) {
-                    _pluginChain = BlojsomUtils.parseCommaList(pluginProperties.getProperty(BLOJSOM_PLUGIN_CHAIN));
+                if (plugin.indexOf(BLOJSOM_PLUGIN_CHAIN) != -1) {
+                    _pluginChainMap.put(plugin, BlojsomUtils.parseCommaList(pluginProperties.getProperty(plugin)));
+                    _logger.debug("Added plugin chain: " + plugin + "=" + pluginProperties.getProperty(plugin));
                 } else {
                     String pluginClassName = pluginProperties.getProperty(plugin);
                     try {
@@ -367,15 +370,22 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
+        String[] pluginChain = null;
+
         // Check to see if the user would like to override the plugin chain
         if (httpServletRequest.getParameter(PLUGINS_PARAM) != null) {
-            _pluginChain = BlojsomUtils.parseCommaList(httpServletRequest.getParameter(PLUGINS_PARAM));
+            pluginChain = BlojsomUtils.parseCommaList(httpServletRequest.getParameter(PLUGINS_PARAM));
+        } else {
+            String pluginChainMapKey = flavor + "." + BLOJSOM_PLUGIN_CHAIN;
+            if (_pluginChainMap.containsKey(pluginChainMapKey)) {
+                pluginChain = (String[]) _pluginChainMap.get(pluginChainMapKey);
+            }
         }
 
         // Invoke the plugins in the order in which they were specified
-        if (entries != null) {
-            for (int i = 0; i < _pluginChain.length; i++) {
-                String plugin = _pluginChain[i];
+        if ((entries != null) && (pluginChain != null)) {
+            for (int i = 0; i < pluginChain.length; i++) {
+                String plugin = pluginChain[i];
                 if (_plugins.containsKey(plugin)) {
                     BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
                     try {
