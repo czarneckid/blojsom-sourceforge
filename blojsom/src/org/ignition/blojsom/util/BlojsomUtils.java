@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.33 2003-03-26 03:02:47 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.34 2003-03-26 03:17:59 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -400,7 +400,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return the template name for a particular page
      *
      * @param flavorTemplate Flavor template filename
-     * @param Requested page
+     * @param page Requested page
      * @return
      */
     public static final String getTemplateForPage(String flavorTemplate, String page) {
