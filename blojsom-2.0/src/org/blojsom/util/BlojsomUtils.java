@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.61 2005-03-05 18:04:12 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.62 2005-03-06 01:13:35 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -363,6 +363,26 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String[] parseOnlyCommaList(String commaList) {
         return parseDelimitedList(commaList, ",");
+    }
+
+    /**
+     * Parse a string into two separate strings based on the last comma in the input value
+     *
+     * @param value Input
+     * @return Parsed string
+     * @since blojsom 2.24
+     */
+    public static String[] parseLastComma(String value) {
+        if (checkNullOrBlank(value)) {
+            return new String[] {value};
+        }
+
+        int lastCommaIndex = value.lastIndexOf(",");
+        if (lastCommaIndex == -1) {
+            return new String[] {value};
+        } else {
+            return new String[] {value.substring(0, lastCommaIndex), value.substring(lastCommaIndex + 1)};
+        }
     }
 
     /**
