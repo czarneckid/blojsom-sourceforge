@@ -1,3 +1,32 @@
+/**
+ * Copyright (c) 2003, David A. Czarnecki
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the "David A. Czarnecki" nor the names of
+ * its contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.ignition.blojsom.util;
 
 /**
@@ -116,4 +145,18 @@ public interface BlojsomConstants {
      */
     public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-d'T'kk:mm:ssZZZZZ";
 
+    // Blog initialization parameters from blojsom.properties
+    final static String BLOG_HOME_IP = "blog-home";
+    final static String BLOG_NAME_IP = "blog-name";
+    final static String BLOG_DEPTH_IP = "blog-directory-depth";
+    final static String BLOG_LANGUAGE_IP = "blog-language";
+    final static String BLOG_DESCRIPTION_IP = "blog-description";
+    final static String BLOG_URL_IP = "blog-url";
+    final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
+    final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
+    static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
+    static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
+    static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
+    static final String BLOG_OWNER = "blog-owner";
+    static final String BLOG_OWNER_EMAIL = "blog-owner-email";
 }
