@@ -39,8 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogComment;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.plugin.common.IPBanningPlugin;
 import org.ignition.blojsom.plugin.email.EmailUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -58,9 +58,9 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.33 2003-05-15 00:47:29 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.34 2003-06-04 01:53:05 czarneckid Exp $
  */
-public class CommentPlugin implements BlojsomPlugin {
+public class CommentPlugin extends IPBanningPlugin {
 
     /**
      * Request parameter for the "comment"
@@ -165,6 +165,7 @@ public class CommentPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
+        super.init(servletConfig, blog);
         _blogFileExtensions = blog.getBlogFileExtensions();
         _blogHome = blog.getBlogHome();
         _blogCommentsEnabled = blog.getBlogCommentsEnabled();
@@ -227,6 +228,13 @@ public class CommentPlugin implements BlojsomPlugin {
         context.put(BLOJSOM_COMMENT_PLUGIN_ENABLED, Boolean.valueOf(true));
 
         if (entries.length == 0) {
+            return entries;
+        }
+
+        // Check for a comment from a banned IP address
+        String remoteIPAddress = httpServletRequest.getRemoteAddr();
+        if (isIPBanned(remoteIPAddress)) {
+            _logger.debug("Attempted comment from banned IP address: " + remoteIPAddress);
             return entries;
         }
 
