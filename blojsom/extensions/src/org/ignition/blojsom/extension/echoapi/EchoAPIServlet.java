@@ -64,10 +64,10 @@ import java.util.Properties;
  * EchoAPIServlet
  *
  * Implementation of J.C. Gregorio's EchoAPI
- * <a href="http://bitworking.org/rfc/draft-gregorio-03.html">http://bitworking.org/rfc/draft-gregorio-03.html</a>
+ * <a href="http://bitworking.org/rfc/draft-gregorio-04.html">http://bitworking.org/rfc/draft-gregorio-04.html</a>
  *
  * @author Mark Lussier
- * @version $Id: EchoAPIServlet.java,v 1.8 2003-07-15 15:50:37 intabulas Exp $
+ * @version $Id: EchoAPIServlet.java,v 1.9 2003-07-16 14:18:07 intabulas Exp $
  */
 public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, EchoConstants {
 
@@ -245,9 +245,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
             }
 
         }
-
         return result;
-
     }
 
 
