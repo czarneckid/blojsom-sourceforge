@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.32 2005-01-05 02:32:33 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.33 2005-01-11 15:12:09 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -546,7 +546,9 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
 
             Properties trackbackMetaDataProperties = BlojsomUtils.mapToProperties(trackbackMetaData, UTF8);
             String trackbackMetaDataFilename = BlojsomUtils.getFilename(trackbackEntry.toString()) + DEFAULT_METADATA_EXTENSION;
-            trackbackMetaDataProperties.store(new FileOutputStream(new File(trackbackMetaDataFilename)), null);
+            FileOutputStream fos = new FileOutputStream(new File(trackbackMetaDataFilename));
+            trackbackMetaDataProperties.store(fos, null);
+            fos.close();
             _logger.debug("Wrote trackback meta-data: " + trackbackMetaDataFilename);
         } catch (IOException e) {
             _logger.error(e);

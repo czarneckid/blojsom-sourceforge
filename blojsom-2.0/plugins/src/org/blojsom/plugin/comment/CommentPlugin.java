@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.26 2005-01-05 02:31:38 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.27 2005-01-11 15:11:24 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -645,7 +645,9 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                     Properties commentMetaDataProperties = BlojsomUtils.mapToProperties(commentMetaData, UTF8);
                     String commentMetaDataFilename = BlojsomUtils.getFilename(commentEntry.toString()) + DEFAULT_METADATA_EXTENSION;
-                    commentMetaDataProperties.store(new FileOutputStream(new File(commentMetaDataFilename)), null);
+                    FileOutputStream fos = new FileOutputStream(new File(commentMetaDataFilename));
+                    commentMetaDataProperties.store(fos, null);
+                    fos.close();
                     _logger.debug("Wrote comment meta-data: " + commentMetaDataFilename);
                 } catch (IOException e) {
                     _logger.error(e);
