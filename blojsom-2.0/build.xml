@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <!DOCTYPE project [
     <!ENTITY forrest-targets SYSTEM "file:./forrest-targets.ent">
 ]>
@@ -32,7 +31,10 @@
     <property name="core.jar" value="${webinf.lib.dir}/${name}-core.jar"/>
     <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins.jar"/>
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions.jar"/>
+    <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
+
+    <property name="create.packed.war" value="false"/>
 
     <property name="project.home" location="${basedir}"/>
 
@@ -111,13 +113,13 @@
         <delete dir="${javadoc.dir}"/>
         <delete dir="${distro.dir}"/>
         <delete dir="${build.dir}"/>
-        <delete dir="${war.dir}/WEB-INF/default/templates"/>
         <delete file="${core.jar}"/>
         <delete file="${plugins.jar}"/>
         <delete file="${extensions.jar}"/>
         <delete file="${addon.core.jar}"/>
         <delete file="${addon.extensions.jar}"/>
         <delete file="${addon.plugins.jar}"/>
+        <delete file="${templates.jar}"/>
         <delete file="${war.file}"/>
     </target>
 
@@ -246,8 +248,10 @@
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
     <target name="war" depends="clean,prepare,compile">
-        <copydir src="${templates.dir" dest="${war.dir}/WEB-INF/default/templates"/>
+        <copydir src="${templates.dir}" dest="${war.dir}/WEB-INF/default/templates"/>
         <copydir src="${themes.dir}" dest="${war.dir}/themes"/>
+        <!-- Uncomment this if you want to JAR up the templates for running blojsom from a WAR file (i.e. a packed WAR) -->
+        <!-- <jar jarfile="${templates.jar}" basedir="${templates.dir}"/> -->
         <jar jarfile="${war.file}" basedir="${war.dir}"/>
         <delete dir="${war.dir}/WEB-INF/default/templates"/>
         <delete dir="${war.dir}/themes"/>
