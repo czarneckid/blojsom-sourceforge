@@ -36,8 +36,8 @@ package org.ignition.blojsom.plugin.search;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 
@@ -45,14 +45,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.3 2003-04-19 02:44:57 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.4 2003-05-01 00:26:32 intabulas Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 

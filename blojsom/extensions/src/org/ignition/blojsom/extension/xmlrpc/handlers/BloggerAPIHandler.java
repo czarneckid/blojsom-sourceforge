@@ -57,7 +57,7 @@ import java.util.Map;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.12 2003-04-25 03:26:38 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.13 2003-05-01 00:26:33 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -205,7 +205,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 category = postid.substring(0, pos);
                 permalink = postid.substring(pos + match.length());
 
-                HashMap fetchMap = new HashMap();
+                Map fetchMap = new HashMap();
                 BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
                 fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
@@ -394,7 +394,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 category = postid.substring(0, pos);
                 permalink = postid.substring(pos + match.length());
 
-                HashMap fetchMap = new HashMap();
+                Map fetchMap = new HashMap();
                 BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
                 fetchMap.put(FETCHER_CATEGORY, blogCategory);
                 fetchMap.put(FETCHER_PERMALINK, permalink);
@@ -508,7 +508,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + requestedCategory);
 
                 BlogEntry[] entries;
-                HashMap fetchMap = new HashMap();
+                Map fetchMap = new HashMap();
 
                 if (requestedCategory == null || "".equals(requestedCategory)) {
                     fetchMap.put(FETCHER_FLAVOR, DEFAULT_FLAVOR_HTML);
