@@ -36,10 +36,7 @@ package org.ignition.blojsom.fetcher;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ignition.blojsom.blog.Blog;
-import org.ignition.blojsom.blog.BlogCategory;
-import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.FileBackedBlogEntry;
+import org.ignition.blojsom.blog.*;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
@@ -58,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.3 2003-04-17 02:35:29 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.4 2003-04-17 03:09:56 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -314,7 +311,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         }
 
         _logger.debug("User requested category: " + requestedCategory);
-        BlogCategory category = new BlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
+        FileBackedBlogCategory category = new FileBackedBlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
 
         // We might also want to pass the flavor so that we can also have flavor-based category meta-data
         category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
@@ -407,7 +404,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             categoryKey += "/";
         }
 
-        BlogCategory blogCategory = new BlogCategory(categoryKey, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
+        FileBackedBlogCategory blogCategory = new FileBackedBlogCategory(categoryKey, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
         blogCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
         categoryList.add(blogCategory);
 
@@ -452,13 +449,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         ArrayList categoryList = new ArrayList();
         ArrayList sanitizedCategoryList = new ArrayList();
         BlogCategory category;
+        FileBackedBlogCategory fileBackedCategory;
 
         while (slashTokenizer.hasMoreTokens()) {
             previousCategoryName += slashTokenizer.nextToken() + "/";
             if (!previousCategoryName.equals(currentCategory.getCategory())) {
-                category = new BlogCategory(previousCategoryName, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
-                category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
-                categoryList.add(category);
+                fileBackedCategory = new FileBackedBlogCategory(previousCategoryName, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
+                fileBackedCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+                categoryList.add(fileBackedCategory);
             }
         }
 
@@ -471,7 +469,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             }
         }
 
-        BlogCategory rootCategory = new BlogCategory("/", _blog.getBlogURL());
+        FileBackedBlogCategory rootCategory = new FileBackedBlogCategory("/", _blog.getBlogURL());
         rootCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
         sanitizedCategoryList.add(0, rootCategory);
 
@@ -509,7 +507,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         }
 
         _logger.debug("User requested category: " + requestedCategory);
-        BlogCategory category = new BlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
+        FileBackedBlogCategory category = new FileBackedBlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
 
         // We might also want to pass the flavor so that we can also have flavor-based category meta-data
         category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
