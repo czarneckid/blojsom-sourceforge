@@ -30,8 +30,12 @@
             <param-value>/WEB-INF/plugin.properties</param-value>
         </init-param>
         <init-param>
-            <param-name>blog-macros-expansion</param-name>
+            <param-name>plugin-macros-expansion</param-name>
             <param-value>/WEB-INF/macros.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>plugin-showmemore</param-name>
+            <param-value>/WEB-INF/showmemore.properties</param-value>
         </init-param>
         <init-param>
             <param-name>blog-authorization</param-name>
