@@ -348,6 +348,13 @@
             use="true"
             windowtitle="${name} ${version} API"
             doctitle="${name} ${version} API">
+            <group
+                packages="org.*:org.blojsom.authorization.*:org.blojsom.blog.*:org.blojsom.dispatcher.*:org.blojsom.event.*:org.blojsom.fetcher.*:org.blojsom.filter.*:org.blojsom.servlet.*:org.blojsom.util.*:org.blojsom.util.resources.*"
+                title="blojsom core"/>
+            <group packages="org.blojsom.extension.*"
+                title="blojsom extensions"/>
+            <group packages="org.blojsom.plugin.*"
+                title="blojsom plugins"/>
             <classpath refid="build.classpath"/>
             <sourcepath refid="source.path"/>
         </javadoc>
