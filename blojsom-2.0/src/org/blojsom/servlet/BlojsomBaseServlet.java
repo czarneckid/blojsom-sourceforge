@@ -54,7 +54,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.10 2004-06-03 01:19:51 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.11 2004-08-11 02:27:59 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -102,7 +102,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
     protected void configureBlojsom(ServletConfig servletConfig) throws ServletException {
         try {
             // Configure blojsom's properties
-            Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, BLOJSOM_CONFIGURATION_IP, true);
+            Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, BLOJSOM_CONFIGURATION_IP, true, true);
 
             _blojsomConfiguration = new BlojsomConfiguration(servletConfig, BlojsomUtils.propertiesToMap(configurationProperties));
             _baseConfigurationDirectory = _blojsomConfiguration.getBaseConfigurationDirectory();
