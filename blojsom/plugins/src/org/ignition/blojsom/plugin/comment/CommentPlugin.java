@@ -61,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.19 2003-03-27 03:57:11 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.20 2003-03-29 18:54:24 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -239,6 +239,12 @@ public class CommentPlugin implements BlojsomPlugin {
                     && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
                 if (!category.endsWith("/")) {
                     category += "/";
+                }
+
+                if ((authorURL != null) && (!"".equals(authorURL))) {
+                    if (!authorURL.toLowerCase().startsWith("http://")) {
+                        authorURL = "http://" + authorURL;
+                    }
                 }
 
                 BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
