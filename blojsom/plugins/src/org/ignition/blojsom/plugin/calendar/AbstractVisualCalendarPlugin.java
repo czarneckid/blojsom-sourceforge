@@ -34,12 +34,8 @@
  */
 package org.ignition.blojsom.plugin.calendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
-import org.ignition.blojsom.util.BlojsomConstants;
-import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,11 +47,10 @@ import java.util.Map;
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.2 2003-03-31 15:25:33 intabulas Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.3 2003-03-31 16:16:16 intabulas Exp $
  */
 public class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
-    private Log _logger = LogFactory.getLog(AbstractVisualCalendarPlugin.class);
 
     protected BlogCalendar _blogCalendar;
 
@@ -74,16 +69,7 @@ public class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
         entries = super.process(httpServletRequest, httpServletResponse, context, entries);
 
-        // Was a category part of the URL? If so we want to create href's based on the category
-        String requestedCategory = httpServletRequest.getPathInfo();
-        if (requestedCategory== null) {
-            requestedCategory = "";
-        }
-        _logger.info( "Category is" +requestedCategory);
-
-
-        String _calurl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(requestedCategory);
-        _blogCalendar = new BlogCalendar(_calendar, _calurl, _locale);
+        BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
 
         Calendar entrycalendar = new GregorianCalendar(_locale);
         if (entries != null && entries.length > 0) {
@@ -94,12 +80,13 @@ public class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
                 int entryear = entrycalendar.get(Calendar.YEAR);
 
                 // If the Entry is is the same month and the same year, then flag that date as having a Entry
-                if ((entrymonth == _currentMonth) && (entryear == _currentYear)) {
-                    _blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
+                if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryear == blogCalendar.getCurrentYear())) {
+                    blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
                 }
             }
         }
 
+        context.put(BLOJSOM_CALENDAR, blogCalendar);
         return entries;
 
     }

@@ -40,6 +40,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ import java.util.*;
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.2 2003-03-31 04:37:14 intabulas Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.3 2003-03-31 16:16:17 intabulas Exp $
  */
 public class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -89,11 +90,6 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
      */
     protected String _blogUrlPrefix;
 
-    protected int _currentMonth;
-    protected int _currentDay;
-    protected int _currentYear;
-    protected Calendar _calendar;
-    protected String _requestedDateKey;
 
 
     /**
@@ -128,12 +124,22 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
+        String requestedDateKey;
+
+        // Was a category part of the URL? If so we want to create href's based on the category
+        String requestedCategory = httpServletRequest.getPathInfo();
+        if (requestedCategory== null) {
+            requestedCategory = "";
+        }
+
+        String calendarUrl = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(requestedCategory);
+
         // Default to the Current Month and Year
-        _calendar = new GregorianCalendar(_locale);
-        _calendar.setTime(new Date());
-        _currentMonth = _calendar.get(Calendar.MONTH);
-        _currentYear = _calendar.get(Calendar.YEAR);
-        _currentDay = _calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar calendar = new GregorianCalendar(_locale);
+        calendar.setTime(new Date());
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 
         // Determine a calendar-based request
         String year = null;
@@ -149,8 +155,8 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                 year = null;
             } else {
                 try {
-                    _currentYear = Integer.parseInt(year);
-                    _calendar.set(Calendar.YEAR, _currentYear);
+                    currentYear = Integer.parseInt(year);
+                    calendar.set(Calendar.YEAR, currentYear);
                 } catch (NumberFormatException e) {
                     year = "";
                     _logger.error("Invalid Year Param submitted and ignored: " + year);
@@ -164,8 +170,8 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                 }
                 if (!month.equals("")) {
                     try {
-                        _currentMonth = Integer.parseInt(month) - 1; // Damm Sun!
-                        _calendar.set(Calendar.MONTH, _currentMonth);
+                        currentMonth = Integer.parseInt(month) - 1; // Damm Sun!
+                        calendar.set(Calendar.MONTH, currentMonth);
                     } catch (NumberFormatException e) {
                         month = "";
                         _logger.error("Invalid Month Param submitted and ignored: " + month);
@@ -180,8 +186,8 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
 
                 if (!day.equals("")) {
                     try {
-                        _currentDay = Integer.parseInt(day);
-                        _calendar.set(Calendar.DAY_OF_MONTH, _currentDay);
+                        currentDay = Integer.parseInt(day);
+                        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
                     } catch (NumberFormatException e) {
                         _logger.error("Invalid Day Param submitted and ignored: " + day);
                     }
@@ -189,12 +195,22 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
 
 
             }
-            _requestedDateKey = year + month + day;
-            _logger.info("Setting Filter Key = " + _requestedDateKey);
+            requestedDateKey = year + month + day;
+            _logger.info("Setting Filter Key = " + requestedDateKey);
 
         } else {
-            _requestedDateKey = null;
+            requestedDateKey = null;
         }
+
+        BlogCalendar blogCalendar = new BlogCalendar(calendar, calendarUrl, _locale);
+        blogCalendar.setCurrentMonth(currentMonth);
+        blogCalendar.setCurrentDay(currentDay);
+        blogCalendar.setCurrentYear(currentYear);
+        blogCalendar.setRequestedDateKey(requestedDateKey);
+
+
+
+        context.put(BLOJSOM_CALENDAR, blogCalendar);
 
         return entries;
     }

@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.9 2003-03-31 04:37:14 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.10 2003-03-31 16:16:13 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -56,6 +56,8 @@ public class BlogCalendar {
     private String _blogURL;
     private int currentmonth;
     private int currentyear;
+    private int currentday;
+    private String _requestedDateKey;
 
     /**
      * Public Constructor
@@ -221,22 +223,6 @@ public class BlogCalendar {
     }
 
     /**
-     * Get the Current Month for this Calendar
-     * @return the current month as an int
-     */
-    public int getCurrentMonth() {
-        return currentmonth;
-    }
-
-    /**
-     * Get the Current Year for this Calendar
-     * @return the current year as an int
-     */
-    public int getCurrentYear() {
-        return currentyear;
-    }
-
-    /**
      * Get the Blog URL used by the calendar
      * @return the blog url
      */
@@ -259,5 +245,75 @@ public class BlogCalendar {
     public Calendar getToday() {
         return _today;
     }
+
+    // ==========
+
+    /**
+     * Gets the current month for this Calendar
+     * @return current month as an int (as defined by Calendar)
+     */
+    public int getCurrentMonth() {
+        return currentmonth;
+    }
+
+    /**
+     * Sets the current month for this Calendar
+     * @param currentmonth current month as an int (as defined by Calendar)
+     */
+    public void setCurrentMonth(int currentmonth) {
+        this.currentmonth = currentmonth;
+    }
+
+    /**
+     * Gets the current year for this Calendar
+     * @return current year as an int (as defined by Calendar)
+     */
+    public int getCurrentYear() {
+        return currentyear;
+    }
+
+    /**
+     * Sets the current year for this Calendar
+     * @param currentyear current year as an int (as defined by Calendar)
+     */
+    public void setCurrentYear(int currentyear) {
+        this.currentyear = currentyear;
+    }
+
+    /**
+     * Gets the current day for this Calendar
+     * @return current day as an int (as defined by Calendar)
+     */
+    public int getCurrentDay() {
+        return currentday;
+    }
+
+    /**
+     * Sets the current day for this Calendar
+     * @param currentday current day as an int (as defined by Calendar)
+     */
+    public void setCurrentDay(int currentday) {
+        this.currentday = currentday;
+    }
+
+    // ========================
+
+    /**
+     * Gets the current entry date match key (year+month+day)
+     * @return Date match key as a String
+     */
+    public String getRequestedDateKey() {
+        return _requestedDateKey;
+    }
+
+    /**
+     * Sets the current entry date match key (year+month+day)
+     * @param requestedDateKey current entry match key
+     */
+    public void setRequestedDateKey(String requestedDateKey) {
+        _requestedDateKey = requestedDateKey;
+    }
+
+
 }
 

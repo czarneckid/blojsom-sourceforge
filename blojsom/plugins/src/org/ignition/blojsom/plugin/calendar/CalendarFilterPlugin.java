@@ -34,8 +34,6 @@
  */
 package org.ignition.blojsom.plugin.calendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -51,12 +49,10 @@ import java.util.Map;
  * CalendarFilterPlugin filters entries based on the calendar navigation parameters in the URL
  *
  * @author Mark Lussier
- * @version $Id: CalendarFilterPlugin.java,v 1.1 2003-03-31 04:23:29 intabulas Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.2 2003-03-31 16:16:13 intabulas Exp $
  */
 
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
-
-    private Log _logger = LogFactory.getLog(CalendarFilterPlugin.class);
 
 
     /**
@@ -74,6 +70,8 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
         entries = super.process(httpServletRequest, httpServletResponse, context, entries);
 
+        BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
+
         ArrayList updatedEntryList = new ArrayList();
 
         Calendar entrycalendar = new GregorianCalendar(_locale);
@@ -83,7 +81,7 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
                 String blogDateKey = BlojsomUtils.getDateKey(entry.getDate());
                 entrycalendar.setTime(entry.getDate());
 
-                if (_requestedDateKey == null || (blogDateKey.startsWith(_requestedDateKey))) {
+                if (blogCalendar.getRequestedDateKey() == null || (blogDateKey.startsWith(blogCalendar.getRequestedDateKey()))) {
                     updatedEntryList.add(entry);
                 }
 

@@ -66,11 +66,12 @@ public class VelocityCalendarPlugin extends AbstractVisualCalendarPlugin {
 
         entries = super.process(httpServletRequest, httpServletResponse, context, entries);
 
-        VelocityHelper _vtlhelper = new VelocityHelper(_blogCalendar);
-        _vtlhelper.buildCalendar();
+        BlogCalendar blogCalendar = (BlogCalendar)context.get(BLOJSOM_CALENDAR);
 
-        context.put(BLOJSOM_CALENDAR, _blogCalendar);
-        context.put(BLOJSOM_CALENDAR_VTLHELPER, _vtlhelper);
+        VelocityHelper vtlhelper = new VelocityHelper(blogCalendar);
+        vtlhelper.buildCalendar();
+
+        context.put(BLOJSOM_CALENDAR_VTLHELPER, vtlhelper);
 
         return entries;
     }
