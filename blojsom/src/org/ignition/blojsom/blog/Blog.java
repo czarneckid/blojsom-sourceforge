@@ -35,10 +35,7 @@ import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Blog
@@ -47,21 +44,6 @@ import java.util.StringTokenizer;
  * @author Dan Morrill
  */
 public class Blog implements BlojsomConstants {
-
-    // Blog initialization parameters from blojsom.properties
-    private final static String BLOG_HOME_IP = "blog-home";
-    private final static String BLOG_NAME_IP = "blog-name";
-    private final static String BLOG_DEPTH_IP = "blog-directory-depth";
-    private final static String BLOG_LANGUAGE_IP = "blog-language";
-    private final static String BLOG_DESCRIPTION_IP = "blog-description";
-    private final static String BLOG_URL_IP = "blog-url";
-    private final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
-    private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
-    private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
-    private static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
-    private static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
-    private static final String BLOG_OWNER = "blog-owner";
-    private static final String BLOG_OWNER_EMAIL = "blog-owner-email";
 
     private Log _logger = LogFactory.getLog(Blog.class);
 
@@ -79,6 +61,8 @@ public class Blog implements BlojsomConstants {
     private String _blogOwner;
     private String _blogOwnerEmail;
 
+    private HashMap _blogProperties;
+
     /**
      * Create a blog with the supplied configuration properties
      *
@@ -86,6 +70,8 @@ public class Blog implements BlojsomConstants {
      * @throws BlojsomConfigurationException If there is an error configuring the blog
      */
     public Blog(Properties blogConfiguration) throws BlojsomConfigurationException {
+        _blogProperties = new HashMap();
+
         _blogHome = blogConfiguration.getProperty(BLOG_HOME_IP);
         if (_blogHome == null) {
             _logger.error("No value supplied for blog-home");
@@ -94,26 +80,31 @@ public class Blog implements BlojsomConstants {
         if (!_blogHome.endsWith("/")) {
             _blogHome += "/";
         }
+        _blogProperties.put(BLOG_HOME_IP, _blogHome);
 
         _blogLanguage = blogConfiguration.getProperty(BLOG_LANGUAGE_IP);
         if (_blogLanguage == null) {
             _logger.warn("No value supplied for blog-language. Defaulting to: " + BLOG_LANGUAGE_DEFAULT);
             _blogLanguage = BLOG_LANGUAGE_DEFAULT;
         }
+        _blogProperties.put(BLOG_LANGUAGE_IP, _blogLanguage);
 
         _blogDescription = blogConfiguration.getProperty(BLOG_DESCRIPTION_IP);
         if (_blogDescription == null) {
             _logger.warn("No value supplied for blog-description");
             _blogDescription = "";
         }
+        _blogProperties.put(BLOG_DESCRIPTION_IP, _blogDescription);
 
         _blogName = blogConfiguration.getProperty(BLOG_NAME_IP);
         if (_blogName == null) {
             _logger.warn("No value supplied for blog-name");
             _blogName = "";
         }
+        _blogProperties.put(BLOG_NAME_IP, _blogName);
 
         _blogDepth = Integer.parseInt(blogConfiguration.getProperty(BLOG_DEPTH_IP, Integer.toString(INFINITE_BLOG_DEPTH)));
+        _blogProperties.put(BLOG_DEPTH_IP, new Integer(_blogDepth));
 
         _blogURL = blogConfiguration.getProperty(BLOG_URL_IP);
         if (_blogURL == null) {
@@ -123,12 +114,17 @@ public class Blog implements BlojsomConstants {
         if (!_blogURL.endsWith("/")) {
             _blogURL += "/";
         }
+        _blogProperties.put(BLOG_URL_IP, _blogURL);
 
         // The following parameters will either be removed or changed
         _blogFileExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
+        _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, _blogFileExtensions);
+
         _blogPropertiesExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
+        _blogProperties.put(BLOG_PROPERTIES_EXTENSIONS_IP, _blogPropertiesExtensions);
 
         _blogDisplayEntries = Integer.parseInt(blogConfiguration.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
+        _blogProperties.put(BLOG_ENTRIES_DISPLAY_IP, new Integer(_blogDisplayEntries));
 
         String blogDefaultCategoryMapping = blogConfiguration.getProperty(BLOG_DEFAULT_CATEGORY_MAPPING_IP);
         if (blogDefaultCategoryMapping == null) {
@@ -141,6 +137,7 @@ public class Blog implements BlojsomConstants {
                 _blogDefaultCategoryMappings = null;
             }
         }
+        _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, _blogDefaultCategoryMappings);
 
         String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
         if (blogDirectoryFilter == null) {
@@ -153,9 +150,13 @@ public class Blog implements BlojsomConstants {
             }
             _logger.debug("blojsom filtering " + _blogDirectoryFilter.length + " directories");
         }
+        _blogProperties.put(BLOG_DIRECTORY_FILTER_IP, _blogDirectoryFilter);
 
         _blogOwner = blogConfiguration.getProperty(BLOG_OWNER);
+        _blogProperties.put(BLOG_OWNER, _blogOwner);
+
         _blogOwnerEmail = blogConfiguration.getProperty(BLOG_OWNER_EMAIL);
+        _blogProperties.put(BLOG_OWNER_EMAIL, _blogOwnerEmail);
     }
 
     /**
@@ -659,5 +660,14 @@ public class Blog implements BlojsomConstants {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Returns a read-only view of the properties for this blog
+     *
+     * @return HashMap of blog properties
+     */
+    public HashMap getBlogProperties() {
+        return _blogProperties;
     }
 }
