@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Add Blog Entry")
+#adminPageHeader("#adminResource('add.blog.entry.header' 'Add Blog Entry')")
 
     <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
     </div>
 
         <!-- Add blog entry form -->
         <div id="mainClm">
-            <h2>Add a blog entry</h2>
+            <h2>#adminResource('add.blog.entry.text' 'Add a blog entry')</h2>
             <table>
                 <form name="add-blog-entry" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-entry"/>
@@ -16,41 +16,41 @@
                     <input type="hidden" name="plugins" value="edit-blog-entries"/>
                     <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
                     <tr>
-                        <td>Blog entry title</td>
+                        <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
                         <td><input type="text" size="50" name="blog-entry-title"/></td>
                     </tr>
                     <tr>
-                        <td>Blog entry text</td>
+                        <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
                         <td><textarea rows="10" cols="80" name="blog-entry-description"></textarea></td>
                     </tr>
                     <tr>
-                        <td>Blog trackback URLs</td>
+                        <td>#adminResource('blog.entry.trackbackURLs.text' 'Blog trackback URLs')</td>
                         <td><textarea rows="3" cols="80" name="blog-trackback-urls"></textarea></td>
                     </tr>
                     <tr>
-                        <td>Blog ping URLs</td>
+                        <td>#adminResource('blog.entry.pingURLs.text' 'Blog ping URLs')</td>
                         <td><textarea rows="3" cols="80" name="blog-ping-urls"></textarea></td>
                     </tr>
                     <tr>
-                        <td>Disable comments?</td>
+                        <td>#adminResource('blog.disable.comments.text' 'Disable comments?')</td>
                         <td><input type="checkbox" name="blog-entry-comments-disabled" value="y"/></td>
                     </tr>
                     <tr>
-                        <td>Disable trackbacks?</td>
+                        <td>#adminResource('blog.disable.trackbacks.text' 'Disable trackbacks?')</td>
                         <td><input type="checkbox" name="blog-entry-trackbacks-disabled" value="y"/></td>
                     </tr>
                     <tr>
-                        <td>Blog publish date and time (MM/dd/yyyy HH:mm:ss)</td>
+                        <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') (MM/dd/yyyy HH:mm:ss)</td>
                         <td><input type="text" size="30" name="blog-entry-publish-datetime"/></td>
                     </tr>
                     <tr>
-                        <td>Proposed name</td>
+                        <td>#adminResource('blog.proposed.name.text' 'Proposed name')</td>
                         <td><input type="text" size="30" name="blog-entry-proposed-name"/></td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Add blog entry"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('add.blog.entry.text' 'Add blog entry')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
