@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.34 2005-01-05 02:32:51 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.35 2005-01-05 18:15:49 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -71,7 +71,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _resourceManager;
     private String _authorizationProvider;
     private String _globalBlogHome;
-    private BlojsomEventBroadcaster _eventBroadcaster;
+    private static BlojsomEventBroadcaster _eventBroadcaster = null;
     private String _installedLocales;
 
     private Map _blogUsers;
@@ -137,7 +137,9 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
         try {
             Class broadcasterClass = Class.forName(eventBroadcaster);
-            _eventBroadcaster = (BlojsomEventBroadcaster) broadcasterClass.newInstance();
+            if (_eventBroadcaster == null) {
+                _eventBroadcaster = (BlojsomEventBroadcaster) broadcasterClass.newInstance();
+            }
             _logger.debug("Using event broadcaster: " + eventBroadcaster);
 
             String listenerConfiguration = servletConfig.getInitParameter(BLOJSOM_LISTENER_CONFIGURATION_IP);
