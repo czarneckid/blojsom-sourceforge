@@ -8,6 +8,20 @@
 
     <changes>
 
+        <release version="2.01" date="dev">
+            <action dev="czarneckid" type="update" context="Build">
+                Added forrest information to build of source distribution.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Core">
+                Added BlojsomConfiguration to parameters of BlojsomFetcher init() method.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Core">
+                Added CachingFetcher which can cache blog entries to improve blog rendering performance.
+            </action>
+        </release>
+
         <release version="2.0" date="August 26, 2003">
             <action dev="czarneckid" type="add" context="Core">
                 Added support for multi-user with a single blojsom instance.
