@@ -42,7 +42,7 @@ import java.util.regex.Matcher;
  * Textile
  *
  * @author Mark Lussier
- * @version $Id: Textile.java,v 1.3 2003-05-27 01:25:09 intabulas Exp $
+ * @version $Id: Textile.java,v 1.4 2003-05-27 03:01:45 intabulas Exp $
  */
 public class Textile implements TextileConstants {
 
@@ -199,7 +199,7 @@ public class Textile implements TextileConstants {
                 if (segments[x].toLowerCase().matches(EXP_STARTPRESERVE)) {
                     inpreservation = true;
                 } else if (segments[x].toLowerCase().matches(EXP_ENDPRESERVE)) {
-                    inpreservation = true;
+                    inpreservation = false;
                 }
 
                 if (!Pattern.compile(EXP_ISHTML).matcher(segments[x]).find() && !inpreservation) {

@@ -38,7 +38,7 @@ package org.ignition.blojsom.plugin.textile;
  * Textile Constants
  *
  * @author Mark Lussier
- * @version $Id: TextileConstants.java,v 1.3 2003-05-27 01:25:09 intabulas Exp $
+ * @version $Id: TextileConstants.java,v 1.4 2003-05-27 03:01:45 intabulas Exp $
  */
 public interface TextileConstants {
 
@@ -61,7 +61,7 @@ public interface TextileConstants {
 
 
     public static final String EXP_HREF_QTAG_MATCH = "\"([^\"\\(]+)\\s?(\\(([^\\)]+)\\))?\":(\\S+?)([^\\w\\s\\/;]|[1-9]*?)(\\s|$)";
-    public static final String EXP_HREF_QTAG_REPLACE = "$1<a href=\\\"$4$5\\\" title=\\\"$3\\\">$2</a>$6";
+    public static final String EXP_HREF_QTAG_REPLACE = "<a href=\\\"$4\\\" title=\\\"$3\\\">$1</a>";
 
 
     public static final String[] EXP_PHRASE_MODIFIER_SOURCETAGS = {"\\*\\*", "\\*", "\\?\\?", "-", "\\+", "~", "@"};
