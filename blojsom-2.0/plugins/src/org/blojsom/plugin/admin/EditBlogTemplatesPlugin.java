@@ -49,12 +49,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Arrays;
 
 /**
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.14 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.15 2005-01-14 18:34:50 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -121,6 +122,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
         File[] templates = templatesDirectory.listFiles();
+        Arrays.sort(templates);
         ArrayList templatesList = new ArrayList(templates.length);
         for (int i = 0; i < templates.length; i++) {
             File template = templates[i];
@@ -207,7 +209,10 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             }
 
             addOperationResultMessage(context, "Updated blog template: " + blogTemplate);
-            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE, blogTemplate);
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE, BlojsomUtils.escapeString(blogTemplateData));
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
         }
 
         return entries;
