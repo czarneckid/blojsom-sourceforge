@@ -3,19 +3,67 @@
 
 <faqs title="Frequently Asked Questions">
 
-  <part id="docs">
-    <title>Documentation</title>
-    <faq id="forrest">
+  <part id="general">
+    <title>General</title>
+    <faq id="name">
       <question>
-        How can I help write documentation?
+        What does blojsom stand for?
       </question>
       <answer>
         <p>
-          This project uses <link href="ext:forrest">Apache Forrest</link> to
-          generate documentation from XML.  Please download a copy of Forrest,
-          which can be used to <link
-            href="ext:forrest/validation">validate</link>, <link
-            href="ext:forrest/webapp">develop</link> and render a project site.
+          blojsom is an acronym for (blo)gging in (j)ava ... (so)mewhat ... (m)aybe.
+I was looking for a way to play off the name,
+<link href="http://www.raelity.org/apps/blosxom">blosxom</link>, blojsom's not-so-distant "relative",
+and blojsom stuck.
+        </p>
+      </answer>
+   </faq>
+   <faq id="pronounce">
+      <question>
+        How do you pronounce blojsom?
+      </question>
+      <answer>
+        <p>
+          Phonetically, I guess it would be bloj-sum.
+        </p>
+      </answer>
+    </faq>
+    
+
+<faq id="capital">
+      <question>
+        Is it Blojsom or blojsom?
+      </question>
+      <answer>
+        <p>
+          blojsom.
+        </p>
+      </answer>
+    </faq>
+<faq id="firstpost">
+      <question>
+        How do I create my first blog entry?
+      </question>
+      <answer>
+        <p>
+          blojsom renders your blog based on what files it finds in the directory you set as your
+<em>blog-home</em> (see <link href="site:installation">installation</link>). In this directory, each
+individual file is treated as a seperate blog entry. You can control which files are processed
+and which are ignored using the <em>blog-file-extentions</em> and <em>blog-directory-filter</em>
+entries in <em>/WEB-INF/blojsom.properties</em>.
+        </p>
+      </answer>
+    </faq>
+    <faq id="categories">
+      <question>
+        How do I create different blog categories?
+      </question>
+      <answer>
+        <p>
+           All you have to do is simply create new directories underneath your <em>blog-home</em>
+directory and blojsom will automatically recognize them as categories. You can further
+control the categories using optional meta-data, an example is a more descriptive name for
+the category. See <link href="site:customization">customization</link> for more details.
         </p>
       </answer>
     </faq>
