@@ -15,7 +15,7 @@
     <property name="src.dir" value="${basedir}/src"/>
     <property name="plugins.src.dir" value="${basedir}/plugins/src"/>
     <property name="extensions.src.dir" value="${basedir}/extensions/src"/>
-    <property name="testing.src.dir" value="${basedir}/testing/src"/>
+    <property name="test.src.dir" value="${basedir}/test/src"/>
     <property name="war.dir" value="${basedir}/war"/>
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
@@ -213,13 +213,15 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <!--        <javac srcdir="${testing.src.dir}"-->
-        <!--            destdir="${compile.dir}"-->
-        <!--            debug="${debug}"-->
-        <!--            deprecation="${deprecation}"-->
-        <!--            optimize="${optimize}">-->
-        <!--            <classpath refid="build.classpath"/>-->
-        <!--        </javac>-->
+        <!--
+        <javac srcdir="${test.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        -->
         <javac srcdir="${addon.core.src.dir}"
             destdir="${compile.dir}"
             debug="${debug}"
@@ -309,7 +311,7 @@
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
     <target name="war" depends="compile" description="Create a deployable WAR file">
-        <copydir src="${themes.dir}" dest="${war.dir}/themes"/>
+        <copydir src="${themes.dir}" dest="${war.dir}/WEB-INF/themes"/>
 
         <!-- Uncomment this if you want to JAR up the templates for running blojsom from a WAR file (i.e. a packed WAR) -->
         <!-- <jar jarfile="${templates.jar}" basedir="${templates.dir}"/> -->
@@ -367,79 +369,6 @@
     <target name="website-docs" depends="javadoc" description="Creates a ZIP for the blojsom website">
         <zip zipfile="${website.zip}" basedir="${docs.dir}"/>
     </target>
-
-    <!-- =================================================================== -->
-    <!-- Copies the shrubbery theme                                          -->
-    <!-- =================================================================== -->
-    <!--
-    <target name="copy-shrubbery-theme">
-        <tstamp/>
-        <copy todir="${build.dir}">
-            <fileset dir="${themes.dir}/shrubbery">
-                <include name="**/*.vm"/>
-            </fileset>
-        </copy>
-        <copy todir="${war.dir}">
-            <fileset dir="${themes.dir}/shrubbery">
-                <include name="**/*.css"/>
-                <include name="**/*.jpg"/>
-                <include name="**/*.gif"/>
-            </fileset>
-        </copy>
-    </target>
-    -->
-
-    <!-- =================================================================== -->
-    <!-- Copies the secondwave theme                                         -->
-    <!-- =================================================================== -->
-    <!--
-    <target name="copy-green-lantern-theme">
-        <tstamp/>
-        <copy todir="${war.dir}">
-            <fileset dir="${themes.dir}/green-lantern">
-                <include name="**/*.css"/>
-            </fileset>
-        </copy>
-    </target>
-    -->
-
-    <!-- =================================================================== -->
-    <!-- Copies the eclipse theme                                            -->
-    <!-- =================================================================== -->
-    <!--
-    <target name="copy-eclipse-theme">
-        <tstamp/>
-        <copy todir="${build.dir}">
-            <fileset dir="${themes.dir}/eclipse">
-                <include name="**/*.vm"/>
-            </fileset>
-        </copy>
-        <copy todir="${war.dir}">
-            <fileset dir="${themes.dir}/eclipse">
-                <include name="**/*.css"/>
-            </fileset>
-        </copy>
-    </target>
-    -->
-
-    <!-- =================================================================== -->
-    <!-- Copies the secondwave theme                                         -->
-    <!-- =================================================================== -->
-    <!--
-    <target name="copy-secondwave-theme">
-        <tstamp/>
-        <copy todir="${build.dir}">
-            <fileset dir="${themes.dir}/secondwave">
-                <include name="**/*.vm"/>
-            </fileset>
-        </copy>
-        <copy todir="${war.dir}">
-            <fileset dir="${themes.dir}/secondwave">
-                <include name="**/*.css"/>
-            </fileset>
-        </copy>
-    </target>
-    -->
 
     <!-- =================================================================== -->
     <!-- Create a source distribution                                        -->
