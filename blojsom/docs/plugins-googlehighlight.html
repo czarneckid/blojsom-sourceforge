@@ -1,0 +1,89 @@
+<html>
+
+<head>
+<title>blojsom - plugins - google highlight</title>
+<link rel="stylesheet" href="blojsom.css" />
+<link rel="SHORTCUT ICON" href="favicon.ico" />
+</head>
+
+<body>
+
+<p class="weblogtitle">blojsom - plugins - google highlight</p>
+
+<p class="navigation"><a href="index.html">home</a> |
+<a href="http://sourceforge.net/project/showfiles.php?group_id=72754">download</a> |
+<a href="installation.html">installation</a> |
+<a href="customization.html">customization</a> |
+<a href="comments.html">comments</a> |
+<a href="trackbacks.html">trackbacks</a> |
+<a href="plugins.html">plugins</a> |
+<a href="xmlrpc.html">xml-rpc</a> |
+<a href="themes.html">themes</a> |
+<a href="faq.html">faq</a> |
+<a href="changelog.html">changelog</a> |
+<a href="screenshots.html">screenshots</a> |
+<a href="javadoc/index.html">javadocs</a> |
+<a href="http://sourceforge.net/projects/blojsom/">sourceforge project page</a></p>
+
+<ul>
+<p class="navigation">Details on:<br /><br />
+<a href="plugins-calendar.html">calendar plugin</a> |
+<a href="plugins-emoticons.html">emoticons plugin</a> |
+<a href="plugins-hyperlink.html">hyperlink URL plugin</a> |
+<a href="plugins-limiter.html">entries limiter plugin</a> |
+<a href="plugins-macro.html">macro expansion plugin</a> |
+<a href="plugins-referer.html">referer plugin</a> |
+<a href="plugins-showmemore.html">"show me more" plugin</a> |
+<a href="plugins-simplesearch.html">simple search plugin</a> |
+<a href="plugins-sendemail.html">send email plugin</a>
+</p>
+</ul>
+
+<p class="weblogtitle">description</a>
+<p />
+The Google Highlight plugin
+<p />
+
+<p class="weblogtitle">installation and setup</a>
+<p />
+In your <i>plugin.properties</i> file, add the following line:
+<ul>
+<pre>
+google-highlight=org.ignition.blojsom.plugin.highlight.GoogleHighlightPlugin
+</pre>
+</ul>
+
+You may then add "google-highlight" to one of the flavor-based plugin chains. For example:
+<ul>
+<pre>
+html.blojsom-plugin-chain=google-highlight
+</pre>
+</ul>
+
+
+<p class="weblogtitle">context attributes and types</p>
+<p />
+The following table describes the context attributes that are available and their associated type.
+<p />
+<table border="1">
+    <th>Context key</th> <th>Input or Output</th> <th>Type</th> <th>Description</th>
+    <tr>
+        <td>REFERER_HISTORY</td> <td>Output</td>
+        <td><tt>org.ignition.blojsom.plugin.referer.BlogRefererGroup</tt></td>
+        <td>Manages the referer groups for the various flavors setup in <i>referer.properties</i></td>
+    </tr>
+    <tr>
+        <td>REFERER_MAX_LENGTH</td> <td>Output</td> <td><tt>java.lang.Integer</tt></td> <td>Max length for referer URLs</td>
+    </tr>
+</table>
+
+<p />
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
+
+<hr />
+
+<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=72754&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
+
+</body>
+
+</html>

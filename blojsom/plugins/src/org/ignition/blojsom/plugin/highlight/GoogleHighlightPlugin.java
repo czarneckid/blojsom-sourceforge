@@ -1,7 +1,39 @@
+/**
+ * Copyright (c) 2003, David A. Czarnecki
+ * All rights reserved.
+ *
+ * Portions Copyright (c) 2003 by Mark Lussier
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the "David A. Czarnecki" and "blojsom" nor the names of
+ * its contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * Products derived from this software may not be called "blojsom",
+ * nor may "blojsom" appear in their name, without prior written permission of
+ * David A. Czarnecki.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.ignition.blojsom.plugin.highlight;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
@@ -16,8 +48,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * The GoogleHighlightPlugin will highlight words on your blog if the refere came from a Google
+ * query.
+ *
+ * Based on work from http://www.textism.com/
  *
  * @author Mark Lussier
+ * @version $Id: GoogleHighlightPlugin.java,v 1.2 2003-05-04 17:12:47 intabulas Exp $
  */
 
 public class GoogleHighlightPlugin implements BlojsomPlugin {
@@ -28,28 +65,55 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
      */
     private static final String HEADER_REFERER = "referer";
 
+    private static final String START_BOUNDRY = "(\\b";
+    private static final String END_BOUNDRY = "\\b)";
 
+    /**
+     * Expression used to identify the refer as a Google referer
+     */
     private static final String EXPRESSSION_GOOGLE = "^http:\\/\\/w?w?w?\\.?google.*";
+
     private static final String EXPRESSION_HTMLPREFIX = "(?<=>)([^<]+)?";
     private static final String EXPRESSION_HASTAGS = "<.+>";
 
+    /**
+     * Expression used to extract the Query string portion of the referer
+     */
     private static final String GOOGLE_QUERY = "^.*q=([^&]+)&?.*$";
-    private static final String GOOGLE_CLEANQUOTES = "'/\'|\"/\"";
-
-    private static final String HIGHLIGHT_PLAINTEXT = "<span class=\"searchhighlight\">$1</span>";
-    private static final String HIGHLIGHT_HTML = "$1<span class=\"searchhighlight\">$2</span>";
 
     /**
-     * Logger instance
+     * Expression used to clean quotes
      */
-    private Log _logger = LogFactory.getLog(GoogleHighlightPlugin.class);
+    private static final String GOOGLE_CLEANQUOTES = "'/\'|\"/\"";
+
+    /**
+     * Used to replace matches in entries that DO NOT have html tags
+     */
+    private static final String HIGHLIGHT_PLAINTEXT = "<span class=\"searchhighlight\">$1</span>";
+
+    /**
+     * Used to replace matches in entries that HAVE html tags
+     */
+    private static final String HIGHLIGHT_HTML = "$1<span class=\"searchhighlight\">$2</span>";
 
 
+    /**
+     * Initialize this plugin. This method only called when the plugin is instantiated.
+     *
+     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blog {@link Blog} instance
+     * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     */
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
-
     }
 
 
+    /**
+     * Extract search tokens from the Google Query String
+     *
+     * @param referer The Google referer
+     * @return A string array of search words
+     */
     private String[] extractQueryTokens(String referer) {
         String[] result = null;
         Matcher matcher = Pattern.compile(GOOGLE_QUERY).matcher(referer);
@@ -69,6 +133,16 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
 
     }
 
+    /**
+     * Process the blog entries
+     *
+     * @param httpServletRequest Request
+     * @param httpServletResponse Response
+     * @param context Context
+     * @param entries Blog entries retrieved for the particular request
+     * @return Modified set of blog entries
+     * @throws BlojsomPluginException If there is an error processing the blog entries
+     */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String referer = httpServletRequest.getHeader(HEADER_REFERER);
@@ -82,13 +156,12 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
                 BlogEntry entry = entries[x];
                 Matcher matcher = hasTags.matcher(entry.getDescription());
                 boolean isHtml = matcher.find();
-
                 for (int y = 0; y < searchwords.length; y++) {
                     String word = searchwords[y];
                     if (isHtml) {
-                        entry.setDescription(entry.getDescription().replaceAll("(\\b" + word + "\\b)", HIGHLIGHT_PLAINTEXT));
+                        entry.setDescription(entry.getDescription().replaceAll(START_BOUNDRY + word + END_BOUNDRY, HIGHLIGHT_PLAINTEXT));
                     } else {
-                        entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + "(\\b" + word + "\\b)", HIGHLIGHT_HTML));
+                        entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + START_BOUNDRY + word + END_BOUNDRY, HIGHLIGHT_HTML));
                     }
 
                 }
