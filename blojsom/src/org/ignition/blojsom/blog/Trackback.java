@@ -35,7 +35,7 @@ import java.util.Date;
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.1 2003-03-18 03:07:43 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.2 2003-03-21 02:09:31 czarneckid Exp $
  */
 public class Trackback {
 
