@@ -51,7 +51,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.3 2003-05-31 19:24:54 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.4 2003-06-01 14:22:44 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -60,6 +60,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
     private static final String ENTRY_TEXT_CUTOFF = "entry-text-cutoff";
     private static final String SHOW_ME_MORE_TEXT = "show-me-more-text";
     private static final String SHOW_ME_MORE_PARAM = "smm";
+    private static final int ENTRY_TEXT_CUTOFF_DEFAULT = 400;
 
     private int _cutoff;
     private String _textCutoff;
@@ -91,7 +92,11 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
             is.close();
             _moreText = showMeMoreProperties.getProperty(SHOW_ME_MORE_TEXT);
             _textCutoff = showMeMoreProperties.getProperty(ENTRY_TEXT_CUTOFF);
-            _cutoff = Integer.parseInt(showMeMoreProperties.getProperty(ENTRY_LENGTH_CUTOFF));
+            try {
+                _cutoff = Integer.parseInt(showMeMoreProperties.getProperty(ENTRY_LENGTH_CUTOFF));
+            } catch (NumberFormatException e) {
+                _cutoff = ENTRY_TEXT_CUTOFF_DEFAULT;
+            }
         } catch (IOException e) {
             throw new BlojsomPluginException(e);
         }
