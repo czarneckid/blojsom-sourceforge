@@ -9,16 +9,24 @@
 <h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
 <h3>$BLOJSOM_BLOG.getBlogDescription()</h3>
 
+Available categories:
+#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+    [<i><a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a></i>]
+#end
+
 <body>
 #foreach ($entry in $BLOJSOM_ENTRIES)
-    <p class="weblogtitle">$entry.getTitle()</p><p class="weblogdateline">$entry.getDate() [<a href="$BLOJSOM_BLOG.getBlogURL()$entry.getCategory()">/$entry.getCategory()</a>]</p>
+    <div class="entrystyle">
+    <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
+    <p class="weblogdateline">$entry.getDate() [<a href="$BLOJSOM_BLOG.getBlogURL()$entry.getCategory()">/$entry.getCategory()</a>]</p>
     <p>$entry.getDescription()</p>
-    <p class="weblogbottomline"><a href="$entry.getLink()">Permalink</a></p>
+    </div>
+    <p class="weblogbottomline"></p>
 #end
+
+Available categories:
 #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    #if ($blogCategory.getNumberOfEntries() > 0)
-        <a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()#if ($blogCategory.getDescription()) ($blogCategory.getDescription())#end</a><br />
-    #end
+    [<i><a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a></i>]
 #end
 
 <p />
