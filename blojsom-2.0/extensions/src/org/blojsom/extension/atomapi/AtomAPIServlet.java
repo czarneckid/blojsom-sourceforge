@@ -45,6 +45,7 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
@@ -73,7 +74,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.13 2003-09-11 21:10:50 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.14 2003-09-12 00:35:37 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -116,7 +117,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         if (httpServletRequest.getHeader(ATOMHEADER_AUTHORIZATION) != null) {
             AtomAuthentication auth = new AtomAuthentication(httpServletRequest.getHeader(ATOMHEADER_AUTHORIZATION));
-            Map authMap = blog.getAuthorizationMap();
+            Map authMap = blog.getAuthorization();
             if (authMap.containsKey(auth.getUsername())) {
                 result = auth.authenticate((String) authMap.get(auth.getUsername()), verb);
             } else {
