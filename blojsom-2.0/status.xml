@@ -11,6 +11,10 @@
             <action dev="czarneckid" type="add" context="Plugin">
                 Added Conditional GET plugin for RSS aggregators that support this feature.
             </action>
+
+            <action dev="czarneckid" type="fix" context="Extension" fixes-bug="871374">
+                Fixed bug where Atom API servlet cannot handle search request.
+            </action>
         </release>
 
         <release version="2.07" date="January 3, 2003">
