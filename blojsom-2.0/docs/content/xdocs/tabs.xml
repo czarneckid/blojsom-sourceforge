@@ -3,7 +3,7 @@
 
 <tabs software="blojsom"
   title="blojsom"
-  copyright="David Czarnecki"
+  copyright="@year@ David A. Czarnecki"
   xmlns:xlink="http://www.w3.org/1999/xlink">
 
   <!-- The rules are:
@@ -14,7 +14,8 @@
   -->
 
   <tab label="Home" dir="" indexfile="index.html"/>
- 
+
+  <tab label="Web-based Administration" dir="administration/"/>
   <tab label="Plugins" dir="plugins/"/>
   <tab label="Contributed" dir="contributed/"/>
   
