@@ -41,6 +41,11 @@
                 Also added error messages to administration console where some errors were logged but not reported
                 back to the browser.
             </action>
+
+            <action dev="czarneckid" type="update" context="Template">
+                Updated the RSS 2.0 templates to remove the core namespace according to paragraph 3 of the
+                <a href="http://blogs.law.harvard.edu/tech/rss#extendingRss">RSS 2.0 specification</a>.
+            </action>
         </release>
 
         <release version="2.11" date="February 9, 2004">
