@@ -52,7 +52,7 @@
                xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
         <rdf:Description
             rdf:about="$entry.getLink()"
-            dc:identifer="$entry.getLink()"
+            dc:identifier="$entry.getLink()"
             dc:title="$entry.getTitle()"
             dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
             dc:description="$blogDescription"
