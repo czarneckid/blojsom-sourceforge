@@ -49,16 +49,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.6 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.7 2005-01-30 18:13:46 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -152,7 +149,10 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 }
             }
         }
-        return (String[]) themes.toArray(new String[themes.size()]);
+
+        String[] availableThemes = (String[]) themes.toArray(new String[themes.size()]);
+        Arrays.sort(availableThemes);
+        return availableThemes;
     }
 
     /**
@@ -208,7 +208,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
             String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
 
             context.put(THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES, getAvailableThemes());
-            context.put(THEME_SWITCHER_PLUGIN_FLAVORS, user.getFlavors());
+            context.put(THEME_SWITCHER_PLUGIN_FLAVORS, new TreeMap(user.getFlavors()));
             context.put(THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR, user.getBlog().getBlogDefaultFlavor());
             String currentHtmlFlavor = (String) user.getFlavorToTemplate().get("html");
             currentHtmlFlavor = currentHtmlFlavor.substring(0, currentHtmlFlavor.indexOf('.'));

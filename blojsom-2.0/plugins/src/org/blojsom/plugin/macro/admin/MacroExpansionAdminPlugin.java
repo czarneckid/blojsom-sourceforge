@@ -50,15 +50,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 /**
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.5 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.6 2005-01-30 18:13:49 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -199,7 +199,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
      * @throws BlojsomPluginException If there is an error reading in the macros
      */
     private Map readMacros(String userId, String macroConfiguration) throws BlojsomPluginException {
-        Map macros = new HashMap();
+        Map macros = new TreeMap();
         Properties macroProperties = new BlojsomProperties();
         String configurationFile = _blojsomConfiguration.getBaseConfigurationDirectory() + userId + '/' + macroConfiguration;
         InputStream is = _servletConfig.getServletContext().getResourceAsStream(configurationFile);
@@ -209,7 +209,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
             try {
                 macroProperties.load(is);
                 is.close();
-                macros = BlojsomUtils.propertiesToMap(macroProperties);
+                macros = new TreeMap(BlojsomUtils.propertiesToMap(macroProperties));
             } catch (IOException e) {
                 _logger.error(e);
                 throw new BlojsomPluginException(e);
