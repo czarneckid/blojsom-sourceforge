@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.32 2003-06-21 15:00:47 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.33 2003-06-23 02:28:59 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -612,7 +612,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String requestedCategory = BlojsomUtils.removeInitialSlash(blogid);
                 BlogCategory blogCategory = _fetcher.newBlogCategory();
                 blogCategory.setCategory(blogid);
-                blogCategory.setCategoryURL(_blog.getBlogFileExtensions() + requestedCategory);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + requestedCategory);
 
                 BlogEntry[] entries;
                 Map fetchMap = new HashMap();
