@@ -55,13 +55,6 @@
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
 <%
-		if ((i > 0) && ((i % 5) == 0)) {
-%>
-		    <div nowrap class="weblogbottomline">
-			<b>Categories: </b><%= catString %>
-		    </div>
-<%
-		}
 	    }
 	}
 %>
