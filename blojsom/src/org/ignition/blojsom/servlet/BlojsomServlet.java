@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.58 2003-03-28 01:08:07 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.59 2003-03-28 03:51:49 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -368,6 +368,25 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
+        // Check to see if we have a start and end range for entries (e.g. for pagination)
+        Integer entriesStart = null;
+        Integer entriesEnd = null;
+        try {
+            entriesStart = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_START_PARAM)));
+            _logger.debug("Requested entries start: " + entriesStart.toString());
+        } catch (NumberFormatException e) {
+            entriesStart = null;
+            _logger.debug("Requested entries start invalid");
+        }
+
+        try {
+            entriesEnd = new Integer(Integer.parseInt(httpServletRequest.getParameter(ENTRIES_END_PARAM)));
+            _logger.debug("Requested entries end: " + entriesEnd.toString());
+        } catch (NumberFormatException e) {
+            entriesEnd = null;
+            _logger.debug("Requested entries end invalid");
+        }
+
         BlogEntry[] entries;
 
         // Check for a permalink entry request
@@ -375,16 +394,29 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             entries = _blog.getPermalinkEntry(category, permalink);
         } else {
             if  (requestedCategory.equals("/")) {
-
                 if (entriesToDisplay == null) {
-                    entries = _blog.getEntriesAllCategories(flavor);
+                    // If either the start point or end point is null, get entries for all categories as normal
+                    if (entriesStart == null || entriesEnd == null) {
+                        _logger.debug("Retrieving entries for all categories for flavor: " + flavor);
+                        entries = _blog.getEntriesAllCategories(flavor);
+                    } else {
+                        _logger.debug("Retrieving entries for all categories with start/end for flavor: " + flavor);
+                        entries = _blog.getEntriesAllCategories(flavor, entriesStart.intValue(), entriesEnd.intValue());
+                    }
                 } else {
                     entries = _blog.getEntriesAllCategories(flavor, entriesToDisplay.intValue());
                 }
                 // Check for the requested category
             } else {
                 if (entriesToDisplay == null) {
-                    entries = _blog.getEntriesForCategory(category);
+                    // If either the start point or end point is null, get entries for category as normal
+                    if (entriesStart == null || entriesEnd == null) {
+                        _logger.debug("Retrieving entries for category: " + category.toString());
+                        entries = _blog.getEntriesForCategory(category);
+                    } else {
+                        _logger.debug("Retrieving entries with start/end for category: " + category.toString());
+                        entries = _blog.getEntriesForCategory(category, entriesStart.intValue(), entriesEnd.intValue());
+                    }
                 } else {
                     entries = _blog.getEntriesForCategory(category, entriesToDisplay.intValue());
                 }
