@@ -58,7 +58,7 @@ a img
 #container
    {
       position: relative;
-      background: #FFFBDF url(images/fade.gif) no-repeat 0 68px;
+      background: #FFFBDF url(flex-fade.gif) no-repeat 0 68px;
       margin: 0 auto 10px auto;
       border-left: 1px solid #000;
       border-right: 1px solid #000;
@@ -70,7 +70,7 @@ a img
 #pageHeader
    {
       height: 68px;
-      background: url(images/header2.png) no-repeat top left;
+      background: url(flex-header2.png) no-repeat top left;
       border-bottom: 1px solid #CDC4AC;
 
       font: bold 200% trebuchet ms;
@@ -141,7 +141,7 @@ a img
 
 #comment
    {
-      background: url(images/comment.png) no-repeat top left;
+      background: url(flex-comment.png) no-repeat top left;
       padding: 0px 0px 20px 25px;
    }
 
@@ -285,7 +285,7 @@ a img
       display: block;
       margin-bottom: 2px;
       padding-left: 14px;
-      background: url(images/arrow.gif) no-repeat 0 5px;
+      background: url(flex-arrow.gif) no-repeat 0 5px;
       list-style-type: none;
    }
 

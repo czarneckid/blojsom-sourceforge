@@ -8,7 +8,7 @@
   <script type="text/javascript"></script>
 
   <style type="text/css" media="all">
-    @import "$BLOJSOM_SITE_URL/blojsom-flex.css";
+    @import "$BLOJSOM_SITE_URL/resources/$BLOJSOM_USER/flex.css";
   </style>
 
   <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
@@ -27,7 +27,43 @@
   </div>
 
   <div id="mainContent">
-#parse($mainContent)
+#foreach ($entry in $BLOJSOM_ENTRIES)
+    <div id="blogEntry">
+      <h3><span><a href="$entry.getLink()" title="Permalink to $entry.getTitle()">$entry.getTitle() <img src="$BLOJSOM_SITE_URL/resources/$BLOJSOM_USER/flex-permalink.png" alt=""/></a></span></h3>
+      <h4><span>$entry.getDate()</span></h4>
+      <p class="p1"><span>$entry.getDescription()</span></p>
+    </div>
+#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+  <div id="entryCommentAndTrackbackCount">
+    (<a href="$entry.getLink()&amp;page=comments">$entry.getNumComments() comment(s)</a> and
+    <a href="$entry.getLink()&amp;page=trackback">$entry.getNumTrackbacks() trackback(s)</a>)
+  </div>
+#end
+  #if ($BLOJSOM_PERMALINK)
+  <!-- Trackback Auto Discovery -->
+  #set( $blogDescription = $entry.getEscapedDescription() )
+  #if ($blogDescription.length() > 255 )
+    #set( $ellipses = "..." )
+    #set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
+  #end
+<!--
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+               xmlns:dc="http://purl.org/dc/elements/1.1/"
+               xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+        <rdf:Description
+            rdf:about="$entry.getLink()"
+            dc:identifier="$entry.getLink()"
+            dc:title="$entry.getTitle()"
+            dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
+            dc:description="$blogDescription"
+            dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
+            dc:date="$entry.getISO8601Date()"
+            trackback:ping="$entry.getLink()&tb=y" />
+      </rdf:RDF>
+-->
+  #end
+#end
+
 
     <div id="footer">
 #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
@@ -84,13 +120,14 @@
       </ul>
     </div>
 
+    <!--
     <div id="blogroll">
       <h3 class="archives"><span>Blogroll:</span></h3>
       <ul>
         <li><a href="http://www.thauvin.net/blog/index.jsp" title="Erik's Weblog">Erik's Weblog</a></li>
-        <li><a href="http://www.blojsom.com/blog/" title="David Czarnecki's Blog">David Czarnecki's Blog</a></li>
       </ul>
     </div>
+    -->
 
     <div id="resources">
       <script type="text/JavaScript">
@@ -122,20 +159,7 @@
       <div id="aboutMe">
         <div id="aboutMeText">
           <p>
-            I'm a Senior Software Engineer working for <a href="http://www.manheim.com">Manheim Auctions</a>
-            in Atlanta.  Before that I worked at VerticalOne (now <a href="http://www.yodlee.com">Yodlee</a>).
-          </p>
-          <p>
-            Outside of work, I've contributed to some open source projects, mostly to
-            <a href="http://www.jedit.org">jEdit</a>.  I'm also working one two of my
-            own (<b class="bold">Jane</b> and <b class="bold">TroubleScope</b>).
-          </p>
-          <p>
-            I currently reside in Roswell, GA, with my wife and more pets than I care
-            to disclose.
-          </p>
-          <p>
-            You can contact me at <b class="bold">cyu77 AT yahoo DOT com</b>
+            <a href="http://blojsom.sf.net">blojsom</a> developer.
           </p>
         </div>
         <div id="closeButton"><a href="javascript:closeAboutWindow();" onclick="javascript:closeAboutWindow();">close</a></div>
@@ -143,10 +167,9 @@
       <h3><span>Resources:</span></h3>
       <ul>
         <li><a href="javascript:aboutWindow()" onclick="javascript:aboutWindow()" title="About Me">About Me</a></li>
-        <li><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss" title="RSS 0.92 Feed"><img src="$BLOJSOM_SITE_URL/images/rss092.gif" alt=""/></a></li>
-        <li><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2" title="RSS 2.0 Feed"><img src="$BLOJSOM_SITE_URL/images/rss2.gif" alt=""/></a></li>
-        <li><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf" title="RDF Feed"><img src="$BLOJSOM_SITE_URL/images/rdf.gif" alt=""/></a></li>
-        <li><a href="http://www.javablogs.com" title="JavaBlogs.com"><img src="$BLOJSOM_SITE_URL/images/javablog.gif" alt=""/></a></li>
+        <li><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss" title="RSS 0.92 Feed"><img src="$BLOJSOM_SITE_URL/resources/$BLOJSOM_USER/flex-rss092.gif" alt=""/></a></li>
+        <li><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2" title="RSS 2.0 Feed"><img src="$BLOJSOM_SITE_URL/resources/$BLOJSOM_USER/flex-rss2.gif" alt=""/></a></li>
+        <li><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf" title="RDF Feed"><img src="$BLOJSOM_SITE_URL/resources/$BLOJSOM_USER/flex-rdf.gif" alt=""/></a></li>
       </ul>
     </div>
 
