@@ -39,7 +39,6 @@
         </ul>
 
         <div id="main">
-            <div id="contents">
                 #showErrorMessage()
 
                 <!-- Edit blog entries form -->
@@ -245,9 +244,8 @@
                         </form>
                     </table>
                 </div>
-            </div>
         </div>
-    </div>
+    </div>   
 </body>
 
 #AdministrationFooter()

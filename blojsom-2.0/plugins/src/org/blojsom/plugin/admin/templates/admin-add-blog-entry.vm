@@ -39,7 +39,6 @@
         </ul>
 
         <div id="main">
-            <div id="contents">
                 #showErrorMessage()
                 <div class="mainClm">
                     <h3>#adminResource('add.blog.entry.header' 'Add Blog Entry')</h3>
@@ -123,7 +122,6 @@
                         </form>
                     </table>
                 </div>
-            </div>
         </div>
     </div>
 </body>
