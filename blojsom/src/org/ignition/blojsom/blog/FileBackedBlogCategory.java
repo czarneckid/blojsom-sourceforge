@@ -35,6 +35,7 @@
 package org.ignition.blojsom.blog;
 
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.BlojsomException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,7 +48,7 @@ import java.util.Properties;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.2 2003-04-19 14:38:30 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.3 2003-06-11 02:46:49 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -76,7 +77,7 @@ public class FileBackedBlogCategory extends BlogCategory {
      * @param blogHome Directory where blog entries are stored
      * @param propertiesExtensions List of file extensions to use when looking for category properties
      */
-    public void loadMetaData(String blogHome, String[] propertiesExtensions) {
+    protected void loadMetaData(String blogHome, String[] propertiesExtensions) {
         File blog = new File(blogHome + BlojsomUtils.removeInitialSlash(_category));
 
         // Load properties file for category (if present)
@@ -96,5 +97,16 @@ public class FileBackedBlogCategory extends BlogCategory {
 
             setMetaData(dirProps);
         }
+    }
+
+    /**
+     * Load a blog category.
+     *
+     * @since blojsom 1.9.1
+     * @param blog Blog
+     * @throws BlojsomException If there is an error loading the entry
+     */
+    public void loadCategory(Blog blog) throws BlojsomException {
+        loadMetaData(blog.getBlogHome(), blog.getBlogPropertiesExtensions());
     }
 }
