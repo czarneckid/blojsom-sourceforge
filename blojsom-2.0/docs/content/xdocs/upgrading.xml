@@ -9,6 +9,28 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.07 to blojsom 2.08</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
+                        blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.08.jar,
+                        blojsom-extensions-2.08.jar, blojsom-plugins-2.08.jar files, and blojsom-plugins-templates-2.08.jar.
+                    </p>
+                </section>
+                <section>
+                    <title>Template changes</title>
+                    <p>
+                        1. Replace the <code>atom.vm</code> file (as appropriate) in the
+                        <code>templates</code> directory for those users who have an Atom flavor enabled. Alternatively,
+                        users can login to edit their Atom template via the web administration interface and change the
+                        text for <code>$entry.getCategory()</code> in the &lt;id&gt; tag to
+                        <code>$entry.getEncodedCategory()</code>.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.06 to blojsom 2.07</title>
                 <section>
                     <title>Library changes</title>
