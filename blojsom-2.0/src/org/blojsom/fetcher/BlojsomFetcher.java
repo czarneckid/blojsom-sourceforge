@@ -49,9 +49,14 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.2 2003-09-05 02:45:27 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.3 2003-09-12 02:00:36 czarneckid Exp $
  */
 public interface BlojsomFetcher {
+
+    public static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
+    public static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
+    public static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
+    public static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
 
     /**
      * Initialize this fetcher. This method only called when the fetcher is instantiated.

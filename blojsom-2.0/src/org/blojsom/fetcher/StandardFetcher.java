@@ -55,17 +55,13 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.3 2003-09-05 02:45:27 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.4 2003-09-12 02:00:36 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
     protected Log _logger = LogFactory.getLog(StandardFetcher.class);
 
     protected static final String DEPTH_PARAM = "depth";
-    protected static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
-    protected static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
-    protected static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
-    protected static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
 
     protected static final String STANDARD_FETCHER_CATEGORY = "STANDARD_FETCHER_CATEGORY";
     protected static final String STANDARD_FETCHER_DEPTH = "STANDARD_FETCHER_DEPTH";
