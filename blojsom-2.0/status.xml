@@ -20,6 +20,10 @@
             <action dev="czarneckid" type="add" context="Core">
                 Added CachingFetcher which can cache blog entries to improve blog rendering performance.
             </action>
+
+            <action dev="czarneckid" type="add" context="Core">
+                Added BlojsomProperties to properly load properties files in a specific encoding.
+            </action>
         </release>
 
         <release version="2.0" date="August 26, 2003">
