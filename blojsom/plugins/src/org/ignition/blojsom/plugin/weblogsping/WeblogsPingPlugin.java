@@ -17,13 +17,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Vector;
+import java.util.HashMap;
 
 /**
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.1 2003-06-18 04:13:35 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.2 2003-06-18 04:33:10 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -71,9 +72,13 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
             Map entryMetaData = entry.getMetaData();
+            if (entryMetaData == null) {
+                entryMetaData = new HashMap();
+            }
             if (!entryMetaData.containsKey(WEBLOGS_PING_METADATA)) {
                 shouldPingWeblogs = true;
                 entryMetaData.put(WEBLOGS_PING_METADATA, WEBLOGS_PING_VALUE);
+                entry.setMetaData(entryMetaData);
                 try {
                     entry.save(_blog);
                 } catch (BlojsomException e) {
