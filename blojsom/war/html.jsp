@@ -67,7 +67,8 @@
 %>
 
     <p />
-    <img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" />
+    <a href="http://blojsom.sf.net"><img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" /></a>
+
 
     </body>
 </html>
