@@ -17,6 +17,9 @@
     <!-- required feed elements -->
     <title mode="escaped"><%= blogInformation.getBlogName() %></title>
     <link rel="alternate" type="text/html" href="<%= blogInformation.getBlogURL() %>"/>
+
+    <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/" rel="service.post" title="<%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
+
     <modified><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE_UTC) %></modified>
 
     <!-- optional feed elements -->
@@ -52,6 +55,7 @@
         <!-- entry required elements -->
         <title mode="escaped"><%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%></title>
         <link rel="alternate" type="text/html" href="<%= blogEntry.getLink() %>"/>
+        <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi<%= blogEntry.getEncodedCategory() %>/?permalink=<%= blogEntry.getPermalink() %>" rel="service.edit" title="Edit <%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
         <modified><%= blogEntry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") %></modified>
         <issued><%= blogEntry.getISO8601Date() %></issued>
         <id>tag:<%= blogInformation.getBlogOwnerEmail() %>,<%= blogEntry.getDateAsFormat("yyyy-MM-dd") %>:<%= blogEntry.getEncodedCategory() %>.<%= blogEntry.getPermalink() %></id>
