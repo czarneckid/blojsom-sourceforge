@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.37 2003-03-26 04:25:56 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.38 2003-03-26 05:10:17 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -67,7 +67,6 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_CALENDAR = "BLOJSOM_CALENDAR";
-
 
     /**
      * Key under which the date (RFC 822 format) of the blog will be placed
@@ -99,12 +98,10 @@ public interface BlojsomConstants {
      */
     public static final String BLOJSOM_COMMENTS_ENABLED = "BLOJSOM_COMMENTS_ENABLED";
 
-
     /**
      * Key under which whether or not email messages will be sent to the blog author
      */
     public static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
-
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
@@ -161,7 +158,6 @@ public interface BlojsomConstants {
      */
     public static final String PAGE_PARAM = "page";
 
-
     /**
      * Request parameter for the "category"
      */
@@ -171,7 +167,6 @@ public interface BlojsomConstants {
      * Request parameter for "rememberme"
      */
     public static final String REMEMBERME_PARAM = "rememberme";
-
 
     /**
      * Default directory for adding trackbacks
@@ -230,22 +225,20 @@ public interface BlojsomConstants {
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
 
-
     /**
      * Comment "Remember Me" Cookie for the Authors Name
      */
-    public static final String COOKIE_AUTHOR = "blojsomAuthor";
+    public static final String COOKIE_AUTHOR = "blojsom.cookie.author";
 
     /**
      * Comment "Remember Me" Cookie for the Authors Email
      */
-    public static final String COOKIE_EMAIL = "blojsomEmail";
+    public static final String COOKIE_EMAIL = "blojsom.cookie.email";
 
     /**
      * Comment "Remember Me" Cookie for the Authors URL
      */
-    public static final String COOKIE_URL = "blojsomUrl";
-
+    public static final String COOKIE_URL = "blojsom.cookie.url";
 
 
     // Blog initialization parameters from blojsom.properties
