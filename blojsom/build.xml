@@ -153,7 +153,7 @@
         </javac>
         <javac srcdir="${extensions.src.dir}"
             destdir="${compile.dir}"
-            debug="${debug}"
+        debug="${debug}"
             deprecation="${deprecation}"
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
