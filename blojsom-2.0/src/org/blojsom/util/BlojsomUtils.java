@@ -56,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.57 2005-01-25 02:21:17 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.58 2005-01-25 02:23:44 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1047,7 +1047,10 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         InputStream is = servletConfig.getServletContext().getResourceAsStream(configuration);
-
+        if (is == null) {
+            throw new BlojsomException("Could not load configuration file: " + configuration);
+        }
+        
         try {
             properties.load(is);
         } catch (IOException e) {
