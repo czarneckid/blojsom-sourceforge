@@ -11,6 +11,7 @@
     BlogEntry[] entryArray = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
     BlogCategory[] blogCategories = (BlogCategory[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
+    BlogCategory requestedCategory = (BlogCategory) request.getAttribute(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
 
     StringBuffer catStringBuf = new StringBuffer(20);
     String blogName = null;
@@ -69,7 +70,7 @@
 
     <p />
     <a href="http://blojsom.sf.net"><img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" /></a>&nbsp;&nbsp;
-    <a href="<%= blogInformation.getBlogURL() %>?flavor=rss"><img src="<%= blogSiteURL %>/xml.gif" border="0" /></a>
+    <a href="<%= requestedCategory.getCategoryURL() %>?flavor=rss"><img src="<%= blogSiteURL %>/xml.gif" border="0" /></a>
 
 
     </body>
