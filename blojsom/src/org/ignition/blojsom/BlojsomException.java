@@ -32,25 +32,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.plugin;
-
-import org.ignition.blojsom.BlojsomException;
+package org.ignition.blojsom;
 
 /**
- * BlojsomPluginException
+ * BlojsomException
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPluginException.java,v 1.4 2003-05-21 23:25:44 czarneckid Exp $
+ * @since blojsom 1.9
+ * @version $Id: BlojsomException.java,v 1.1 2003-05-21 23:25:38 czarneckid Exp $
  */
-public class BlojsomPluginException extends BlojsomException {
+public class BlojsomException extends Exception {
 
     /**
      * Constructs a new exception with <code>null</code> as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public BlojsomPluginException() {
-        super();
+    public BlojsomException() {
     }
 
     /**
@@ -61,7 +59,7 @@ public class BlojsomPluginException extends BlojsomException {
      * @param   message   the detail message. The detail message is saved for
      *          later retrieval by the {@link #getMessage()} method.
      */
-    public BlojsomPluginException(String message) {
+    public BlojsomException(String message) {
         super(message);
     }
 
@@ -79,7 +77,7 @@ public class BlojsomPluginException extends BlojsomException {
      *         unknown.)
      * @since  1.4
      */
-    public BlojsomPluginException(String message, Throwable cause) {
+    public BlojsomException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -97,7 +95,7 @@ public class BlojsomPluginException extends BlojsomException {
      *         unknown.)
      * @since  1.4
      */
-    public BlojsomPluginException(Throwable cause) {
+    public BlojsomException(Throwable cause) {
         super(cause);
     }
 }
