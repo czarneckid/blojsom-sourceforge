@@ -52,7 +52,7 @@ import java.util.Properties;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.9 2004-06-18 00:17:56 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.10 2004-07-01 03:17:48 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -89,7 +89,7 @@ public class CachingFetcher extends StandardFetcher {
      */
     private static final String CATEGORY_KEY = "__CATEGORY__";
 
-    protected GeneralCacheAdministrator _cache;
+    protected static GeneralCacheAdministrator _cache;
 
     /**
      * Default constructor
@@ -114,7 +114,9 @@ public class CachingFetcher extends StandardFetcher {
 
         try {
             Properties oscacheProperties = BlojsomUtils.loadProperties(servletConfig, oscachePropertiesIP);
-            _cache = new GeneralCacheAdministrator(oscacheProperties);
+            if (_cache == null) {
+                _cache = new GeneralCacheAdministrator(oscacheProperties);
+            }
             _logger.debug("Initialized caching fetcher");
         } catch (BlojsomException e) {
             _logger.error(e);
