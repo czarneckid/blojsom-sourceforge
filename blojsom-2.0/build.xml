@@ -232,17 +232,17 @@
         <delete dir="${compile.dir}"/>
 
         <!-- Add-on extensions -->
-        <delete dir="${compile.dir}"/>
-        <mkdir dir="${compile.dir}"/>
-        <javac srcdir="${addon.extensions.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}">
-            <classpath refid="build.classpath"/>
-        </javac>
-        <jar file="${addon.extensions.jar}" basedir="${compile.dir}"/>
-        <delete dir="${compile.dir}"/>
+<!--        <delete dir="${compile.dir}"/>-->
+<!--        <mkdir dir="${compile.dir}"/>-->
+<!--        <javac srcdir="${addon.extensions.src.dir}"-->
+<!--            destdir="${compile.dir}"-->
+<!--            debug="${debug}"-->
+<!--            deprecation="${deprecation}"-->
+<!--            optimize="${optimize}">-->
+<!--            <classpath refid="build.classpath"/>-->
+<!--        </javac>-->
+<!--        <jar file="${addon.extensions.jar}" basedir="${compile.dir}"/>-->
+<!--        <delete dir="${compile.dir}"/>-->
     </target>
 
     <!-- =================================================================== -->

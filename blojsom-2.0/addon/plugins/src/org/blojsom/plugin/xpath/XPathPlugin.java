@@ -35,6 +35,8 @@
 package org.blojsom.plugin.xpath;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
@@ -54,12 +56,14 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.4 2003-09-24 13:25:48 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.5 2003-09-24 13:53:30 intabulas Exp $
  */
 
 public class XPathPlugin implements BlojsomPlugin {
 
     private static final String XPATH_PARAM = "xpath";
+
+    private Log _logger = LogFactory.getLog(XPathPlugin.class);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -91,13 +95,16 @@ public class XPathPlugin implements BlojsomPlugin {
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
         if (xpath != null) {
+            _logger.info("Searching using: " + xpath);
             BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
             List foundEntries = new ArrayList();
             JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
             Iterator entryIterator = xpathcontext.iterate(xpath);
 
             while (entryIterator.hasNext()) {
-                BlogEntry entry = (BlogEntry) entryIterator.next();
+                Object obj = entryIterator.next();
+                _logger.info(obj.toString());
+                BlogEntry entry = (BlogEntry) obj;
                 foundEntries.add(entry);
             }
 
