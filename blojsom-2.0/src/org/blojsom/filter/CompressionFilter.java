@@ -109,7 +109,6 @@ public class CompressionFilter implements Filter {
             // Send compressed result to client.
             OutputStream realOut = responseWrapper.getOutputStream();
             byteStream.writeTo(realOut);
-            realOut.close();
         }
     }
 
