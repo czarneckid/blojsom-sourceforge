@@ -101,6 +101,13 @@ a:hover
 	background-color: #EEEEEE;
 }
 
+.commentstyle
+{
+	margin-bottom: 20px;
+	text-align: left;
+	background-color: #EEEEEE;
+}
+
 .smalltext
 {
 	font-size: 50%;
