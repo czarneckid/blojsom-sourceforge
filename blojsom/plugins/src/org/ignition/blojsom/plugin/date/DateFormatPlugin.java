@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.1
- * @version $Id: DateFormatPlugin.java,v 1.1 2003-06-11 03:55:48 czarneckid Exp $
+ * @version $Id: DateFormatPlugin.java,v 1.2 2003-06-11 03:58:08 czarneckid Exp $
  */
 public class DateFormatPlugin implements BlojsomPlugin {
 
@@ -54,34 +54,31 @@ public class DateFormatPlugin implements BlojsomPlugin {
         }
         _logger.debug("blojsom timezone-id: " + blogTimeZoneId);
         // Defaults to GMT if the Id is invalid
-		_blogTimeZone = TimeZone.getTimeZone( blogTimeZoneId );
+        _blogTimeZone = TimeZone.getTimeZone(blogTimeZoneId);
 
         String blogDateFormatPattern = blog.getBlogProperty(BLOG_DATEFORMAT_PATTERN_IP);
         if (blogDateFormatPattern == null || "".equals(blogDateFormatPattern)) {
             _blogDateFormatPattern = null;
             _logger.debug("No value supplied for blog-dateformat-pattern");
+        } else {
+            _blogDateFormatPattern = blogDateFormatPattern;
+            _logger.debug("blojsom dateformat pattern: " + blogDateFormatPattern);
         }
-        else {
-			_blogDateFormatPattern = blogDateFormatPattern;
-	        _logger.debug("blojsom dateformat pattern: " + blogDateFormatPattern);
-		}
 
         // Get a DateFormat for the specified TimeZone
-		_blogDateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-		_blogDateFormat.setTimeZone(_blogTimeZone);
-		if (_blogDateFormatPattern != null) {
-			try {
-				SimpleDateFormat sdf = (SimpleDateFormat) _blogDateFormat;
-				sdf.applyPattern(_blogDateFormatPattern);
-				_blogDateFormat = sdf;
-			}
-			catch (IllegalArgumentException ie) {
-				_logger.error("blojsom date format pattern \"" + _blogDateFormatPattern + "\" is invalid - using DateFormat.FULL");
-			}
-			catch (ClassCastException ce) {
-				_logger.warn("blojsom cannot cast to SimpleDateFormat to apply date format pattern");
-			}
-		}
+        _blogDateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+        _blogDateFormat.setTimeZone(_blogTimeZone);
+        if (_blogDateFormatPattern != null) {
+            try {
+                SimpleDateFormat sdf = (SimpleDateFormat) _blogDateFormat;
+                sdf.applyPattern(_blogDateFormatPattern);
+                _blogDateFormat = sdf;
+            } catch (IllegalArgumentException ie) {
+                _logger.error("blojsom date format pattern \"" + _blogDateFormatPattern + "\" is invalid - using DateFormat.FULL");
+            } catch (ClassCastException ce) {
+                _logger.warn("blojsom cannot cast to SimpleDateFormat to apply date format pattern");
+            }
+        }
     }
 
     /**
