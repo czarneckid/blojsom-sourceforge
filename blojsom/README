@@ -1,16 +1,16 @@
 blojsom 1.0 README
 ------------------
 
+Developed with:
+---------------
+IntelliJ IDEA (http://www.intellij.net)
+
 Tested under:
 -------------
 Jakarta Tomcat 4.1.18
 Java 2 SDK 1.4.1
 Mozilla 1.2.1
 Mac OS X
-
-Developed with:
----------------
-IntelliJ IDEA (http://www.intellij.net)
 
 Libraries
 ---------
@@ -45,6 +45,7 @@ Xerces 1.4.4 API
 ----------------
 - Download from http://xml.apache.org
 - Place xerces-1.4.4.jar in war/WEB-INF/lib
+
 License
 -------
 See LICENSE for information
