@@ -59,7 +59,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.1 2003-11-25 04:01:35 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.2 2003-11-25 04:11:14 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -218,6 +218,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                                 _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
                             }
                         }
+                    } else {
+                        _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
                     }
                 }
             }
