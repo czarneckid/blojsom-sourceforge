@@ -53,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.13 2004-07-27 03:29:24 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.14 2004-09-12 23:01:28 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -178,7 +178,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("getUserInfo() Called =====[ SUPPORTED ]=======");
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -221,7 +221,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("getUsersBlogs() Called ===[ SUPPORTED ]=======");
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -303,7 +303,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("    Publish: " + publish);
         _logger.debug("     Content:\n " + content);
 
@@ -374,7 +374,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("    Publish: " + publish);
         _logger.debug("     Content:\n " + content);
 
@@ -448,7 +448,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -514,7 +514,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         boolean result = false;
 
@@ -577,8 +577,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
-        _logger.debug("     Number: " + numposts);
+        _logger.debug("   Password: *********");
+        _logger.debug("   Numposts: " + numposts);
 
         Vector recentPosts = new Vector();
         blogid = BlojsomUtils.normalize(blogid);
@@ -650,7 +650,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("   Template: " + template);
         _logger.debug("       Type: " + templateType);
 
@@ -673,7 +673,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);

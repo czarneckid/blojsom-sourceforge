@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.18 2004-08-04 00:44:41 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.19 2004-09-12 23:01:28 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -185,7 +185,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _uploadDirectory += "/";
         }
 
-        _logger.debug("MetaWeblogAPI Handler for user [" + _blogUser.getId() + "] is " + _uploadDirectory);
+        _logger.debug("Upload directory for user [" + _blogUser.getId() + "] is " + _uploadDirectory);
 
         _acceptedMimeTypes = new HashMap(3);
         String acceptedMimeTypes = _blog.getBlogProperty(METAWEBLOG_ACCEPTED_TYPES_IP);
@@ -217,7 +217,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("getUsersBlogs() Called ===[ SUPPORTED ]=======");
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -250,7 +250,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("getCategories() Called =====[ SUPPORTED ]=====");
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -312,7 +312,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("    Publish: " + publish);
 
         blogid = BlojsomUtils.normalize(blogid);
@@ -387,7 +387,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("editPost() Called ========[ SUPPORTED ]=====");
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("    Publish: " + publish);
 
         try {
@@ -480,7 +480,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("getPost() Called =========[ SUPPORTED ]=====");
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -550,7 +550,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         boolean result = false;
 
@@ -612,7 +612,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("getRecentPosts() Called =========[ SUPPORTED ]=====");
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -673,7 +673,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("newMediaObject() Called =[ SUPPORTED ]=====");
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
 
         try {
             _authorizationProvider.loadAuthenticationCredentials(_blogUser);
@@ -742,7 +742,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("   Template: " + template);
         _logger.debug("       Type: " + templateType);
 
@@ -765,7 +765,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
-        _logger.debug("   Password: " + password);
+        _logger.debug("   Password: *********");
         _logger.debug("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
