@@ -48,13 +48,14 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.text.Collator;
 import java.util.*;
 
 /**
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.43 2004-11-16 16:08:01 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.44 2004-11-17 19:41:11 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1667,5 +1668,77 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return new Locale(language, country, variant);
+    }
+
+    /**
+     * Return of a list of locale languages supported on this system (JVM)
+     *
+     * @param locale {@link Locale} used for sorting
+     * @return List of locale languages supported on this system (JVM)
+     * @since blojsom 2.21
+     */
+    public static String[] getLanguagesForSystem(Locale locale) {
+        Locale[] installedLocales = Locale.getAvailableLocales();
+        ArrayList languageList = new ArrayList(installedLocales.length);
+        String[] languages = null;
+        String language;
+
+        for (int i = 0; i < installedLocales.length; i++) {
+            Locale installedLocale = installedLocales[i];
+            language = installedLocale.getLanguage();
+            if (!languageList.contains(language) && !checkNullOrBlank(language)) {
+                languageList.add(language);
+            }
+        }
+
+        languages = (String[]) languageList.toArray(new String[languageList.size()]);
+        Collator collator = Collator.getInstance(locale);
+        Arrays.sort(languages, collator);
+
+        return languages;
+    }
+
+    /**
+     * Return of a list of locale countries supported on this system (JVM)
+     *
+     * @param locale {@link Locale} used for sorting
+     * @return Return of a list of locale countries supported on this system (JVM)
+     * @since blojsom 2.21
+     */
+    public static String[] getCountriesForSystem(Locale locale) {
+        Locale[] installedLocales = Locale.getAvailableLocales();
+        ArrayList countryList = new ArrayList(installedLocales.length);
+        String[] countries = null;
+        String country;
+
+        for (int i = 0; i < installedLocales.length; i++) {
+            Locale installedLocale = installedLocales[i];
+            country = installedLocale.getCountry();
+            if (!countryList.contains(country) && !checkNullOrBlank(country)) {
+                countryList.add(country);
+            }
+        }
+
+        countries = (String[]) countryList.toArray(new String[countryList.size()]);
+        Collator collator = Collator.getInstance(locale);
+        Arrays.sort(countries, collator);
+
+        return countries;
+    }
+
+    /**
+     * Return of a list of time zone IDs supported on this system (JVM)
+     *
+     * @param locale {@link Locale} used for sorting
+     * @return Return of a list of time zone IDs supported on this system (JVM)
+     * @since blojsom 2.21
+     */
+    public static String[] getTimeZonesForSystem(Locale locale) {
+        String[] timezones = TimeZone.getAvailableIDs();
+
+        Collator collator = Collator.getInstance(locale);
+        Arrays.sort(timezones, collator);
+
+        return timezones;
     }
 }
