@@ -54,7 +54,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.14 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.15 2004-07-14 05:03:43 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -66,6 +66,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA";
 
     // Actions
@@ -76,7 +77,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
     // Form elements
     private static final String BLOG_CATEGORY_NAME = "blog-category-name";
+    private static final String BLOG_CATEGORY_DESCRIPTION = "blog-category-description";
     private static final String BLOG_CATEGORY_META_DATA = "blog-category-meta-data";
+    private static final String BLOG_CATEGORY_PARENT = "blog-category-parent";
 
     /**
      * Default constructor.
@@ -147,6 +150,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                         categoryProperties.load(fis);
                         fis.close();
 
+                        // Try and load the category description if available
+                        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION, categoryProperties.get(NAME_KEY));
+
                         Iterator keyIterator = categoryProperties.keySet().iterator();
                         Object key;
                         while (keyIterator.hasNext()) {
@@ -175,6 +181,11 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 return entries;
             }
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+
+            String blogCategoryParent = BlojsomUtils.getRequestValue(BLOG_CATEGORY_PARENT, httpServletRequest);
+            blogCategoryParent = BlojsomUtils.normalize(blogCategoryParent);
+
+            String blogCategoryDescription = BlojsomUtils.getRequestValue(BLOG_CATEGORY_DESCRIPTION, httpServletRequest);
 
             if (!isUpdatingCategory) {
                 _logger.debug("Adding blog category: " + blogCategoryName);
@@ -208,7 +219,14 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 _logger.error(e);
             }
 
-            File newBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
+
+            File newBlogCategory;
+            if (BlojsomUtils.checkNullOrBlank(blogCategoryParent)) {
+                newBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
+            } else {
+                newBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryParent) + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
+            }
+            
             if (!isUpdatingCategory) {
                 if (!newBlogCategory.mkdirs()) {
                     _logger.error("Unable to add new blog category: " + blogCategoryName);
@@ -219,6 +237,10 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 } else {
                     _logger.debug("Created blog directory: " + newBlogCategory.toString());
                 }
+            }
+
+            if (!BlojsomUtils.checkNullOrBlank(blogCategoryDescription)) {
+                categoryMetaData.put(NAME_KEY, blogCategoryDescription);
             }
 
             File newBlogProperties = new File(newBlogCategory.getAbsolutePath() + "/blojsom.properties");
@@ -239,7 +261,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, "Successfully updated blog category: " + blogCategoryName);
             }
 
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
         }
 
         return entries;

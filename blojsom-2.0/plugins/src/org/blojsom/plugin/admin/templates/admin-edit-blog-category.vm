@@ -31,7 +31,11 @@
                         <td><input type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME" disabled="true"/></td>
                     </tr>
                     <tr>
-                        <td>#adminResource('category.metadata.text' 'Category meta-data')</td>
+                        <td>#adminResource('category.description.text' 'Category description (optional)')</td>
+                        <td><input type="text" size="50" name="blog-category-description" value="$!BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('category.metadata.text' 'Category meta-data (optional)')</td>
                         <td><textarea rows="10" cols="80" name="blog-category-meta-data">$!BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA</textarea></td>
                     </tr>
 
