@@ -36,6 +36,7 @@ package org.ignition.blojsom.fetcher;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.*;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -44,7 +45,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.16 2003-05-26 19:10:34 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.17 2003-05-31 02:09:19 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -107,6 +107,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     protected BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
+        permalink = BlojsomUtils.urlDecode(permalink);
         String permalinkEntry = _blog.getBlogHome() + category + permalink;
         File blogFile = new File(permalinkEntry);
         if (!blogFile.exists()) {
@@ -119,20 +120,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             blogEntry.setCategory(category);
             blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
             blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
+            blogEntry.setBlogCategory(blogCategory);
             try {
-                blogEntry.reloadSource();
-                blogCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
-                blogEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogEntryMetaDataExtension());
-            } catch (IOException e) {
+                blogEntry.loadEntry(_blog);
+            } catch (BlojsomException e) {
                 return new BlogEntry[0];
             }
-            blogEntry.setBlogCategory(blogCategory);
-            blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
-            blogEntry.setTrackbacksDirectory(_blog.getBlogTrackbackDirectory());
-            if (_blog.getBlogCommentsEnabled().booleanValue()) {
-                blogEntry.loadComments();
-            }
-            blogEntry.loadTrackbacks();
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -172,20 +165,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogEntry.setCategory(category);
                 blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
                 blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
+                blogEntry.setBlogCategory(blogCategoryForEntry);
                 try {
-                    blogEntry.reloadSource();
-                    blogCategoryForEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
-                    blogEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogEntryMetaDataExtension());
-                } catch (IOException e) {
+                    blogEntry.loadEntry(_blog);
+                } catch (BlojsomException e) {
                     _logger.error(e);
                 }
-                blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
-                blogEntry.setTrackbacksDirectory(_blog.getBlogTrackbackDirectory());
-                blogEntry.setBlogCategory(blogCategoryForEntry);
-                if (_blog.getBlogCommentsEnabled().booleanValue()) {
-                    blogEntry.loadComments();
-                }
-                blogEntry.loadTrackbacks();
                 entryArray[i] = blogEntry;
             }
             return entryArray;

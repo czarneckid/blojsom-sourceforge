@@ -37,6 +37,7 @@ package org.ignition.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.BlojsomException;
 
 import java.io.*;
 import java.util.*;
@@ -45,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.5 2003-05-16 02:25:23 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.6 2003-05-31 02:09:19 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -133,7 +134,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      *
      * The first line of the blog entry will be used as the title of the blog
      */
-    public void reloadSource() throws IOException {
+    protected void reloadSource() throws IOException {
         boolean hasLoadedTitle = false;
         String lineSeparator = System.getProperty("line.separator");
 
@@ -181,7 +182,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Convenience method to load the comments for this blog entry. A blog entry can have
      */
-    public void loadComments() {
+    protected void loadComments() {
         if (supportsComments()) {
             String commentsDirectoryPath;
             if (_source.getParent() == null) {
@@ -271,7 +272,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Convenience method to load the trackbacks for this blog entry.
      */
-    public void loadTrackbacks() {
+    protected void loadTrackbacks() {
         String trackbacksDirectoryPath;
         if (_source.getParent() == null) {
             trackbacksDirectoryPath = File.separator + _trackbacksDirectory + File.separator + _source.getName();
@@ -359,7 +360,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blogHome Directory where blog entries are stored
      * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
      */
-    public void loadMetaData(String blogHome, String blogEntryMetaDataExtension) {
+    protected void loadMetaData(String blogHome, String blogEntryMetaDataExtension) {
         if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension)) {
             return;
         }
@@ -400,7 +401,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blogHome Directory where blog entries are stored
      * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
      */
-    public void saveMetaData(String blogHome, String blogEntryMetaDataExtension) {
+    protected void saveMetaData(String blogHome, String blogEntryMetaDataExtension) {
         if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension) || _metaData == null) {
             return;
         }
@@ -425,6 +426,92 @@ public class FileBackedBlogEntry extends BlogEntry {
             _logger.debug("Saved meta-data to: " + blogEntryMetaData.toString());
         } catch (IOException e) {
             _logger.error("Failed saving meta-data to: " + blogEntryMetaData.toString());
+        }
+    }
+
+    /**
+     * Load a blog entry.
+     *
+     * @since blojsom 1.9
+     * @param blog
+     * @throws BlojsomException If there is an error loading the entry
+     */
+    public void loadEntry(Blog blog) throws BlojsomException {
+        try {
+            reloadSource();
+            if (blog.getBlogCommentsEnabled().booleanValue()) {
+                loadComments();
+                loadTrackbacks();
+            }
+            loadMetaData(blog.getBlogHome(), blog.getBlogEntryMetaDataExtension());
+        } catch (IOException e) {
+            _logger.error(e);
+            throw new BlojsomException(e);
+        }
+    }
+
+    /**
+     * Save the blog entry. This method does not write out the comments or trackbacks to disk.
+     *
+     * @since blojsom 1.9
+     * @param blog
+     * @throws BlojsomException If there is an error saving the entry
+     */
+    public void saveEntry(Blog blog) throws BlojsomException {
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_source.getAbsolutePath(), false), blog.getBlogFileEncoding()));
+            bw.write(_title);
+            bw.newLine();
+            bw.write(_description);
+            bw.close();
+        } catch (IOException e) {
+            throw new BlojsomException(e);
+        }
+        saveMetaData(blog.getBlogHome(), blog.getBlogEntryMetaDataExtension());
+    }
+
+    /**
+     * Helper method to empty a directory
+     *
+     * @param directory File instance of directory to empty
+     */
+    private void removeDirectory(File directory) {
+        if (directory.exists() && directory.isDirectory()) {
+            File[] _children = directory.listFiles();
+            if (_children != null && _children.length > 0) {
+                for (int x = 0; x < _children.length; x++) {
+                    _children[x].delete();
+                }
+            }
+            directory.delete();
+        }
+    }
+
+    /**
+     *
+     * @since blojsom 1.9
+     * @param blog
+     * @throws BlojsomException
+     */
+    public void deleteEntry(Blog blog) throws BlojsomException {
+        _logger.debug("Deleting post " + _source.getAbsolutePath());
+        _source.delete();
+
+        // Delete comments
+        File _comments = new File(blog.getBlogHome() + _category + blog.getBlogCommentsDirectory()
+                + File.separatorChar + _source.getName() + File.separatorChar);
+        removeDirectory(_comments);
+
+        // Delete trackbacks
+        File _trackbacks = new File(blog.getBlogHome() + _category + blog.getBlogTrackbackDirectory()
+                + File.separatorChar + _source.getName() + File.separatorChar);
+        removeDirectory(_trackbacks);
+
+        // Delete meta-data
+        File metaFile = new File(blog.getBlogHome() + _category + BlojsomUtils.getFilename(_source.getName())
+                + blog.getBlogEntryMetaDataExtension());
+        if (metaFile.exists()) {
+            metaFile.delete();
         }
     }
 }

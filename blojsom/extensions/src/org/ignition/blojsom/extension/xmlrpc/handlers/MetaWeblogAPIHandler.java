@@ -45,6 +45,7 @@ import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
+import org.ignition.blojsom.BlojsomException;
 
 import java.io.*;
 import java.util.Hashtable;
@@ -58,7 +59,7 @@ import java.util.Properties;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.23 2003-05-30 00:16:48 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.24 2003-05-31 02:09:19 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -206,7 +207,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
+                    BlogEntry _entry = _entries[0];
 
                     try {
                         Hashtable postcontent = struct;
@@ -224,14 +225,11 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                             hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
                         }
 
-                        StringBuffer _post = new StringBuffer();
-                        _post.append(_title).append("\n").append(_description);
-
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), _blog.getBlogFileEncoding()));
-                        bw.write(_post.toString());
-                        bw.close();
+                        _entry.setTitle(_title);
+                        _entry.setDescription(_description);
+                        _entry.saveEntry(_blog);
                         result = true;
-                    } catch (IOException e) {
+                    } catch (BlojsomException e) {
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                     }
                 } else {

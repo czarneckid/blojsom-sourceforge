@@ -37,14 +37,14 @@ package org.ignition.blojsom.extension.xmlrpc.handlers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
+import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.FileBackedBlogEntry;
+import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 
 import java.io.*;
 import java.util.*;
@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.23 2003-05-30 00:19:40 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.24 2003-05-31 02:09:19 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -180,24 +180,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _fetcher = fetcher;
     }
 
-
-    /**
-     * Helper method to empty a directory
-     *
-     * @param directory File instance of directory to empty
-     */
-    private void removeDirectory(File directory) {
-        if (directory.exists() && directory.isDirectory()) {
-            File[] _children = directory.listFiles();
-            if (_children != null && _children.length > 0) {
-                for (int x = 0; x < _children.length; x++) {
-                    _children[x].delete();
-                }
-            }
-            directory.delete();
-        }
-    }
-
     /**
      * Delete a Post
      *
@@ -238,29 +220,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
-                    System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
-                    result = _entry.getSource().delete();
-
-                    // Delete Comments
-                    File _comments = new File(_blog.getBlogHome() + category + _blog.getBlogCommentsDirectory()
-                            + File.separatorChar + permalink + File.separatorChar);
-                    removeDirectory(_comments);
-
-
-                    // Delete Trackbacks
-                    File _trackbacks = new File(_blog.getBlogHome() + category + _blog.getBlogTrackbackDirectory()
-                            + File.separatorChar + permalink + File.separatorChar);
-                    removeDirectory(_trackbacks);
-
-                    // Meta Data
-                    File metaFile = new File(_blog.getBlogHome() + category + BlojsomUtils.getFilename(permalink)
-                            + _blog.getBlogEntryMetaDataExtension());
-                    if (metaFile.exists()) {
-                        metaFile.delete();
-                    }
-
-
+                    _entries[0].deleteEntry(_blog);
+                    result = true;
                 } else {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
@@ -458,15 +419,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
+                    BlogEntry _entry = _entries[0];
                     try {
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), _blog.getBlogFileEncoding()));
-                        bw.write(content);
-                        bw.close();
+                        _entry.saveEntry(_blog);
                         result = true;
-
-
-                    } catch (IOException e) {
+                    } catch (BlojsomException e) {
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                     }
                 } else {
@@ -608,9 +565,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                 if (entries != null && entries.length > 0) {
                     for (int x = 0; x < entries.length; x++) {
-                        FileBackedBlogEntry entry = (FileBackedBlogEntry) entries[x];
+                        BlogEntry entry = entries[x];
                         Hashtable entrystruct = new Hashtable();
-                        entrystruct.put(MEMBER_POSTID, entry.getCategory() + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
+                        entrystruct.put(MEMBER_POSTID, entry.getId());
                         entrystruct.put(MEMBER_BLOGID, entry.getCategory());
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());

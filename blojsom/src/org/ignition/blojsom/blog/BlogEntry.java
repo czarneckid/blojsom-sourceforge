@@ -48,7 +48,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.33 2003-05-31 02:08:20 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.34 2003-05-31 02:09:19 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -419,7 +419,7 @@ public abstract class BlogEntry implements BlojsomConstants {
      *
      * @since blojsom 1.9
      * @param blog Blog
-     * @throws BlojsomException
+     * @throws BlojsomException If there is an error deleting the entry
      */
     public abstract void deleteEntry(Blog blog) throws BlojsomException;
 }
