@@ -64,7 +64,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.25 2004-10-20 17:01:56 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.26 2004-11-16 17:46:55 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -73,6 +73,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_PROPERTIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-properties";
     private static final String EDIT_BLOG_PROPERTIES_ACTION = "edit-blog-properties";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP";
+    private static final String BLOJSOM_INSTALLED_LOCALES = "BLOJSOM_INSTALLED_LOCALES";
 
     /**
      * Default constructor.
@@ -120,6 +121,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogCountry(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_LANGUAGE_IP, httpServletRequest);
             blog.setBlogLanguage(blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_ADMINISTRATION_LOCALE_IP, httpServletRequest);
+            blog.setBlogAdministrationLocale(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_DEPTH_IP, httpServletRequest);
             try {
                 int blogDepth = Integer.parseInt(blogPropertyValue);
@@ -254,6 +257,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         }
 
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP, categoryMapping);
+        context.put(BLOJSOM_INSTALLED_LOCALES, _blojsomConfiguration.getInstalledLocalesAsStrings());
 
         return entries;
     }
