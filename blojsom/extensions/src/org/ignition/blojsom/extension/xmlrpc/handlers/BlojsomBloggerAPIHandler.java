@@ -56,18 +56,26 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.10 2003-04-06 18:43:10 czarneckid Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.11 2003-04-06 18:46:56 czarneckid Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
     public static final String API_PREFIX = "blogger";
 
-    /** */
-    public static final String MEMBER_URL = "url";
-    /** */
-    public static final String MEMBER_BLOGID = "blogid";
-    /** */
-    public static final String MEMBER_BLOGNAME = "blogName";
+    /**
+     * Blogger API "url" key
+     */
+    private static final String MEMBER_URL = "url";
+
+    /**
+     * Blogger API "blogid" key
+     */
+    private static final String MEMBER_BLOGID = "blogid";
+
+    /**
+     * Blogger API "blogName" key
+     */
+    private static final String MEMBER_BLOGNAME = "blogName";
 
     private Blog _blog;
     private Log _logger = LogFactory.getLog(BlojsomBloggerAPIHandler.class);
