@@ -56,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.26 2003-07-20 22:13:29 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.27 2003-07-21 22:09:34 intabulas Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -347,13 +347,13 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
         _trackback.append("\n==[ Trackback ]==========================================================").append("\n\n");
 
-        if (title == null && !title.equals("")) {
+        if (title != null && !title.equals("")) {
             _trackback.append("Title    : ").append(title).append("\n");
         }
         if (url != null && !url.equals("")) {
             _trackback.append("Url      : ").append(url).append("\n");
         }
-        if (blogName == null && !blogName.equals("")) {
+        if (blogName != null && !blogName.equals("")) {
             _trackback.append("Blog Name: ").append(blogName).append("\n");
         }
         if (excerpt != null && !excerpt.equals("")) {
