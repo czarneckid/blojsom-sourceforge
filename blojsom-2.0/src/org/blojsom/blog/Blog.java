@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.24 2004-09-12 22:57:52 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.25 2004-10-05 02:47:46 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -144,22 +144,22 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_DEPTH_IP, new Integer(_blogDepth));
 
         _blogURL = blogConfiguration.getProperty(BLOG_URL_IP);
-        if (_blogURL == null) {
-            _logger.error("No value supplied for blog-url");
-            throw new BlojsomConfigurationException("No value supplied for blog-url");
-        }
-        if (!_blogURL.endsWith("/")) {
-            _blogURL += "/";
+        if (BlojsomUtils.checkNullOrBlank(_blogURL)) {
+            _logger.warn("No value supplied for blog-url");
+        } else {
+            if (!_blogURL.endsWith("/")) {
+                _blogURL += "/";
+            }
         }
         _blogProperties.put(BLOG_URL_IP, _blogURL);
 
         _blogBaseURL = blogConfiguration.getProperty(BLOG_BASE_URL_IP);
-        if (_blogBaseURL == null) {
-            _logger.error("No value supplied for blog-base-url");
-            throw new BlojsomConfigurationException("No value supplied for blog-base-url");
-        }
-        if (_blogBaseURL.endsWith("/")) {
-            _blogBaseURL = _blogBaseURL.substring(0, _blogBaseURL.length() - 1);
+        if (BlojsomUtils.checkNullOrBlank(_blogBaseURL)) {
+            _logger.warn("No value supplied for blog-base-url");
+        } else {
+            if (_blogBaseURL.endsWith("/")) {
+                _blogBaseURL = _blogBaseURL.substring(0, _blogBaseURL.length() - 1);
+            }
         }
         _blogProperties.put(BLOG_BASE_URL_IP, _blogBaseURL);
 
