@@ -54,8 +54,8 @@ SVG spec (http://www.w3.org/TR/SVG/) as a reference.
     <text x="51%" y="75%" style="font-size:42pt; font-family:Verdana ; text-anchor: middle">
       Blojsom
     </text>
-       <text x="61%" y="95%" style="font-size:12pt; font-family:Arial ; text-anchor: middle">
-      Need a slogan.
+       <text x="51%" y="95%" style="font-size:10pt; font-family:Arial ; text-anchor: middle">
+      In a maze of weblogs all alike, think blojsom and get out.
     </text>
   </g>
 </svg>
