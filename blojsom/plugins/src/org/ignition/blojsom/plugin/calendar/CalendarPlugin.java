@@ -52,7 +52,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.12 2003-03-27 16:40:47 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.13 2003-03-27 17:38:18 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -132,7 +132,7 @@ public class CalendarPlugin implements BlojsomPlugin {
             } else {
 
                 try {
-                    currentyear = new Integer(year).intValue();
+                    currentyear = Integer.parseInt(year);
                     calendar.set(Calendar.YEAR, currentyear);
                 } catch (NumberFormatException e) {
                     year = "";
@@ -147,7 +147,7 @@ public class CalendarPlugin implements BlojsomPlugin {
                 }
                 if (!month.equals("")) {
                     try {
-                        currentmonth = new Integer(month).intValue() - 1; // Damm Sun!
+                        currentmonth = Integer.parseInt(month) - 1; // Damm Sun!
                         calendar.set(Calendar.MONTH, currentmonth);
                     } catch (NumberFormatException e) {
                         month = "";
