@@ -206,3 +206,11 @@
 #end
 
 #macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
+
+#macro(DisplayWeatherForcast $weatherInfo)
+<p><span>$weatherInfo.getLocation()</span></p>
+<p>Temperature: &nbsp;<span>$weatherInfo.getFahrenheit() / $weatherInfo.getCelcius()</span></p>
+<p>Visibility: &nbsp;<spam>$weatherInfo.getVisibility()</span></p>
+<p>Qind: &nbsp;<span>$weatherInfo.getWind()</span></p>
+<p><a href="$weatherInfo.getHistoryUrl()" class="rounded" title="Detailed Weather History"><span>Detailed Weather History</span></a></p>
+#end
