@@ -60,7 +60,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.16 2003-03-26 03:02:54 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.17 2003-03-26 05:08:58 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -143,7 +143,6 @@ public class CommentPlugin implements BlojsomPlugin {
                     category += "/";
                 }
 
-
                 BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
                 if (_comment != null) {
                     ArrayList blogComments = entries[0].getComments();
@@ -157,8 +156,6 @@ public class CommentPlugin implements BlojsomPlugin {
                 if (_blogEmailEnabled.booleanValue()) {
                     sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
                 }
-
-
             }
         }
 
@@ -184,7 +181,6 @@ public class CommentPlugin implements BlojsomPlugin {
         _emailcomment.append("Comment on: ").append(_blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
         _emailcomment.append("?permalink=").append(permalink).append("&page=comments").append("\n");
 
-
         if (author != null && !author.equals("")) {
             _emailcomment.append("Comment by: ").append(author).append("\n");
         }
@@ -196,11 +192,8 @@ public class CommentPlugin implements BlojsomPlugin {
         }
 
         _emailcomment.append("\n==[ Comment ]==========================================================").append("\n\n");
-
         _emailcomment.append(userComment);
-
         EmailUtils.notifyBlogAuthor("[blojsom] Comment on: " + title, _emailcomment.toString(), context);
-
     }
 
 
