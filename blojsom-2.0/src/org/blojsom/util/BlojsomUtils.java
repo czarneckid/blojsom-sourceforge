@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.14 2004-01-09 02:51:39 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.15 2004-01-11 03:04:05 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1202,5 +1202,25 @@ public class BlojsomUtils implements BlojsomConstants {
     public static void setNoCacheControlHeaders(HttpServletResponse httpServletResponse) {
         httpServletResponse.setHeader(PRAGMA_HTTP_HEADER, NO_CACHE_HTTP_HEADER_VALUE);
         httpServletResponse.setHeader(CACHE_CONTROL_HTTP_HEADER, NO_CACHE_HTTP_HEADER_VALUE);
+    }
+
+    /**
+     * Check to see if a given map contains a particular key. Returns <code>true</code> if and only if the map and
+     * key are not null and the map contains the key.
+     *
+     * @param map Map to check for given key
+     * @param key Key to check for in map
+     * @return Returns <code>true</code> if and only if the map and key are not null and the map contains the key. 
+     */
+    public static boolean checkMapForKey(Map map, String key) {
+        if (map == null) {
+            return false;
+        }
+
+        if (key == null) {
+            return false;
+        }
+
+        return map.containsKey(key);
     }
 }
