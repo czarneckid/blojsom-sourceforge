@@ -53,7 +53,7 @@ import java.util.Map;
  * Trackback moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackModerationPlugin.java,v 1.3 2005-01-05 02:32:33 czarneckid Exp $
+ * @version $Id: TrackbackModerationPlugin.java,v 1.4 2005-01-06 17:09:38 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class TrackbackModerationPlugin implements BlojsomPlugin {
@@ -118,7 +118,13 @@ public class TrackbackModerationPlugin implements BlojsomPlugin {
 
         if ("true".equalsIgnoreCase(blog.getBlogProperty(TRACKBACK_MODERATION_ENABLED))) {
             if ("y".equalsIgnoreCase(httpServletRequest.getParameter(TrackbackPlugin.TRACKBACK_PARAM)) && user.getBlog().getBlogTrackbacksEnabled().booleanValue()) {
-                HashMap trackbackMetaData = new HashMap();
+                Map trackbackMetaData;
+                if (context.containsKey(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA)) {
+                    trackbackMetaData = (Map) context.get(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA);
+                } else {
+                    trackbackMetaData = new HashMap();
+                }
+                
                 trackbackMetaData.put(BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
                 context.put(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA, trackbackMetaData);
 
