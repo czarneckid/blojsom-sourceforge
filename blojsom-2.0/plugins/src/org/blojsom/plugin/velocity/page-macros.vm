@@ -128,6 +128,12 @@
     #set ($xmlrpcLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_USER/$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
 
+#macro(DatelessFriendlyPermalink $entry)
+    #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
+    #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getPermalink()")
+#end
+
 ###############################################
 ## Category Macros
 ###############################################
@@ -235,7 +241,13 @@
 ## Plugin Macros
 ###############################################
 
-#macro(Obfuscate $text)$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
+#macro(DisplayWeatherForecast $weatherInfo)
+<p><span>$weatherInfo.getLocation()</span></p>
+<p>Temperature: &nbsp;<span>$weatherInfo.getFahrenheit() / $weatherInfo.getCelcius()</span></p>
+<p>Visibility: &nbsp;<spam>$weatherInfo.getVisibility()</span></p>
+<p>Qind: &nbsp;<span>$weatherInfo.getWind()</span></p>
+<p><a href="$weatherInfo.getHistoryUrl()" class="rounded" title="Detailed Weather History"><span>Detailed Weather History</span></a></p>
+#end
 
 #macro(MathCommentQuestion)$!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2#end
 
@@ -244,12 +256,13 @@
 <p class="input"><input type="text" name="mathAnswerCheck" value="" class="fixed" /></p>
 #end
 
+#macro(MultiBlogFriendlyPermalink $entry)
+    #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
+    #set ($entryLink = $entry.getMetaData().get("BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_BLOG_URL")$categoryForEntry$entry.getDateAsFormat("yyyy")/$entry.getDateAsFormat("MM")/$entry.getDateAsFormat("dd")/$entry.getPermalink()")
+#end
+
+#macro(Obfuscate $text)$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
+
 #macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
 
-#macro(DisplayWeatherForecast $weatherInfo)
-<p><span>$weatherInfo.getLocation()</span></p>
-<p>Temperature: &nbsp;<span>$weatherInfo.getFahrenheit() / $weatherInfo.getCelcius()</span></p>
-<p>Visibility: &nbsp;<spam>$weatherInfo.getVisibility()</span></p>
-<p>Qind: &nbsp;<span>$weatherInfo.getWind()</span></p>
-<p><a href="$weatherInfo.getHistoryUrl()" class="rounded" title="Detailed Weather History"><span>Detailed Weather History</span></a></p>
-#end
