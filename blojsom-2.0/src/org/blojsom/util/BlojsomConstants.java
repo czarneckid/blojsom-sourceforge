@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.55 2004-11-16 16:06:24 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.56 2004-11-22 16:58:41 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -215,12 +215,10 @@ public interface BlojsomConstants {
      */
     public static final String PAGE_PARAM_ARCHIVE = "archive";
 
-
     /**
      * Request parameter value for not toggling LastModfied and ETag fromgetting generated
      */
     public static final String OVERRIDE_LASTMODIFIED_PARAM = "lastmodified";
-
 
     /**
      * Request parameter for the "category"
@@ -372,6 +370,7 @@ public interface BlojsomConstants {
     public static final String BLOG_BASE_URL_IP = "blog-base-url";
     public static final String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
     public static final String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
+    public static final String[] DEFAULT_PROPERTIES_EXTENSIONS = {".properties"};
     public static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     public static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
     public static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
