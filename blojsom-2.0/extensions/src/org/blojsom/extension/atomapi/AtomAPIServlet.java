@@ -74,7 +74,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.52 2004-11-10 21:41:20 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.53 2004-11-22 02:51:35 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -151,6 +151,20 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             userProperties.load(is);
             is.close();
             Blog userBlog = null;
+
+            // If a global blog-home directory has been defined, use it for each user
+            if (!BlojsomUtils.checkNullOrBlank(_blojsomConfiguration.getGlobalBlogHome()) &&
+                    !userProperties.containsKey(BLOG_HOME_IP)) {
+                String usersBlogHome = _blojsomConfiguration.getGlobalBlogHome() + userID + "/";
+                File blogHomeDirectory = new File(usersBlogHome);
+                if (!blogHomeDirectory.exists()) {
+                    _logger.error("Unable to use blog-home directory for user: " + blogHomeDirectory.toString());
+                    throw new BlojsomConfigurationException("Unable to use blog-home directory for user: " + blogHomeDirectory.toString());
+                }
+
+                userProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
+                _logger.debug("Setting user blog-home directory: " + usersBlogHome);
+            }
 
             userBlog = new Blog(userProperties);
             blogUser.setBlog(userBlog);

@@ -54,10 +54,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -69,7 +66,7 @@ import java.util.Properties;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.15 2004-11-07 19:17:55 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.16 2004-11-22 02:51:45 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -141,6 +138,20 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
             } catch (IOException e) {
                 _logger.error(e);
                 throw new BlojsomConfigurationException(e);
+            }
+
+            // If a global blog-home directory has been defined, use it for each user
+            if (!BlojsomUtils.checkNullOrBlank(_blojsomConfiguration.getGlobalBlogHome()) &&
+                    !blogProperties.containsKey(BLOG_HOME_IP)) {
+                String usersBlogHome = _blojsomConfiguration.getGlobalBlogHome() + userID + "/";
+                File blogHomeDirectory = new File(usersBlogHome);
+                if (!blogHomeDirectory.exists()) {
+                    _logger.error("Unable to use blog-home directory for user: " + blogHomeDirectory.toString());
+                    throw new BlojsomConfigurationException("Unable to use blog-home directory for user: " + blogHomeDirectory.toString());
+                }
+
+                blogProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
+                _logger.debug("Setting user blog-home directory: " + usersBlogHome);
             }
 
             Blog blog = null;
