@@ -47,6 +47,7 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -60,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.17 2003-03-26 05:08:58 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.18 2003-03-27 03:23:03 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -89,6 +90,32 @@ public class CommentPlugin implements BlojsomPlugin {
      */
     private static final String COMMENT_TEXT_PARAM = "commentText";
 
+    /**
+     * Request parameter to "remember" the poster
+     */
+    private static final String REMEMBER_ME_PARAM = "remember";
+
+    /**
+     * Comment "Remember Me" Cookie for the Authors Name
+     */
+    private static final String COOKIE_AUTHOR = "blojsom.cookie.author";
+
+    /**
+     * Comment "Remember Me" Cookie for the Authors Email
+     */
+    private static final String COOKIE_EMAIL = "blojsom.cookie.email";
+
+    /**
+     * Comment "Remember Me" Cookie for the Authors URL
+     */
+    private static final String COOKIE_URL = "blojsom.cookie.url";
+
+    /**
+     *
+     */
+    private static final int COOKIE_EXPIRATION_AGE = 604800;
+
+
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
     private Boolean _blogCommentsEnabled;
     private Boolean _blogEmailEnabled;
@@ -113,6 +140,43 @@ public class CommentPlugin implements BlojsomPlugin {
         _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
     }
 
+    /**
+     * Return a cookie given a particular key
+     *
+     * @param httpServletRequest Request
+     * @param cookieKey Cookie key
+     * @return <code>Cookie</code> of the requested key or <code>null</code> if no cookie
+     * under that name is found
+     */
+    private Cookie getCommentCookie(HttpServletRequest httpServletRequest, String cookieKey) {
+        Cookie[] cookies = httpServletRequest.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+
+        for (int i = 0; i < cookies.length; i++) {
+            Cookie cookie = cookies[i];
+            if (cookie.getName().equals(cookieKey)) {
+                return cookie;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Add a cookie with a key and value to the response
+     *
+     * @param httpServletResponse Response
+     * @param cookieKey Cookie key
+     * @param cookieValue Cookie value
+     */
+    private void addCommentCookie(HttpServletResponse httpServletResponse, String cookieKey,
+                                  String cookieValue) {
+        Cookie cookie = new Cookie(cookieKey, cookieValue);
+        cookie.setMaxAge(COOKIE_EXPIRATION_AGE);
+        httpServletResponse.addCookie(cookie);
+    }
 
     /**
      * Process the blog entries
@@ -134,6 +198,36 @@ public class CommentPlugin implements BlojsomPlugin {
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
+            String remember = httpServletRequest.getParameter(REMEMBER_ME_PARAM);
+
+            // Check to see if the person has requested they be "remembered" and if so
+            // extract their information from the appropriate cookies
+            Cookie authorCookie = getCommentCookie(httpServletRequest, COOKIE_AUTHOR);
+            if ((authorCookie != null) && ((author == null) || "".equals(author))) {
+                author = authorCookie.getValue();
+                _logger.debug("Pulling author from cookie: " + author);
+                if ("".equals(author)) {
+                    author = null;
+                }
+
+                Cookie authorEmailCookie = getCommentCookie(httpServletRequest, COOKIE_EMAIL);
+                if ((authorEmailCookie != null) && ((authorEmail == null) || "".equals(authorEmail))) {
+                    authorEmail = authorEmailCookie.getValue();
+                    _logger.debug("Pulling author email from cookie: " + authorEmail);
+                    if (authorEmail == null) {
+                        authorEmail = "";
+                    }
+                }
+
+                Cookie authorUrlCookie = getCommentCookie(httpServletRequest, COOKIE_URL);
+                if ((authorUrlCookie != null) && ((authorURL == null) || "".equals(authorURL))) {
+                    authorURL = authorUrlCookie.getValue();
+                    _logger.debug("Pulling author URL from cookie: " + authorURL);
+                    if (authorURL == null) {
+                        authorURL = "";
+                    }
+                }
+            }
 
             String title = entries[0].getTitle();
 
@@ -155,6 +249,13 @@ public class CommentPlugin implements BlojsomPlugin {
 
                 if (_blogEmailEnabled.booleanValue()) {
                     sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
+                }
+
+                // If we're asked to remember the person, then add the appropriate cookies
+                if ((remember != null) && (!"".equals(remember))) {
+                    addCommentCookie(httpServletResponse, COOKIE_AUTHOR, author);
+                    addCommentCookie(httpServletResponse, COOKIE_EMAIL, authorEmail);
+                    addCommentCookie(httpServletResponse, COOKIE_URL, authorURL);
                 }
             }
         }
@@ -225,20 +326,21 @@ public class CommentPlugin implements BlojsomPlugin {
 
             StringBuffer commentDirectory = new StringBuffer();
             String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, _blogFileExtensions);
+            permalinkFilename = BlojsomUtils.urlDecode(permalinkFilename);
             if (permalinkFilename == null) {
                 _logger.debug("Invalid permalink comment for: " + permalink);
                 return null;
             }
             commentDirectory.append(_blogHome);
             commentDirectory.append(BlojsomUtils.removeInitialSlash(category));
-            File blogEntry = new File(commentDirectory.toString() + File.separator + permalink);
+            File blogEntry = new File(commentDirectory.toString() + File.separator + permalinkFilename);
             if (!blogEntry.exists()) {
                 _logger.error("Trying to create comment for invalid blog entry: " + permalink);
                 return null;
             }
             commentDirectory.append(_blogCommentsDirectory);
             commentDirectory.append(File.separator);
-            commentDirectory.append(permalink);
+            commentDirectory.append(permalinkFilename);
             commentDirectory.append(File.separator);
             String commentFilename = commentDirectory.toString() + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
             File commentDir = new File(commentDirectory.toString());
