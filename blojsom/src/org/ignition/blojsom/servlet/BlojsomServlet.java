@@ -285,6 +285,8 @@ public class BlojsomServlet extends HttpServlet {
      * @throws IOException If there is an error in IO
      */
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        String blogSiteURL = BlojsomUtils.getBlogSiteURL(_blogURL, httpServletRequest.getServletPath());
+
         // Determine user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
 
@@ -354,6 +356,8 @@ public class BlojsomServlet extends HttpServlet {
                 entryArray = null;
             }
         }
+
+        context.put(BlojsomConstants.BLOJSOM_SITE_URL, blogSiteURL);
         context.put(BlojsomConstants.BLOJSOM_ENTRIES, entryArray);
         context.put(BlojsomConstants.BLOJSOM_CATEGORIES, BlojsomUtils.getBlogCategories(_blogURL, _blogEntryMap));
 
