@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>associated categories plugin</title>
+        <title>Associated Categories plugin</title>
     </header>
 
     <body>
@@ -19,7 +19,7 @@
         <section>
             <title>installation and setup</title>
             <p>
-                In your
+                In your global
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
@@ -32,6 +32,8 @@
                 plugin does not necessarily need to be after any specific plugin, but the meta-data
                 plugin can be used to populated a blog entry's meta-data from meta-data in the blog
                 entry after which this plugin can take advantage of categories in the meta-data.
+                "associated-categories" must be added in the individual user's <code>plugin.properties</code>
+                file.
             </p>
             <source>
                 html.blojsom-plugin-chain=meta,...,associated-categories

@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>calendar plugins</title>
+        <title>Calendar plugins</title>
     </header>
 
     <body>
@@ -19,7 +19,7 @@
         <section>
             <title>installation and setup</title>
             <p>
-                In your
+                In your global
                 <em>plugin.properties</em> file, add the following two lines:
             </p>
             <source>
@@ -31,7 +31,8 @@
                 You may then add "calendar-filter"  to the
                 <strong>beginning</strong> of a flavor-based plugin
                 chain, and "calendar-gui" to the
-                <strong>end</strong> of the chain. For example:
+                <strong>end</strong> of the chain. These plugin chains can be found in the individual user's
+                <code>plugin.properties</code> file. For example:
             </p>
             <source>
                 html.blojsom-plugin-chain=calendar-fitler,...,calendar-gui

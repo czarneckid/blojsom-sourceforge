@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>weblogs ping plugin</title>
+        <title>Weblogs.com Ping plugin</title>
     </header>
 
     <body>
@@ -16,26 +16,24 @@
                 have been added. If a new entry has been detected, the plugin will set its check to that entry's
                 date and time.
             </p>
-
         </section>
         <section>
             <title>installation and setup</title>
             <p>
-                In your
+                In your global
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
                 weblogs-ping=org.blojsom.plugin.weblogsping.WeblogsPingPlugin
             </source>
             <p>
-
-                You may then add "weblogs-ping" to one of the flavor-based plugin chains. For example:
+                You may then add "weblogs-ping" to one of the flavor-based plugin chains.
+                These plugin chains can be found in the individual user's
+                <code>plugin.properties</code> file. For example:
             </p>
             <source>
                 html.blojsom-plugin-chain=weblogs-ping
             </source>
-
-
         </section>
     </body>
 </document>

@@ -2,7 +2,7 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
 <document>
     <header>
-        <title>entries limiter plugin</title>
+        <title>Entries Limiter plugin</title>
     </header>
 
     <body>
@@ -20,7 +20,7 @@
         <section>
             <title>installation and setup</title>
             <p>
-                In your
+                In your global
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
@@ -28,7 +28,9 @@
             </source>
 
             <p>
-                You may then add "limiter" to one of the flavor-based plugin chains. For example:
+                You may then add "limiter" to one of the flavor-based plugin chains.
+                These plugin chains can be found in the individual user's
+                <code>plugin.properties</code> file. For example:
             </p>
             <source>
                 html.blojsom-plugin-chain=limiter
