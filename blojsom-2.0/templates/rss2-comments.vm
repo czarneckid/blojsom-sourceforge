@@ -18,7 +18,7 @@
         <item>
            <title>$entry.getEscapedTitle()</title>
            <link>$entry.getEscapedLink()</link>
-           <description>$entryComment.getComment()</description>
+           <description>$entryComment.getEscapedComment()</description>
            <pubDate>$entryComment.getRFC822Date()</pubDate>
            <author>$entryComment.getAuthorEmail()</author>
         </item>
