@@ -80,6 +80,12 @@
 #end
 #end
 
+#macro(PingbacksAllowed $entry)
+#if ($BLOJSOM_BLOG.getBlogPingbacksEnabled.booleanValue() && $entry.supportsPingbacks())
+    #set($pingbacksAllowed = true)
+#end
+#end
+
 #macro(DaysSincePosted $entry)$!entry.getMetaData().get("blojsom-plugin-days-since-posted")#end
 
 #macro(FormatDate $entry $format)$entry.getDateAsFormat($format)#end
@@ -111,6 +117,15 @@
              trackback:ping="$entryLink?tb=y" />
      </rdf:RDF>
 -->
+#end
+
+#macro(PingbackLink $entry $xmlrpcurl)
+    #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
+    #if ("" == $xmlrpcurl)
+        #set($xmlrpcurl = "xmlrpc")
+    #end
+    #set ($pingbackLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_USER/$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
 
 ###############################################
