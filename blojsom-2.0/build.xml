@@ -17,6 +17,7 @@
     <property name="extensions.src.dir" value="${basedir}/extensions/src"/>
     <property name="test.src.dir" value="${basedir}/test/src"/>
     <property name="war.dir" value="${basedir}/war"/>
+    <property name="resources.dir" value="${war.dir}/resources"/>
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
     <property name="build.dir" value="${webinf.dir}/classes"/>
@@ -26,6 +27,9 @@
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
     <property name="themes.dir" value="${basedir}/themes"/>
+    <property name="default.theme.dir" value="${themes.dir}/asual/"/>
+    <property name="default.theme.templates.dir" value="${default.theme.dir}/templates/"/>
+    <property name="default.theme.resources.dir" value="${default.theme.dir}/resources/"/>
     <property name="core.jar" value="${webinf.lib.dir}/${name}-core-${version}.jar"/>
     <property name="resources.jar" value="${webinf.lib.dir}/${name}-resources-${version}.jar"/>
     <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins-${version}.jar"/>
@@ -33,6 +37,7 @@
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
+    <property name="default.user" value="default"/>
     <property name="bootstrap.user" value="bootstrap"/>
 
     <!-- Add-on properties -->
@@ -92,19 +97,33 @@
             </fileset>
         </copy>
 
-        <mkdir dir="${war.dir}/WEB-INF/default/templates/"/>
-        <copy todir="${war.dir}/WEB-INF/default/templates/">
+        <!-- Copy general templates for default user -->
+        <mkdir dir="${war.dir}/WEB-INF/${default.user}/templates/"/>
+        <copy todir="${war.dir}/WEB-INF/${default.user}/templates/">
             <fileset dir="${templates.dir}">
                 <include name="**/*.vm"/>
+                <exclude name="**/html*.vm"/>
             </fileset>
         </copy>
 
-        <mkdir dir="${war.dir}/WEB-INF/bootstrap/templates/"/>
-        <copy todir="${war.dir}/WEB-INF/bootstrap/templates/">
+        <!-- Copy general templates for bootstrap user -->
+        <mkdir dir="${war.dir}/WEB-INF/${bootstrap.user}/templates/"/>
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/templates/">
             <fileset dir="${templates.dir}">
                 <include name="**/*.vm"/>
+                <exclude name="**/html*.vm"/>
             </fileset>
         </copy>
+
+        <!-- Copy theme templates and resources for default user -->
+        <mkdir dir="${resources.dir}/${default.user}"/>
+        <copydir src="${default.theme.templates.dir}" dest="${war.dir}/WEB-INF/${default.user}/templates"/>
+        <copydir src="${default.theme.resources.dir}" dest="${resources.dir}/${default.user}"/>
+
+        <!-- Copy theme templates and resources for bootstrap user -->
+        <mkdir dir="${war.dir}/WEB-INF/${bootstrap.user}/resources/"/>
+        <copydir src="${default.theme.templates.dir}" dest="${war.dir}/WEB-INF/${bootstrap.user}/templates"/>
+        <copydir src="${default.theme.resources.dir}" dest="${war.dir}/WEB-INF/${bootstrap.user}/resources"/>
     </target>
 
     <!-- =================================================================== -->
@@ -120,6 +139,8 @@
             <fileset dir="${webinf.lib.dir}" includes="${name}-*.jar"/>
         </delete>
         <delete file="${war.file}"/>
+        <delete dir="${resources.dir}/${default.user}" includeemptydirs="true"/>
+        <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>
     </target>
 
     <!-- =================================================================== -->
