@@ -1,0 +1,50 @@
+blojsom 1.0 README
+------------------
+
+Tested under:
+-------------
+Jakarta Tomcat 4.1.18
+Java 2 SDK 1.4.1
+Mozilla 1.2.1
+Mac OS X
+
+Developed with:
+---------------
+IntelliJ IDEA (http://www.intellij.net)
+
+Libraries
+---------
+The following libraries are required to compile and run blojsom. If you are using different versions of these APIs than those given here, you are on your own.
+
+Servlet 2.2 API 
+---------------
+- Download from http://java.sun.com
+- Place servlet-2.2b.jar file in /lib
+
+Jakarta Commons Collections 2.1 API
+-----------------------------------
+- Download from http://jakarta.apache.org
+- Place commons-collections-2.1.jar in war/WEB-INF/lib
+
+Jakarta Commons Logging 1.0.2 API
+---------------------------------
+- Download from http://jakarta.apache.org
+- Place commons-logging-1.0.2.jar in war/WEB-INF/lib
+
+Jakarta Log4J 1.2.7 API
+-----------------------
+- Download from http://jakarta.apache.org
+- Place log4j-1.2.7.jar in war/WEB-INF/lib
+
+Velocity 1.3 API
+----------------
+- Download from http://jakarta.apache.org
+- Place velocity-1.3.jar in war/WEB-INF/lib
+
+Xerces 1.4.4 API
+----------------
+- Download from http://xml.apache.org
+- Place xerces-1.4.4.jar in war/WEB-INF/lib
+License
+-------
+See LICENSE for information
