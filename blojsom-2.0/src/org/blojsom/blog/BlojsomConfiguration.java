@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.27 2004-08-31 20:17:58 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.28 2004-09-06 17:58:05 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -259,19 +259,19 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
                         _blogUsers.put(user, blogUser);
                         _logger.debug("Added blojsom user: " + blogUser.getId());
+
+                        // Ensure the resource directory for the user physically exists
+                        File resourceDirectory = new File(_qualifiedResourceDirectory + File.separator + user);
+                        if (!resourceDirectory.exists()) {
+                            _logger.debug("Creating resource directory for user " + user);
+                            resourceDirectory.mkdirs();
+                        }
                     } catch (BlojsomConfigurationException e) {
                         _logger.error(e);
                         _logger.error("Marking user as invalid: " + blogUser.getId());
                     }
                 } else {
                     _logger.error("Unable to load blog configuration for blog: " + blogUser.getId());
-                }
-
-                // Ensure the resource directory for the user physically exists
-                File resourceDirectory = new File(_qualifiedResourceDirectory + File.separator + user);
-                if (!resourceDirectory.exists()) {
-                    _logger.debug("Creating resource directory for user " + user);
-                    resourceDirectory.mkdirs();
                 }
             }
 
