@@ -22,11 +22,11 @@
             </action>
 
             <action dev="intabulas" type="update" context="Extension">
-                Updated the Atom API extension to support Sandler 0.4 (Full Atom 0.3 support)
+                Updated the Atom API extension to use Sandler 0.4 library (Full Atom 0.3 support).
             </action>
 
             <action dev="intabulas" type="update" context="Library">
-                Updated blojsom to use the Sandler 0.4 release
+                Updated blojsom to use the Sandler 0.4 release.
             </action>
 
         </release>
