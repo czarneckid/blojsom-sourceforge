@@ -55,8 +55,8 @@ import java.util.Date;
  * AtomUtils
  *
  * @author Mark Lussier
+ * @version $Id: AtomUtils.java,v 1.13 2004-02-23 18:25:10 intabulas Exp $
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.12 2004-02-09 21:19:46 intabulas Exp $
  */
 public class AtomUtils implements AtomConstants {
 
@@ -65,7 +65,7 @@ public class AtomUtils implements AtomConstants {
      *
      * @param user BlogUser instance for the particular blog
      * @return String that is a SHA digest (in hex) of the NONCE value
-     * todo Optimize the format we gen the nonce from
+     *         todo Optimize the format we gen the nonce from
      */
     public static String generateNextNonce(BlogUser user) {
         String nonce = BlojsomUtils.getISO8601Date(new Date()) + ":" + user.getId() + ":" +
@@ -77,8 +77,8 @@ public class AtomUtils implements AtomConstants {
     /**
      * Generate an Atom Entry object from a Blojsom BlogEntry object
      *
-     * @param blog Blog instance
-     * @param user BlogUser instance
+     * @param blog      Blog instance
+     * @param user      BlogUser instance
      * @param blogentry BlogEntry to convert
      * @return Entry object populated from the BlogEntry
      */
@@ -106,6 +106,7 @@ public class AtomUtils implements AtomConstants {
 
         Content content = new ContentImpl();
         content.setMimeType(CONTENTTYPE_HTML);
+        content.setMode(org.intabulas.sandler.AtomConstants.Mode.ESCAPED);
         content.setBody(blogentry.getEscapedDescription());
         result.addContent(content);
 
@@ -115,9 +116,9 @@ public class AtomUtils implements AtomConstants {
     /**
      * Generates a slim Entry object (tile and id only) from a BlogEntry object
      *
-     * @param blog Blog instance
-     * @param user BlogUser instance
-     * @param blogentry BlogEntry to convert
+     * @param blog           Blog instance
+     * @param user           BlogUser instance
+     * @param blogentry      BlogEntry to convert
      * @param servletMapping Servlet mapping for the Atom API
      * @return Entry object populated from the BlogEntry
      */
@@ -129,4 +130,22 @@ public class AtomUtils implements AtomConstants {
 
         return result;
     }
+
+
+    /**
+     * Extract the AtomAPI Method off the end of the SOAPActionHeader
+     *
+     * @param soapaction the contents of the SOAPAction header
+     * @return the method
+     */
+    public static String getSOAPActionMethod(String soapaction) {
+        String result = null;
+        int idx = soapaction.lastIndexOf('/');
+        if (idx != -1) {
+            result = soapaction.substring(idx);
+        }
+
+        return result;
+    }
 }
+
