@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.26 2003-03-11 01:35:51 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.27 2003-03-13 02:14:11 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -438,6 +438,34 @@ public class BlojsomUtils implements BlojsomConstants {
                 return -1;
             } else if (f1.lastModified() < f2.lastModified()) {
                 return 1;
+            } else {
+                return f1.getName().compareTo(f2.getName());
+            }
+        }
+    };
+
+    /**
+     * Return a comparator that uses a file's last modified time to order the files in ascending order.
+     * If the files have the same last modified time, the file's names are compared to order the
+     * files.
+     */
+    public static Comparator FILE_TIME_ASCENDING_COMPARATOR = new Comparator() {
+        public int compare(Object o1, Object o2) {
+            File f1;
+            File f2;
+
+            if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
+                f1 = ((BlogEntry) o1).getSource();
+                f2 = ((BlogEntry) o2).getSource();
+            } else {
+                f1 = (File) o1;
+                f2 = (File) o2;
+            }
+
+            if (f1.lastModified() > f2.lastModified()) {
+                return 1;
+            } else if (f1.lastModified() < f2.lastModified()) {
+                return -1;
             } else {
                 return f1.getName().compareTo(f2.getName());
             }
