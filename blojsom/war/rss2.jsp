@@ -25,8 +25,8 @@
     		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
-            <guid isPermaLink="true">blogEntry.getLink()</guid>
-			<pubDate>blogEntry.getDateAsRFC822()</pubDate>
+            <guid isPermaLink="true"><%= blogEntry.getEscapedLink() %></guid>
+			<pubDate><%= blogEntry.getRFC822Date() %></pubDate>
     	</item>
     <%
             }
