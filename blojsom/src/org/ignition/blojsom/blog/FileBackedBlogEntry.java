@@ -46,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.6 2003-05-31 02:09:19 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.7 2003-05-31 02:17:19 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -488,14 +488,17 @@ public class FileBackedBlogEntry extends BlogEntry {
     }
 
     /**
+     * Delete the blog entry.
      *
      * @since blojsom 1.9
-     * @param blog
-     * @throws BlojsomException
+     * @param blog Blog
+     * @throws BlojsomException If there is an error deleting the entry
      */
     public void deleteEntry(Blog blog) throws BlojsomException {
         _logger.debug("Deleting post " + _source.getAbsolutePath());
-        _source.delete();
+        if (!_source.delete()) {
+            throw new BlojsomException("Unable to delete entry: " + getId());
+        }
 
         // Delete comments
         File _comments = new File(blog.getBlogHome() + _category + blog.getBlogCommentsDirectory()
