@@ -43,7 +43,8 @@ Available categories:
     <!-- Trackback Auto Discovery -->
     #set( $blogDescription = $entry.getEscapedDescription() )
     #if ($blogDescription.length() > 255 )
-        #set( $blogDescription = $blogDescription.substring(0,252)  + "..." )
+        #set( $ellipses = "..." )
+        #set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
     #end
 <!--
     <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
