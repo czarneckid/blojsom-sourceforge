@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.29 2004-11-24 15:25:46 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.30 2004-12-02 02:45:14 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -116,28 +116,28 @@ public class Blog implements BlojsomConstants {
 
         _blogLanguage = blogConfiguration.getProperty(BLOG_LANGUAGE_IP);
         if (_blogLanguage == null) {
-            _logger.warn("No value supplied for blog-language. Defaulting to: " + BLOG_LANGUAGE_DEFAULT);
+            _logger.info("No value supplied for blog-language. Defaulting to: " + BLOG_LANGUAGE_DEFAULT);
             _blogLanguage = BLOG_LANGUAGE_DEFAULT;
         }
         _blogProperties.put(BLOG_LANGUAGE_IP, _blogLanguage);
 
         _blogCountry = blogConfiguration.getProperty(BLOG_COUNTRY_IP);
         if (_blogCountry == null) {
-            _logger.warn("No value supplied for blog-country. Defaulting to: " + BLOG_COUNTRY_DEFAULT);
+            _logger.info("No value supplied for blog-country. Defaulting to: " + BLOG_COUNTRY_DEFAULT);
             _blogCountry = BLOG_COUNTRY_DEFAULT;
         }
         _blogProperties.put(BLOG_COUNTRY_IP, _blogCountry);
 
         _blogDescription = blogConfiguration.getProperty(BLOG_DESCRIPTION_IP);
         if (_blogDescription == null) {
-            _logger.warn("No value supplied for blog-description");
+            _logger.info("No value supplied for blog-description");
             _blogDescription = "";
         }
         _blogProperties.put(BLOG_DESCRIPTION_IP, _blogDescription);
 
         _blogName = blogConfiguration.getProperty(BLOG_NAME_IP);
         if (_blogName == null) {
-            _logger.warn("No value supplied for blog-name");
+            _logger.info("No value supplied for blog-name");
             _blogName = "";
         }
         _blogProperties.put(BLOG_NAME_IP, _blogName);
@@ -147,7 +147,7 @@ public class Blog implements BlojsomConstants {
 
         _blogURL = blogConfiguration.getProperty(BLOG_URL_IP);
         if (BlojsomUtils.checkNullOrBlank(_blogURL)) {
-            _logger.warn("No value supplied for blog-url");
+            _logger.info("No value supplied for blog-url");
         } else {
             if (!_blogURL.endsWith("/")) {
                 _blogURL += "/";
@@ -157,7 +157,7 @@ public class Blog implements BlojsomConstants {
 
         _blogAdminURL = blogConfiguration.getProperty(BLOG_ADMIN_URL_IP);
         if (BlojsomUtils.checkNullOrBlank(_blogAdminURL)) {
-            _logger.warn("No value supplied for blog-admin-url");
+            _logger.info("No value supplied for blog-admin-url");
             _blogAdminURL = _blogURL;
         } else {
             if (!_blogAdminURL.endsWith("/")) {
@@ -168,7 +168,7 @@ public class Blog implements BlojsomConstants {
 
         _blogBaseURL = blogConfiguration.getProperty(BLOG_BASE_URL_IP);
         if (BlojsomUtils.checkNullOrBlank(_blogBaseURL)) {
-            _logger.warn("No value supplied for blog-base-url");
+            _logger.info("No value supplied for blog-base-url");
         } else {
             if (_blogBaseURL.endsWith("/")) {
                 _blogBaseURL = _blogBaseURL.substring(0, _blogBaseURL.length() - 1);
