@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
-<!-- name="generator" content="blojsom v1.3" -->
-<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
-
 <%@ page import="org.ignition.blojsom.blog.Blog,
                  org.ignition.blojsom.util.BlojsomConstants,
                  java.util.TreeMap,
@@ -12,12 +9,15 @@
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
 %>
-<rss version="0.91">
+<rss version="2.0" xmlns="http://backend.userland.com/rss2">
   <channel>
     <title><%= blogInformation.getBlogName() %></title>
     <link><%= blogInformation.getBlogURL() %></link>
     <description><%= blogInformation.getBlogDescription() %></description>
     <language><%= blogInformation.getBlogLanguage() %></language>
+    <docs>http://backend.userland.com/rss</docs>
+    <generator>Blojsom</generator>
+
     <%
         if (blogEntries != null) {
             for (int i = 0; i < blogEntries.length; i++) {
@@ -27,6 +27,8 @@
     		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
+            <guid isPermaLink="true">blogEntry.getLink()</guid>
+			<pubDate>blogEntry.getDate()</pubDate>
     	</item>
     <%
             }
