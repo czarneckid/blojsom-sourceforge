@@ -46,6 +46,18 @@ import java.io.File;
  */
 public class Blog implements BlojsomConstants {
 
+    // Blog initialization parameters from blojsom.properties
+    private final static String BLOG_HOME_IP = "blog-home";
+    private final static String BLOG_NAME_IP = "blog-name";
+    private final static String BLOG_DEPTH_IP = "blog-directory-depth";
+    private final static String BLOG_LANGUAGE_IP = "blog-language";
+    private final static String BLOG_DESCRIPTION_IP = "blog-description";
+    private final static String BLOG_URL_IP = "blog-url";
+    private final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
+    private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
+    private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
+    private static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
+
     private Log _logger = LogFactory.getLog(Blog.class);
 
     private String _blogHome;
@@ -60,27 +72,67 @@ public class Blog implements BlojsomConstants {
     private String[] _blogDefaultCategoryMappings;
 
     /**
-     * Blog constructor
+     * Create a blog with the supplied configuration properties
      *
-     * @param blogHome Directory where the blog entries will be stored
-     * @param blogName Name of the blog
-     * @param blogDescription Detailed description of the blog
-     * @param blogURL URL for the blog
-     * @param blogLanguage Language of the blog
-     * @param blogFileExtensions File extensions to look for when checking for blog entries
-     * @param blogPropertiesExtensions File extensions to look for in category directories for meta-data
-     * @param blogDepth Number of directory-levels to traverse in looking for blog entries
+     * @param blogConfiguration Blog configuration properties
+     * @throws BlojsomConfigurationException If there is an error configuring the blog
      */
-    public Blog(String blogHome, String blogName, String blogDescription, String blogURL, String blogLanguage,
-                String[] blogFileExtensions, String[] blogPropertiesExtensions, int blogDepth) {
-        _blogHome = blogHome;
-        _blogName = blogName;
-        _blogDescription = blogDescription;
-        _blogURL = blogURL;
-        _blogLanguage = blogLanguage;
-        _blogFileExtensions = blogFileExtensions;
-        _blogPropertiesExtensions = blogPropertiesExtensions;
-        _blogDepth = blogDepth;
+    public Blog(Properties blogConfiguration) throws BlojsomConfigurationException {
+        _blogHome = blogConfiguration.getProperty(BLOG_HOME_IP);
+        if (_blogHome == null) {
+            _logger.error("No value supplied for blog-home");
+            throw new BlojsomConfigurationException("No valued supplied for blog-home");
+        }
+        if (!_blogHome.endsWith("/")) {
+            _blogHome += "/";
+        }
+
+        _blogLanguage = blogConfiguration.getProperty(BLOG_LANGUAGE_IP);
+        if (_blogLanguage == null) {
+            _logger.warn("No value supplied for blog-language. Defaulting to: " + BLOG_LANGUAGE_DEFAULT);
+            _blogLanguage = BLOG_LANGUAGE_DEFAULT;
+        }
+
+        _blogDescription = blogConfiguration.getProperty(BLOG_DESCRIPTION_IP);
+        if (_blogDescription == null) {
+            _logger.warn("No value supplied for blog-description");
+            _blogDescription = "";
+        }
+
+        _blogName = blogConfiguration.getProperty(BLOG_NAME_IP);
+        if (_blogName == null) {
+            _logger.warn("No value supplied for blog-name");
+            _blogName = "";
+        }
+
+        _blogDepth = Integer.parseInt(blogConfiguration.getProperty(BLOG_DEPTH_IP, Integer.toString(INFINITE_BLOG_DEPTH)));
+
+        _blogURL = blogConfiguration.getProperty(BLOG_URL_IP);
+        if (_blogURL == null) {
+            _logger.error("No value supplied for blog-url");
+            throw new BlojsomConfigurationException("No value supplied for blog-url");
+        }
+        if (!_blogURL.endsWith("/")) {
+            _blogURL += "/";
+        }
+
+        // The following parameters will either be removed or changed
+        _blogFileExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
+        _blogPropertiesExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
+
+        _blogDisplayEntries = Integer.parseInt(blogConfiguration.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
+
+        String blogDefaultCategoryMapping = blogConfiguration.getProperty(BLOG_DEFAULT_CATEGORY_MAPPING_IP);
+        if (blogDefaultCategoryMapping == null) {
+            _blogDefaultCategoryMappings = null;
+            _logger.debug("No mapping supplied for the default category '/'");
+        } else {
+            _blogDefaultCategoryMappings = BlojsomUtils.parseCommaList(blogDefaultCategoryMapping);
+            _logger.debug(_blogDefaultCategoryMappings.length + " directories mapped to the default category '/'");
+            if (_blogDefaultCategoryMappings.length == 0) {
+                _blogDefaultCategoryMappings = null;
+            }
+        }
     }
 
     /**
