@@ -69,6 +69,10 @@
                         1. Replace the <code>atom.vm</code> or <code>atom.jsp</code> file (as appropriate) in the
                         <code>templates</code> directory for those users who have an Atom flavor enabled.
                     </p>
+                    <p>
+                        2. Add the <code>atom.css</code> file to the directory where you unpacked the
+                        <code>blojsom.war</code> file.
+                    </p>
                 </section>
             </section>
             <section>
