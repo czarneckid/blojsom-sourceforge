@@ -31,6 +31,7 @@ package org.ignition.blojsom.dispatcher;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +45,7 @@ import java.io.IOException;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.3 2003-03-01 20:19:43 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.4 2003-03-05 04:08:46 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -85,6 +86,11 @@ public class JSPDispatcher implements GenericDispatcher {
 
         if (!flavorTemplate.startsWith("/")) {
             flavorTemplate = "/" + flavorTemplate;
+        }
+
+        if (httpServletRequest.getParameter(PAGE_PARAM) != null) {
+            flavorTemplate = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
+            _logger.debug("Retrieved template for page: " + flavorTemplate);
         }
 
         // Populate the request with context attributes from the blog

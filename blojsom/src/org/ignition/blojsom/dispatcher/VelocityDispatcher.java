@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.VelocityContext;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ import java.io.*;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.5 2003-03-01 20:19:42 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.6 2003-03-05 04:08:46 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -96,11 +97,14 @@ public class VelocityDispatcher implements GenericDispatcher {
             throws IOException, ServletException {
         httpServletResponse.setContentType(flavorContentType);
 
-
         StringWriter sw = new StringWriter();
 
-        // Setup the VelocityContext
+        if (httpServletRequest.getParameter(PAGE_PARAM) != null) {
+            flavorTemplate = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
+            _logger.debug("Retrieved template for page: " + flavorTemplate);
+        }
 
+        // Setup the VelocityContext
         VelocityContext velocityContext = new VelocityContext(context);
         try {
             Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
@@ -108,7 +112,7 @@ public class VelocityDispatcher implements GenericDispatcher {
             _logger.error(e);
         }
 
-        // We  need that content length, especially for RSS Feeds
+        // We need that content length, especially for RSS Feeds
         String content = sw.toString();
         httpServletResponse.addIntHeader("Content-Length", content.length());
 

@@ -29,6 +29,8 @@
  */
 package org.ignition.blojsom.dispatcher;
 
+import org.ignition.blojsom.util.BlojsomConstants;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
@@ -40,9 +42,9 @@ import java.io.IOException;
  * GenericDispatcher
  *
  * @author David Czarnecki
- * @version $Id: GenericDispatcher.java,v 1.3 2003-03-01 20:19:43 czarneckid Exp $
+ * @version $Id: GenericDispatcher.java,v 1.4 2003-03-05 04:08:46 czarneckid Exp $
  */
-public interface GenericDispatcher {
+public interface GenericDispatcher extends BlojsomConstants {
 
     /**
      * Initialization method for blojsom dispatchers
