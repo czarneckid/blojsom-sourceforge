@@ -8,6 +8,12 @@
 
     <changes>
         <release version="2.14" date="Available from CVS">
+            <action dev="czarneckid" type="update" context="Core" fixes-bug="940449">
+                Fixed loading of various properties files, most notably, <code>blog.properties</code>, which did
+                not load properties in UTF-8. The default for the <code>BlojsomProperties</code> class in loading
+                properties is now UTF-8.
+            </action>
+            
             <action dev="czarneckid" type="update" context="Core">
                 Updated Velocity and FreeMarker dispatchers to allow for sharing of Velocity and
                 FreeMarker templates, respectively, across users.
@@ -26,7 +32,7 @@
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Edit Blog Entries plugin so that when you add a new blog entry or edit an existing blog entry,
                 you will be taken to the editing page for that menu instead of having to navigate the menus to edit
-                the particular entry. 
+                the particular entry.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
@@ -39,7 +45,7 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
-                Updated Macro Expansion plugin to check for null or blank in the title or description. 
+                Updated Macro Expansion plugin to check for null or blank in the title or description.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
