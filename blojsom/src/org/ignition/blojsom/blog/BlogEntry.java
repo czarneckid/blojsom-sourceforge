@@ -43,7 +43,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.18 2003-03-05 04:07:41 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.19 2003-03-06 04:07:34 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -232,6 +232,14 @@ public class BlogEntry implements BlojsomConstants {
     }
 
     /**
+     *
+     * @return
+     */
+    public String getPermalink() {
+        return _source.getName();
+    }
+
+    /**
      * Returns the contents of the file in a byte array
      *
      * @param file Input file
@@ -362,14 +370,6 @@ public class BlogEntry implements BlojsomConstants {
     }
 
     /**
-     * XXX: This method will go away!
-     * @return
-     */
-    public BlogComment getFirstComment() {
-        return (BlogComment) _comments.get(0);
-    }
-
-    /**
      * Get the number of comments for this entry
      *
      * @return 0 if comments is <code>null</code>, or the number of comments otherwise, which could be 0
@@ -393,15 +393,14 @@ public class BlogEntry implements BlojsomConstants {
 
     /**
      * Convenience method to load the comments for this blog entry. A blog entry can have
-     * comments attached if the blog entry is writable, {@see #supportsComments}
      */
     public void loadComments() {
         if (supportsComments()) {
             String commentsDirectoryPath;
             if (_source.getParent() == null) {
-                commentsDirectoryPath = File.separator + _commentsDirectory;
+                commentsDirectoryPath = File.separator + _commentsDirectory + File.separator + _source.getName();
             } else {
-                commentsDirectoryPath = _source.getParent() + File.separator + _commentsDirectory;
+                commentsDirectoryPath = _source.getParent() + File.separator + _commentsDirectory + File.separator + _source.getName();
             }
             File commentsDirectory = new File(commentsDirectoryPath);
             File[] comments = commentsDirectory.listFiles(BlojsomUtils.getExtensionFilter(COMMENT_EXTENSION));
@@ -428,7 +427,7 @@ public class BlogEntry implements BlojsomConstants {
      * everything else after is the comment
      *
      * @param commentFile Comment file
-     * @return BlogComment
+     * @return BlogComment Blog comment loaded from disk
      */
     private BlogComment loadComment(File commentFile) {
         int commentSwitch = 0;
