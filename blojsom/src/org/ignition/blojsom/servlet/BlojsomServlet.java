@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.38 2003-03-07 01:46:24 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.39 2003-03-07 22:13:10 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -276,7 +276,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(CATEGORY_PARAM);
-            _blog.addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
+            if (author != null && commentText != null) {
+                _blog.addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
+            }
         }
 
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
