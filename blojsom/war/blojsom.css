@@ -3,8 +3,8 @@ body
 	color: #333333;
 	background-color: white;
 	margin-top: 24pt;
-	margin-left: 72pt;
-	margin-right: 72pt;
+	margin-left: 50pt;
+	margin-right: 50pt;
 	margin-bottom: 36pt;
 	font-family: Georgia, "Times New Roman", Times, serif;
 }
@@ -142,23 +142,36 @@ a:hover
 	margin-bottom: 0px;
 }
 
+
 #searchbox{
 	float:right;
-	width : 200px;
+	width : 210px;
 	background-color: #FFFFFF;
-	border-left:1px solid #000000;
-	border-right:1px solid #000000;
-	border-bottom:1px solid #000000;
-	border-top:1px solid #000000;
-	padding:5px;
+	border-left:0px solid #000000;
+	border-right:0px solid #000000;
+	border-bottom:0px solid #000000;
+	border-top:0px solid #000000;
+	padding:0px;
 	margin-top:5px;
 	margin-bottom:0px;
+	align: right;
 }
 
 .searchform
 {
     margin-top: 2px;
 	margin-bottom: 2px;
+}
+
+
+.calendarcaption {
+   font-family: Helvetica, Arial, sans-serif;
+   text-align:center;
+   font-weight: bold;
+   font-size: larger;
+   margin-bottom: 0pt;
+   margin-top: 1pt;
+   padding-bottom: 0pt;
 }
 
 .calendarbox {
@@ -173,6 +186,7 @@ a:hover
 }
 
 .calendarcolumn {
+    font-family: Helvetica, Arial, sans-serif;
 	font-size:  9px;
 	text-align: center;
 }
@@ -183,5 +197,5 @@ a:hover
 }
 
 .tablemaxpxwidth {
-   width: 100px;
+   padding:7px;
 }

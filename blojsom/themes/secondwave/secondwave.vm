@@ -15,7 +15,7 @@
 <div id="searchbox">
 <form class="searchform" method="post" action=".">
 <p class="searchtext">
-Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
+Search:&nbsp;&nbsp;<input size="13" type="text" name="query" value=""/>&nbsp;
 <input type="submit" name="submit" value="go"/>
 </p>
 </form>
@@ -51,16 +51,16 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 </td>
 <td  class="tablemaxpxwidth">&nbsp;</td>
 
-<td valign="top" align="center" width="200">
+<td valign="top" align="center" >
 
 <div class="calendarbox">
-<table cellspacing="0" cellpadding="0" border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+<table cellspacing="0" cellpadding="0" border="0" width="150"><tr><td colspan="7" class="calendarcaption"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>
 #foreach( $downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())
         #if($downame)
-		<td width="19" align="center" style="font-size:9px">$downame&nbsp;</td>
+		<td width="19" class="calendarcolumn">$downame&nbsp;</td>
 		#end
 #end
 </tr>
