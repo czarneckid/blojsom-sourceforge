@@ -19,6 +19,11 @@
                         blojsom-extensions-2.11.jar, blojsom-plugins-2.11.jar files, and blojsom-plugins-templates-2.11.jar.
                     </p>
                 </section>
+                <section>
+                    <title>Template changes</title>
+                    <p>
+                        1. Copy the <code>blojsom-admin.css</code> file to the directory where you installed blojsom.
+                    </p>
             </section>
             <section>
                 <title>Upgrading from blojsom 2.09 to blojsom 2.10</title>
