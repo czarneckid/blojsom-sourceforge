@@ -32,7 +32,7 @@ Available categories:
 #end
 
 <p />
-<img src="../powered-by-blojsom.gif" border="0" />
+<img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" border="0" />
 
 </body>
 

@@ -73,7 +73,7 @@
 %>
 
     <p />
-    <img src="../powered-by-blojsom.gif" border="0" />
+    <img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" />
 
     </body>
 </html>
