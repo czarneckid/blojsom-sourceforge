@@ -46,16 +46,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * EmoticonsPlugin
+ * ExcerptPlugin
  *
  * @author Mark Lussier
- * @version $Id: ExcerptPlugin.java,v 1.1 2004-03-08 21:17:33 intabulas Exp $
+ * @since blojsom 2.13
+ * @version $Id: ExcerptPlugin.java,v 1.2 2004-03-09 01:43:28 czarneckid Exp $
  */
 public class ExcerptPlugin implements BlojsomPlugin {
 
     private static final String EXCERPT_EXPRESSION = "(^|\\s).*<div class=\"excerpt\">(.*)</div>.*";
     private static final String SHOWME_START = "$2 &nbsp;<a href=\"";
-    private static final String SHOWME_FINIASH = "&amp;smm=y\">Read More</a>";
+    private static final String SHOWME_FINISH = "&amp;smm=y\">Read More</a>";
 
     /**
      * Default Constructor
@@ -72,7 +73,6 @@ public class ExcerptPlugin implements BlojsomPlugin {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-
     }
 
     /**
@@ -93,9 +93,10 @@ public class ExcerptPlugin implements BlojsomPlugin {
             BlogEntry entry = entries[i];
             String updatedDescription = entry.getDescription();
             if (updatedDescription.matches(EXCERPT_EXPRESSION)) {
-                entry.setDescription(updatedDescription.replaceAll(EXCERPT_EXPRESSION, SHOWME_START) + entry.getLink() + SHOWME_FINIASH);
+                entry.setDescription(updatedDescription.replaceAll(EXCERPT_EXPRESSION, SHOWME_START) + entry.getLink() + SHOWME_FINISH);
             }
         }
+
         return entries;
     }
 
@@ -106,7 +107,6 @@ public class ExcerptPlugin implements BlojsomPlugin {
      *          If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
-
     }
 
     /**
@@ -116,6 +116,5 @@ public class ExcerptPlugin implements BlojsomPlugin {
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-
     }
 }
