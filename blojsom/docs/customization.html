@@ -74,13 +74,13 @@ However, you as a user should be aware of the name and type of objects that are 
 	    <td>"BLOJSOM_REQUESTED_CATEGORY"</td> <td>org.ignition.blojsom.blog.BlogCategory</td>
     </tr>
 	<tr>
-		<td>"BLOJSOM_SITE_URL"</td> <td>URL of the blojsom blog</td>
+		<td>"BLOJSOM_SITE_URL"</td> <td>java.lang.String</td>
 	</tr>
 	<tr>
-		<td>"BLOJSOM_DATE"</td> <td>RFC 822 formatted date of either the most recent entry or the current date if no entries were retrieved for the requests</td>
+		<td>"BLOJSOM_DATE"</td> <td>java.lang.Date</td>
 	</tr>
 	<tr>
-		<td>"BLOJSOM_COMMENTS_ENABLED"</td> <td>Boolean (no, not the primitive type)</td>
+		<td>"BLOJSOM_COMMENTS_ENABLED"</td> <td>java.lang.Boolean</td>
 	</tr>
 </table>
 
@@ -90,14 +90,14 @@ In blojsom 1.1, a per-category meta-data facility was added blojsom. A configura
 <p />
 A sample <i>blojsom.properties</i> file in the blog home directory might look like:
 <pre>
-blojsom.name=Top
-blojsom.description=This is my top-level category
+blojsom.name=Aggregator
+blojsom.description=the aggregator
 </pre>
 There are two reserved properties for blojsom, <i>blojsom.name</i> and <i>blojsom.description</i>. These two properties can be used to set another descriptive name for the current blog category and to provide a detailed description of the entries in that category. Other properties can be extracted by calling the <i>BlogCategory.getMetaData()</i> method and then looking for the particular property in the returned HashMap.
 <p />
 As a user, you can use the meta-data in any way you like. For example, besides an alternate name and description, you could have per-category colors or other personalization features that are extracted by the proper template. An example of printing out a category's detailed description, if found in the category meta-data for a category, is given in the Velocity template for the HTML flavor, <i>html.vm</i>.
 <p />
-<a href="blojsom-screenshot.jpg">Click here</a> for a screen shot of the meta-data facility in action. Look for the string, "This is my top-level category".
+<a href="blojsom-screenshot.jpg">Click here</a> for a screen shot of the meta-data facility in action. Look for the string, "the aggregator".
 
 <p class="weblogtitle">blojsom flavor and template customization</p>
 <p />
