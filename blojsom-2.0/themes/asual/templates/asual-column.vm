@@ -3,7 +3,7 @@
 
 						<div>
 								<strong>About:</strong>
-								<p>E-mail: <a href="#Obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())">#BlogOwner()</a></p>
+								<p>E-mail: <a href="mailto:#Obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())">#BlogOwner()</a></p>
 						</div>
 						<div>
 							<strong>Categories:</strong>
