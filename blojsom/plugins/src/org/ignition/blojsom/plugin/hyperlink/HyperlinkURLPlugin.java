@@ -48,7 +48,7 @@ import java.util.Map;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.2 2003-03-29 17:58:20 intabulas Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.3 2003-03-29 18:06:08 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -114,7 +114,5 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
-
-
 
 }
