@@ -20,6 +20,17 @@
                         and blojsom-plugins-templates-2.14.jar.
                     </p>
                 </section>
+                <section>
+                    <title>Properties changes</title>
+                    <p>
+                        1. Add the following to your
+                        <code>/WEB-INF/plugin.properties</code> if you would like to
+                        enable the forgotten password plugin.
+                        <pre>
+                            forgotten-password=org.blojsom.plugin.admin.ForgottenPasswordPlugin
+                        </pre>
+                    </p>
+                </section>
             </section>
 
             <section>

@@ -22,9 +22,13 @@
                 The usernames and passwords in this file control the users that can access the individual blog
                 either via the administration console or XML-RPC. The format of this file is as follows.
                 <source>
-                    username=password
+                    username=password,{optional e-mail address}
                 </source>
-                Each separate line represents an individual username and password combination.
+                Each separate line represents an individual username and password combination. You may associate
+                an e-mail address with the username by adding a "," and the username's e-mail address. The e-mail
+                address is used to send the username an e-mail message if they forget their password. If the
+                e-mail address is not present, the username is assumed to be associated with the blog owner and
+                therefore an e-mail message in this case would be sent to the blog owner's e-mail address.
             </p>
         </section>
         <section>
