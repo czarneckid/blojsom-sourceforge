@@ -56,9 +56,19 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.23 2003-06-04 01:53:17 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.24 2003-06-11 02:39:41 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
+
+    /**
+     * Default prefix for trackback e-mail notification
+     */
+    private static final String DEFAULT_TRACKBACK_PREFIX = "[blojsom] Trackback on: ";
+
+    /**
+     * Initialization parameter for e-mail prefix
+     */
+    private static final String TRACKBACK_PREFIX_IP = "plugin-trackback-email-prefix";
 
     /**
      * Request parameter to indicate a trackback "tb"
@@ -115,6 +125,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     private Boolean _blogEmailEnabled;
     private String _blogUrlPrefix;
     private String _blogFileEncoding;
+    private String _emailPrefix;
 
     /**
      * Default constructor
@@ -136,6 +147,10 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogUrlPrefix = blog.getBlogURL();
         _blogFileEncoding = blog.getBlogFileEncoding();
+        _emailPrefix = blog.getBlogProperty(TRACKBACK_PREFIX_IP);
+        if (_emailPrefix == null) {
+            _emailPrefix = DEFAULT_TRACKBACK_PREFIX;
+        }
     }
 
     /**
@@ -338,7 +353,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
             _trackback.append("Excerpt  : ").append(excerpt).append("\n");
         }
 
-        EmailUtils.notifyBlogAuthor("[blojsom] Trackback on: " + entryTitle, _trackback.toString(), context);
+        EmailUtils.notifyBlogAuthor(_emailPrefix + entryTitle, _trackback.toString(), context);
     }
 
 
