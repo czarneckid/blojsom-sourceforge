@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.34 2004-04-09 18:46:09 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.35 2004-04-23 22:14:28 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -279,6 +279,11 @@ public interface BlojsomConstants {
      * truncated to this size. NOTE: This only truncates for hash.
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
+
+    /**
+     * Default extension for metadata
+     */
+    public static final String DEFAULT_METADATA_EXTENSION = ".meta";
 
     /**
      * Line separator for the system
