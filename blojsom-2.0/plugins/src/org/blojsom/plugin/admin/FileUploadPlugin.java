@@ -56,7 +56,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.9 2003-12-23 03:17:42 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.10 2003-12-24 14:59:57 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -78,8 +78,15 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     // Pages
     private static final String FILE_UPLOAD_PAGE = "/org/blojsom/plugin/admin/templates/admin-file-upload";
 
+    // Constants
+    private static final String PLUGIN_ADMIN_FILE_UPLOAD_FILES = "PLUGIN_ADMIN_FILE_UPLOAD_FILES";
+
     // Actions
     private static final String UPLOAD_FILE_ACTION = "upload-file";
+    private static final String DELETE_UPLOAD_FILES = "delete-upload-files";
+
+    // Form items
+    private static final String FILE_TO_DELETE = "file-to-delete";
 
     private String _temporaryDirectory;
     private long _maximumUploadSize;
@@ -171,6 +178,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             return entries;
         }
 
+        File resourceDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _resourcesDirectory + user.getId() + "/");
+
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
@@ -205,8 +214,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
                         // If so, upload the file to the resources directory
                         if (isAcceptedFileType) {
-                            File resourceDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
-                                    _resourcesDirectory + user.getId() + "/");
                             if (!resourceDirectory.exists()) {
                                 if (!resourceDirectory.mkdirs()) {
                                     _logger.error("Unable to create resource directory for user: " + resourceDirectory.toString());
@@ -235,7 +242,40 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
+        } else if (DELETE_UPLOAD_FILES.equals(action)) {
+            String[] filesToDelete = httpServletRequest.getParameterValues(FILE_TO_DELETE);
+            if (filesToDelete != null && filesToDelete.length > 0) {
+                File deletedFile;
+                for (int i = 0; i < filesToDelete.length; i++) {
+                    String fileToDelete = filesToDelete[i];
+                    deletedFile = new File(resourceDirectory, fileToDelete);
+                    if (!deletedFile.delete()) {
+                        _logger.debug("Unable to delete resource file: " + deletedFile.toString());
+                    }
+                }
+
+                addOperationResultMessage(context, "Deleted " + filesToDelete.length + " file(s) from resources directory");
+            }
+
+            httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
         }
+
+        // Create a list of files in the user's resource directory
+        Map resourceFilesMap = new HashMap();
+        if (resourceDirectory.exists()) {
+            File[] resourceFiles = resourceDirectory.listFiles();
+
+            if (resourceFiles != null) {
+                resourceFilesMap = new HashMap(resourceFiles.length);
+                for (int i = 0; i < resourceFiles.length; i++) {
+                    File resourceFile = resourceFiles[i];
+                    resourceFilesMap.put(resourceFile.getName(), resourceFile.getName());
+                }
+            }
+        } else {
+            resourceFilesMap = new HashMap();
+        }
+        context.put(PLUGIN_ADMIN_FILE_UPLOAD_FILES, resourceFilesMap);
 
         return entries;
     }

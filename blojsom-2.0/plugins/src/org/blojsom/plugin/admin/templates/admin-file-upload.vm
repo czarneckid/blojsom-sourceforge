@@ -34,5 +34,35 @@
                 </form>
             </table>
         </center>
+
+        <!-- File upload delete form -->
+        <center>
+            <h3>Delete a file</h3>
+            <table border="1">
+                <form name="delete-upload-files" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="file-upload"/>
+                    <input type="hidden" name="action" value="delete-upload-files"/>
+                    <tr>
+                        <td>File(s) to delete - multiple selection allowed</td>
+                        <td>
+                            <select name="file-to-delete" multiple="true" size="5">
+                            #foreach ($filename in $PLUGIN_ADMIN_FILE_UPLOAD_FILES.keySet())
+                                <option value="$filename">$filename</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Delete file(s)"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
     </body>
 </html>
