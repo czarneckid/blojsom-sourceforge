@@ -34,36 +34,36 @@
  */
 package org.blojsom.plugin.trackback;
 
-import org.blojsom.plugin.BlojsomPlugin;
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.Blog;
-import org.blojsom.BlojsomException;
-import org.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.plugin.BlojsomPlugin;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * AutoTrackbackPlugin
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.3 2003-09-24 01:22:12 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.4 2003-09-27 16:29:25 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -156,7 +156,9 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                                 URL trackbackUrl = new URL(trackbackPingURL.toString());
 
                                                 // Open a connection to the trackback URL and read its input
-                                                URLConnection trackbackUrlConnection = trackbackUrl.openConnection();
+                                                HttpURLConnection trackbackUrlConnection = (HttpURLConnection) trackbackUrl.openConnection();
+                                                trackbackUrlConnection.setRequestMethod("POST");
+                                                trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                                                 trackbackUrlConnection.setDoOutput(true);
                                                 trackbackUrlConnection.connect();
                                                 BufferedReader trackbackStatus = new BufferedReader(new InputStreamReader(trackbackUrlConnection.getInputStream()));
