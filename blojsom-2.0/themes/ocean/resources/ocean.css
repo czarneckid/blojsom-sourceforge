@@ -69,6 +69,10 @@ a:hover {
 #searchimage {
 	vertical-align: middle;
 }
+.searchhighlight {
+    background-color:#FFFF00;
+    color: #000000;
+}
 #switcher {
 	width: 12em;
 	float: right;

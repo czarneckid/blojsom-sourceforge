@@ -225,6 +225,10 @@ a:hover {
 	width: 10em;
 	padding: 1px;
 }
+.searchhighlight {
+    background-color:#FFFF00;
+    color: #000000;
+}
 #blojsom {
 	margin-top: 40px;
 }
