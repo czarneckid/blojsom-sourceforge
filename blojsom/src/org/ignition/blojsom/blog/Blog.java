@@ -34,9 +34,9 @@ import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
+import java.io.IOException;
+import java.io.File;
 
 /**
  * Blog
@@ -57,11 +57,6 @@ public class Blog implements BlojsomConstants {
     private String[] _blogPropertiesExtensions;
     private long _blogReloadCheck;
     private int _blogDepth;
-
-    private Map _blogEntryMap;
-    private Map _blogCalendarMap;
-
-    private Thread _blogUpdaterThread;
 
     /**
      * Blog constructor
@@ -87,28 +82,16 @@ public class Blog implements BlojsomConstants {
         _blogFileExtensions = blogFileExtensions;
         _blogPropertiesExtensions = blogPropertiesExtensions;
         _blogDepth = blogDepth;
-
-        _blogEntryMap = new TreeMap();
-        _blogCalendarMap = new TreeMap();
-        if (_blogReloadCheck != -1) {
-            _blogUpdaterThread = new Thread(new BlogUpdater());
-            if (!_blogUpdaterThread.isAlive()) {
-                _blogUpdaterThread.setDaemon(true);
-                _blogUpdaterThread.start();
-            }
-        } else {
-            _logger.info("blojsom: blog reloading disabled");
-            recursiveBlogBuilder(-1, _blogHome);
-        }
     }
 
     /**
-     * Build an in-memory representation for the blog
+     * Build a list of blog categories recursively
      *
-     * @param blogDepth Blog depth to recurse to; -1 indicates infinite depth
-     * @param blogDirectory Current working directory for the blog
+     * @param blogDepth Depth at which the current iteration is running
+     * @param blogDirectory Directory in which the current iteration is running
+     * @param categoryList Dynamic list of categories that gets added to as it explores directories
      */
-    private void recursiveBlogBuilder(int blogDepth, String blogDirectory) {
+    private void recursiveCategoryBuilder(int blogDepth, String blogDirectory, ArrayList categoryList) {
         blogDepth++;
         _logger.debug("Working in directory: " + blogDirectory + " at blog depth: " + blogDepth);
         if (_blogDepth != INFINITE_BLOG_DEPTH) {
@@ -125,12 +108,12 @@ public class Blog implements BlojsomConstants {
         if (!categoryKey.endsWith("/")) {
             categoryKey += "/";
         }
+
         BlogCategory blogCategory = new BlogCategory(categoryKey, _blogURL + BlojsomUtils.removeInitialSlash(categoryKey));
 
         // Load properties file for category (if present)
         File[] categoryPropertyFiles = blog.listFiles(BlojsomUtils.getExtensionsFilter(_blogPropertiesExtensions));
         if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
-	    _logger.debug("loading " + categoryPropertyFiles.length + " props files for '" + blogCategory.getCategory());
             Properties dirProps = new Properties();
             for (int i = 0; i < categoryPropertyFiles.length; i++) {
                 try {
@@ -144,108 +127,14 @@ public class Blog implements BlojsomConstants {
             blogCategory.setMetaData(dirProps);
         }
 
-        // look for blog entries in this directory
-        File[] entries = blog.listFiles(BlojsomUtils.getExtensionsFilter(_blogFileExtensions));
-        if (entries == null) {
-            _logger.debug("No blog entries in blog directory: " + blogDirectory);
-            _blogEntryMap.put(blogCategory, new TreeMap(BlojsomUtils.FILE_TIME_COMPARATOR));
-        } else {
-            Map entryMap;
-            Map calendarMap;
-
-            // Get the category-based map
-            if (!_blogEntryMap.containsKey(blogCategory)) {
-                entryMap = new TreeMap(BlojsomUtils.FILE_TIME_COMPARATOR);
-            } else {
-                entryMap = (Map) _blogEntryMap.get(blogCategory);
-                _blogEntryMap.remove(blogCategory);
-            }
-
-            _logger.debug("Adding " + entries.length + " entries to the blog");
-            for (int i = 0; i < entries.length; i++) {
-                File entry = entries[i];
-
-                String blogCalendarKey = BlojsomUtils.getDateKey(new Date(entry.lastModified()));
-                blogCalendarKey = blogCategory + blogCalendarKey;
-
-                if (!_blogCalendarMap.containsKey(blogCalendarKey)) {
-                    calendarMap = new TreeMap(BlojsomUtils.FILE_TIME_COMPARATOR);
-                } else {
-                    calendarMap = (Map) _blogCalendarMap.get(blogCalendarKey);
-                    _blogCalendarMap.remove(blogCalendarKey);
-                }
-
-                BlogEntry blogEntry;
-                if (!entryMap.containsKey(entry)) {
-                    blogEntry = new BlogEntry();
-                    blogEntry.setSource(entry);
-                    blogEntry.setCategory(BlojsomUtils.removeInitialSlash(categoryKey));
-                    blogEntry.setLink(_blogURL + BlojsomUtils.removeInitialSlash(categoryKey) + "?permalink=" + entry.getName());
-                    blogEntry.reloadSource();
-                    entryMap.put(entry, blogEntry);
-                    calendarMap.put(entry, blogEntry);
-                    _logger.debug("Adding initial blog entry: " + entry.toString() + " in blog category: " + categoryKey);
-                } else {
-                    blogEntry = (BlogEntry) entryMap.get(entry);
-                    if (entry.lastModified() > blogEntry.getLastModified()) {
-                        entryMap.remove(entry);
-                        calendarMap.remove(entry);
-                        blogEntry = new BlogEntry();
-                        blogEntry.setSource(entry);
-                        blogEntry.setCategory(BlojsomUtils.removeInitialSlash(categoryKey));
-                        blogEntry.setLink(_blogURL + BlojsomUtils.removeInitialSlash(categoryKey) + "?permalink=" + entry.getName());
-                        blogEntry.reloadSource();
-                        entryMap.put(entry, blogEntry);
-                        calendarMap.put(entry, blogEntry);
-                        _logger.debug("Blog entry updated on disk: " + entry.toString());
-                    }
-                }
-                _blogCalendarMap.put(blogCalendarKey, calendarMap);
-                _logger.debug("Added " + calendarMap.size() + " entries to calendar map under key: " + blogCalendarKey);
-            }
-            blogCategory.setNumberOfEntries(entryMap.size());
-            _blogEntryMap.put(blogCategory, entryMap);
-            _logger.debug("Added " + entryMap.size() + " entries to the blog map under key: " + blogCategory);
-        }
+        categoryList.add(blogCategory);
 
         if (directories == null) {
             return;
         } else {
             for (int i = 0; i < directories.length; i++) {
                 File directory = directories[i];
-                recursiveBlogBuilder(blogDepth, directory.toString());
-            }
-        }
-    }
-
-    /**
-     * Removes any blog categories that have disappeared while the blog is running
-     */
-    private void cleanupBlogCategories() {
-        Iterator categoryIterator = _blogEntryMap.keySet().iterator();
-        ArrayList deletedCategories = new ArrayList();
-        while (categoryIterator.hasNext()) {
-            BlogCategory blogCategory = (BlogCategory) categoryIterator.next();
-            File blogDirectory = new File(_blogHome + blogCategory.getCategory());
-            if (!blogDirectory.exists()) {
-                deletedCategories.add(blogCategory);
-            }
-        }
-
-        for (int i = 0; i < deletedCategories.size(); i++) {
-            BlogCategory deletedCategory = (BlogCategory) deletedCategories.get(i);
-            String deletedCategoryName = deletedCategory.getCategory();
-
-            _blogEntryMap.remove(deletedCategory);
-            _logger.debug("Removed blog entry category: " + deletedCategoryName);
-
-            Iterator calendarMapIterator = _blogCalendarMap.keySet().iterator();
-            while (calendarMapIterator.hasNext()) {
-                String calendarMapKey = (String) calendarMapIterator.next();
-                if (calendarMapKey.startsWith(deletedCategoryName)) {
-                    _logger.debug("Removed blog calendar category: " + deletedCategoryName);
-                    _blogCalendarMap.remove(calendarMapKey);
-                }
+                recursiveCategoryBuilder(blogDepth, directory.toString(), categoryList);
             }
         }
     }
@@ -257,17 +146,8 @@ public class Blog implements BlojsomConstants {
      * @return <code>true</code> if the category has entries, <code>false</code> otherwise
      */
     public boolean checkCategoryHasEntries(BlogCategory category) {
-        return _blogEntryMap.containsKey(category);
-    }
-
-    /**
-     * Return the blog entries for a blog category
-     *
-     * @param requestedCategory Requested category
-     * @return Blog entrie
-     */
-    private Object getCategoryEntries(BlogCategory requestedCategory) {
-        return _blogEntryMap.get(requestedCategory);
+        File blogCategory = new File(_blogHome + BlojsomUtils.removeInitialSlash(category.getCategory()));
+        return blogCategory.exists();
     }
 
     /**
@@ -278,32 +158,21 @@ public class Blog implements BlojsomConstants {
      * @return Blog entry array containing the single requested permalink entry (possibly null), or null if the permalink entry was not found
      */
     public BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
-        BlogEntry[] entryArray;
-        Map entriesForCategory = (Map) getCategoryEntries(requestedCategory);
-
-        boolean foundEntry = false;
-        entryArray = new BlogEntry[1];
-        _logger.debug("Permalink entry: " + requestedCategory.getCategory() + permalink);
-        Iterator entryIterator = entriesForCategory.keySet().iterator();
-        while (entryIterator.hasNext() && !foundEntry) {
-            File entryKey = (File) entryIterator.next();
-            if (entryKey.getName().endsWith(permalink)) {
-                foundEntry = true;
-                entryArray[0] = (BlogEntry) entriesForCategory.get(entryKey);
-                // Check if entry deleted from disk
-                if (entryArray[0] == null) {
-                    entryArray = null;
-                    entriesForCategory.remove(entryKey);
-                }
-            }
+        String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
+        String permalinkEntry = _blogHome + category + permalink;
+        File blogFile = new File(permalinkEntry);
+        if (!blogFile.exists()) {
+            return null;
+        } else {
+            BlogEntry[] entryArray = new BlogEntry[1];
+            BlogEntry blogEntry = new BlogEntry();
+            blogEntry.setSource(blogFile);
+            blogEntry.setCategory(category);
+            blogEntry.setLink(_blogURL + category + "?permalink=" + blogFile.getName());
+            blogEntry.reloadSource();
+            entryArray[0] = blogEntry;
+            return entryArray;
         }
-
-        if (foundEntry == false) {
-            _logger.warn("Permalink entry: " + permalink + " gone");
-            entryArray = null;
-        }
-
-        return entryArray;
     }
 
     /**
@@ -314,22 +183,27 @@ public class Blog implements BlojsomConstants {
      */
     public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory) {
         BlogEntry[] entryArray;
-        ArrayList entryList = new ArrayList();
-        Map entriesForCategory = (Map) getCategoryEntries(requestedCategory);
-
-        Iterator entryIterator = entriesForCategory.keySet().iterator();
-        while (entryIterator.hasNext()) {
-            Object entryKey = entryIterator.next();
-            if (entriesForCategory.get(entryKey) != null) {
-                entryList.add(entriesForCategory.get(entryKey));
-            } else {
-                // Entry deleted from disk
-                entriesForCategory.remove(entryKey);
+        File blogCategory = new File(_blogHome + BlojsomUtils.removeInitialSlash(requestedCategory.getCategory()));
+        File[] entries = blogCategory.listFiles(BlojsomUtils.getExtensionsFilter(_blogFileExtensions));
+        String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
+        if (entries == null) {
+            _logger.debug("No blog entries in blog directory: " + blogCategory);
+            return null;
+        } else {
+            Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
+            entryArray = new BlogEntry[entries.length];
+            BlogEntry blogEntry;
+            for (int i = 0; i < entries.length; i++) {
+                File entry = entries[i];
+                blogEntry = new BlogEntry();
+                blogEntry.setSource(entry);
+                blogEntry.setCategory(category);
+                blogEntry.setLink(_blogURL + category + "?permalink=" + entry.getName());
+                blogEntry.reloadSource();
+                entryArray[i] = blogEntry;
             }
+            return entryArray;
         }
-        entryArray = (BlogEntry[]) entryList.toArray(new BlogEntry[entryList.size()]);
-
-        return entryArray;
     }
 
     /**
@@ -346,37 +220,27 @@ public class Blog implements BlojsomConstants {
      * @return Blog entry array containing the list of blog entries for the given category, year, month, and day
      */
     public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String year, String month, String day) {
-        String blogCalendarKey = requestedCategory.getCategory() + year + month + day;
-        _logger.debug("Looking for entries by date under key: " + blogCalendarKey);
-        BlogEntry[] entryArray;
-        ArrayList entryList = new ArrayList();
-        Map entriesForDate = null;
+        BlogEntry[] blogEntries = getEntriesForCategory(requestedCategory);
+        ArrayList updatedEntryList = new ArrayList();
+        String requestedDateKey = year + month + day;
 
-        // Search for the calendar key in the calendar map
-        Iterator calendarKeyIterator = _blogCalendarMap.keySet().iterator();
-        while (calendarKeyIterator.hasNext()) {
-            String calendarKey = (String) calendarKeyIterator.next();
-            if (calendarKey.startsWith(blogCalendarKey)) {
-                entriesForDate = (Map) _blogCalendarMap.get(calendarKey);
+        if (blogEntries == null) {
+            return null;
+        }
+
+        for (int i = 0; i < blogEntries.length; i++) {
+            BlogEntry blogEntry = blogEntries[i];
+            String blogDateKey = BlojsomUtils.getDateKey(blogEntry.getDate());
+            if (blogDateKey.startsWith(requestedDateKey)) {
+                updatedEntryList.add(blogEntry);
             }
         }
 
-        if (entriesForDate != null) {
-            Iterator entryIterator = entriesForDate.keySet().iterator();
-            while (entryIterator.hasNext()) {
-                Object entryKey = entryIterator.next();
-                if (entriesForDate.containsKey(entryKey)) {
-                    entryList.add(entriesForDate.get(entryKey));
-                } else {
-                    entriesForDate.remove(entryKey);
-                }
-            }
-            entryArray = (BlogEntry[]) entryList.toArray(new BlogEntry[entryList.size()]);
-
-            return entryArray;
+        if (updatedEntryList.size() == 0) {
+            return null;
+        } else {
+            return (BlogEntry[]) updatedEntryList.toArray(new BlogEntry[updatedEntryList.size()]);
         }
-
-        return null;
     }
 
     /**
@@ -531,41 +395,7 @@ public class Blog implements BlojsomConstants {
      */
     public BlogCategory[] getBlogCategories() {
         ArrayList categoryList = new ArrayList();
-        Iterator categoryIterator = _blogEntryMap.keySet().iterator();
-        while (categoryIterator.hasNext()) {
-            categoryList.add(categoryIterator.next());
-        }
+        recursiveCategoryBuilder(-1, _blogHome, categoryList);
         return (BlogCategory[]) (categoryList.toArray(new BlogCategory[categoryList.size()]));
-    }
-
-
-    /**
-     * Updates the in-memory blog representation for blojsom
-     */
-    private class BlogUpdater implements Runnable {
-
-        /**
-         * Create a new BlogUpdater
-         */
-        public BlogUpdater() {
-        }
-
-        /**
-         * Reloads the blog entries and cleans up the blog categories from disk
-         */
-        public void run() {
-            while (true) {
-                _logger.debug("Reloading blog from BlogUpdater");
-                recursiveBlogBuilder(-1, _blogHome);
-                cleanupBlogCategories();
-
-                try {
-                    Thread.sleep(_blogReloadCheck);
-                } catch (InterruptedException e) {
-                    _logger.error(e);
-                    break;
-                }
-            }
-        }
     }
 }
