@@ -79,7 +79,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.43 2004-07-20 02:35:07 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.44 2004-07-20 13:33:34 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -606,6 +606,14 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
 
+
+                    // Insert an escaped Link into the Blog Entry
+                    if ("/".equals(category)) {
+                        entry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(sourceFile.getName()));
+                    } else {
+                        entry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(sourceFile.getName()));
+                    }
+
                     entry.save(blogUser);
                     entry.load(blogUser);
 
@@ -622,7 +630,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                     atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
                     OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
-                    osw.write(Sandler.marshallEntry(atomEntry));
+                    osw.write(Sandler.marshallEntry(atomEntry, true));
                     osw.flush();
                 } catch (SerializationException e) {
                     _logger.error(e.getLocalizedMessage(), e);
@@ -716,9 +724,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
             } catch (BlojsomException e) {
-                _logger.error(e);
-                httpServletResponse.setStatus(404);
-            } catch (MarshallException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
             }
