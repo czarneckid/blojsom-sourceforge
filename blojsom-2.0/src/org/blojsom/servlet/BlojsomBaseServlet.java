@@ -61,7 +61,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.3 2003-08-11 02:03:22 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.4 2003-08-12 14:45:18 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -173,7 +173,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
 
                 // Configure the fetcher for use by this blog
                 configureFetcher(servletConfig, configurationProperties);
-                _blojsomConfiguration = new BlojsomConfiguration(usersProperty, _defaultUser, _baseConfigurationDirectory, configurationProperties.getProperty(BLOJSOM_FETCHER_IP));
+                _blojsomConfiguration = new BlojsomConfiguration(usersProperty, _defaultUser, _baseConfigurationDirectory, configurationProperties.getProperty(BLOJSOM_FETCHER_IP), _users);
             }
         } catch (BlojsomConfigurationException e) {
             _logger.error(e);

@@ -36,12 +36,14 @@ package org.blojsom.blog;
 
 import org.blojsom.util.BlojsomUtils;
 
+import java.util.Map;
+
 /**
  * BlojsomConfiguration
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.1 2003-08-11 02:03:04 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.2 2003-08-12 14:44:50 czarneckid Exp $
  */
 public class BlojsomConfiguration {
 
@@ -49,6 +51,7 @@ public class BlojsomConfiguration {
     private String _defaultUser;
     private String _configurationBaseDirectory;
     private String _fetcherClass;
+    private Map _blogUsers;
 
     /**
      * Instantiate a new configuration object
@@ -57,15 +60,18 @@ public class BlojsomConfiguration {
      * @param defaultUser Default user for the system
      * @param configurationBaseDirectory Base directory for configuration information
      * @param fetcherClass Fetcher class
+     * @param blogUsers {@link BlogUser} objects
      */
     public BlojsomConfiguration(String blojsomUsers,
                                 String defaultUser,
                                 String configurationBaseDirectory,
-                                String fetcherClass) {
+                                String fetcherClass,
+                                Map blogUsers) {
         _blojsomUsers = blojsomUsers;
         _defaultUser = defaultUser;
         _configurationBaseDirectory = configurationBaseDirectory;
         _fetcherClass = fetcherClass;
+        _blogUsers = blogUsers;
     }
 
     /**
@@ -102,5 +108,14 @@ public class BlojsomConfiguration {
      */
     public String[] getBlojsomUsers() {
         return BlojsomUtils.parseCommaList(_blojsomUsers);
+    }
+
+    /**
+     * Get a map of the {@link BlogUser} objects
+     *
+     * @return Map of {@link BlogUser} objects
+     */
+    public Map getBlogUsers() {
+        return _blogUsers;
     }
 }
