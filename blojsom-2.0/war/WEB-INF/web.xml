@@ -64,6 +64,10 @@
             <param-name>plugin-referer</param-name>
             <param-value>referer.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>plugin-admin-upload</param-name>
+            <param-value>plugin-admin-upload.properties</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
