@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.9 2004-11-14 20:10:38 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.10 2004-11-14 20:12:56 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -119,7 +119,8 @@ public class VelocityHelper {
     }
 
     /**
-     * Get the visual content for a given calendar row
+     * Get the visual content for a given calendar row. If <code>clazz</code> is null, no <code>class</code> attribute
+     * will be included in the &lt;td&gt; tag.  
      * 
      * @param row   the row
      * @param clazz the css style apply
@@ -129,7 +130,11 @@ public class VelocityHelper {
         StringBuffer result = new StringBuffer();
         if (row > 0 && row <= visualcalendar.length) {
             for (int x = 0; x < 7; x++) {
-                result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
+                if (clazz != null) {
+                    result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
+                } else {
+                    result.append("<td>").append(visualcalendar[row - 1][x]).append("</td>");
+                }
             }
         }
         return result.toString();
