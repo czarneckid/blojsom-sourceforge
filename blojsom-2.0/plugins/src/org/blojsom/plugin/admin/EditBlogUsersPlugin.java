@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.19 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.20 2005-01-27 01:27:49 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -89,6 +89,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
     private String _flavorConfiguration;
     private String _pluginConfiguration;
     private String _authorizationConfiguration;
+    private String _permissionsConfiguration;
     private ServletConfig _servletConfig;
     private Map _administrators;
 
@@ -114,6 +115,10 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         _flavorConfiguration = servletConfig.getInitParameter(BLOJSOM_FLAVOR_CONFIGURATION_IP);
         _pluginConfiguration = servletConfig.getInitParameter(BLOJSOM_PLUGIN_CONFIGURATION_IP);
         _authorizationConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
+        _permissionsConfiguration = servletConfig.getInitParameter(BLOG_PERMISSIONS_IP);
+        if (BlojsomUtils.checkNullOrBlank(_permissionsConfiguration)) {
+            _permissionsConfiguration = DEFAULT_PERMISSIONS_CONFIGURATION_FILE;
+        }
 
         try {
             Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, PLUGIN_ADMIN_EDIT_USERS_IP, true);
@@ -341,6 +346,16 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                             authorizationProperties.store(fos, null);
                             fos.close();
                             _logger.debug("Wrote blog authorization information for new user: " + blogAuthorizationFile.toString());
+
+                            // Write out the permissions
+                            File blogPermissionsFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() +
+                                    blogUserID + "/" + _permissionsConfiguration);
+                            fos = new FileOutputStream(blogPermissionsFile);
+                            Properties permissionsProperties = new BlojsomProperties(true);
+                            permissionsProperties.setProperty(blogUserID, "*");
+                            permissionsProperties.store(fos, null);
+                            fos.close();
+                            _logger.debug("Wrote blog permissions information for new user: " + blogPermissionsFile.toString());
 
                             // Configure flavors
                             Map flavors = new HashMap();
