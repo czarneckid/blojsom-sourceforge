@@ -42,6 +42,8 @@ import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.email.SimpleAuthenticator;
+import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -52,6 +54,9 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.*;
 import java.net.ConnectException;
 import java.util.*;
@@ -61,10 +66,10 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.19 2004-11-16 01:55:39 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.20 2004-11-24 15:31:23 czarneckid Exp $
  * @since blojsom 2.14
  */
-public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
+public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
 
@@ -230,7 +235,31 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
         _blojsomConfiguration = blojsomConfiguration;
         _checker = new MailboxChecker();
         _checker.setDaemon(true);
-        _popSession = Session.getDefaultInstance(System.getProperties(), null);
+
+        String hostname = servletConfig.getInitParameter(SMTPSERVER_IP);
+        if (hostname != null) {
+            if (hostname.startsWith("java:comp/env")) {
+                try {
+                    Context context = new InitialContext();
+                    _popSession = (Session) context.lookup(hostname);
+                } catch (NamingException e) {
+                    _logger.error(e);
+                    throw new BlojsomPluginException(e);
+                }
+            } else {
+                String username = servletConfig.getInitParameter(SMTPSERVER_USERNAME_IP);
+                String password = servletConfig.getInitParameter(SMTPSERVER_PASSWORD_IP);
+
+                Properties props = new Properties();
+                props.put(SESSION_NAME, hostname);
+                if (BlojsomUtils.checkNullOrBlank(username) || BlojsomUtils.checkNullOrBlank(password)) {
+                    _popSession = Session.getDefaultInstance(props, null);
+                } else {
+                    _popSession = Session.getDefaultInstance(props, new SimpleAuthenticator(username, password));
+                }
+            }
+        }
+
         _checker.start();
 
         _logger.debug("Initialized moblog plugin.");
