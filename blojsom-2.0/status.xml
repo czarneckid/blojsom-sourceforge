@@ -7,7 +7,7 @@
     </developers>
 
     <changes>
-        <release version="2.06" date="Available from CVS">
+        <release version="2.06" date="December 22, 2003">
             <action dev="czarneckid" type="update" context="Core">
                 Updated loading of users so that if an individual user's configuration cannot be loaded, then only
                 that user is not loaded. Previously, blojsom would not start if there was an error in a user's
