@@ -141,7 +141,7 @@
         <delete file="${war.file}"/>
         <delete dir="${webinf.dir}/themes"/>
         <delete dir="${resources.dir}/${default.user}" includeemptydirs="true"/>
-        <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>        
+        <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -372,6 +372,18 @@
     </target>
 
     <!-- =================================================================== -->
+    <!-- Create the themes bundle                                            -->
+    <!-- =================================================================== -->
+    <target name="create-themes-bundle" description="Create the themes bundle">
+        <tstamp/>
+        <zip zipfile="${distro.dir}/${name}-${version}-themes.zip">
+            <fileset dir="${themes.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <!-- =================================================================== -->
     <!-- Creates the API documentation                                       -->
     <!-- =================================================================== -->
     <target name="javadoc" description="Creates the API documentation">
@@ -440,7 +452,7 @@
         </zip>
     </target>
 
-    <target name="create-distribution" depends="clean, war, create-addon-bundle, create-source-distribution"
+    <target name="create-distribution" depends="clean, war, create-addon-bundle, create-source-distribution, create-themes-bundle"
         description="Create the WAR, add-on bundle, and source distribution">
     </target>
 
