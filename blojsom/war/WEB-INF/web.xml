@@ -25,6 +25,10 @@
             <param-name>dispatcher-map-configuration</param-name>
             <param-value>/WEB-INF/dispatcher.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>blog-plugin-configuration</param-name>
+            <param-value>/WEB-INF/plugin.properties</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
