@@ -34,6 +34,9 @@
  */
 package org.blojsom.plugin.admin;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
@@ -41,30 +44,35 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
-import org.blojsom.BlojsomException;
-import org.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
-import java.io.File;
 
 /**
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.3 2003-11-21 03:34:48 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.4 2003-12-15 00:22:36 intabulas Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
+
+    /**
+     * COPIED LOCAL AS TEMP FIX SINCE PLUGINS COMPILED BEFORE EXTENSIONS
+     * Default file extension for blog entries written via XML-RPC
+     */
+    public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
+    public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
+
+
 
     private static final Log _logger = LogFactory.getLog(EditBlogEntriesPlugin.class);
 
@@ -318,9 +326,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
             entry.setMetaData(entryMetaData);
 
-            String blogEntryExtension = user.getBlog().getBlogProperty(BlojsomXMLRPCConstants.BLOG_XMLRPC_ENTRY_EXTENSION_IP);
+            String blogEntryExtension = user.getBlog().getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
             if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
-                blogEntryExtension = BlojsomXMLRPCConstants.DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
+                blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
             }
 
             String filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
