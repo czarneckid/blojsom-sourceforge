@@ -45,7 +45,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.2 2003-05-06 02:22:00 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.3 2003-05-07 02:27:56 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -349,6 +349,10 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blogEntryMetaDataExtension File extension to use for the blog entry meta-data
      */
     public void loadMetaData(String blogHome, String blogEntryMetaDataExtension) {
+        if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension)) {
+            return;
+        }
+
         String entryFilename = BlojsomUtils.getFilename(_source.getName());
         File blogEntryMetaData = new File(blogHome + BlojsomUtils.removeInitialSlash(_category) + entryFilename + blogEntryMetaDataExtension);
 
