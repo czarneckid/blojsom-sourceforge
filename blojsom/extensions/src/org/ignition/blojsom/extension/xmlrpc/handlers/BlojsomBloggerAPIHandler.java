@@ -56,7 +56,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.13 2003-04-08 05:13:37 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.14 2003-04-13 03:36:54 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -415,7 +415,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         Vector recentPosts = new Vector();
 
         if (_blog.checkAuthorization(userid, password)) {
-            String result = null;
 
             //Quick verify that the categories are valid
             File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
@@ -429,7 +428,6 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                     for (int x = 0; x < entries.length; x++) {
                         BlogEntry entry = entries[x];
                         Hashtable entrystruct = new Hashtable();
-
                         entrystruct.put(MEMBER_POSTID, blogid + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
                         entrystruct.put(MEMBER_BLOGID, blogid);
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
@@ -443,7 +441,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                 }
             }
 
-            return result;
+            return recentPosts;
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
