@@ -58,7 +58,7 @@ import java.util.Properties;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.1 2004-09-22 16:11:56 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.2 2004-09-22 17:13:03 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -71,6 +71,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
     // Context variables
     private static final String THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES = "THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES";
     private static final String THEME_SWITCHER_PLUGIN_FLAVORS = "THEME_SWITCHER_PLUGIN_FLAVORS";
+    private static final String THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR = "THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR";
 
     // Actions
     private static final String SWITCH_THEME_ACTION = "switch-theme";
@@ -198,6 +199,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
 
             context.put(THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES, getAvailableThemes());
             context.put(THEME_SWITCHER_PLUGIN_FLAVORS, user.getFlavors());
+            context.put(THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR, user.getBlog().getBlogDefaultFlavor());
 
             if (SWITCH_THEME_ACTION.equals(action)) {
                 String theme = BlojsomUtils.getRequestValue(THEME, httpServletRequest);

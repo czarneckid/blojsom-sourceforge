@@ -45,7 +45,7 @@
                             <select name="flavor-name">
                             #foreach ($flavor in $THEME_SWITCHER_PLUGIN_FLAVORS)
                                 #if (!$flavor.equals("admin"))
-                                <option value="$flavor">$flavor</option>
+                                <option value="$flavor" #if ($THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR.equals($flavor)) SELECTED #end>$flavor</option>
                                 #end
                             #end
                             </select>
