@@ -5,6 +5,16 @@
         <title>$BLOJSOM_BLOG.getBlogName() - $page</title>
         <link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-admin.css" />
         <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
+        <script type="text/javascript">
+        function reloadPreviewDiv() {
+            var previewString = document.getElementById('blog-entry-description').value;
+            document.getElementById('blog-entry-preview').innerHTML = previewString;
+        }
+
+        function loadPreviewText() {
+            document.getElementById('blog-entry-preview').innerHTML = document.getElementById('blog-entry-description').value;
+        }
+        </script>
     </head>
 
     <body>

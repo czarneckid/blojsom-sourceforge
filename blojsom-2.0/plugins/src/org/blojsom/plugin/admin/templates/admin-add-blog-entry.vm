@@ -2,6 +2,7 @@
 
 #adminPageHeader("#adminResource('add.blog.entry.header' 'Add Blog Entry')")
 
+
     <div id="sideBar">
         <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
     </div>
@@ -21,8 +22,19 @@
                     </tr>
                     <tr>
                         <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
-                        <td><textarea rows="10" cols="80" name="blog-entry-description"></textarea></td>
+                        <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();"></textarea></td>
                     </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="2"><h4>Preview</h4></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="blog-entry-preview">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr></tr>
                     <tr>
                         <td>#adminResource('blog.entry.trackbackURLs.text' 'Blog trackback URLs')</td>
                         <td><textarea rows="3" cols="80" name="blog-trackback-urls"></textarea></td>
