@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.38 2003-07-20 22:08:21 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.39 2003-07-27 20:20:29 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -198,7 +198,11 @@ public class CommentPlugin extends IPBanningPlugin {
         if (cookieExpiration == null || "".equals(cookieExpiration)) {
             _cookieExpiration = COOKIE_EXPIRATION_AGE;
         } else {
-            _cookieExpiration = Integer.parseInt(cookieExpiration);
+            try {
+                _cookieExpiration = Integer.parseInt(cookieExpiration);
+            } catch (NumberFormatException e) {
+                _cookieExpiration = COOKIE_EXPIRATION_AGE;
+            }
         }
     }
 
