@@ -38,9 +38,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
@@ -55,13 +55,15 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.3 2003-08-17 21:47:03 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.4 2003-08-22 04:41:55 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
     private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
 
     private Log _logger = LogFactory.getLog(VelocityDispatcher.class);
+    private String _baseConfigurationDirectory;
+    private String _templatesDirectory;
 
     /**
      * Create a new VelocityDispatcher
@@ -73,9 +75,17 @@ public class VelocityDispatcher implements GenericDispatcher {
      * Initialization method for blojsom dispatchers
      *
      * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig) throws BlojsomException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
+        _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
+        _templatesDirectory = blojsomConfiguration.getBlojsomPropertyAsString(TEMPLATES_DIRECTORY_IP);
+        if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
+            _templatesDirectory = DEFAULT_TEMPLATES_DIRECTORY;
+        }
+        _logger.debug("Using templates directory: " + _templatesDirectory);
+
         String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
         Properties velocityProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(velocityConfiguration);
@@ -127,41 +137,41 @@ public class VelocityDispatcher implements GenericDispatcher {
         VelocityContext velocityContext = new VelocityContext(context);
 
         if (flavorTemplateForPage != null) {
-            // Try and look for the original flavor template with page for the individual user
-            try {
-                Velocity.mergeTemplate(user.getId() + '/' + flavorTemplateForPage, UTF8, velocityContext, sw);
-                _logger.debug("Dispatched to template: " + user.getId() + '/' + flavorTemplateForPage);
-            } catch (ResourceNotFoundException e) {
-                _logger.error(e);
-                // Otherwise, fallback and look for the flavor template with page without including any user information
-                try {
-                    Velocity.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, sw);
-                    _logger.debug("Dispatched to template: " + flavorTemplateForPage);
-                } catch (Exception e1) {
-                    _logger.error(e);
+            // Try and look for the flavor page template for the individual user
+            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplateForPage;
+            if (!Velocity.templateExists(templateToLoad)) {
+                _logger.error("Could not find flavor page template for user: " + templateToLoad);
+                templateToLoad = flavorTemplateForPage;
+                if (!Velocity.templateExists(templateToLoad)) {
+                    _logger.error("Could not find default flavor page template: " + templateToLoad);
+                    return;
                 }
+            }
+
+            try {
+                Velocity.mergeTemplate(templateToLoad, UTF8, velocityContext, sw);
             } catch (Exception e) {
-                // If we get any other error, log it
                 _logger.error(e);
             }
+            _logger.debug("Dispatched to flavor page template: " + templateToLoad);
         } else {
             // Otherwise, fallback and look for the flavor template for the individual user
-            try {
-                Velocity.mergeTemplate(user.getId() + '/' + flavorTemplate, UTF8, velocityContext, sw);
-                _logger.debug("Dispatched to template: " + user.getId() + '/' + flavorTemplate);
-            } catch (ResourceNotFoundException e) {
-                _logger.error(e);
-                // Finally, fallback and look for the flavor template without including any user information
-                try {
-                    Velocity.mergeTemplate(flavorTemplate, UTF8, velocityContext, sw);
-                    _logger.debug("Dispatched to template: " + flavorTemplate);
-                } catch (Exception e1) {
-                    _logger.error(e1);
+            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplate;
+            if (!Velocity.templateExists(templateToLoad)) {
+                _logger.error("Could not find flavor template for user: " + templateToLoad);
+                templateToLoad = flavorTemplate;
+                if (!Velocity.templateExists(templateToLoad)) {
+                    _logger.error("Could not find default flavor template: " + templateToLoad);
+                    return;
                 }
+            }
+
+            try {
+                Velocity.mergeTemplate(templateToLoad, UTF8, velocityContext, sw);
             } catch (Exception e) {
-                // If we get any other error, log it
                 _logger.error(e);
             }
+            _logger.debug("Dispatched to flavor template: " + templateToLoad);
         }
 
         // We need that content length, especially for RSS feeds

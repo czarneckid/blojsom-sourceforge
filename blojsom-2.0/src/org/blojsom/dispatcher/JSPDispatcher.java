@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
@@ -53,17 +54,15 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.4 2003-08-17 21:47:03 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.5 2003-08-22 04:41:55 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
-
-    private static final String TEMPLATES_DIRECTORY_IP = "jsp-dispatcher-templates-directory";
-    private static final String TEMPLATES_DIRECTORY_DEFAULT = "/WEB-INF/classes/";
 
     private Log _logger = LogFactory.getLog(JSPDispatcher.class);
 
     private ServletContext _context;
     private String _templatesDirectory;
+    private String _baseConfigurationDirectory;
 
     /**
      * Create a new JSPDispatcher
@@ -75,22 +74,15 @@ public class JSPDispatcher implements GenericDispatcher {
      * Initialization method for blojsom dispatchers
      *
      * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig) throws BlojsomException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
         _context = servletConfig.getServletContext();
-
-        // Configure the base directory
-        _templatesDirectory = servletConfig.getInitParameter(TEMPLATES_DIRECTORY_IP);
+        _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
+        _templatesDirectory = blojsomConfiguration.getBlojsomPropertyAsString(TEMPLATES_DIRECTORY_IP);
         if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
-            _templatesDirectory = TEMPLATES_DIRECTORY_DEFAULT;
-        } else {
-            if (!_templatesDirectory.startsWith("/")) {
-                _templatesDirectory = '/' + _templatesDirectory;
-            }
-            if (!_templatesDirectory.endsWith("/")) {
-                _templatesDirectory += "/";
-            }
+            _templatesDirectory = DEFAULT_TEMPLATES_DIRECTORY;
         }
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
@@ -140,27 +132,35 @@ public class JSPDispatcher implements GenericDispatcher {
 
         // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
-            if (_context.getResource(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage) != null) {
-                httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
-                _logger.debug("Dispatched to: " + _templatesDirectory + user.getId() + '/' + flavorTemplateForPage);
+            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplateForPage;
+            if (_context.getResource(templateToLoad) != null) {
+                httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                _logger.debug("Dispatched to flavor page template for user: " + templateToLoad);
                 return;
-            } else if (_context.getResource(_templatesDirectory + flavorTemplateForPage) != null) {
-                // Otherwise, fallback and look for the flavor template with page without including any user information
-                httpServletRequest.getRequestDispatcher(_templatesDirectory + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
-                _logger.debug("Dispatched to: " + _templatesDirectory + flavorTemplateForPage);
-                return;
+            } else {
+                templateToLoad = _baseConfigurationDirectory + BlojsomUtils.removeInitialSlash(_templatesDirectory) + flavorTemplateForPage;
+                if (_context.getResource(templateToLoad) != null) {
+                    // Otherwise, fallback and look for the flavor template with page without including any user information
+                    httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                    _logger.debug("Dispatched to flavor page template: " + templateToLoad);
+                    return;
+                }
             }
         } else {
             // Otherwise, fallback and look for the flavor template for the individual user
-            if (_context.getResource(_templatesDirectory + user.getId() + '/' + flavorTemplate) != null) {
-                httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplate).forward(httpServletRequest, httpServletResponse);
-                _logger.debug("Dispatched to: " + _templatesDirectory + user.getId() + '/' + flavorTemplate);
+            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplate;
+            if (_context.getResource(templateToLoad) != null) {
+                httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                _logger.debug("Dispatched to flavor template for user: " + templateToLoad);
                 return;
-            } else if (_context.getResource(_templatesDirectory + flavorTemplate) != null) {
-                // Finally, fallback and look for the flavor template without including any user information
-                httpServletRequest.getRequestDispatcher(_templatesDirectory + flavorTemplate).forward(httpServletRequest, httpServletResponse);
-                _logger.debug("Dispatched to: " + _templatesDirectory + flavorTemplate);
-                return;
+            } else {
+                templateToLoad = _baseConfigurationDirectory + BlojsomUtils.removeInitialSlash(_templatesDirectory) + flavorTemplate;
+                if (_context.getResource(templateToLoad) != null) {
+                    // Otherwise, fallback and look for the flavor template without including any user information
+                    httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                    _logger.debug("Dispatched to flavor template: " + templateToLoad);
+                    return;
+                }
             }
         }
     }
