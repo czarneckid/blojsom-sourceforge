@@ -39,7 +39,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.blojsom.BlojsomException;
+import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfigurationException;
 import org.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
@@ -65,12 +67,14 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  * 
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.9 2004-04-20 01:02:50 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.10 2004-06-03 01:28:03 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
     private Map _xmlrpcServers;
+    protected AuthorizationProvider _authorizationProvider;
+
 
     /**
      * Construct a new Blojsom XML-RPC servlet instance
@@ -78,12 +82,28 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
     public BlojsomXMLRPCServlet() {
     }
 
+    protected void configureAuthorization(ServletConfig servletConfig) throws ServletException {
+        try {
+            Class authorizationProviderClass = Class.forName(_blojsomConfiguration.getAuthorizationProvider());
+            _authorizationProvider = (AuthorizationProvider) authorizationProviderClass.newInstance();
+            _authorizationProvider.init(servletConfig, _blojsomConfiguration);
+        } catch (ClassNotFoundException e) {
+            throw new ServletException(e);
+        } catch (InstantiationException e) {
+            throw new ServletException(e);
+        } catch (IllegalAccessException e) {
+            throw new ServletException(e);
+        } catch (BlojsomConfigurationException e) {
+            throw new ServletException(e);
+        }
+    }
+
     /**
      * Configure the XML-RPC API Handlers
      * 
      * @param servletConfig Servlet configuration information
      */
-    private void configureAPIHandlers(ServletConfig servletConfig) {
+    protected void configureAPIHandlers(ServletConfig servletConfig) throws ServletException {
         _xmlrpcServers = new HashMap(_blojsomConfiguration.getBlogUsers().size());
 
         String templateConfiguration = servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
@@ -115,7 +135,9 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                     AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
                     handler.setFetcher(_fetcher);
                     handler.setConfiguration(_blojsomConfiguration);
-                    handler.setBlogUser(blogUser);                    
+                    _authorizationProvider.loadAuthenticationCredentials(blogUser);
+                    handler.setBlogUser(blogUser);
+                    handler.setAuthorizationProvider(_authorizationProvider);
                     xmlRpcServer.addHandler(handler.getName(), handler);
                     if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
                         xmlRpcServer.addHandler(DEFAULT_XMLRPC_HANDLER_KEY, handler);
@@ -128,15 +150,15 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                 _xmlrpcServers.put(user, xmlRpcServer);
             }
         } catch (InstantiationException e) {
-            _logger.error(e);
+            throw new ServletException(e);
         } catch (IllegalAccessException e) {
-            _logger.error(e);
+            throw new ServletException(e);
         } catch (ClassNotFoundException e) {
-            _logger.error(e);
+            throw new ServletException(e);
         } catch (IOException e) {
-            _logger.error(e);
+            throw new ServletException(e);
         } catch (BlojsomException e) {
-            _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
