@@ -60,7 +60,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.4 2003-10-07 01:23:04 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.5 2003-11-11 03:28:45 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -129,15 +129,17 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
                 _userLastPingMap.put(user.getId(), lastPingDate);
 
                 try {
-                    XmlRpcClient client = new XmlRpcClient(WEBLOGS_PING_URL);
+                    XmlRpcClient weblogsComclient = new XmlRpcClient(WEBLOGS_PING_URL);
                     Vector params = new Vector();
                     params.add(blog.getBlogName());
                     params.add(blog.getBlogURL());
+
                     // Ping weblogs.com
-                    client.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
-                    client = new XmlRpcClient(WEBLO_GS_PING_URL);
+                    weblogsComclient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+
                     // Ping weblo.gs
-                    client.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                    XmlRpcClient weblogsClient = new XmlRpcClient(WEBLO_GS_PING_URL);
+                    weblogsClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
                 } catch (IOException e) {
                     _logger.error(e);
                 }
