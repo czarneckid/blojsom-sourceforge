@@ -58,6 +58,23 @@
         <load-on-startup>2</load-on-startup>
     </servlet>
 
+
+    <servlet>
+        <servlet-name>blojsomcommentapi</servlet-name>
+        <servlet-class>org.ignition.blojsom.extension.comment.CommentAPIServlet</servlet-class>
+        <init-param>
+            <param-name>blog-configuration</param-name>
+            <param-value>/WEB-INF/blojsom.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>smtp-server</param-name>
+            <param-value>localhost</param-value>
+        </init-param>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+
+
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
         <url-pattern>/blog/*</url-pattern>
@@ -67,5 +84,12 @@
         <servlet-name>blojsomxmlrpc</servlet-name>
         <url-pattern>/xmlrpc/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>blojsomcommentapi</servlet-name>
+        <url-pattern>/commentapi/*</url-pattern>
+    </servlet-mapping>
+
+
 
 </web-app>
