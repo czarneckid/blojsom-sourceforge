@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.27 2003-04-15 01:54:04 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.28 2003-04-16 00:50:49 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -267,6 +267,18 @@ public class CommentPlugin implements BlojsomPlugin {
 
             if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))
                     && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
+
+                author = author.trim();
+                commentText = commentText.trim();
+
+                if (authorEmail != null) {
+                    authorEmail = authorEmail.trim();
+                }
+
+                if (authorURL != null) {
+                    authorURL = authorURL.trim();
+                }
+
                 if (!category.endsWith("/")) {
                     category += "/";
                 }
