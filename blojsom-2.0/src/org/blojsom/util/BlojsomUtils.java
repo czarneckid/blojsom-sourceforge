@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.27 2004-05-03 23:36:28 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.28 2004-05-04 01:23:06 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1348,6 +1348,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a filename with the date as a long value before the file extension.
      *
+     * @since blojsom 2.14
      * @param filename Filename with extension
      * @return Filename as {filename}-{date}.{file extension} or <code>null</code> if there was no file extension
      */
@@ -1367,6 +1368,7 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param input Input string
      * @return Input with line terminator characters stripped or <code>null</code> if the input was <code>null</code>
+     * @since blojsom 2.14
      */
     public static String stripLineTerminators(String input) {
         if (input == null) {
