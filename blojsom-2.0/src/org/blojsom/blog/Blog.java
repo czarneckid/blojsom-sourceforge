@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.19 2004-04-12 23:50:04 intabulas Exp $
+ * @version $Id: Blog.java,v 1.20 2004-06-03 01:16:06 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -269,23 +269,17 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
-     * Check to see if a username and password is valid for this blog
-     * 
+     * Check to see if a username and password is valid for this blog. This method will always return false since it
+     * has been deprecated.
+     *
      * @param username Username of the user
      * @param password Password for the Username
-     * @return True if the user is authenticated
+     * @return This method will always return false since it has been deprecated
+     * @deprecated
+     * @see org.blojsom.authorization.AuthorizationProvider#authorize(org.blojsom.blog.BlogUser, java.util.Map, java.lang.String, java.lang.String)
      */
     public boolean checkAuthorization(String username, String password) {
-        boolean result = false;
-
-        if (_authorization != null) {
-            if (_authorization.containsKey(username)) {
-                String parsedPassword = BlojsomUtils.parseCommaList((String)_authorization.get(username))[0];
-                result = password.equals(parsedPassword);
-            }
-        }
-
-        return result;
+        return false;
     }
 
     /**
@@ -493,17 +487,15 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the Username/Password table used for blog authorization.
-     * NOTE: This method can only be called once per Blog instances
+     * <p/>
+     * As of blojsom 2.16, this method can be called more than once.
      * 
      * @param authorization HashMap of Usernames and Passwords
      * @return True is the authorization table was assigned, otherwise false
      */
     public boolean setAuthorization(Map authorization) {
         boolean result = false;
-        if (_authorization == null) {
-            _authorization = authorization;
-            result = true;
-        }
+        _authorization = authorization;
 
         return result;
     }
@@ -512,6 +504,7 @@ public class Blog implements BlojsomConstants {
      * Returns the authorization map for this blog
      * 
      * @return Map of authorization usernames/passwords
+
      */
     public Map getAuthorization() {
         return _authorization;
