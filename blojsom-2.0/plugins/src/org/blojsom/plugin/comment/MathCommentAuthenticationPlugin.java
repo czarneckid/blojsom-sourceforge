@@ -52,7 +52,7 @@ import java.util.HashMap;
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.1 2004-12-21 03:51:44 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.2 2004-12-21 03:54:39 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
@@ -64,6 +64,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
     public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2 = "BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2";
     public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION = "BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION";
     public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_ANSWER_CHECK_PARAM = "mathAnswerCheck";
+    public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE = "BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE";
 
     private static final int AVAILABLE_OPERATIONS = 3;
 
@@ -115,6 +116,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                     context.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA, commentMetaData);
 
                     _logger.info("Failed math comment authentication check.");
+                    context.put(BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE, "Failed math comment authentication check.");
                 }
             }
 
