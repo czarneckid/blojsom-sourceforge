@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.16 2003-11-13 00:54:34 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.17 2003-12-05 01:53:52 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -279,43 +279,44 @@ public interface BlojsomConstants {
      */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    static final String BLOJSOM_CONFIGURATION_IP = "blojsom-configuration";
+    public static final String BLOJSOM_CONFIGURATION_IP = "blojsom-configuration";
 
     // blojsom initialization parameters from blojsom.properties
-    static final String BLOJSOM_USERS_IP = "blojsom-users";
-    static final String BLOJSOM_DEFAULT_USER_IP = "blojsom-default-user";
-    static final String BLOJSOM_FETCHER_IP = "blojsom-fetcher";
-    static final String BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP = "blojsom-configuration-base-directory";
-    static final String BLOJSOM_INSTALLATION_DIRECTORY = "blojsom-installation-directory";
-    static final String BLOJSOM_TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
-    static final String BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY = "/WEB-INF/";
-    static final String BLOJSOM_DEFAULT_TEMPLATES_DIRECTORY = "/templates";
-    static final String BLOG_DEFAULT_PROPERTIES = "blog.properties";
+    public static final String BLOJSOM_USERS_IP = "blojsom-users";
+    public static final String BLOJSOM_DEFAULT_USER_IP = "blojsom-default-user";
+    public static final String BLOJSOM_FETCHER_IP = "blojsom-fetcher";
+    public static final String BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP = "blojsom-configuration-base-directory";
+    public static final String BLOJSOM_INSTALLATION_DIRECTORY = "blojsom-installation-directory";
+    public static final String BLOJSOM_TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
+    public static final String BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY = "/WEB-INF/";
+    public static final String BLOJSOM_DEFAULT_TEMPLATES_DIRECTORY = "/templates";
+    public static final String BLOG_DEFAULT_PROPERTIES = "blog.properties";
 
     // Blog initialization parameters from blog.properties
-    static final String BLOG_HOME_IP = "blog-home";
-    static final String BLOG_NAME_IP = "blog-name";
-    static final String BLOG_DEPTH_IP = "blog-directory-depth";
-    static final String BLOG_LANGUAGE_IP = "blog-language";
-    static final String BLOG_COUNTRY_IP = "blog-country";
-    static final String BLOG_DESCRIPTION_IP = "blog-description";
-    static final String BLOG_URL_IP = "blog-url";
-    static final String BLOG_BASE_URL_IP = "blog-base-url";
-    static final String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
-    static final String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
-    static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
-    static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
-    static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
-    static final String BLOG_AUTHORIZATION_IP = "blog-authorization";
-    static final String BLOG_OWNER = "blog-owner";
-    static final String BLOG_OWNER_EMAIL = "blog-owner-email";
-    static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
-    static final String BLOG_TRACKBACK_DIRECTORY_IP = "blog-trackbacks-directory";
-    static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
-    static final String BLOG_TRACKBACKS_ENABLED_IP = "blog-trackbacks-enabled";
-    static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
-    static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
-    static final String BLOG_ENTRY_META_DATA_EXTENSION_IP = "blog-entry-meta-data-extension";
-    static final String BLOG_FILE_ENCODING_IP = "blog-file-encoding";
-    static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
+    public static final String BLOG_HOME_IP = "blog-home";
+    public static final String BLOG_NAME_IP = "blog-name";
+    public static final String BLOG_DEPTH_IP = "blog-directory-depth";
+    public static final String BLOG_LANGUAGE_IP = "blog-language";
+    public static final String BLOG_COUNTRY_IP = "blog-country";
+    public static final String BLOG_DESCRIPTION_IP = "blog-description";
+    public static final String BLOG_URL_IP = "blog-url";
+    public static final String BLOG_BASE_URL_IP = "blog-base-url";
+    public static final String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
+    public static final String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
+    public static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
+    public static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
+    public static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
+    public static final String BLOG_AUTHORIZATION_IP = "blog-authorization";
+    public static final String BLOG_OWNER = "blog-owner";
+    public static final String BLOG_OWNER_EMAIL = "blog-owner-email";
+    public static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
+    public static final String BLOG_TRACKBACK_DIRECTORY_IP = "blog-trackbacks-directory";
+    public static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
+    public static final String BLOG_TRACKBACKS_ENABLED_IP = "blog-trackbacks-enabled";
+    public static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
+    public static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
+    public static final String BLOG_ENTRY_META_DATA_EXTENSION_IP = "blog-entry-meta-data-extension";
+    public static final String BLOG_FILE_ENCODING_IP = "blog-file-encoding";
+    public static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
+    public static final String BLOG_DEFAULT_FLAVOR_IP = "blog-default-flavor";
 }
