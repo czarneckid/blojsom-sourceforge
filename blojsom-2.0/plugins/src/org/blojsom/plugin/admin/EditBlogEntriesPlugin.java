@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.34 2004-11-06 19:47:59 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.35 2004-11-08 03:59:43 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -776,11 +776,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 String trackbackURL = trackbackURLs[i].trim();
                 StringBuffer trackbackPingURL = new StringBuffer(trackbackURL);
 
-                if (trackbackPingURL.indexOf("?") == -1) {
-                    trackbackPingURL.append("?");
-                }
-
-                trackbackPingURL.append(trackbackPingURLParameters);
                 _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
 
                 try {
@@ -791,7 +786,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     trackbackUrlConnection.setRequestMethod("POST");
                     trackbackUrlConnection.setRequestProperty("Content-Encoding", UTF8);
                     trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    trackbackUrlConnection.setRequestProperty("Content-Length", "" + trackbackPingURLParameters.length());
                     trackbackUrlConnection.setDoOutput(true);
+                    trackbackUrlConnection.getOutputStream().write(trackbackPingURLParameters.toString().getBytes(UTF8));
                     trackbackUrlConnection.connect();
                     BufferedReader trackbackStatus = new BufferedReader(new InputStreamReader(trackbackUrlConnection.getInputStream()));
                     String line;

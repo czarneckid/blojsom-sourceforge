@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.11 2004-11-05 02:23:47 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.12 2004-11-08 04:00:09 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -151,10 +151,6 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                             Matcher trackbackPingMatcher = TRACKBACK_PING_PATTERN.matcher(innerRdfText);
                                             if (trackbackPingMatcher.find()) {
                                                 StringBuffer trackbackPingURL = new StringBuffer(trackbackPingMatcher.group(1));
-                                                if (trackbackPingURL.indexOf("?") == -1) {
-                                                    trackbackPingURL.append("?");
-                                                }
-                                                trackbackPingURL.append(trackbackPingURLParameters);
 
                                                 _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
                                                 URL trackbackUrl = new URL(trackbackPingURL.toString());
@@ -164,7 +160,9 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                                 trackbackUrlConnection.setRequestMethod("POST");
                                                 trackbackUrlConnection.setRequestProperty("Content-Encoding", UTF8);
                                                 trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                                                trackbackUrlConnection.setRequestProperty("Content-Length", "" + trackbackPingURLParameters.length());
                                                 trackbackUrlConnection.setDoOutput(true);
+                                                trackbackUrlConnection.getOutputStream().write(trackbackPingURLParameters.toString().getBytes(UTF8));
                                                 trackbackUrlConnection.connect();
                                                 BufferedReader trackbackStatus = new BufferedReader(new InputStreamReader(trackbackUrlConnection.getInputStream()));
                                                 String line;
