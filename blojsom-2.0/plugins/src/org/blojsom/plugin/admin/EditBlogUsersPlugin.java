@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.13 2004-09-06 17:44:26 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.14 2004-09-12 18:45:29 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -167,6 +167,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             return entries;
         }
 
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP, Collections.unmodifiableMap(_blojsomConfiguration.getBlogUsers()));        
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
@@ -174,7 +175,6 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         } else if (PAGE_ACTION.equals(action)) {
             _logger.debug("User requested edit blog users page");
 
-            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP, Collections.unmodifiableMap(_blojsomConfiguration.getBlogUsers()));
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
         } else if (DELETE_BLOG_USER_ACTION.equals(action)) {
             _logger.debug("User requested delete blog user action");
@@ -280,6 +280,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                             BlojsomUtils.copyDirectory(bootstrapDirectory, newUserDirectory);
                         } catch (IOException e) {
                             addOperationResultMessage(context, "Unable to copy bootstrap directory. Check log files for error");
+                            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                             _logger.error(e);
 
                             return entries;
@@ -293,6 +294,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                             if (!blogHomeDirectory.mkdirs()) {
                                 _logger.error("Unable to create blog home directory: " + blogHomeDirectory.toString());
                                 addOperationResultMessage(context, "Unable to create blog home directory for blog ID: " + blogUserID);
+                                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                                 return entries;
                             }
