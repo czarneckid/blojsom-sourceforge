@@ -22,7 +22,10 @@ ects/blojsom/">Sourceforge</a></p>
 General:<br />
 - Added a text flavor. <i>flavor=text</i><br />
 - Added support for comments. See the <a href="comments.html">comments</a> document for more information<br />
-- Added "BLOJSOM_COMMENTS_ENABLED" as a request attribute to indicate whether or not comments are enabled for this blog<br />
+- Added "BLOJSOM_COMMENTS_ENABLED" (see <a href="customization.html">customization</a>) as
+a request attribute to indicate whether or not comments are enabled for this blog<br />
+- Enhanced security of permalinks such that only permalinks matching one of the
+<i>blog-file-extensions</i> will be returned<br />
 - XML-RPC Handler supporting a subset of the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a><br />
 <p />
 The following bugs were fixed:<br />
