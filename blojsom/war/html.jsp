@@ -84,6 +84,31 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
         Trackbacks [<a href="<%= blogEntry.getLink() %>&amp;page=trackback"><%= blogEntry.getNumTrackbacks() %></a>]
         </p>
 
+        <% if ( entryArray.length == 1 ) {
+
+            String blogDescription =  blogEntry.getEscapedDescription();
+            if ( blogDescription.length() > 255 ) {
+                blogDescription = blogDescription.substring(0,252)+ "..";
+            }
+        %>
+<!--
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+        <rdf:Description
+             rdf:about="<%= blogEntry.getLink()%>"
+             dc:identifer="<%= blogEntry.getLink()%>"
+             dc:title="<%=blogEntry.getTitle()%>"
+             dc:subject="<%=requestedCategory.getCategoryURL()%>"
+             dc:description="<%=blogDescription%>"
+             dc:creator="<%= blogInformation.getBlogOwner() %>"
+             dc:date="<%= blogEntry.getISO8601Date()%>"
+             trackback:ping="<%= blogEntry.getLink()%>&amp;tb=y" />
+     </rdf:RDF>
+-->
+    <% } %>
+
+
 <%
 	    }
 	}
