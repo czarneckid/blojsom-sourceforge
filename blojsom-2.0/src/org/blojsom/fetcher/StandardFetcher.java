@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.7 2003-12-30 04:46:23 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.8 2004-01-09 04:00:42 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -119,6 +119,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         if (!category.endsWith("/")) {
             category += "/";
         }
+
         String permalinkEntry = blog.getBlogHome() + category + permalink;
         File blogFile = new File(permalinkEntry);
         if (!blogFile.exists()) {
@@ -147,7 +148,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             if ("/".equals(category)) {
                 blogEntry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             } else {
-                blogEntry.setLink(blog.getBlogURL() + category + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
+                blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncode(category) + "?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             }
             blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
             blogEntry.setBlogCategory(blogCategory);
@@ -216,7 +217,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 if ("/".equals(category)) {
                     blogEntry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 } else {
-                    blogEntry.setLink(blog.getBlogURL() + category + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
+                    blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncode(category) + "?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 }
                 blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
