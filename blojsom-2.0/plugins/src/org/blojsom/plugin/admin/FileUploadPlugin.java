@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.21 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.22 2005-03-05 18:16:16 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -315,6 +315,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         } else {
             resourceFilesMap = new HashMap();
         }
+
         resourceFilesMap = new TreeMap(resourceFilesMap);
         context.put(PLUGIN_ADMIN_FILE_UPLOAD_FILES, resourceFilesMap);
 
