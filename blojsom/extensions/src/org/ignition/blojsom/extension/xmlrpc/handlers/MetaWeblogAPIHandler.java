@@ -49,6 +49,7 @@ import java.io.*;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -56,7 +57,7 @@ import java.util.HashMap;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.19 2003-05-01 00:26:33 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.20 2003-05-13 21:50:36 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -279,7 +280,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
                 }
 
-                String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
+                String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
+                String filename = baseFilename + ".txt";
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
@@ -291,6 +293,28 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     bw.write(_post.toString());
                     bw.close();
                     result = postid;
+
+                    // Filename for Entry Meta Data - We do this since BlogEntry only loads and does not save....
+                    String metaFile = _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid)
+                            + baseFilename + _blog.getBlogEntryMetaDataExtension();
+
+                    File blogEntryMetaData = new File(metaFile);
+                    Properties metaProps = new Properties();
+                    // If any meta data exists, load it first..
+                    if (blogEntryMetaData.exists()) {
+                        FileInputStream fis = new FileInputStream(blogEntryMetaData);
+                        metaProps.load(fis);
+                        fis.close();
+                    }
+
+                    // Add the posters ID as the entry author
+                    metaProps.put(BlojsomConstants.BLOG_METADATA_ENTRY_AUTHOR, userid);
+
+                    FileOutputStream fos = new FileOutputStream(blogEntryMetaData, false);
+                    metaProps.store(fos, BlojsomConstants.BLOG_METADATA_HEADER);
+                    fos.close();
+
+
                 } catch (IOException e) {
                     throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                 }

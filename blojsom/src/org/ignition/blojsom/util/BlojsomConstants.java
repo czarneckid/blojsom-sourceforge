@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.56 2003-05-06 02:20:52 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.57 2003-05-13 21:50:30 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -229,6 +229,17 @@ public interface BlojsomConstants {
      * truncated to this size. NOTE: This only truncates for hash.
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
+
+
+    /**
+     * Entry Meta Data Key for Poster
+     */
+    public static final String BLOG_METADATA_ENTRY_AUTHOR ="blog-entry-author";
+
+    /**
+     * Entry MetaData File Header
+     */
+    public static final String BLOG_METADATA_HEADER = "blojsom entry metadata";
 
     // Blog initialization parameters from blojsom.properties
     static final String BLOG_HOME_IP = "blog-home";

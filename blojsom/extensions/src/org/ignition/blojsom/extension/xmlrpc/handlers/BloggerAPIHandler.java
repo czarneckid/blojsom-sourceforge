@@ -46,10 +46,7 @@ import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger v1.0 API
@@ -57,7 +54,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.18 2003-05-02 01:29:21 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.19 2003-05-13 21:50:36 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -246,14 +243,21 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                     // Delete Comments
                     File _comments = new File(_blog.getBlogHome() + category + _blog.getBlogCommentsDirectory()
-                                              + File.separatorChar + permalink + File.separatorChar);
+                            + File.separatorChar + permalink + File.separatorChar);
                     removeDirectory(_comments);
 
 
                     // Delete Trackbacks
                     File _trackbacks = new File(_blog.getBlogHome() + category + _blog.getBlogTrackbackDirectory()
-                                                + File.separatorChar + permalink + File.separatorChar);
+                            + File.separatorChar + permalink + File.separatorChar);
                     removeDirectory(_trackbacks);
+
+                    // Meta Data
+                    File metaFile = new File(_blog.getBlogHome() + category + BlojsomUtils.getFilename(permalink)
+                            + _blog.getBlogEntryMetaDataExtension());
+                    if (metaFile.exists()) {
+                        metaFile.delete();
+                    }
 
 
                 } else {
@@ -458,6 +462,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                         bw.write(content);
                         bw.close();
                         result = true;
+
+
                     } catch (IOException e) {
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                     }
@@ -507,7 +513,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
                 }
 
-                String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
+                String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
+                String filename = baseFilename + ".txt";
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
@@ -516,7 +523,30 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     bw.write(content);
                     bw.close();
                     result = postid;
+
+
+                    // Filename for Entry Meta Data - We do this since BlogEntry only loads and does not save....
+                    String metaFile = _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid)
+                            + baseFilename + _blog.getBlogEntryMetaDataExtension();
+
+                    File blogEntryMetaData = new File(metaFile);
+                    Properties metaProps = new Properties();
+                    // If any meta data exists, load it first..
+                    if (blogEntryMetaData.exists()) {
+                        FileInputStream fis = new FileInputStream(blogEntryMetaData);
+                        metaProps.load(fis);
+                        fis.close();
+                    }
+
+                    // Add the posters ID as the entry author
+                    metaProps.put(BlojsomConstants.BLOG_METADATA_ENTRY_AUTHOR, userid);
+
+                    FileOutputStream fos = new FileOutputStream(blogEntryMetaData, false);
+                    metaProps.store(fos, BlojsomConstants.BLOG_METADATA_HEADER);
+                    fos.close();
+
                 } catch (IOException e) {
+                    _logger.error(e);
                     throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                 }
             }
