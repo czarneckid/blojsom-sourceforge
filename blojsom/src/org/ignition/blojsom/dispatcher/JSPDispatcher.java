@@ -43,7 +43,7 @@ import java.io.IOException;
 /**
  * JSPDispatcher
  *
- * @author David Czarnecki (czarneckid@acm.org)
+ * @author David Czarnecki
  */
 public class JSPDispatcher implements GenericDispatcher {
 

@@ -39,7 +39,7 @@ import java.io.IOException;
 /**
  * GenericDispatcher
  *
- * @author David Czarnecki (czarneckid@acm.org)
+ * @author David Czarnecki
  */
 public interface GenericDispatcher {
 

@@ -45,7 +45,7 @@ import java.io.*;
 /**
  * VelocityDispatcher
  *
- * @author David Czarnecki (czarneckid@acm.org)
+ * @author David Czarnecki
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
