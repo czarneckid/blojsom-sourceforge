@@ -5,20 +5,20 @@
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
+    String blogUser = (String) request.getAttribute(BlojsomConstants.BLOJSOM_USER);
 %>
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="<%= blogInformation.getBlogBaseURL() %>/atom.css" type="text/css"?>
 
 <feed version="0.3"
     xmlns="http://purl.org/atom/ns#"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
     xml:lang="<%= blogInformation.getBlogLanguage() %>">
 
     <!-- required feed elements -->
     <title mode="escaped"><%= blogInformation.getBlogName() %></title>
     <link rel="alternate" type="text/html" href="<%= blogInformation.getBlogURL() %>"/>
 
-    <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/" rel="service.post" title="<%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
+    <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/<%= blogUser %>" rel="service.post" title="<%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
 
     <modified><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE_UTC) %></modified>
 
@@ -55,13 +55,13 @@
         <!-- entry required elements -->
         <title mode="escaped"><%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%></title>
         <link rel="alternate" type="text/html" href="<%= blogEntry.getLink() %>"/>
-        <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi<%= blogEntry.getEncodedCategory() %>/?permalink=<%= blogEntry.getPermalink() %>" rel="service.edit" title="Edit <%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%>" type="application/x.atom+xml"/>
-        <modified><%= blogEntry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") %></modified>
-        <issued><%= blogEntry.getISO8601Date() %></issued>
+        <link href="<%= blogInformation.getBlogBaseURL() %>/atomapi/<%= blogUser %><%= blogEntry.getId() %>" rel="service.edit" title="Edit <%= blogEntry.getEscapedTitle() %>" type="application/x.atom+xml"/>
+        <modified><%= blogEntry.getUTCDate() %></modified>
+        <issued><%= blogEntry.getUTCDate() %></issued>
         <id>tag:<%= blogInformation.getBlogOwnerEmail() %>,<%= blogEntry.getDateAsFormat("yyyy-MM-dd") %>:<%= blogEntry.getEncodedCategory() %>.<%= blogEntry.getPermalink() %></id>
 
         <!-- entry optional elements -->
-        <created><%= blogEntry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") %></created>
+        <created><%= blogEntry.getUTCDate() %></created>
         <content type="text/html" mode="escaped" xml:lang="<%= blogInformation.getBlogLanguage() %>" xml:base="<%= blogInformation.getBlogBaseURL() %>">
             <![CDATA[ <%= blogEntry.getDescription() %> ]]>
         </content>
