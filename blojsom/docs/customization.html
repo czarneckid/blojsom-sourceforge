@@ -1,0 +1,135 @@
+<html>
+
+<head>
+<title>blojsom - customization</title>
+</head>
+
+<link rel="stylesheet" href="main.css" />
+
+<body>
+
+<p class="weblogtitle">blojsom - customization</p>
+<p class="navigation"><a href="index.html">home</a> | <a href="installation.html">installation</a> |
+ <a href="customization.html">customization</a> | <a href="faq.html">faq</a> | <a href="changelog.ht
+ml">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/proj
+ects/blojsom/">Sourceforge</a></p>
+
+<p>
+
+<p class="weblogtitle">blojsom context</p>
+<p />
+There are a number of objects that get placed in a "Context" that is used by the particular dispatcher handling the template for a requested flavor. A concrete instance of GenericDispatcher will use this "Context" map and make the objects in it available, as appropriate, for the particular presentation technology. For example, in the JSPDispatcher, the objects from this "Context" are placed on the request using the setAttribute method.    
+<p />
+However, you as a user should be aware of the name and type of objects that are available in the "Context". You can see examples of how they are accessed by looking at the html.jsp (JSP page for the html flavor) and html.vm (Velocity template for the html flavor).
+
+<p />
+<table>
+	<th>Key</th>	<th>Object type</th>
+	<tr>
+		<td>"BLOJSOM_BLOG"</td> <td>org.ignition.blojsom.blog.Blog</td>
+	</tr>
+	<tr>
+		<td>"BLOJSOM_ENTRIES"</td> <td>org.ignition.blojsom.blog.BlogEntry[]</td>
+	</tr>
+	<tr>
+		<td>"BLOJSOM_CATEGORIES"</td> <td>org.ignition.blojsom.blog.BlogCategory[]</td>
+	</tr>
+	<tr>
+		<td>"BLOJSOM_SITE_URL"</td> <td>URL of the blojsom blog</td>
+	</tr>
+</table> 
+
+<p class="weblogtitle">blojsom category meta-data</p>
+<p />
+In blojsom 1.1, a per-category meta-data facility was added blojsom. A configuration property in <i>blojsom.properties</i> was added, <i>blojsom-properties-extensions</i>, which defaults to <i>.properties</i>. As blojsom traverses the blog home directory looking for entries, it will also look for files with the extensions listed in <i>blojsom-properties-extensions</i>. If a file matching an extension listed in this configuration property is found, it will be loaded and stored as meta-data information for that category. The properties files <b>must</b> adhere to the restrictions for Java .properties files.
+<p />
+A sample <i>blojsom.properties</i> file in the blog home directory might look like:
+<pre>
+blojsom.name=Top
+blojsom.description=This is my top-level category
+</pre>
+There are two reserved properties for blojsom, <i>blojsom.name</i> and <i>blojsom.description</i>. These two properties can be used to set another descriptive name for the current blog category and to provide a detailed description of the entries in that category. Other properties can be extracted by calling the <i>BlogCategory.getMetaData()</i> method and then looking for the particular property in the returned HashMap. 
+<p />
+As a user, you can use the meta-data in any way you like. For example, besides an alternate name and description, you could have per-category colors or other personalization features that are extracted by the proper template. An example of printing out a category's detailed description, if found in the category meta-data for a category, is given in the Velocity template for the HTML flavor, <i>html.vm</i>. 
+<p />
+<a href="blojsom-screenshot.jpg">Click here</a> for a screen shot of the meta-data facility in action. Look for the string, "This is my top-level category". 
+
+<p class="weblogtitle">blojsom flavor and template customization</p>
+<p /> 
+In blojsom, you have the ability to configure both the flavor and the template mechanism. Why would you want to do this? Well, out of the box, blojsom can generate a few simple flavors for people to view your blog, HTML and RSS. However, these flavors may be insufficient to "describe" your blog and you may also want to use a particular presentation technology for rendering your blog. 
+<p />
+<p class="weblogdateline">Configuring blojsom flavors</p>
+blojsom flavors are configured in <i>WEB-INF/flavor.properties</i>. Here is what the file looks like when you download blojsom.
+<pre>
+html=html.vm, text/html
+rss=rss.vm, text/xml
+</pre>
+Each line represents a configuration of <i>flavor</i>=<i>flavor template filename</i>, <i>flavor content type</i>. In this configuration, the <i>html</i> flavor uses the <i>html.vm</i> template and also uses a content type of <i>text/html</i>. Each line must also follow this configuration of
+<pre><i>flavor</i>=<i>flavor template filename</i>, <i>flavor content type</i></pre>
+ 
+This is the first half of the flavor/template equation. If you wanted to have the HTML flavor for your blog rendered using JavaServer Pages (JSP), you can do this. 
+<p />
+<p class="weblogdateline">Configuring blojsom dispatchers</p>
+blojsom dispatchers are configured in <i>WEB-INF/dispatcher-map.properties</i>. Here is what the file looks like when you download blojsom.
+<pre>
+jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
+vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
+</pre>
+Each line represents a configuration of <i>template extension</i>=<i>fully qualified dispatcher classname</i>. For the template dispatcher to be configured correctly, the template extension must be present in one of the configured flavors. 
+<p />
+In the above configuration, the <i>html</i> flavor is handled by the <i>html.vm</i> template which is dispatched by the <i>org.ignition.blojsom.dispatcher.VelocityDispatcher</i>. Got that? OK, well, let's say you wanted to use the JSP template for the HTML flavor to render your blog. Here's how that configuration would look for the <i>flavor.properties</i> and <i>dispatcher-map.properties</i>, respectively.
+<p />
+<i>flavor.properties</i>
+<pre>
+html=html.jsp, text/html
+rss=rss.vm, text/xml
+</pre>
+<i>dispatcher-map.properties</i>
+<pre>
+jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
+vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
+</pre>
+OK. So, one simple change to the <i>flavor.properties</i> file and no change to the <i>dispatcher-map.properties</i>. That's it. It's that simple!
+<p />
+
+<p class="weblogtitle">writing a blojsom custom dispatcher</p>
+<p />
+Coming soon... For now, check out the <a href="javadoc/index.html">javadocs</a> and the source code for the JSPDispatcher and VelocityDispatcher. It's pretty straightforward.
+<p />
+Besides, are you REALLY going to be dispatching to anything other than JSP or Velocity? ;) Maybe a DatabaseDispatcher perhaps?!
+
+<p class="weblogtitle">blojsom logging customization</p>
+<p />
+blojsom uses <a href="http://jakarta.apache.org/commons/logging.html">Jakarta Commons Logging</a> to
+ do logging. blojsom also ships with <a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J
+</a> as its logging package. In the <i>WEB-INF/classes</i> directory, you will find a file called <i
+>log4j.properties</i>. Developers who have downloaded blojsom from CVS will find this file in the di
+rectory where blojsom was checked out to in <i>/properties</i>.
+<p />
+You may edit the <i>log4j.properties</i> file to configure logging in blojsom as per your needs. How
+ever, Log4J configuration is out of the scope of this document, so you should refer to the <a href="
+http://jakarta.apache.org/log4j/docs/index.html">Log4J</a> website for documentation on configuring
+Log4J.
+<p />
+However, if you would like to turn off blojsom debugging log messages, you can change the following
+statement in <i>log4j.properties</i>:
+<pre>
+log4j.rootLogger=DEBUG, stdout
+</pre>
+to
+<pre>
+log4j.rootLogger=INFO, stdout
+</pre>
+This will ensure that only information messages get logged by blojsom.
+
+</p>
+
+<p />
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
+a>
+
+<hr />
+
+<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=72754&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
+
+</body>

@@ -1,0 +1,47 @@
+<html>
+
+<head>
+<title>blojsom - index</title>
+</head>
+
+<link rel="stylesheet" href="main.css" />
+
+<body>
+
+<p class="weblogtitle">blojsom</p>
+<p class="navigation"><a href="index.html">home</a> | <a href="installation.html">installation</a> |
+ <a href="customization.html">customization</a> | <a href="faq.html">faq</a> | <a href="changelog.ht
+ml">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/proj
+ects/blojsom/">Sourceforge</a></p>
+
+<p class="weblogdate">A lightweight blog package written in Java that is inspired by <a href="http://www.raelity.org">blosxom</a>. blojsom aims to retain the simplicity in design of its Perl-based "relative" while adding user flexibility in areas such as the flavor and templating mechanism.</p>
+
+<p>
+So, out of the box what does it offer?
+<ul>
+<li>Uses the file system, folders and files as its content database.
+<li>Allows you to configure the file types that blojsom treat as blog entries. Defaults to .txt and .html, but you could add other extensions.
+<li>Permalinks which point to individual blog entries.
+<li>Customizable flavors. blojsom currently offers a standard HTML flavor and an RSS flavor.
+<li>Customizable template mechanism. blojsom is very powerful in this area in that you as a developer are allowed to decide what display technology is appropriate for the requested flavor. blojsom currently offers a JSP Dispatcher and a Velocity Dispatcher and .jsp and .vm templates are provided for the HTML and RSS flavors.
+<p />
+This allows you to mix-and-match display technologies for your blog. For example, you might want to render HTML through the JSP for that flavor while you might want to render RSS through Velocity for that flavor.
+<p />
+Have another display technology you'd like to use? Simply extend the <a href="javadoc/org/ignition/blojsom/dispatcher/GenericDispatcher.html">GenericDispatcher</a> interface and configure a mapping file so that blojsom knows how to map the template extension to the proper dispatcher. That's it!
+</ul>
+</p>
+
+Check out a <a href="blojsom-screenshot.jpg">screenshot</a> of blojsom in action.
+<p />
+
+Got an issue with blojsom? Write to <a href="mailto:czarneckid@users.sourceforge.net">me</a>. Or better yet, if it's a bug or request for enhancement, then file it on the <a href="http://sourceforge.net/projects/blojsom">project</a> page.
+<p />
+
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
+a>
+
+<hr />
+
+<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=72754&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
+
+</body>

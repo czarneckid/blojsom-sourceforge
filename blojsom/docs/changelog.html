@@ -1,0 +1,57 @@
+<html>
+
+<head>
+<title>blojsom - changelog</title>
+</head>
+
+<link rel="stylesheet" href="main.css" />
+
+<body>
+
+<p class="weblogtitle">blojsom - changelog</p>
+<p class="navigation"><a href="index.html">home</a> | <a href="installation.html">installation</a> | <a href="customization.html">customization</a> | <a href="faq.html">faq</a> | <a href="changelog.html">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/projects/blojsom/">Sourceforge</a></p>
+
+<p>
+<p class="weblogtitle">blojsom 1.2</p>
+<p class="weblogdateline">Available from CVS</p>
+<p />
+The following bugs were fixed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=684666&group_id=72754&atid=535586">BUG 684666</a>: whitespace lost due to readline<br />
+<p>
+<p class="weblogtitle">blojsom 1.1</p>
+<p class="weblogdateline">February 10, 2003</p>
+<p />
+General:<br />
+- blojsom configuration parameters were moved from <i>/WEB-INF/web.xml</i> to <i>/WEB-INF/blojsom.properties</i>. This allows other projects such as <a href="http://sourceforge.net/projects/blojsim">blojsim</a> to share blojsom configuration information.<br />
+- All of the blog-related functionality (e.g. building the blog entry map, looking up blog entries for a category, etc...) has been refactored into the Blog class. BlojsomServlet is now only concerned with processing requests for the blog.<br />
+- A per-category meta-data facility was added. This functionality is described in the <a href="customization.html">customization</a> documentation.<br /> 
+- Calendar-based navigation is now supported in blojsom. This means that users can add "year=YYYY", "month="MM", and "day=DD" parameters when requesting entries per blog category to see entries that fall under a particular date range. The year must be provided, but a user can narrow down the list of entries by providing a month and a day.<br />
+- Added "powered by" logo to the HTML flavor templates (JSP and Velocity)<br />
+<p />
+The following bugs were fixed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=681271&group_id=72754&atid=535586">BUG 681271</a>: No trailing slash in blog dir hoses category (URI) generation<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=681964&group_id=72754&atid=535586">BUG 681964</a>: @see BUG 681271<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=681969&group_id=72754&atid=535586">BUG 681969</a>: URLs in RSS<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=682445&group_id=72754&atid=535586">BUG 682445</a>: JDK 1.4<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=684190&group_id=72754&atid=535586">BUG 684190</a>: Entry Titles with &'s<br />
+<p />
+The following RFEs were addressed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=682499&group_id=72754&atid=535589">RFE 682499</a>: blojsom is now built to blojsom-core.jar and placed in WEB-INF/lib<br />
+</p>
+
+<p>
+<p class="weblogtitle">blojsom 1.0</p>
+<p class="weblogdateline">February 2, 2003</p>
+<p />
+Initial release of blojsom
+</p>
+
+<p />
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
+a>
+
+<hr />
+
+<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=72754&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
+
+</body>

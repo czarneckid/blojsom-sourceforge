@@ -1,0 +1,60 @@
+<html>
+
+<head>
+<title>blojsom - installation</title>
+</head>
+
+<link rel="stylesheet" href="main.css" />
+
+<body>
+
+<p class="weblogtitle">blojsom - installation</p>
+<p class="navigation"><a href="index.html">home</a> | <a href="installation.html">installation</a> |
+ <a href="customization.html">customization</a> | <a href="faq.html">faq</a> | <a href="changelog.ht
+ml">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/proj
+ects/blojsom/">Sourceforge</a></p>
+
+<p class="weblogtitle">requirements</a></p>
+<ul>
+	<li>Servlet 2.2 compliant application server (e.g. Jakarta Tomcat 4.1.18)
+	<li>Java 1.3 (or higher) runtime
+</ul>
+
+<p class="weblogtitle">installation and default configuration</a></p>
+<p />
+1. Download <a href="http://sourceforge.net/projects/blojsom">blojsom</a>.<p />
+2. Unpack <i>blojsom.war</i> using Java's JAR program (jar xvf blojsom.war) into the directory where the application server will be running blojsom. Under Tomcat, this might be $TOMCAT_HOME/webapps.<br /><p />
+3. Configure the <i>WEB-INF/blojsom.properties</i> file for your blog.
+<ul>
+	<li>Edit <i>blog-home</i> to point to the directory where your blog entries will be located
+	<li>Edit <i>blog-directory-depth</i> to indicate the number of levels deep that blojsom should traverse in <i>blog-home</i> to look for entries. A value of -1 indicates that blojsom should traverse all directories
+	<li>Edit <i>blog-language</i> to indicate the language code for this blog. This parameter is used when generating RSS feeds for your blog
+	<li>Edit <i>blog-name</i> to the name of your blog
+	<li>Edit <i>blog-description</i> to provide a concise description of your blog
+	<li>Edit <i>blog-reload-check</i> to tell blojsom how many ms it should wait before looking for updated entries and/or categories. A value of -1 indicates that blojsom should not reload the blog after it is loaded once.
+	<li>Edit <i>blog-url</i> to the URL for your blog
+	<li>By default, blojsom will look for .txt and .html file extensions in the blog directories for entries. You may add other file extensions under <i>blog-file-extensions</i>
+	<li>Edit <i>blog-properties-extensions</i> to identify the file extensions that blojsom should look for in the blog category directories. Any properties files discovered when loading the blog from disk will be used as meta-data for the current category. This feature is described in the <a href="customization.html">customization</a> reference.
+</ul>
+4. Start your application server. On startup, blojsom will log messages to the console to indicate what it is doing. Configuring blojsom's log capability is described in a later section of this document.
+
+<p class="weblogtitle">blog navigation</p>
+<p/>
+After blojsom is setup and running, your users will be able to navigate around your blog in those categories that have entries. No surprise there, eh?! 
+<p />
+Users may also navigate the blog using a calendar-based method where they request a particular year followed by an optional month followed by an optional day. Examples are provided below:
+<p />
+<i>http://somesite.com/blojsom/blog/java/jdk/?year=2003&month=1</i> - view all entries in the <i>/java/jdk</i> category for January 2003 as HTML. <br />
+<i>http://somesite.com/blojsom/blog/?year=2002&month=12&day=30&flavor=rss</i> - view all entries in the <i>/</i> category for December 30th, 2002 as RSS. 
+<p />
+You get the idea (I hope :) ). For calendar-based navigation, users can provide the year, the year and the month, or the year the month and the day. No other combinations are supported.
+
+<p />
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
+a>
+
+<hr />
+
+<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=72754&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
+
+</body>
