@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.18 2003-05-28 14:40:26 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.19 2003-05-29 03:56:40 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -152,7 +152,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private void populateBlacklistPatterns(File blacklistFile) {
         _blacklistPatterns = new ArrayList(5);
         if (blacklistFile.exists()) {
-
             try {
                 _logger.info("Processing blacklist filter [" + blacklistFile.getAbsolutePath() + "]");
                 BufferedReader br = new BufferedReader(new FileReader(blacklistFile));
@@ -166,10 +165,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
             } catch (IOException e) {
                 _logger.error(e);
             }
-
-
         }
-
     }
 
     /**
@@ -179,7 +175,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @return A boolean indicating if this referer is blacklisted
      */
     private boolean isBlacklisted(String referer) {
-
         boolean result = false;
         if (_blacklistPatterns != null) {
             int count = _blacklistPatterns.size();
@@ -195,7 +190,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
         }
 
         return result;
-
     }
 
 
@@ -207,20 +201,15 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
-
         _referergroups = new HashMap(5);
-
         _blogurlfilter = blog.getBlogURL();
-
         _hitcountflavors = new ArrayList(5);
-
 
         String blacklistFilename = (String) blog.getBlogProperties().get(BlojsomConstants.BLOG_BLACKLIST_FILE_IP);
 
         if (blacklistFilename != null && !"".equals(blacklistFilename)) {
             populateBlacklistPatterns(new File(blacklistFilename));
         }
-
 
         String refererConfiguration = servletConfig.getInitParameter(REFERER_CONFIG_IP);
         if (refererConfiguration == null || "".equals(refererConfiguration)) {
