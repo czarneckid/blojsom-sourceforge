@@ -34,11 +34,14 @@ package org.ignition.blojsom.plugin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,7 +52,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.9 2003-03-15 00:23:38 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.10 2003-03-15 18:25:40 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -65,7 +68,21 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * Fully qualified filename to write referers to
      */
     private String _refererlog = null;
+
+    /**
+     * Contains the blog url to filter referes from sub-category entries
+     */
+    private String _blogurlfilter = null;
+
+    /**
+     * Referer History and Count
+     */
     private Map _refererhistory = null;
+
+    /**
+     * Current referer list (will be persisted on destroy()P
+     */
+    private List _referlist = null;
 
     /**
      * Logger instance
@@ -80,12 +97,17 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+
+        _blogurlfilter = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+
         _refererlog = servletConfig.getInitParameter(REFERER_LOG_IP);
         if (_refererlog == null || "".equals(_refererlog)) {
             throw new BlojsomPluginException("No value given for: " + REFERER_LOG_IP + " configuration parameter");
         }
 
         _refererhistory = new HashMap(20);
+        _referlist = new ArrayList(25);
+
         loadRefererLog(_refererlog);
     }
 
@@ -99,9 +121,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
-        if (_referer != null) {
+        if ((_referer != null) && (!_referer.startsWith(_blogurlfilter))) {
             _logger.info("HTTP Referer is " + _referer);
 
             if (_refererhistory.containsKey(_referer)) {
@@ -110,15 +133,8 @@ public class RefererLogPlugin implements BlojsomPlugin {
             } else {
                 _refererhistory.put(_referer, new Integer(1));
             }
+            _referlist.add(_referer);
 
-            try {
-                String output = _referer + "\n";
-                FileOutputStream _fos = new FileOutputStream(_refererlog, true);
-                _fos.write(output.getBytes());
-                _fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         context.put(REFERER_CONTEXT_NAME, _refererhistory);
 
@@ -145,14 +161,13 @@ public class RefererLogPlugin implements BlojsomPlugin {
         if (_refererfile.exists()) {
 
             try {
-                _logger.info("Loading saved referer log from [" + _refererfile + "]");
                 BufferedReader _br = new BufferedReader(new FileReader(_refererfile));
 
                 String _entry = null;
 
                 while (((_entry = _br.readLine()) != null)) {
 
-                    if (!_entry.equals(BUG_FIX)) {
+                    if (!_entry.equals(BUG_FIX) && (!_entry.startsWith(_blogurlfilter))) {
 
                         if (_refererhistory.containsKey(_entry)) {
                             int _count = ((Integer) _refererhistory.get(_entry)).intValue();
@@ -176,5 +191,23 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+
+        // Writer referer cache out to disk
+        _logger.info("Writing referer list to " + _refererlog);
+
+        StringBuffer _referers;
+        if (_referlist.size() > 0) {
+            _referers = new StringBuffer();
+            for (int x = 0; x < _referlist.size(); x++) {
+                _referers.append((String) _referlist.get(x)).append("\n");
+            }
+            try {
+                FileOutputStream _fos = new FileOutputStream(_refererlog, true);
+                _fos.write(_referers.toString().getBytes());
+                _fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
