@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.19 2003-12-17 20:04:26 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.20 2003-12-20 18:10:43 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -278,6 +278,13 @@ public interface BlojsomConstants {
      * Line separator for the system
      */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    /**
+     * Various HTTP caching headers
+     */
+    public static final String PRAGMA_HTTP_HEADER = "Pragma";
+    public static final String CACHE_CONTROL_HTTP_HEADER = "Cache-Control";
+    public static final String NO_CACHE_HTTP_HEADER_VALUE = "no-cache";
 
     public static final String BLOJSOM_CONFIGURATION_IP = "blojsom-configuration";
 
