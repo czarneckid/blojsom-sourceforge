@@ -47,7 +47,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.2 2003-03-31 02:57:31 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.3 2003-04-03 04:00:11 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -81,7 +81,6 @@ public class EmailUtils {
         List _messagelist = (ArrayList) context.get(CONTEXT_VARIABLE);
         _messagelist.add(new EmailMessage(subject, message));
         context.put(CONTEXT_VARIABLE, _messagelist);
-
     }
 
 
