@@ -51,8 +51,13 @@
                 Added $default to <tt>xmlrpc.properties</tt> so that one can have a default XML-RPC handler.
             </action>
 
+            <action dev="czarneckid" type="add" context="Core (addon)">
+                Added <link href="http://www.freemarker.org">FreeMarker</link> dispatcher to allow users to develop
+                templates in FreeMarker.
+            </action>
+
             <action dev="czarneckid" type="add" context="Library">
-                Added <link href="http://jakarta.apache.org/commons/fileupload/">Jakarta Commons FileUpload</link> 1.0.
+                Added <link href="http://jakarta.apache.org/commons/fileupload/">Jakarta Commons FileUpload</link> 1.0 library.
             </action>
 
             <action dev="czarneckid" type="update" context="Library">
@@ -60,7 +65,7 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Library">
-                Updated <link href="http://opensymphony.com/oscache">OSCache</link> to 2.0.1.
+                Updated <link href="http://opensymphony.com/oscache">OSCache</link> library to 2.0.1.
             </action>
 
             <action dev="czarneckid" type="update" context="Template">
