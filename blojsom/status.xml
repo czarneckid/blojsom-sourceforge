@@ -9,22 +9,8 @@
     <changes>
 
         <release version="1.9.5" date="dev">
-            <action dev="intabulas" type="update" context="Extension">
-                Initial implementation of the <a href="http://bitworking.org/rfc/draft-gregorio-05.html">AtomAPI</a> for editing entries. At this time only
-                the fetching of entries is implemented.
-            </action>
 
-            <action dev="czarneckid" type="update" context="Extension">
-                Refactored method to get a blog entry filename from within the Blogger and
-                MetaWeblog API handlers into the base <tt>AbstractBlojsomAPIHandler</tt> class.
-            </action>
-
-            <action dev="czarneckid" type="add" context="Plugin">
-                Duration of "remember me" cookies for the comment plugin can be configured
-                via the <i>plugin-comment-expiration-duration</i> parameter in
-                <i>/WEB-INF/blojsom.properties</i>.
-            </action>
-
+            <!-- Core/General changes -->
             <action dev="czarneckid" type="add" context="Core">
                 The country code for the blog can be configured via the <i>blog-country</i>
                 parameter in <i>/WEB-INF/blojsom.properties</i>.
@@ -35,6 +21,30 @@
                 parameter in <i>/WEB-INF/blojsom.properties</i>. This is now a required parameter
                 for trackbacks to be enabled or disabled.
             </action>
+
+            <action dev="czarneckid" type="update" context="Core">
+                Changed <tt>BlogCategory.setMetadata()</tt> to <tt>BlogCategory.setMetaData()</tt>
+                to be consistent with the naming convention in other classes.
+            </action>
+
+            <!-- Plugin changes -->
+            <action dev="czarneckid" type="add" context="Plugin">
+                Duration of "remember me" cookies for the comment plugin can be configured
+                via the <i>plugin-comment-expiration-duration</i> parameter in
+                <i>/WEB-INF/blojsom.properties</i>.
+            </action>
+
+            <!-- Extension changes -->
+            <action dev="intabulas" type="update" context="Extension">
+                Initial implementation of the <a href="http://bitworking.org/rfc/draft-gregorio-05.html">AtomAPI</a> for editing entries. At this time only
+                the fetching of entries is implemented.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Extension">
+                Refactored method to get a blog entry filename from within the Blogger and
+                MetaWeblog API handlers into the base <tt>AbstractBlojsomAPIHandler</tt> class.
+            </action>
+
         </release>
 
         <release version="1.9.4" date="July 13, 2003">

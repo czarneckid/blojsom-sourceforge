@@ -48,7 +48,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.16 2003-06-12 02:04:55 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.17 2003-07-22 00:07:41 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -194,24 +194,27 @@ public abstract class BlogCategory implements Comparable {
      *
      * @param metadata The map to be associated with the category as meta-data
      */
-    public void setMetadata(Map metadata) {
+    public void setMetaData(Map metadata) {
         _metadata = metadata;
     }
 
     /**
-     * Sets the meta-data associated with this category
+     * Sets the meta-data associated with this category. This method will also try to set the
+     * description and name properties from the meta-data by looking for the
+     * DESCRIPTION_KEY and NAME_KEY, respectively
      *
      * @param data The properties to be associated with the category as meta-data
      */
     public void setMetaData(Properties data) {
         String s = null;
         Enumeration keys = data.keys();
-        Enumeration vals = data.elements();
         if (_metadata == null) {
             _metadata = new HashMap(5);
         }
+        Object key;
         while (keys.hasMoreElements()) {
-            _metadata.put(keys.nextElement(), vals.nextElement());
+            key = keys.nextElement();
+            _metadata.put(key, data.get(key));
         }
 
         s = (String) _metadata.get(BlojsomConstants.DESCRIPTION_KEY);
