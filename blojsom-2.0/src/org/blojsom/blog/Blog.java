@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.32 2005-01-31 02:40:31 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.33 2005-03-05 18:05:10 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -83,6 +83,7 @@ public class Blog implements BlojsomConstants {
     private Boolean _linearNavigationEnabled;
     private Boolean _xmlrpcEnabled;
     private String _blogPingbacksDirectory;
+    private Boolean _useEncryptedPasswords;
 
     private Map _blogProperties;
 
@@ -325,6 +326,10 @@ public class Blog implements BlojsomConstants {
         }
         _blogAdministrationLocale = blogAdministrationLocale;
         _blogProperties.put(BLOG_ADMINISTRATION_LOCALE_IP, _blogAdministrationLocale);
+
+        String useEncryptedPasswords = blogConfiguration.getProperty(USE_ENCRYPTED_PASSWORDS);
+        _useEncryptedPasswords = Boolean.valueOf(useEncryptedPasswords);
+        _blogProperties.put(USE_ENCRYPTED_PASSWORDS, _useEncryptedPasswords);
 
         _logger.info("blojsom home: " + _blogHome);
     }
@@ -1036,5 +1041,36 @@ public class Blog implements BlojsomConstants {
      */
     public Locale getBlogLocale() {
         return new Locale(_blogLanguage, _blogCountry);
+    }
+
+    /**
+     * Retrieve whether or not MD5 encrypted passwords are used
+     *
+     * @return <code>true</code> if encrypted passwords are used, <code>false</code> otherwise
+     * @since blojsom 2.24
+     */
+    public Boolean getUseEncryptedPasswords() {
+        return _useEncryptedPasswords;
+    }
+
+    /**
+     * Set whether or not MD5 encrypted passwords are used
+     *
+     * @param useEncryptedPasswords <code>true</code> if MD5 passwords are used, <code>false</code> otherwise
+     * @since blojsom 2.24
+     */
+    public void setUseEncryptedPasswords(Boolean useEncryptedPasswords) {
+        _useEncryptedPasswords = useEncryptedPasswords;
+    }
+
+    /**
+     * Set the new admin URL for the blog
+     *
+     * @param blogAdminURL Blog admin URL
+     * @since blojsom 2.24
+     */
+    public void setBlogAdminURL(String blogAdminURL) {
+        _blogAdminURL = blogAdminURL;
+        _blogProperties.put(BLOG_ADMIN_URL_IP, blogAdminURL);
     }
 }
