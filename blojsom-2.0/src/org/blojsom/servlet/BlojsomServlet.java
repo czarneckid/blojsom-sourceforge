@@ -60,7 +60,7 @@ import java.util.*;
  * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.23 2004-03-15 01:02:58 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.24 2004-04-24 15:15:55 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -439,8 +439,8 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 }
 
                 // Check for the Last-Modified object from one of the plugins
-                if (httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED) != null) {
-                    Long lastModified = (Long) httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED);
+                if (context.containsKey(BLOJSOM_LAST_MODIFIED)) {
+                    Long lastModified = (Long) context.get(BLOJSOM_LAST_MODIFIED);
                     if (lastModified.longValue() > _lastmodified) {
                         _lastmodified = lastModified.longValue();
                     }

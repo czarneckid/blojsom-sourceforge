@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.20 2004-04-23 22:22:47 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.21 2004-04-24 15:15:40 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -472,7 +472,7 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
                         _blogCommentsDirectory, _blogFileEncoding, commentMetaData);
 
                 // For persisting the Last-Modified time
-                httpServletRequest.getSession().setAttribute(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
+                context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
                 if (_comment != null) {
                     List blogComments = entries[0].getComments();

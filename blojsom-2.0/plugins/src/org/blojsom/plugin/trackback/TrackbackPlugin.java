@@ -56,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.21 2004-04-23 22:22:46 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.22 2004-04-24 15:15:01 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -398,7 +398,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                     _blogFileEncoding, trackbackMetaData);
 
             // For persisting the Last-Modified time
-            httpServletRequest.getSession().setAttribute(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
+            context.put(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
             if (_blogEmailEnabled.booleanValue()) {
                 sendTrackbackEmail(entryTitle, title, category, permalink, url, excerpt, blogName, context,
