@@ -51,7 +51,7 @@ import java.io.IOException;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.12 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.13 2004-03-13 17:15:36 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -64,6 +64,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _fetcherClass;
     private String _installationDirectory;
     private String _templatesDirectory;
+    private String _resourceManager;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
@@ -163,6 +164,12 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 _fetcherClass = BLOG_DEFAULT_FETCHER;
             }
         }
+
+        _resourceManager = getBlojsomPropertyAsString(BLOJSOM_RESOURCE_MANAGER_IP);
+        if (BlojsomUtils.checkNullOrBlank(_resourceManager)) {
+            _resourceManager = BLOJSOM_DEFAULT_RESOURCE_MANAGER;
+        }
+        _logger.debug("Using resource manager: " + _resourceManager);
     }
 
     /**
@@ -262,5 +269,15 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public Map getBlogUsers() {
         return _blogUsers;
+    }
+
+    /**
+     * Get the name of the resource manager class
+     *
+     * @since blojsom 2.13
+     * @return Classname of the resource manager
+     */
+    public String getResourceManager() {
+        return _resourceManager;
     }
 }

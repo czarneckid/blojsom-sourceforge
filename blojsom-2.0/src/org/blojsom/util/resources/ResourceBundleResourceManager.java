@@ -1,0 +1,117 @@
+/**
+ * Copyright (c) 2003-2004, David A. Czarnecki
+ * All rights reserved.
+ *
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the "David A. Czarnecki" and "blojsom" nor the names of
+ * its contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * Products derived from this software may not be called "blojsom",
+ * nor may "blojsom" appear in their name, without prior written permission of
+ * David A. Czarnecki.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.blojsom.util.resources;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.MissingResourceException;
+
+/**
+ * ResourceBundleResourceManager
+ *
+ * @version $Id: ResourceBundleResourceManager.java,v 1.1 2004-03-13 17:15:36 czarneckid Exp $
+ * @since blojsom 2.13
+ * @author David Czarnecki
+ */
+public class ResourceBundleResourceManager implements BlojsomConstants, ResourceManager {
+
+    private transient Log _logger = LogFactory.getLog(ResourceBundleResourceManager.class);
+
+    /**
+     * Default constructor;
+     */
+    public ResourceBundleResourceManager() {
+    }
+
+    /**
+     * @param blojsomConfiguration
+     */
+    public void init(BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
+        String resourceBundlesToLoad = blojsomConfiguration.getBlojsomPropertyAsString(BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP);
+        if (!BlojsomUtils.checkNullOrBlank(resourceBundlesToLoad)) {
+            String[] resourceBundles = BlojsomUtils.parseCommaList(resourceBundlesToLoad);
+            if (resourceBundles != null && resourceBundles.length > 0) {
+                for (int i = 0; i < resourceBundles.length; i++) {
+                    String resourceBundle = resourceBundles[i];
+                    try {
+                        ResourceBundle.getBundle(resourceBundle);
+                        _logger.debug("Loaded resource bundle: " + resourceBundle);
+                    } catch (Exception e) {
+                        _logger.error(e);
+                    }
+                }
+            }
+        }
+
+        _logger.debug("Initialized resource bundle resource manager");
+    }
+
+    /**
+     * @param resourceID
+     * @param resource
+     * @param fallback
+     * @param language
+     * @param country
+     * @return
+     */
+    public String getString(String resourceID, String resource, String fallback, String language, String country) {
+        return getString(resourceID, resource, fallback, new Locale(language, country));
+    }
+
+    /**
+     * @param resourceID
+     * @param resource
+     * @param fallback
+     * @param locale
+     * @return
+     */
+    public String getString(String resourceID, String resource, String fallback, Locale locale) {
+        try {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(resource, locale);
+            return resourceBundle.getString(resourceID);
+        } catch (MissingResourceException e) {
+            _logger.error(e);
+        }
+
+        return fallback;
+    }
+}

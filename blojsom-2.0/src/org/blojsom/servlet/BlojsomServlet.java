@@ -44,6 +44,7 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.resources.ResourceManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -59,7 +60,7 @@ import java.util.*;
  * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.21 2004-01-11 04:04:12 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.22 2004-03-13 17:15:36 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -70,6 +71,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     private Map _plugins;
     private Map _dispatchers;
+    private ResourceManager _resourceManager;
 
     /**
      * Create a new blojsom servlet instance
@@ -83,7 +85,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
      * 
      * @param servletConfig Servlet configuration information
      */
-    private void configureDispatchers(ServletConfig servletConfig) throws ServletException {
+    protected void configureDispatchers(ServletConfig servletConfig) throws ServletException {
         String templateConfiguration = servletConfig.getInitParameter(BLOJSOM_DISPATCHER_MAP_CONFIGURATION_IP);
         _dispatchers = new HashMap();
         Properties templateMapProperties = new Properties();
@@ -122,7 +124,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
      * 
      * @param servletConfig Servlet configuration information
      */
-    private void configureFlavors(ServletConfig servletConfig) throws ServletException {
+    protected void configureFlavors(ServletConfig servletConfig) throws ServletException {
         String flavorConfiguration = servletConfig.getInitParameter(BLOJSOM_FLAVOR_CONFIGURATION_IP);
         Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
         BlogUser blogUser;
@@ -164,7 +166,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
      * 
      * @param servletConfig Servlet configuration information
      */
-    private void configurePlugins(ServletConfig servletConfig) throws ServletException {
+    protected void configurePlugins(ServletConfig servletConfig) throws ServletException {
         // Instantiate the plugins
         String pluginConfiguration = servletConfig.getInitParameter(BLOJSOM_PLUGIN_CONFIGURATION_IP);
         if (BlojsomUtils.checkNullOrBlank(pluginConfiguration)) {
@@ -243,6 +245,32 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     }
 
     /**
+     *
+     * @throws ServletException
+     */
+    protected void configureResourceManager() throws ServletException {
+        String resourceManagerClass = _blojsomConfiguration.getResourceManager();
+
+        try {
+            Class resourceManagerClazz = Class.forName(resourceManagerClass);
+            _resourceManager = (ResourceManager) resourceManagerClazz.newInstance();
+            _resourceManager.init(_blojsomConfiguration);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        }
+    }
+
+    /**
      * Initialize blojsom: configure blog, configure flavors, configure dispatchers
      * 
      * @param servletConfig Servlet configuration information
@@ -256,6 +284,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         configureFlavors(servletConfig);
         configurePlugins(servletConfig);
         configureAuthorization(servletConfig);
+        configureResourceManager();
 
         _logger.debug("blojsom: All Your Blog Are Belong To Us");
     }
@@ -332,6 +361,9 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
         // Setup the initial context for the fetcher, plugins, and finally the dispatcher
         HashMap context = new HashMap();
+
+        // Setup the resource manager in the context
+        context.put(BLOJSOM_RESOURCE_MANAGER_CONTEXT_KEY, _resourceManager);
 
         BlogEntry[] entries = null;
         BlogCategory[] categories = null;
