@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <html>
 
     <head>
@@ -14,7 +15,8 @@
             <tr>
                 <th>Blog property</th> <th>Current value</th>
             </tr>
-            <form name="edit-blog-properties" action="." method="post">
+            <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
+
                 <input type="hidden" name="action" value="edit-blog-properties"/>
                 <input type="hidden" name="flavor" value="admin"/>
                 <tr>
@@ -24,10 +26,10 @@
                     <td>Blog description</td> <td><input name="blog-description" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDescription()"/></td>
                 </tr>
                 <tr>
-                    <td>Blog URL</td> <td><input name="blog-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogURL()"/></td>
+                    <td>Blog URL</td> <td><input name="blog-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogURL()" disabled="true"/></td>
                 </tr>
                 <tr>
-                    <td>Blog base URL</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()"/></td>
+                    <td>Blog base URL</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()" disabled="true"/></td>
                 </tr>
                 <tr>
                     <td>Blog country</td> <td><input name="blog-country" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCountry()"/></td>
@@ -38,6 +40,11 @@
                 <tr>
                     <td>Blog depth</td> <td><input name="blog-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
                 </tr>
+                #foreach ($flavor in $FLAVOR_MAP.keySet())
+                        <tr>
+                            <td>$flavor default category mapping</td> <td><input name="${flavor}-blog-default-category-mapping" type="text" size="50" value="$FLAVOR_MAP.get($flavor)"/></td>
+                        </tr>
+                #end
                 <tr>
                     <td>Blog display entries</td> <td><input name="blog-display-entries" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDisplayEntries()"/></td>
                 </tr>

@@ -48,15 +48,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.1 2003-10-21 03:34:33 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.2 2003-10-22 02:48:30 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -64,6 +63,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
     private static final String EDIT_BLOG_PROPERTIES_PAGE = "/org/blojsom/plugin/admin/admin-edit-blog-properties";
     private static final String EDIT_BLOG_PROPERTIES_ACTION = "edit-blog-properties";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP";
 
     /**
      *
@@ -99,6 +99,20 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             return entries;
         }
 
+        // Setup default objects
+        Blog blog = user.getBlog();
+
+        Map flavorMap = user.getFlavors();
+        Iterator flavorKeys = flavorMap.keySet().iterator();
+        Map categoryMapping = new HashMap();
+        while (flavorKeys.hasNext()) {
+            String key = (String) flavorKeys.next();
+            if (blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP) != null) {
+                categoryMapping.put(key, blog.getBlogProperty(key + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP));
+            }
+        }
+        context.put(BLOJSOM_PLUGIN_CATEGORY_MAP, categoryMapping);
+
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action == null || "".equals(action)) {
             _logger.debug("User did not request edit action");
@@ -110,16 +124,11 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             return entries;
         } else if (EDIT_BLOG_PROPERTIES_ACTION.equals(action)) {
             _logger.debug("User requested edit action");
-            Blog blog = user.getBlog();
 
             String blogPropertyValue = BlojsomUtils.getRequestValue("blog-name", httpServletRequest);
             blog.setBlogName(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-description", httpServletRequest);
             blog.setBlogDescription(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-url", httpServletRequest);
-            blog.setBlogURL(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-base-url", httpServletRequest);
-            blog.setBlogBaseURL(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-country", httpServletRequest);
             blog.setBlogCountry(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-language", httpServletRequest);
@@ -155,7 +164,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
 
             // Write out new blog properties
-            Properties blogProperties = BlojsomUtils.mapToProperties(blog.getBlogProperties(), blog.getBlogFileEncoding());
+            Properties blogProperties = BlojsomUtils.mapToProperties(blog.getBlogProperties(), UTF8);
             File propertiesFile = new File(_blojsomConfiguration.getInstallationDirectory()
                     + BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
                     "/" + user.getId() + "/" + BlojsomConstants.BLOG_DEFAULT_PROPERTIES);
