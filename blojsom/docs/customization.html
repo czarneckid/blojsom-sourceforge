@@ -83,10 +83,13 @@ However, you as a user should be aware of the name and type of objects that are 
 		<td>"BLOJSOM_SITE_URL"</td> <td>java.lang.String</td>
 	</tr>
 	<tr>
-		<td>"BLOJSOM_DATE"</td> <td>java.lang.String</td>
+		<td>"BLOJSOM_DATE"</td> <td>java.lang.String (RFC-822 format)</td>
 	</tr>
 	<tr>
 		<td>"BLOJSOM_DATE_ISO8601"</td> <td>java.lang.String</td>
+	</tr>
+	<tr>
+		<td>"BLOJSOM_DATE_OBJECT"</td> <td>java.util.Date</td>
 	</tr>
 	<tr>
 		<td>"BLOJSOM_COMMENTS_ENABLED"</td> <td>java.lang.Boolean</td>
@@ -119,7 +122,9 @@ html=html.vm, text/html
 rss=rss.vm, text/xml
 </pre>
 Each line represents a configuration of <i>flavor</i>=<i>flavor template filename</i>, <i>flavor content type</i>. In this configuration, the <i>html</i> flavor uses the <i>html.vm</i> template and also uses a content type of <i>text/html</i>. Each line must also follow this configuration of
-<pre><i>flavor</i>=<i>flavor template filename</i>, <i>flavor content type</i></pre>
+<pre>
+flavor=flavor template filename, flavor content type
+</pre>
 
 This is the first half of the flavor/template equation. If you wanted to have the HTML flavor for your blog rendered using JavaServer Pages (JSP), you can do this.
 <p />

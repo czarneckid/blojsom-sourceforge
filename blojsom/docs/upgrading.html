@@ -35,6 +35,29 @@ For example:
 <pre>
 blog-fetcher=
 </pre>
+
+<p />
+2. If you would like to enable support for the Comment API in blojsom, add the following to
+your <i>web.xml</i> file.
+<pre>
+&lt;servlet&gt;
+    &lt;servlet-name&gt;blojsomcommentapi&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.ignition.blojsom.extension.comment.CommentAPIServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;blog-configuration&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/blojsom.properties&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+</pre>
+<p />
+<pre>
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;blojsomcommentapi&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/commentapi/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</pre>
+
 <p />
 
 <p>
@@ -52,6 +75,7 @@ blog-base-url=http://localhost:8080/blojsom/
 2. All plugins have been refactored into individual packages. The following list contains
 the proper plugin class names:
 <pre>
+emoticons=org.ignition.blojsom.plugin.emoticons.EmoticonsPlugin
 limiter=org.ignition.blojsom.plugin.limiter.EntriesLimiterPlugin
 macro-expansion=org.ignition.blojsom.plugin.macro.MacroExpansionPlugin
 href-hyperlinks=org.ignition.blojsom.plugin.hyperlink.HyperlinkURLPlugin
