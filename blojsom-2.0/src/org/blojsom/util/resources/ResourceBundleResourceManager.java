@@ -48,7 +48,7 @@ import java.util.MissingResourceException;
 /**
  * ResourceBundleResourceManager
  *
- * @version $Id: ResourceBundleResourceManager.java,v 1.1 2004-03-13 17:15:36 czarneckid Exp $
+ * @version $Id: ResourceBundleResourceManager.java,v 1.2 2004-03-15 01:02:04 czarneckid Exp $
  * @since blojsom 2.13
  * @author David Czarnecki
  */
@@ -63,7 +63,11 @@ public class ResourceBundleResourceManager implements BlojsomConstants, Resource
     }
 
     /**
-     * @param blojsomConfiguration
+     * Initialize the resource bundle manager.
+     * <p/>
+     * Resource bundles to pre-load are specified in a comma-separated list under the key
+     * <code>blojsom-resource-manager-bundles</code>.
+     * @param blojsomConfiguration Blojsom configuration information
      */
     public void init(BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
         String resourceBundlesToLoad = blojsomConfiguration.getBlojsomPropertyAsString(BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP);
@@ -86,23 +90,46 @@ public class ResourceBundleResourceManager implements BlojsomConstants, Resource
     }
 
     /**
-     * @param resourceID
-     * @param resource
-     * @param fallback
-     * @param language
-     * @param country
-     * @return
+     * Retrieve a string from a given resource bundle for the default locale.
+     *
+     * @param resourceID Resource ID to retrieve from the resource bundle
+     * @param resource Full-qualified resource bundle from which to retrieve the resource ID
+     * @param fallback Fallback string to use if the given resource ID cannot be found
+     * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
+     */
+    public String getString(String resourceID, String resource, String fallback) {
+        try {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(resource);
+            return resourceBundle.getString(resourceID);
+        } catch (MissingResourceException e) {
+            _logger.error(e);
+        }
+
+        return fallback;
+    }
+
+    /**
+     * Retrieve a string from a given resource bundle for the particular language and country locale.
+     *
+     * @param resourceID Resource ID to retrieve from the resource bundle
+     * @param resource Full-qualified resource bundle from which to retrieve the resource ID
+     * @param fallback Fallback string to use if the given resource ID cannot be found
+     * @param language Language code
+     * @param country Country code
+     * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
      */
     public String getString(String resourceID, String resource, String fallback, String language, String country) {
         return getString(resourceID, resource, fallback, new Locale(language, country));
     }
 
     /**
-     * @param resourceID
-     * @param resource
-     * @param fallback
-     * @param locale
-     * @return
+     * Retrieve a string from a given resource bundle for the particular language and country locale.
+     *
+     * @param resourceID Resource ID to retrieve from the resource bundle
+     * @param resource Full-qualified resource bundle from which to retrieve the resource ID
+     * @param fallback Fallback string to use if the given resource ID cannot be found
+     * @param locale Locale object to use when retrieving the resource bundle
+     * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
      */
     public String getString(String resourceID, String resource, String fallback, Locale locale) {
         try {
