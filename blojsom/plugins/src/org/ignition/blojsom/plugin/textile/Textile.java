@@ -45,7 +45,8 @@ import java.util.regex.Matcher;
  * Please also see JTextile http://pipthepixie.tripod.com/code/jtextile.html
  *
  * @author Mark Lussier
- * @version $Id: Textile.java,v 1.5 2003-05-28 13:56:09 intabulas Exp $
+ * @since blojsom 1.9
+ * @version $Id: Textile.java,v 1.6 2003-05-29 04:10:29 czarneckid Exp $
  */
 public class Textile implements TextileConstants {
 
@@ -79,21 +80,15 @@ public class Textile implements TextileConstants {
         content = replace(content, "&lt;", "<");
         content = replace(content, "&amp;", "&");
 
-
-
-
         /**
          *  zap carriage returns
-         * @todo optimize
          */
         content = replace(content, "\r\n", "\n");
 
         /**
          * zap tabs
-         * @todo optimize
          */
         content = replace(content, "\t", "");
-
 
         /**
          * trim each line
@@ -109,12 +104,10 @@ public class Textile implements TextileConstants {
 
         //### Find and replace quick tags
 
-
         /**
          * double equal signs mean <notextile>
          */
         content = content.replaceAll(EXP_DOUBLEQUOTE_MATCH, EXP_DOUBLEQUOTE_REPLACE);
-
 
         /**
          * image qtag
@@ -129,7 +122,6 @@ public class Textile implements TextileConstants {
          */
         content = content.replaceAll(EXP_HREF_QTAG_MATCH, EXP_HREF_QTAG_REPLACE);
 
-
         /**
          * loop through the array, replacing qtags with html
          */
@@ -139,12 +131,6 @@ public class Textile implements TextileConstants {
                     + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "([^\\w\\s]{0,2})(\\s|$)?"
                     , "$1<" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$2$3</" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$4");
         }
-
-
-
-
-
-
 
         /**
          * From the Origional Docs:
@@ -332,18 +318,17 @@ public class Textile implements TextileConstants {
 
 
         return content;
-
     }
 
     /**
      * An implementation of the PHP htmlspecialchars()
      *
-     * @param content
-     * @param mode
-     * @return
+     * @param content Source string
+     * @param mode Mode to select replacement string for quotes
+     *
+     * @return String with replace occurrences
      */
     private String htmlSpecialChars(String content, int mode) {
-
         content = replace(content, "&", "&amp;");
 
 
@@ -356,18 +341,17 @@ public class Textile implements TextileConstants {
         content = replace(content, "<", "&lt;");
         content = replace(content, ">", "&gt;");
         return content;
-
     }
 
 
     /**
      * Splits a string into a string array based on a matching regex
-     * @param matchexp Expression to Match
+     *
+     * @param matchexp Expression to match
      * @param content Content to split
      * @return String array of split content
      */
     private String[] splitContent(String matchexp, String content) {
-
         int startAt = 0;
         List tempList = new ArrayList();
 
@@ -390,19 +374,18 @@ public class Textile implements TextileConstants {
         }
 
         return result;
-
     }
 
 
     /**
+     * Replace an array of match patterns in a string
      *
-     * @param content
-     * @param matches
-     * @param replaces
-     * @return
+     * @param content Source string
+     * @param matches Match patterns
+     * @param replaces Replacement patterns
+     * @return String with replaced occurrences
      */
     private String arrayReplaceAll(String content, String[] matches, String[] replaces) {
-
         String result = content;
 
         for (int x = 0; x < matches.length; x++) {
@@ -419,7 +402,7 @@ public class Textile implements TextileConstants {
      * @param str The source string.  This is the string that will be searched and have the replacements
      * @param pattern The pattern to look for in str
      * @param replace The string to insert in the place of <i>pattern</i>
-     * @return String with replace occurences
+     * @return String with replaced occurences
      */
     private static String replace(String str, String pattern, String replace) {
         if (str == null || "".equals(str)) {
@@ -446,6 +429,4 @@ public class Textile implements TextileConstants {
         result.append(str.substring(s));
         return result.toString();
     }
-
-
 }

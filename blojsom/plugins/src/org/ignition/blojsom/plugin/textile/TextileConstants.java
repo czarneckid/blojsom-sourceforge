@@ -38,7 +38,8 @@ package org.ignition.blojsom.plugin.textile;
  * Textile Constants
  *
  * @author Mark Lussier
- * @version $Id: TextileConstants.java,v 1.4 2003-05-27 03:01:45 intabulas Exp $
+ * @since blojsom 1.9
+ * @version $Id: TextileConstants.java,v 1.5 2003-05-29 04:10:29 czarneckid Exp $
  */
 public interface TextileConstants {
 

@@ -52,7 +52,8 @@ import java.util.Map;
  * An implementation of the Textism's Textile. See http://www.textism.com/tools/textile
  *
  * @author Mark Lussier
- * @version $Id: TextilePlugin.java,v 1.5 2003-05-28 13:56:09 intabulas Exp $
+ * @since blojsom 1.9
+ * @version $Id: TextilePlugin.java,v 1.6 2003-05-29 04:10:29 czarneckid Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
 
@@ -98,14 +99,12 @@ public class TextilePlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-
         for (int x = 0; x < entries.length; x++) {
             BlogEntry entry = entries[x];
             if (entry.getPermalink().endsWith(TEXTILE_EXTENSION)) {
-                _logger.info("Textile Processing: " + entry.getTitle());
+                _logger.debug("Textile Processing: " + entry.getTitle());
                 entry.setDescription(_textile.process(entry.getDescription()));
             }
-
         }
 
         return entries;
