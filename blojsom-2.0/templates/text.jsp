@@ -1,7 +1,7 @@
 <%@ page import="org.blojsom.blog.BlogEntry,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.Blog"
-         contentType="text/plain" %>
+         contentType="text/plain; charset=UTF-8" %>
 
 <% Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG); %>
 <%= blogInformation.getBlogName() %>

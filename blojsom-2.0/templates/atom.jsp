@@ -1,4 +1,5 @@
-<%@ page import="org.blojsom.blog.Blog,
+<%@ page contentType="application/atom+xml; charset=UTF-8"
+         import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogEntry"%>
 <%

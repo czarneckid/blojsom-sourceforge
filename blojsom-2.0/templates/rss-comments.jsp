@@ -1,12 +1,13 @@
-<?xml version="1.0"?>
-<!-- name="generator" content="<%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %>" -->
-<%@ page import="org.blojsom.blog.Blog,
+<%@ page contentType="text/xml; charset=UTF-8"
+         import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogEntry,
                  org.blojsom.util.BlojsomUtils,
                  org.blojsom.blog.BlogComment,
                  java.util.List"
-                 session="false"%>
+         session="false"%>
+<?xml version="1.0"?>
+<!-- name="generator" content="<%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %>" -->
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);

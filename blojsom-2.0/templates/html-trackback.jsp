@@ -1,4 +1,5 @@
-<%@ page import="org.blojsom.util.BlojsomConstants,
+<%@ page contentType="text/html; charset=UTF-8"
+         import="org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.*,
                  java.util.List"
 		 session="false"%>

@@ -1,8 +1,9 @@
-<?xml version="1.0"?>
-<%@ page import="org.blojsom.blog.Blog,
+<%@ page contentType="text/xml; charset=UTF-8"
+         import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogEntry"
-                 session="false"%>
+         session="false"%>
+<?xml version="1.0"?>
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);

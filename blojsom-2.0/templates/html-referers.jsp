@@ -1,4 +1,5 @@
-<%@ page import="org.blojsom.blog.Blog,
+<%@ page contentType="text/html; charset=UTF-8"
+         import="org.blojsom.blog.Blog,
 		 org.blojsom.util.BlojsomConstants,
                  java.util.Map,
                  java.util.HashMap,
