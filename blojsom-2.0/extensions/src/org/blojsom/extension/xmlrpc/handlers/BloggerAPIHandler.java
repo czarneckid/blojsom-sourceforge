@@ -53,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.14 2004-09-12 23:01:28 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.15 2004-11-07 19:19:05 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -480,7 +480,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     entrystruct.put(MEMBER_BLOGID, entry.getCategory());
                     entrystruct.put(MEMBER_TITLE, entry.getTitle());
                     entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                    entrystruct.put(MEMBER_CONTENT, entry.getDescription());
+                    entrystruct.put(MEMBER_CONTENT, entry.getTitle() + LINE_SEPARATOR + entry.getDescription());
                     entrystruct.put(MEMBER_DATECREATED, entry.getDate());
                     entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                     entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
@@ -617,7 +617,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                         entrystruct.put(MEMBER_BLOGID, entry.getCategory());
                         entrystruct.put(MEMBER_TITLE, entry.getTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                        entrystruct.put(MEMBER_CONTENT, entry.getDescription());
+                        entrystruct.put(MEMBER_CONTENT, entry.getTitle() + LINE_SEPARATOR + entry.getDescription());
                         entrystruct.put(MEMBER_DATECREATED, entry.getDate());
                         entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                         entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
