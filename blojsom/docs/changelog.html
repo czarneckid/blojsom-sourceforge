@@ -31,10 +31,19 @@
 General:<br />
 - Upgraded Velocity from version 1.3 to 1.3.1<br />
 - Upgraded log4j from version 1.2.7 to 1.2.8<br />
-- Changed Referer Log plugin to log each referer at the debug level rather than at the
-info level.<br />
 - <tt>BlojsomServlet</tt> now correctly falls back to <i>blojsom-plugin-chain</i> if
 <i>&lt;flavor&gt;.blojsom-plugin-chain</i> is not present in <i>plugin.properties</i><br />
+- Added "BLOJSOM_DATE_OBJECT" (<tt>java.util.Date</tt>) to the context<br />
+
+<p />
+Extension changes:<br />
+- Blogger API and MetaWeblog API handlers now use <tt>File.separator</tt> when writing
+a post<br />
+
+<p />
+Plugin changes:<br />
+- Changed Referer Log plugin to log each referer at the debug level rather than at the
+info level.<br />
 
 <p>
 <p class="weblogtitle">blojsom 1.7 (codename: Absolut)</p>
