@@ -45,7 +45,7 @@ import java.util.Map;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.10 2005-01-19 17:52:43 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.11 2005-01-19 21:49:49 intabulas Exp $
  */
 public class BlogComment {
 
@@ -117,6 +117,14 @@ public class BlogComment {
      */
     public void setAuthorURL(String authorURL) {
         _authorURL = authorURL;
+    }
+
+    /**
+     * Get the comment as a escaped string 
+     * @return Escaped Comment
+     */
+    public String getEscapedComment() {
+        return BlojsomUtils.escapeString(_comment);
     }
 
     /**
