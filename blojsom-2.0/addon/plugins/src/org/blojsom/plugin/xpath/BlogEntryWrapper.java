@@ -42,17 +42,26 @@ import org.blojsom.blog.BlogEntry;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: BlogEntryWrapper.java,v 1.3 2003-09-24 22:22:40 intabulas Exp $
+ * @version $Id: BlogEntryWrapper.java,v 1.4 2003-09-25 01:20:22 czarneckid Exp $
  */
-
 public class BlogEntryWrapper {
 
     private BlogEntry[] _entries;
 
+    /**
+     * Construct a wrapper with an existing set of entries
+     *
+     * @param entries Set of blog entries
+     */
     public BlogEntryWrapper(BlogEntry[] entries) {
         _entries = entries;
     }
 
+    /**
+     * Retrieve the set of blog entries
+     *
+     * @return Blog entries
+     */
     public BlogEntry[] getEntries() {
         return _entries;
     }

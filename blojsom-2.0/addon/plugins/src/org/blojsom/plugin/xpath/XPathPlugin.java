@@ -57,9 +57,8 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.7 2003-09-24 23:19:55 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.8 2003-09-25 01:20:22 czarneckid Exp $
  */
-
 public class XPathPlugin implements BlojsomPlugin {
 
     private static final String XPATH_PARAM = "xpath";
@@ -74,9 +73,7 @@ public class XPathPlugin implements BlojsomPlugin {
      * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-
         JXPathContext.newContext(BlogEntry.class);
-
     }
 
     /**
@@ -91,12 +88,11 @@ public class XPathPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-
         BlogEntry[] results = null;
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
-        if (xpath != null) {
-            _logger.info("Attempting with: " + xpath);
+        if (xpath != null && !"".equals(xpath)) {
+            _logger.debug("Attempting xpath query with: " + xpath);
             BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
             List foundEntries = new ArrayList();
             JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
@@ -105,7 +101,7 @@ public class XPathPlugin implements BlojsomPlugin {
 
                 while (entryIterator.hasNext()) {
                     Object object = entryIterator.next();
-                    BlogEntry entry = (FileBackedBlogEntry) object;
+                    BlogEntry entry = (BlogEntry) object;
                     foundEntries.add(entry);
                 }
             } catch (Exception e) {
@@ -119,13 +115,10 @@ public class XPathPlugin implements BlojsomPlugin {
                 for (int x = 0; x < foundEntries.size(); x++) {
                     results[x] = (BlogEntry) foundEntries.get(x);
                 }
-
             }
-
         } else {
             results = entries;
         }
-
 
         return results;
     }
