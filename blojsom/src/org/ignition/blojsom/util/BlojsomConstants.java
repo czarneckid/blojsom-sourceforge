@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.44 2003-03-28 01:07:43 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.45 2003-03-28 03:50:58 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -156,6 +156,16 @@ public interface BlojsomConstants {
      * Request parameter for the "category"
      */
     public static final String CATEGORY_PARAM = "category";
+
+    /**
+     * Request parameter for "entries_start"
+     */
+    public static final String ENTRIES_START_PARAM = "entries_start";
+
+    /**
+     * Request parameter for "entries_end"
+     */
+    public static final String ENTRIES_END_PARAM = "entries_end";
 
     /**
      * Default directory for adding trackbacks
