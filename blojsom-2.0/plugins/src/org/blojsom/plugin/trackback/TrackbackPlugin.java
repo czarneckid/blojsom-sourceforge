@@ -56,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.23 2004-05-03 23:37:05 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.24 2004-05-08 19:12:30 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -321,6 +321,9 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
             }
 
             url = url.trim();
+            if (!url.toLowerCase().startsWith("http://")) {
+                url = "http://" + url;
+            }
 
             if (BlojsomUtils.checkNullOrBlank(title)) {
                 title = url;
