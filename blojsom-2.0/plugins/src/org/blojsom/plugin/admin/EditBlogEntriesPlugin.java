@@ -60,7 +60,7 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.23 2004-03-23 01:24:11 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.24 2004-03-30 02:13:44 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -248,6 +248,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
+            if (BlojsomUtils.checkNullOrBlank(blogEntryTitle)) {
+                blogEntryDescription = BlojsomUtils.LINE_SEPARATOR + blogEntryDescription;
+            }
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
@@ -343,8 +346,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 entries = _fetcher.fetchEntries(fetchMap, user);
                 if (entries != null) {
                     _logger.debug("Retrieved " + entries.length + " entries from category: " + blogCategoryName);
+                    String title = entries[0].getTitle();
                     entries[0].delete(user);
-                    addOperationResultMessage(context, "Deleted blog entry: " + blogEntryId);
+                    addOperationResultMessage(context, "Deleted blog entry: " + title);
                 } else {
                     _logger.debug("No entries found in category: " + blogCategoryName);
                 }
@@ -378,6 +382,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
+            if (BlojsomUtils.checkNullOrBlank(blogEntryTitle)) {
+                blogEntryDescription = BlojsomUtils.LINE_SEPARATOR + blogEntryDescription;
+            }
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
