@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.42 2003-03-11 04:03:58 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.43 2003-03-14 04:14:38 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -396,6 +396,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
+        // Setup the initial context for the dispatcher
+        HashMap context = new HashMap();
+
         // Invoke the plugins in the order in which they were specified
         if ((entries != null) && (pluginChain != null)) {
             for (int i = 0; i < pluginChain.length; i++) {
@@ -404,7 +407,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                     BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
                     _logger.debug("blojsom plugin execution: " + blojsomPlugin.getClass().getName());
                     try {
-                        entries = blojsomPlugin.process(httpServletRequest, entries);
+                        entries = blojsomPlugin.process(httpServletRequest, context, entries);
                         blojsomPlugin.cleanup();
                     } catch (BlojsomPluginException e) {
                         _logger.error(e);
@@ -415,16 +418,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        String _blogdate = null;
-
-        // If we have entries, construct a last modified on the most recent
-        // Additional  set the blog date
-
-        /**
-         * Last-Modified Code: If this page is showing comments (page=) then base the last modified  off
-         * the most recent comment,  otherwise base it off the most recent blog entry
-         */
-
+        String blogdate = null;
+        String blogISO8601Date = null;
+        // If we have entries, construct a last modified on the most recent entry
+        // Additionally, set the blog date
         if ((entries != null) && (entries.length > 0)) {
             _logger.debug("Adding last-modified header for most recent blog entry");
             BlogEntry _entry = entries[0];
@@ -437,18 +434,21 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 _lastmodified = _entry.getLastModified();
             }
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
-            _blogdate = entries[0].getRFC822Date();
+            blogdate = entries[0].getRFC822Date();
+            blogISO8601Date = entries[0].getISO8601Date();
         } else {
             _logger.debug("Adding last-modified header for current date");
-            _blogdate = BlojsomUtils.getRFC822Date(new Date());
+            Date today = new Date();
+            blogdate = BlojsomUtils.getRFC822Date(today);
+            blogISO8601Date = BlojsomUtils.getISO8601Date(today);
         }
 
-        // Setup the context for the dispatcher
-        HashMap context = new HashMap();
+        // Finish setting up the context for the dispatcher
         context.put(BLOJSOM_BLOG, _blog);
         context.put(BLOJSOM_SITE_URL, blogSiteURL);
         context.put(BLOJSOM_ENTRIES, entries);
-        context.put(BLOJSOM_DATE, _blogdate);
+        context.put(BLOJSOM_DATE, blogdate);
+        context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
         if (requestedCategory.equals("/")) {
             context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
         } else {
