@@ -197,7 +197,7 @@
                     <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
                     #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
                         #foreach ($blogTrackback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
-                        #set ($trackbackModerated = $!blogComment.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("true"))
+                        #set ($trackbackModerated = $!blogTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("true"))
                         #if (!$trackbackModerated)
                         <tr>
                             <td><input type="checkbox" name="blog-trackback-id" value="$blogTrackback.getId()"/>&nbsp;
