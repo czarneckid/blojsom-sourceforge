@@ -34,8 +34,6 @@
  */
 package org.ignition.blojsom.plugin.trackback;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.Trackback;
@@ -56,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.27 2003-07-21 22:09:34 intabulas Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.28 2003-08-04 15:07:03 intabulas Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -117,7 +115,6 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      */
     private static final String TRACKBACK_FAILURE_PAGE = "/trackback-failure";
 
-    private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
 
     private String[] _blogFileExtensions;
     private String _blogHome;

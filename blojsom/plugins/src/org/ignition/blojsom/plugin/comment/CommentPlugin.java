@@ -34,8 +34,6 @@
  */
 package org.ignition.blojsom.plugin.comment;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogComment;
 import org.ignition.blojsom.blog.BlogEntry;
@@ -58,7 +56,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.39 2003-07-27 20:20:29 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.40 2003-08-04 15:06:35 intabulas Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -163,7 +161,6 @@ public class CommentPlugin extends IPBanningPlugin {
     public static final String BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME = "BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME";
 
 
-    private Log _logger = LogFactory.getLog(CommentPlugin.class);
     private Boolean _blogCommentsEnabled;
     private Boolean _blogEmailEnabled;
     private String[] _blogFileExtensions;
