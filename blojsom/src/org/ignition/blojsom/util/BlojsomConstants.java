@@ -5,10 +5,7 @@ package org.ignition.blojsom.util;
  *
  * @author David Czarnecki
  */
-public class BlojsomConstants {
-
-    private BlojsomConstants() {
-    }
+public interface BlojsomConstants {
 
     /**
      * Value under which blog information will be placed
@@ -38,6 +35,11 @@ public class BlojsomConstants {
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
      */
     public static final String DEFAULT_FLAVOR_HTML = "html";
+
+    /**
+     * Request parameter for the requested "flavor"
+     */
+    public static final String FLAVOR_PARAM = "flavor";
 
     /**
      * Value indicating all subdirectories under the blog home should be searched
