@@ -59,7 +59,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.27 2005-01-13 19:19:33 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.28 2005-01-16 22:22:45 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -244,7 +244,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                     if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
                         _description = (String) _metadata.get(NAME_KEY);
                     } else {
-                        _description = _blogid;
+                        _description = _category.getEncodedCategory();
                     }
 
                     _bloglist.put(MEMBER_URL, _category.getCategoryURL());
