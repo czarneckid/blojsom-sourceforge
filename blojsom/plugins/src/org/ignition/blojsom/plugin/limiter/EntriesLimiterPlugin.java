@@ -51,7 +51,7 @@ import java.util.Map;
  * EntriesLimiterPlugin
  *
  * @author David Czarnecki
- * @version $Id: EntriesLimiterPlugin.java,v 1.2 2003-03-31 03:47:53 czarneckid Exp $
+ * @version $Id: EntriesLimiterPlugin.java,v 1.3 2003-04-04 02:53:40 czarneckid Exp $
  */
 public class EntriesLimiterPlugin implements BlojsomPlugin {
 
@@ -61,7 +61,7 @@ public class EntriesLimiterPlugin implements BlojsomPlugin {
     /**
      * Request parameter for the "entries"
      */
-    public static final String ENTRIES_PARAM = "entries";
+    private static final String ENTRIES_PARAM = "entries";
 
     /**
      * Default constructor
