@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.53 2003-05-23 03:36:40 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.54 2003-07-20 22:07:24 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -59,6 +59,7 @@ public class Blog implements BlojsomConstants {
     private String _blogDescription;
     private String _blogURL;
     private String _blogBaseURL;
+    private String _blogCountry;
     private String _blogLanguage;
     private String[] _blogFileExtensions;
     private String[] _blogPropertiesExtensions;
@@ -71,6 +72,7 @@ public class Blog implements BlojsomConstants {
     private String _blogCommentsDirectory;
     private Boolean _blogCommentsEnabled;
     private Boolean _blogEmailEnabled;
+    private Boolean _blogTrackbacksEnabled;
     private String _blogTrackbackDirectory;
     private String _blogFetcher;
     private String _blogEntryMetaDataExtension;
@@ -113,6 +115,13 @@ public class Blog implements BlojsomConstants {
             _blogLanguage = BLOG_LANGUAGE_DEFAULT;
         }
         _blogProperties.put(BLOG_LANGUAGE_IP, _blogLanguage);
+
+        _blogCountry = blogConfiguration.getProperty(BLOG_COUNTRY_IP);
+        if (_blogCountry == null) {
+            _logger.warn("No value supplied for blog-country. Defaulting to: " + BLOG_COUNTRY_DEFAULT);
+            _blogCountry = BLOG_COUNTRY_DEFAULT;
+        }
+        _blogProperties.put(BLOG_COUNTRY_IP, _blogCountry);
 
         _blogDescription = blogConfiguration.getProperty(BLOG_DESCRIPTION_IP);
         if (_blogDescription == null) {
@@ -226,12 +235,12 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_OWNER_EMAIL, _blogOwnerEmail);
 
         String blogCommentsEnabled = blogConfiguration.getProperty(BLOG_COMMENTS_ENABLED_IP);
-        if ("true".equalsIgnoreCase(blogCommentsEnabled)) {
-            _blogCommentsEnabled = Boolean.valueOf(true);
-        } else {
-            _blogCommentsEnabled = Boolean.valueOf(false);
-        }
+        _blogCommentsEnabled = Boolean.valueOf(blogCommentsEnabled);
         _blogProperties.put(BLOG_COMMENTS_ENABLED_IP, _blogCommentsEnabled);
+
+        String blogTrackbacksEnabled = blogConfiguration.getProperty(BLOG_TRACKBACKS_ENABLED_IP);
+        _blogTrackbacksEnabled = Boolean.valueOf(blogTrackbacksEnabled);
+        _blogProperties.put(BLOG_TRACKBACKS_ENABLED_IP, _blogTrackbacksEnabled);
 
         String blogEmailEnabled = blogConfiguration.getProperty(BLOG_EMAIL_ENABLED_IP);
         if ("true".equalsIgnoreCase(blogEmailEnabled)) {
@@ -445,6 +454,16 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Country of the blog
+     *
+     * @since blojsom 1.9.5
+     * @return Country for the blog
+     */
+    public String getBlogCountry() {
+        return _blogCountry;
+    }
+
+    /**
      * Return the number of blog entries to retrieve from the individual categories
      *
      * @return Blog entries to retrieve from the individual categories
@@ -645,6 +664,16 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogCommentsEnabled(Boolean blogCommentsEnabled) {
         _blogCommentsEnabled = blogCommentsEnabled;
+    }
+
+    /**
+     * Return whether or not trackbacks are enabled
+     *
+     * @since blojsom 1.9.5
+     * @return <code>true</code> if trackbacks are enabled, <code>false</code> otherwise
+     */
+    public Boolean getBlogTrackbacksEnabled() {
+        return _blogTrackbacksEnabled;
     }
 
     /**
