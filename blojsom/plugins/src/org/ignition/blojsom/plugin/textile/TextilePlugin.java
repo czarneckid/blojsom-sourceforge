@@ -50,7 +50,7 @@ import java.util.Map;
  * Textile Plugin
  *
  * @author Mark Lussier
- * @version $Id: TextilePlugin.java,v 1.3 2003-05-27 03:10:49 intabulas Exp $
+ * @version $Id: TextilePlugin.java,v 1.4 2003-05-27 03:27:51 intabulas Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
 
@@ -99,8 +99,7 @@ public class TextilePlugin implements BlojsomPlugin {
 
         for (int x = 0; x < entries.length; x++) {
             BlogEntry entry = entries[x];
-
-            if (entry.getMetaData().containsKey(METADATA_ISTEXTILE) || entry.getPermalink().endsWith(TEXTILE_EXTENSION)) {
+            if (entry.getPermalink().endsWith(TEXTILE_EXTENSION)) {
                 _logger.info("Textile Processing: " + entry.getTitle());
                 entry.setDescription(_textile.process(entry.getDescription()));
             }
