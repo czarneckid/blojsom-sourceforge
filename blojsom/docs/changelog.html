@@ -45,7 +45,8 @@ file encoding<br />
 - Added new class <tt>org.ignition.blojsom.BlojsomException</tt> and changed the 2 other
 exception classes to subclass from this root exception class<br />
 - File extension for entries posted via XML-RPC is now configurable via the <i>blog-xmlrpc-entry-extension</i>
-parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i>
+parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i><br />
+- Added <tt>Blog</tt> as a parameter to the <tt>GenericDispatcher.init()</tt> method<br />
 <p />
 Extension changes:<br />
 - The newPost() methods for the Blogger and MetaWebLog API now stores the poster's user id as entry
