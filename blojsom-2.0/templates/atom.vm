@@ -43,7 +43,7 @@
         <!-- required entry elements -->
         <title>$entry.getEscapedTitle().replaceAll("<.*?>","")</title>
         <link rel="alternate" type="text/html" href="$entry.getLink()"/>
-        <link href="$BLOJSOM_BLOG.getBlogBaseURL()/atomapi/$entry.getCategory()/?permalink=$entry.getPermalink()" rel="service.edit" title="Edit $entry.getEscapedTitle()" type="application/x.atom+xml"/>
+        <link href="$BLOJSOM_BLOG.getBlogBaseURL()/atomapi/$entry.getCategory()?permalink=$entry.getPermalink()" rel="service.edit" title="Edit $entry.getEscapedTitle()" type="application/x.atom+xml"/>
 
         <modified>$entry.getUTCDate()</modified>
         <issued>$entry.getUTCDate()</issued>
