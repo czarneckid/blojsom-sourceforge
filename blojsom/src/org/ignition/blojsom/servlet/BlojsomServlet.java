@@ -190,21 +190,23 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                     _pluginChain = BlojsomUtils.parseCommaList(pluginProperties.getProperty(BLOJSOM_PLUGIN_CHAIN));
                 } else {
                     String pluginClassName = pluginProperties.getProperty(plugin);
-                    Class pluginClass = Class.forName(pluginClassName);
-                    BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
-                    blojsomPlugin.init(servletConfig, _blog.getBlogProperties());
-                    _plugins.put(plugin, blojsomPlugin);
-                    _logger.info("Added blojsom plugin: " + pluginClassName);
+                    try {
+                        Class pluginClass = Class.forName(pluginClassName);
+                        BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
+                        blojsomPlugin.init(servletConfig, _blog.getBlogProperties());
+                        _plugins.put(plugin, blojsomPlugin);
+                        _logger.info("Added blojsom plugin: " + pluginClassName);
+                    } catch (BlojsomPluginException e) {
+                        _logger.error(e);
+                    } catch (InstantiationException e) {
+                        _logger.error(e);
+                    } catch (IllegalAccessException e) {
+                        _logger.error(e);
+                    } catch (ClassNotFoundException e) {
+                        _logger.error(e);
+                    }
                 }
             }
-        } catch (BlojsomPluginException e) {
-            _logger.error(e);
-        } catch (InstantiationException e) {
-            _logger.error(e);
-        } catch (IllegalAccessException e) {
-            _logger.error(e);
-        } catch (ClassNotFoundException e) {
-            _logger.error(e);
         } catch (IOException e) {
             _logger.error(e);
         }
