@@ -36,6 +36,7 @@ package org.ignition.blojsom.plugin.emoticons;
 
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 
@@ -52,7 +53,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.1 2003-03-28 22:06:51 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.2 2003-04-01 02:03:03 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -112,6 +113,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     private static final String IMG_ALT_END = "\" />";
 
     private Properties _emoticonsProperties;
+    private String _blogBaseURL;
 
     /**
      * Default constructor
@@ -139,6 +141,8 @@ public class EmoticonsPlugin implements BlojsomPlugin {
         } catch (IOException e) {
             throw new BlojsomPluginException(e);
         }
+
+        _blogBaseURL = (String) blogProperties.get(BlojsomConstants.BLOG_BASE_URL_IP);
     }
 
     /**
@@ -153,30 +157,26 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
-        if (blogSiteURL.endsWith("/")) {
-            blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length() - 1);
-        }
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
             String updatedDescription = entry.getDescription();
-            updatedDescription = replaceEmoticon(updatedDescription, HAPPY, HAPPY_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, SAD, SAD_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, GRIN, GRIN_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, LOVE, LOVE_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, MISCHIEF, MISCHIEF_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, COOL, COOL_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, DEVIL, DEVIL_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, SILLY, SILLY_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, ANGRY, ANGRY_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, LAUGH, LAUGH_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, WINK, WINK_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, BLUSH, BLUSH_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, CRY, CRY_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, CONFUSED, CONFUSED_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, SHOCKED, SHOCKED_PARAM, blogSiteURL);
-            updatedDescription = replaceEmoticon(updatedDescription, PLAIN, PLAIN_PARAM, blogSiteURL);
+            updatedDescription = replaceEmoticon(updatedDescription, HAPPY, HAPPY_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, SAD, SAD_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, GRIN, GRIN_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, LOVE, LOVE_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, MISCHIEF, MISCHIEF_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, COOL, COOL_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, DEVIL, DEVIL_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, SILLY, SILLY_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, ANGRY, ANGRY_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, LAUGH, LAUGH_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, WINK, WINK_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, BLUSH, BLUSH_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, CRY, CRY_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, CONFUSED, CONFUSED_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, SHOCKED, SHOCKED_PARAM, _blogBaseURL);
+            updatedDescription = replaceEmoticon(updatedDescription, PLAIN, PLAIN_PARAM, _blogBaseURL);
             entry.setDescription(updatedDescription);
         }
         return entries;
