@@ -47,20 +47,18 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.11 2003-03-25 15:52:45 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.12 2003-03-25 16:25:15 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -156,6 +154,8 @@ public class CommentPlugin implements BlojsomPlugin {
                 if (_blogEmailEnabled.booleanValue()) {
                     sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
                 }
+
+
             }
         }
 
