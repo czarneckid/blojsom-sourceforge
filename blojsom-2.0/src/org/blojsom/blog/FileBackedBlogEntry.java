@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.24 2005-01-31 02:42:35 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.25 2005-01-31 04:29:30 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -199,7 +199,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @since blojsom 2.23
      */
     public boolean supportsPingbacks() {
-        return _source.canWrite();
+        return _source.canWrite() && (!BlojsomUtils.checkMapForKey(_metaData, BLOG_METADATA_PINGBACKS_DISABLED));
     }
 
     /**
