@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.52 2003-04-13 17:52:44 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.53 2003-04-15 02:24:04 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -111,6 +111,11 @@ public interface BlojsomConstants {
      * Key under which whether or not email messages will be sent to the blog author
      */
     public static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
+
+    /**
+     * Default class for fetching blog entries
+     */
+    public static final String BLOG_DEFAULT_FETCHER = "org.ignition.blojsom.fetcher.StandardFetcher";
 
     /**
      * UTF-8 encoding
@@ -235,4 +240,5 @@ public interface BlojsomConstants {
     static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
     static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
+    static final String BLOG_FETCHER_IP = "blog-fetcher";
 }
