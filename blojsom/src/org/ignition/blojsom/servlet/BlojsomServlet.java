@@ -37,11 +37,14 @@ package org.ignition.blojsom.servlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.*;
+import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.dispatcher.GenericDispatcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
+import org.ignition.blojsom.fetcher.BlojsomFetcher;
+import org.ignition.blojsom.fetcher.BlojsomFetcherException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -58,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.69 2003-04-15 00:04:40 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.70 2003-04-15 02:26:28 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -76,6 +79,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private Map _templateDispatchers;
     private Map _plugins;
     private Map _pluginChainMap;
+
+    private BlojsomFetcher _fetcher;
 
     private Log _logger = LogFactory.getLog(BlojsomServlet.class);
 
@@ -268,6 +273,39 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     }
 
     /**
+     * Configure the {@link BlojsomFetcher} that will be used to fetch categories and
+     * entries
+     *
+     * @param servletConfig Servlet configuration information
+     * @throws ServletException If the {@link BlojsomFetcher} class could not be loaded and/or initialized
+     */
+    private void configureFetcher(ServletConfig servletConfig) throws ServletException {
+        String fetcherClassName = _blog.getBlogFetcher();
+        if ((fetcherClassName == null) || "".equals(fetcherClassName)) {
+            fetcherClassName = BLOG_DEFAULT_FETCHER;
+        }
+
+        try {
+            Class fetcherClass = Class.forName(fetcherClassName);
+            _fetcher = (BlojsomFetcher) fetcherClass.newInstance();
+            _fetcher.init(servletConfig, _blog);
+            _logger.info("Added blojsom fetcher: " + fetcherClassName);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        }
+    }
+
+    /**
      * Initialize blojsom: configure blog, configure flavors, configure dispatchers
      *
      * @param servletConfig Servlet configuration information
@@ -281,6 +319,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         configureFlavors(servletConfig);
         configureDispatchers(servletConfig);
         configurePlugins(servletConfig);
+        configureFetcher(servletConfig);
 
         _logger.debug("blojsom: All Your Blog Are Belong To Us");
     }
@@ -320,34 +359,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             return;
         }
 
-        // Determine the user requested category
-        String requestedCategory = httpServletRequest.getPathInfo();
-        _logger.debug("blojsom path info: " + requestedCategory);
-
-        if (requestedCategory == null) {
-            requestedCategory = "/";
-        } else if (!requestedCategory.endsWith("/")) {
-            requestedCategory += "/";
-        }
-
-        _logger.debug("User requested category: " + requestedCategory);
-        BlogCategory category = new BlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
-
-        // We might also want to pass the flavor so that we can also have flavor-based category meta-data
-        category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
-
-        // Determine if a permalink has been requested
-        String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
-        if (permalink != null) {
-            permalink = BlojsomUtils.getFilenameForPermalink(permalink, _blog.getBlogFileExtensions());
-            permalink = BlojsomUtils.urlDecode(permalink);
-            if (permalink == null) {
-                _logger.error("Permalink request for invalid permalink: " + httpServletRequest.getParameter(PERMALINK_PARAM));
-            } else {
-                _logger.debug("Permalink request for: " + permalink);
-            }
-        }
-
         // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
         if (flavor == null) {
@@ -358,17 +369,17 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        BlogEntry[] entries;
+        // Setup the initial context for the dispatcher
+        HashMap context = new HashMap();
 
-        // Check for a permalink entry request
-        if (permalink != null) {
-            entries = _blog.getPermalinkEntry(category, permalink);
-        } else {
-            if (requestedCategory.equals("/")) {
-                entries = _blog.getEntriesAllCategories(flavor, -1);
-            } else {
-                entries = _blog.getEntriesForCategory(category, -1);
-            }
+        BlogEntry[] entries = null;
+        BlogCategory[] categories = null;
+
+        try {
+            categories = _fetcher.fetchCategories(httpServletRequest, httpServletResponse, flavor, context);
+            entries = _fetcher.fetchEntries(httpServletRequest, httpServletResponse, flavor, context);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
         }
 
         String[] pluginChain = null;
@@ -384,9 +395,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 pluginChain = (String[]) _pluginChainMap.get(BLOJSOM_PLUGIN_CHAIN);
             }
         }
-
-        // Setup the initial context for the dispatcher
-        HashMap context = new HashMap();
 
         // Invoke the plugins in the order in which they were specified
         if ((entries != null) && (pluginChain != null)) {
@@ -443,16 +451,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_DATE, blogdate);
         context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
         context.put(BLOJSOM_DATE_OBJECT, blogDateObject);
-        if (permalink != null) {
-            context.put(BLOJSOM_PERMALINK, permalink);
-        }
-
-        if (requestedCategory.equals("/")) {
-            context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
-        } else {
-            context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategoryHierarchy(category));
-        }
-        context.put(BLOJSOM_REQUESTED_CATEGORY, category);
+        context.put(BLOJSOM_CATEGORIES, categories);
         context.put(BLOJSOM_COMMENTS_ENABLED, _blog.areCommentsEnabled());
 
         // Forward the request on to the template for the requested flavor
