@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.21 2003-06-10 22:46:08 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.22 2003-06-11 02:48:24 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -105,6 +105,16 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     public BlogEntry newBlogEntry() {
         return new FileBackedBlogEntry();
+    }
+
+    /**
+     * Return a new blog category instance
+     *
+     * @since blojsom 1.9.1
+     * @return Blog category instance
+     */
+    public BlogCategory newBlogCategory() {
+        return new FileBackedBlogCategory();
     }
 
     /**
@@ -261,9 +271,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             for (int i = 0; i < categoryFilter.length; i++) {
                 String category = BlojsomUtils.removeInitialSlash(categoryFilter[i]);
                 if ("".equals(category)) {
-                    blogCategories[i] = new BlogCategory("/", _blog.getBlogURL() + category);
+                    blogCategories[i] = new FileBackedBlogCategory("/", _blog.getBlogURL() + category);
                 } else {
-                    blogCategories[i] = new BlogCategory(category, _blog.getBlogURL() + category);
+                    blogCategories[i] = new FileBackedBlogCategory(category, _blog.getBlogURL() + category);
                 }
             }
         }
@@ -327,7 +337,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         FileBackedBlogCategory category = new FileBackedBlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
 
         // We might also want to pass the flavor so that we can also have flavor-based category meta-data
-        category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+        try {
+            category.loadCategory(_blog);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+        }
 
         return category;
     }
@@ -442,7 +456,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         }
 
         FileBackedBlogCategory blogCategory = new FileBackedBlogCategory(categoryKey, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
-        blogCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+        try {
+            blogCategory.loadCategory(_blog);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+        }
         categoryList.add(blogCategory);
 
         if (directories == null) {
@@ -492,7 +510,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             previousCategoryName += slashTokenizer.nextToken() + "/";
             if (!previousCategoryName.equals(currentCategory.getCategory())) {
                 fileBackedCategory = new FileBackedBlogCategory(previousCategoryName, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
-                fileBackedCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+                try {
+                    fileBackedCategory.loadCategory(_blog);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+                }
                 categoryList.add(fileBackedCategory);
             }
         }
@@ -507,7 +529,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         }
 
         FileBackedBlogCategory rootCategory = new FileBackedBlogCategory("/", _blog.getBlogURL());
-        rootCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+        try {
+            rootCategory.loadCategory(_blog);
+        } catch (BlojsomException e) {
+            _logger.error(e);
+        }
         sanitizedCategoryList.add(0, rootCategory);
 
         if (sanitizedCategoryList.size() > 0) {
