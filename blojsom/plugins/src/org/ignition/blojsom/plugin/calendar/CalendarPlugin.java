@@ -52,11 +52,16 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.6 2003-03-26 15:46:13 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.7 2003-03-27 02:07:42 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(CalendarPlugin.class);
+
+    /**
+     * Locale to use for the Calendar.
+     */
+    private Locale _locale = Locale.getDefault();
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -66,6 +71,11 @@ public class CalendarPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+        // If blog-language is set in blojsom.properties, use it instead
+        String locale = (String)blogProperties.get(BlojsomConstants.BLOG_LANGUAGE_DEFAULT);
+        if ( locale != null ) {
+             _locale = new Locale(locale);
+        }
     }
 
     /**
@@ -82,7 +92,7 @@ public class CalendarPlugin implements BlojsomPlugin {
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
         // Default to the Current Month and Year
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = new GregorianCalendar(_locale);
         calendar.setTime(new Date());
         int currentmonth = calendar.get(Calendar.MONTH);
         int currentyear = calendar.get(Calendar.YEAR);
@@ -91,44 +101,30 @@ public class CalendarPlugin implements BlojsomPlugin {
         String navmonth = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
         if (navmonth != null) {
             currentmonth = new Integer(navmonth).intValue();
-            calendar = new GregorianCalendar(currentyear, currentmonth, 1);
+            calendar.set(Calendar.MONTH, currentmonth);
         }
 
         // If a Year is seen on the URL, either by design or calnav params, use it!
         String navyear = httpServletRequest.getParameter(BlojsomConstants.YEAR_PARAM);
         if (navyear != null) {
             currentyear = new Integer(navyear).intValue();
-            calendar = new GregorianCalendar(currentyear, currentmonth, 1);
+            calendar.set(Calendar.YEAR, currentyear);
+
         }
 
-        // Create the Calendar Caption (ie: March 2003) and shove it in the context
-        String caption = BlojsomUtils.getFormattedDate(calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_FORMAT);
-        context.put(BlojsomConstants.BLOJSOM_CALENDAR_CAPTION, caption);
+        BlogCalendar _blogCalendar = new BlogCalendar(calendar, _locale);
 
-        // Roll the calendar back 1 month (we do not care about the year for this) and grab the short month caption
-        calendar.roll(Calendar.MONTH, -1);
-        String prevmonth = BlojsomUtils.getFormattedDate(calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_SHORTFORMAT);
-        context.put(BlojsomConstants.BLOJSOM_CALENDAR_PREVIOUS, prevmonth);
-
-        // Roll the calendar forward 2 months (to skip current) and grab the short month caption
-        calendar.roll(Calendar.MONTH, 2);
-        String nextmonth = BlojsomUtils.getFormattedDate(calendar.getTime(), BlojsomConstants.BLOJSOM_CALENDAR_SHORTFORMAT);
-        context.put(BlojsomConstants.BLOJSOM_CALENDAR_NEXT, nextmonth);
-
-
-        Boolean[] dates = new Boolean[calendar.getMaximum(Calendar.DAY_OF_MONTH)];
-        Arrays.fill(dates, Boolean.FALSE);
-
+        Calendar entrycalendar = new GregorianCalendar(_locale);
         if (entries != null && entries.length > 0) {
             for (int x = 0; x < entries.length; x++) {
                 BlogEntry entry = entries[x];
-                calendar.setTime(entry.getDate());
-                int entrymonth = calendar.get(Calendar.MONTH);
-                int entryear = calendar.get(Calendar.YEAR);
+                entrycalendar.setTime(entry.getDate());
+                int entrymonth = entrycalendar.get(Calendar.MONTH);
+                int entryear = entrycalendar.get(Calendar.YEAR);
 
                 // If the Entry is is the same month and the same year, then flag that date as having a Entry
                 if ((entrymonth == currentmonth) && (entryear == currentyear)) {
-                    dates[calendar.get(Calendar.DAY_OF_MONTH)] = Boolean.TRUE;
+                    _blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
                 }
 
                 // The MB Filter ;) Break on dates EARLIER than current month/year.. to avoid running though 947
@@ -139,7 +135,7 @@ public class CalendarPlugin implements BlojsomPlugin {
             }
         }
 
-        context.put(BlojsomConstants.BLOJSOM_CALENDAR, dates);
+        context.put(BlojsomConstants.BLOJSOM_CALENDAR, _blogCalendar);
         return entries;
     }
 
