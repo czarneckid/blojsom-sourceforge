@@ -36,6 +36,17 @@
                 Updated Edit Blog Entries plugin so that entries without titles would not use the entire
                 description as the title.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Adding the blog property <code>blog-ping-urls</code> to your individual <code>blog.properties</code> file
+                allows you to set the list of URLs that should pre-populate the ping URLs box when adding or
+                editing blog entries. For example:
+                <pre>
+                    blog-ping-urls=http://rpc.weblogs.com/RPC2 http://ping.blo.gs http://rpc.technorati.com/rpc/ping
+                </pre>
+                If you do not use the web administration interface, you can still use this property to control
+                the URLs that are sent a ping when the WeblogsPingPlugin executes.
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
