@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.11 2004-11-14 20:14:39 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.12 2004-11-22 03:01:39 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -109,7 +109,7 @@ public class VelocityHelper {
                         StringBuffer _url = new StringBuffer(HREF_PREFIX);
                         String _calurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), (_calendar.getCurrentMonth() + 1), dowoffset, _calendar.getCurrentYear());
                         _url.append(_calurl);
-                        _url.append("\">").append(dowoffset).append(HREF_SUFFIX);
+                        _url.append("\"><span>").append(dowoffset).append("</span>").append(HREF_SUFFIX);
                         visualcalendar[x][y] = _url.toString();
                     }
 
@@ -234,11 +234,10 @@ public class VelocityHelper {
      * @since blojsom 2.21
      */
     public String getPreviousMonthName() {
-
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, -1);
 
-        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+        result.append(_calendar.getMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
         _calendar.getCalendar().add(Calendar.MONTH, 1);
 
         return result.toString();
@@ -265,10 +264,9 @@ public class VelocityHelper {
      * @since blojsom 2.21
      */
     public String getCurrentMonthName() {
-
         StringBuffer result = new StringBuffer();
 
-        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+        result.append(_calendar.getMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
 
         return result.toString();
     }
@@ -303,26 +301,12 @@ public class VelocityHelper {
      * @since blojsom 2.21
      */
     public String getNextMonthName() {
-
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, 1);
 
-        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+        result.append(_calendar.getMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
         _calendar.getCalendar().add(Calendar.MONTH, -1);
 
         return result.toString();
-    }
-
-    /**
-     * Set the prefix and suffix of the calendar links
-     *
-     * @param prefix the calendar link prefix
-     * @param suffix the calendar link suffix
-     * @since blojsom 2.21
-     */
-    public void setLinkFormat(String prefix, String suffix) {
-        HREF_PREFIX = prefix;
-        HREF_SUFFIX = suffix;
-        buildCalendar();
     }
 }
