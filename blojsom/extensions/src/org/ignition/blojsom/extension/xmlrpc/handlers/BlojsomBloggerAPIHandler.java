@@ -56,7 +56,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.11 2003-04-06 18:46:56 czarneckid Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.12 2003-04-08 05:08:37 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -73,9 +73,41 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
     private static final String MEMBER_BLOGID = "blogid";
 
     /**
+     * Blogger APU "postid" key
+     */
+    private static final String MEMBER_POSTID = "postid";
+
+    /**
      * Blogger API "blogName" key
      */
     private static final String MEMBER_BLOGNAME = "blogName";
+
+    /**
+     * Blogger API "title" key
+     */
+    private static final String MEMBER_TITLE = "title";
+
+    /**
+     * Blogger API "content" key
+     */
+    private static final String MEMBER_CONTENT = "content";
+
+    /**
+     * Blogger API "dateCreated" key
+     */
+    private static final String MEMBER_DATECREATED = "dateCreated";
+
+
+    /**
+     * Blogger API "authorName" key
+     */
+    private static final String MEMBER_AUTHORNAME = "authorName";
+
+    /**
+     * Blogger API "authorEmail" key
+     */
+    private static final String MEMBER_AUTHOREMAIL = "authorEmail";
+
 
     private Blog _blog;
     private Log _logger = LogFactory.getLog(BlojsomBloggerAPIHandler.class);
@@ -104,6 +136,28 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
     public void setBlog(Blog bloginstance) {
         _blog = bloginstance;
     }
+
+
+    /**
+     * Delete a Post
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param postid Unique identifier of the post to be changed
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param publish Ignored
+     * @throws XmlRpcException
+     * @return
+     */
+    public boolean deletePost(String appkey, String postid, String userid, String password, boolean publish) throws Exception {
+        _logger.info("deletePost() Called =====[ UNSUPPORTED ]=====");
+        _logger.info("     Appkey: " + appkey);
+        _logger.info("     PostId: " + postid);
+        _logger.info("     UserId: " + userid);
+        _logger.info("   Password: " + password);
+        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+    }
+
 
     /**
      * Edits the main or archive index template of a given blog
@@ -337,4 +391,70 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
+
+
+    /**
+     * Get a list of recent posts for a blojsom category
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param numposts Number of Posts to Retrieve
+     * @throws XmlRpcException
+     * @return
+     */
+    public Object getRecentPosts(String appkey, String blogid, String userid, String password, int numposts) throws Exception {
+        _logger.info("getRecentPosts() Called ===========[ SUPPORTED ]=====");
+        _logger.info("     Appkey: " + appkey);
+        _logger.info("     BlogId: " + blogid);
+        _logger.info("     UserId: " + userid);
+        _logger.info("   Password: " + password);
+        _logger.info("     Number: " + numposts);
+
+        Vector recentPosts = new Vector();
+
+        if (_blog.checkAuthorization(userid, password)) {
+            String result = null;
+
+            //Quick verify that the categories are valid
+            File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
+            if (blogCategoryFile.exists() && blogCategoryFile.isDirectory()) {
+
+                BlogCategory blogCategory = new BlogCategory(blogid, _blog.getBlogFileExtensions() + BlojsomUtils.removeInitialSlash(blogid));
+                BlogEntry[] entries = _blog.getEntriesForCategory(blogCategory);
+
+
+                if (entries != null && entries.length > 0) {
+                    // if it's zero or -1, <metallica>show'em all</metallica>
+                    if (numposts == 0 || numposts == -1) {
+                        numposts = entries.length;
+                    }
+
+                    for (int x = 0; x < entries.length; x++) {
+                        BlogEntry entry = entries[x];
+                        if (x < numposts) {
+                            Hashtable entrystruct = new Hashtable();
+
+                            entrystruct.put(MEMBER_POSTID, blogid + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
+                            entrystruct.put(MEMBER_BLOGID, blogid);
+                            entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
+                            entrystruct.put(MEMBER_URL, entry.getEscapedLink());
+                            entrystruct.put(MEMBER_CONTENT, entry.getEscapedDescription());
+                            entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
+                            entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
+                            entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
+                            recentPosts.add(entrystruct);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
+
 }
