@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.36 2003-07-04 20:35:51 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.37 2003-07-04 21:00:47 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -320,10 +320,14 @@ public class CommentPlugin extends IPBanningPlugin {
 
                 if (authorEmail != null) {
                     authorEmail = authorEmail.trim();
+                } else {
+                    authorEmail = "";
                 }
 
                 if (authorURL != null) {
                     authorURL = authorURL.trim();
+                } else {
+                    authorURL = "";
                 }
 
                 if (!category.endsWith("/")) {
