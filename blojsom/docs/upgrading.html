@@ -56,6 +56,23 @@ you will need to add the following property to <i>/WEB-INF/blojsom.properties</i
 <pre>
 blog-email-enabled=true
 </pre>
+<p />
+
+4. All plugins have been refactored into individual packages. The following list contains the
+proper plugin names:
+<pre>
+limiter=org.ignition.blojsom.plugin.limiter.EntriesLimiterPlugin
+macro-expansion=org.ignition.blojsom.plugin.macro.MacroExpansionPlugin
+href-hyperlinks=org.ignition.blojsom.plugin.hyperlink.HyperlinkURLPlugin
+simple-search=org.ignition.blojsom.plugin.search.SimpleSearchPlugin
+show-me-more=org.ignition.blojsom.plugin.showmore.ShowMeMorePlugin
+referer-log=org.ignition.blojsom.plugin.referer.RefererLogPlugin
+calendar-filter=org.ignition.blojsom.plugin.calendar.CalendarFilterPlugin
+calendar-gui=org.ignition.blojsom.plugin.calendar.VelocityCalendarPlugin
+comment=org.ignition.blojsom.plugin.comment.CommentPlugin
+trackback=org.ignition.blojsom.plugin.trackback.TrackbackPlugin
+sendemail=org.ignition.blojsom.plugin.email.SendEmailPlugin
+</pre>
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
