@@ -15,7 +15,6 @@
     <language><%= blogInformation.getBlogLanguage() %></language>
     <docs>http://backend.userland.com/rss</docs>
     <generator>blojsom</generator>
-
     <%
         if (blogEntries != null) {
             for (int i = 0; i < blogEntries.length; i++) {
@@ -30,7 +29,6 @@
 			<wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
                  <%= blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%>
             </wfw:comment>
-
     	</item>
     <%
             }
