@@ -24,9 +24,12 @@
     <p class="weblogdateline">$entry.getDate()</p>
     <p>$entry.getDescription()</p>
     </div>
+    <p class="weblogbottomline">
     #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
-    <p class="weblogbottomline">Comments [<a href="$entry.getLink()&page=comments">$entry.getNumComments()</a>] | Trackbacks [<a href="$entry.getLink()&page=trackback">$entry.getNumTrackbacks()</a>]</p>
+    Comments [<a href="$entry.getLink()&page=comments">$entry.getNumComments()</a>] |
     #end
+    Trackbacks [<a href="$entry.getLink()&page=trackback">$entry.getNumTrackbacks()</a>]
+    </p>
     #set( $totalEntries = $totalEntries + 1)
 #end
 #if ($totalEntries > 0)
