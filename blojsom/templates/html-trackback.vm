@@ -25,7 +25,7 @@ Available categories:
     <p>$entry.getDescription()</p>
     </div>
     <p class="weblogtitle">Trackback for this entry</p>
-    <p class="weblogdateline">$entry.getLink()&category=/$entry.getCategory()&tb=y</p>
+    <p class="weblogdateline">$entry.getLink()&tb=y</p>
     #foreach ($entryTrackback in $entry.getTrackbacks())
         <div class="commentstyle">
             Trackback from: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>
