@@ -40,10 +40,22 @@ parameter is not present<br />
 - Velocity templates can now be found in <i>/WEB-INF/classes</i>. They are no longer
 built and bundled as <i>/WEB-INF/lib/blojsom-templates.jar</i> since that way was not amenable to
 editing and customizing the templates by end users<br />
+- Added <tt>setComments</tt> method to <tt>BlogEntry</tt> class so that plugins can
+manipulate blog entry comments<br />
+- Trackback support added. See the <a href="trackbacks.html">trackbacks</a> document for more
+information on Trackback support in blojsom<br />
+- <font color="red">NOTE:</font> You will need to add one parameter, <i>blog-trackbacks-directory</i>
+ to your <i>blojsom.properties</i> file if you are upgrading from a
+previous version of blojsom. For example, you would add the following line to your <i>blojsom.properties</i> file:
+<pre>
+blog-trackbacks-directory=.trackbacks
+</pre>
+
 
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=704184&group_id=72754">BUG 704184</a>: Calender access doesn't work on sub-categories<br />
+<a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=704356&group_id=72754">BUG 704356</a>: Fix for Calendar date access<br />
 
 <p>
 <p class="weblogtitle">blojsom 1.5 (codename: Hangar One)</p>
