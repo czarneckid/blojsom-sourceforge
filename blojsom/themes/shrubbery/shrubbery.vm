@@ -6,18 +6,21 @@
 <body>
 
 #parse( "shrubbery-header.vm" )
+#parse( "shrubbery-categories.vm" )
 
-<p>Available categories:
-#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
-#end</p>
-
-<div class="lc">
+<div class="rc">
+#parse( "shrubbery-calendar.vm" )
+#parse( "shrubbery-sidebars.vm" )
+</div><div class="lc">
 #set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="es"><p class="wlt">$entry.getTitle() <span class="st">[<a href="$entry.getLink()">Permalink</a>]</span> </p><p class="wldl">$entry.getDate()</p>$entry.getDescription()</div>
-    <div class="wlbl">#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())<a href="$entry.getLink()&amp;page=comments">Comments [$entry.getNumComments()</a>]#end</div>
+    <div class="wlbl">#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())<a href="$entry.getLink()&amp;page=comments">Comments [$entry.getNumComments()</a>] | #end
+<a href="$entry.getLink()&amp;page=trackback">Trackbacks [$entry.getNumTrackbacks()]</a></div>
     #set( $totalEntries = $totalEntries + 1)
 #end
-#if ($totalEntries > 0)<p>Available categories:#foreach ($blogCategory in $BLOJSOM_CATEGORIES)[<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]#end</p>#end #parse( "pbb.vm" )</div>
-<div class="rc">#parse( "shrubbery-sidebars.vm" )</div></body></html>
+#if ($totalEntries > 0)
+	#parse( "shrubbery-categories.vm" )
+#end 
+#parse( "shrubbery-pbb.vm" )</div>
+</body></html>

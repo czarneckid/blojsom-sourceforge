@@ -14,12 +14,7 @@
 <body>
 
 #parse( "shrubbery-header.vm" )
-
-<p>Available categories:
-#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
-#end
-</p>
+#parse( "shrubbery-categories.vm" )
 
 #set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
@@ -52,7 +47,7 @@
     #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
 
     <form id="commentform" method="post" action=".">
-	    <table summary="Add Your Comments" class="commentEdit">
+	    <table summary="Add Your Comments" class="ce">
 	    	<tr>
  	    		<td colspan="2">
 					<input type="hidden" name="comment" value="y" />
@@ -86,14 +81,10 @@
     #end
 #end
 #if ($totalEntries > 0)
-    <p>Available categories:
-    #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-        [<i><a href="$blogCategory.getCategoryURL()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a></i>]
-    #end
-    </p>
+	#parse( "shrubbery-categories.vm" )
 #end
 
-#parse( "pbb.vm" )
+#parse( "shrubbery-pbb.vm" )
 </body>
 
 </html>
