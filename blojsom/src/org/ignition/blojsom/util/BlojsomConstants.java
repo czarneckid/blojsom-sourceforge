@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.63 2003-06-23 02:24:02 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.64 2003-07-08 02:28:07 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -79,6 +79,12 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_DATE_OBJECT = "BLOJSOM_DATE_OBJECT";
+
+    /**
+     * Key under which the date (UTC format) of the blog will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_DATE_UTC = "BLOJSOM_DATE_UTC";
 
     /**
      * Key under which the blog site will be placed
@@ -227,6 +233,12 @@ public interface BlojsomConstants {
      * ISO 8601 [W3CDTF] date format (used in rdf flavor)
      */
     public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ssZ";
+
+    /**
+     * UTC style date format
+     * @since blojsom 1.9.4
+     */
+    public static final String UTC_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ss'Z'";
 
     /**
      * If a entry is longer that this length, then when any content hashing is performed, it is
