@@ -51,7 +51,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.4 2003-06-01 14:22:44 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.5 2003-07-23 00:35:06 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -122,9 +122,11 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                 BlogEntry entry = entries[i];
                 String description = entry.getDescription();
                 StringBuffer partialDescription = new StringBuffer();
-                if (_textCutoff == null || "".equals(_textCutoff)) {
-                    if (description.length() > _cutoff) {
-                        partialDescription.append(description.substring(0, _cutoff));
+                int indexOfCutoffText;
+                if (_textCutoff != null || !"".equals(_textCutoff)) {
+                    indexOfCutoffText = description.indexOf(_textCutoff);
+                    if (indexOfCutoffText != -1) {
+                        partialDescription.append(description.substring(0, indexOfCutoffText));
                         partialDescription.append("&nbsp; <a href=\"");
                         partialDescription.append(entry.getLink());
                         partialDescription.append("&amp;");
@@ -133,11 +135,8 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                         partialDescription.append(_moreText);
                         partialDescription.append("</a>");
                         entry.setDescription(partialDescription.toString());
-                    }
-                } else {
-                    int indexOfCutoffText = description.indexOf(_textCutoff);
-                    if (indexOfCutoffText != -1) {
-                        partialDescription.append(description.substring(0, indexOfCutoffText));
+                    } else if (description.length() > _cutoff) {
+                        partialDescription.append(description.substring(0, _cutoff));
                         partialDescription.append("&nbsp; <a href=\"");
                         partialDescription.append(entry.getLink());
                         partialDescription.append("&amp;");
