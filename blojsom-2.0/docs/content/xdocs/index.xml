@@ -15,13 +15,18 @@
                 by
                 <link href="http://www.raelity.org">blosxom</link>. blojsom aims to retain the simplicity in
                 design of its Perl-based "relative" while adding user flexibility in areas such as the flavors,
-                templating, and plugins.
+                templating, plugins, and the ability to run a multi-user blog with a single blojsom installation.
             </p>
 
             <p>
                 So, "out of the box" what does it offer?</p>
             <ul>
-                <li>Uses the file system (folders and files) as its content database.</li>
+                <li>
+                    <p>Uses the file system (folders and files) as its content database. blojsom can support
+                        any backend storage mechanism through a specific implementation of the
+                        <link href="javadoc/org/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</link> interface.
+                    </p>
+                </li>
                 <li>Allows you to configure the file types that blojsom treats as blog entries (defaults to .txt and .html).</li>
                 <li>Permalinks which point to individual blog entries.</li>
                 <li>Calendar-based (i.e. year, year/month, year/month/day) navigation of your blog.</li>
@@ -41,12 +46,23 @@
                     </p>
                     <p>
                         Have another display technology you'd like to use? Simply extend the
-                        <link href="javadoc/org/ignition/blojsom/dispatcher/GenericDispatcher.html">GenericDispatcher</link>
+                        <link href="javadoc/org/blojsom/dispatcher/GenericDispatcher.html">GenericDispatcher</link>
                         interface and configure a mapping file so that blojsom knows how to map the template extension to the proper
                         dispatcher. That's it!
                     </p>
                 </li>
-                <li>Customizable "fetching" mechanism for blog categories and entries.</li>
+                <li>
+                    <p>
+                        Multi-user support with a single blojsom installation. Multi-user options include:
+                        <ul>
+                            <li>Authorization properties for users who can post to an individual blog via XML-RPC.</li>
+                            <li>All the blog properties such as blog directory, description, owner, default category mappings, etc.</li>
+                            <li>Flavors supported.</li>
+                            <li>Flavor-based plugin chains.</li>
+                            <li>All the individual plugin configuration files are separate per-user.</li>
+                        </ul>
+                    </p>
+                </li>
             </ul>
             <p>
 

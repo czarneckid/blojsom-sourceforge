@@ -9,6 +9,12 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 1.x to blojsom 2.0</title>
+                <p>
+                    XXX
+                </p>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 1.9.4 to blojsom 1.9.5</title>
                 <p>
                     Add the following parameter, <code>blog-trackbacks-enabled</code> with a
