@@ -50,7 +50,7 @@ import java.util.zip.GZIPOutputStream;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
- * @version $Id: GZIPResponseStream.java,v 1.4 2005-01-05 02:32:59 czarneckid Exp $
+ * @version $Id: GZIPResponseStream.java,v 1.5 2005-02-10 21:42:10 czarneckid Exp $
  * @since blojsom 2.10
  */
 public class GZIPResponseStream extends ServletOutputStream {
@@ -87,6 +87,8 @@ public class GZIPResponseStream extends ServletOutputStream {
         }
 
         gzipstream.finish();
+        gzipstream.flush();
+        gzipstream.close();
 
         byte[] bytes = baos.toByteArray();
 
