@@ -54,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.8 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.9 2004-01-18 18:05:13 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -208,14 +208,15 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         }
 
         String category = httpServletRequest.getPathInfo();
-        if (category.startsWith("/" + user.getId() + "/")) {
-            category = BlojsomUtils.getCategoryFromPath(category);
-        }
         if (category == null) {
             category = "/";
         } else if (!category.endsWith("/")) {
             category += "/";
         }
+
+        if (category.startsWith("/" + user.getId() + "/")) {
+            category = BlojsomUtils.getCategoryFromPath(category);
+        }        
 
         String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
