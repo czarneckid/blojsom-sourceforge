@@ -39,7 +39,7 @@ package org.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomConstants.java,v 1.6 2003-09-12 01:00:28 intabulas Exp $
+ * @version $Id: AtomConstants.java,v 1.7 2003-09-13 00:49:47 czarneckid Exp $
  */
 public interface AtomConstants {
 
@@ -48,73 +48,83 @@ public interface AtomConstants {
      */
     static final String DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION = ".txt";
 
-
     /**
-     *
+     * Initialization parameter for setting blog entries written via AtomAPI
      */
     static final String BLOG_ATOMAPI_ENTRY_EXTENSION_IP = "blog-atomapi-entry-extension";
 
     /**
-     * Header Value prefix for Atom Relm Auth..
+     * Header value prefix for Atom authentication realm
      */
     static final String ATOM_AUTH_PREFIX = "Atom ";
 
     /**
-     * Authentication Realm
+     * Authentication realm
      */
     static final String AUTHENTICATION_REALM = "Atom realm=\"blojsom\", qop=\"atom-auth\", algorith=\"SHA\", nonce=\"{0}\"";
 
-
     /**
-     * Resonse Header for Authentication Challenge
+     * Response header for authentication challenge
      */
     static final String HEADER_WWWAUTHENTICATE = "WWW-Authenticate";
 
     /**
-     * Resonse Header for Path
+     * Response header for path
      */
     static final String HEADER_LOCATION = "Location";
 
     /**
-     * Inbound Request Header with Authentication Credentials
+     * Inbound request header with authentication credentials
      */
     static final String HEADER_AUTHORIZATION = "Authorization";
 
     /**
-     *
+     * Atom namespace
      */
     static final String ATOM_NAMESPACE = "\"http://purl.org/atom/ns#\"";
 
     /**
-     *
+     * Atom authorization header
      */
     static final String ATOMHEADER_AUTHORIZATION = "X-Atom-Authorization";
 
     /**
-     *
+     * Atom authentication info header
      */
     static final String ATOMHEADER_AUTHENTICATION_INFO = "X-Atom-Authentication-Info";
 
     /**
-     *
+     * Atom nextnonce token
      */
     static final String ATOM_TOKEN_NEXTNONCE = "nextnonce=\"";
 
-
     /**
-     *
+     * Atom content-type
      */
     static final String CONTENTTYPE_ATOM = "application/x.atom+xml";
+
+    /**
+     * XML content-type
+     */
     static final String CONTENTTYPE_XML = "application/xml";
+
+    /**
+     * HTML content-type
+     */
     static final String CONTENTTYPE_HTML = "text/html";
 
     /**
-     *
+     * Key for atom-all
      */
     static final String KEY_ATOMALL = "atom-all";
+
+    /**
+     * Key for atom-last
+     */
     static final String KEY_ATOMLAST = "atom-last";
 
-
+    /**
+     * Default Atom API servlet mapping
+     */
     static final String ATOM_SERVLETMAPPING = "/atomapi/";
-
 }
