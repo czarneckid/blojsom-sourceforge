@@ -45,6 +45,7 @@ import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
 import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.plugin.email.SimpleAuthenticator;
 import org.blojsom.util.BlojsomConstants;
@@ -71,7 +72,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.26 2005-01-10 21:46:20 intabulas Exp $
+ * @version $Id: MoblogPlugin.java,v 1.27 2005-02-06 00:38:52 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
@@ -638,8 +639,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                 blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR_EXT, from);
                                 blogEntry.setMetaData(blogEntryMetaData);
                                 blogEntry.save(mailbox.getBlogUser());
+                                blogEntry.load(mailbox.getBlogUser());
 
                                 msgs[msgNum].setFlag(Flags.Flag.DELETED, true);
+                                
+                                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), blogEntry, mailbox.getBlogUser()));
                             } catch (BlojsomException e) {
                                 _logger.error(e);
                             }
