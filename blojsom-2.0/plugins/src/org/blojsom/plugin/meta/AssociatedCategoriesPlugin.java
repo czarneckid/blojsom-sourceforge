@@ -51,7 +51,7 @@ import java.util.Map;
  * AssociatedCategoriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: AssociatedCategoriesPlugin.java,v 1.3 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: AssociatedCategoriesPlugin.java,v 1.4 2004-12-17 16:53:03 czarneckid Exp $
  * @since blojsom 1.9.6
  */
 public class AssociatedCategoriesPlugin implements BlojsomPlugin {
@@ -115,7 +115,7 @@ public class AssociatedCategoriesPlugin implements BlojsomPlugin {
                         }
                         FileBackedBlogCategory fbbc = new FileBackedBlogCategory(associatedCategory, blog.getBlogURL() + associatedCategory);
                         try {
-                            fbbc.load(blog);
+                            fbbc.load(user);
                         } catch (BlojsomException e) {
                             _logger.error(e);
                         }
