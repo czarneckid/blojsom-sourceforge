@@ -58,7 +58,7 @@ import java.io.FileOutputStream;
  * EditBlogFlavorsPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.8 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.9 2004-05-18 01:06:25 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -209,6 +209,14 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
                 addOperationResultMessage(context, "No flavor name specified");
+
+                return entries;
+            }
+
+            if (flavorName.equalsIgnoreCase(user.getBlog().getBlogDefaultFlavor())) {
+                _logger.debug("Cannot delete the default flavor");
+                addOperationResultMessage(context, "Cannot delete the default flavor");
+
                 return entries;
             }
 
