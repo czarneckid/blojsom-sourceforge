@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.32 2004-09-15 00:59:43 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.33 2004-11-16 16:10:50 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -72,6 +72,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _authorizationProvider;
     private String _globalBlogHome;
     private BlojsomEventBroadcaster _eventBroadcaster;
+    private String _installedLocales;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
@@ -314,6 +315,12 @@ public class BlojsomConfiguration implements BlojsomConstants {
             _authorizationProvider = DEFAULT_AUTHORIZATION_PROVIDER;
         }
         _logger.debug("Using authorization provider: " + _authorizationProvider);
+
+        _installedLocales = getBlojsomPropertyAsString(BLOJSOM_INSTALLED_LOCALES_IP);
+        if (BlojsomUtils.checkNullOrBlank(_installedLocales)) {
+            _installedLocales = BLOG_LANGUAGE_DEFAULT + "_" + BLOG_COUNTRY_DEFAULT;
+        }
+        _logger.debug("Using installed locales: " + _installedLocales);
     }
 
     /**
@@ -493,5 +500,33 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public BlojsomEventBroadcaster getEventBroadcaster() {
         return _eventBroadcaster;
+    }
+
+    /**
+     * Get the installed locales for this blojsom installation
+     *
+     * @return Array of locale strings installed for this blojsom installation
+     * @since blojsom 2.21
+     */
+    public String[] getInstalledLocalesAsStrings() {
+        return BlojsomUtils.parseCommaList(_installedLocales);
+    }
+
+    /**
+     * Get the installed locales as {@link Locale} objects
+     *
+     * @return Array of {@link Locale} objects
+     * @since blojsom 2.21
+     */
+    public Locale[] getInstalledLocales() {
+        String[] localeStrings = getInstalledLocalesAsStrings();
+        Locale[] locales = new Locale[localeStrings.length];
+
+        for (int i = 0; i < localeStrings.length; i++) {
+            String localeString = localeStrings[i];
+            locales[i] = BlojsomUtils.getLocaleFromString(localeString);
+        }
+
+        return locales;
     }
 }

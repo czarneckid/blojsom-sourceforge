@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.54 2004-11-16 03:10:16 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.55 2004-11-16 16:06:24 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -353,6 +353,7 @@ public interface BlojsomConstants {
     public static final String BLOG_DEFAULT_PROPERTIES = "blog.properties";
     public static final String BLOJSOM_AUTHORIZATION_PROVIDER_IP = "blojsom-authorization-provider";
     public static final String BLOJSOM_BLOG_HOME_IP = "blojsom-blog-home";
+    public static final String BLOJSOM_INSTALLED_LOCALES_IP = "blojsom-installed-locales";
 
     // blojsom listener and event configuration parameters
     public static final String BLOJSOM_LISTENER_CONFIGURATION_IP = "listener-configuration";
@@ -388,7 +389,8 @@ public interface BlojsomConstants {
     public static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
     public static final String BLOG_DEFAULT_FLAVOR_IP = "blog-default-flavor";
     public static final String LINEAR_NAVIGATION_ENABLED_IP = "linear-navigation-enabled";
-    public static final String XMLRPC_ENABLED_IP = "xmlrpc-enabled"; 
+    public static final String XMLRPC_ENABLED_IP = "xmlrpc-enabled";
+    public static final String BLOG_ADMINISTRATION_LOCALE_IP = "blog-administration-locale";
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";
