@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.13 2003-05-09 02:57:56 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.14 2003-05-14 02:20:05 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -127,6 +127,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             }
             blogEntry.setBlogCategory(blogCategory);
             blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
+            blogEntry.setTrackbacksDirectory(_blog.getBlogTrackbackDirectory());
             if (_blog.getBlogCommentsEnabled().booleanValue()) {
                 blogEntry.loadComments();
             }
@@ -177,6 +178,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                     _logger.error(e);
                 }
                 blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
+                blogEntry.setTrackbacksDirectory(_blog.getBlogTrackbackDirectory());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
                 if (_blog.getBlogCommentsEnabled().booleanValue()) {
                     blogEntry.loadComments();
@@ -556,7 +558,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     }
 
     /**
-     * Called when {@link BlojsomServlet} is taken out of service
+     * Called when {@link org.ignition.blojsom.servlet.BlojsomServlet} is taken out of service
      *
      * @throws BlojsomFetcherException If there is an error in finalizing this fetcher
      */
