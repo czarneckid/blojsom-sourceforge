@@ -48,13 +48,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Iterator;
 
 /**
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.14 2003-05-03 18:01:24 intabulas Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.15 2003-05-12 01:52:14 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
