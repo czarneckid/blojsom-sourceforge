@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.31 2005-01-30 18:01:14 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.32 2005-01-31 03:08:25 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -200,6 +200,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_DAYS_EXPIRATION_IP, blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackModerationPlugin.TRACKBACK_MODERATION_ENABLED, httpServletRequest);
             blog.setBlogProperty(TrackbackModerationPlugin.TRACKBACK_MODERATION_ENABLED, blogPropertyValue);
+
+            // Pingback properties
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_PINGBACKS_ENABLED_IP, httpServletRequest);
+            blog.setBlogPingbacksEnabled(Boolean.valueOf(blogPropertyValue));
 
             // Weblogs Ping plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(WeblogsPingPlugin.BLOG_PING_URLS_IP, httpServletRequest);

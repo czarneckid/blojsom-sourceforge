@@ -177,6 +177,15 @@
                         <td>#adminResource('trackback.expiration.days.text' 'Trackback expiration (in days)')</td> <td><input name="plugin-trackback-days-expiration" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-days-expiration")"/></td>
                     </tr>
 
+                    <!-- Pingback settings -->
+                    <tr>
+                        <th>#adminResource('blog.properties.pingbacks' 'Pingback settings')</th>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "blog-pingbacks-enabled")
+                        <td>#adminResource('blog.pingbacks.enabled.text' 'Pingbacks enabled?')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogPingbacksEnabled())</td>
+                    </tr>
+
                     <!-- Notification service settings -->
                     <tr>
                         <th>#adminResource('blog.properties.notification' 'Notification service settings')</th>
