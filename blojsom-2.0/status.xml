@@ -7,7 +7,7 @@
     </developers>
 
     <changes>
-        <release version="2.13" date="Available from CVS">
+        <release version="2.13" date="March 17, 2004">
             <action dev="czarneckid" type="add" context="Core">
                 All available categories are now placed under the key <code>BLOJSOM_ALL_CATEGORIES</code>. This would
                 allow you to display all your categories to your users in your templates, not just the categories available underneath
@@ -25,7 +25,7 @@
             </action>
 
             <action dev="intabulas" type="add" context="Core">
-                Added rss and rss2 "-comment.?" templates (both Velocity and JSP) to support Comment API rss feeds.
+                Added rss and rss2 "-comment.?" templates (both Velocity and JSP) to support Comment API RSS feeds.
             </action>
 
             <action dev="czarneckid" type="add" context="Plugin">
