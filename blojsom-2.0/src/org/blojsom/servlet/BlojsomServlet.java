@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.7 2003-08-17 00:34:20 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.8 2003-08-22 04:39:07 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -99,7 +99,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 String templateDispatcherClass = templateMapProperties.getProperty(templateExtension);
                 Class dispatcherClass = Class.forName(templateDispatcherClass);
                 GenericDispatcher dispatcher = (GenericDispatcher) dispatcherClass.newInstance();
-                dispatcher.init(servletConfig);
+                dispatcher.init(servletConfig, _blojsomConfiguration);
                 _dispatchers.put(templateExtension, dispatcher);
                 _logger.debug("Added template dispatcher: " + templateDispatcherClass);
             }

@@ -36,6 +36,7 @@ package org.blojsom.dispatcher;
 
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
@@ -49,17 +50,21 @@ import java.util.Map;
  * GenericDispatcher
  *
  * @author David Czarnecki
- * @version $Id: GenericDispatcher.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: GenericDispatcher.java,v 1.2 2003-08-22 04:39:27 czarneckid Exp $
  */
 public interface GenericDispatcher extends BlojsomConstants {
+
+    static final String TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
+    static final String DEFAULT_TEMPLATES_DIRECTORY = "/templates/";
 
     /**
      * Initialization method for blojsom dispatchers
      *
      * @param servletConfig ServletConfig for obtaining any initialization parameters
+     * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig) throws BlojsomException;
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomException;
 
     /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
