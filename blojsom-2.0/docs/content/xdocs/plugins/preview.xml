@@ -34,34 +34,25 @@
                 html.blojsom-plugin-chain=preview
             </source>
             <p>
-
-                The preview plugin can use its own configuration file,
-                <em>preview.properties</em>,
-                that is referenced in
-                <em>web.xml</em>.
+                Configuration properties for the preview plugin are set in the individual <code>blog.properties</code>
+                file.
+            </p>
+            <p>
+                The 2 configurable parameters are:
             </p>
             <source>
-                &lt;init-param&gt;
-                &lt;param-name&gt;plugin-preview&lt;/param-name&gt;
-                &lt;param-value&gt;/WEB-INF/preview.properties&lt;/param-value&gt;
-                &lt;/init-param&gt;
+                plugin-preview-title-prefix=PREFIX
+                plugin-preview-preview-password=true
             </source>
             <p>
-
-                The
-                <em>preview.properties</em> contains 2 configurable parameters:
-            </p>
-            <source>
-                TITLE_PREFIX=PREVIEW
-                PREVIEW_PASSWORD=true
-            </source>
-            <p>
-                <em>TITLE_PREFIX</em> controls the prefix that indicates an entry is a preview-only entry
+                <em>plugin-preview-title-prefix</em> controls the prefix that indicates an entry is a preview-only entry
                 <br/>
-                <em>PREVIEW_PASSWORD</em> is the password that must be supplied for the "preview" URL parameter
+                <em>plugin-preview-preview-password</em> is the password that must be supplied for the "preview" URL parameter
                 to have preview entries displayed
-                <br/>
-
+                <p/>
+                If no values are supplied for these parameters, the defaults are "PREFIX" for the
+                <em>plugin-preview-title-prefix</em> parameter and "true" for the <em>plugin-preview-preview-password</em>
+                parameter.
             </p>
         </section>
         <section>
