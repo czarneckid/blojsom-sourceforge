@@ -79,7 +79,7 @@
                         <td>
                             <select name="blog-user-id">
                             #foreach ($blogUserID in $BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP)
-                                <option value="$blogUserID.getId()">$blogUserID.getId()</option>
+                                <option value="$blogUserID">$blogUserID</option>
                             #end
                             </select>
                         </td>
