@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.23 2003-03-04 03:30:57 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.24 2003-03-05 04:05:46 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -359,6 +359,42 @@ public class BlojsomUtils implements BlojsomConstants {
         return result;
     }
 
+    /**
+     * Return the template name for a particular page
+     *
+     * @param flavorTemplate Flavor template filename
+     * @param Requested page
+     * @return
+     */
+    public static final String getTemplateForPage(String flavorTemplate, String page) {
+        int dotIndex = flavorTemplate.lastIndexOf(".");
+        if (dotIndex == -1) {
+            return flavorTemplate + "-" + page;
+        } else {
+            StringBuffer newTemplate = new StringBuffer();
+            newTemplate.append(flavorTemplate.substring(0, dotIndex));
+            newTemplate.append("-");
+            newTemplate.append(page);
+            newTemplate.append(".");
+            newTemplate.append(flavorTemplate.substring(dotIndex + 1, flavorTemplate.length()));
+            return newTemplate.toString();
+        }
+    }
+
+    /**
+     * Return only the filename of a permalink request
+     *
+     * @param permalink Permalink request
+     * @return Filename portion of permalink request
+     */
+    public static final String getFilenameForPermalink(String permalink) {
+        int indexOfSlash = permalink.lastIndexOf("/");
+        if (indexOfSlash == -1) {
+            return permalink;
+        } else {
+            return permalink.substring(indexOfSlash + 1, permalink.length());
+        }
+    }
 
     /**
      * Return a comparator that uses a file's last modified time to order the files. If the
