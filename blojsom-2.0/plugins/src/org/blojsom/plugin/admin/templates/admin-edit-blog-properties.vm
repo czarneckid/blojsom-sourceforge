@@ -97,6 +97,9 @@
                         <td>#adminResource('trackback.throttle.text' 'Trackback throttle minutes')</td> <td><input name="plugin-trackback-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-throttle")"/></td>
                     </tr>
                     <tr>
+                        <td>#adminResource('ping.urls.text' 'URLs to ping when adding or editing a new entry')</td> <td><textarea name="blog-ping-urls" rows="6" cols="50">$!BLOJSOM_BLOG.getBlogProperty("blog-ping-urls")</textarea></td>
+                    </tr>
+                    <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('edit.blog.properties.text' 'Edit blog properties')"/>
                             <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>

@@ -62,7 +62,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.10 2004-04-01 03:10:40 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.11 2004-04-08 01:34:03 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -73,7 +73,7 @@ public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
     private static final String TECHNORATI_PING_URL = "http://rpc.technorati.com/rpc/ping";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
 
-    private static final String BLOG_PING_URLS_IP = "blog-ping-urls";
+    public static final String BLOG_PING_URLS_IP = "blog-ping-urls";
     private static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
 
     private WeblogsPingPluginAsyncCallback _callbackHandler;

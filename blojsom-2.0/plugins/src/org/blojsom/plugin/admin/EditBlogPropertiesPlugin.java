@@ -40,6 +40,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.util.BlojsomConstants;
@@ -60,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.17 2004-04-08 01:15:04 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.18 2004-04-08 01:34:12 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -162,7 +163,16 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_THROTTLE_MINUTES_IP, blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_PREFIX_IP, httpServletRequest);
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_PREFIX_IP, blogPropertyValue);
-            
+
+            // Weblogs Ping plugin properties
+            blogPropertyValue = BlojsomUtils.getRequestValue(WeblogsPingPlugin.BLOG_PING_URLS_IP, httpServletRequest);
+            String[] pingURLs = BlojsomUtils.parseDelimitedList(blogPropertyValue, BlojsomUtils.WHITESPACE);
+            if (pingURLs != null && pingURLs.length > 0) {
+                blog.setBlogProperty(WeblogsPingPlugin.BLOG_PING_URLS_IP, BlojsomUtils.arrayOfStringsToString(pingURLs, " "));
+            } else {
+                blog.setBlogProperty(WeblogsPingPlugin.BLOG_PING_URLS_IP, "");
+            }
+
             // Set the blog default category mappings
             flavorMap = user.getFlavors();
             flavorKeys = flavorMap.keySet().iterator();
