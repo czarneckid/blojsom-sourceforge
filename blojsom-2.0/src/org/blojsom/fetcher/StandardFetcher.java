@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.2 2003-08-10 15:32:25 intabulas Exp $
+ * @version $Id: StandardFetcher.java,v 1.3 2003-09-05 02:45:27 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -80,9 +80,10 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * Initialize this fetcher. This method only called when the fetcher is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration blojsom configuration information
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
-    public void init(ServletConfig servletConfig) throws BlojsomFetcherException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomFetcherException {
         _logger.debug("Initialized standard fetcher");
     }
 

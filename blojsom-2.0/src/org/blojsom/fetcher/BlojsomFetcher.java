@@ -37,6 +37,7 @@ package org.blojsom.fetcher;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.2 2003-09-05 02:45:27 czarneckid Exp $
  */
 public interface BlojsomFetcher {
 
@@ -56,9 +57,10 @@ public interface BlojsomFetcher {
      * Initialize this fetcher. This method only called when the fetcher is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration blojsom configuration information
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
-    public void init(ServletConfig servletConfig) throws BlojsomFetcherException;
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomFetcherException;
 
     /**
      * Return a new blog entry instance

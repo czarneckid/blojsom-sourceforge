@@ -59,7 +59,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.5 2003-08-22 04:41:10 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.6 2003-09-05 02:45:46 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -85,7 +85,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
         try {
             Class fetcherClass = Class.forName(fetcherClassName);
             _fetcher = (BlojsomFetcher) fetcherClass.newInstance();
-            _fetcher.init(servletConfig);
+            _fetcher.init(servletConfig, blojsomConfiguration);
             _logger.info("Added blojsom fetcher: " + fetcherClassName);
         } catch (ClassNotFoundException e) {
             _logger.error(e);
