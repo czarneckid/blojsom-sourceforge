@@ -48,7 +48,7 @@ import sun.util.calendar.Gregorian;
  * BlogReferer
  *
  * @author Mark Lussier
- * @version $Id: BlogReferer.java,v 1.2 2003-03-28 21:20:23 intabulas Exp $
+ * @version $Id: BlogReferer.java,v 1.3 2003-03-29 18:06:45 intabulas Exp $
  */
 public class BlogReferer {
     private String _url;
@@ -135,7 +135,7 @@ public class BlogReferer {
      * @param lastreferal
      */
     public void setLastReferal(Date lastreferal) {
-        if (_lastreferal.compareTo(lastreferal) > 0) {
+        if (lastreferal.compareTo(_lastreferal) > 0) {
             _lastreferal = lastreferal;
             _istoday = determineToday();
         }
