@@ -61,13 +61,9 @@ import java.util.Vector;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.1 2003-08-09 20:33:33 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.2 2003-09-12 02:45:38 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
-
-    private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
-    private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
-    private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
 
     private static final String METAWEBLOG_UPLOAD_DIRECTORY_IP = "blojsom-extension-metaweblog-upload-directory";
     private static final String METAWEBLOG_ACCEPTED_TYPES_IP = "blojsom-extension-metaweblog-accepted-types";
@@ -292,8 +288,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 blogCategory.setCategoryURL(_blog.getBlogURL() + category);
 
                 Map fetchMap = new HashMap();
-                fetchMap.put(FETCHER_CATEGORY, blogCategory);
-                fetchMap.put(FETCHER_PERMALINK, permalink);
+                fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+                fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
 
                 if (entries != null && entries.length > 0) {
@@ -443,8 +439,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 blogCategory.setCategoryURL(_blog.getBlogURL() + category);
 
                 Map fetchMap = new HashMap();
-                fetchMap.put(FETCHER_CATEGORY, blogCategory);
-                fetchMap.put(FETCHER_PERMALINK, permalink);
+                fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+                fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
 
                 if (entries != null && entries.length > 0) {
@@ -493,8 +489,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             category.setCategoryURL(_blog.getBlogURL() + blogid);
 
             Map fetchMap = new HashMap();
-            fetchMap.put(FETCHER_CATEGORY, category);
-            fetchMap.put(FETCHER_NUM_POSTS_INTEGER, new Integer(numberOfPosts));
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, category);
+            fetchMap.put(BlojsomFetcher.FETCHER_NUM_POSTS_INTEGER, new Integer(numberOfPosts));
 
             BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
             Vector blogEntries = new Vector();

@@ -41,6 +41,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
@@ -73,15 +74,13 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.15 2003-09-12 01:02:02 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.16 2003-09-12 02:45:36 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
-    private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
-    private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
-    private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
-
-
+    /**
+     * Logger instance
+     */
     private Log _logger = LogFactory.getLog(AtomAPIServlet.class);
 
 
@@ -198,8 +197,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         BlogCategory blogCategory = _fetcher.newBlogCategory();
         blogCategory.setCategory(category);
         blogCategory.setCategoryURL(blog.getBlogURL() + category);
-        fetchMap.put(FETCHER_CATEGORY, blogCategory);
-        fetchMap.put(FETCHER_NUM_POSTS_INTEGER, new Integer(numPosts));
+        fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+        fetchMap.put(BlojsomFetcher.FETCHER_NUM_POSTS_INTEGER, new Integer(numPosts));
         try {
             BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
 
@@ -262,8 +261,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             BlogCategory blogCategory = _fetcher.newBlogCategory();
             blogCategory.setCategory(category);
             blogCategory.setCategoryURL(blog.getBlogURL() + category);
-            fetchMap.put(FETCHER_CATEGORY, blogCategory);
-            fetchMap.put(FETCHER_PERMALINK, permalink);
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
             try {
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
                 if (entries != null && entries.length > 0) {
@@ -372,8 +371,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             BlogCategory blogCategory = _fetcher.newBlogCategory();
             blogCategory.setCategory(category);
             blogCategory.setCategoryURL(blog.getBlogURL() + category);
-            fetchMap.put(FETCHER_CATEGORY, blogCategory);
-            fetchMap.put(FETCHER_PERMALINK, permalink);
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
             try {
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
 
@@ -542,8 +541,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             BlogCategory blogCategory = _fetcher.newBlogCategory();
             blogCategory.setCategory(category);
             blogCategory.setCategoryURL(blog.getBlogURL() + category);
-            fetchMap.put(FETCHER_CATEGORY, blogCategory);
-            fetchMap.put(FETCHER_PERMALINK, permalink);
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
             try {
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
 
