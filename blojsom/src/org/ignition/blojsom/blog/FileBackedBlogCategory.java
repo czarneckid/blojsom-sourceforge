@@ -47,7 +47,7 @@ import java.util.Properties;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.1 2003-04-17 03:08:09 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.2 2003-04-19 14:38:30 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -84,7 +84,6 @@ public class FileBackedBlogCategory extends BlogCategory {
         if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
             Properties dirProps = new Properties();
             for (int i = 0; i < categoryPropertyFiles.length; i++) {
-
                 try {
                     FileInputStream _fis = new FileInputStream(categoryPropertyFiles[i]);
                     dirProps.load( _fis);
