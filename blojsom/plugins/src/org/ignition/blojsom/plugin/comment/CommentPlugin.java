@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
+import java.util.ArrayList;
 import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -58,7 +59,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.9 2003-03-25 01:19:05 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.10 2003-03-25 04:28:38 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -140,15 +141,18 @@ public class CommentPlugin implements BlojsomPlugin {
                 }
 
                 BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
-                if ( _comment != null ) {
-                    entries[0].getComments().add(_comment);
+                if (_comment != null) {
+                    ArrayList blogComments = entries[0].getComments();
+                    if (blogComments == null) {
+                        blogComments = new ArrayList(1);
+                    }
+                    blogComments.add(_comment);
+                    entries[0].setComments(blogComments);
                 }
 
                 if (_blogEmailEnabled.booleanValue()) {
                     sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
                 }
-
-
             }
         }
 
@@ -257,11 +261,8 @@ public class CommentPlugin implements BlojsomPlugin {
                 _logger.debug("Added blog comment: " + commentFilename);
             } catch (IOException e) {
                 _logger.error(e);
+                return null;
             }
-
-
-
-
         }
 
         return comment;
