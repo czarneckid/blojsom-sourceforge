@@ -60,7 +60,7 @@ import java.util.*;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.1 2003-03-28 20:18:56 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.2 2003-03-29 18:07:51 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -114,6 +114,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
     private static final String REFERER_MAX_LENGTH = "referer-display-size";
 
+    private static final String REFERER_HIT_COUNTS = "hit-count-flavors";
+
+    private List _hitcountflavors;
+
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -127,6 +131,8 @@ public class RefererLogPlugin implements BlojsomPlugin {
         _referergroups = new HashMap(5);
 
         _blogurlfilter = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+
+        _hitcountflavors = new ArrayList(5);
 
         String refererConfiguration = servletConfig.getInitParameter(REFERER_CONFIG_IP);
         if (refererConfiguration == null || "".equals(refererConfiguration)) {
@@ -142,6 +148,16 @@ public class RefererLogPlugin implements BlojsomPlugin {
             if (maxlength != null) {
                 _referermaxlength = Integer.parseInt(maxlength);
             }
+
+            String hitcounters = refererProperties.getProperty(REFERER_HIT_COUNTS);
+            if (hitcounters != null) {
+                String[] _hitflavors = BlojsomUtils.parseCommaList(hitcounters);
+                for (int x = 0; x < _hitflavors.length; x++) {
+                    _hitcountflavors.add(_hitflavors[x]);
+                }
+                _logger.info("Hit count flavors = " + _hitcountflavors.size());
+            }
+
 
             _refererlog = refererProperties.getProperty(REFERER_LOG_FILE);
         } catch (IOException e) {
@@ -171,14 +187,27 @@ public class RefererLogPlugin implements BlojsomPlugin {
             flavor = BlojsomConstants.DEFAULT_FLAVOR_HTML;
         }
 
-        if ((referer != null) && (!referer.startsWith(_blogurlfilter))) {
+        if (_hitcountflavors.contains(flavor)) {
+            _logger.info("[HitCounter] Flavor = " + flavor + "  Referer = " + referer);
+
+            BlogRefererGroup group;
+            if (_referergroups.containsKey(flavor)) {
+                group = (BlogRefererGroup) _referergroups.get(flavor);
+            } else {
+                group = new BlogRefererGroup(true);
+            }
+            group.addHitCount(new Date(),1);
+            _referergroups.put(flavor, group);
+
+
+        } else if ((referer != null) && (!referer.startsWith(_blogurlfilter))) {
             _logger.info("[Referer] Flavor = " + flavor + "  Referer = " + referer);
 
             BlogRefererGroup group;
             if (_referergroups.containsKey(flavor)) {
                 group = (BlogRefererGroup) _referergroups.get(flavor);
             } else {
-                group = new BlogRefererGroup();
+                group = new BlogRefererGroup(_hitcountflavors.contains(flavor));
             }
             group.addReferer(flavor, referer, new Date());
             _referergroups.put(flavor, group);
@@ -235,11 +264,15 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     if (_referergroups.containsKey(_flavor)) {
                         _group = (BlogRefererGroup) _referergroups.get(_flavor);
                     } else {
-                        _group = new BlogRefererGroup();
+                        _group = new BlogRefererGroup(_hitcountflavors.contains(_flavor));
                     }
 
 
-                    _group.addReferer(_flavor, _url, getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
+                    if (_hitcountflavors.contains(_flavor)) {
+                        _group.addHitCount(getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
+                    } else {
+                        _group.addReferer(_flavor, _url, getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
+                    }
                     _referergroups.put(_flavor, _group);
 
                 }
@@ -260,21 +293,22 @@ public class RefererLogPlugin implements BlojsomPlugin {
         _logger.info("Writing referer list to " + _refererlog);
 
         Properties _refererproperties = new Properties();
-        StringBuffer _referers = null;
 
         Iterator _groupiterator = _referergroups.keySet().iterator();
         while (_groupiterator.hasNext()) {
             String groupflavor = (String) _groupiterator.next();
             BlogRefererGroup group = (BlogRefererGroup) _referergroups.get(groupflavor);
+            if (group.isHitCounter()) {
+               _refererproperties.put(groupflavor + ".hitcounter", getRefererDate(group.getLastHit()) +","+ group.getRefererCount() );
+            } else {
+                Iterator _flavoriterator = group.keySet().iterator();
+                while (_flavoriterator.hasNext()) {
+                    String flavorkey = (String) _flavoriterator.next();
+                    BlogReferer referer = (BlogReferer) group.get(flavorkey);
+                    _refererproperties.put(groupflavor + "." + BlojsomUtils.escapeString(referer.getUrl()),
+                            getRefererDate(referer.getLastReferal()) + "," + referer.getRefererCount());
 
-            Iterator _flavoriterator = group.keySet().iterator();
-            while (_flavoriterator.hasNext()) {
-                String flavorkey = (String) _flavoriterator.next();
-                BlogReferer referer = (BlogReferer) group.get(flavorkey);
-
-                _refererproperties.put(groupflavor + "." + BlojsomUtils.escapeString(referer.getUrl()),
-                        getRefererDate(referer.getLastReferal()) + "," + referer.getRefererCount());
-
+                }
             }
 
         }
