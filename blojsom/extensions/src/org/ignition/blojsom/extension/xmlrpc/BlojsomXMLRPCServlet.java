@@ -51,6 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Map;
@@ -63,7 +64,7 @@ import java.util.HashMap;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.6 2003-03-25 04:38:12 intabulas Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.7 2003-04-02 16:56:20 intabulas Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
@@ -200,11 +201,13 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         byte[] result = _xmlrpc.execute(httpServletRequest.getInputStream());
+        String content = new String(result);
         httpServletResponse.setContentType("text/xml");
-        httpServletResponse.setContentLength(result.length);
-        OutputStream out = httpServletResponse.getOutputStream();
-        out.write(result);
-        out.flush();
+        httpServletResponse.setContentLength(content.length());
+        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
+        osw.write(content);
+        osw.flush();
+
     }
 
     /**
