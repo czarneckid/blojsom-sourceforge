@@ -57,7 +57,7 @@ import java.util.Map;
  *
  * @author <a href="http://nick.chalko.com"/>Nick Chalko</a>
  * @author David Czarnecki
- * @version $Id: PreviewPlugin.java,v 1.1 2004-02-18 00:59:06 czarneckid Exp $
+ * @version $Id: PreviewPlugin.java,v 1.2 2004-03-21 14:30:52 czarneckid Exp $
  * @since blojsom 1.9
  */
 public class PreviewPlugin implements BlojsomPlugin {
@@ -125,7 +125,7 @@ public class PreviewPlugin implements BlojsomPlugin {
             List postedEntries = new ArrayList(entries.length);
             for (int i = 0; i < entries.length; i++) {
                 BlogEntry entry = entries[i];
-                if (!entry.getTitle().startsWith(titlePrefix)) {
+                if (entry != null && entry.getTitle() != null && !entry.getTitle().startsWith(titlePrefix)) {
                     postedEntries.add(entry);
                 }
             }
