@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.49 2003-05-06 02:20:14 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.50 2003-05-08 03:11:57 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -358,6 +358,18 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return String with replace occurences
      */
     public static String replace(String str, String pattern, String replace) {
+        if (str == null || "".equals(str)) {
+            return str;
+        }
+
+        if (replace == null) {
+            return str;
+        }
+
+        if ("".equals(pattern)) {
+            return str;
+        }
+
         int s = 0;
         int e = 0;
         StringBuffer result = new StringBuffer();
