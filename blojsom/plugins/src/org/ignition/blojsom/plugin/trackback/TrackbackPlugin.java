@@ -56,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.17 2003-04-15 04:48:48 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.18 2003-04-16 00:51:38 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -175,9 +175,14 @@ public class TrackbackPlugin implements BlojsomPlugin {
                 return entries;
             }
 
+            url = url.trim();
+
             if (title == null || "".equals(title)) {
                 title = url;
+            } else {
+                title = title.trim();
             }
+
             if (excerpt == null) {
                 excerpt = "";
             } else {
@@ -186,9 +191,13 @@ public class TrackbackPlugin implements BlojsomPlugin {
                     excerpt += "...";
                 }
             }
+
             if (blogName == null) {
                 blogName = "";
+            } else {
+                blogName = blogName.trim();
             }
+
             if (!category.endsWith("/")) {
                 category += "/";
             }
