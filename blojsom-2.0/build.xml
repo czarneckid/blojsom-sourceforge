@@ -34,7 +34,7 @@
     <property name="plugins-templates.jar" value="${webinf.lib.dir}/${name}-plugins-templates-${version}.jar"/>
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
-    <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
+    <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
     <property name="forrest.home" value="/Applications/Development/apache-forrest-0.5.1-src/build/dist/shbat"/>
 
     <!-- Add-on properties -->
@@ -205,7 +205,7 @@
     <!-- =================================================================== -->
     <!-- Compiles the add-on source code                                     -->
     <!-- =================================================================== -->
-    <target name="compile-addon" depends="prepare, compile" description="Compiles the add-on core, extensions, and plugins">
+    <target name="compile-addon" depends="prepare" description="Compiles the add-on core, extensions, and plugins">
         <!-- Add-on core -->
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
@@ -261,6 +261,21 @@
         <jar jarfile="${war.file}" basedir="${war.dir}"/>
         <delete dir="${war.dir}/WEB-INF/default/templates"/>
         <delete dir="${war.dir}/themes"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Create the add-on bundle                                            -->
+    <!-- =================================================================== -->
+    <target name="create-addon-bundle" depends="compile-addon">
+        <tstamp/>
+        <zip zipfile="${distro.dir}/${name}-${version}-addons.zip">
+            <fileset dir="${webinf.lib.dir}">
+                <include name="${name}-addon-*.jar"/>
+            </fileset>
+            <fileset dir="${addon.lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </zip>
     </target>
 
     <!-- =================================================================== -->
