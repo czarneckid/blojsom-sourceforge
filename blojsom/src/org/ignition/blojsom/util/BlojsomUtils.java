@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.48 2003-05-03 18:01:21 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.49 2003-05-06 02:20:14 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -268,7 +268,6 @@ public class BlojsomUtils implements BlojsomConstants {
             try {
                 buffer.append(URLEncoder.encode(name, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-                // @todo
             }
             if (paramNames.hasMoreElements()) {
                 buffer.append("&");
@@ -385,6 +384,22 @@ public class BlojsomUtils implements BlojsomConstants {
             return null;
         } else {
             return filename.substring(dotIndex + 1);
+        }
+    }
+
+    /**
+     * Return the filename without extension for a given filename
+     *
+     * @since blojsom 1.9
+     * @param filename Filename
+     * @return Filename up to the .
+     */
+    public static String getFilename(String filename) {
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex == -1) {
+            return filename;
+        } else {
+            return filename.substring(0, dotIndex);
         }
     }
 
