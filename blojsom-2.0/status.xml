@@ -22,6 +22,10 @@
                 Added rss and rss2 "-comment.?" templates (both Velocity and JSP) to support Comment API rss feeds.
             </action>
 
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added ability to submit a list of trackback and ping URLs when adding or updating blog entries.
+            </action>
+
             <action dev="intabulas" type="update" context="Library">
                 Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
             </action>
