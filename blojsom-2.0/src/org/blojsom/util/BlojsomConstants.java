@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.11 2003-10-17 01:47:45 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.12 2003-10-21 04:03:39 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -147,7 +147,7 @@ public interface BlojsomConstants {
     /**
      * UTF-8 encoding
      */
-    public static final String UTF8 = "UTF-8";
+    public static final String UTF8 = "UTF8";
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
