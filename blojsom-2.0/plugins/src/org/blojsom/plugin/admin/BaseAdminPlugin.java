@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.10 2004-06-03 01:22:53 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.11 2004-06-09 03:12:05 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -79,6 +79,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected static final String LOGOUT_ACTION = "logout";
     protected static final String PAGE_ACTION = "page";
 
+    protected ServletConfig _servletConfig;
     protected BlojsomConfiguration _blojsomConfiguration;
     protected AuthorizationProvider _authorizationProvider;
 
@@ -97,6 +98,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         _blojsomConfiguration = blojsomConfiguration;
+        _servletConfig = servletConfig;
 
         try {
             Class authorizationProviderClass = Class.forName(_blojsomConfiguration.getAuthorizationProvider());
