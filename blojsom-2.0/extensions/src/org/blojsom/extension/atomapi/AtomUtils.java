@@ -53,14 +53,15 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.6 2003-09-11 17:12:13 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.7 2003-09-11 18:07:17 intabulas Exp $
  */
-public class AtomUtils {
+public class AtomUtils implements AtomConstants {
 
     /**
+     * Generate a NONCE value based on the the current blog
      *
-     * @param user
-     * @return
+     * @param user a BlogUser instance for the particular blog
+     * @return a String that is a SHA digest (in hex) of the NONCE value
      */
     public static String generateNextNonce(BlogUser user) {
         String nonce = BlojsomUtils.getISO8601Date(new Date()) + ":" + user.getId() + ":" + user.getBlog().getBlogDescription();
@@ -69,11 +70,12 @@ public class AtomUtils {
 
 
     /**
+     * Generate an Atom Entry object from a Blojsom BlogEntry object
      *
-     * @param blog
-     * @param user
-     * @param blogentry
-     * @return
+     * @param blog the Blog instance
+     * @param user the BlogUser instance
+     * @param blogentry the BlogEntry to convert
+     * @return a Entry object populated from the BlogEntry
      */
     public static Entry fromBlogEntry(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
@@ -91,7 +93,7 @@ public class AtomUtils {
         result.setAuthor(author);
 
         Content content = new ContentImpl();
-        content.setMimeType("text/html");
+        content.setMimeType(CONTENTTYPE_HTML);
         content.setBody(blogentry.getEscapedDescription());
         result.addContent(content);
         return result;
@@ -99,15 +101,17 @@ public class AtomUtils {
     }
 
     /**
+     * Generates a slim Entry object (tile and id only) from a BlogEntry object
      *
-     * @param blog
-     * @param user
-     * @param blogentry
-     * @return
+     * @param blog the Blog instance
+     * @param user the BlogUser instance
+     * @param blogentry the BlogEntry to convert
+     * @return a Entry object populated from the BlogEntry
      */
     public static Entry fromBlogEntrySearch(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
         result.setTitle(blogentry.getEscapedTitle());
+        //@todo move the servletmap constant out of this method
         result.setId(blog.getBlogBaseURL() + "/atomapi/" + user.getId() + "/?permalink=" + blogentry.getPermalink());
         return result;
 

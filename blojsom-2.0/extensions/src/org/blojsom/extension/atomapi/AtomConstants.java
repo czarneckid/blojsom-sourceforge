@@ -39,14 +39,14 @@ package org.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomConstants.java,v 1.4 2003-09-10 21:01:43 intabulas Exp $
+ * @version $Id: AtomConstants.java,v 1.5 2003-09-11 18:07:51 intabulas Exp $
  */
 public interface AtomConstants {
 
     /**
      * Default file extension for blog entries written via AtomAPI
      */
-    public static final String DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION = ".txt";
+    static final String DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION = ".txt";
 
 
     /**
@@ -55,9 +55,9 @@ public interface AtomConstants {
     static final String BLOG_ATOMAPI_ENTRY_EXTENSION_IP = "blog-atomapi-entry-extension";
 
     /**
-     * Header Value prefix for Basic Relm Auth.. NOTE: THE TRAILING SLASH IS INTENDED!
+     * Header Value prefix for Atom Relm Auth..
      */
-    static final String BASE64_AUTH_PREFIX = "Basic ";
+    static final String ATOM_AUTH_PREFIX = "Atom ";
 
     /**
      * Authentication Realm
@@ -79,6 +79,40 @@ public interface AtomConstants {
      * Inbound Request Header with Authentication Credentials
      */
     static final String HEADER_AUTHORIZATION = "Authorization";
+
+    /**
+     *
+     */
+    static final String ATOM_NAMESPACE = "\"http://purl.org/atom/ns#\"";
+
+    /**
+     *
+     */
+    static final String ATOMHEADER_AUTHORIZATION = "X-Atom-Authorization";
+
+    /**
+     *
+     */
+    static final String ATOMHEADER_AUTHENTICATION_INFO = "X-Atom-Authentication-Info";
+
+    /**
+     *
+     */
+    static final String ATOM_TOKEN_NEXTNONCE = "nextnonce=\"";
+
+
+    /**
+     *
+     */
+    static final String CONTENTTYPE_ATOM = "application/x.atom+xml";
+    static final String CONTENTTYPE_XML = "application/xml";
+    static final String CONTENTTYPE_HTML = "text/html";
+
+    /**
+     *
+     */
+    static final String KEY_ATOMALL = "atom-all";
+    static final String KEY_ATOMLAST = "atom-last";
 
 
 }
