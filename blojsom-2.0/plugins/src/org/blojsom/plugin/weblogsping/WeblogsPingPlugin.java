@@ -60,7 +60,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.6 2003-11-11 04:00:54 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.7 2003-12-18 02:22:59 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -68,7 +68,10 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
 
     private static final String WEBLOGS_PING_URL = "http://rpc.weblogs.com/RPC2";
     private static final String WEBLO_GS_PING_URL = "http://ping.blo.gs/";
+    private static final String TECHNORATI_PING_URL = "http://rpc.technorati.com/rpc/ping";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
+
+    private static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
 
     private WeblogsPingPluginAsyncCallback _callbackHandler;
 
@@ -120,6 +123,12 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
         if (entries.length <= 0) {
             return entries;
         } else {
+            // Check the latest entry's metadata to see if we should not do the ping to weblogs.com and weblo.gs.
+            Map metaData = entries[0].getMetaData();
+            if (metaData != null && metaData.containsKey(NO_PING_WEBLOGS_METADATA)) {
+                return entries;
+            }
+
             // Pull the latest entry, check its date to see if its newer than the lastPingDate, and
             // if so, ping weblogs.com
             BlogEntry entry = entries[0];
@@ -140,6 +149,10 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
                     // Ping weblo.gs
                     XmlRpcClient weblogsClient = new XmlRpcClient(WEBLO_GS_PING_URL);
                     weblogsClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+
+                    // Ping technorati
+                    XmlRpcClient technoratiClient = new XmlRpcClient(TECHNORATI_PING_URL);
+                    technoratiClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
                 } catch (IOException e) {
                     _logger.error(e);
                 }
