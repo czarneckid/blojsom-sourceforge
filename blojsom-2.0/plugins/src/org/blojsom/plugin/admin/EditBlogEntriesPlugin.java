@@ -47,6 +47,7 @@ import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
 import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
 import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
 import org.blojsom.util.BlojsomMetaDataConstants;
@@ -72,7 +73,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.44 2005-02-10 16:11:32 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.45 2005-03-05 18:24:57 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -242,6 +243,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 BlogEntry entry = BlojsomUtils.fetchEntry(_fetcher, user, blogCategoryName, blogEntryId);
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
+
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entry,
+                    user, httpServletRequest, httpServletResponse, context));
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to retrieve blog entry: " + blogEntryId);
@@ -306,6 +310,10 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 }
 
                 entryToUpdate.setMetaData(entryMetaData);
+
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entryToUpdate,
+                    user, httpServletRequest, httpServletResponse, context));
+
                 entryToUpdate.save(user);
                 entryToUpdate.load(user);
                 _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
@@ -365,6 +373,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+
+            _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), null,
+                    user, httpServletRequest, httpServletResponse, context));
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY, blogCategoryName);
             httpServletRequest.setAttribute(PAGE_PARAM, ADD_BLOG_ENTRY_PAGE);
@@ -468,6 +479,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setAttributes(attributeMap);
 
             try {
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entry, user, httpServletRequest, httpServletResponse, context));
+                
                 entry.save(user);
                 entry.load(user);
                 StringBuffer entryLink = new StringBuffer();
