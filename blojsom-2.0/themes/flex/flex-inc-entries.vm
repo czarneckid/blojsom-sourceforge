@@ -8,7 +8,7 @@
     #parse($postEntryTemplate)
   #end
   #if ($BLOJSOM_PERMALINK)
-    #parse("default/flex-inc-trackback-auto-discovery.vm")
+    #parse("flex-inc-trackback-auto-discovery.vm")
   #end
 #end
 

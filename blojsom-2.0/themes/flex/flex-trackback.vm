@@ -1,3 +1,3 @@
-#set($postEntryTemplate = 'default/flex-inc-post-entry-trackback.vm')
-#set($mainContent = 'default/flex-inc-entries.vm')
-#parse('default/flex-inc-main.vm')
+#set($postEntryTemplate = 'flex-inc-post-entry-trackback.vm')
+#set($mainContent = 'flex-inc-entries.vm')
+#parse('flex-inc-main.vm')
