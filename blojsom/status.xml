@@ -5,28 +5,9 @@
         <person name="David Czarnecki" email="czarneckid@users.sourceforge.net" id="czarneckid"/>
         <person name="Mark Lussier" email="intabulas@users.sourceforge.net" id="intabulas"/>
         <person name="Nick Chalko" email="nick@chalko.com" id="chalko"/>
-        <!-- Add more people here -->
     </developers>
 
     <todo>
-        <actions priority="high">
-            <action context="docs" dev="chalko">
-                Customize this template project with your project's details.  This
-                TODO list is generated from 'status.xml'.
-            </action>
-            <action context="docs" dev="JB">
-                Add lots of content.  XML content goes in
-                <code>src/documentation/content/xdocs</code>, or wherever the
-                <code>${project.xdocs-dir}</code> property (set in
-                <code>forrest.properties</code>) points.
-            </action>
-            <action context="feedback" dev="JB">
-                Mail
-                <link
-                    href="mailto:forrest-dev@xml.apache.org">forrest-dev@xml.apache.org</link>
-                with feedback.
-            </action>
-        </actions>
         <!-- Add todo items. @context is an arbitrary string. Eg:
         <actions priority="high">
           <action context="code" dev="SN">
@@ -40,9 +21,9 @@
     </todo>
 
     <changes>
-        <!-- Add new releases here -->
+        <!-- Add new releases here -->    a
         <release version="1.9.3" date="July 6, 2003">
-            <action dev="czarneckid" type="add" context="General">
+            <action dev="czarneckid" type="remove" context="General">
                 Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
                 Blogger 2 API or even develop Blogger to support the Blogger 2 API in favor of the Echo API
             </action>
@@ -70,11 +51,7 @@
         </release>
 
         <release version="1.9.2" date="June 19, 2003">
-            <!-- Some action types have associated images. By default, images are
-            defined for 'add', 'fix', 'remove' and 'update'. If you add
-            src/documentation/resources/images/<foo>.jpg images, these will
-              automatically be used for entries of type <foo>. -->
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="update" context="Core">
                 BlojsomServlet and BlojsomXMLRPCServlet now call the destroy() method on the fetcher in use
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
@@ -94,11 +71,11 @@
                 Added the blojsom
                 <i>favicon.ico</i> file and references in the html JSP and Velocity templates
             </action>
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="update" context="Core">
                 <i>main.css</i> was renamed to
                 <i>blojsom.css</i> to avoid potential conflicts with existing style sheets
             </action>
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="update" context="Core">
                 <i>dispatcher-map.properties</i> was changed to
                 <i>dispatcher.properties</i>
             </action>
@@ -108,10 +85,10 @@
                 <tt>Blog</tt> class and removed previous
                 <tt>Blog</tt> constructor
             </action>
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="remove" context="Core">
                 Removed intermediate category output in html JSP template
             </action>
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="update" context="Core">
                 <i>blog-file-extensions</i> now takes a comma-separated list of regular expressions, rather than simply file extensions
             </action>
             <action dev="czarneckid" type="add" context="Core">
@@ -119,7 +96,7 @@
                 <i>blog-directory-filter</i> to
                 <i>blojsom.properties</i>, which takes a comma-separated list of regular expressions for directories to filter when generating the category list
             </action>
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="fix" context="Core">
                 Correctly placed requested category
                 <tt>BlogCategory</tt> object on the context
             </action>
@@ -143,7 +120,7 @@
             <action dev="czarneckid" type="add" context="Core">
                 Last-Modified header is now generated based on the most recent blog entry
             </action>
-            <action dev="czarneckid" type="add" context="Core">
+            <action dev="czarneckid" type="update" context="Core">
                 Correctly loaded meta-data for categories that get placed on the request (the categories list and the requested category)
             </action>
             <action dev="czarneckid" type="add" context="Core">
@@ -200,13 +177,13 @@
         </release>
 
         <release version="1.1" date="February 10, 2003">
-            <action dev="czarneckid" type="add" context="General">
+            <action dev="czarneckid" type="update" context="General">
                 blojsom configuration parameters were moved from
                 <i>/WEB-INF/web.xml</i> to
                 <i>/WEB-INF/blojsom.properties</i>. This allows other projects such as
                 <a href="http://sourceforge.net/projects/blojsim">blojsim</a> to share blojsom configuration information
             </action>
-            <action dev="czarneckid" type="add" context="General">
+            <action dev="czarneckid" type="update" context="General">
                 All of the blog-related functionality (e.g. building the blog entry map, looking up blog entries for a category, etc...) has been refactored into the Blog class. BlojsomServlet is now only concerned with processing requests for the blog
             </action>
             <action dev="czarneckid" type="add" context="General">
