@@ -42,6 +42,21 @@ public interface BlojsomConstants {
     public static final String FLAVOR_PARAM = "flavor";
 
     /**
+     * Request parameter for the "year"
+     */
+    public static final String YEAR_PARAM = "year";
+
+    /**
+     * Request parameter for the "month"
+     */
+    public static final String MONTH_PARAM = "month";
+
+    /**
+     * Request parameter for the "day"
+     */
+    public static final String DAY_PARAM = "day";
+
+    /**
      * Value indicating all subdirectories under the blog home should be searched
      */
     public static final int INFINITE_BLOG_DEPTH = -1;
