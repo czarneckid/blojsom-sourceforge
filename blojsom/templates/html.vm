@@ -110,13 +110,17 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 
 <!-- Optional Code if you are using the referer plugin -->
 #if($REFERER_HISTORY)
-  <p class="weblogtitle">Referers:</p><p class="weblogdateline">
-  #foreach( $referentry in $REFERER_HISTORY.keySet())
-      <a href="$referentry">$referentry</a> ($REFERER_HISTORY.get($referentry))<br/>
+  #foreach( $flavorgroup in $REFERER_HISTORY.keySet())
+     #set ($group = $REFERER_HISTORY.get($flavorgroup))
+     <p class="weblogtitle">$flavorgroup referers today <span class="weblogdateline">($group.getRefererCount() overall)</span></p><p class="weblogdateline">
+     #foreach( $refererurl in $group.keySet())
+         #if ( $group.get($refererurl).isToday() )
+           <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getRefererCount())<br/>
+         #end
+     #end
+     </p>
   #end
-  </p>
 #end
-
 </body>
 
 </html>
