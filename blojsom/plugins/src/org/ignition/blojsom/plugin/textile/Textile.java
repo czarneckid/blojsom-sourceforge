@@ -46,7 +46,7 @@ import java.util.regex.Matcher;
  *
  * @author Mark Lussier
  * @since blojsom 1.9
- * @version $Id: Textile.java,v 1.6 2003-05-29 04:10:29 czarneckid Exp $
+ * @version $Id: Textile.java,v 1.7 2003-06-07 16:04:40 intabulas Exp $
  */
 public class Textile implements TextileConstants {
 
@@ -127,7 +127,7 @@ public class Textile implements TextileConstants {
          */
 
         for (int x = 0; x < EXP_PHRASE_MODIFIER_SOURCETAGS.length; x++) {
-            content.replaceAll("(^|\\s|>)" + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "\\b(.+?)\\b([^\\w\\s]*?)"
+            content = content.replaceAll("(^|\\s|>)" + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "\\b(.+?)\\b([^\\w\\s]*?)"
                     + EXP_PHRASE_MODIFIER_SOURCETAGS[x] + "([^\\w\\s]{0,2})(\\s|$)?"
                     , "$1<" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$2$3</" + EXP_PHRASE_MODIFIER_REPLACETAGS[x] + ">$4");
         }
