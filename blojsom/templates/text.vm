@@ -1,3 +1,8 @@
+$BLOJSOM_BLOG.getBlogName()
+$BLOJSOM_BLOG.getBlogURL()
+$BLOJSOM_BLOG.getBlogDescription()
+-------------------------------------------------------------------------------------------------
+
 #set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
 ---
