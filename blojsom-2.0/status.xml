@@ -18,6 +18,11 @@
                 in an IllegalArgumentException.
             </action>
 
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="898242">
+                Fixed issue where file upload under certain conditions would use the fullname for the upload file.
+                Also added error messages to administration console where some errors were logged but not reported
+                back to the browser.
+            </action>
         </release>
 
         <release version="2.11" date="February 9, 2004">
