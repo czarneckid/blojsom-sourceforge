@@ -51,7 +51,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.49 2003-05-06 02:22:37 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.50 2003-05-15 00:44:40 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -77,6 +77,7 @@ public class Blog implements BlojsomConstants {
     private String _blogTrackbackDirectory;
     private String _blogFetcher;
     private String _blogEntryMetaDataExtension;
+    private String _blogFileEncoding;
 
     private HashMap _blogProperties;
 
@@ -246,6 +247,13 @@ public class Blog implements BlojsomConstants {
         String blogFetcherClassName = blogConfiguration.getProperty(BLOG_FETCHER_IP);
         _blogFetcher = blogFetcherClassName;
         _blogProperties.put(BLOG_FETCHER_IP, blogFetcherClassName);
+
+        String blogFileEncoding = blogConfiguration.getProperty(BLOG_FILE_ENCODING_IP);
+        if (blogFileEncoding == null || "".equals(blogFileEncoding)) {
+            blogFileEncoding = UTF8;
+        }
+        _blogFileEncoding = blogFileEncoding;
+        _blogProperties.put(BLOG_FILE_ENCODING_IP, blogFileEncoding);
 
         _logger.info("blojsom home: " + _blogHome);
     }
@@ -654,20 +662,42 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Get the file extension for blog entry meta-data
      *
      * @since blojsom 1.9
-     * @return
+     * @return Meta-data file extension
      */
     public String getBlogEntryMetaDataExtension() {
         return _blogEntryMetaDataExtension;
     }
 
     /**
+     * Set the file extension for blog entry meta-data
      *
      * @since blojsom 1.9
-     * @param blogEntryMetaDataExtension
+     * @param blogEntryMetaDataExtension File extension for blog entry meta-data
      */
     public void setBlogEntryMetaDataExtension(String blogEntryMetaDataExtension) {
         _blogEntryMetaDataExtension = blogEntryMetaDataExtension;
+    }
+
+    /**
+     * Get the file encoding for blog entries
+     *
+     * @since blojsom 1.9
+     * @return File encoding
+     */
+    public String getBlogFileEncoding() {
+        return _blogFileEncoding;
+    }
+
+    /**
+     * Set the file encoding for blog entries
+     *
+     * @since blojsom 1.9
+     * @param blogFileEncoding File encoding
+     */
+    public void setBlogFileEncoding(String blogFileEncoding) {
+        _blogFileEncoding = blogFileEncoding;
     }
 }
