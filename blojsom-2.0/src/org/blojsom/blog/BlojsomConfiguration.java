@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.24 2004-08-26 02:19:50 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.25 2004-08-26 13:23:20 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -199,17 +199,16 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
         }
 
-
+        String[] users;
         Object listOfUsers = getBlojsomProperty(BLOJSOM_USERS_IP);
         if (listOfUsers instanceof List) {
             List blojsomUsers = getBlojsomPropertyAsList(BLOJSOM_USERS_IP);
-            String[] users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
+            users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
             _blojsomUsers = BlojsomUtils.arrayOfStringsToString(users);
         } else {
             _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
+            users = BlojsomUtils.parseCommaList(_blojsomUsers);
         }
-
-        String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
 
         InputStream is;
         if (users.length == 0) {
