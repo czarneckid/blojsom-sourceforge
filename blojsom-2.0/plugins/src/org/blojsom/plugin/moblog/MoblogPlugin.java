@@ -60,19 +60,32 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.5 2004-04-27 00:29:58 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.6 2004-04-27 01:10:42 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
 
+    /**
+     * Default store
+     */
     private static final String POP3_STORE = "pop3";
+
+    /**
+     * Default poll time (5 minutes)
+     */
+    private static final int DEFAULT_POLL_TIME = 360;
 
     /**
      * Moblog confifguration parameter for web.xml
      */
-    private static final String BLOG_MOBLOG_CONFIGURATION_IP = "plugin-moblog";
+    private static final String PLUGIN_MOBLOG_CONFIGURATION_IP = "plugin-moblog";
+
+    /**
+     * Moblog configuration parameter for mailbox polling time (5 minutes)
+     */
+    private static final String PLUGIN_MOBLOG_POLL_TIME = "plugin-moblog-poll-time";
 
     /**
      * Default moblog authorization properties file which lists valid e-mail addresses who can moblog entries
@@ -111,7 +124,7 @@ public class MoblogPlugin implements BlojsomPlugin {
 
     private Map _authorizationMap;
     private String _urlPrefix = null;
-    private static final int SLEEP_TIME = 100;
+    private int _pollTime;
 
     private Session _popSession;
     private boolean _finished = false;
@@ -189,7 +202,19 @@ public class MoblogPlugin implements BlojsomPlugin {
             throw new BlojsomPluginException(e);
         }
 
-        String moblogConfiguration = servletConfig.getInitParameter(BLOG_MOBLOG_CONFIGURATION_IP);
+        String moblogConfiguration = servletConfig.getInitParameter(PLUGIN_MOBLOG_CONFIGURATION_IP);
+
+        String moblogPollTime = servletConfig.getInitParameter(PLUGIN_MOBLOG_POLL_TIME);
+        if (BlojsomUtils.checkNullOrBlank(moblogPollTime)) {
+            _pollTime = DEFAULT_POLL_TIME;
+        } else {
+            try {
+                _pollTime = Integer.parseInt(moblogPollTime);
+            } catch (NumberFormatException e) {
+                _logger.error("Invalid time specified for: " + PLUGIN_MOBLOG_POLL_TIME);
+                _pollTime = DEFAULT_POLL_TIME;
+            }
+        }
 
         _checker = new MailboxChecker();
         _urlPrefix = blojsomConfiguration.getResourceDirectory();
@@ -387,7 +412,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                 for (int msgNum = 0; msgNum < msgs.length; msgNum++) {
                     String from = ((InternetAddress)
                             msgs[msgNum].getFrom()[0]).getAddress();
-                    _logger.debug("Processing message #" + msgNum);
+                    _logger.debug("Processing message: " + msgNum);
 
                     if (!checkSender(mailbox.getBlogUser().getId(), from)) {
                         _logger.debug("Unauthorized sender address: " + from);
@@ -577,13 +602,13 @@ public class MoblogPlugin implements BlojsomPlugin {
                     for (int x = 0; x < cnt; x++) {
                         Mailbox mailbox = (Mailbox) _pollingQueue.get(x);
                         if (mailbox.isEnabled()) {
-                            _logger.debug("Checking mailbox for user: " + mailbox.getUserId());
+                            _logger.debug("Checking mailbox: " + mailbox.getUserId() + " for user: " + mailbox.getBlogUser().getId());
                             processMailbox(mailbox);
                         }
                     }
 
                     _logger.debug("Moblog plugin off to take a nap");
-                    sleep(SLEEP_TIME * 1000);
+                    sleep(_pollTime * 1000);
                 }
             } catch (InterruptedException e) {
                 _logger.error(e);
