@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Update Blog Template")
+#adminPageHeader("#adminResource('update.blog.template.page.header' 'Update Blog Template')")
 
-        <div id="sideBar">
-            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
-        </div>
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
+    </div>
 
         <!-- Update blog template form -->
         <div id="mainClm">
-            <h2>Update a blog template</h2>
+            <h2>#adminResource('update.blog.template.text' 'Update blog template')</h2>
             <table>
                 <form name="update-blog-template" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="update-blog-template"/>
@@ -16,18 +16,18 @@
                     <input type="hidden" name="plugins" value="edit-blog-templates"/>
                     <input type="hidden" name="blog-template" value="$BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE"/>
                     <tr>
-                        <td>Template name</td>
+                        <td>#adminResource('template.name.text' 'Template name')</td>
                         <td><input type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE" disabled="true"/></td>
                     </tr>
                     <tr>
-                        <td>Template</td>
+                        <td>#adminResource('template.text' 'Template')</td>
                         <td><textarea rows="30" cols="100" name="blog-template-data">$BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE</textarea></td>
                     </tr>
 
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Update template"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('update.blog.template.text' 'Update blog template')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>

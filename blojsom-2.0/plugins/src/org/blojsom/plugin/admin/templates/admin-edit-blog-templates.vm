@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Templates")
+#adminPageHeader("#adminResource('templates.page.header' 'Templates')")
 
-        <div id="sideBar">
-            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
-        </div>
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
+    </div>
 
         <!-- Edit blog template form -->
         <div id="mainClm">
-            <h2>Edit a blog template</h2>
+            <h2>#adminResource('edit.blog.template.text' 'Update blog template')</h2>
             <table>
                 <form name="edit-blog-template" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="edit-blog-template"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-templates"/>
                     <tr>
-                        <td>Blog template</td>
+                        <td>#adminResource('blog.template.text' 'Blog template')</td>
                         <td>
                             <select name="blog-template">
                             #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES)
@@ -26,8 +26,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Edit template"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('edit.blog.template.text' 'Update blog template')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
