@@ -75,8 +75,12 @@ html.blojsom-plugin-chain=macro-expansion, href-hyperlinks
 
 <p class="weblogtitle">blojsom plugin execution</a></p>
 <p/>
-blojsom will not execute any of the plugins if there are no blog entries retrieved for a
-given request.
+blojsom will still execute the plugins even if there are no blog entries retrieved for a
+given request. You do not need to explicitly test for
+<pre>entries == null</pre> at the
+beginning of the <tt>process</tt> method as this method is passed a <tt>BlogEntry[]</tt>
+array of length 0 if there were no blog entries retrieved for a particular request.
+<p />
 <p class="weblogdateline">blojsom plugins override</p>
 You may override the plugins that get executed on a given request. The following table describes the URL parameters that affect the blojsom plugin chain.
 <p />

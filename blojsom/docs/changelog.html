@@ -21,7 +21,14 @@ ects/blojsom/">Sourceforge</a></p>
 <p />
 General:<br />
 - Added a text flavor. <i>flavor=text</i><br />
-- Added support for comments. See the <a href="comments.html">comments</a> document for more information<br />
+- Added support for comments. See the <a href="comments.html">comments</a> document for more information on configuring comments<br />
+- <font color="red">NOTE:</font> You will need to add two parameters, <i>blog-comments-enabled</i>
+and <i>blog-comments-directory</i> to your <i>blojsom.properties</i> file if you are upgrading from a
+previous version of blojsom. For example, you would add the following two lines to your <i>blojsom.properties</i> file:
+<pre>
+blog-comments-enabled=true
+blog-comments-directory=.comments
+</pre>
 - Added "BLOJSOM_COMMENTS_ENABLED" (see <a href="customization.html">customization</a>) as
 a request attribute to indicate whether or not comments are enabled for this blog<br />
 - Enhanced security of permalinks such that only permalinks matching one of the

@@ -17,10 +17,15 @@ ects/blojsom/">Sourceforge</a></p>
 
 <p />
 Starting with blojsom 1.5, you have the ability to allow users to comment on your blog entries. By default,
-comments are enabled in the <i>blojsom.properties</i> that ships with blojsom. As indicated in the
+comments are enabled in the <i>blojsom.properties</i> that ships with blojsom.
+<p />As indicated in the
 <a href="installation.html">installation</a> document, the value for the <i>blog-comments-enabled</i>
 parameter can be either <i>true</i> or <i>false</i>. If set to true, blog comments are enabled globally
 on your blog. If set to false, no user may comment on blog entries.
+<p />
+The <i>blog-comments-directory</i> parameter indicates the directory where blog comments
+will be written to under the blog category directories.  This directory is automatically
+added to the list of directories that get filtered by blojsom.
 <p />
 When users are taken to the comments page for a blog entry, they are presented with a form
 where they can enter their name, e-mail address, URL (for a homepage or their own blog), and
