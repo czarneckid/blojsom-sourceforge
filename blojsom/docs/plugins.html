@@ -28,13 +28,15 @@ ects/blojsom/">Sourceforge</a></p>
 <p/>
 The blojsom plugin API was designed to be very straightforward. A developer that wants to write a plugin
 for blojsom will implement the <a href="javadoc/org/ignition/blojsom/plugin/BlojsomPlugin.html">BlojsomPlugin</a> interface.
-This interface defines 3 methods that must be overridden:
+This interface defines 4 methods that must be overridden:
 <ul>
     <li><tt>init(javax.servlet.ServletConfig servletConfig, java.util.HashMap blogProperties)</tt>: This method is called once when the plugin class is instantiated by blojsom. As a developer, you can retrieve any initialization parameters from web.xml and you have read-only access to the blog properties for blojsom.
-    <li><tt>process(javax.servlet.http.HttpServletRequest httpServletRequest, BlogEntry[] entries)</tt>: After retrieving the blog entries for a request, blojsom will execute the plugins (their order is defined in the <i>blog-plugin-chain</i> property of the
+    <li><tt>process(javax.servlet.http.HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries)</tt>: After retrieving the blog entries for a request, blojsom will execute the plugins (their order is defined in the <i>blog-plugin-chain</i> property of the
         <i>plugin.properties</i> file). The <tt>process()</tt> method is where the plugin can manipulate the individual blog entries.
     <li><tt>cleanup()</tt>: The <tt>cleanup()</tt> method is called directly after the <tt>process</tt> method and is provided so that developers
         can perform any cleanup after processing a plugin request.
+    <li><tt>destroy()</tt>: The <tt>destroy()</tt> method is called for each plugin when
+        BlojsomServlet is taken out of service by the servlet container.
 </ul>
 As a developer, you must ensure that any access to class member variables is thread-safe.
 <p />
