@@ -10,7 +10,7 @@
 <project name="blojsom" default="compile" basedir=".">
 
     <property name="name" value="blojsom"/>
-    <property name="version" value="2.02"/>
+    <property name="version" value="2.03"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
     <property name="war.file" value="${distro.dir}/${name}.war"/>
@@ -29,10 +29,10 @@
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
     <property name="themes.dir" value="${basedir}/themes"/>
-    <property name="core.jar" value="${webinf.lib.dir}/${name}-core.jar"/>
-    <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins.jar"/>
-    <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions.jar"/>
-    <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates.jar"/>
+    <property name="core.jar" value="${webinf.lib.dir}/${name}-core-${version}.jar"/>
+    <property name="plugins.jar" value="${webinf.lib.dir}/${name}-plugins-${version}.jar"/>
+    <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
+    <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
 
     <property name="create.packed.war" value="false"/>
@@ -46,9 +46,9 @@
     <property name="addon.plugins.src.dir" value="${basedir}/addon/plugins/src"/>
     <property name="addon.core.src.dir" value="${basedir}/addon/core/src"/>
 
-    <property name="addon.core.jar" value="${webinf.lib.dir}/${name}-addon-core.jar"/>
-    <property name="addon.plugins.jar" value="${webinf.lib.dir}/${name}-addon-plugins.jar"/>
-    <property name="addon.extensions.jar" value="${webinf.lib.dir}/${name}-addon-extensions.jar"/>
+    <property name="addon.core.jar" value="${webinf.lib.dir}/${name}-addon-core-${version}.jar"/>
+    <property name="addon.plugins.jar" value="${webinf.lib.dir}/${name}-addon-plugins-${version}.jar"/>
+    <property name="addon.extensions.jar" value="${webinf.lib.dir}/${name}-addon-extensions-${version}.jar"/>
 
     <property name="debug" value="on"/>
     <property name="deprecation" value="on"/>
