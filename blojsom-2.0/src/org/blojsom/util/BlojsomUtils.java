@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.31 2004-07-08 00:52:43 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.32 2004-07-14 02:15:51 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -716,6 +716,7 @@ public class BlojsomUtils implements BlojsomConstants {
         try {
             String result = URLEncoder.encode(input, UTF8);
             result = replace(result, "%2F", "/");
+            result = replace(result, "%20", "+");
             return result;
         } catch (UnsupportedEncodingException e) {
             return input;
