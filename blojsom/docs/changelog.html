@@ -9,7 +9,11 @@
 <body>
 
 <p class="weblogtitle">blojsom - changelog</p>
-<p class="navigation"><a href="index.html">home</a> | <a href="installation.html">installation</a> | <a href="customization.html">customization</a> | <a href="faq.html">faq</a> | <a href="changelog.html">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/projects/blojsom/">Sourceforge</a></p>
+
+<p class="navigation"><a href="index.html">home</a> | <a href="installation.html">installation</a> |
+ <a href="customization.html">customization</a> | <a href="plugins.html">plugins</a> | <a href="faq.html">faq</a> | <a href="changelog.ht
+ml">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/proj
+ects/blojsom/">Sourceforge</a></p>
 
 <p>
 <p class="weblogtitle">blojsom 1.4 (codename: Zalinsky)</p>
@@ -17,13 +21,16 @@
 <p />
 General:<br />
 - "BLOG_SITE_URL" no longer contains a trailing "/"<br />
-- Initial Plugin API for blojsom<br />
 - XML-RPC Interface (Additional Servlet) supporting a subset of the <a href="http://plant.blogger.com/api/index.html">Blogger API</a> <br />
-- Plugins available:<br />
+- Initial Plugin API for blojsom<br />
+- Plugins available:
 <ul>
-- Macro Expansion Plugin that will expand $MACRO$ keywords in both the subject and body of a blog entry (see macros.properties)<br />
-- HREF Plugin that converts any URLs in text entries to hrefs automatically<br />
+    <li>Macro Expansion Plugin that will expand <i>$macro$</i> references in the body of a blog entry
+    <li>HREF Plugin that converts any URLs in text entries to hyperlinks automatically
+    <li>"More ..." Plugin will truncate long entries and add a hyperlink to the full text of the entry
+    <li>The Simple Search Plugin looks for a user's query in either the blog entry title or blog entry description
 </ul>
+
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=692640&group_id=72754">BUG 692640</a>: Servlet context name same as url-mapping makes invalid URL<br />
