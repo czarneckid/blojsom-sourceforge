@@ -48,11 +48,11 @@ import java.util.*;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.10 2004-05-16 01:48:45 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.11 2004-07-15 22:53:17 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
-    protected Log _logger = LogFactory.getLog(BlogEntry.class);
+    protected transient Log _logger = LogFactory.getLog(BlogEntry.class);
 
     protected String _title;
     protected String _link;

@@ -47,17 +47,17 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.17 2004-05-16 01:49:16 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.18 2004-07-15 22:53:17 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
 
-    private Log _logger = LogFactory.getLog(FileBackedBlogEntry.class);
+    private transient Log _logger = LogFactory.getLog(FileBackedBlogEntry.class);
 
-    private File _source;
-    private String _commentsDirectory;
-    private String _trackbacksDirectory;
-    private String _blogFileEncoding;
+    private transient File _source;
+    private transient String _commentsDirectory;
+    private transient String _trackbacksDirectory;
+    private transient String _blogFileEncoding;
 
     /**
      * Create a new blog entry with no data
