@@ -40,14 +40,14 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.65 2005-03-16 04:23:45 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.66 2005-03-19 04:52:56 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
     /**
      * blojsom version
      */
-    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.24";
+    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.25";
 
     /**
      * Key under which blog information will be placed
@@ -329,6 +329,8 @@ public interface BlojsomConstants {
      */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
+    public static final String DEFAULT_DIGEST_ALGORITHM = "MD5";
+
     public static final String WHITESPACE = " \t\n\f\r";
 
     /**
@@ -408,7 +410,8 @@ public interface BlojsomConstants {
     public static final String LINEAR_NAVIGATION_ENABLED_IP = "linear-navigation-enabled";
     public static final String XMLRPC_ENABLED_IP = "xmlrpc-enabled";
     public static final String BLOG_ADMINISTRATION_LOCALE_IP = "blog-administration-locale";
-    public static final String USE_ENCRYPTED_PASSWORDS = "use-encrypted-passwords"; 
+    public static final String USE_ENCRYPTED_PASSWORDS = "use-encrypted-passwords";
+    public static final String DIGEST_ALGORITHM = "digest-algorithm"; 
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";
