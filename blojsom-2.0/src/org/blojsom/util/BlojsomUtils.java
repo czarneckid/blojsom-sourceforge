@@ -46,12 +46,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.nio.channels.FileChannel;
 
 /**
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.9 2003-11-11 01:54:52 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.10 2003-12-17 20:09:34 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -63,8 +64,33 @@ public class BlojsomUtils implements BlojsomConstants {
 
     /** Filter only directories */
     private static final FileFilter DIRECTORY_FILTER = new FileFilter() {
+
+        /**
+         * Tests whether or not the specified abstract pathname should be
+         * included in a pathname list.
+         * 
+         * @param pathname The abstract pathname to be tested
+         * @return <code>true</code> if and only if <code>pathname</code>
+         *         should be included
+         */
         public boolean accept(File pathname) {
             return (pathname.isDirectory());
+        }
+    };
+
+    /** Filter only files */
+    private static final FileFilter FILE_FILTER = new FileFilter() {
+
+        /**
+         * Tests whether or not the specified abstract pathname should be
+         * included in a pathname list.
+         * 
+         * @param pathname The abstract pathname to be tested
+         * @return <code>true</code> if and only if <code>pathname</code>
+         *         should be included
+         */
+        public boolean accept(File pathname) {
+            return (!pathname.isDirectory());
         }
     };
 
@@ -814,7 +840,7 @@ public class BlojsomUtils implements BlojsomConstants {
         String configuration =
                 servletConfig.getInitParameter(configurationIP);
 
-        Properties properties = new Properties();
+        Properties properties = new BlojsomProperties();
 
         if (configuration == null || "".equals(configuration)) {
             if (required) {
@@ -854,7 +880,7 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static Properties loadProperties(ServletConfig servletConfig, String configurationFile)
             throws BlojsomException {
-        Properties properties = new Properties();
+        Properties properties = new BlojsomProperties();
 
         InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
 
@@ -1059,5 +1085,70 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return directoryOrFile.delete();
+    }
+
+    /**
+     * Recursively copy a directory from a source to a target
+     *
+     * @param sourceDirectory Source directory
+     * @param targetDirectory Destination directory
+     * @throws IOException If there is an error copying the files and directories
+     * @since blojsom 2.06
+     */
+    public static void copyDirectory(File sourceDirectory, File targetDirectory) throws IOException {
+        File[] sourceFiles = sourceDirectory.listFiles(FILE_FILTER);
+        File[] sourceDirectories = sourceDirectory.listFiles(DIRECTORY_FILTER);
+
+        targetDirectory.mkdirs();
+
+        // Copy the files
+        if (sourceFiles != null && sourceFiles.length > 0) {
+            for (int i = 0; i < sourceFiles.length; i++) {
+                File sourceFile = sourceFiles[i];
+
+                FileInputStream fis = new FileInputStream(sourceFile);
+                FileOutputStream fos = new FileOutputStream(targetDirectory + File.separator + sourceFile.getName());
+                FileChannel fcin = fis.getChannel();
+                FileChannel fcout = fos.getChannel();
+
+                fcin.transferTo(0, fcin.size(), fcout);
+
+                fcin.close();
+                fcout.close();
+                fis.close();
+                fos.close();
+            }
+        }
+
+        // Copy the directories
+        if (sourceDirectories != null && sourceDirectories.length > 0) {
+            for (int i = 0; i < sourceDirectories.length; i++) {
+                File directory = sourceDirectories[i];
+                File newTargetDirectory = new File(targetDirectory, directory.getName());
+
+                copyDirectory(directory, newTargetDirectory);
+            }
+        }
+    }
+
+    /**
+     * Turn an array of strings into a Map where the keys and values are the input strings. If the incoming array is null, this
+     * method returns an empty map.
+     *
+     * @since blojsom 2.06
+     * @param array Array of strings
+     * @return Map Map containing all the strings from the original array or an empty map if the incoming array is null.
+     */
+    public static Map arrayOfStringsToMap(String[] array) {
+        if (array == null) {
+            return new HashMap();
+        }
+
+        Map result = new HashMap();
+        for (int i = 0; i < array.length; i++) {
+            result.put(array[i], array[i]);
+        }
+
+        return result;
     }
 }
