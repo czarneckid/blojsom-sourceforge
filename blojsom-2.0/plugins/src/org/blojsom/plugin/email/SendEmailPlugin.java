@@ -42,12 +42,18 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.mail.Session;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Authenticator;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +63,7 @@ import java.util.Properties;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.3 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.4 2004-11-05 01:03:05 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -67,6 +73,16 @@ public class SendEmailPlugin implements BlojsomPlugin {
      * SMTP server initialization parameter
      */
     public static final String SMTPSERVER_IP = "smtp-server";
+
+    /**
+     * SMTP server username
+     */
+    public static final String SMTPSERVER_USERNAME_IP = "smtp-server-username";
+
+    /**
+     * SMTP server password
+     */
+    public static final String SMTPSERVER_PASSWORD_IP = "smtp-server-password";
 
     /**
      * SMTP session name
@@ -87,11 +103,29 @@ public class SendEmailPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        String _hostname = servletConfig.getInitParameter(SMTPSERVER_IP);
-        if (_hostname != null) {
-            Properties _props = new Properties();
-            _props.put(SESSION_NAME, _hostname);
-            _mailsession = Session.getInstance(_props);
+        String hostname = servletConfig.getInitParameter(SMTPSERVER_IP);
+
+        if (hostname != null) {
+            if (hostname.startsWith("java:comp/env")) {
+                try {
+                    Context context = new InitialContext();
+                    _mailsession = (Session) context.lookup(hostname);
+                } catch (NamingException e) {
+                    _logger.error(e);
+                    throw new BlojsomPluginException(e);
+                }
+            } else {
+                String username = servletConfig.getInitParameter(SMTPSERVER_USERNAME_IP);
+                String password = servletConfig.getInitParameter(SMTPSERVER_PASSWORD_IP);
+
+                Properties props = new Properties();
+                props.put(SESSION_NAME, hostname);
+                if (BlojsomUtils.checkNullOrBlank(username) || BlojsomUtils.checkNullOrBlank(password)) {
+                    _mailsession = Session.getDefaultInstance(props, null);
+                } else {
+                    _mailsession = Session.getDefaultInstance(props, new SimpleAuthenticator(username, password));
+                }
+            }
         }
 
     }
@@ -114,21 +148,21 @@ public class SendEmailPlugin implements BlojsomPlugin {
                                BlogEntry[] entries) throws BlojsomPluginException {
         Blog blog = user.getBlog();
 
-        String _defaultrecipientname = null;
-        String _defaultrecipientemail = null;
+        String defaultrecipientname = null;
+        String defaultrecipientemail = null;
 
         if (blog.getBlogOwnerEmail() != null) {
-            _defaultrecipientemail = blog.getBlogOwnerEmail();
+            defaultrecipientemail = blog.getBlogOwnerEmail();
         }
 
         if (blog.getBlogOwner() != null) {
-            _defaultrecipientname = blog.getBlogOwner();
+            defaultrecipientname = blog.getBlogOwner();
         }
         List _messagelist = (List) context.get(EmailUtils.BLOJSOM_OUTBOUNDMAIL);
         if (_messagelist != null) {
             for (int x = 0; x < +_messagelist.size(); x++) {
                 EmailMessage _msg = (EmailMessage) _messagelist.get(x);
-                sendMailMessage(_msg, _defaultrecipientemail, _defaultrecipientname);
+                sendMailMessage(_msg, defaultrecipientemail, defaultrecipientname);
 
             }
         }
@@ -166,5 +200,34 @@ public class SendEmailPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Simple authenticator
+     */
+    private class SimpleAuthenticator extends Authenticator {
+
+        private String username;
+        private String password;
+
+        /**
+         * Construct a new simple authenticator with the given username and password
+         *
+         * @param username Username
+         * @param password Password
+         */
+        public SimpleAuthenticator(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        /**
+         * Returns a {@link PasswordAuthentication} object with username and password
+         *
+         * @return {@link PasswordAuthentication}
+         */
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(username, password);
+        }
     }
 }
