@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.4 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.5 2003-12-23 01:57:00 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -84,7 +84,6 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
     private static final String BLOG_USER_PASSWORD = "blog-user-password";
     private static final String BLOG_USER_PASSWORD_CHECK = "blog-user-password-check";
 
-    private BlojsomConfiguration _blojsomConfiguration;
     private String _bootstrapDirectory;
     private String _blogHomeBaseDirectory;
     private String _flavorConfiguration;

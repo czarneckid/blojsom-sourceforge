@@ -59,7 +59,7 @@ import java.io.FileOutputStream;
  *
  * @since blojsom 2.06
  * @author czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.3 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.4 2003-12-23 01:57:00 czarneckid Exp $
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
@@ -75,7 +75,6 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
     // Actions
     private static final String MODIFY_PLUGIN_CHAINS = "modify-plugin-chains";
 
-    private BlojsomConfiguration _blojsomConfiguration;
     private String _pluginConfiguration;
     private Map _plugins;
 
@@ -96,7 +95,6 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
 
-        _blojsomConfiguration = blojsomConfiguration;
         _pluginConfiguration = servletConfig.getInitParameter(BLOJSOM_PLUGIN_CONFIGURATION_IP);
         try {
             Properties pluginProperties = BlojsomUtils.loadProperties(servletConfig, _blojsomConfiguration.getBaseConfigurationDirectory() + _pluginConfiguration);

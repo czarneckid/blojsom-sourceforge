@@ -56,7 +56,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.7 2003-12-22 16:54:20 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.8 2003-12-23 01:57:00 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -81,7 +81,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     // Actions
     private static final String UPLOAD_FILE_ACTION = "upload-file";
 
-    private String _installationDirectory;
     private String _temporaryDirectory;
     private long _maximumUploadSize;
     private int _maximumMemorySize;
@@ -104,8 +103,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
-
-        _installationDirectory = blojsomConfiguration.getInstallationDirectory();
 
         try {
             Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, PLUGIN_ADMIN_UPLOAD_IP, true);
@@ -208,7 +205,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
                         // If so, upload the file to the resources directory
                         if (isAcceptedFileType) {
-                            File resourceDirectory = new File(_installationDirectory + _resourcesDirectory + user.getId() + "/");
+                            File resourceDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
+                                    _resourcesDirectory + user.getId() + "/");
                             if (!resourceDirectory.exists()) {
                                 if (!resourceDirectory.mkdirs()) {
                                     _logger.error("Unable to create resource directory for user: " + resourceDirectory.toString());
@@ -216,7 +214,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                                 }
                             }
 
-                            File resourceFile = new File(_installationDirectory + _resourcesDirectory + user.getId() + "/" + item.getName());
+                            File resourceFile = new File(_blojsomConfiguration.getInstallationDirectory() +
+                                    _resourcesDirectory + user.getId() + "/" + item.getName());
                             try {
                                 item.write(resourceFile);
                             } catch (Exception e) {

@@ -55,15 +55,11 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.6 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.7 2003-12-23 01:57:00 czarneckid Exp $
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(EditBlogTemplatesPlugin.class);
-
-    private String _templatesDirectory;
-    private String _installationDirectory;
-    private String _baseConfigurationDirectory;
 
     // Pages
     private static final String EDIT_BLOG_TEMPLATES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-templates";
@@ -97,10 +93,6 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
-        _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
-        _installationDirectory = blojsomConfiguration.getInstallationDirectory();
-        _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
-
     }
 
     /**
@@ -128,8 +120,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         } else if (PAGE_ACTION.equals(action)) {
             _logger.debug("User requested edit blog templates page");
 
-            File templatesDirectory = new File(_installationDirectory + BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory) +
-                    user.getId() + _templatesDirectory);
+            File templatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
+                    BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
+                    user.getId() + _blojsomConfiguration.getTemplatesDirectory());
             _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
             File[] templates = templatesDirectory.listFiles();
@@ -153,8 +146,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 return entries;
             }
 
-            File blogTemplateFile = new File(_installationDirectory + BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory) +
-                    user.getId() + _templatesDirectory + blogTemplate);
+            File blogTemplateFile = new File(_blojsomConfiguration.getInstallationDirectory() +
+                    BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
+                    user.getId() + _blojsomConfiguration.getTemplatesDirectory() + blogTemplate);
             _logger.debug("Reading template file: " + blogTemplateFile.toString());
 
             try {
@@ -187,8 +181,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             }
 
             String blogTemplateData = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DATA, httpServletRequest);
-            File blogTemplateFile = new File(_installationDirectory + BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory) +
-                    user.getId() + _templatesDirectory + blogTemplate);
+            File blogTemplateFile = new File(_blojsomConfiguration.getInstallationDirectory() +
+                    BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
+                    user.getId() + _blojsomConfiguration.getTemplatesDirectory() + blogTemplate);
 
             _logger.debug("Writing template file: " + blogTemplateFile.toString());
 

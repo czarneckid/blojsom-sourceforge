@@ -58,7 +58,7 @@ import java.io.FileOutputStream;
  * EditBlogFlavorsPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.5 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.6 2003-12-23 01:57:00 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -85,7 +85,6 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     private static final String FLAVOR_CHARACTER_SET = "flavor-character-set";
     private static final String BLOG_TEMPLATE = "blog-template";
 
-    private BlojsomConfiguration _blojsomConfiguration;
     private String _flavorConfiguration;
 
     /**
@@ -105,7 +104,6 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
 
-        _blojsomConfiguration = blojsomConfiguration;
         _flavorConfiguration = servletConfig.getInitParameter(BLOJSOM_FLAVOR_CONFIGURATION_IP);
     }
 

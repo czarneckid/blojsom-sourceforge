@@ -57,7 +57,7 @@ import java.io.FileOutputStream;
  * 
  * @author czarnecki
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.5 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.6 2003-12-23 01:57:00 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -79,7 +79,6 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     private static final String BLOG_USER_PASSWORD = "blog-user-password";
     private static final String BLOG_USER_PASSWORD_CHECK = "blog-user-password-check";
 
-    private BlojsomConfiguration _blojsomConfiguration;
     private String _authorizationConfiguration;
 
     /**
@@ -99,7 +98,6 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
 
-        _blojsomConfiguration = blojsomConfiguration;
         _authorizationConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
     }
 
