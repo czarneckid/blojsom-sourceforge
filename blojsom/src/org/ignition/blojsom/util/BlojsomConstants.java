@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.41 2003-03-27 02:07:49 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.42 2003-03-27 02:12:55 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -177,11 +177,6 @@ public interface BlojsomConstants {
     public static final String CATEGORY_PARAM = "category";
 
     /**
-     * Request parameter for "rememberme"
-     */
-    public static final String REMEMBERME_PARAM = "rememberme";
-
-    /**
      * Default directory for adding trackbacks
      */
     public static final String DEFAULT_TRACKBACK_DIRECTORY = ".trackbacks";
@@ -237,22 +232,6 @@ public interface BlojsomConstants {
      * truncated to this size. NOTE: This only truncates for hash.
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
-
-    /**
-     * Comment "Remember Me" Cookie for the Authors Name
-     */
-    public static final String COOKIE_AUTHOR = "blojsom.cookie.author";
-
-    /**
-     * Comment "Remember Me" Cookie for the Authors Email
-     */
-    public static final String COOKIE_EMAIL = "blojsom.cookie.email";
-
-    /**
-     * Comment "Remember Me" Cookie for the Authors URL
-     */
-    public static final String COOKIE_URL = "blojsom.cookie.url";
-
 
     // Blog initialization parameters from blojsom.properties
     static final String BLOG_HOME_IP = "blog-home";
