@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="$BLOJSOM_SITE_URL/pumpkin.css" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" TYPE="image/x-icon"/>
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
-<link rel="EditURL" type="application/rsd+xml" title="RSD" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rsd" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
+<link rel="EditURL" type="application/atom+xml" title="Atom" href="$BLOJSOM_BLOG.getBlogURL()?flavor=atom" />
 </head>
 
 <body>
@@ -22,32 +23,32 @@
 
 <div class="blog">
     #set( $totalEntries = 0)
-    
-    #foreach ($entry in $BLOJSOM_ENTRIES) 
+
+    #foreach ($entry in $BLOJSOM_ENTRIES)
 	<div class="blogbody">
-	
+
 <!--
 	<a name="000076"></a>
 -->
 	<h3 class="title"><a href="$entry.getLink()">$entry.getTitle()</a></h3>
 
-	$entry.getDescription() 
-	
+	$entry.getDescription()
+
 	<div class="posted">
 	 [<a href="$entry.getBlogCategory().getCategoryURL()">#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end</a>]<br />
-     &raquo;&nbsp;Posted	
+     &raquo;&nbsp;Posted
 	 #if ($entry.getMetaData())
         #if ($entry.getMetaData().get("blog-entry-author"))
             &nbsp;by: <b>$entry.getMetaData().get("blog-entry-author")</b>
         #end
      #end
-	 &nbsp;on $entry.getDate() - 
+	 &nbsp;on $entry.getDate() -
 	 #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
        Comments (<a href="$entry.getLink()&amp;page=comments">$entry.getNumComments()</a>)&nbsp;
     #end
     Trackbacks (<a href="$entry.getLink()&amp;page=trackback">$entry.getNumTrackbacks()</a>)
 	</div>
-	
+
 	#set( $totalEntries = $totalEntries + 1)
     #if ($BLOJSOM_PERMALINK)
       <!-- Trackback Auto Discovery -->
