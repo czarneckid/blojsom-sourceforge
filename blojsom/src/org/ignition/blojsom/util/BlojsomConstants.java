@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.61 2003-05-31 20:24:07 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.62 2003-06-11 14:22:49 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -160,6 +160,12 @@ public interface BlojsomConstants {
      * Request parameter for the "page"
      */
     public static final String PAGE_PARAM = "page";
+
+    /**
+     * Request parameter value for the archive page
+     */
+    public static final String PAGE_PARAM_ARCHIVE = "archive";
+
 
     /**
      * Request parameter for the "category"
