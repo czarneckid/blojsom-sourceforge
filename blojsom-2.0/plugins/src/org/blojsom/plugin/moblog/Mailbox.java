@@ -37,8 +37,8 @@ package org.blojsom.plugin.moblog;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.util.BlojsomUtils;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Mailbox.
@@ -47,7 +47,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.11 2005-01-05 02:32:12 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.12 2005-01-10 21:28:45 intabulas Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -70,6 +70,7 @@ public class Mailbox {
     private Map _textMimeTypes;
     private Map _authorizedAddresses;
     private String _ignoreExpression;
+    private boolean _caseInsensativeMimeTypes;
 
     /**
      * Default constructor.
@@ -80,13 +81,14 @@ public class Mailbox {
         _attachmentMimeTypes = new HashMap();
         _textMimeTypes = new HashMap();
         _authorizedAddresses = new HashMap();
+        _caseInsensativeMimeTypes = false;
     }
 
     /**
      * Construct a new mailbox for a given hostname, user, and password.
      *
      * @param hostname Mailbox hostname
-     * @param userid Mailbox user id
+     * @param userid   Mailbox user id
      * @param password Mailbox user password
      */
     public Mailbox(String hostname, String userid, String password) {
@@ -178,6 +180,7 @@ public class Mailbox {
 
     /**
      * Set the output directory where attachments will be written
+     *
      * @param outputDirectory Output directory
      */
     public void setOutputDirectory(String outputDirectory) {
@@ -361,8 +364,8 @@ public class Mailbox {
     /**
      * Retrieve the secret word for this mailbox
      *
-     * @since blojsom 2.15
      * @return Secret word which must be present at the start of the subject of the e-mail
+     * @since blojsom 2.15
      */
     public String getSecretWord() {
         return _secretWord;
@@ -371,8 +374,8 @@ public class Mailbox {
     /**
      * Set the secret word for this mailbox.
      *
-     * @since blojsom 2.15
      * @param secretWord Secret word which must be present at the start of the subject of the e-mail
+     * @since blojsom 2.15
      */
     public void setSecretWord(String secretWord) {
         _secretWord = secretWord;
@@ -416,5 +419,25 @@ public class Mailbox {
      */
     public void setIgnoreExpression(String ignoreExpression) {
         _ignoreExpression = ignoreExpression;
+    }
+
+    /**
+     * Gets the flag indicating that mime types should be matched case insensativly. Default is false
+     *
+     * @return A boolean indicating case insensative mime type matching
+     * @since blojsom 2.23
+     */
+    public boolean isCaseInsensativeMimeTypes() {
+        return _caseInsensativeMimeTypes;
+    }
+
+    /**
+     * Set the flag indicating case insensative mime type matching
+     *
+     * @param caseInsensativeMimeTypes A boolean indicating case insensative matching
+     * @since blojsom 2.23
+     */
+    public void setCaseInsensativeMimeTypes(boolean caseInsensativeMimeTypes) {
+        _caseInsensativeMimeTypes = caseInsensativeMimeTypes;
     }
 }

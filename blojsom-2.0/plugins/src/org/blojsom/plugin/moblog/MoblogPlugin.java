@@ -71,7 +71,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.24 2005-01-05 02:32:13 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.25 2005-01-10 21:28:46 intabulas Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
@@ -112,6 +112,12 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
      * Default poll time (10 minutes)
      */
     private static final int DEFAULT_POLL_TIME = 720;
+
+
+    /**
+     * Default value for normalizing mime types
+     */
+    private static final boolean DEFAULT_NORMALIZE_MIME_TYPE = false;
 
     /**
      * Moblog confifguration parameter for web.xml
@@ -164,6 +170,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
     public static final String PROPERTY_ENABLED = "moblog-enabled";
 
     /**
+     * Configuration property to indicate if mime types should be case insentivly matched or not
+     */
+    public static final String PROPERTY_NORMALIZE = "moblog-normalize-mime-types";
+
+    /**
      * Configuration property for the secret word that must be present at the beginning of the subject
      */
     public static final String PLUGIN_MOBLOG_SECRET_WORD = "moblog-secret-word";
@@ -196,6 +207,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
     private ServletConfig _servletConfig;
     private BlojsomConfiguration _blojsomConfiguration;
     private String _storeProvider;
+    private boolean _caseInsensativeMimeTypes = DEFAULT_NORMALIZE_MIME_TYPE;
 
     private BlojsomFetcher _fetcher;
 
@@ -419,6 +431,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                             // Check for multipart/alternative
                             String overallType = email.getContentType();
                             overallType = sanitizeContentType(overallType);
+
+                            if (mailbox.isCaseInsensativeMimeTypes()) {
+                                overallType = overallType.toLowerCase();
+                            }
+
                             boolean isMultipartAlternative = false;
                             if (MULTIPART_ALTERNATIVE_MIME_TYPE.equals(overallType)) {
                                 isMultipartAlternative = true;
@@ -433,7 +450,9 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                 String type = bp.getContentType();
                                 if (type != null) {
                                     type = sanitizeContentType(type);
-
+                                    if (mailbox.isCaseInsensativeMimeTypes()) {
+                                        type = type.toLowerCase();
+                                    }
                                     Map imageMimeTypes = mailbox.getImageMimeTypes();
                                     Map attachmentMimeTypes = mailbox.getAttachmentMimeTypes();
                                     Map textMimeTypes = mailbox.getTextMimeTypes();

@@ -41,12 +41,7 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -55,7 +50,7 @@ import java.util.Properties;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.6 2005-01-05 02:32:14 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.7 2005-01-10 21:28:46 intabulas Exp $
  * @since blojsom 2.16
  */
 public class MoblogPluginUtils {
@@ -98,10 +93,10 @@ public class MoblogPluginUtils {
      * Read in the mailbox settings for a given user
      *
      * @param blojsomConfiguration {@link BlojsomConfiguration}
-     * @param servletConfig {@link ServletConfig}
-     * @param blogUser {@link BlogUser}
+     * @param servletConfig        {@link ServletConfig}
+     * @param blogUser             {@link BlogUser}
      * @return {@link Mailbox} populated with settings and authorized e-mail addresses or <code>null</code> if there
-     * was an error reading any configuration information
+     *         was an error reading any configuration information
      */
     public static Mailbox readMailboxSettingsForUser(BlojsomConfiguration blojsomConfiguration, ServletConfig servletConfig,
                                                      BlogUser blogUser) {
@@ -172,6 +167,10 @@ public class MoblogPluginUtils {
 
                     Boolean enabled = Boolean.valueOf(moblogProperties.getProperty(MoblogPlugin.PROPERTY_ENABLED, "false"));
                     mailbox.setEnabled(enabled.booleanValue());
+
+
+                    Boolean normalize = Boolean.valueOf(moblogProperties.getProperty(MoblogPlugin.PROPERTY_NORMALIZE, "false"));
+                    mailbox.setCaseInsensativeMimeTypes(normalize.booleanValue());
 
                     String[] types;
 
@@ -255,9 +254,9 @@ public class MoblogPluginUtils {
     /**
      * Save a file to disk
      *
-     * @param filename Base filename
+     * @param filename  Base filename
      * @param extension File extension
-     * @param input Input from which to read and write a file
+     * @param input     Input from which to read and write a file
      * @return # of bytes written to disk
      * @throws IOException If there is an error writing the file
      */
