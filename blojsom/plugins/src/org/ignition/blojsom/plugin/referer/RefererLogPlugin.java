@@ -54,13 +54,9 @@ import java.util.*;
 
 /**
  * Generic Referer Plugin
- * <p />
- * This plugin will log to a file all the http referer headers it encounters. It dumps this
- * log to what ever file you set in the <i>referer-log</i>
- * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.9 2003-04-04 01:50:27 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.10 2003-04-04 02:31:31 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
