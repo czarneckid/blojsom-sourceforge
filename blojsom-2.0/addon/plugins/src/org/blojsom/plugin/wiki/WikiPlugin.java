@@ -42,9 +42,9 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.radeox.EngineManager;
-import org.radeox.engine.RenderEngine;
+import org.radeox.api.engine.RenderEngine;
+import org.radeox.api.engine.context.RenderContext;
 import org.radeox.engine.context.BaseRenderContext;
-import org.radeox.engine.context.RenderContext;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -55,15 +55,12 @@ import java.util.Map;
  * WikiPlugin
  * 
  * @author David Czarnecki 
- * @version $Id: WikiPlugin.java,v 1.2 2003-08-11 02:04:40 czarneckid Exp $
+ * @version $Id: WikiPlugin.java,v 1.3 2003-12-02 03:36:07 czarneckid Exp $
  */
 public class WikiPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WikiPlugin.class);
     private static final String WIKI_EXTENSION = ".wiki";
-
-    RenderEngine _engine;
-    RenderContext _context;
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -73,8 +70,6 @@ public class WikiPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        _engine = EngineManager.getInstance();
-        _context = new BaseRenderContext();
     }
 
     /**
@@ -93,11 +88,14 @@ public class WikiPlugin implements BlojsomPlugin {
                                BlogUser user,
                                Map context,
                                BlogEntry[] entries) throws BlojsomPluginException {
+        RenderEngine engine = EngineManager.getInstance();
+        RenderContext renderContext = new BaseRenderContext();
+
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
             if (entry.getId().endsWith(WIKI_EXTENSION)) {
                 String description = entry.getDescription();
-                entry.setDescription(_engine.render(description, _context));
+                entry.setDescription(engine.render(description, renderContext));
             }
         }
 
