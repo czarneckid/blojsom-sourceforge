@@ -37,6 +37,7 @@ package org.ignition.blojsom.plugin.search;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 
@@ -51,7 +52,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.2 2003-04-01 15:03:19 intabulas Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.3 2003-04-19 02:44:57 czarneckid Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -72,10 +73,10 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
     }
 
     /**

@@ -34,6 +34,7 @@
  */
 package org.ignition.blojsom.plugin.showmore;
 
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
@@ -43,7 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -51,7 +51,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.1 2003-03-28 22:06:49 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.2 2003-04-19 02:44:46 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -73,10 +73,10 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
         String showMeMoreConfiguration = servletConfig.getInitParameter(SHOW_ME_MORE_CONFIG_IP);
         if (showMeMoreConfiguration == null || "".equals(showMeMoreConfiguration)) {
             throw new BlojsomPluginException("No value given for: " + SHOW_ME_MORE_CONFIG_IP + " configuration parameter");

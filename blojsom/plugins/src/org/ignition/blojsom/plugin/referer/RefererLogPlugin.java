@@ -37,6 +37,7 @@ package org.ignition.blojsom.plugin.referer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.plugin.referer.BlogReferer;
 import org.ignition.blojsom.plugin.referer.BlogRefererGroup;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
@@ -56,7 +57,7 @@ import java.util.*;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.12 2003-04-04 23:16:57 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.13 2003-04-19 02:44:57 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -136,14 +137,14 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
 
         _referergroups = new HashMap(5);
 
-        _blogurlfilter = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+        _blogurlfilter = blog.getBlogURL();
 
         _hitcountflavors = new ArrayList(5);
 

@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.5 2003-04-17 03:31:31 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.6 2003-04-19 02:44:46 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -111,7 +111,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 return new BlogEntry[0];
             }
             blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
-            if (_blog.areCommentsEnabled().booleanValue()) {
+            if (_blog.getBlogCommentsEnabled().booleanValue()) {
                 blogEntry.loadComments();
             }
             blogEntry.loadTrackbacks();
@@ -158,7 +158,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                     _logger.error(e);
                 }
                 blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
-                if (_blog.areCommentsEnabled().booleanValue()) {
+                if (_blog.getBlogCommentsEnabled().booleanValue()) {
                     blogEntry.loadComments();
                 }
                 blogEntry.loadTrackbacks();

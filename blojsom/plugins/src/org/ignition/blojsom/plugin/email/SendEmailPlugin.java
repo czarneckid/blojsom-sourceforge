@@ -36,10 +36,10 @@ package org.ignition.blojsom.plugin.email;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
-import org.ignition.blojsom.util.BlojsomConstants;
 
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
@@ -47,13 +47,16 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.6 2003-04-15 01:54:02 intabulas Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.7 2003-04-19 02:45:14 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -82,19 +85,18 @@ public class SendEmailPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
 
-        if (blogProperties.containsKey(BlojsomConstants.BLOG_OWNER_EMAIL)) {
-            _defaultrecipientemail = (String) blogProperties.get(BlojsomConstants.BLOG_OWNER_EMAIL);
+        if (blog.getBlogOwnerEmail() != null) {
+            _defaultrecipientemail = blog.getBlogOwnerEmail();
         }
 
-        if (blogProperties.containsKey(BlojsomConstants.BLOG_OWNER)) {
-            _defaultrecipientname = (String) blogProperties.get(BlojsomConstants.BLOG_OWNER);
+        if (blog.getBlogOwner() != null) {
+            _defaultrecipientname = blog.getBlogOwner();
         }
-
 
         String _hostname = servletConfig.getInitParameter(SMTPSERVER_IP);
         if (_hostname != null) {

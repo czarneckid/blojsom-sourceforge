@@ -36,6 +36,7 @@ package org.ignition.blojsom.plugin.trackback;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.Trackback;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
@@ -49,14 +50,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.19 2003-04-18 02:21:35 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.20 2003-04-19 02:44:46 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -125,15 +125,15 @@ public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
-        _blogFileExtensions = (String[]) blogProperties.get(BLOG_FILE_EXTENSIONS_IP);
-        _blogHome = (String) blogProperties.get(BLOG_HOME_IP);
-        _blogTrackbackDirectory = (String) blogProperties.get(BLOG_TRACKBACK_DIRECTORY_IP);
-        _blogEmailEnabled = (Boolean) blogProperties.get(BLOG_EMAIL_ENABLED_IP);
-        _blogUrlPrefix = (String) blogProperties.get(BLOG_URL_IP);
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
+        _blogFileExtensions = blog.getBlogFileExtensions();
+        _blogHome = blog.getBlogHome();
+        _blogTrackbackDirectory = blog.getBlogTrackbackDirectory();
+        _blogEmailEnabled = blog.getBlogEmailEnabled();
+        _blogUrlPrefix = blog.getBlogURL();
     }
 
     /**

@@ -36,6 +36,7 @@ package org.ignition.blojsom.plugin.comment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogComment;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
@@ -45,20 +46,19 @@ import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.29 2003-04-18 02:21:35 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.30 2003-04-19 02:45:14 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -149,16 +149,16 @@ public class CommentPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
-        _blogFileExtensions = (String[]) blogProperties.get(BlojsomConstants.BLOG_FILE_EXTENSIONS_IP);
-        _blogHome = (String) blogProperties.get(BlojsomConstants.BLOG_HOME_IP);
-        _blogCommentsEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_COMMENTS_ENABLED_IP);
-        _blogEmailEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_EMAIL_ENABLED_IP);
-        _blogCommentsDirectory = (String) blogProperties.get(BlojsomConstants.BLOG_COMMENTS_DIRECTORY_IP);
-        _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
+        _blogFileExtensions = blog.getBlogFileExtensions();
+        _blogHome = blog.getBlogHome();
+        _blogCommentsEnabled = blog.getBlogCommentsEnabled();
+        _blogEmailEnabled = blog.getBlogEmailEnabled();
+        _blogCommentsDirectory = blog.getBlogCommentsDirectory();
+        _blogUrlPrefix = blog.getBlogURL();
     }
 
     /**

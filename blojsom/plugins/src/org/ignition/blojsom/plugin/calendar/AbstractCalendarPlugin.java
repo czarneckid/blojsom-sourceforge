@@ -36,10 +36,10 @@ package org.ignition.blojsom.plugin.calendar;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
-import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
@@ -52,7 +52,7 @@ import java.util.*;
  * to filter content
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.8 2003-04-03 03:07:03 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.9 2003-04-19 02:45:07 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -112,19 +112,19 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
         // If blog-language is set in blojsom.properties, use it instead
-        String locale = (String) blogProperties.get(BlojsomConstants.BLOG_LANGUAGE_DEFAULT);
+        String locale = blog.getBlogLanguage();
 
         // If no locale is configured, use the system default
         if (locale != null) {
             _locale = new Locale(locale);
         }
 
-        _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+        _blogUrlPrefix = blog.getBlogURL();
     }
 
     /**

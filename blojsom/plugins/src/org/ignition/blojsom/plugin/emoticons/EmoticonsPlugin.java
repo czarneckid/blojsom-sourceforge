@@ -34,18 +34,17 @@
  */
 package org.ignition.blojsom.plugin.emoticons;
 
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -53,7 +52,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.2 2003-04-01 02:03:03 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.3 2003-04-19 02:45:14 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -125,10 +124,10 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
         String emoticonsConfiguration = servletConfig.getInitParameter(EMOTICONS_CONFIGURATION_IP);
         if (emoticonsConfiguration == null || "".equals(emoticonsConfiguration)) {
             throw new BlojsomPluginException("No value given for: " + EMOTICONS_CONFIGURATION_IP + " configuration parameter");
@@ -142,7 +141,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
             throw new BlojsomPluginException(e);
         }
 
-        _blogBaseURL = (String) blogProperties.get(BlojsomConstants.BLOG_BASE_URL_IP);
+        _blogBaseURL = blog.getBlogBaseURL();
     }
 
     /**

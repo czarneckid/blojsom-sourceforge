@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.71 2003-04-18 02:21:22 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.72 2003-04-19 02:44:42 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -253,7 +253,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                     try {
                         Class pluginClass = Class.forName(pluginClassName);
                         BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
-                        blojsomPlugin.init(servletConfig, _blog.getBlogProperties());
+                        blojsomPlugin.init(servletConfig, _blog);
                         _plugins.put(plugin, blojsomPlugin);
                         _logger.info("Added blojsom plugin: " + pluginClassName);
                     } catch (BlojsomPluginException e) {
@@ -462,7 +462,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
         context.put(BLOJSOM_DATE_OBJECT, blogDateObject);
         context.put(BLOJSOM_CATEGORIES, categories);
-        context.put(BLOJSOM_COMMENTS_ENABLED, _blog.areCommentsEnabled());
+        context.put(BLOJSOM_COMMENTS_ENABLED, _blog.getBlogCommentsEnabled());
 
         // Forward the request on to the template for the requested flavor
         String flavorTemplate;

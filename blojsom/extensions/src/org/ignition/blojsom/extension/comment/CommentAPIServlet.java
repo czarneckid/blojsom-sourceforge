@@ -74,7 +74,7 @@ import java.util.Properties;
  * Comment API Specification can be found at http://wellformedweb.org/story/9
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.1 2003-04-15 02:31:42 intabulas Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.2 2003-04-19 02:45:07 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
@@ -186,7 +186,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
         String commentText = null;
         String commentTitle = null;
 
-        if (_blog.areCommentsEnabled().booleanValue() && httpServletRequest.getContentLength() > 0) {
+        if (_blog.getBlogCommentsEnabled().booleanValue() && httpServletRequest.getContentLength() > 0) {
 
             String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
 

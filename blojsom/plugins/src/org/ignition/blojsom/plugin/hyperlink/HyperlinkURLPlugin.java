@@ -34,6 +34,7 @@
  */
 package org.ignition.blojsom.plugin.hyperlink;
 
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
@@ -41,14 +42,13 @@ import org.ignition.blojsom.plugin.BlojsomPluginException;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.4 2003-04-04 15:19:21 intabulas Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.5 2003-04-19 02:45:21 czarneckid Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -72,10 +72,10 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
     }
 
     /**

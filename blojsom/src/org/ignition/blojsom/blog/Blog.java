@@ -51,7 +51,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.45 2003-04-15 02:27:28 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.46 2003-04-19 02:44:46 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -536,15 +536,6 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
-     * Return whether or not blog comments are enabled
-     *
-     * @return <code>true</code> if comments are enabled, <code>false</code> otherwise
-     */
-    public Boolean areCommentsEnabled() {
-        return _blogCommentsEnabled;
-    }
-
-    /**
      * Get the directory where blog comments will be written to under the individual blog
      * category directories
      *
@@ -620,5 +611,41 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogFetcher(String blogFetcher) {
         _blogFetcher = blogFetcher;
+    }
+
+    /**
+     * Return whether or not comments are enabled
+     *
+     * @return Whether or not comments are enabled
+     */
+    public Boolean getBlogCommentsEnabled() {
+        return _blogCommentsEnabled;
+    }
+
+    /**
+     * Set whether or not comments are enabled
+     *
+     * @param blogCommentsEnabled Comments enabled value
+     */
+    public void setBlogCommentsEnabled(Boolean blogCommentsEnabled) {
+        _blogCommentsEnabled = blogCommentsEnabled;
+    }
+
+    /**
+     * Get whether or not email is enabled
+     *
+     * @return Whether or not email is enabled
+     */
+    public Boolean getBlogEmailEnabled() {
+        return _blogEmailEnabled;
+    }
+
+    /**
+     * Set whether or not email is enabled
+     *
+     * @param blogEmailEnabled Email enabled value
+     */
+    public void setBlogEmailEnabled(Boolean blogEmailEnabled) {
+        _blogEmailEnabled = blogEmailEnabled;
     }
 }

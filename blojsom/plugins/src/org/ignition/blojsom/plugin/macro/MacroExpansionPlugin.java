@@ -37,6 +37,7 @@ package org.ignition.blojsom.plugin.macro;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
@@ -57,7 +58,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.1 2003-03-28 22:06:50 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-04-19 02:44:57 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -110,10 +111,10 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blogProperties Read-only properties for the Blog
+     * @param blog {@link Blog} instance
      * @throws org.ignition.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
         _macros = new HashMap(10);
 
         loadMacros(servletConfig);
