@@ -6,6 +6,7 @@
 
 <web-app>
 
+    <!-- blojsom servlet initialization -->
     <servlet>
         <servlet-name>blojsom</servlet-name>
         <servlet-class>org.blojsom.servlet.BlojsomServlet</servlet-class>
@@ -74,7 +75,6 @@
         <load-on-startup>2</load-on-startup>
     </servlet>
 
-
     <servlet>
         <servlet-name>blojsomcommentapi</servlet-name>
         <servlet-class>org.blojsom.extension.comment.CommentAPIServlet</servlet-class>
@@ -89,8 +89,7 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 
-
-
+    <!-- blojsom servlet mappings -->
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
         <url-pattern>/blog/*</url-pattern>
@@ -105,7 +104,5 @@
         <servlet-name>blojsomcommentapi</servlet-name>
         <url-pattern>/commentapi/*</url-pattern>
     </servlet-mapping>
-
-
 
 </web-app>
