@@ -67,7 +67,7 @@ import java.util.Properties;
  * <a href="http://bitworking.org/rfc/draft-gregorio-03.html">http://bitworking.org/rfc/draft-gregorio-03.html</a>
  *
  * @author Mark Lussier
- * @version $Id: EchoAPIServlet.java,v 1.5 2003-07-15 01:08:34 intabulas Exp $
+ * @version $Id: EchoAPIServlet.java,v 1.6 2003-07-15 14:48:17 intabulas Exp $
  */
 public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, EchoConstants {
 
@@ -265,7 +265,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
         } else {
             httpServletResponse.setContentType("text/html");
-            httpServletResponse.setHeader("WWW-Authenticate", "basic realm=\"/blojsom\"");
+            httpServletResponse.setHeader("WWW-Authenticate", "basic realm=\"blojsom\"");
             httpServletResponse.setStatus(401);
         }
 
