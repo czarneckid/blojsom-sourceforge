@@ -48,7 +48,7 @@ import java.util.*;
  * removed at the same time an event is being broadcast.
  *
  * @author David Czarnecki
- * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.3 2005-01-05 02:32:58 czarneckid Exp $
+ * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.4 2005-01-06 03:32:10 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
@@ -83,9 +83,11 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
             }
         });
 
-        _listeners.add(handler);
-        _listenerToHandler.put(listener.getClass().getName(), handler);
-        _logger.debug("Added event: " + listener.getClass().getName() + " with process all events filter");
+        if (!_listenerToHandler.containsKey(listener.getClass().getName())) {
+            _listeners.add(handler);
+            _listenerToHandler.put(listener.getClass().getName(), handler);
+            _logger.debug("Added event: " + listener.getClass().getName() + " with process all events filter");
+        } 
     }
 
     /**
@@ -97,9 +99,12 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
      */
     public void addListener(BlojsomListener listener, BlojsomFilter filter) {
         EventHandler handler = new EventHandler(listener, filter);
-        _listeners.add(handler);
-        _listenerToHandler.put(listener.getClass().getName(), handler);
-        _logger.debug("Added event: " + listener.getClass().getName() + " with filter: " + filter.getClass().getName());
+
+        if (!_listenerToHandler.containsKey(listener.getClass().getName())) {
+            _listeners.add(handler);
+            _listenerToHandler.put(listener.getClass().getName(), handler);
+            _logger.debug("Added event: " + listener.getClass().getName() + " with filter: " + filter.getClass().getName());
+        }
     }
 
     /**
