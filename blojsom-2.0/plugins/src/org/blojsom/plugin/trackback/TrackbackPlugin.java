@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.29 2004-10-20 17:02:40 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.30 2004-11-28 17:02:34 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -279,6 +279,8 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             category = BlojsomUtils.getCategoryFromPath(category);
         }
 
+        category = BlojsomUtils.urlDecode(category);
+
         String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         String title = httpServletRequest.getParameter(TRACKBACK_TITLE_PARAM);
@@ -376,7 +378,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
 
             try {
                 BlogEntry[] fetchedEntries = _fetcher.fetchEntries(fetchMap, user);
-                if (entries.length > 0) {
+                if (fetchedEntries.length > 0) {
                     BlogEntry entry = fetchedEntries[0];
                     if (BlojsomUtils.checkMapForKey(entry.getMetaData(), BLOG_METADATA_TRACKBACKS_DISABLED)) {
                         _logger.debug("Trackbacks have been disabled for blog entry: " + entry.getId());

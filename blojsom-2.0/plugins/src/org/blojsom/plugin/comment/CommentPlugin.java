@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.23 2004-10-20 17:02:40 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.24 2004-11-28 17:01:56 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -369,6 +369,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
+            category = BlojsomUtils.urlDecode(category);
             String remember = httpServletRequest.getParameter(REMEMBER_ME_PARAM);
 
             String title = entries[0].getTitle();
@@ -451,7 +452,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 try {
                     BlogEntry[] fetchedEntries = _fetcher.fetchEntries(fetchMap, user);
-                    if (entries.length > 0) {
+                    if (fetchedEntries.length > 0) {
                         BlogEntry entry = fetchedEntries[0];
                         if (BlojsomUtils.checkMapForKey(entry.getMetaData(), BLOG_METADATA_COMMENTS_DISABLED)) {
                             _logger.debug("Comments have been disabled for blog entry: " + entry.getId());
