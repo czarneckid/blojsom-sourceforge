@@ -66,7 +66,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.14 2003-05-26 06:24:06 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.15 2003-05-26 18:16:16 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -224,7 +224,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         configureFetcher(servletConfig);
         configureAPIHandlers(servletConfig);
 
-        _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
+        _logger.info("blojsom home is [" + _blog.getBlogHome() + "]");
     }
 
     /**
