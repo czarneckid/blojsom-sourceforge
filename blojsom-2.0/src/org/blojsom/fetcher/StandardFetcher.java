@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.5 2003-10-23 00:18:40 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.6 2003-10-23 01:31:47 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -243,12 +243,15 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     protected BlogEntry[] getEntriesAllCategories(BlogUser user, String flavor, int maxBlogEntries, int blogDirectoryDepth) {
         Blog blog = user.getBlog();
         String flavorMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
-        String categoryMappingForFlavor = (String) blog.getBlogProperties().get(flavorMappingKey);
+        String categoryMappingForFlavor = (String) blog.getBlogProperty(flavorMappingKey);
         String[] categoryMappingsForFlavor = null;
-        if (categoryMappingForFlavor != null) {
+        if (categoryMappingForFlavor != null && !"".equals(categoryMappingForFlavor)) {
             _logger.debug("Using category mappings for flavor: " + flavor);
             categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
+        } else if ("".equals(categoryMappingForFlavor)) {
+            categoryMappingsForFlavor = null;
         }
+
         return getEntriesAllCategories(user, categoryMappingsForFlavor, maxBlogEntries, blogDirectoryDepth);
     }
 
