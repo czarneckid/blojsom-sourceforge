@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.22 2003-03-01 20:20:20 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.23 2003-03-04 03:30:57 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -158,6 +158,16 @@ public class BlojsomUtils implements BlojsomConstants {
                 return false;
             }
         };
+    }
+
+    /**
+     * Return a file filter which takes a single file extension to look for
+     *
+     * @param extension File extension
+     * @return File filter appropriate for filtering out a single file extension
+     */
+    public static FileFilter getExtensionFilter(final String extension) {
+        return getExtensionsFilter(new String[] {extension});
     }
 
     /**
