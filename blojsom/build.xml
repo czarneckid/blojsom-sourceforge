@@ -34,8 +34,7 @@
     <property name="templates.jar" value="${name}-templates.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
 
-
-
+    <property name="project.home" location="${basedir}"/>
 
     <!-- Add-on properties -->
     <property name="addon.extensions.src.dir" value="${basedir}/addon/extensions/src"/>
@@ -361,10 +360,9 @@
         </zip>
     </target>
 
-
-
-
-    <!-- deploy the site -->
+    <!-- =================================================================== -->
+    <!-- Deploys the Forrest site to Source                                  -->
+    <!-- =================================================================== -->
     <target name="deploysite">
 
         <!-- property to build and deploy the forrest site -->
@@ -377,6 +375,7 @@
         <property name="forrest.site.work.dir" value="build/work-site"/>
         <delete dir="${forrest.site.work.dir}"/>
         <mkdir dir="${forrest.site.work.dir}"/>
+        <mkdir dir="${forrest.site.dir}"/>
 
         <property name="forrest.site.tar.path.and.name" value="${forrest.site.work.dir}/${name}-site"/>
 
@@ -397,7 +396,7 @@
 
     </target>
 
-    <!-- &forrest-targets; -->
+    &forrest-targets;
 
 </project>
 
