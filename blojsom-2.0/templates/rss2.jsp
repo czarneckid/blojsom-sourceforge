@@ -45,6 +45,7 @@
     		<description><%= blogEntry.getEscapedDescription() %></description>
             <guid><%= blogEntry.getEscapedLink() %></guid>
 			<pubDate><%= blogEntry.getRFC822Date() %></pubDate>
+            <category><%= blogEntry.getEncodedCategory() %></category>
             <% if (blogCommentsEnabled && blogEntry.supportsComments() && !BlojsomUtils.checkMapForKey(blogEntry.getMetaData(), "blog-entry-comments-disabled")) { %>
 			  <wfw:comment><%= blogInformation.getBlogBaseURL()%>/commentapi/<%= request.getAttribute(BlojsomConstants.BLOJSOM_USER) %><%= blogEntry.getId()%></wfw:comment>
               <wfw:commentRss><%= blogEntry.getEscapedLink()%>&amp;page=comments&amp;flavor=rss</wfw:commentRss>

@@ -24,6 +24,7 @@
             <description>$entry.getEscapedDescription()</description>
             <guid>$entry.getLink()</guid>
 			<pubDate>$entry.getRFC822Date()</pubDate>
+            <category>$entry.getEncodedCategory()</category>
             #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
   	          <wfw:comment>$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$BLOJSOM_USER$entry.getId()</wfw:comment>
               <wfw:commentRss>$entry.getEscapedLink()&amp;page=comments&amp;flavor=rss2</wfw:commentRss>

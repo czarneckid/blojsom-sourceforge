@@ -10,6 +10,7 @@
 		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>$BLOJSOM_VERSION</generator>
         <pubDate>$BLOJSOM_DATE</pubDate>
+        <category>$entry.getEncodedCategory()</category>
         <managingEditor>$BLOJSOM_BLOG.getBlogOwnerEmail()</managingEditor>
         <webMaster>$BLOJSOM_BLOG.getBlogOwnerEmail()</webMaster>
 

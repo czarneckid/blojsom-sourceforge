@@ -27,6 +27,7 @@
             <docs>http://blogs.law.harvard.edu/tech/rss</docs>
             <generator><%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %></generator>
             <pubDate><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE) %></pubDate>
+            <category><%= blogEntry.getEncodedCategory() %></category>
 	        <managingEditor><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></managingEditor>
             <webMaster><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></webMaster>
         <%
