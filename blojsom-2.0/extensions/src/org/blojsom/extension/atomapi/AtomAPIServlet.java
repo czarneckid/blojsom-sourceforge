@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -75,7 +75,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.25 2004-01-06 02:10:58 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.26 2004-01-11 03:58:35 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 

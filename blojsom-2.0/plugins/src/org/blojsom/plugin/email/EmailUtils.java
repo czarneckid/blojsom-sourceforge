@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -56,7 +56,7 @@ import java.util.Date;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.3 2004-01-08 01:31:59 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.4 2004-01-11 04:01:05 czarneckid Exp $
  */
 public class EmailUtils {
 

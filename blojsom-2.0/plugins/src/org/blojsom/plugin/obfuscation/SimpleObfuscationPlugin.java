@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -53,7 +53,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: SimpleObfuscationPlugin.java,v 1.1 2003-09-23 02:26:25 czarneckid Exp $
+ * @version $Id: SimpleObfuscationPlugin.java,v 1.2 2004-01-11 04:01:04 czarneckid Exp $
  */
 public class SimpleObfuscationPlugin implements BlojsomPlugin {
 

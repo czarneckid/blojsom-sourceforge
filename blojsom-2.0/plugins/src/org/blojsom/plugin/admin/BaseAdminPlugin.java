@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.7 2003-12-23 17:59:48 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.8 2004-01-11 04:01:05 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 

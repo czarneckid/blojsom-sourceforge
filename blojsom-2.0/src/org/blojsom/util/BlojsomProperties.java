@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004  by Mark Lussier
  * BlojsomProperties by Jšrg Prante
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ import java.io.IOException;
  * @author David Czarnecki
  * @author Jšrg Prante
  * @since blojsom 2.01
- * @version $Id: BlojsomProperties.java,v 1.3 2004-01-09 02:51:39 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.4 2004-01-11 04:04:12 czarneckid Exp $
  */
 public class BlojsomProperties extends Properties {
 

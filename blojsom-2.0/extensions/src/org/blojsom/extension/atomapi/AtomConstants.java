@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@ package org.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomConstants.java,v 1.7 2003-09-13 00:49:47 czarneckid Exp $
+ * @version $Id: AtomConstants.java,v 1.8 2004-01-11 03:58:35 czarneckid Exp $
  */
 public interface AtomConstants {
 

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -58,7 +58,7 @@ import java.io.FileOutputStream;
  * EditBlogFlavorsPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.7 2003-12-23 03:29:53 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.8 2004-01-11 04:01:05 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.4 2003-10-14 01:38:02 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.5 2004-01-11 04:01:05 czarneckid Exp $
  */
 public class VelocityHelper {
 

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003, David A. Czarnecki
+ * Copyright (c) 2003-2004 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003 by Mark Lussier
+ * Portions Copyright (c) 2003-2004  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -47,7 +47,7 @@ import java.util.Map;
  * BlojsomPlugin
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPlugin.java,v 1.2 2003-08-11 02:03:10 czarneckid Exp $
+ * @version $Id: BlojsomPlugin.java,v 1.3 2004-01-11 04:04:12 czarneckid Exp $
  */
 public interface BlojsomPlugin {
 
