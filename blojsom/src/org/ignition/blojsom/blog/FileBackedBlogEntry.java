@@ -46,12 +46,14 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.7 2003-05-31 02:17:19 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.8 2003-05-31 18:42:17 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
 
     private Log _logger = LogFactory.getLog(FileBackedBlogEntry.class);
+
+    private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     private File _source;
     private String _commentsDirectory;
@@ -433,10 +435,14 @@ public class FileBackedBlogEntry extends BlogEntry {
      * Load a blog entry.
      *
      * @since blojsom 1.9
-     * @param blog
+     * @param blog Blog
      * @throws BlojsomException If there is an error loading the entry
      */
     public void loadEntry(Blog blog) throws BlojsomException {
+        if (_source == null) {
+            throw new BlojsomException("No source file set for this blog entry.");
+        }
+
         try {
             reloadSource();
             if (blog.getBlogCommentsEnabled().booleanValue()) {
@@ -454,16 +460,25 @@ public class FileBackedBlogEntry extends BlogEntry {
      * Save the blog entry. This method does not write out the comments or trackbacks to disk.
      *
      * @since blojsom 1.9
-     * @param blog
+     * @param blog Blog
      * @throws BlojsomException If there is an error saving the entry
      */
     public void saveEntry(Blog blog) throws BlojsomException {
+        if (_source == null) {
+            throw new BlojsomException("No source file set for this blog entry.");
+        }
+
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_source.getAbsolutePath(), false), blog.getBlogFileEncoding()));
-            bw.write(_title);
-            bw.newLine();
-            bw.write(_description);
-            bw.close();
+            if (_title == null) {
+                bw.write(BlojsomUtils.nullToBlank(_description));
+                bw.close();
+            } else {
+                bw.write(BlojsomUtils.nullToBlank(_title));
+                bw.newLine();
+                bw.write(BlojsomUtils.nullToBlank(_description));
+                bw.close();
+            }
         } catch (IOException e) {
             throw new BlojsomException(e);
         }
@@ -495,7 +510,12 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @throws BlojsomException If there is an error deleting the entry
      */
     public void deleteEntry(Blog blog) throws BlojsomException {
+        if (_source == null) {
+            throw new BlojsomException("No source file set for this blog entry.");
+        }
+
         _logger.debug("Deleting post " + _source.getAbsolutePath());
+
         if (!_source.delete()) {
             throw new BlojsomException("Unable to delete entry: " + getId());
         }
@@ -515,6 +535,17 @@ public class FileBackedBlogEntry extends BlogEntry {
                 + blog.getBlogEntryMetaDataExtension());
         if (metaFile.exists()) {
             metaFile.delete();
+        }
+    }
+
+    /**
+     * Set any attributes of the blog entry using data from the map.
+     *
+     * @param attributeMap Attributes
+     */
+    public void setAttributes(Map attributeMap) {
+        if (attributeMap.containsKey(SOURCE_ATTRIBUTE)) {
+            _source = (File) attributeMap.get(SOURCE_ATTRIBUTE);
         }
     }
 }
