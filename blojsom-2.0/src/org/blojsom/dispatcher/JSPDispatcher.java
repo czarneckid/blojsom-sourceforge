@@ -53,7 +53,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.2 2003-08-10 15:29:55 intabulas Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -86,7 +86,7 @@ public class JSPDispatcher implements GenericDispatcher {
             _templatesDirectory = TEMPLATES_DIRECTORY_DEFAULT;
         } else {
             if (!_templatesDirectory.startsWith("/")) {
-                _templatesDirectory = "/" + _templatesDirectory;
+                _templatesDirectory = '/' + _templatesDirectory;
             }
             if (!_templatesDirectory.endsWith("/")) {
                 _templatesDirectory += "/";
@@ -122,7 +122,7 @@ public class JSPDispatcher implements GenericDispatcher {
         httpServletResponse.setContentType(flavorContentType);
 
         if (!flavorTemplate.startsWith("/")) {
-            flavorTemplate = "/" + flavorTemplate;
+            flavorTemplate = '/' + flavorTemplate;
         }
 
         String flavorTemplateForPage = null;
@@ -140,11 +140,11 @@ public class JSPDispatcher implements GenericDispatcher {
 
         // Dispatch to the proper JSP
         if (flavorTemplateForPage != null) {
-            if (_context.getResource(_templatesDirectory + user.getId() + "/" + flavorTemplateForPage) != null) {
+            if (_context.getResource(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage) != null) {
                 httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + "/" + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
                 return;
             } else {
-                _logger.debug("No resource found for flavor template: " + _templatesDirectory + user.getId() + "/" + flavorTemplateForPage);
+                _logger.debug("No resource found for flavor template: " + _templatesDirectory + user.getId() + '/' + flavorTemplateForPage);
             }
         }
 

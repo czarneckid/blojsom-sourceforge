@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.2 2003-08-10 15:29:49 intabulas Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -136,7 +136,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             blogUser = (BlogUser) _users.get(user);
 
             Properties flavorProperties = new Properties();
-            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + "/" + flavorConfiguration);
+            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + flavorConfiguration);
             try {
                 flavorProperties.load(is);
                 is.close();
@@ -216,7 +216,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             String user = (String) usersIterator.next();
             blogUser = (BlogUser) _users.get(user);
 
-            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + "/" + pluginConfiguration);
+            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + pluginConfiguration);
             pluginProperties = new Properties();
             try {
                 pluginProperties.load(is);
@@ -226,7 +226,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                     String plugin = (String) pluginIterator.next();
                     if (plugin.indexOf(BLOJSOM_PLUGIN_CHAIN) != -1) {
                         pluginChainMap.put(plugin, BlojsomUtils.parseCommaList(pluginProperties.getProperty(plugin)));
-                        _logger.debug("Added plugin chain: " + plugin + "=" + pluginProperties.getProperty(plugin) + " for user: " + user);
+                        _logger.debug("Added plugin chain: " + plugin + '=' + pluginProperties.getProperty(plugin) + " for user: " + user);
                     }
                 }
                 blogUser.setPluginChain(pluginChainMap);
@@ -337,7 +337,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         if (httpServletRequest.getParameter(PLUGINS_PARAM) != null) {
             pluginChain = BlojsomUtils.parseCommaList(httpServletRequest.getParameter(PLUGINS_PARAM));
         } else {
-            String pluginChainMapKey = flavor + "." + BLOJSOM_PLUGIN_CHAIN;
+            String pluginChainMapKey = flavor + '.' + BLOJSOM_PLUGIN_CHAIN;
             String[] pluginChainValue = (String[]) pluginChainMap.get(pluginChainMapKey);
             if (pluginChainValue != null && pluginChainValue.length > 0) {
                 pluginChain = (String[]) pluginChainMap.get(pluginChainMapKey);

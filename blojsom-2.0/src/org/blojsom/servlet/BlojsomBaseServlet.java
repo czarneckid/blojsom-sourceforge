@@ -60,7 +60,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.2 2003-08-10 15:29:39 intabulas Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -119,7 +119,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
                 _baseConfigurationDirectory = BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY;
             } else {
                 if (!_baseConfigurationDirectory.startsWith("/")) {
-                    _baseConfigurationDirectory = "/" + _baseConfigurationDirectory;
+                    _baseConfigurationDirectory = '/' + _baseConfigurationDirectory;
                 }
                 if (!_baseConfigurationDirectory.endsWith("/")) {
                     _baseConfigurationDirectory += "/";
@@ -141,7 +141,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
                     blogUser.setId(user);
 
                     Properties userProperties = new Properties();
-                    is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + "/" + BLOG_DEFAULT_PROPERTIES);
+                    is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
                     userProperties.load(is);
                     is.close();
 
@@ -202,7 +202,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
             String user = (String) usersIterator.next();
             blogUser = (BlogUser) _users.get(user);
 
-            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + "/" + authorizationConfiguration);
+            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + authorizationConfiguration);
             authorizationProperties = new Properties();
             try {
                 authorizationProperties.load(is);
