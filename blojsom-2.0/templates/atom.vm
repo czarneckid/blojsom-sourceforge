@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <feed xmlns="http://purl.org/atom/ns#"
-      xmlns:dc="http://purl.org/dc/elements/1.1/"
-      xml:lang="$BLOJSOM_BLOG.getBlogLanguage()"
-      version="0.2">
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()"
+    version="0.2">
 
     <!-- feed required elements -->
     <title>$BLOJSOM_BLOG.getBlogName()</title>
@@ -17,15 +17,15 @@
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
-	<!-- entry required elements -->
+        <!-- entry required elements -->
         <title>$entry.getTitle().replaceAll("<.*?>","")</title>
-	<link>$entry.getLink()</link>
-	<id>$entry.getLink()</id>
-	<issued>$entry.getISO8601Date()</issued>
+        <link>$entry.getLink()</link>
+        <id>$entry.getLink()</id>
+        <issued>$entry.getISO8601Date()</issued>
         <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
 
-	<!-- entry optional elements -->
-	<created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
+        <!-- entry optional elements -->
+        <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
         <author>
             <name>$BLOJSOM_BLOG.getBlogOwner()</name>
             <url>$BLOJSOM_BLOG.getBlogURL()</url>
