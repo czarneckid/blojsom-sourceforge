@@ -51,7 +51,7 @@ import java.util.Properties;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.47 2003-04-20 16:39:25 intabulas Exp $
+ * @version $Id: Blog.java,v 1.48 2003-05-03 18:01:24 intabulas Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -225,17 +225,17 @@ public class Blog implements BlojsomConstants {
 
         String blogCommentsEnabled = blogConfiguration.getProperty(BLOG_COMMENTS_ENABLED_IP);
         if ("true".equalsIgnoreCase(blogCommentsEnabled)) {
-            _blogCommentsEnabled = new Boolean(true);
+            _blogCommentsEnabled = Boolean.valueOf(true);
         } else {
-            _blogCommentsEnabled = new Boolean(false);
+            _blogCommentsEnabled = Boolean.valueOf(false);
         }
         _blogProperties.put(BLOG_COMMENTS_ENABLED_IP, _blogCommentsEnabled);
 
         String blogEmailEnabled = blogConfiguration.getProperty(BLOG_EMAIL_ENABLED_IP);
         if ("true".equalsIgnoreCase(blogEmailEnabled)) {
-            _blogEmailEnabled = new Boolean(true);
+            _blogEmailEnabled = Boolean.valueOf(true);
         } else {
-            _blogEmailEnabled = new Boolean(false);
+            _blogEmailEnabled =  Boolean.valueOf(false);
         }
         _blogProperties.put(BLOG_EMAIL_ENABLED_IP, _blogEmailEnabled);
 

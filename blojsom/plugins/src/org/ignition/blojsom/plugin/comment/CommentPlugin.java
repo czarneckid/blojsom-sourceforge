@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.30 2003-04-19 02:45:14 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.31 2003-05-03 18:01:24 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -211,7 +211,7 @@ public class CommentPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        context.put(BLOJSOM_COMMENT_PLUGIN_ENABLED, new Boolean(true));
+        context.put(BLOJSOM_COMMENT_PLUGIN_ENABLED, Boolean.valueOf(true));
 
         if (entries.length == 0) {
             return entries;

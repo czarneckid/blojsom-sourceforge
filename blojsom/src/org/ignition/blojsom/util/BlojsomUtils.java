@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.47 2003-04-24 01:53:10 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.48 2003-05-03 18:01:21 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -268,6 +268,7 @@ public class BlojsomUtils implements BlojsomConstants {
             try {
                 buffer.append(URLEncoder.encode(name, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
+                // @todo
             }
             if (paramNames.hasMoreElements()) {
                 buffer.append("&");
@@ -598,7 +599,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * files have the same last modified time, the file's names are compared to order the
      * files.
      */
-    public static Comparator FILE_TIME_COMPARATOR = new Comparator() {
+    public static final Comparator FILE_TIME_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
             File f1;
             File f2;
@@ -626,7 +627,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * If the files have the same last modified time, the file's names are compared to order the
      * files.
      */
-    public static Comparator FILE_TIME_ASCENDING_COMPARATOR = new Comparator() {
+    public static final Comparator FILE_TIME_ASCENDING_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
             File f1;
             File f2;
@@ -652,7 +653,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a comparator to sort by name
      */
-    public static Comparator FILE_NAME_COMPARATOR = new Comparator() {
+    public static final Comparator FILE_NAME_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
             String s2 = (String) o2;

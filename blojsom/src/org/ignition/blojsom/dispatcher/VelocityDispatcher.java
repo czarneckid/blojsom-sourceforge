@@ -54,7 +54,7 @@ import java.util.Iterator;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.13 2003-05-01 19:17:03 intabulas Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.14 2003-05-03 18:01:24 intabulas Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -141,6 +141,7 @@ public class VelocityDispatcher implements GenericDispatcher {
         try {
             contentBytes = content.getBytes(UTF8);
         } catch (UnsupportedEncodingException e) {
+            _logger.error(e);
         }
         httpServletResponse.addIntHeader("Content-Length", (contentBytes == null ? content.length() : contentBytes.length));
 
