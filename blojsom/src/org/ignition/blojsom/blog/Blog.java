@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.25 2003-03-07 01:45:58 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.26 2003-03-11 01:34:36 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -835,9 +835,20 @@ public class Blog implements BlojsomConstants {
             comment.setComment(userComment);
             comment.setCommentDate(new Date());
 
-            String commentDirectory = _blogHome + BlojsomUtils.removeInitialSlash(category) + _blogCommentsDirectory + File.separator + BlojsomUtils.getFilenameForPermalink(permalink) + File.separator;
-            String commentFilename = commentDirectory + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
-            File commentDir = new File(commentDirectory);
+            StringBuffer commentDirectory = new StringBuffer();
+            String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, _blogFileExtensions);
+            if (permalinkFilename == null) {
+                _logger.debug("Invalid permalink comment for: " + permalink);
+                return;
+            }
+            commentDirectory.append(_blogHome);
+            commentDirectory.append(BlojsomUtils.removeInitialSlash(category));
+            commentDirectory.append(_blogCommentsDirectory);
+            commentDirectory.append(File.separator);
+            commentDirectory.append(permalink);
+            commentDirectory.append(File.separator);
+            String commentFilename = commentDirectory.toString() + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
+            File commentDir = new File(commentDirectory.toString());
             if (!commentDir.exists()) {
                 if (!commentDir.mkdirs()) {
                     _logger.error("Could not create directory for comments: " + commentDirectory);

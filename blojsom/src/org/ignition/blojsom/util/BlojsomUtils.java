@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.25 2003-03-05 19:32:12 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.26 2003-03-11 01:35:51 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -385,9 +385,22 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return only the filename of a permalink request
      *
      * @param permalink Permalink request
+     * @param blogEntryExtensions Regex for blog entries so that we only pickup requests for valid blog entries
      * @return Filename portion of permalink request
      */
-    public static final String getFilenameForPermalink(String permalink) {
+    public static final String getFilenameForPermalink(String permalink, String[] blogEntryExtensions) {
+        boolean matchesExtension = false;
+        for (int i = 0; i < blogEntryExtensions.length; i++) {
+            String blogEntryExtension = blogEntryExtensions[i];
+            if (permalink.matches(blogEntryExtension)) {
+                matchesExtension = true;
+                break;
+            }
+        }
+        if (!matchesExtension) {
+            return null;
+        }
+
         int indexOfSlash = permalink.lastIndexOf("/");
         if (indexOfSlash == -1) {
             return permalink;
