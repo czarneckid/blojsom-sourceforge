@@ -56,7 +56,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.15 2004-08-31 16:54:17 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.16 2004-08-31 17:50:02 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -73,6 +73,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String ACCEPTED_FILE_TYPES_IP = "accepted-file-types";
     private static final String[] DEFAULT_ACCEPTED_FILE_TYPES = {"image/jpeg", "image/gif", "image/png"};
     private static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
+    private static final String INVALID_FILE_EXTENSIONS_IP = "invalid-file-extensions";
+    private static final String[] DEFAULT_INVALID_FILE_EXTENSIONS = {".jsp", ".jspf", ".jspi", ".php", ".cgi"};
 
     // Pages
     private static final String FILE_UPLOAD_PAGE = "/org/blojsom/plugin/admin/templates/admin-file-upload";
@@ -92,6 +94,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private int _maximumMemorySize;
     private Map _acceptedFileTypes;
     private String _resourcesDirectory;
+    private String[] _invalidFileExtensions;
 
     /**
      * Default constructor.
@@ -153,6 +156,14 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
             _resourcesDirectory = BlojsomUtils.checkStartingAndEndingSlash(_resourcesDirectory);
             _logger.debug("Using resources directory: " + _resourcesDirectory);
+
+            String invalidFileExtensionsProperty = configurationProperties.getProperty(INVALID_FILE_EXTENSIONS_IP);
+            if (BlojsomUtils.checkNullOrBlank(invalidFileExtensionsProperty)) {
+                _invalidFileExtensions = DEFAULT_INVALID_FILE_EXTENSIONS;
+            } else {
+                _invalidFileExtensions = BlojsomUtils.parseCommaList(invalidFileExtensionsProperty);
+            }
+            _logger.debug("Using invalid file extensions: " + invalidFileExtensionsProperty);
         } catch (BlojsomException e) {
             _logger.error(e);
             throw new BlojsomPluginException(e);
@@ -213,8 +224,23 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                         String fileType = item.getContentType();
                         boolean isAcceptedFileType = _acceptedFileTypes.containsKey(fileType);
 
+                        String extension = BlojsomUtils.getFileExtension(itemNameWithoutPath);
+                        boolean isAcceptedFileExtension = true;
+                        for (int i = 0; i < _invalidFileExtensions.length; i++) {
+                            String invalidFileExtension = _invalidFileExtensions[i];
+                            if (itemNameWithoutPath.indexOf(invalidFileExtension) != -1) {
+                                isAcceptedFileExtension = false;
+                                break;
+                            }
+                        }
+
+                        if (!isAcceptedFileExtension) {
+                            _logger.error("Upload file does not have an accepted extension: " + extension);
+                            addOperationResultMessage(context, "Upload file does not have an accepted extension: " + extension);
+                        }
+
                         // If so, upload the file to the resources directory
-                        if (isAcceptedFileType) {
+                        if (isAcceptedFileType && isAcceptedFileExtension) {
                             if (!resourceDirectory.exists()) {
                                 if (!resourceDirectory.mkdirs()) {
                                     _logger.error("Unable to create resource directory for user: " + resourceDirectory.toString());
