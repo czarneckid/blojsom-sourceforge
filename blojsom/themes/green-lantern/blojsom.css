@@ -226,3 +226,8 @@ blockquote {
 .tablemaxpxwidth {
    padding:5px;
 }
+
+.searchhighlight {
+   background-color:#FFFF00;
+   color: #000000;
+}
