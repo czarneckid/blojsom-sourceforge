@@ -127,6 +127,7 @@
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${extensions.jar}" basedir="${compile.dir}" />
+        <delete dir="${compile.dir}"/>
     </target>
 
     <!-- =================================================================== -->
