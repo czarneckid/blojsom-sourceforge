@@ -45,12 +45,11 @@
 
 <!-- Optional Code if you are using the referer plugin -->
 #if($REFERER_HISTORY)
-  <p class="weblogtitle">referers:</p>
-  #set($refererEntries = 0)
-  #foreach( $entry in $REFERER_HISTORY.keySet())
-      <p class="weblogdateline"><a href="$entry">$entry</a> ($REFERER_HISTORY.get($entry))</p>
-      #set($refererEntries = $refererEntries +  1)
+  <p class="weblogtitle">referers:</p><p class="weblogdateline">
+  #foreach( $referentry in $REFERER_HISTORY.keySet())
+      <a href="$referentry">$referentry</a> ($REFERER_HISTORY.get($referentry))<br/>
   #end
+  </p>
 #end
 
 </body>
