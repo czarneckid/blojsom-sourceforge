@@ -57,7 +57,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.12 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.13 2004-04-03 00:57:34 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -114,6 +114,10 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         fileLoaderPath.append(_installationDirectory);
         fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
         fileLoaderPath.append(userId).append("/");
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
+        fileLoaderPath.append(", ");
+        fileLoaderPath.append(_installationDirectory);
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
         fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
 
         return fileLoaderPath.toString();

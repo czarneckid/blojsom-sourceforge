@@ -38,6 +38,10 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
@@ -59,7 +63,7 @@ import java.util.Properties;
  * FreeMarkerDispatcher
  * 
  * @author czarneckid
- * @version $Id: FreeMarkerDispatcher.java,v 1.4 2004-01-11 03:56:30 czarneckid Exp $
+ * @version $Id: FreeMarkerDispatcher.java,v 1.5 2004-04-03 00:57:56 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FreeMarkerDispatcher implements BlojsomDispatcher {
@@ -91,7 +95,7 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
         _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
 
-        _freemarkerProperties = BlojsomUtils.loadProperties(servletConfig, FREEMARKER_PROPERTIES_IP, true);
+        _freemarkerProperties = BlojsomUtils.loadProperties(servletConfig, FREEMARKER_PROPERTIES_IP, false);
         if (_freemarkerProperties.isEmpty()) {
             _freemarkerProperties = null;
         }
@@ -100,19 +104,42 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
     }
 
     /**
-     * Return a path appropriate for loading FreeMarker templates
+     * Set paths appropriate for loading FreeMarker templates
      * 
      * @param userId User ID
-     * @return blojsom installation directory + base configuration directory + user id + templates directory
+     * @param freemarkerConfiguration
      */
-    private String getTemplatePath(String userId) {
-        StringBuffer templatePath = new StringBuffer();
-        templatePath.append(_installationDirectory);
-        templatePath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
-        templatePath.append(userId).append("/");
-        templatePath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
+    private void setTemplatePath(String userId, Configuration freemarkerConfiguration) {
+        try {
+            StringBuffer templatePath = new StringBuffer();
+            templatePath.append(_installationDirectory);
+            templatePath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
+            templatePath.append(userId).append("/");
+            templatePath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
+            FileTemplateLoader fileTemplateLoaderUser = new FileTemplateLoader(new File(templatePath.toString()));
 
-        return templatePath.toString();
+            ClassTemplateLoader classTemplateLoader = new ClassTemplateLoader(getClass(), "");
+
+            templatePath = new StringBuffer();
+            templatePath.append(_installationDirectory);
+            templatePath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
+            templatePath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
+            File globalTemplateDirectory = new File(templatePath.toString());
+
+            TemplateLoader[] loaders;
+            if (globalTemplateDirectory.exists()) {
+                FileTemplateLoader fileTemplateLoaderGlobal = new FileTemplateLoader(globalTemplateDirectory);
+                loaders = new TemplateLoader[] {fileTemplateLoaderUser, fileTemplateLoaderGlobal,
+                                                classTemplateLoader};
+            } else {
+                loaders = new TemplateLoader[] {fileTemplateLoaderUser, classTemplateLoader};
+            }
+
+            MultiTemplateLoader multiTemplateLoader = new MultiTemplateLoader(loaders);
+            freemarkerConfiguration.setTemplateLoader(multiTemplateLoader);
+        } catch (IOException e) {
+            _logger.error(e);
+        }
     }
 
     /**
@@ -133,8 +160,6 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
     public void dispatch(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, String flavorTemplate, String flavorContentType) throws IOException, ServletException {
         httpServletResponse.setContentType(flavorContentType);
 
-        String templatePath = getTemplatePath(user.getId());
-
         // Configure FreeMarker with the loaded properties
         Configuration freemarkerConfiguration = Configuration.getDefaultConfiguration();
         if (_freemarkerProperties != null) {
@@ -144,7 +169,8 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
                 _logger.error(e);
             }
         }
-        freemarkerConfiguration.setDirectoryForTemplateLoading(new File(templatePath));
+
+        setTemplatePath(user.getId(), freemarkerConfiguration);
 
         BeansWrapper wrapper = new BeansWrapper();
         wrapper.setExposureLevel(BeansWrapper.EXPOSE_PROPERTIES_ONLY);
