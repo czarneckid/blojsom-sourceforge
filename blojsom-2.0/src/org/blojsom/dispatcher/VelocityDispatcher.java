@@ -55,7 +55,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.2 2003-08-10 15:31:23 intabulas Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.3 2003-08-17 21:47:03 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -125,24 +125,43 @@ public class VelocityDispatcher implements GenericDispatcher {
 
         // Setup the VelocityContext
         VelocityContext velocityContext = new VelocityContext(context);
-        try {
-            if (flavorTemplateForPage != null) {
+
+        if (flavorTemplateForPage != null) {
+            // Try and look for the original flavor template with page for the individual user
+            try {
                 Velocity.mergeTemplate(user.getId() + '/' + flavorTemplateForPage, UTF8, velocityContext, sw);
-            } else {
-                Velocity.mergeTemplate(user.getId() + '/' + flavorTemplate, UTF8, velocityContext, sw);
-            }
-        } catch (ResourceNotFoundException e) {
-            _logger.error(e);
-            if (flavorTemplateForPage != null) {
-                _logger.debug("Trying to fallback to original flavor template: " + flavorTemplate);
+                _logger.debug("Dispatched to template: " + user.getId() + '/' + flavorTemplateForPage);
+            } catch (ResourceNotFoundException e) {
+                _logger.error(e);
+                // Otherwise, fallback and look for the flavor template with page without including any user information
                 try {
-                    Velocity.mergeTemplate(user.getId() + '/' + flavorTemplate, UTF8, velocityContext, sw);
-                } catch (Exception internale) {
-                    _logger.error(internale);
+                    Velocity.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, sw);
+                    _logger.debug("Dispatched to template: " + flavorTemplateForPage);
+                } catch (Exception e1) {
+                    _logger.error(e);
                 }
+            } catch (Exception e) {
+                // If we get any other error, log it
+                _logger.error(e);
             }
-        } catch (Exception e) {
-            _logger.error(e);
+        } else {
+            // Otherwise, fallback and look for the flavor template for the individual user
+            try {
+                Velocity.mergeTemplate(user.getId() + '/' + flavorTemplate, UTF8, velocityContext, sw);
+                _logger.debug("Dispatched to template: " + user.getId() + '/' + flavorTemplate);
+            } catch (ResourceNotFoundException e) {
+                _logger.error(e);
+                // Finally, fallback and look for the flavor template without including any user information
+                try {
+                    Velocity.mergeTemplate(flavorTemplate, UTF8, velocityContext, sw);
+                    _logger.debug("Dispatched to template: " + flavorTemplate);
+                } catch (Exception e1) {
+                    _logger.error(e1);
+                }
+            } catch (Exception e) {
+                // If we get any other error, log it
+                _logger.error(e);
+            }
         }
 
         // We need that content length, especially for RSS feeds

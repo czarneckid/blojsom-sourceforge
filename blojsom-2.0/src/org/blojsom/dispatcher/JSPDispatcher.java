@@ -53,7 +53,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.3 2003-08-10 15:31:13 intabulas Exp $
+ * @version $Id: JSPDispatcher.java,v 1.4 2003-08-17 21:47:03 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -138,16 +138,30 @@ public class JSPDispatcher implements GenericDispatcher {
             httpServletRequest.setAttribute(contextKey, context.get(contextKey));
         }
 
-        // Dispatch to the proper JSP
+        // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
             if (_context.getResource(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage) != null) {
                 httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
+                _logger.debug("Dispatched to: " + _templatesDirectory + user.getId() + '/' + flavorTemplateForPage);
                 return;
-            } else {
-                _logger.debug("No resource found for flavor template: " + _templatesDirectory + user.getId() + '/' + flavorTemplateForPage);
+            } else if (_context.getResource(_templatesDirectory + flavorTemplateForPage) != null) {
+                // Otherwise, fallback and look for the flavor template with page without including any user information
+                httpServletRequest.getRequestDispatcher(_templatesDirectory + flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
+                _logger.debug("Dispatched to: " + _templatesDirectory + flavorTemplateForPage);
+                return;
+            }
+        } else {
+            // Otherwise, fallback and look for the flavor template for the individual user
+            if (_context.getResource(_templatesDirectory + user.getId() + '/' + flavorTemplate) != null) {
+                httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplate).forward(httpServletRequest, httpServletResponse);
+                _logger.debug("Dispatched to: " + _templatesDirectory + user.getId() + '/' + flavorTemplate);
+                return;
+            } else if (_context.getResource(_templatesDirectory + flavorTemplate) != null) {
+                // Finally, fallback and look for the flavor template without including any user information
+                httpServletRequest.getRequestDispatcher(_templatesDirectory + flavorTemplate).forward(httpServletRequest, httpServletResponse);
+                _logger.debug("Dispatched to: " + _templatesDirectory + flavorTemplate);
+                return;
             }
         }
-
-        httpServletRequest.getRequestDispatcher(_templatesDirectory + user.getId() + '/' + flavorTemplate).forward(httpServletRequest, httpServletResponse);
     }
 }
