@@ -58,7 +58,7 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.34 2003-07-08 00:43:50 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.35 2003-07-13 01:01:05 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -510,7 +510,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     bos.close();
 
                     Hashtable returnStruct = new Hashtable(1);
-                    String mediaURL = _blog.getBlogURL() + _staticURLPrefix + name;
+                    String mediaURL = _blog.getBlogBaseURL() + _staticURLPrefix + name;
                     returnStruct.put(MEMBER_URL, mediaURL);
 
                     return returnStruct;
