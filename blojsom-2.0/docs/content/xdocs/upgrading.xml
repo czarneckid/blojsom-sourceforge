@@ -17,6 +17,21 @@
                         <code>/WEB-INF/blojsom.properties</code>.
                     </p>
                 </section>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Copy the sandler-0.2 JAR file into your <code>/WEB-INF/lib</code> directory if you
+                        are using the AtomAPIServlet. You may remove the sandler-0.1 JAR file from <code>/WEB-INF/lib</code>.
+                    </p>
+                    <p>
+                        2. If you are using the CachingFetcher, copy the oscache-2.0 JAR file into your
+                        <code>/WEB-INF/lib</code> directory. You may remove the oscache-2.0b2 JAR file.
+                    </p>
+                    <p>
+                        3. If you are using the XPath and/or XPath Search plugins, copy the
+                        commons-jxpath-1.1 JAR file into your <code>/WEB-INF/lib</code> directory.
+                    </p>
+                </section>
             </section>
             <section>
                 <title>Upgrading from blojsom 2.0 to blojsom 2.01</title>
