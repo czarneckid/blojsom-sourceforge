@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.23 2004-08-26 01:57:45 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.24 2004-08-26 02:19:50 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -200,15 +200,16 @@ public class BlojsomConfiguration implements BlojsomConstants {
         }
 
 
-//  Commented out on 8/22 since it just does not work.. You can add a CSL to an ArrayList..        
-//        List blojsomUsers = getBlojsomPropertyAsList(BLOJSOM_USERS_IP);
-//        String[] users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
-//        _blojsomUsers = BlojsomUtils.arrayOfStringsToString(users);
+        Object listOfUsers = getBlojsomProperty(BLOJSOM_USERS_IP);
+        if (listOfUsers instanceof List) {
+            List blojsomUsers = getBlojsomPropertyAsList(BLOJSOM_USERS_IP);
+            String[] users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
+            _blojsomUsers = BlojsomUtils.arrayOfStringsToString(users);
+        } else {
+            _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
+        }
 
-
-        _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
-
 
         InputStream is;
         if (users.length == 0) {
