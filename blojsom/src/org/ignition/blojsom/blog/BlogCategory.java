@@ -48,7 +48,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.15 2003-06-11 02:46:09 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.16 2003-06-12 02:04:55 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -235,11 +235,38 @@ public abstract class BlogCategory implements Comparable {
     }
 
     /**
+     * Set any attributes of the blog category using data from the map.
+     *
+     * @since blojsom 1.9.1
+     * @param attributeMap Attributes
+     */
+    public void setAttributes(Map attributeMap) {
+    }
+
+    /**
      * Load a blog category.
      *
      * @since blojsom 1.9.1
      * @param blog Blog
-     * @throws BlojsomException If there is an error loading the entry
+     * @throws BlojsomException If there is an error loading the category
      */
-    public abstract void loadCategory(Blog blog) throws BlojsomException;
+    public abstract void load(Blog blog) throws BlojsomException;
+
+    /**
+     * Save the blog category.
+     *
+     * @since blojsom 1.9.1
+     * @param blog Blog
+     * @throws BlojsomException If there is an error saving the category
+     */
+    public abstract void save(Blog blog) throws BlojsomException;
+
+    /**
+     * Delete the blog category.
+     *
+     * @since blojsom 1.9.1
+     * @param blog Blog
+     * @throws BlojsomException If there is an error deleting the category
+     */
+    public abstract void delete(Blog blog) throws BlojsomException;
 }

@@ -48,7 +48,7 @@ import java.util.Properties;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.3 2003-06-11 02:46:49 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.4 2003-06-12 02:06:43 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -100,13 +100,33 @@ public class FileBackedBlogCategory extends BlogCategory {
     }
 
     /**
-     * Load a blog category.
+     * Load a blog category. Currently only loads the blog meta-data from disk.
      *
      * @since blojsom 1.9.1
      * @param blog Blog
-     * @throws BlojsomException If there is an error loading the entry
+     * @throws BlojsomException If there is an error loading the category
      */
-    public void loadCategory(Blog blog) throws BlojsomException {
+    public void load(Blog blog) throws BlojsomException {
         loadMetaData(blog.getBlogHome(), blog.getBlogPropertiesExtensions());
+    }
+
+    /**
+     * Save the blog category. Currently does nothing.
+     *
+     * @since blojsom 1.9.1
+     * @param blog Blog
+     * @throws BlojsomException If there is an error saving the category
+     */
+    public void save(Blog blog) throws BlojsomException {
+    }
+
+    /**
+     * Delete the blog category. Currently does nothing.
+     *
+     * @since blojsom 1.9.1
+     * @param blog Blog
+     * @throws BlojsomException If there is an error deleting the category
+     */
+    public void delete(Blog blog) throws BlojsomException {
     }
 }
