@@ -49,7 +49,7 @@ import java.io.IOException;
  * init-param in web.xml. If not file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.1 2003-03-12 23:59:43 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.2 2003-03-13 01:13:46 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -58,8 +58,14 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     private static final String HEADER_REFERER = "referer";
 
+    /**
+     * Fully qualified filename to write refere's to
+     */
     private String _refererlog = null;
 
+    /**
+     * Logger instance
+     */
     private Log _logger = LogFactory.getLog(RefererLogPlugin.class);
 
     /**
@@ -83,13 +89,13 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
 
-        String _referer = httpServletRequest.getHeader(HEADER_REFERER) ;
+        String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
-        if ( _refererlog != null ) {
+        if (_refererlog != null) {
             try {
-                String output = _referer + "\n";
+                String output = _referer + "\n"; // Yeah Yeah Yeah
                 FileOutputStream _fos = new FileOutputStream(_refererlog, true);
-                _fos.write( output.getBytes());
+                _fos.write(output.getBytes());
                 _fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -108,7 +114,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
-
 
 
 }
