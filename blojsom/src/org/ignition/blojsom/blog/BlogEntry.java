@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.BlojsomException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +48,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.32 2003-05-23 01:38:32 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.33 2003-05-31 02:08:20 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -394,4 +395,31 @@ public abstract class BlogEntry implements BlojsomConstants {
     public String toString() {
         return _title;
     }
+
+    /**
+     * Load a blog entry.
+     *
+     * @since blojsom 1.9
+     * @param blog Blog
+     * @throws BlojsomException If there is an error loading the entry
+     */
+    public abstract void loadEntry(Blog blog) throws BlojsomException;
+
+    /**
+     * Save the blog entry.
+     *
+     * @since blojsom 1.9
+     * @param blog Blog
+     * @throws BlojsomException If there is an error saving the entry
+     */
+    public abstract void saveEntry(Blog blog) throws BlojsomException;
+
+    /**
+     * Delete the blog entry.
+     *
+     * @since blojsom 1.9
+     * @param blog Blog
+     * @throws BlojsomException
+     */
+    public abstract void deleteEntry(Blog blog) throws BlojsomException;
 }
