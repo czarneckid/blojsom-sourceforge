@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.11 2003-12-05 01:53:21 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.12 2003-12-05 04:09:18 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -752,5 +752,6 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogDefaultFlavor(String blogDefaultFlavor) {
         _blogDefaultFlavor = blogDefaultFlavor;
+        _blogProperties.put(BLOG_DEFAULT_FLAVOR_IP, _blogDefaultFlavor);
     }
 }
