@@ -76,7 +76,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.23 2003-12-30 23:24:09 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.24 2004-01-05 22:29:58 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -191,7 +191,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         int numPosts = -1;
         // Did they specify how many entries?
         if (paramMap.containsKey(KEY_ATOMLAST)) {
-            numPosts = Integer.parseInt((String) paramMap.get(KEY_ATOMLAST));
+            try {
+                numPosts = Integer.parseInt(((String []) paramMap.get(KEY_ATOMLAST))[0]);
+            } catch (NumberFormatException e) {
+                numPosts = -1;
+            }
         }
 
         Map fetchMap = new HashMap();
