@@ -53,7 +53,7 @@ import java.util.Map;
  * Comment moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: CommentModerationPlugin.java,v 1.2 2004-10-20 20:19:56 czarneckid Exp $
+ * @version $Id: CommentModerationPlugin.java,v 1.3 2004-12-21 03:51:44 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class CommentModerationPlugin implements BlojsomPlugin {
@@ -113,7 +113,7 @@ public class CommentModerationPlugin implements BlojsomPlugin {
      * @param entries             Blog entries retrieved for the particular request
      * @throws BlojsomPluginException If there is an error in moderating a comment
      */
-    public void moderateComment(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    protected void moderateComment(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         Blog blog = user.getBlog();
 
         if ("true".equalsIgnoreCase(blog.getBlogProperty(COMMENT_MODERATION_ENABLED))) {
