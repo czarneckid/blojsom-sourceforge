@@ -37,20 +37,19 @@ package org.ignition.blojsom.extension.xmlrpc.handlers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
+import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.FileBackedBlogEntry;
+import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
-import org.ignition.blojsom.BlojsomException;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Properties;
 
 /**
@@ -59,7 +58,7 @@ import java.util.Properties;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.24 2003-05-31 02:09:19 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.25 2003-05-31 02:17:37 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
