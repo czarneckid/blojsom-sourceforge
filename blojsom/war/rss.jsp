@@ -11,7 +11,6 @@
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
-    String[] blogCategories = (String[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
 %>
 <rss version="0.91">
   <channel>
