@@ -55,7 +55,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.7 2003-04-15 03:23:01 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.8 2003-04-16 01:45:00 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -162,14 +162,14 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @param password Password for said username
      * @param publish Ignored
      * @throws XmlRpcException
-     * @return
+     * @return <code>true</code> if the entry was delete, <code>false</code> otherwise
      */
     public boolean deletePost(String appkey, String postid, String userid, String password, boolean publish) throws Exception {
-        _logger.info("deletePost() Called =====[ UNSUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     PostId: " + postid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
+        _logger.debug("deletePost() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     PostId: " + postid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
 
 
         boolean result = false;
@@ -199,20 +199,16 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
             }
-
-
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
 
         return result;
-
     }
 
-
     /**
-     * Edits the main or archive index template of a given blog
+     * Edits the main or archive index template of a given blog (NOT IMPLEMENTED)
      *
      * @param appkey Unique identifier/passcode of the application sending the post
      * @param blogid Unique identifier of the blog the post will be added to
@@ -224,19 +220,19 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @return
      */
     public boolean setTemplate(String appkey, String blogid, String userid, String password, String template, String templateType) throws Exception {
-        _logger.info("setTemplate() Called =====[ UNSUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("   Template: " + template);
-        _logger.info("       Type: " + templateType);
+        _logger.debug("setTemplate() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("   Template: " + template);
+        _logger.debug("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
     }
 
     /**
-     * Returns the main or archive index template of a given blog
+     * Returns the main or archive index template of a given blog (NOT IMPLEMENTED)
      *
      * @param appkey Unique identifier/passcode of the application sending the post
      * @param blogid Unique identifier of the blog the post will be added to
@@ -247,18 +243,18 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @return
      */
     public String getTemplate(String appkey, String blogid, String userid, String password, String templateType) throws Exception {
-        _logger.info("getTemplate() Called =====[ UNSUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("       Type: " + templateType);
+        _logger.debug("getTemplate() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
     }
 
     /**
-     * Authenticates a user and returns basic user info (name, email, userid, etc.)
+     * Authenticates a user and returns basic user info (name, email, userid, etc.). (NOT IMPLEMENTED)
      *
      * @param appkey Unique identifier/passcode of the application sending the post
      * @param userid Login for a Blogger user who has permission to post to the blog
@@ -267,10 +263,10 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @return
      */
     public String getUserInfo(String appkey, String userid, String password) throws Exception {
-        _logger.info("getUserInfo() Called =====[ UNSUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
+        _logger.debug("getUserInfo() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
     }
@@ -281,14 +277,14 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @param appkey Unique identifier/passcode of the application sending the post
      * @param userid Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @throws XmlRpcException
-     * @return
+     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
+     * @return Blog category list
      */
     public Object getUsersBlogs(String appkey, String userid, String password) throws Exception {
-        _logger.info("getUsersBlogs() Called ===[ SUPPORTED ]=======");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
+        _logger.debug("getUsersBlogs() Called ===[ SUPPORTED ]=======");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
 
         if (_blog.checkAuthorization(userid, password)) {
             Vector result = new Vector();
@@ -339,17 +335,18 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @param password Password for said username
      * @param content Contents of the post
      * @param publish If true, the blog will be published immediately after the post is made
-     * @throws XmlRpcException
-     * @return
+     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
+     * or if the entry permalink ID is invalid
+     * @return <code>true</code> if the entry was edited, <code>false</code> otherwise
      */
     public boolean editPost(String appkey, String postid, String userid, String password, String content, boolean publish) throws Exception {
-        _logger.info("editPost() Called ========[ SUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     PostId: " + postid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("    Publish: " + publish);
-        _logger.info("     Content:\n " + content);
+        _logger.debug("editPost() Called ========[ SUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     PostId: " + postid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("    Publish: " + publish);
+        _logger.debug("     Content:\n " + content);
 
         if (_blog.checkAuthorization(userid, password)) {
 
@@ -385,10 +382,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             }
 
             return result;
-
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
-
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -402,17 +397,17 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @param password Password for said username
      * @param content Contents of the post
      * @param publish If true, the blog will be published immediately after the post is made
-     * @throws XmlRpcException
-     * @return
+     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
+     * @return Post ID of the added entry
      */
     public String newPost(String appkey, String blogid, String userid, String password, String content, boolean publish) throws Exception {
-        _logger.info("newPost() Called ===========[ SUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("    Publish: " + publish);
-        _logger.info("     Content:\n " + content);
+        _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("    Publish: " + publish);
+        _logger.debug("     Content:\n " + content);
 
         if (_blog.checkAuthorization(userid, password)) {
             String result = null;
@@ -431,13 +426,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
-                // If blogging tools only can add a <br/> to seperate lines, then this catches that
-//                int eolOffset = content.indexOf(10);
-//                int brOffset = content.indexOf(ALTERNATE_EOL);
-//                if ( ( eolOffset == -1 && brOffset != -1 )  || brOffset < eolOffset ) {
-//                  content =  content.substring(0,brOffset) + "\n" + content.substring(brOffset + ALTERNATE_EOL.length());
-//                }
-
                 try {
                     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), UTF8));
                     bw.write(content);
@@ -455,7 +443,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         }
     }
 
-
     /**
      * Get a list of recent posts for a blojsom category
      *
@@ -464,16 +451,16 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @param userid Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
      * @param numposts Number of Posts to Retrieve
-     * @throws XmlRpcException
-     * @return
+     * @throws XmlRpcException If the user was not authenticated correctly
+     * @return Recent posts to the blog
      */
     public Object getRecentPosts(String appkey, String blogid, String userid, String password, int numposts) throws Exception {
-        _logger.info("getRecentPosts() Called ===========[ SUPPORTED ]=====");
-        _logger.info("     Appkey: " + appkey);
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("     Number: " + numposts);
+        _logger.debug("getRecentPosts() Called ===========[ SUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("     Number: " + numposts);
 
         Vector recentPosts = new Vector();
 

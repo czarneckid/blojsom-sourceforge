@@ -56,7 +56,8 @@ import java.io.IOException;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.1 2003-04-15 02:25:10 czarneckid Exp $
+ * @since blojsom 1.8
+ * @version $Id: StandardFetcher.java,v 1.2 2003-04-16 01:46:46 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
