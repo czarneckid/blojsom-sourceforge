@@ -10,10 +10,6 @@ site.xml. -->
     copyright="@year@ David A. Czarnecki"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <menu label="About">
-        <menu-item label="Index" href="site:index"/>
-    </menu>
-
     <menu label="Plugins">
         <menu-item label="Overview" href="site:plugins/index"/>
         <menu-item label="Associated Categories" href="associated-categories.html"/>
