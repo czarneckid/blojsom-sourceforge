@@ -33,6 +33,9 @@
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions.jar"/>
     <property name="templates.jar" value="${name}-templates.jar"/>
     <property name="website.zip" value="${distro.dir}/blojsom-website.zip"/>
+    
+    
+
 
     <!-- Add-on properties -->
     <property name="addon.extensions.src.dir" value="${basedir}/addon/extensions/src"/>
@@ -357,6 +360,45 @@
             </zipfileset>
         </zip>
     </target>
+    
+    
+    
+    
+    <!-- deploy the site -->
+     <target name="deploysite"
+  		if="forrest.site.work.dir" >
+  		
+   <!-- property to build and deploy the forrest site -->
+    <property name="forrest.site.dir" location="build/site"/>
+    <property name="forrest.deployer.name" value="${user.name}"/>
+ 
+    <property name="forrest.site.hostname" value="shell.sf.net"/>
+    <property name="forrest.site.remotedir" value="/home/groups/b/bl/blojsom/htdocs/test-site"/>
+    
+    <property name="forrest.site.work.dir" value="${forrest.work.dir}/site/"/>
+    <delete dir="${forrest.site.work.dir}"/>
+    <mkdir dir="${forrest.site.work.dir}"/>
+
+    <property name="forrest.site.tar.path.and.name" value="${forrest.site.work.dir}/${name}-site"/>
+
+    <tar tarfile="${forrest.site.tar.path.and.name}.tar" basedir="${forrest.site.dir}"/>
+    <gzip zipfile="${forrest.site.tar.path.and.name}.tar.gz" src="${forrest.site.tar.path.and.name}.tar"/>
+    <delete file="${forrest.site.tar.path.and.name}.tar"/>
+
+    <exec dir="${forrest.site.work.dir}" executable="scp">
+      <arg value="${name}-site.tar.gz"/>
+      <arg value="${forrest.deployer.username}@${forrest.site.hostname}:${forrest.site.remotedir}"/>
+    </exec>
+
+    <exec dir="." executable="ssh">
+      <arg line="-n ${forrest.site.hostname} -l ${forrest.deployer.username} 'cd ${forrest.site.remotedir};gunzip ${project.name}-site.tar.gz;tar xUvf ${project.name}-site.tar;chgrp -R ${name} *;chmod -R g+rwX *;rm ${name}-site.tar'"/>
+    </exec>
+
+    <delete file="${forrest.site.tar.path.and.name}.tar.gz"/>
+
+  </target>
+    
+    
 
     <!-- &forrest-targets; -->
 
