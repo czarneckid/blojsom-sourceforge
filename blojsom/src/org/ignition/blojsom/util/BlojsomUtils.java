@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.50 2003-05-08 03:11:57 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.51 2003-05-12 01:50:02 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -230,7 +230,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseCommaList(String commaList) {
-        return  parseDelimitedList(commaList, ", ");
+        return parseDelimitedList(commaList, ", ");
     }
 
     /**
@@ -241,7 +241,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseDelimitedList(String commaList, String delimiter) {
-        StringTokenizer tokenizer = new StringTokenizer(commaList,delimiter);
+        StringTokenizer tokenizer = new StringTokenizer(commaList, delimiter);
         ArrayList list = new ArrayList();
         while (tokenizer.hasMoreTokens()) {
             list.add(tokenizer.nextToken());
@@ -496,9 +496,13 @@ public class BlojsomUtils implements BlojsomConstants {
             return flavorTemplate + "-" + page;
         } else {
             StringBuffer newTemplate = new StringBuffer();
-            newTemplate.append(flavorTemplate.substring(0, dotIndex));
-            newTemplate.append("-");
-            newTemplate.append(page);
+            if (page.startsWith("/")) {
+                newTemplate.append(removeInitialSlash(page));
+            } else {
+                newTemplate.append(flavorTemplate.substring(0, dotIndex));
+                newTemplate.append("-");
+                newTemplate.append(page);
+            }
             newTemplate.append(".");
             newTemplate.append(flavorTemplate.substring(dotIndex + 1, flavorTemplate.length()));
             return newTemplate.toString();
@@ -610,7 +614,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String getCalendarNavigationUrl(String prefix, int month, int day, int year) {
         StringBuffer dateurl = new StringBuffer(prefix);
         if (month != -1) {
-           dateurl.append("?month=").append(month);
+            dateurl.append("?month=").append(month);
         }
         if (day != -1) {
             dateurl.append("&amp;day=").append(day);
