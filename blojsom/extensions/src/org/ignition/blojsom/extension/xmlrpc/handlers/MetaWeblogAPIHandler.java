@@ -43,7 +43,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -51,7 +50,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.5 2003-03-09 03:31:23 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.6 2003-03-09 03:39:41 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -102,16 +101,16 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("     UserId: " + userid);
         _logger.info("   Password: " + password);
 
-        Hashtable result;
+        HashMap result;
 
         BlogCategory[] _categories = _blog.getBlogCategories();
 
         if (_categories != null) {
 
-            result = new Hashtable(_categories.length);
+            result = new HashMap(_categories.length);
 
             for (int x = 0; x < _categories.length; x++) {
-                Hashtable _catlist = new Hashtable(3);
+                HashMap _catlist = new HashMap(3);
                 BlogCategory _category = _categories[x];
 
                 String _blogid = _category.getCategory();
@@ -171,7 +170,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @throws org.apache.xmlrpc.XmlRpcException
      * @return
      */
-    public String newPost(String blogid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
+    public String newPost(String blogid, String userid, String password, HashMap struct, boolean publish) throws Exception {
         _logger.info("newPost() Called ===========[ SUPPORTED ]=====");
         _logger.info("     BlogId: " + blogid);
         _logger.info("     UserId: " + userid);
@@ -184,7 +183,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
 
-            Hashtable postcontent = struct;
+            HashMap postcontent = struct;
 
             String _title = (String) postcontent.get("title");
             String _description = (String) postcontent.get("description");
