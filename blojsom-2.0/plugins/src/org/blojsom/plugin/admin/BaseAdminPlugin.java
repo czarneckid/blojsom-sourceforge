@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.11 2004-06-09 03:12:05 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.12 2004-10-06 02:22:56 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -69,6 +69,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected static final String BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM = "password";
     protected static final String ACTION_PARAM = "action";
     protected static final String BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT = "BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT";
+    protected static final String BLOJSOM_USER_AUTHENTICATED = "BLOJSOM_USER_AUTHENTICATED";
 
     // Pages
     protected static final String ADMIN_ADMINISTRATION_PAGE = "/org/blojsom/plugin/admin/templates/admin";
@@ -133,6 +134,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action != null && LOGOUT_ACTION.equals(action)) {
             httpSession.removeAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY);
+            httpSession.removeAttribute(BLOJSOM_USER_AUTHENTICATED);
         }
 
         // Otherwise, check for the authenticated key and if not authenticated, look for a "username" and "password" parameter
@@ -151,6 +153,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 _authorizationProvider.authorize(blogUser, null, username, password);
                 httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
                 httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
+                httpSession.setAttribute(BLOJSOM_USER_AUTHENTICATED, Boolean.TRUE);
                 _logger.debug("Passed authentication for username: " + username);
                 return true;
             } catch (BlojsomException e) {
