@@ -36,13 +36,14 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.*;
+import org.blojsom.fetcher.BlojsomFetcher;
+import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -54,7 +55,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.15 2004-07-14 05:03:43 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.16 2004-07-30 16:05:59 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -68,6 +69,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES = "BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES";
 
     // Actions
     private static final String ADD_BLOG_CATEGORY_ACTION = "add-blog-category";
@@ -81,10 +83,44 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_CATEGORY_META_DATA = "blog-category-meta-data";
     private static final String BLOG_CATEGORY_PARENT = "blog-category-parent";
 
+    private BlojsomFetcher _fetcher;
+
     /**
      * Default constructor.
      */
     public EditBlogCategoriesPlugin() {
+    }
+
+    /**
+     * Initialize this plugin. This method only called when the plugin is instantiated.
+     *
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error initializing the plugin
+     */
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
+
+        String fetcherClassName = blojsomConfiguration.getFetcherClass();
+        try {
+            Class fetcherClass = Class.forName(fetcherClassName);
+            _fetcher = (BlojsomFetcher) fetcherClass.newInstance();
+            _fetcher.init(servletConfig, blojsomConfiguration);
+            _logger.info("Added blojsom fetcher: " + fetcherClassName);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        }
     }
 
     /**
@@ -108,6 +144,13 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
         Blog blog = user.getBlog();
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
+        try {
+            BlogCategory[] allCategories = _fetcher.fetchCategories(null, user);
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES, allCategories);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
+        }
+
         if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
@@ -178,8 +221,10 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(blogCategoryName)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
                 addOperationResultMessage(context, "No blog category specified");
+
                 return entries;
             }
+
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
 
             String blogCategoryParent = BlojsomUtils.getRequestValue(BLOG_CATEGORY_PARENT, httpServletRequest);
@@ -262,6 +307,13 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
+        }
+
+        try {
+            BlogCategory[] allCategories = _fetcher.fetchCategories(null, user);
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES, allCategories);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
         }
 
         return entries;
