@@ -44,6 +44,7 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.8 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.9 2004-01-17 19:20:43 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -154,6 +155,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                                 if (trackbackPingURL.indexOf("?") == -1) {
                                                     trackbackPingURL.append("?");
                                                 }
+                                                trackbackPingURL = new StringBuffer(BlojsomUtils.replace(trackbackPingURL.toString(), "&amp;", "&"));
                                                 trackbackPingURL.append(trackbackPingURLParameters);
 
                                                 _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
