@@ -53,13 +53,19 @@ import java.util.Map;
  * 
  * @author David Czarnecki
  * @since blojsom 2.15
- * @version $Id: ImportToolPlugin.java,v 1.2 2004-05-26 01:11:17 czarneckid Exp $
+ * @version $Id: ImportToolPlugin.java,v 1.3 2004-05-26 02:09:45 czarneckid Exp $
  */
 public class ImportToolPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(ImportToolPlugin.class);
 
     private static final String BLOJSOM_PLUGIN_IMPORT_TOOL = "BLOJSOM_PLUGIN_IMPORT_TOOL";
+
+    /**
+     * Default constructor.
+     */
+    public ImportToolPlugin() {
+    }
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
