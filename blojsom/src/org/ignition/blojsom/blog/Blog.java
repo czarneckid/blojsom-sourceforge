@@ -74,6 +74,14 @@ public class Blog implements BlojsomConstants {
     public Blog(Properties blogConfiguration) throws BlojsomConfigurationException {
         _blogProperties = new HashMap();
 
+        // Load the blog properties with all the keys/values even though some will be overridden
+        Iterator keyIterator = blogConfiguration.keySet().iterator();
+        while (keyIterator.hasNext()) {
+            String key = (String) keyIterator.next();
+            String propertyValue = blogConfiguration.getProperty(key);
+            _blogProperties.put(key, propertyValue);
+        }
+
         _blogHome = blogConfiguration.getProperty(BLOG_HOME_IP);
         if (_blogHome == null) {
             _logger.error("No value supplied for blog-home");
@@ -376,11 +384,22 @@ public class Blog implements BlojsomConstants {
      * the default category mapping and the maximum number of blog entries to retrieve
      * from each category
      *
+     * @param flavor Requested flavor
      * @return Blog entry array containing the list of blog entries for the categories
      * or <code>null</code> if there are no entries
      */
-    public BlogEntry[] getEntriesAllCategories() {
-        return getEntriesAllCategories(_blogDefaultCategoryMappings, _blogDisplayEntries);
+    public BlogEntry[] getEntriesAllCategories(String flavor) {
+        if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
+            return getEntriesAllCategories(_blogDefaultCategoryMappings, _blogDisplayEntries);
+        } else {
+            String flavorMappingKey = flavor + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
+            String categoryMappingForFlavor = (String) _blogProperties.get(flavorMappingKey);
+            String[] categoryMappingsForFlavor = null;
+            if (categoryMappingForFlavor != null) {
+                categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
+            }
+            return getEntriesAllCategories(categoryMappingsForFlavor, _blogDisplayEntries);
+        }
     }
 
     /**
