@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.25 2004-05-22 19:31:44 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.26 2004-05-22 19:46:05 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -157,7 +157,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     /**
      * Key under which the blog comment will be placed for merging the trackback e-mail
      */
-    public static final String BLOJSOM_TRACKBACK_PLUGIN_BLOG_TRACKBACK = "BLOJSOM_TRACKBACK_PLUGIN_BLOG_TRACKBACK";
+    public static final String BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK = "BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK";
 
     private Map _ipAddressTrackbackTimes;
     private BlojsomFetcher _fetcher;
