@@ -32,6 +32,7 @@
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
+    <property name="bootstrap.user" value="bootstrap"/>
 
     <!-- Add-on properties -->
     <property name="addon.lib.dir" value="${basedir}/addon-lib"/>
@@ -76,7 +77,7 @@
     <!-- =================================================================== -->
     <!-- Prepares the build process                                          -->
     <!-- =================================================================== -->
-    <target name="prepare">
+    <target name="prepare" description="Prepares the build by creating necessary directories and copying necessary files">
         <tstamp/>
         <mkdir dir="${compile.dir}"/>
         <mkdir dir="${build.dir}"/>
@@ -92,12 +93,18 @@
                 <include name="**/*.vm"/>
             </fileset>
         </copy>
+
+        <copy todir="${war.dir}/WEB-INF/bootstrap/templates/">
+            <fileset dir="${templates.dir}">
+                <include name="**/*.vm"/>
+            </fileset>
+        </copy>
     </target>
 
     <!-- =================================================================== -->
     <!-- Cleans up generated stuff                                           -->
     <!-- =================================================================== -->
-    <target name="clean" description="Removes generated files">
+    <target name="clean" description="Removes generated files from the build">
         <delete dir="${compile.dir}"/>
         <delete dir="${build.dir}"/>
         <delete dir="${javadoc.dir}"/>
@@ -112,7 +119,7 @@
     <!-- =================================================================== -->
     <!-- Compiles the source code                                            -->
     <!-- =================================================================== -->
-    <target name="compile" depends="prepare" description="Compiles the class files">
+    <target name="compile" depends="prepare" description="Compiles the core, plugin, and extensions">
         <!-- Core -->
         <javac srcdir="${src.dir}"
             destdir="${compile.dir}"
@@ -295,7 +302,7 @@
     <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
-    <target name="war" depends="clean, prepare, compile">
+    <target name="war" depends="clean, prepare, compile" description="Create a deployable WAR file">
         <copydir src="${templates.dir}" dest="${war.dir}/WEB-INF/default/templates"/>
         <copydir src="${themes.dir}" dest="${war.dir}/themes"/>
 
@@ -310,7 +317,7 @@
     <!-- =================================================================== -->
     <!-- Create the add-on bundle                                            -->
     <!-- =================================================================== -->
-    <target name="create-addon-bundle" depends="compile-addon">
+    <target name="create-addon-bundle" depends="compile-addon" description="Create the add-on bundle">
         <tstamp/>
         <zip zipfile="${distro.dir}/${name}-${version}-addons.zip">
             <fileset dir="${webinf.lib.dir}">
@@ -425,7 +432,7 @@
     <!-- =================================================================== -->
     <!-- Create a source distribution                                        -->
     <!-- =================================================================== -->
-    <target name="create-source-distribution" depends="clean, prepare">
+    <target name="create-source-distribution" depends="clean, prepare" description="Creates the source distribution">
         <tstamp/>
         <zip zipfile="${distro.dir}/${name}-${version}-source.zip">
             <zipfileset dir="${basedir}">
