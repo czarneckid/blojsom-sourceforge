@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.2 2003-09-24 03:42:46 czarneckid Exp $
+ * @version $Id: XPathPlugin.java,v 1.3 2003-09-24 04:43:40 intabulas Exp $
  */
 
 public class XPathPlugin implements BlojsomPlugin {
@@ -90,12 +90,12 @@ public class XPathPlugin implements BlojsomPlugin {
         BlogEntry[] results = entries;
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
-
         if (xpath != null) {
             BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
+            List foundEntries = new ArrayList();
             JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
             Iterator entryIterator = xpathcontext.iterate(xpath);
-            List foundEntries = new ArrayList();
+
             while (entryIterator.hasNext()) {
                 BlogEntry entry = (BlogEntry) entryIterator.next();
                 foundEntries.add(entry);
