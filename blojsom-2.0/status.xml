@@ -9,6 +9,11 @@
     <changes>
         <release version="2.12" date="Available from CVS">
             <action dev="czarneckid" type="update" context="Plugin">
+                Updated the Edit Blog Properties plugin to allow the "blog-default-category-mapping" property to
+                be configured. Also addressed an issue where the StandardFetcher would not pickup this property.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
                 Updated Edit Blog Entries plugin to create a link to the new or edited post in the status message when
                 adding or updating an entry in a category.
             </action>
@@ -24,6 +29,11 @@
                 would be specified as "meta-blog-entry-comments-disabled=y" in your blog entry. The metadata key to
                 disable trackbacks would be specified as "meta-blog-entry-trackbacks-disabled=y" in your blog entry.
                 You can also enable and disable comments and trackbacks from the web administration console.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added the Preview plugin back to the set of available plugins.
+                This was "lost" in the blojsom 1.x to 2.x development. Oops!
             </action>
 
             <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="898242">
