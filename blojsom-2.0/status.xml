@@ -8,7 +8,7 @@
 
     <changes>
 
-        <release version="2.04" date="dev">
+        <release version="2.04" date="November 11, 2003">
             <action dev="czarneckid" type="update" context="Core">
                 Blog entry timestamp is preserved when saving an entry if the blog-entry-metadata-timestamp meta-data
                 exists. Its value contains a long value indicating the date and time of the original timestamp. This
@@ -21,6 +21,10 @@
 
             <action dev="czarneckid" type="add" context="Plugins">
                 Added Base Admin and Edit Blog Properties, Edit Blog Categories, and Edit Blog Templates plugins.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugins">
+                Updated Weblogs Ping plugin to use separate XML-RPC clients when pinging weblogs.com and weblo.gs.
             </action>
 
         </release>
