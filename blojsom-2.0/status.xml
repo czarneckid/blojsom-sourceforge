@@ -31,6 +31,10 @@
                 Added Simple Obfuscation plugin to allow for the obfuscation of data. For example, this can
                 be used for obfuscating e-mail addresses on the comment page.
             </action>
+
+            <action dev="czarneckid" type="update" context="Library">
+                Updated OSCache to 2.0.
+            </action>
         </release>
 
         <release version="2.01" date="September 9, 2003">
