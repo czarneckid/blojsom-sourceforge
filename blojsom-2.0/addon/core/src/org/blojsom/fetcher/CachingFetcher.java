@@ -34,11 +34,13 @@
  */
 package org.blojsom.fetcher;
 
-import org.blojsom.blog.*;
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.BlojsomException;
+import com.opensymphony.oscache.base.NeedsRefreshException;
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
+import org.blojsom.blog.*;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -46,36 +48,45 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Properties;
 
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
-import com.opensymphony.oscache.base.NeedsRefreshException;
-
 /**
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.7 2004-03-10 01:50:11 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.8 2004-06-17 03:28:32 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
 
     private Log _logger = LogFactory.getLog(CachingFetcher.class);
 
-    /** Default refresh period for refreshing the cache (5 minutes) */
+    /**
+     * Default refresh period for refreshing the cache (5 minutes)
+     */
     private static final int DEFAULT_CACHE_REFRESH = 300;
 
-    /** Initialization parameter for web.xml */
+    /**
+     * Initialization parameter for web.xml
+     */
     private static final String OSCACHE_PROPERTIES_IP = "oscache-properties";
 
-    /** Parameter for blog.properties for user to control cache refresh period */
+    /**
+     * Parameter for blog.properties for user to control cache refresh period
+     */
     private static final String CACHING_FETCHER_REFRESH = "caching-fetcher-refresh";
 
-    /** Default location for oscache.properties */
+    /**
+     * Default location for oscache.properties
+     */
     private static final String OSCACHE_PROPERTIES_DEFAULT = "/WEB-INF/oscache.properties";
 
-    /** Internal key for cache for flavor */
+    /**
+     * Internal key for cache for flavor
+     */
     private static final String FLAVOR_KEY = "__FLAVOR__";
 
-    /** Internal key for cache for category */
+    /**
+     * Internal key for cache for category
+     */
     private static final String CATEGORY_KEY = "__CATEGORY__";
 
     protected GeneralCacheAdministrator _cache;
@@ -144,7 +155,56 @@ public class CachingFetcher extends StandardFetcher {
         // Check for a permalink entry request
         if (permalink != null) {
             context.put(BLOJSOM_PERMALINK, permalink);
-            return getPermalinkEntry(user, category, permalink);
+
+            String cacheRefresh = user.getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
+            int refreshPeriod;
+            if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
+                refreshPeriod = DEFAULT_CACHE_REFRESH;
+            }
+            try {
+                refreshPeriod = Integer.parseInt(cacheRefresh);
+            } catch (NumberFormatException e) {
+                refreshPeriod = DEFAULT_CACHE_REFRESH;
+            }
+
+            BlogEntry[] permalinkEntry = getPermalinkEntry(user, category, permalink);
+
+            if (blog.getLinearNavigationEnabled().booleanValue()) {
+                BlogEntry[] allEntries;
+                try {
+                    allEntries = (BlogEntry[]) _cache.getFromCache(user.getId() + FLAVOR_KEY + flavor, refreshPeriod);
+                    _logger.debug("Returned entries from cache for user/flavor: " + user.getId() + " / " + flavor);
+
+                } catch (NeedsRefreshException e) {
+                    allEntries = (BlogEntry[]) e.getCacheContent();
+                    _logger.debug("Returned entries from expired cache for user/flavor: " + user.getId() + " / " + flavor);
+                }
+
+                if (permalinkEntry.length > 0 && allEntries.length > 0) {
+                    String permalinkId = permalinkEntry[0].getId();
+                    for (int i = 0; i < allEntries.length; i++) {
+                        BlogEntry blogEntry = allEntries[i];
+                        String blogEntryId = blogEntry.getId();
+                        if (blogEntryId != null && blogEntryId.equals(permalinkId)) {
+                            if ((i-1) >= 0) {
+                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i-1]);
+                            } else {
+                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, null);
+                            }
+
+                            if ((i+1) < allEntries.length) {
+                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, allEntries[i+1]);
+                            } else {
+                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, null);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return permalinkEntry;
         } else {
             BlogEntry[] entries;
 
@@ -219,8 +279,8 @@ public class CachingFetcher extends StandardFetcher {
         /**
          * Default constructor.
          *
-         * @param user Blog user
-         * @param flavor Flavor
+         * @param user               Blog user
+         * @param flavor             Flavor
          * @param blogDirectoryDepth Blog directory depth
          */
         public AllCategoriesFetcherThread(BlogUser user, String flavor, int blogDirectoryDepth) {
@@ -236,7 +296,7 @@ public class CachingFetcher extends StandardFetcher {
          * otherwise, this method does nothing and returns.
          * <p/>
          * Subclasses of <code>Thread</code> should override this method.
-         * 
+         *
          * @see Thread#start()
          * @see Thread#stop()
          * @see Thread#Thread(ThreadGroup,
@@ -265,7 +325,7 @@ public class CachingFetcher extends StandardFetcher {
         /**
          * Default constructor.
          *
-         * @param user Blog user
+         * @param user     Blog user
          * @param category Blog category
          */
         public SingleCategoryFetcherThread(BlogUser user, BlogCategory category) {
@@ -280,7 +340,7 @@ public class CachingFetcher extends StandardFetcher {
          * otherwise, this method does nothing and returns.
          * <p/>
          * Subclasses of <code>Thread</code> should override this method.
-         * 
+         *
          * @see Thread#start()
          * @see Thread#stop()
          * @see Thread#Thread(ThreadGroup,

@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.20 2004-06-03 01:16:06 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.21 2004-06-17 03:27:40 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -77,6 +77,7 @@ public class Blog implements BlojsomConstants {
     private String _blogEntryMetaDataExtension;
     private String _blogFileEncoding;
     private String _blogDefaultFlavor;
+    private Boolean _linearNavigationEnabled;
 
     private Map _blogProperties;
 
@@ -264,6 +265,11 @@ public class Blog implements BlojsomConstants {
             blogDefaultFlavor = DEFAULT_FLAVOR_HTML;
         }
         _blogDefaultFlavor = blogDefaultFlavor;
+        _blogProperties.put(BLOG_DEFAULT_FLAVOR_IP, _blogDefaultFlavor);
+
+        String linearNavigationEnabled = blogConfiguration.getProperty(LINEAR_NAVIGATION_ENABLED_IP);
+        _linearNavigationEnabled = Boolean.valueOf(linearNavigationEnabled);
+        _blogProperties.put(LINEAR_NAVIGATION_ENABLED_IP, _linearNavigationEnabled);
 
         _logger.info("blojsom home: " + _blogHome);
     }
@@ -837,5 +843,26 @@ public class Blog implements BlojsomConstants {
                 _blogProperties.put(key, value);
             }
         }
+    }
+
+    /**
+     * Is linear navigation enabled?
+     *
+     * @return <code>true</code> if linear navigation is enabled, <code>false</code> otherwise
+     * @since blojsom 2.16
+     */
+    public Boolean getLinearNavigationEnabled() {
+        return _linearNavigationEnabled;
+    }
+
+    /**
+     * Set whether or not linear navigation should be enabled
+     *
+     * @param linearNavigationEnabled <code>true</code> if linear navigation is enabled, <code>false</code> otherwise
+     * @since blojsom 2.16
+     */
+    public void setLinearNavigationEnabled(Boolean linearNavigationEnabled) {
+        _linearNavigationEnabled = linearNavigationEnabled;
+        _blogProperties.put(LINEAR_NAVIGATION_ENABLED_IP, _linearNavigationEnabled);
     }
 }

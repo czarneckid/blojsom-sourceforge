@@ -52,6 +52,10 @@
                     <tr>
                         <td>#adminResource('blog.default.flavor.text' 'Blog default flavor')</td> <td><input name="blog-default-flavor" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDefaultFlavor()"/></td>
                     </tr>
+                    <tr>
+                        #set ($selectListName = "linear-navigation-enabled")
+                        <td>#adminResource('blog.linear.navigation.enabled.text' 'Linear navigation enabled?')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getLinearNavigationEnabled())</td>
+                    </tr>
 
                     <!-- Category mapping settings -->
                     <tr>

@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.15 2004-02-27 03:11:41 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.16 2004-06-17 03:27:51 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -445,7 +445,36 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         // Check for a permalink entry request
         if (permalink != null) {
             context.put(BLOJSOM_PERMALINK, permalink);
-            return getPermalinkEntry(user, category, permalink);
+            BlogEntry[] permalinkEntry = getPermalinkEntry(user, category, permalink);
+
+            if (blog.getLinearNavigationEnabled().booleanValue()) {
+                BlogEntry[] allEntries = getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
+
+                if (permalinkEntry.length > 0 && allEntries.length > 0) {
+                    String permalinkId = permalinkEntry[0].getId();
+                    for (int i = 0; i < allEntries.length; i++) {
+                        BlogEntry blogEntry = allEntries[i];
+                        String blogEntryId = blogEntry.getId();
+                        if (blogEntryId != null && blogEntryId.equals(permalinkId)) {
+                            if ((i-1) >= 0) {
+                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, allEntries[i-1]);
+                            } else {
+                                context.put(BLOJSOM_PERMALINK_NEXT_ENTRY, null);
+                            }
+
+                            if ((i+1) < allEntries.length) {
+                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, allEntries[i+1]);
+                            } else {
+                                context.put(BLOJSOM_PERMALINK_PREVIOUS_ENTRY, null);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return permalinkEntry;
         } else {
             if (category.getCategory().equals("/")) {
                 return getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);

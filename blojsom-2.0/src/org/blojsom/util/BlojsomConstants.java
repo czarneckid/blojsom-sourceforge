@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.39 2004-06-03 01:14:31 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.40 2004-06-17 03:27:51 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -109,6 +109,20 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_PERMALINK = "BLOJSOM_PERMALINK";
+
+    /**
+     * Key under which the next entry after the permalink value will be placed. This is used to allow templates
+     * to generate linear post navigation links.
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_PERMALINK_NEXT_ENTRY = "BLOJSOM_PERMALINK_NEXT_ENTRY";
+
+    /**
+     * Key under which the previous entry after the permalink value will be placed. This is used to allow templates
+     * to generate linear post navigation links.
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_PERMALINK_PREVIOUS_ENTRY = "BLOJSOM_PERMALINK_PREVIOUS_ENTRY";
 
     /**
      * Key under which the requested category will be placed
@@ -355,6 +369,7 @@ public interface BlojsomConstants {
     public static final String BLOG_FILE_ENCODING_IP = "blog-file-encoding";
     public static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
     public static final String BLOG_DEFAULT_FLAVOR_IP = "blog-default-flavor";
+    public static final String LINEAR_NAVIGATION_ENABLED_IP = "linear-navigation-enabled";
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";

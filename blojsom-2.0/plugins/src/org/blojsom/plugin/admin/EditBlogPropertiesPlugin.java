@@ -61,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.20 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.21 2004-06-17 03:28:25 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -147,6 +147,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogFileExtensions(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-default-flavor", httpServletRequest);
             blog.setBlogDefaultFlavor(blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue("linear-navigation-enabled", httpServletRequest);
+            blog.setLinearNavigationEnabled(Boolean.valueOf(blogPropertyValue));
 
             // Comment plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_AUTOFORMAT_IP, httpServletRequest);
