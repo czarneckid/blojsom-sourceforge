@@ -34,6 +34,8 @@
  */
 package org.ignition.blojsom.plugin.calendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
@@ -49,9 +51,11 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.4 2003-03-26 05:22:47 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.5 2003-03-26 05:36:49 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
+
+    private Log _logger = LogFactory.getLog(CalendarPlugin.class);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
