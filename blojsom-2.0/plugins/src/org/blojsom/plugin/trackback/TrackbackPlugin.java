@@ -59,7 +59,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.17 2004-04-16 04:10:34 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.18 2004-04-18 20:38:38 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -370,15 +370,17 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
                     // Check for a trackback where the number of days between trackback auto-expiration has passed
                     String trackbackDaysExpiration = blog.getBlogProperty(TRACKBACK_DAYS_EXPIRATION_IP);
-                    try {
-                        int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
-                        if ((daysExpiration > 0) && (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration)) {
-                            _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
+                    if (!BlojsomUtils.checkNullOrBlank(trackbackDaysExpiration)) {
+                        try {
+                            int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
+                            if ((daysExpiration > 0) && (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration)) {
+                                _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
 
-                            return entries;
+                                return entries;
+                            }
+                        } catch (NumberFormatException e) {
+                            _logger.error("Error in parameter " + TRACKBACK_DAYS_EXPIRATION_IP + ": " + trackbackDaysExpiration);
                         }
-                    } catch (NumberFormatException e) {
-                        _logger.error("Error in parameter " + TRACKBACK_DAYS_EXPIRATION_IP + ": " + trackbackDaysExpiration);
                     }
                 }
             } catch (BlojsomFetcherException e) {
