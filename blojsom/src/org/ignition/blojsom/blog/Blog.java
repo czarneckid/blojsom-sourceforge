@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.37 2003-03-27 01:54:40 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.38 2003-03-28 01:15:09 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -507,7 +507,11 @@ public class Blog implements BlojsomConstants {
             String categoryMappingForFlavor = (String) _blogProperties.get(flavorMappingKey);
             String[] categoryMappingsForFlavor = null;
             if (categoryMappingForFlavor != null) {
+                _logger.debug("Using category mappings for flavor: " + flavor);
                 categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
+            } else {
+                _logger.debug("Fallback to default category mappings for flavor: " + flavor);
+                categoryMappingsForFlavor = _blogDefaultCategoryMappings;
             }
             return getEntriesAllCategories(categoryMappingsForFlavor, maxBlogEntries);
         }
