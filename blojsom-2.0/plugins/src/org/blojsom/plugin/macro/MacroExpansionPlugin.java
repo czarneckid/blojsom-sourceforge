@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.5 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.6 2004-03-25 22:29:50 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -138,6 +138,10 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * @return The macro expanded string
      */
     private String replaceMacros(String userId, String content) {
+        if (BlojsomUtils.checkNullOrBlank(content)) {
+            return content;
+        }
+        
         Pattern macroPattern = Pattern.compile(MACRO_REGEX);
         Matcher matcher = macroPattern.matcher(content);
 
