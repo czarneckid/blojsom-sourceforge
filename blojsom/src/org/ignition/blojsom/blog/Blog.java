@@ -129,7 +129,7 @@ public class Blog implements BlojsomConstants {
 
         // Load properties file for category (if present)
         File[] categoryPropertyFiles = blog.listFiles(BlojsomUtils.getExtensionsFilter(_blogPropertiesExtensions));
-        if (categoryPropertyFiles.length > 0) {
+        if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
             Properties dirProps = new Properties();
             for (int i = 0; i < categoryPropertyFiles.length; i++) {
                 try {
