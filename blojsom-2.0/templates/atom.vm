@@ -42,7 +42,7 @@
         <link rel="alternate" type="text/html" href="$entry.getLink()"/>
         <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
         <issued>$entry.getISO8601Date()</issued>
-        <id>tag:$BLOJSOM_BLOG.getBlogOwnerEmail(),$entry.getDateAsFormat("yyyy-MM-dd"):$entry.getCategory().$entry.getPermalink()</id>
+        <id>tag:$BLOJSOM_BLOG.getBlogOwnerEmail(),$entry.getDateAsFormat("yyyy-MM-dd"):$entry.getEncodedCategory().$entry.getPermalink()</id>
 
         <!-- optional entry elements -->
         <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
