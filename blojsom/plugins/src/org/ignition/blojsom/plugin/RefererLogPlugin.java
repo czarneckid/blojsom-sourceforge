@@ -49,7 +49,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.6 2003-03-14 16:49:50 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.7 2003-03-14 17:56:24 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -97,7 +97,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
-        if (_refererlog != null) {
+        if (_referer != null  ) {
 
             _logger.info("HTTP Referer is " + _referer);
 
