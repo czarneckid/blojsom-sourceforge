@@ -36,6 +36,7 @@ package org.blojsom.extension.atomapi;
 
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
 import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.elements.Author;
 import org.intabulas.sandler.elements.Content;
@@ -51,7 +52,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.2 2003-09-08 16:24:21 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.3 2003-09-10 18:23:35 intabulas Exp $
  */
 public class AtomUtils {
 
@@ -62,13 +63,14 @@ public class AtomUtils {
     }
 
 
-    public static Entry fromBlogEntry(Blog blog, BlogEntry blogentry) {
+    public static Entry fromBlogEntry(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
-        result.setTitle(blogentry.getTitle());
+        result.setTitle(BlojsomUtils.escapeString(blogentry.getTitle()));
+        result.setSummary(BlojsomUtils.escapeString(blogentry.getTitle()));
         result.setCreated(blogentry.getDate());
         result.setIssued(blogentry.getDate());
         result.setModified(new Date(blogentry.getLastModified()));
-        result.setId(blogentry.getPermalink());
+        result.setId(blogentry.getLink());
         result.setLink(blogentry.getLink());
         Author author = new AuthorImpl();
         author.setName(blog.getBlogOwner());
@@ -77,11 +79,21 @@ public class AtomUtils {
         result.setAuthor(author);
 
         Content content = new ContentImpl();
+        content.setMimeType("text/html");
         content.setBody(blogentry.getEscapedDescription());
         result.addContent(content);
         return result;
 
     }
+
+    public static Entry fromBlogEntrySearch(Blog blog, BlogUser user, BlogEntry blogentry) {
+        Entry result = new EntryImpl();
+        result.setTitle(blogentry.getTitle());
+        result.setId(blog.getBlogBaseURL() + "/atomapi/" + user.getId() + "/?permalink=" + blogentry.getPermalink());
+        return result;
+
+    }
+
 
 
 }
