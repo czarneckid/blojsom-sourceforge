@@ -210,7 +210,7 @@
         #end
         #foreach ($month in [$totalMonths..$monthIndex])
             #set ($calMonth = $month - 1)
-    <li><a href="#BlogURL()$year/#if($month < 10)$padding#end$month/">$BLOJSOM_CALENDAR.getMonthName($calMonth) $year</a><li>
+    <li><a href="#BlogURL()$year/#if($month < 10)$padding#end$month/">$BLOJSOM_CALENDAR.getMonthName($calMonth) $year</a></li>
         #end
     #end
 </ul>
