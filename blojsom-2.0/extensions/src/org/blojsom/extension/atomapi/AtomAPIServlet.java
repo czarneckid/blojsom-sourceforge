@@ -78,7 +78,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.35 2004-05-11 04:50:48 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.36 2004-05-15 16:20:05 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -314,6 +314,14 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         link.setType(AtomConstants.Type.ATOM_XML);
         link.setTitle(blog.getBlogDescription());
         feed.addLink(link);
+
+        LinkImpl link3 = new LinkImpl();
+        link3.setHref(atomuri);
+        link3.setRelationship(AtomConstants.Rel.SERVICE_EDIT);
+        link3.setType(AtomConstants.Type.ATOM_XML);
+        link3.setTitle(blog.getBlogDescription());
+        feed.addLink(link3);
+
 
         LinkImpl link2 = new LinkImpl();
         link2.setHref(atomuri2);
