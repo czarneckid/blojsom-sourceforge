@@ -48,10 +48,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.25 2003-04-10 14:37:35 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.26 2003-04-13 18:07:19 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -293,7 +290,6 @@ public class CommentPlugin implements BlojsomPlugin {
                         sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
                     }
 
-
                 }
 
 
@@ -395,7 +391,6 @@ public class CommentPlugin implements BlojsomPlugin {
             String commentHashable = author + userComment;
             String hashedComment = BlojsomUtils.digestString(commentHashable).toUpperCase();
 
-
             String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
             File commentDir = new File(commentDirectory.toString());
             if (!commentDir.exists()) {
@@ -409,7 +404,7 @@ public class CommentPlugin implements BlojsomPlugin {
 
             if (!commentEntry.exists()) {
                 try {
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), BlojsomConstants.UTF8));
                     bw.write(comment.getAuthor());
                     bw.newLine();
                     bw.write(comment.getAuthorEmail());

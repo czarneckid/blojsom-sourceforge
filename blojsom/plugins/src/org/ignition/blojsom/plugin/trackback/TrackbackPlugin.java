@@ -47,10 +47,7 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.15 2003-04-04 02:54:07 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.16 2003-04-13 18:07:05 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -201,7 +198,6 @@ public class TrackbackPlugin implements BlojsomPlugin {
                 sendTrackbackEmail(entryTitle, title, category, permalink, url, excerpt, blogName, context);
             }
 
-
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
             if (code.intValue() == 0) {
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_SUCCESS_PAGE);
@@ -265,7 +261,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
 
         File trackbackEntry = new File(trackbackFilename);
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(trackbackEntry));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), BlojsomConstants.UTF8));
             bw.write(trackback.getTitle());
             bw.newLine();
             bw.write(trackback.getExcerpt());
@@ -306,7 +302,6 @@ public class TrackbackPlugin implements BlojsomPlugin {
         _trackback.append("?permalink=").append(permalink).append("&page=comments").append("\n");
 
         _trackback.append("\n==[ Trackback ]==========================================================").append("\n\n");
-
 
         if (title == null && !title.equals("")) {
             _trackback.append("Title    : ").append(title).append("\n");

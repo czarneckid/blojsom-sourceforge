@@ -48,7 +48,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.26 2003-04-01 00:54:22 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.27 2003-04-13 18:02:57 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -249,48 +249,6 @@ public class BlogEntry implements BlojsomConstants {
     }
 
     /**
-     * Returns the contents of the file in a byte array
-     *
-     * @param file Input file
-     * @return Byte array containing the file contents
-     * @throws IOException If there is an error reading the contents of the file
-     */
-    private static byte[] getBytesFromFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-
-        // Get the size of the file
-        long length = file.length();
-
-        // You cannot create an array using a long type.
-        // It needs to be an int type.
-        // Before converting to an int type, check
-        // to ensure that file is not larger than Integer.MAX_VALUE.
-        if (length > Integer.MAX_VALUE) {
-            // File is too large
-        }
-
-        // Create the byte array to hold the data
-        byte[] bytes = new byte[(int) length];
-
-        // Read in the bytes
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-            offset += numRead;
-        }
-
-        // Ensure all the bytes have been read in
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file: " + file.getName());
-        }
-
-        // Close the input stream and return bytes
-        is.close();
-        return bytes;
-    }
-
-    /**
      * Reload the blog entry from disk
      *
      * The first line of the blog entry will be used as the title of the blog
@@ -300,7 +258,7 @@ public class BlogEntry implements BlojsomConstants {
         String lineSeparator = System.getProperty("line.separator");
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(_source));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(_source), UTF8));
             String line;
             StringBuffer description = new StringBuffer();
             while ((line = br.readLine()) != null) {
@@ -465,7 +423,7 @@ public class BlogEntry implements BlojsomConstants {
         StringBuffer commentDescription = new StringBuffer();
         String commentLine;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(commentFile));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(commentFile), UTF8));
             while ((commentLine = br.readLine()) != null) {
                 switch (commentSwitch) {
                     case 0:
@@ -595,7 +553,7 @@ public class BlogEntry implements BlojsomConstants {
         trackback.setTrackbackDateLong(trackbackFile.lastModified());
         String trackbackLine;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(trackbackFile));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(trackbackFile), UTF8));
             while (((trackbackLine = br.readLine()) != null) && (trackbackSwitch < 4)) {
                 switch (trackbackSwitch) {
                     case 0:
