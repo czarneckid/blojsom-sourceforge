@@ -45,7 +45,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Vector;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -53,7 +52,7 @@ import java.util.Vector;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.9 2003-03-13 02:09:39 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.10 2003-03-23 18:31:19 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 

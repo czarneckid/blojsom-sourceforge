@@ -31,8 +31,6 @@
  */
 package org.ignition.blojsom.plugin;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
 
 import javax.servlet.ServletConfig;
@@ -44,7 +42,7 @@ import java.util.Map;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.6 2003-03-15 00:16:56 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.7 2003-03-23 18:31:19 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -63,8 +61,6 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      * The resulting replace string for formatting the href
      */
     private static final String HREF_EXPRESSION = " <a href=\"$2\" target=\"_blank\">$2</a>";
-
-    private Log _logger = LogFactory.getLog(HyperlinkURLPlugin.class);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.

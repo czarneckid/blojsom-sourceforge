@@ -52,7 +52,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.4 2003-03-22 20:03:49 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.5 2003-03-23 18:31:17 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -139,7 +139,7 @@ public class CommentPlugin implements BlojsomPlugin {
      * @param author Comment author
      * @param authorEmail Comment author e-mail
      * @param authorURL Comment author URL
-     * @param comment Comment
+     * @param userComment Comment
      */
     private synchronized void addBlogComment(String category, String permalink, String author,
                                             String authorEmail, String authorURL, String userComment) {
