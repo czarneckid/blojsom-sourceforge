@@ -54,7 +54,7 @@ import java.util.Map;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.2 2004-11-05 00:16:04 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.3 2004-12-09 17:39:20 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin {
@@ -65,6 +65,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
 
     public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
     public static final String METADATA_RSS_ENCLOSURE = "rss-enclosure";
+    public static final String METADATA_ESS_ENCLOSURE_OBJECT = "rss-enclosure-object";
 
     protected static final String MIME_TYPE_XMPEGURL = "audio/x-mpegurl m3u";
     protected static final String MIME_TYPE_XMPEG = "audio/x-mpeg mp1 mp2 mp3 mpa mpega";
@@ -138,12 +139,10 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
                             mimetypesFileTypeMap.getContentType(enclosure);
 
                     StringBuffer enclosureElement = new StringBuffer();
+                    String url = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
+                            user.getId() + "/" + enclosure.getName();
                     enclosureElement.append("<enclosure url=\"");
-                    enclosureElement.append(user.getBlog().getBlogBaseURL());
-                    enclosureElement.append(_blojsomConfiguration.getResourceDirectory());
-                    enclosureElement.append(user.getId());
-                    enclosureElement.append("/");
-                    enclosureElement.append(enclosure.getName());
+                    enclosureElement.append(url);
                     enclosureElement.append("\" length=\"");
                     enclosureElement.append(enclosure.length());
                     enclosureElement.append("\" type=\"");
@@ -153,8 +152,10 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
                     enclosureElement.append(type);
                     enclosureElement.append("\" />");
 
+                    RSSEnclosure rssEnclosure = new RSSEnclosure(url, enclosure.length(), type);
                     entry.getMetaData().put(METADATA_RSS_ENCLOSURE,
                             enclosureElement.toString());
+                    entry.getMetaData().put(METADATA_ESS_ENCLOSURE_OBJECT, rssEnclosure);
                     _logger.debug("Added enclosure: " + enclosureElement.toString());
                 }
             }
@@ -179,6 +180,59 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * RSS Enclosure
+     *
+     * @author David Czarnecki
+     * @since blojsom 2.22
+     */
+    private class RSSEnclosure {
+
+        private String url;
+        private long length;
+        private String type;
+
+        /**
+         * Construct an RSS enclosure
+         *
+         * @param url URL to retrieve enclosure
+         * @param length Length of enclosure
+         * @param type Type of enclosure
+         */
+        public RSSEnclosure(String url, long length, String type) {
+            this.url = url;
+            this.length = length;
+            this.type = type;
+        }
+
+        /**
+         * Get the URL for the enclosure
+         *
+         * @return URL for enclosure
+         */
+        public String getUrl() {
+            return url;
+        }
+
+        /**
+         * Get the length of the enclosure
+         *
+         * @return Length of enclosure
+         */
+        public long getLength() {
+            return length;
+        }
+
+        /**
+         * Get the type of the enclosure
+         *
+         * @return Type of enclosure (e.g. audio/mpeg)
+         */
+        public String getType() {
+            return type;
+        }
     }
 }
 
