@@ -37,14 +37,13 @@ package org.ignition.blojsom.servlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.*;
-import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.dispatcher.GenericDispatcher;
-import org.ignition.blojsom.util.BlojsomConstants;
-import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.plugin.BlojsomPluginException;
-import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.fetcher.BlojsomFetcherException;
+import org.ignition.blojsom.plugin.BlojsomPlugin;
+import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -61,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.74 2003-04-30 03:04:13 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.75 2003-05-01 14:31:49 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -443,6 +442,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                     _lastmodified = lastModified.longValue();
                 }
             }
+
+            // Generates an ETag header bases on the string value of LastModified as an ISO8601 Format
+            String etagLastModified = BlojsomUtils.getISO8601Date(new Date(_lastmodified));
+            httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
 
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
             blogdate = entries[0].getRFC822Date();

@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.54 2003-04-18 02:21:18 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.55 2003-05-01 14:31:40 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -207,6 +207,11 @@ public interface BlojsomConstants {
      * HTTP Header Name representing the Last Modified Timstamp of the blog (GMT Based)
      */
     public static final String HTTP_LASTMODIFIED = "Last-Modified";
+
+    /**
+     * HTTP Header Name representing the ETag of the blog
+     */
+    public static final String HTTP_ETAG = "ETag";
 
     /**
      * RFC 822 style date format
