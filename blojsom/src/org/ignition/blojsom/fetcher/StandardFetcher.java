@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.8 2003-04-22 02:13:11 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.9 2003-04-23 01:33:27 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -83,6 +83,16 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomFetcherException {
         _blog = blog;
         _logger.debug("Initialized standard fetcher");
+    }
+
+    /**
+     * Initialize this fetcher. This method only called when the fetcher is instantiated.
+     *
+     * @param blog {@link Blog} instance
+     * @throws BlojsomFetcherException If there is an error initializing the fetcher
+     */
+    public void init(Blog blog) throws BlojsomFetcherException {
+        init(null, blog);
     }
 
     /**
@@ -513,6 +523,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * <tr>
      * <td><code>null</code></td> <td>return all categories</td>
      * </tr>
+     * <tr>
+     * <td>"FETCHER_CATEGORY" (<code>BlogCategory</code>)</td> <td>return all categories</td>
+     * </tr>
      * </table>
      *
      * @param fetchParameters Parameters which will be used to retrieve blog entries
@@ -522,6 +535,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     public BlogCategory[] fetchCategories(Map fetchParameters) throws BlojsomFetcherException {
         if (fetchParameters == null) {
             return getBlogCategories();
+        } else if (fetchParameters.containsKey(FETCHER_CATEGORY)) {
+            return getBlogCategoryHierarchy((BlogCategory) fetchParameters.get(FETCHER_CATEGORY));
         }
 
         return new BlogCategory[0];
