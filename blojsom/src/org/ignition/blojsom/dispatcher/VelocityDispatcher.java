@@ -46,6 +46,7 @@ import java.io.*;
  * VelocityDispatcher
  *
  * @author David Czarnecki
+ * @version $Id: VelocityDispatcher.java,v 1.5 2003-03-01 20:19:42 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 

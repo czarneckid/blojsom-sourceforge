@@ -41,7 +41,9 @@ import java.util.*;
  * Blog
  *
  * @author David Czarnecki
+ * @author Mark Lussier
  * @author Dan Morrill
+ * @version $Id: Blog.java,v 1.21 2003-03-01 20:19:12 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -126,7 +128,6 @@ public class Blog implements BlojsomConstants {
         }
         _blogProperties.put(BLOG_URL_IP, _blogURL);
 
-        // The following parameters will either be removed or changed
         _blogFileExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
         _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, _blogFileExtensions);
 
@@ -222,7 +223,7 @@ public class Blog implements BlojsomConstants {
 
         if (_authorization != null) {
             if (_authorization.containsKey(username)) {
-                result = password.equals((String) _authorization.get(username));
+                result = password.equals(_authorization.get(username));
             }
         }
 

@@ -44,6 +44,7 @@ import java.util.HashMap;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
+ * @version $Id: SimpleSearchPlugin.java,v 1.3 2003-03-01 20:18:25 czarneckid Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 

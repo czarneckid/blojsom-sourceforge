@@ -45,6 +45,7 @@ import java.io.IOException;
  * BlogCategory
  *
  * @author David Czarnecki
+ * @version $Id: BlogCategory.java,v 1.8 2003-03-01 20:19:25 czarneckid Exp $
  */
 public class BlogCategory implements Comparable {
 

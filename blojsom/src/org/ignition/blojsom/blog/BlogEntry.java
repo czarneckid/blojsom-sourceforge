@@ -44,6 +44,7 @@ import java.util.Date;
  * BlogEntry
  *
  * @author David Czarnecki
+ * @version $Id: BlogEntry.java,v 1.16 2003-03-01 20:19:32 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 

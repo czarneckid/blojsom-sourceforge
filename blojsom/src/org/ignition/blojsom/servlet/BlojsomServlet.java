@@ -55,6 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: BlojsomServlet.java,v 1.33 2003-03-01 20:19:58 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 

@@ -45,6 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
+ * @version $Id: BlojsomUtils.java,v 1.22 2003-03-01 20:20:20 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 

@@ -44,6 +44,7 @@ import java.io.IOException;
  * JSPDispatcher
  *
  * @author David Czarnecki
+ * @version $Id: JSPDispatcher.java,v 1.3 2003-03-01 20:19:43 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 

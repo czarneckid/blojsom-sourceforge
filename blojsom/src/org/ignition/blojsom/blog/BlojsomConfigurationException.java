@@ -33,6 +33,7 @@ package org.ignition.blojsom.blog;
  * BlojsomConfigurationException
  *
  * @author David Czarnecki
+ * @version $Id: BlojsomConfigurationException.java,v 1.2 2003-03-01 20:19:32 czarneckid Exp $
  */
 public class BlojsomConfigurationException extends Exception {
 

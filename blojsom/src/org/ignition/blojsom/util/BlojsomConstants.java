@@ -35,6 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
+ * @version $Id: BlojsomConstants.java,v 1.23 2003-03-01 20:20:13 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
