@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.29 2005-01-05 02:33:00 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.30 2005-01-06 03:38:54 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -126,6 +126,9 @@ public class BlojsomServlet extends BlojsomBaseServlet {
      */
     protected void configureFlavors(ServletConfig servletConfig) throws ServletException {
         String flavorConfiguration = servletConfig.getInitParameter(BLOJSOM_FLAVOR_CONFIGURATION_IP);
+        if (BlojsomUtils.checkNullOrBlank(flavorConfiguration)) {
+            flavorConfiguration = DEFAULT_FLAVOR_CONFIGURATION_FILE;
+        }
         Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
         BlogUser blogUser;
         while (usersIterator.hasNext()) {
