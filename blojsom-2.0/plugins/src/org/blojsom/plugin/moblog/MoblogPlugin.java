@@ -60,12 +60,27 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.6 2004-04-27 01:10:42 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.7 2004-04-27 17:13:18 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
+
+    /**
+     * Default mime-types for text
+     */
+    private static final String DEFAULT_TEXT_MIME_TYPES = "text/plain, text/html";
+
+    /**
+     * Default mime-types for images
+     */
+    private static final String DEFAULT_IMAGE_MIME_TYPES = "image/jpg, image/jpeg, image/gif, image/png";
+
+    /**
+     * Multipart mime-type
+     */
+    private static final String MULTIPART_TYPE = "multipart/*";
 
     /**
      * Default store
@@ -121,6 +136,21 @@ public class MoblogPlugin implements BlojsomPlugin {
      * Configuration property for whether or not moblog is enabled for this blog
      */
     private static final String PROPERTY_ENABLED = "moblog-enabled";
+
+    /**
+     *
+     */
+    private static final String PLUGIN_MOBLOG_IMAGE_MIME_TYPES = "moblog-image-mime-types";
+
+    /**
+     *
+     */
+    private static final String PLUGIN_MOBLOG_ATTACHMENT_MIME_TYPES = "moblog-attachment-mime-types";
+
+    /**
+     *
+     */
+    private static final String PLUGIN_MOBLOG_TEXT_MIME_TYPES = "moblog-text-mime-types";
 
     private Map _authorizationMap;
     private String _urlPrefix = null;
@@ -290,6 +320,56 @@ public class MoblogPlugin implements BlojsomPlugin {
                         Boolean enabled = Boolean.valueOf(moblogProperties.getProperty(PROPERTY_ENABLED, "false"));
                         mailbox.setEnabled(enabled.booleanValue());
 
+                        String[] types;
+
+                        // Extract the image mime types
+                        String imageMimeTypes = moblogProperties.getProperty(PLUGIN_MOBLOG_IMAGE_MIME_TYPES, DEFAULT_IMAGE_MIME_TYPES);
+                        if (!BlojsomUtils.checkNullOrBlank(imageMimeTypes)) {
+                            types = BlojsomUtils.parseCommaList(imageMimeTypes);
+                            if (types.length > 0) {
+                                Map imageTypesMap = new HashMap();
+                                for (int i = 0; i < types.length; i++) {
+                                    String type = types[i];
+                                    imageTypesMap.put(type, type);
+                                }
+                                mailbox.setImageMimeTypes(imageTypesMap);
+                            }
+                        } else {
+                            mailbox.setImageMimeTypes(new HashMap());
+                        }
+
+                        // Extract the attachment mime types
+                        String attachmentMimeTypes = moblogProperties.getProperty(PLUGIN_MOBLOG_ATTACHMENT_MIME_TYPES);
+                        if (!BlojsomUtils.checkNullOrBlank(attachmentMimeTypes)) {
+                            types = BlojsomUtils.parseCommaList(attachmentMimeTypes);
+                            if (types.length > 0) {
+                                Map attachmentTypesMap = new HashMap();
+                                for (int i = 0; i < types.length; i++) {
+                                    String type = types[i];
+                                    attachmentTypesMap.put(type, type);
+                                }
+                                mailbox.setAttachmentMimeTypes(attachmentTypesMap);
+                            }
+                        } else {
+                            mailbox.setAttachmentMimeTypes(new HashMap());
+                        }
+
+                        // Extract the text mime types
+                        String textMimeTypes = moblogProperties.getProperty(PLUGIN_MOBLOG_TEXT_MIME_TYPES, DEFAULT_TEXT_MIME_TYPES);
+                        if (!BlojsomUtils.checkNullOrBlank(textMimeTypes)) {
+                            types = BlojsomUtils.parseCommaList(textMimeTypes);
+                            if (types.length > 0) {
+                                Map textTypesMap = new HashMap();
+                                for (int i = 0; i < types.length; i++) {
+                                    String type = types[i];
+                                    textTypesMap.put(type, type);
+                                }
+                                mailbox.setTextMimeTypes(textTypesMap);
+                            }
+                        } else {
+                            mailbox.setTextMimeTypes(new HashMap());
+                        }
+
                         _checker.addMailbox(mailbox);
                     }
                 } catch (IOException e) {
@@ -428,89 +508,109 @@ public class MoblogPlugin implements BlojsomPlugin {
                         if (subject == null) {
                             subject = "";
                         }
-                        //entry.append(subject).append("\n\n");
-                        if (email.isMimeType("multipart/*")) {
+
+                        if (email.isMimeType(MULTIPART_TYPE)) {
                             Multipart mp = (Multipart)
                                     messagePart.getContent();
                             int count = mp.getCount();
                             for (int i = 0; i < count; i++) {
                                 BodyPart bp = mp.getBodyPart(i);
-                                /* Handle JPEG's */
-                                if (bp.isMimeType("image/jpeg") || bp.isMimeType("image/jpg")) {
-                                    _logger.debug("Creating Image");
-                                    InputStream is = bp.getInputStream();
-                                    byte[] jpgFile = new
-                                            byte[is.available()];
-                                    is.read(jpgFile, 0, is.available());
-                                    is.close();
-                                    String outputFilename =
-                                            BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
-                                    _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
-                                            outputFilename + ".jpg");
-                                    FileOutputStream fos = new
-                                            FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + ".jpg"));
-                                    fos.write(jpgFile);
-                                    fos.close();
-                                    String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
-                                    entry.append("<p /><img src =\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + ".jpg").append("\" border=\"0\"/ > ");
-                                    /* Handle PNG's */
-                                } else if (bp.isMimeType("image/png")) {
-                                    _logger.debug("Creating Image");
-                                    InputStream is = bp.getInputStream();
-                                    byte[] pngFile = new
-                                            byte[is.available()];
-                                    is.read(pngFile, 0, is.available());
-                                    is.close();
-                                    String outputFilename =
-                                            BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
-                                    _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
-                                            outputFilename + ".png");
-                                    FileOutputStream fos = new
-                                            FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + ".png"));
-                                    fos.write(pngFile);
-                                    fos.close();
+                                String type = bp.getContentType();
+                                if (type != null) {
+                                    type = sanitizeContentType(type);
 
-                                    String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+                                    Map imageMimeTypes = mailbox.getImageMimeTypes();
+                                    Map attachmentMimeTypes = mailbox.getAttachmentMimeTypes();
+                                    Map textMimeTypes = mailbox.getTextMimeTypes();
 
-                                    entry.append("<p /><img src =\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + ".png").append("\" border=\"0\"/ > ");
-                                } else if (bp.isMimeType("image/gif")) {
-                                    _logger.debug("Creating Image");
-                                    InputStream is = bp.getInputStream();
-                                    byte[] gifFile = new
-                                            byte[is.available()];
-                                    is.read(gifFile, 0, is.available());
-                                    is.close();
-                                    String outputFilename =
-                                            BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
-                                    _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
-                                            outputFilename + ".gif");
-                                    FileOutputStream fos = new
-                                            FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + ".gif"));
-                                    fos.write(gifFile);
-                                    fos.close();
+                                    if (imageMimeTypes.containsKey(type)) {
+                                        _logger.debug("Creating image of type: " + type);
+                                        InputStream is = bp.getInputStream();
+                                        byte[] imageFile = new byte[is.available()];
+                                        is.read(imageFile, 0, is.available());
+                                        is.close();
+                                        String outputFilename =
+                                                BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
+                                        String extension = BlojsomUtils.getFileExtension(bp.getFileName());
+                                        if (BlojsomUtils.checkNullOrBlank(extension)) {
+                                            extension = "";
+                                        }
 
-                                    String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+                                        _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
+                                                outputFilename + "." + extension);
+                                        FileOutputStream fos = new
+                                                FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
+                                        fos.write(imageFile);
+                                        fos.close();
+                                        String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+                                        entry.append("<p /><img src=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\" border=\"0\"/ >");
+                                    } else if (attachmentMimeTypes.containsKey(type)) {
+                                        _logger.debug("Creating attachment of type: " + type);
+                                        InputStream is = bp.getInputStream();
+                                        byte[] attachmentFile = new byte[is.available()];
+                                        is.read(attachmentFile, 0, is.available());
+                                        is.close();
+                                        String outputFilename =
+                                                BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
+                                        String extension = BlojsomUtils.getFileExtension(bp.getFileName());
+                                        if (BlojsomUtils.checkNullOrBlank(extension)) {
+                                            extension = "";
+                                        }
 
-                                    entry.append("<p /><img src =\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + ".gif").append("\" border=\"0\"/ > ");
-                                } else if (bp.isMimeType("text/plain")) {
-                                    InputStream is = bp.getInputStream();
+                                        _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
+                                                outputFilename + "." + extension);
+                                        FileOutputStream fos = new
+                                                FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
+                                        fos.write(attachmentFile);
+                                        fos.close();
+                                        String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+                                        entry.append("<p /><a href=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\">").append(bp.getFileName()).append("</a>");
+                                    } else if (textMimeTypes.containsKey(type)) {
+                                        _logger.debug("Using text part of type: " + type);
+                                        InputStream is = bp.getInputStream();
 
-                                    BufferedReader reader = new
-                                            BufferedReader(new InputStreamReader(is));
-                                    String thisLine;
+                                        BufferedReader reader = new
+                                                BufferedReader(new InputStreamReader(is));
+                                        String thisLine;
 
-                                    while ((thisLine = reader.readLine()) !=
-                                            null) {
-                                        description.append(thisLine);
+                                        while ((thisLine = reader.readLine()) !=
+                                                null) {
+                                            description.append(thisLine);
+                                            description.append(BlojsomConstants.LINE_SEPARATOR);
+                                        }
 
-                                        description.append(BlojsomConstants.LINE_SEPARATOR);
+                                        reader.close();
+                                        entry.append(description);
+                                    } else {
+                                        _logger.error("Unknown mimetype for multipart: " + type);
                                     }
-
-                                    reader.close();
-                                    entry.append(description);
                                 } else {
-                                    _logger.debug("Unknown mimetype " + bp.getContentType());
+                                    _logger.debug("Body part has no defined mime type. Skipping.");
                                 }
+                            }
+                        } else {
+                            // Check for the message being one of the defined text mime types if it's not a multipart
+                            Map textMimeTypes = mailbox.getTextMimeTypes();
+                            String mimeType = email.getContentType();
+                            if (mimeType != null) {
+                                mimeType = sanitizeContentType(mimeType);
+                            }
+
+                            if ((mimeType != null) && (textMimeTypes.containsKey(mimeType))) {
+                                InputStream is = email.getInputStream();
+
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                                String thisLine;
+
+                                while ((thisLine = reader.readLine()) != null) {
+                                    description.append(thisLine);
+                                    description.append(BlojsomConstants.LINE_SEPARATOR);
+                                }
+
+                                reader.close();
+                                entry.append(description);
+                            } else {
+                                _logger.error("Unknown mimetype: " + mimeType);
                             }
                         }
 
@@ -650,5 +750,20 @@ public class MoblogPlugin implements BlojsomPlugin {
         } else {
             return new File(blog.getBlogHome() + "/");
         }
+    }
+
+    /**
+     * Return a content type up to the first ; character
+     *
+     * @param contentType Content type
+     * @return Content type without any trailing information after a ;
+     */
+    protected String sanitizeContentType(String contentType) {
+        int semicolonIndex = contentType.indexOf(";");
+        if (semicolonIndex != -1) {
+            return contentType.substring(0, semicolonIndex);
+        }
+
+        return contentType;
     }
 }

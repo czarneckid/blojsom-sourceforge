@@ -36,12 +36,14 @@ package org.blojsom.plugin.moblog;
 
 import org.blojsom.blog.BlogUser;
 
+import java.util.Map;
+
 /**
  * Mailbox Definition
  * This file is a container for everything the thread will need to connect to and to store into
  *
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.5 2004-04-27 00:29:58 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.6 2004-04-27 17:13:18 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -58,6 +60,9 @@ public class Mailbox {
     private String _urlPrefix;
     private boolean _enabled;
     private BlogUser _user;
+    private Map _imageMimeTypes;
+    private Map _attachmentMimeTypes;
+    private Map _textMimeTypes;
 
     /**
      * Default constructor.
@@ -255,5 +260,59 @@ public class Mailbox {
      */
     public void setBlogUser(BlogUser user) {
         this._user = user;
+    }
+
+    /**
+     * Retrieve the {@link Map} of image mime-types
+     *
+     * @return {@link Map} of image mime-types
+     */
+    public Map getImageMimeTypes() {
+        return _imageMimeTypes;
+    }
+
+    /**
+     * Set the {@link Map} of image mime-types
+     *
+     * @param imageMimeTypes {@link Map} of image mime-types
+     */
+    public void setImageMimeTypes(Map imageMimeTypes) {
+        _imageMimeTypes = imageMimeTypes;
+    }
+
+    /**
+     * Retrieve the {@link Map} of attachment mime-types
+     *
+     * @return {@link Map} of image mime-types
+     */
+    public Map getAttachmentMimeTypes() {
+        return _attachmentMimeTypes;
+    }
+
+    /**
+     * Set the {@link Map} of attachment mime-types
+     *
+     * @param attachmentMimeTypes {@link Map} of attachment mime-types
+     */
+    public void setAttachmentMimeTypes(Map attachmentMimeTypes) {
+        _attachmentMimeTypes = attachmentMimeTypes;
+    }
+
+    /**
+     * Retrieve the {@link Map} of text mime-types
+     *
+     * @return {@link Map} of image mime-types
+     */
+    public Map getTextMimeTypes() {
+        return _textMimeTypes;
+    }
+
+    /**
+     * Set the {@link Map} of text mime-types
+     *
+     * @param textMimeTypes {@link Map} of text mime-types
+     */
+    public void setTextMimeTypes(Map textMimeTypes) {
+        _textMimeTypes = textMimeTypes;
     }
 }
