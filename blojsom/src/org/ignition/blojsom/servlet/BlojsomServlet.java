@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.76 2003-05-13 12:28:14 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.77 2003-05-14 00:11:10 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -443,7 +443,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 }
             }
 
-            // Generates an ETag header bases on the string value of LastModified as an ISO8601 Format
+            // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
             String etagLastModified = BlojsomUtils.getISO8601Date(new Date(_lastmodified));
             httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
 
@@ -458,9 +458,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             blogISO8601Date = BlojsomUtils.getISO8601Date(today);
             blogDateObject = today;
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, today.getTime());
-            // Generates an ETag header bases on the string value of LastModified as an ISO8601 Format
+            // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
             httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
-
         }
 
         // Finish setting up the context for the dispatcher
