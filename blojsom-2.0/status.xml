@@ -31,6 +31,11 @@
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Macro Expansion plugin to check for null or blank in the title or description. 
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Edit Blog Entries plugin so that entries without titles would not use the entire
+                description as the title.
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
