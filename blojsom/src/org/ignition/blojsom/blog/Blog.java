@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.27 2003-03-11 04:08:18 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.28 2003-03-15 17:10:14 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -410,9 +410,17 @@ public class Blog implements BlojsomConstants {
      * or <code>BlogEntry[0]</code> if there are no entries
      */
     public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String year, String month, String day) {
-        BlogEntry[] blogEntries = getEntriesAllCategories(_blogDefaultCategoryMappings, -1);
+        BlogEntry[] blogEntries = null;
         ArrayList updatedEntryList = new ArrayList();
         String requestedDateKey = year + month + day;
+
+        if ((requestedCategory == null) || ("".equals(requestedCategory))) {
+            blogEntries =
+                    getEntriesAllCategories(_blogDefaultCategoryMappings, -1);
+        } else {
+            blogEntries =
+                    getEntriesForCategory(requestedCategory, -1);
+        }
 
         if (blogEntries == null) {
             return new BlogEntry[0];
