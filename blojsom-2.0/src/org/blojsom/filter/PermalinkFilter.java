@@ -38,6 +38,7 @@ package org.blojsom.filter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
- * @version $Id: PermalinkFilter.java,v 1.2 2004-06-26 18:58:18 czarneckid Exp $
+ * @version $Id: PermalinkFilter.java,v 1.3 2004-09-21 17:13:32 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class PermalinkFilter implements Filter {
@@ -107,6 +108,8 @@ public class PermalinkFilter implements Filter {
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        request.setCharacterEncoding(BlojsomConstants.UTF8);
+        
         HttpServletRequest hreq = (HttpServletRequest) request;
         String uri = hreq.getRequestURI();
         StringBuffer url = hreq.getRequestURL();
