@@ -50,7 +50,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.4 2003-12-30 04:46:28 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.5 2004-01-10 16:13:24 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -245,6 +245,16 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      */
     public String getCategory() {
         return _category;
+    }
+
+    /**
+     * Return the category name encoded
+     *
+     * @since blojsom 2.08
+     * @return Category name encoded as UTF-8
+     */
+    public String getEncodedCategory() {
+        return BlojsomUtils.urlEncode(_category);
     }
 
     /**

@@ -37,6 +37,7 @@ package org.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 import org.blojsom.BlojsomException;
 
 import java.util.Enumeration;
@@ -48,7 +49,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.2 2004-01-10 16:13:24 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -102,6 +103,16 @@ public abstract class BlogCategory implements Comparable {
      */
     public String getCategory() {
         return _category;
+    }
+
+    /**
+     * Return the category name encoded
+     *
+     * @since blojsom 2.08
+     * @return Category name encoded as UTF-8
+     */
+    public String getEncodedCategory() {
+        return BlojsomUtils.urlEncode(_category);
     }
 
     /**
