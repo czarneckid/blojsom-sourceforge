@@ -49,7 +49,7 @@ import java.io.IOException;
  * GenericDispatcher
  *
  * @author David Czarnecki
- * @version $Id: GenericDispatcher.java,v 1.6 2003-05-22 04:49:17 czarneckid Exp $
+ * @version $Id: GenericDispatcher.java,v 1.7 2003-08-04 15:35:51 intabulas Exp $
  */
 public interface GenericDispatcher extends BlojsomConstants {
 
@@ -60,7 +60,7 @@ public interface GenericDispatcher extends BlojsomConstants {
      * @param blog {@link Blog} information
      * @throws BlojsomException If there is an error initializing the dispatcher
      */
-    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomException;
+    void init(ServletConfig servletConfig, Blog blog) throws BlojsomException;
 
     /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
@@ -76,5 +76,5 @@ public interface GenericDispatcher extends BlojsomConstants {
      * @throws IOException If there is an exception during IO
      * @throws ServletException If there is an exception in dispatching the request
      */
-    public void dispatch(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, String flavorTemplate, String flavorContentType) throws IOException, ServletException;
+    void dispatch(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, String flavorTemplate, String flavorContentType) throws IOException, ServletException;
 }

@@ -55,11 +55,11 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.16 2003-05-22 04:49:37 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.17 2003-08-04 15:37:26 intabulas Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
-    private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
+    private static final String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
 
     private Log _logger = LogFactory.getLog(VelocityDispatcher.class);
 

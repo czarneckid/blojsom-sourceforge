@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.6 2003-06-11 02:47:34 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.7 2003-08-04 15:35:28 intabulas Exp $
  */
 public interface BlojsomFetcher {
 
@@ -59,7 +59,7 @@ public interface BlojsomFetcher {
      * @param blog {@link Blog} instance
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
-    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomFetcherException;
+    void init(ServletConfig servletConfig, Blog blog) throws BlojsomFetcherException;
 
     /**
      * Return a new blog entry instance
@@ -67,7 +67,7 @@ public interface BlojsomFetcher {
      * @since blojsom 1.9
      * @return Blog entry instance
      */
-    public BlogEntry newBlogEntry();
+    BlogEntry newBlogEntry();
 
     /**
      * Return a new blog category instance
@@ -75,7 +75,7 @@ public interface BlojsomFetcher {
      * @since blojsom 1.9.1
      * @return Blog category instance
      */
-    public BlogCategory newBlogCategory();
+    BlogCategory newBlogCategory();
 
     /**
      * Fetch a set of {@link BlogEntry} objects.
@@ -87,7 +87,7 @@ public interface BlojsomFetcher {
      * @return Blog entries retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
      */
-    public BlogEntry[] fetchEntries(HttpServletRequest httpServletRequest,
+    BlogEntry[] fetchEntries(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     String flavor,
                                     Map context) throws BlojsomFetcherException;
@@ -103,7 +103,7 @@ public interface BlojsomFetcher {
      * @return Blog entries retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
      */
-    public BlogEntry[] fetchEntries(Map fetchParameters) throws BlojsomFetcherException;
+    BlogEntry[] fetchEntries(Map fetchParameters) throws BlojsomFetcherException;
 
     /**
      * Fetch a set of {@link BlogCategory} objects
@@ -112,10 +112,9 @@ public interface BlojsomFetcher {
      * @param httpServletResponse Response
      * @param flavor Flavor
      * @param context Context
-     * @return Blog categories retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog categories for the request
      */
-    public BlogCategory[] fetchCategories(HttpServletRequest httpServletRequest,
+    BlogCategory[] fetchCategories(HttpServletRequest httpServletRequest,
                                           HttpServletResponse httpServletResponse,
                                           String flavor,
                                           Map context) throws BlojsomFetcherException;
@@ -131,12 +130,12 @@ public interface BlojsomFetcher {
      * @return Blog categories retrieved for the particular request
      * @throws BlojsomFetcherException If there is an error retrieving the blog categories for the request
      */
-    public BlogCategory[] fetchCategories(Map fetchParameters) throws BlojsomFetcherException;
+    BlogCategory[] fetchCategories(Map fetchParameters) throws BlojsomFetcherException;
 
     /**
      * Called when {@link org.ignition.blojsom.servlet.BlojsomServlet} is taken out of service
      *
      * @throws BlojsomFetcherException If there is an error in finalizing this fetcher
      */
-    public void destroy() throws BlojsomFetcherException;
+    void destroy() throws BlojsomFetcherException;
 }

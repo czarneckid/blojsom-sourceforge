@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.26 2003-07-22 01:38:21 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.27 2003-08-04 15:37:03 intabulas Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -149,9 +149,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             if ("/".equals(category)) {
-                blogEntry.setLink(_blog.getBlogURL() + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
+                blogEntry.setLink(_blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             } else {
-                blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
+                blogEntry.setLink(_blog.getBlogURL() + category + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             }
             blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
             blogEntry.setBlogCategory(blogCategory);
@@ -217,9 +217,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
                 if ("/".equals(category)) {
-                    blogEntry.setLink(_blog.getBlogURL() + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                    blogEntry.setLink(_blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 } else {
-                    blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
+                    blogEntry.setLink(_blog.getBlogURL() + category + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 }
                 blogEntry.setBlogFileEncoding(_blog.getBlogFileEncoding());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
@@ -249,7 +249,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
             return getEntriesAllCategories(_blog.getBlogDefaultCategoryMappings(), maxBlogEntries, blogDirectoryDepth);
         } else {
-            String flavorMappingKey = flavor + "." + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
+            String flavorMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
             String categoryMappingForFlavor = (String) _blog.getBlogProperties().get(flavorMappingKey);
             String[] categoryMappingsForFlavor = null;
             if (categoryMappingForFlavor != null) {
@@ -526,7 +526,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         FileBackedBlogCategory fileBackedCategory;
 
         while (slashTokenizer.hasMoreTokens()) {
-            previousCategoryName += slashTokenizer.nextToken() + "/";
+            previousCategoryName += slashTokenizer.nextToken() + '/';
             if (!previousCategoryName.equals(currentCategory.getCategory())) {
                 fileBackedCategory = new FileBackedBlogCategory(previousCategoryName, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
                 try {

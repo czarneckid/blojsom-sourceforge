@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.59 2003-07-14 12:58:58 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.60 2003-08-04 15:36:17 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -202,11 +202,7 @@ public class BlojsomUtils implements BlojsomConstants {
                     }
                     String expression = expressions[i];
                     if (pathname.getName().matches(expression)) {
-                        if (pathname.lastModified() <= today.getTime()) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return pathname.lastModified() <= today.getTime();
                     }
                 }
                 return false;
@@ -266,7 +262,7 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String[] parseDelimitedList(String commaList, String delimiter) {
         StringTokenizer tokenizer = new StringTokenizer(commaList, delimiter);
-        ArrayList list = new ArrayList();
+        List list = new ArrayList();
         while (tokenizer.hasMoreTokens()) {
             list.add(tokenizer.nextToken());
         }
@@ -318,7 +314,7 @@ public class BlojsomUtils implements BlojsomConstants {
         indexOfBlogHome += blogHome.length();
         String returnCategory = requestedCategory.substring(indexOfBlogHome);
         returnCategory = removeInitialSlash(returnCategory);
-        return "/" + returnCategory;
+        return '/' + returnCategory;
     }
 
     /**
@@ -517,7 +513,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static final String getTemplateForPage(String flavorTemplate, String page) {
         int dotIndex = flavorTemplate.lastIndexOf(".");
         if (dotIndex == -1) {
-            return flavorTemplate + "-" + page;
+            return flavorTemplate + '-' + page;
         } else {
             StringBuffer newTemplate = new StringBuffer();
             if (page.startsWith("/")) {
@@ -774,9 +770,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return A Hex String representing the byte array
      */
     public static String toHexString(byte[] buf, int offset, int length) {
-        byte[] buf1 = new byte[length * 2];
+        byte[] buf1 = new byte[length << 1];
         for (int i = 0; i < length; i++) {
-            toHexValue(buf1, i * 2, 2, buf[i + offset]);
+            toHexValue(buf1, i << 1, 2, buf[i + offset]);
         }
         return new String(buf1);
     }

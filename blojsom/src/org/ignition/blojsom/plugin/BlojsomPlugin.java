@@ -46,7 +46,7 @@ import java.util.Map;
  * BlojsomPlugin
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPlugin.java,v 1.8 2003-04-19 02:44:46 czarneckid Exp $
+ * @version $Id: BlojsomPlugin.java,v 1.9 2003-08-04 15:37:33 intabulas Exp $
  */
 public interface BlojsomPlugin {
 
@@ -57,7 +57,7 @@ public interface BlojsomPlugin {
      * @param blog {@link Blog} instance
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException;
+    void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException;
 
     /**
      * Process the blog entries
@@ -69,7 +69,7 @@ public interface BlojsomPlugin {
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+    BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException;
 
     /**
@@ -77,12 +77,12 @@ public interface BlojsomPlugin {
      *
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
-    public void cleanup() throws BlojsomPluginException;
+    void cleanup() throws BlojsomPluginException;
 
     /**
      * Called when BlojsomServlet is taken out of service
      *
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
-    public void destroy() throws BlojsomPluginException;
+    void destroy() throws BlojsomPluginException;
 }

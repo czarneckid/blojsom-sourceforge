@@ -53,7 +53,7 @@ import java.io.IOException;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.8 2003-05-22 04:49:43 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.9 2003-08-04 15:37:17 intabulas Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -97,7 +97,7 @@ public class JSPDispatcher implements GenericDispatcher {
         httpServletResponse.setContentType(flavorContentType);
 
         if (!flavorTemplate.startsWith("/")) {
-            flavorTemplate = "/" + flavorTemplate;
+            flavorTemplate = '/' + flavorTemplate;
         }
 
         String flavorTemplateForPage = null;
