@@ -37,10 +37,7 @@ package org.blojsom.plugin.admin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.BlogCategory;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
@@ -51,17 +48,19 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URLDecoder;
 
 /**
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.13 2003-12-30 23:24:09 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.14 2003-12-31 16:26:38 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -92,12 +91,16 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String DELETE_BLOG_ENTRY_ACTION = "delete-blog-entry";
     private static final String NEW_BLOG_ENTRY_ACTION = "new-blog-entry";
     private static final String ADD_BLOG_ENTRY_ACTION = "add-blog-entry";
+    private static final String DELETE_BLOG_COMMENTS = "delete-blog-comments";
+    private static final String DELETE_BLOG_TRACKBACKS = "delete-blog-trackbacks";
 
     // Form elements
     private static final String BLOG_CATEGORY_NAME = "blog-category-name";
     private static final String BLOG_ENTRY_ID = "blog-entry-id";
     private static final String BLOG_ENTRY_TITLE = "blog-entry-title";
     private static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
+    private static final String BLOG_COMMENT_ID = "blog-comment-id";
+    private static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
 
     private BlojsomFetcher _fetcher;
 
@@ -359,6 +362,72 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             } catch (BlojsomException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to add blog entry to category: " + blogCategoryName);
+            }
+
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
+        } else if (DELETE_BLOG_COMMENTS.equals(action)) {
+            _logger.debug("User requested delete blog comments action");
+
+            Blog blog = user.getBlog();
+            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
+            try {
+                blogEntryId = URLDecoder.decode(blogEntryId, UTF8);
+            } catch (UnsupportedEncodingException e) {
+                _logger.error(e);
+            }
+            _logger.debug("Blog entry id: " + blogEntryId);
+
+            String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
+            if (blogCommentIDs != null && blogCommentIDs.length > 0) {
+                File commentsDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogCommentsDirectory()
+                    + File.separatorChar + blogEntryId + File.separatorChar);
+                File blogCommentToDelete;
+                for (int i = 0; i < blogCommentIDs.length; i++) {
+                    String blogCommentID = blogCommentIDs[i];
+                    blogCommentToDelete = new File(commentsDirectory, blogCommentID);
+                    if (!blogCommentToDelete.delete()) {
+                        _logger.error("Unable to delete blog comment: " + blogCommentToDelete.toString());
+                    } else {
+                        _logger.debug("Deleted blog comment: " + blogCommentToDelete.toString());
+                    }
+                }
+
+                addOperationResultMessage(context, "Deleted " + blogCommentIDs.length + " comments");
+            }
+
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
+        } else if (DELETE_BLOG_TRACKBACKS.equals(action)) {
+            _logger.debug("User requested delete blog trackbacks action");
+
+            Blog blog = user.getBlog();
+            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
+            try {
+                blogEntryId = URLDecoder.decode(blogEntryId, UTF8);
+            } catch (UnsupportedEncodingException e) {
+                _logger.error(e);
+            }
+            _logger.debug("Blog entry id: " + blogEntryId);
+
+            String[] blogTrackbackIDs = httpServletRequest.getParameterValues(BLOG_TRACKBACK_ID);
+            if (blogTrackbackIDs != null && blogTrackbackIDs.length > 0) {
+                File trackbacksDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogTrackbackDirectory()
+                    + File.separatorChar + blogEntryId + File.separatorChar);
+                File blogTrackbackToDelete;
+                for (int i = 0; i < blogTrackbackIDs.length; i++) {
+                    String blogTrackbackID = blogTrackbackIDs[i];
+                    blogTrackbackToDelete = new File(trackbacksDirectory, blogTrackbackID);
+                    if (!blogTrackbackToDelete.delete()) {
+                        _logger.error("Unable to delete blog trackback: " + blogTrackbackToDelete.toString());
+                    } else {
+                        _logger.debug("Deleted blog trackback: " + blogTrackbackToDelete.toString());
+                    }
+                }
+
+                addOperationResultMessage(context, "Deleted " + blogTrackbackIDs.length + " trackbacks");
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);

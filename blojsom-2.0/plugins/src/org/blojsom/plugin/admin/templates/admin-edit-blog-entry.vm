@@ -43,5 +43,71 @@
                 </form>
             </table>
         </center>
+
+        <!-- Delete blog comments form -->
+        <center>
+            <h3>Delete blog comments</h3>
+            <table border="1">
+                <form name="delete-blog-comments" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="delete-blog-comments"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                    <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                    #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
+                        #foreach ($blogComment in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
+                        <tr>
+                            <td><input type="checkbox" name="blog-comment-id" value="$blogComment.getId()"/>&nbsp;
+                            Comment by: <a href="mailto:$blogComment.getAuthorEmail()">$blogComment.getAuthor()</a> -
+                                <a href="$blogComment.getAuthorURL()">$blogComment.getAuthorURL()</a>
+                                Left on: $blogComment.getCommentDate()<p />
+                                $blogComment.getComment()<br /></td>
+                        </tr>
+                        #end
+                    #end
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Delete checked comments"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+
+        <!-- Delete blog trackbacks form -->
+        <center>
+            <h3>Delete blog trackbacks</h3>
+            <table border="1">
+                <form name="delete-blog-trackbacks" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="delete-blog-trackbacks"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                    <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                    #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
+                        #foreach ($blogTrackback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
+                        <tr>
+                            <td><input type="checkbox" name="blog-trackback-id" value="$blogTrackback.getId()"/>&nbsp;
+                            Trackback from: <a href="$blogTrackback.getUrl()">#if ($blogTrackback.getBlogName())$blogTrackback.getBlogName()#else$blogTrackback.getUrl()#end</a>
+                            Left on: $blogTrackback.getTrackbackDate()<br/>
+                            Title: #if ($blogTrackback.getTitle()) $blogTrackback.getTitle() #end<br />
+                            #if ($blogTrackback.getExcerpt()) $blogTrackback.getExcerpt() #end<br /></td>
+                        </tr>
+                        #end
+                    #end
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Delete checked trackbacks"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
     </body>
 </html>
