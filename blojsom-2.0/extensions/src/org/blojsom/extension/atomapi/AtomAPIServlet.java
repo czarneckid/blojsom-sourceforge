@@ -37,33 +37,26 @@ package org.blojsom.extension.atomapi;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.Base64;
+import org.blojsom.BlojsomException;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.BlogCategory;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
+import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomConstants;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.BlojsomConfigurationException;
-import org.blojsom.blog.*;
-import org.blojsom.fetcher.BlojsomFetcher;
-import org.blojsom.fetcher.BlojsomFetcherException;
-import org.blojsom.BlojsomException;
-import org.blojsom.servlet.BlojsomBaseServlet;
 import org.intabulas.sandler.elements.Entry;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * AtomAPIServlet
@@ -73,7 +66,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.1 2003-09-07 17:56:09 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.2 2003-09-07 19:18:28 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -231,11 +224,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         String category = BlojsomUtils.normalize(httpServletRequest.getPathInfo());
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
-        if ( user == null || "".equals(user)) {
-             //@todo
+        if (user == null || "".equals(user)) {
+            //@todo
         } else {
             try {
-                setBlogUser((BlogUser)_users.get(user));
+                setBlogUser((BlogUser) _users.get(user));
             } catch (BlojsomException e) {
                 _logger.error(e.getLocalizedMessage(), e);
             }
