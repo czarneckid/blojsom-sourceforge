@@ -43,17 +43,18 @@ The calendar plugin ...
 
 <p class="weblogtitle">installation and setup</a>
 <p />
-In your <i>plugin.properties</i> file, add the following line:
+In your <i>plugin.properties</i> file, add the following two lines:
 <ul>
 <pre>
-calendar=org.ignition.blojsom.plugin.calendar.CalendarPlugin
+calendar-filter=org.ignition.blojsom.plugin.calendar.CalendarFilterPlugin
+calendar-gui=org.ignition.blojsom.plugin.calendar.VelocityCalendarPlugin
 </pre>
 </ul>
 
-You may then add "calendar" to the <b>begining</b> of one of the flavor-based plugin chains. For example:
+You may then add "calendar-filter"  to the <b>begining</b> of a flavor-based plugin chain, and "calendar-gui" to the end of the chain. For example:
 <ul>
 <pre>
-html.blojsom-plugin-chain=calendar,...
+html.blojsom-plugin-chain=calendar-fitler,...,calendar-gui
 </pre>
 </ul>
 <p />
