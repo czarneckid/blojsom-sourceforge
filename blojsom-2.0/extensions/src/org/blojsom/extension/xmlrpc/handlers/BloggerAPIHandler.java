@@ -38,6 +38,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
@@ -53,7 +56,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.18 2005-01-05 02:31:17 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.19 2005-01-05 18:34:39 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -347,6 +350,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(_blogUser);
                     result = postid;
+
+                    // Send out an add blog entry event
+                    _configuration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, _blogUser));
                 } catch (BlojsomException e) {
                     _logger.error(e);
                     throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
@@ -420,6 +426,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                         _entry.setDescription(content);
                         _entry.save(_blogUser);
                         result = true;
+
+                        // Send out an updated blog entry event
+                        _configuration.getEventBroadcaster().broadcastEvent(new UpdatedBlogEntryEvent(this, new Date(), _entry, _blogUser));
                     } catch (BlojsomException e) {
                         _logger.error(e);
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
@@ -553,6 +562,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                     }
                     result = true;
+
+                    // Send out a deleted blog entry event
+                    _configuration.getEventBroadcaster().broadcastEvent(new DeletedBlogEntryEvent(this, new Date(), _entries[0], _blogUser));
                 } else {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }

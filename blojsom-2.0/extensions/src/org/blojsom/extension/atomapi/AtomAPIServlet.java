@@ -37,6 +37,9 @@ package org.blojsom.extension.atomapi;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
@@ -74,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.54 2005-01-05 02:31:14 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.55 2005-01-05 18:34:39 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -360,6 +363,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 //String nonce = AtomUtils.generateNextNonce(blogUser);
                 //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                 httpServletResponse.setStatus(200);
+
+                // Send out a deleted blog entry event
+                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new DeletedBlogEntryEvent(this, new Date(), entries[0], blogUser));
             } catch (BlojsomFetcherException e) {
                 _logger.error(e.getLocalizedMessage(), e);
                 httpServletResponse.setStatus(404);
@@ -641,6 +647,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.save(blogUser);
                     entry.load(blogUser);
 
+                    // Send out an add blog entry event
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, blogUser));
+
                     httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                     httpServletResponse.setStatus(201);
 
@@ -748,6 +757,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     //httpServletResponse.setHeader(x, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
 
                     httpServletResponse.setStatus(204);
+
+                    // Send out an updated blog entry event
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new UpdatedBlogEntryEvent(this, new Date(), entry, blogUser));
                 } else {
                     _logger.info("Unable to fetch " + permalink);
                 }
@@ -911,6 +923,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                                 httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                                 httpServletResponse.setStatus(201);
+
+                                // Send out an add blog entry event
+                                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, blogUser));
 
                                 atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
 
