@@ -36,14 +36,15 @@ package org.blojsom.plugin.referer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +60,7 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: RefererLogPlugin.java,v 1.8 2005-01-05 02:32:17 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.9 2005-03-11 17:50:54 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -179,7 +180,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * Checks to see if a referer is blacklisted or not
      *
      * @param blacklistPatterns Compiled regular expressions to match referers
-     * @param referer The referer to check
+     * @param referer           The referer to check
      * @return A boolean indicating if this referer is blacklisted
      */
     private boolean isBlacklisted(List blacklistPatterns, String referer) {
@@ -188,7 +189,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
             int count = blacklistPatterns.size();
             if (referer != null && count > 0) {
                 for (int x = 0; x < count; x++) {
-                    //@todo should this be a matches() ?
                     result = ((Pattern) blacklistPatterns.get(x)).matcher(referer).find();
                     if (result) {
                         break;
@@ -203,7 +203,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Loads the saved referer log from disk after a blojsom restart.
      *
-     * @param refererlog Fully qualified path to the refer log file
+     * @param refererlog        Fully qualified path to the refer log file
      * @param blacklistPatterns
      * @param refererGroups
      * @param hitCountFlavors
@@ -251,11 +251,11 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws org.blojsom.plugin.BlojsomPluginException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         String refererConfiguration = servletConfig.getInitParameter(REFERER_CONFIG_IP);
         if (BlojsomUtils.checkNullOrBlank(refererConfiguration)) {
             throw new BlojsomPluginException("No value given for: " + REFERER_CONFIG_IP + " configuration parameter");
@@ -281,43 +281,49 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     int refererMaxLength = REFERER_MAX_LENGTH_DEFAULT;
                     List hitCountFlavors = new ArrayList();
                     String refererLog;
-                    String blogUrlFilter = ((BlogUser) blojsomConfiguration.getBlogUsers().get(user)).getBlog().getBlogURL();
 
-                    String maxlength = refererProperties.getProperty(REFERER_MAX_LENGTH_IP);
-                    if (maxlength != null) {
-                        try {
-                            refererMaxLength = Integer.parseInt(maxlength);
-                        } catch (NumberFormatException e) {
-                            refererMaxLength = REFERER_MAX_LENGTH_DEFAULT;
+                    try {
+                        BlogUser blog = blojsomConfiguration.loadBlog(user);
+                        String blogUrlFilter = blog.getBlog().getBlogURL();
+
+                        String maxlength = refererProperties.getProperty(REFERER_MAX_LENGTH_IP);
+                        if (maxlength != null) {
+                            try {
+                                refererMaxLength = Integer.parseInt(maxlength);
+                            } catch (NumberFormatException e) {
+                                refererMaxLength = REFERER_MAX_LENGTH_DEFAULT;
+                            }
                         }
-                    }
 
-                    String hitcounters = refererProperties.getProperty(REFERER_HIT_COUNTS_IP);
-                    if (hitcounters != null) {
-                        String[] _hitflavors = BlojsomUtils.parseCommaList(hitcounters);
-                        for (int x = 0; x < _hitflavors.length; x++) {
-                            hitCountFlavors.add(_hitflavors[x]);
+                        String hitcounters = refererProperties.getProperty(REFERER_HIT_COUNTS_IP);
+                        if (hitcounters != null) {
+                            String[] _hitflavors = BlojsomUtils.parseCommaList(hitcounters);
+                            for (int x = 0; x < _hitflavors.length; x++) {
+                                hitCountFlavors.add(_hitflavors[x]);
+                            }
+                            _logger.info("Hit count flavors = " + hitCountFlavors.size());
                         }
-                        _logger.info("Hit count flavors = " + hitCountFlavors.size());
+
+                        refererLog = refererProperties.getProperty(REFERER_LOG_FILE_IP);
+
+                        String blacklistFilename = refererProperties.getProperty(BlojsomConstants.BLOG_BLACKLIST_FILE_IP);
+                        List blacklist = new ArrayList();
+                        if (BlojsomUtils.checkNullOrBlank(blacklistFilename)) {
+                            _logger.error("No value given for: " + BlojsomConstants.BLOG_BLACKLIST_FILE_IP + " configuration parameter for user: " + user);
+                        } else {
+                            blacklistFilename = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + blacklistFilename;
+                            blacklist = populateBlacklistPatterns(servletConfig, blacklistFilename);
+                        }
+
+                        Map refererGroups = new HashMap(5);
+                        loadRefererLog(refererLog, blacklist, refererGroups, hitCountFlavors);
+
+                        RefererLogConfiguration refererLogConfiguration = new RefererLogConfiguration(blacklist, refererLog, blogUrlFilter, refererGroups, hitCountFlavors, refererMaxLength);
+                        _refererUsers.put(user, refererLogConfiguration);
+
+                    } catch (BlojsomException e) {
+                        _logger.error(e);
                     }
-
-                    refererLog = refererProperties.getProperty(REFERER_LOG_FILE_IP);
-
-                    String blacklistFilename = refererProperties.getProperty(BlojsomConstants.BLOG_BLACKLIST_FILE_IP);
-                    List blacklist = new ArrayList();
-                    if (BlojsomUtils.checkNullOrBlank(blacklistFilename)) {
-                        _logger.error("No value given for: " + BlojsomConstants.BLOG_BLACKLIST_FILE_IP + " configuration parameter for user: " + user);
-                    } else {
-                        blacklistFilename = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + blacklistFilename;
-                        blacklist = populateBlacklistPatterns(servletConfig, blacklistFilename);
-                    }
-
-                    Map refererGroups = new HashMap(5);
-                    loadRefererLog(refererLog, blacklist, refererGroups, hitCountFlavors);
-
-                    RefererLogConfiguration refererLogConfiguration = new RefererLogConfiguration(
-                            blacklist, refererLog, blogUrlFilter, refererGroups, hitCountFlavors, refererMaxLength);
-                    _refererUsers.put(user, refererLogConfiguration);
                 } catch (IOException e) {
                     _logger.error(e);
                     throw new BlojsomPluginException(e);
@@ -329,11 +335,11 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link org.blojsom.blog.BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -400,7 +406,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
-
 
     /**
      * Called when BlojsomServlet is taken out of service
@@ -513,11 +518,11 @@ public class RefererLogPlugin implements BlojsomPlugin {
          * Default constructor
          *
          * @param blacklistPatterns Compiled regular expressions of blacklisted referers
-         * @param refererLog Referer log filename (absolute filename)
-         * @param blogUrlFilter URL of the blog to be filtered
-         * @param refererGroups Referer log groups
-         * @param hitCountFlavors Flavors that are hit counters and not referer loggers
-         * @param refererMaxLength Max length for storing referer URLs
+         * @param refererLog        Referer log filename (absolute filename)
+         * @param blogUrlFilter     URL of the blog to be filtered
+         * @param refererGroups     Referer log groups
+         * @param hitCountFlavors   Flavors that are hit counters and not referer loggers
+         * @param refererMaxLength  Max length for storing referer URLs
          */
         public RefererLogConfiguration(List blacklistPatterns,
                                        String refererLog,
@@ -580,7 +585,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
         /**
          * Retrieve the max length for storing referer URLs
-         * 
+         *
          * @return Max length for storing referer URLs
          */
         public int getRefererMaxLength() {
