@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.5 2003-09-09 00:41:06 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.6 2003-09-11 15:01:34 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -755,6 +755,7 @@ public class BlojsomUtils implements BlojsomConstants {
                 String _ds = toHexString(_digest, 0, _digest.length);
                 result = _ds;
             } catch (NoSuchAlgorithmException e) {
+                result = null;
                 result = null;
             }
         }
