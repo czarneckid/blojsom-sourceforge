@@ -139,6 +139,7 @@
             <fileset dir="${webinf.lib.dir}" includes="${name}-*.jar"/>
         </delete>
         <delete file="${war.file}"/>
+        <delete dir="${webinf.dir}/themes"/>
         <delete dir="${resources.dir}/${default.user}" includeemptydirs="true"/>
         <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>
     </target>
