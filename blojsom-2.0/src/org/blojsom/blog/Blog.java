@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.12 2003-12-05 04:09:18 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.13 2003-12-17 20:13:56 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -100,7 +100,7 @@ public class Blog implements BlojsomConstants {
         }
 
         _blogHome = blogConfiguration.getProperty(BLOG_HOME_IP);
-        if (_blogHome == null) {
+        if (_blogHome == null || "".equals(_blogHome)) {
             _logger.error("No value supplied for blog-home");
             throw new BlojsomConfigurationException("No valued supplied for blog-home");
         }
