@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.11 2003-12-30 04:46:28 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.12 2003-12-30 23:24:08 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -267,6 +267,7 @@ public class FileBackedBlogEntry extends BlogEntry {
             }
             comment.setComment(commentDescription.toString());
             comment.setCommentDate(new Date(commentFile.lastModified()));
+            comment.setId(commentFile.getName());
             br.close();
         } catch (IOException e) {
             _logger.error(e);
@@ -360,6 +361,7 @@ public class FileBackedBlogEntry extends BlogEntry {
                         }
                 }
             }
+            trackback.setId(trackbackFile.getName());
             br.close();
         } catch (IOException e) {
             _logger.error(e);
@@ -377,7 +379,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         String blogHome = blog.getBlogHome();
         String blogEntryMetaDataExtension = blog.getBlogEntryMetaDataExtension();
 
-        if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension)) {
+        if (BlojsomUtils.checkNullOrBlank(blogEntryMetaDataExtension)) {
             return;
         }
 
@@ -433,7 +435,7 @@ public class FileBackedBlogEntry extends BlogEntry {
         String blogHome = blog.getBlogHome();
         String blogEntryMetaDataExtension = blog.getBlogEntryMetaDataExtension();
 
-        if (blogEntryMetaDataExtension == null || "".equals(blogEntryMetaDataExtension) || _metaData == null) {
+        if (BlojsomUtils.checkNullOrBlank(blogEntryMetaDataExtension) || _metaData == null) {
             return;
         }
 
@@ -505,7 +507,7 @@ public class FileBackedBlogEntry extends BlogEntry {
             long originalTimestamp = _source.lastModified();
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_source.getAbsolutePath(), false), blog.getBlogFileEncoding()));
-            if (_title == null || "".equals(_title)) {
+            if (BlojsomUtils.checkNullOrBlank(_title)) {
                 bw.write(BlojsomUtils.nullToBlank(_description));
                 bw.close();
             } else {

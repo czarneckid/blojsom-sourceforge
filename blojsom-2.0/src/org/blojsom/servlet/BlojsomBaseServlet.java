@@ -58,7 +58,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.7 2003-12-17 20:10:17 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.8 2003-12-30 23:24:04 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -129,7 +129,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
      */
     protected void configureAuthorization(ServletConfig servletConfig) throws ServletException {
         String authorizationConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
-        if (authorizationConfiguration == null || "".equals(authorizationConfiguration)) {
+        if (BlojsomUtils.checkNullOrBlank(authorizationConfiguration)) {
             _logger.error("No authorization configuration file specified");
             throw new ServletException("No authorization configuration file specified");
         }

@@ -54,7 +54,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.11 2003-12-23 15:08:51 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.12 2003-12-30 23:24:09 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -105,7 +105,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
         Blog blog = user.getBlog();
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
-        if (action == null || "".equals(action)) {
+        if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
@@ -169,7 +169,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             // Check for blank or null category
-            if (blogCategoryName == null || "".equals(blogCategoryName)) {
+            if (BlojsomUtils.checkNullOrBlank(blogCategoryName)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
                 addOperationResultMessage(context, "No blog category specified");
                 return entries;

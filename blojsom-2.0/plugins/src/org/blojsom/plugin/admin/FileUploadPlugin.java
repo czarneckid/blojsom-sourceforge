@@ -56,7 +56,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.10 2003-12-24 14:59:57 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.11 2003-12-30 23:24:08 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -114,7 +114,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         try {
             Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, PLUGIN_ADMIN_UPLOAD_IP, true);
             _temporaryDirectory = configurationProperties.getProperty(TEMPORARY_DIRECTORY_IP);
-            if (_temporaryDirectory == null || "".equals(_temporaryDirectory)) {
+            if (BlojsomUtils.checkNullOrBlank(_temporaryDirectory)) {
                 _temporaryDirectory = DEFAULT_TEMPORARY_DIRECTORY;
             }
             _logger.debug("Using temporary directory: " + _temporaryDirectory);
@@ -135,7 +135,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
             String acceptedFileTypes = configurationProperties.getProperty(ACCEPTED_FILE_TYPES_IP);
             String[] parsedListOfTypes;
-            if (acceptedFileTypes == null || "".equals(acceptedFileTypes)) {
+            if (BlojsomUtils.checkNullOrBlank(acceptedFileTypes)) {
                 parsedListOfTypes = DEFAULT_ACCEPTED_FILE_TYPES;
             } else {
                 parsedListOfTypes = BlojsomUtils.parseCommaList(acceptedFileTypes);
@@ -148,7 +148,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             _logger.debug("Using accepted file types: " + BlojsomUtils.arrayOfStringsToString(parsedListOfTypes));
 
             _resourcesDirectory = configurationProperties.getProperty(RESOURCES_DIRECTORY_IP);
-            if (_resourcesDirectory == null || "".equals(_resourcesDirectory)) {
+            if (BlojsomUtils.checkNullOrBlank(_resourcesDirectory)) {
                 _resourcesDirectory = DEFAULT_RESOURCES_DIRECTORY;
             }
 

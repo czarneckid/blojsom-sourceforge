@@ -51,7 +51,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.2 2003-11-14 04:45:54 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.3 2003-12-30 23:24:09 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -93,7 +93,7 @@ public class CachingFetcher extends StandardFetcher {
         super.init(servletConfig, blojsomConfiguration);
 
         String oscachePropertiesIP = servletConfig.getInitParameter(OSCACHE_PROPERTIES_IP);
-        if (oscachePropertiesIP == null || "".equals(oscachePropertiesIP)) {
+        if (BlojsomUtils.checkNullOrBlank(oscachePropertiesIP)) {
             oscachePropertiesIP = OSCACHE_PROPERTIES_DEFAULT;
         }
 
@@ -140,13 +140,13 @@ public class CachingFetcher extends StandardFetcher {
         // Check for a permalink entry request
         if (permalink != null) {
             context.put(BLOJSOM_PERMALINK, permalink);
-            return getPermalinkEntry(blog, category, permalink);
+            return getPermalinkEntry(user, category, permalink);
         } else {
             BlogEntry[] entries;
 
             String cacheRefresh = user.getBlog().getBlogProperty(CACHING_FETCHER_REFRESH);
             int refreshPeriod;
-            if (cacheRefresh == null || "".equals(cacheRefresh)) {
+            if (BlojsomUtils.checkNullOrBlank(cacheRefresh)) {
                 refreshPeriod = DEFAULT_CACHE_REFRESH;
             }
             try {

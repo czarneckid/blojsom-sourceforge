@@ -58,7 +58,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.6 2003-12-30 04:46:46 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.7 2003-12-30 23:24:09 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -146,12 +146,12 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _blogUser = blogUser;
         _blog = _blogUser.getBlog();
         _blogEntryExtension = _blog.getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
-        if (_blogEntryExtension == null || "".equals(_blogEntryExtension)) {
+        if (BlojsomUtils.checkNullOrBlank(_blogEntryExtension)) {
             _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
         }
 
         _uploadDirectory = _blog.getBlogProperty(METAWEBLOG_UPLOAD_DIRECTORY_IP);
-        if (_uploadDirectory == null || "".equals(_uploadDirectory)) {
+        if (BlojsomUtils.checkNullOrBlank(_uploadDirectory)) {
             _logger.error("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
             throw new BlojsomException("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
         }

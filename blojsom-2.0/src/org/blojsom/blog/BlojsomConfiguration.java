@@ -51,7 +51,7 @@ import java.io.IOException;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.10 2003-12-18 00:29:02 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.11 2003-12-30 23:24:08 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -78,7 +78,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
         _blojsomConfiguration = blojsomConfiguration;
 
         _installationDirectory = servletConfig.getServletContext().getRealPath("/");
-        if (_installationDirectory == null || "".equals(_installationDirectory)) {
+        if (BlojsomUtils.checkNullOrBlank(_installationDirectory)) {
             _logger.error("No installation directory set for blojsom");
             throw new BlojsomConfigurationException("No installation directory set for blojsom");
         } else {
@@ -89,7 +89,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
         _logger.debug("Using installation directory: " + _installationDirectory);
 
         _baseConfigurationDirectory = getBlojsomPropertyAsString(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP);
-        if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
+        if (BlojsomUtils.checkNullOrBlank(_baseConfigurationDirectory)) {
             _baseConfigurationDirectory = BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY;
         } else {
             _baseConfigurationDirectory = BlojsomUtils.checkStartingAndEndingSlash(_baseConfigurationDirectory);
@@ -97,7 +97,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
         _logger.debug("Using base configuration directory: " + _baseConfigurationDirectory);
 
         _templatesDirectory = getBlojsomPropertyAsString(BLOJSOM_TEMPLATES_DIRECTORY_IP);
-        if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
+        if (BlojsomUtils.checkNullOrBlank(_templatesDirectory)) {
             _templatesDirectory = BLOJSOM_DEFAULT_TEMPLATES_DIRECTORY;
         } else {
             if (!_templatesDirectory.startsWith("/")) {
@@ -145,7 +145,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
             // Determine and set the default user
             String defaultUser = getBlojsomPropertyAsString(BLOJSOM_DEFAULT_USER_IP);
-            if (defaultUser == null || "".equals(defaultUser)) {
+            if (BlojsomUtils.checkNullOrBlank(defaultUser)) {
                 _logger.error("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
                 throw new BlojsomConfigurationException("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
             }

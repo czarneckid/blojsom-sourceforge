@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.6 2003-12-23 03:31:25 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.7 2003-12-30 23:24:09 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -119,12 +119,12 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, PLUGIN_ADMIN_EDIT_USERS_IP, true);
 
             _bootstrapDirectory = configurationProperties.getProperty(BOOTSTRAP_DIRECTORY_IP);
-            if (_bootstrapDirectory == null || "".equals(_bootstrapDirectory)) {
+            if (BlojsomUtils.checkNullOrBlank(_bootstrapDirectory)) {
                 _bootstrapDirectory = DEFAULT_BOOTSTRAP_DIRECTORY;
             }
 
             _blogHomeBaseDirectory = configurationProperties.getProperty(BLOG_HOME_BASE_DIRECTORY_IP);
-            if (_blogHomeBaseDirectory == null || "".equals(_blogHomeBaseDirectory)) {
+            if (BlojsomUtils.checkNullOrBlank(_blogHomeBaseDirectory)) {
                 throw new BlojsomPluginException("No blog base home directory specified.");
             }
             _blogHomeBaseDirectory = BlojsomUtils.checkStartingAndEndingSlash(_blogHomeBaseDirectory);
@@ -166,7 +166,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         }
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
-        if (action == null || "".equals(action)) {
+        if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
@@ -178,7 +178,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             _logger.debug("User requested delete blog user action");
 
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
-            if (blogUserID == null || "".equals(blogUserID)) {
+            if (BlojsomUtils.checkNullOrBlank(blogUserID)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                 return entries;
             } else {
@@ -206,7 +206,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             Map blogUsers = _blojsomConfiguration.getBlogUsers();
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
 
-            if (blogUserID == null || "".equals(blogUserID)) { // Check that we got a blog user ID
+            if (BlojsomUtils.checkNullOrBlank(blogUserID)) { // Check that we got a blog user ID
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                 return entries;
@@ -234,7 +234,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                     String blogURL = BlojsomUtils.getRequestValue(BLOG_URL_IP, httpServletRequest);
 
                     // Check for the blog and blog base URLs
-                    if ((blogURL == null || "".equals(blogURL)) || (blogBaseURL == null || "".equals(blogBaseURL))) {
+                    if (BlojsomUtils.checkNullOrBlank(blogURL) || BlojsomUtils.checkNullOrBlank(blogBaseURL)) {
                         _logger.debug("No blog URL or base URL supplied");
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 

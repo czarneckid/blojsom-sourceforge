@@ -65,7 +65,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  * 
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.4 2003-12-17 20:24:51 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.5 2003-12-30 23:24:09 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -174,7 +174,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
         // Determine the appropriate user from the URL
         String user = httpServletRequest.getPathInfo();
-        if (user == null || "".equals(user) || "/".equals(user)) {
+        if (BlojsomUtils.checkNullOrBlank(user) || "/".equals(user)) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;
         }

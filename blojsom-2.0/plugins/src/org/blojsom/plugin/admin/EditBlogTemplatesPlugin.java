@@ -54,7 +54,7 @@ import java.util.Map;
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.9 2003-12-23 16:28:16 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.10 2003-12-30 23:24:09 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -133,7 +133,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templatesList);
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
-        if (action == null || "".equals(action)) {
+        if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
@@ -144,7 +144,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             _logger.debug("User requested edit blog templates action");
 
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
-            if (blogTemplate == null || "".equals(blogTemplate)) {
+            if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
                 return entries;
             }
@@ -182,7 +182,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             _logger.debug("User requested update blog template action");
 
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
-            if (blogTemplate == null || "".equals(blogTemplate)) {
+            if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
                 return entries;
             }

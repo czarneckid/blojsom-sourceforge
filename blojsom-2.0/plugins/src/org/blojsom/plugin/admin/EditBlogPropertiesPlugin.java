@@ -58,7 +58,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.12 2003-12-23 16:28:16 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.13 2003-12-30 23:24:09 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -97,7 +97,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         Iterator flavorKeys;
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
-        if (action == null || "".equals(action)) {
+        if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {

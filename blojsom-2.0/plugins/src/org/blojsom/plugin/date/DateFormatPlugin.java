@@ -6,6 +6,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.util.BlojsomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -23,7 +24,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.1
- * @version $Id: DateFormatPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
+ * @version $Id: DateFormatPlugin.java,v 1.3 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class DateFormatPlugin implements BlojsomPlugin {
 
@@ -80,7 +81,7 @@ public class DateFormatPlugin implements BlojsomPlugin {
         DateFormat _blogDateFormat;
 
         String blogTimeZoneId = blog.getBlogProperty(BLOG_TIMEZONE_ID_IP);
-        if (blogTimeZoneId == null || "".equals(blogTimeZoneId)) {
+        if (BlojsomUtils.checkNullOrBlank(blogTimeZoneId)) {
             blogTimeZoneId = TimeZone.getDefault().getID();
         }
         _logger.debug("Timezone ID: " + blogTimeZoneId);
@@ -88,7 +89,7 @@ public class DateFormatPlugin implements BlojsomPlugin {
         _blogTimeZone = TimeZone.getTimeZone(blogTimeZoneId);
 
         String blogDateFormatPattern = blog.getBlogProperty(BLOG_DATEFORMAT_PATTERN_IP);
-        if (blogDateFormatPattern == null || "".equals(blogDateFormatPattern)) {
+        if (BlojsomUtils.checkNullOrBlank(blogDateFormatPattern)) {
             _blogDateFormatPattern = null;
             _logger.debug("No value supplied for blog-dateformat-pattern");
         } else {

@@ -41,6 +41,7 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ import java.util.Properties;
 /**
  * ContextLoaderPlugin
  * 
- * @version $Id: ContextLoaderPlugin.java,v 1.1 2003-11-30 21:12:45 intabulas Exp $
+ * @version $Id: ContextLoaderPlugin.java,v 1.2 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class ContextLoaderPlugin implements BlojsomPlugin {
 
@@ -81,7 +82,7 @@ public class ContextLoaderPlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         String contextConfiguration = servletConfig.getInitParameter(CONTEXT_CONFIG_IP);
-        if (contextConfiguration == null || "".equals(contextConfiguration)) {
+        if (BlojsomUtils.checkNullOrBlank(contextConfiguration)) {
             throw new BlojsomPluginException("No value given for: " + CONTEXT_CONFIG_IP + " configuration parameter");
         }
 

@@ -54,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.6 2003-11-29 16:20:11 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.7 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -236,7 +236,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
             url = url.trim();
 
-            if (title == null || "".equals(title)) {
+            if (BlojsomUtils.checkNullOrBlank(title)) {
                 title = url;
             } else {
                 title = title.trim();

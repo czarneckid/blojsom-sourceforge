@@ -40,7 +40,7 @@ import java.util.Date;
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.2 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class Trackback {
 
@@ -49,6 +49,7 @@ public class Trackback {
     private String _url;
     private String _blogName;
     private long _trackbackDateLong;
+    private String _id;
 
     /**
      * Default constructor
@@ -168,5 +169,27 @@ public class Trackback {
      */
     public Date getTrackbackDate() {
         return new Date(_trackbackDateLong);
+    }
+
+    /**
+     * Get the id of this blog comments
+     *
+     * @since blojsom 2.07
+     * @return Id
+     */
+    public String getId() {
+        return _id;
+    }
+
+    /**
+     * Set the id of this blog comment. This method can only be called if the id has not been set.
+     *
+     * @since blojsom 2.07
+     * @param id New id
+     */
+    public void setId(String id) {
+        if (_id == null) {
+            _id = id;
+        }
     }
 }

@@ -40,7 +40,7 @@ import java.util.Date;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.2 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class BlogComment {
 
@@ -50,6 +50,7 @@ public class BlogComment {
     private String _comment;
     private Date _commentDate;
     private long _commentDateLong;
+    private String _id;
 
     /**
      * Default constructor
@@ -163,5 +164,27 @@ public class BlogComment {
      */
     public void setCommentDateLong(long commentDateLong) {
         _commentDateLong = commentDateLong;
+    }
+
+    /**
+     * Get the id of this blog comments
+     *
+     * @since blojsom 2.07
+     * @return Id
+     */
+    public String getId() {
+        return _id;
+    }
+
+    /**
+     * Set the id of this blog comment. This method can only be called if the id has not been set.
+     *
+     * @since blojsom 2.07
+     * @param id New id
+     */
+    public void setId(String id) {
+        if (_id == null) {
+            _id = id;
+        }
     }
 }

@@ -57,7 +57,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.5 2003-11-29 16:20:12 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.6 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -229,7 +229,7 @@ public class CommentPlugin extends IPBanningPlugin {
             _emailPrefix = DEFAULT_COMMENT_PREFIX;
         }
         String cookieExpiration = blog.getBlogProperty(COMMENT_COOKIE_EXPIRATION_DURATION_IP);
-        if (cookieExpiration == null || "".equals(cookieExpiration)) {
+        if (BlojsomUtils.checkNullOrBlank(cookieExpiration)) {
             _cookieExpiration = COOKIE_EXPIRATION_AGE;
         } else {
             try {

@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.14 2003-12-18 06:35:12 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.15 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -100,7 +100,7 @@ public class Blog implements BlojsomConstants {
         }
 
         _blogHome = blogConfiguration.getProperty(BLOG_HOME_IP);
-        if (_blogHome == null || "".equals(_blogHome)) {
+        if (BlojsomUtils.checkNullOrBlank(_blogHome)) {
             _logger.error("No value supplied for blog-home");
             throw new BlojsomConfigurationException("No valued supplied for blog-home");
         }
@@ -173,7 +173,7 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_ENTRIES_DISPLAY_IP, new Integer(_blogDisplayEntries));
 
         String blogDefaultCategoryMapping = blogConfiguration.getProperty(BLOG_DEFAULT_CATEGORY_MAPPING_IP);
-        if (blogDefaultCategoryMapping == null || "".equals(blogDefaultCategoryMapping)) {
+        if (BlojsomUtils.checkNullOrBlank(blogDefaultCategoryMapping)) {
             _blogDefaultCategoryMappings = null;
             _logger.debug("No mapping supplied for the default category '/'");
         } else {
@@ -209,7 +209,7 @@ public class Blog implements BlojsomConstants {
 
         String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
         // Add the blog comments and trackback directories to the blog directory filter
-        if (blogDirectoryFilter == null || "".equals(blogDirectoryFilter)) {
+        if (BlojsomUtils.checkNullOrBlank(blogDirectoryFilter)) {
             blogDirectoryFilter = commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
         } else {
             if (blogDirectoryFilter.indexOf(commentsDirectoryRegex) == -1) {
@@ -253,14 +253,14 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_EMAIL_ENABLED_IP, _blogEmailEnabled);
 
         String blogFileEncoding = blogConfiguration.getProperty(BLOG_FILE_ENCODING_IP);
-        if (blogFileEncoding == null || "".equals(blogFileEncoding)) {
+        if (BlojsomUtils.checkNullOrBlank(blogFileEncoding)) {
             blogFileEncoding = UTF8;
         }
         _blogFileEncoding = blogFileEncoding;
         _blogProperties.put(BLOG_FILE_ENCODING_IP, blogFileEncoding);
 
         String blogDefaultFlavor = blogConfiguration.getProperty(BLOG_DEFAULT_FLAVOR_IP);
-        if (blogDefaultFlavor == null || "".equals(blogDefaultFlavor)) {
+        if (BlojsomUtils.checkNullOrBlank(blogDefaultFlavor)) {
             blogDefaultFlavor = DEFAULT_FLAVOR_HTML;
         }
         _blogDefaultFlavor = blogDefaultFlavor;

@@ -41,6 +41,7 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.3 2003-08-22 04:40:32 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.4 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -85,7 +86,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         String showMeMoreConfiguration = servletConfig.getInitParameter(SHOW_ME_MORE_CONFIG_IP);
-        if (showMeMoreConfiguration == null || "".equals(showMeMoreConfiguration)) {
+        if (BlojsomUtils.checkNullOrBlank(showMeMoreConfiguration)) {
             throw new BlojsomPluginException("No value given for: " + SHOW_ME_MORE_CONFIG_IP + " configuration parameter");
         }
 

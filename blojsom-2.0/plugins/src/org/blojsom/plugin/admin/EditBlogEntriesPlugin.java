@@ -61,7 +61,7 @@ import java.util.Map;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.12 2003-12-30 04:46:37 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.13 2003-12-30 23:24:09 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -157,7 +157,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         }
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
-        if (action == null || "".equals(action)) {
+        if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request edit action");
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
@@ -341,7 +341,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setMetaData(entryMetaData);
 
             String blogEntryExtension = user.getBlog().getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
-            if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
+            if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
                 blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
             }
 

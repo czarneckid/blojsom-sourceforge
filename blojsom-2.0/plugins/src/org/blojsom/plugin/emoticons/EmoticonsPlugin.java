@@ -56,7 +56,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.2 2003-08-22 04:40:32 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.3 2003-12-30 23:24:08 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -134,7 +134,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws org.blojsom.plugin.BlojsomPluginException {
         String emoticonsConfiguration = servletConfig.getInitParameter(EMOTICONS_CONFIGURATION_IP);
-        if (emoticonsConfiguration == null || "".equals(emoticonsConfiguration)) {
+        if (BlojsomUtils.checkNullOrBlank(emoticonsConfiguration)) {
             throw new BlojsomPluginException("No value given for: " + EMOTICONS_CONFIGURATION_IP + " configuration parameter");
         }
 

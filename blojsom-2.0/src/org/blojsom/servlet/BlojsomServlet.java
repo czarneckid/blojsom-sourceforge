@@ -59,7 +59,7 @@ import java.util.*;
  * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.19 2003-12-17 20:06:19 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.20 2003-12-30 23:24:04 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -167,7 +167,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     private void configurePlugins(ServletConfig servletConfig) throws ServletException {
         // Instantiate the plugins
         String pluginConfiguration = servletConfig.getInitParameter(BLOJSOM_PLUGIN_CONFIGURATION_IP);
-        if (pluginConfiguration == null || "".equals(pluginConfiguration)) {
+        if (BlojsomUtils.checkNullOrBlank(pluginConfiguration)) {
             _logger.error("No plugin configuration file specified");
             throw new ServletException("No plugin configuration file specified");
         }
@@ -292,7 +292,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
         // Check for an overriding id
         String user = httpServletRequest.getParameter("id");
-        if (user == null || "".equals(user)) {
+        if (BlojsomUtils.checkNullOrBlank(user)) {
             String userFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
             if (userFromPath == null) {
                 user = _blojsomConfiguration.getDefaultUser();
@@ -316,7 +316,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
         // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
-        if (flavor == null || "".equals(flavor)) {
+        if (BlojsomUtils.checkNullOrBlank(flavor)) {
             flavor = blog.getBlogDefaultFlavor();
             if (blogUser.getFlavors().get(flavor) == null) {
                 flavor = DEFAULT_FLAVOR_HTML;

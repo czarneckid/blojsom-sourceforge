@@ -76,7 +76,7 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.4 2003-12-17 20:24:39 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.5 2003-12-30 23:24:09 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -160,7 +160,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         }
         requestedCategory = BlojsomUtils.normalize(requestedCategory);
 
-        if (user == null || "".equals(user) || "/".equals(user)) {
+        if (BlojsomUtils.checkNullOrBlank(user) || "/".equals(user)) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;
         }
