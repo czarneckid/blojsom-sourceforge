@@ -45,6 +45,10 @@
             <param-name>plugin-showmemore</param-name>
             <param-value>showmemore.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>plugin-emoticons</param-name>
+            <param-value>emoticons.properties</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
