@@ -29,17 +29,48 @@
 <p class="weblogtitle">installation and default configuration</a></p>
 <p/>
 Starting with blojsom 1.4, an XML-RPC servlet is included with blojsom that provides
-support for the Blogger API and the MetaWeblog API.<br/>
-Edit the contents of <i>/WEB-INF/authorization.properties</i> to setup all the valid username/password pairs to control who can post via XML-RPC.<br/><br/>
-And you're done ;)
-<p />
-By default, blojsom's XML-RPC interface is enabled and setup to work with a subset of
-the <a href="http://plant.blogger.com/api/index.html">Blogger API</a> as well as the
-<a href="http://www.xmlrpc.com/metaweblogAPI">MetaWeblog API</a>.<br/><br/>
+support for the <a href="http://plant.blogger.com/api/index.html">Blogger API</a> and the
+<a href="http://www.xmlrpc.com/metaweblogAPI">MetaWeblog API</a>.
+<p/>
+
+Edit the contents of <i>/WEB-INF/authorization.properties</i> to setup all the valid
+username/password pairs to control who can post via XML-RPC. And you're done ;)
+<p/>
+
 To send a message to the service, point your blogger tool or XML-RPC client at
 your http://www.your.blog.com/xmlrpc <p/>
 Replace <i>www.your.blog.com</i> with the url for your blog and get blogging!
-<br/>
+<p/>
+
+<p class="weblogtitle">writing a custom XML-RPC handler</a></p>
+<p/>
+If you are writing a custom XML-RPC handler for blojsom, you must write your class to implement
+the <a href="javadoc/org/ignition/blojsom/extension/xmlrpc/handlers/AbstractBlojsomAPIHandler.html">AbstractBlojsomAPIHandler</a> interface.
+Take a look at the source code for the <a href="javadoc/org/ignition/blojsom/extension/xmlrpc/handlers/BloggerAPIHandler.html">BloggerAPIHandler</a>
+and the <a href="javadoc/org/ignition/blojsom/extension/xmlrpc/handlers/MetaWeblogAPIHandler.html">MetaWeblogAPIHandler</a> to see how it's
+done.
+<p/>
+
+<p class="weblogtitle">registering a custom XML-RPC handler</a></p>
+<p/>
+To register your custom XML-RPC handler with blojsom, you must modify the <i>/WEB-INF/blojsom-xmlrpc.properties</i>
+file. The name of this file can be configured via the <i>blog-xmlrpc-configuration</i> initialization
+parameter in your <i>web.xml</i> file.
+<p/>
+The contents of the file looks similar to the following:
+<ul>
+<pre>
+#
+# blojsom XML-RPC API Handlers
+#
+blogger=org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
+metaWeblog=org.ignition.blojsom.extension.xmlrpc.handlers.MetaWeblogAPIHandler
+</pre>
+</ul>
+You simply register a particular API handler under a given name. In the first case above, the "blogger"
+API handler is handled by the <tt>org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler</tt>
+class.
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
