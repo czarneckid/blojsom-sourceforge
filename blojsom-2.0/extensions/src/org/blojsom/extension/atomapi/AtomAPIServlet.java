@@ -49,6 +49,7 @@ import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
+import org.intabulas.sandler.authentication.AtomAuthentication;
 import org.intabulas.sandler.elements.Entry;
 import org.intabulas.sandler.exceptions.FeedMarshallException;
 import org.intabulas.sandler.introspection.Introspection;
@@ -73,7 +74,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.10 2003-09-10 21:01:53 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.11 2003-09-11 17:12:29 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -142,19 +143,32 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     private boolean isAuthorized(Blog blog, HttpServletRequest httpServletRequest) {
         boolean result = false;
-        String realmAuth = extractAuthorization(httpServletRequest);
-        if (realmAuth != null && !"".equals(realmAuth)) {
-            int pos = realmAuth.indexOf(":");
-            if (pos > 0) {
-                String username = realmAuth.substring(0, pos);
-                String password = realmAuth.substring(pos + 1);
-                result = blog.checkAuthorization(username, password);
-                if (!result) {
-                    _logger.info("Unable to authenticate user [" + username + "] w/password [" + password + ']');
-                }
+
+        if (httpServletRequest.getHeader("X-Atom-Authorization") != null) {
+            _logger.info("Processing X-Atom-Authorization");
+            AtomAuthentication auth = new AtomAuthentication(httpServletRequest.getHeader("X-Atom-Authorization"));
+            Map authMap = blog.getAuthorizationMap();
+            _logger.info("Username = " + auth.getUsername());
+            if (authMap.containsKey(auth.getUsername())) {
+                result = auth.authenticate((String) authMap.get(auth.getUsername()), "POST");
 
             }
 
+
+            String realmAuth = extractAuthorization(httpServletRequest);
+            if (realmAuth != null && !"".equals(realmAuth)) {
+                int pos = realmAuth.indexOf(":");
+                if (pos > 0) {
+                    String username = realmAuth.substring(0, pos);
+                    String password = realmAuth.substring(pos + 1);
+                    result = blog.checkAuthorization(username, password);
+                    if (!result) {
+                        _logger.info("Unable to authenticate user [" + username + "] w/password [" + password + ']');
+                    }
+
+                }
+
+            }
         }
         return result;
     }
@@ -163,7 +177,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     private void sendAuthenticationRequired(HttpServletResponse httpServletResponse, BlogUser user) {
         httpServletResponse.setContentType("text/html");
         String nonce = AtomUtils.generateNextNonce(user);
-        nonce = BlojsomUtils.digestString(nonce);
         String relm = MessageFormat.format(AUTHENTICATION_REALM, new Object[]{nonce});
         httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, relm);
         httpServletResponse.setStatus(401);
@@ -412,7 +425,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
 
         if (isAuthorized(blog, httpServletRequest)) {
-
             String result = null;
 
             // Quick verify that the category is valid
@@ -426,6 +438,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                     String postid = category + "?" + PERMALINK_PARAM + "=" + filename;
 
+                    _logger.info(atomEntry.toString());
+
 
                     File sourceFile = new File(outputfile);
                     BlogEntry entry = _fetcher.newBlogEntry();
@@ -438,13 +452,18 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.setDate(atomEntry.getCreated());
                     entry.setTitle(atomEntry.getTitle());
 
-                    blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, atomEntry.getAuthor().getName());
+                    if (atomEntry.getAuthor() != null) {
+                        blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, atomEntry.getAuthor().getName());
+                    }
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(blog);
                     result = postid;
 
                     httpServletResponse.setContentType("text/html");
                     httpServletResponse.setHeader(HEADER_LOCATION, entry.getEscapedLink());
+
+                    String nonce = AtomUtils.generateNextNonce(blogUser);
+                    httpServletResponse.setHeader("X-Atom-Authentication-Info", "nextnonce=\"" + nonce + "\"");
                     httpServletResponse.setStatus(201);
                 } catch (FeedMarshallException e) {
                     _logger.error(e.getLocalizedMessage(), e);

@@ -38,6 +38,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.util.BlojsomUtils;
+import org.intabulas.sandler.authentication.DigestUtilities;
 import org.intabulas.sandler.elements.Author;
 import org.intabulas.sandler.elements.Content;
 import org.intabulas.sandler.elements.Entry;
@@ -52,15 +53,28 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.5 2003-09-10 21:01:20 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.6 2003-09-11 17:12:13 intabulas Exp $
  */
 public class AtomUtils {
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public static String generateNextNonce(BlogUser user) {
-        return BlojsomUtils.getISO8601Date(new Date()) + ":" + user.getId() + ":hanger1";
+        String nonce = BlojsomUtils.getISO8601Date(new Date()) + ":" + user.getId() + ":" + user.getBlog().getBlogDescription();
+        return DigestUtilities.digestString(nonce);
     }
 
 
+    /**
+     *
+     * @param blog
+     * @param user
+     * @param blogentry
+     * @return
+     */
     public static Entry fromBlogEntry(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
         result.setTitle(blogentry.getEscapedTitle());
@@ -84,6 +98,13 @@ public class AtomUtils {
 
     }
 
+    /**
+     *
+     * @param blog
+     * @param user
+     * @param blogentry
+     * @return
+     */
     public static Entry fromBlogEntrySearch(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
         result.setTitle(blogentry.getEscapedTitle());
