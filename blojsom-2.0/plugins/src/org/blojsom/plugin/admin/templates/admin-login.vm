@@ -29,7 +29,7 @@
             </table>
 
             <p></p>
-            <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&page=forgotten-password">#adminResource('forget.your.password.text' 'Forget your password?')</a><p/>
+            <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=forgotten-password">#adminResource('forget.your.password.text' 'Forget your password?')</a><p/>
             Back to <a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a>
             <p/><p/>
             <a href="http://blojsom.sf.net"><img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" border="0" alt="Powered By blojsom" /></a>
