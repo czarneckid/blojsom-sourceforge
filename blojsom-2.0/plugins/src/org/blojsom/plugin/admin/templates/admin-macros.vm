@@ -32,6 +32,4 @@
     </select>
 #end
 
-#macro(resource $resourceID $fallback)
-    $!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogLanguage(), $BLOJSOM_BLOG.getBlogCountry())
-#end
+#macro( adminResource $resourceID $fallback )$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogLanguage(), $BLOJSOM_BLOG.getBlogCountry())#end
