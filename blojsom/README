@@ -1,4 +1,4 @@
-blojsom 1.0 README
+blojsom 1.2 README
 ------------------
 
 Developed with:
@@ -16,10 +16,10 @@ Libraries
 ---------
 The following libraries are required to compile and run blojsom. If you are using different versions of these APIs than those given here, you are on your own.
 
-Servlet 2.2 API 
+Servlet 2.3 API 
 ---------------
 - Download from http://java.sun.com
-- Place servlet-2.2b.jar file in /lib
+- Place servlet-2.3.jar file in /lib
 
 Jakarta Commons Collections 2.1 API
 -----------------------------------
