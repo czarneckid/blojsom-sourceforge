@@ -76,13 +76,9 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.1 2003-08-10 16:19:42 intabulas Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.2 2003-08-13 02:06:41 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
-
-    private Log _logger = LogFactory.getLog(CommentAPIServlet.class);
-    protected Blog _blog = null;
-    private Session _mailsession = null;
 
     /** RSS <item/> fragment tag containing the Title */
     private static final String COMMENTAPI_TITLE = "title";
@@ -96,6 +92,9 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
     /** RSS <item/> fragment tag containing the Author */
     private static final String COMMENTAPI_AUTHOR = "author";
 
+    private Log _logger = LogFactory.getLog(CommentAPIServlet.class);
+    private Session _mailsession = null;
+
     /**
      * Public Constructor
      */
@@ -106,7 +105,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      * Initialize the blojsom Comment API servlet
      *
      * @param servletConfig Servlet configuration information
-     * @throws javax.servlet.ServletException If there is an error initializing the servlet
+     * @throws ServletException If there is an error initializing the servlet
      */
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
@@ -119,7 +118,6 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         }
 
         configureBlojsom(servletConfig);
-
     }
 
     /**
@@ -131,46 +129,49 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      * @throws IOException If there is an error during I/O
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        try {
+            httpServletRequest.setCharacterEncoding(UTF8);
+        } catch (UnsupportedEncodingException e) {
+            _logger.error(e);
+        }
+
         String commentAuthor = null;
         String commentEmail = null;
         String commentLink = null;
         String commentText = null;
         String commentTitle = null;
 
-
         // Determine the appropriate user from the URL
-        String user = httpServletRequest.getPathInfo();
+        String user;
+        String userFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+        String requestedCategory;
+
+        if (userFromPath == null) {
+            user = _defaultUser;
+            requestedCategory = httpServletRequest.getPathInfo();
+        } else {
+            if (!_users.containsKey(userFromPath)) {
+                user = _defaultUser;
+                requestedCategory = httpServletRequest.getPathInfo();
+            } else {
+                user = userFromPath;
+                requestedCategory = BlojsomUtils.getCategoryFromPath(httpServletRequest.getPathInfo());
+            }
+        }
+        requestedCategory = BlojsomUtils.normalize(requestedCategory);
+
         if (user == null || "".equals(user) || "/".equals(user)) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;
         }
 
-        user = BlojsomUtils.removeInitialSlash(user);
-        String requestedCategory = "/";
-
-        // Chop out the Requested Category
-        int categoryOffset = user.indexOf('/');
-        if (categoryOffset != -1) {
-            requestedCategory = user.substring(categoryOffset + 1);
-            user = user.substring(0, categoryOffset);
-        }
-        if (requestedCategory == null) {
-            requestedCategory = "/";
-        } else if (!requestedCategory.endsWith("/")) {
-            requestedCategory += "/";
-        }
-
+        // Fetch the user and their blog
+        BlogUser blogUser = (BlogUser) _users.get(user);
+        Blog blog = blogUser.getBlog();
 
         _logger.info("Processing a comment for [" + user + "] in category [" + requestedCategory + "]");
 
-        // Fetch the users blob
-        BlogUser _bloguser = (BlogUser) _users.get(user);
-
-        _blog = _bloguser.getBlog();
-
-
-        if (_blog.getBlogCommentsEnabled().booleanValue() && httpServletRequest.getContentLength() > 0) {
-
+        if (blog.getBlogCommentsEnabled().booleanValue() && httpServletRequest.getContentLength() > 0) {
             String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
 
             try {
@@ -211,11 +212,8 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                 _logger.error(e);
             }
 
-
-            /**
-             * Try to extract an email address from "User Name <useremail@.com>" formatted string,
-             * otherwise, just use the Name
-             */
+            // Try to extract an email address from "User Name <useremail@.com>" formatted string,
+            // otherwise, just use the Name
             if (commentAuthor != null) {
                 try {
                     InternetAddress emailaddress = new InternetAddress(commentAuthor);
@@ -229,25 +227,22 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                 commentEmail = "";
             }
 
-            /* If the link is null, set it to an empty string */
+            // If the link is null, set it to an empty string
             if (commentLink == null) {
                 commentLink = "";
             }
 
             if (commentText != null) {
+                _logger.debug("Comment API ==============================================");
+                _logger.debug(" Blog User: " + user);
+                _logger.debug("  Category: " + requestedCategory);
+                _logger.debug(" Permalink: " + permalink);
+                _logger.debug(" Commenter: " + commentAuthor);
+                _logger.debug("Cmtr Email: " + commentEmail);
+                _logger.debug("      Link: " + commentLink);
+                _logger.debug("   Comment: \n" + commentText);
 
-                _logger.info("Comment API ==============================================");
-                _logger.info(" Blog User: " + user);
-                _logger.info("  Category: " + requestedCategory);
-                _logger.info(" Permalink: " + permalink);
-                _logger.info(" Commenter: " + commentAuthor);
-                _logger.info("Cmtr Email: " + commentEmail);
-                _logger.info("      Link: " + commentLink);
-                _logger.info("   Comment: \n" + commentText);
-
-                /**
-                 * Create new Comment Object
-                 */
+                // Create a new blog comment
                 BlogComment comment = new BlogComment();
                 comment.setAuthor(commentAuthor);
                 comment.setAuthorEmail(commentEmail);
@@ -255,13 +250,11 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                 comment.setComment(commentText);
                 comment.setCommentDate(new Date());
 
-                /**
-                 * Construct the Comment Filename
-                 */
-                String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, _blog.getBlogFileExtensions());
-                StringBuffer commentDirectory = new StringBuffer(_blog.getBlogHome());
+                // Construct the comment filename
+                String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blog.getBlogFileExtensions());
+                StringBuffer commentDirectory = new StringBuffer(blog.getBlogHome());
                 commentDirectory.append(BlojsomUtils.removeInitialSlash(requestedCategory));
-                commentDirectory.append(_blog.getBlogCommentsDirectory());
+                commentDirectory.append(blog.getBlogCommentsDirectory());
                 commentDirectory.append(File.separator);
                 commentDirectory.append(permalinkFilename);
                 commentDirectory.append(File.separator);
@@ -269,8 +262,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                 String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
                 File commentDir = new File(commentDirectory.toString());
 
-
-                /* Ensure it exists */
+                // Ensure it exists
                 if (!commentDir.exists()) {
                     if (!commentDir.mkdirs()) {
                         _logger.error("Could not create directory for comments: " + commentDirectory);
@@ -278,13 +270,11 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                     }
                 }
 
-                /**
-                 * Create the Comment Entry
-                 */
+                // Create a comment entry
                 File commentEntry = new File(commentFilename);
                 if (!commentEntry.exists()) {
                     try {
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), _blog.getBlogFileEncoding()));
+                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), blog.getBlogFileEncoding()));
                         bw.write(comment.getAuthor());
                         bw.newLine();
                         bw.write(comment.getAuthorEmail());
@@ -296,24 +286,23 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                         bw.close();
                         _logger.debug("Added blog comment: " + commentFilename);
 
-                        /* Send a Comment Email */
+                        // Send a Comment Email
                         sendCommentEmail(commentTitle, requestedCategory, permalink, commentAuthor, commentEmail,
-                                         commentLink, commentText);
-
+                                commentLink, commentText, blog);
                     } catch (IOException e) {
                         _logger.error(e);
                         httpServletResponse.setStatus(500);
                     }
                 } else {
                     _logger.error("Duplicate comment submission detected, ignoring subsequent submission");
-                    httpServletResponse.setStatus(403);
+                    httpServletResponse.sendError(403, "Duplicate comment submission detected, ignoring subsequent submission");
                 }
                 httpServletResponse.setStatus(200);
             } else {
-                httpServletResponse.setStatus(500);
+                httpServletResponse.sendError(500, "No comment text available");
             }
         } else {
-            httpServletResponse.setStatus(500);
+            httpServletResponse.sendError(500, "Blog comments not enabled or No content in request");
         }
     }
 
@@ -327,16 +316,17 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      * @param authorEmail Email address of the person commenting
      * @param authorURL Homepage URL for the person commenting
      * @param userComment The comment
+     * @param blog Users blog
      */
     private synchronized void sendCommentEmail(String title, String category, String permalink, String author,
-                                               String authorEmail, String authorURL, String userComment) {
+                                               String authorEmail, String authorURL, String userComment, Blog blog) {
 
-        String url = _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category);
+        String url = blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category);
         String commentMessage = CommentUtils.constructCommentEmail(permalink, author, authorEmail, authorURL, userComment,
-                                                                   url);
+                url);
         try {
             EmailMessage emailMessage = new EmailMessage("[blojsom] Comment on: " + title, commentMessage);
-            InternetAddress defaultRecipient = new InternetAddress(_blog.getBlogOwnerEmail(), _blog.getBlogOwner());
+            InternetAddress defaultRecipient = new InternetAddress(blog.getBlogOwnerEmail(), blog.getBlogOwner());
             EmailUtils.sendMailMessage(_mailsession, emailMessage, defaultRecipient);
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
