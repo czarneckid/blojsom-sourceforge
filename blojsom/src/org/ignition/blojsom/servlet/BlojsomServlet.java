@@ -57,6 +57,7 @@ import java.util.Properties;
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
+    // Blog initialization parameters from blojsom.properties
     private final static String BLOG_HOME_IP = "blog-home";
     private final static String BLOG_NAME_IP = "blog-name";
     private final static String BLOG_DEPTH_IP = "blog-directory-depth";
@@ -65,10 +66,12 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private final static String BLOG_DESCRIPTION_IP = "blog-description";
     private final static String BLOG_URL_IP = "blog-url";
     private final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
+    private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
+    private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
+
+    // BlojsomServlet initialization properties from web.xml
     private final static String BLOG_FLAVOR_CONFIGURATION_IP = "blog-flavor-configuration";
     private final static String BLOG_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-map-configuration";
-    private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
-
     private final static String BLOG_CONFIGURATION_IP = "blog-configuration";
 
     private Blog _blog;
@@ -98,7 +101,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      *
      * @param servletConfig Servlet configuration information
      */
-    private void configureBlog(ServletConfig servletConfig) {
+    private void configureBlog(ServletConfig servletConfig) throws ServletException {
         String blojsomConfiguration = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
         Properties configurationProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(blojsomConfiguration);
@@ -106,24 +109,51 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             configurationProperties.load(is);
 
             String blogHome = configurationProperties.getProperty(BLOG_HOME_IP);
+            if (blogHome == null) {
+                _logger.error("No value supplied for blog-home");
+                throw new ServletException("No valued supplied for blog-home");
+            }
             if (!blogHome.endsWith("/")) {
                 blogHome += "/";
             }
 
             String blogLanguage = configurationProperties.getProperty(BLOG_LANGUAGE_IP);
-            String blogDescription = configurationProperties.getProperty(BLOG_DESCRIPTION_IP);
-            String blogName = configurationProperties.getProperty(BLOG_NAME_IP);
-            int blogDepth = Integer.parseInt(configurationProperties.getProperty(BLOG_DEPTH_IP));
-            String blogURL = configurationProperties.getProperty(BLOG_URL_IP);
-            long blogReloadCheck = Long.parseLong(configurationProperties.getProperty(BLOG_RELOAD_CHECK_IP));
+            if (blogLanguage == null) {
+                _logger.warn("No value supplied for blog-language. Defaulting to: " + BLOG_LANGUAGE_DEFAULT);
+                blogLanguage = BLOG_LANGUAGE_DEFAULT;
+            }
 
+            String blogDescription = configurationProperties.getProperty(BLOG_DESCRIPTION_IP);
+            if (blogDescription == null) {
+                _logger.warn("No value supplied for blog-description");
+                blogDescription = "";
+            }
+
+            String blogName = configurationProperties.getProperty(BLOG_NAME_IP);
+            if (blogName == null) {
+                _logger.warn("No value supplied for blog-name");
+                blogName = "";
+            }
+
+            int blogDepth = Integer.parseInt(configurationProperties.getProperty(BLOG_DEPTH_IP, Integer.toString(INFINITE_BLOG_DEPTH)));
+
+            String blogURL = configurationProperties.getProperty(BLOG_URL_IP);
+            if (blogURL == null) {
+                _logger.error("No value supplied for blog-url");
+                throw new ServletException("No value supplied for blog-url");
+            }
             if (!blogURL.endsWith("/")) {
                 blogURL += "/";
             }
+
+            // The following parameters will either be removed or changed
+            long blogReloadCheck = Long.parseLong(configurationProperties.getProperty(BLOG_RELOAD_CHECK_IP));
             String[] blogFileExtensions = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOG_FILE_EXTENSIONS_IP));
             String[] blogPropertiesExtensions = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
             _blog = new Blog(blogHome, blogName, blogDescription, blogURL, blogLanguage, blogReloadCheck,
                     blogFileExtensions, blogPropertiesExtensions, blogDepth);
+
+            int blogEntriesDisplay = Integer.parseInt(configurationProperties.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
         } catch (IOException e) {
             _logger.error(e);
         }
@@ -219,6 +249,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(_blog.getBlogURL(), httpServletRequest.getServletPath());
 
+        _logger.debug("Request URL: " + httpServletRequest.getRequestURL());
+
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
 
@@ -272,8 +304,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         }
 
         // Get the entries for the requested category
-        //Map entriesForCategory = (Map) _blog.getEntriesForCategory(category);
         boolean categoryHasEntries = _blog.checkCategoryHasEntries(category);
+        if (!categoryHasEntries) {
+            _logger.debug("categoryHasEntries returned false");
+        }
 
         // Convert the entries from the map into an array
         BlogEntry[] entries;
@@ -302,6 +336,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_SITE_URL, blogSiteURL);
         context.put(BLOJSOM_ENTRIES, entries);
         context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
+        context.put(BLOJSOM_REQUESTED_CATEGORY, requestedCategory);
 
         // Forward the request on to the template for the requested flavor
         String flavorTemplate;
