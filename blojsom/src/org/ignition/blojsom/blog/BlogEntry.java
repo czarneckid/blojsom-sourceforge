@@ -41,12 +41,13 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.29 2003-04-19 14:36:19 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.30 2003-04-27 16:42:20 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -61,6 +62,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     protected ArrayList _comments;
     protected ArrayList _trackbacks;
     protected BlogCategory _blogCategory;
+    protected Map _metaData;
 
     /**
      * Create a new blog entry with no data
@@ -360,5 +362,24 @@ public abstract class BlogEntry implements BlojsomConstants {
      */
     public void setBlogCategory(BlogCategory blogCategory) {
         _blogCategory = blogCategory;
+    }
+
+    /**
+     * Return meta data for this blog entry
+     *
+     * @since blojsom 1.8
+     * @return Meta data
+     */
+    public Map getMetaData() {
+        return _metaData;
+    }
+
+    /**
+     * Set the meta-data associated with this blog entry
+     * @param metaData Meta-data
+     * @since blojsom 1.8
+     */
+    public void setMetaData(Map metaData) {
+        _metaData = metaData;
     }
 }
