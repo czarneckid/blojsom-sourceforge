@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.6 2003-09-11 15:01:34 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.7 2003-10-21 03:35:24 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -926,6 +926,69 @@ public class BlojsomUtils implements BlojsomConstants {
 
             return convertedProperties;
         }
+    }
+
+    /**
+     * Turn an array of strings into a single string separated by commas
+     *
+     * @param array Array of strings
+     * @return Single string containing all the strings from the original array separated by commas
+     */
+    public static String arrayOfStringsToString(String[] array) {
+        StringBuffer result = new StringBuffer();
+        String element;
+        for (int i = 0; i < array.length; i++) {
+            element = array[i];
+            result.append(element);
+            if (i < array.length -1) {
+                result.append(", ");
+            }
+        }
+
+        return result.toString();
+    }
+
+    /**
+     * Convert a {@link Map} to a set of {@link BlojsomProperties}
+     *
+     * @param map Map to be converted to a BlojsomProperties object
+     * @param encoding Specific encoding to use when writing BlojsomProperties object
+     * @return BlojsomProperties object containing all the keys and values from the original Map object. If the
+     * Map object was null, a new BlojsomProperties is returned with no values.
+     * @since blojsom 2.04
+     */
+    public static Properties mapToProperties(Map map, String encoding) {
+        if (map == null) {
+            return new BlojsomProperties();
+        } else {
+            Iterator keyIterator = map.keySet().iterator();
+            Object key;
+            Object value;
+            Properties convertedProperties = new BlojsomProperties(encoding);
+            while (keyIterator.hasNext()) {
+                key = keyIterator.next();
+                value = map.get(key);
+                if (key != null && value != null && value instanceof String[]) {
+                    convertedProperties.put(key, arrayOfStringsToString((String[]) value));
+                } else if (key != null && value != null) {
+                    convertedProperties.put(key, value.toString());
+                }
+            }
+
+            return convertedProperties;
+        }
+    }
+
+    /**
+     * Convert a {@link Map} to a set of {@link BlojsomProperties}. Uses the default encoding.
+     *
+     * @param map Map to be converted to a BlojsomProperties object
+     * @return BlojsomProperties object containing all the keys and values from the original Map object. If the
+     * Map object was null, a new BlojsomProperties is returned with no values.
+     * @since blojsom 2.04
+     */
+    public static Properties mapToProperties(Map map) {
+        return mapToProperties(map, null);
     }
 
     /**
