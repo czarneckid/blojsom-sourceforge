@@ -55,7 +55,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.2 2003-08-14 01:12:44 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.3 2003-08-22 04:40:32 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -94,7 +94,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
         for (int i = 0; i < users.length; i++) {
             String user = users[i];
             Properties showMeMoreProperties = new Properties();
-            String configurationFile = blojsomConfiguration.getConfigurationBaseDirectory() + user + '/' + showMeMoreConfiguration;
+            String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + showMeMoreConfiguration;
             InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
             if (is == null) {
                 _logger.info("No show me more configuration file found: " + configurationFile);

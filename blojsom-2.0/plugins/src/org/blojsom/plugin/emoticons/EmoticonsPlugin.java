@@ -56,7 +56,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.1 2003-08-12 03:28:15 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.2 2003-08-22 04:40:32 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -143,7 +143,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
         for (int i = 0; i < users.length; i++) {
             String user = users[i];
             Properties emoticonsProperties = new Properties();
-            String configurationFile = blojsomConfiguration.getConfigurationBaseDirectory() + user + '/' + emoticonsConfiguration;
+            String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + emoticonsConfiguration;
             InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
             if (is == null) {
                 _logger.info("No emoticons configuration file found: " + configurationFile);

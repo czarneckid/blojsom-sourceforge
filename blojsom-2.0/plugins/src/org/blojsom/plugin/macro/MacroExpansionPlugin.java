@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-08-12 02:26:16 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.3 2003-08-22 04:40:32 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -95,7 +95,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
         for (int i = 0; i < users.length; i++) {
             String user = users[i];
             Properties macroProperties = new Properties();
-            String configurationFile = blojsomConfiguration.getConfigurationBaseDirectory() + user + '/' + macroConfiguration;
+            String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + macroConfiguration;
             InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
             if (is == null) {
                 _logger.info("No macro configuration file found: " + configurationFile);

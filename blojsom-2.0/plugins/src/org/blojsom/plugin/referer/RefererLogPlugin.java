@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: RefererLogPlugin.java,v 1.1 2003-08-12 14:42:56 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.2 2003-08-22 04:40:32 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -267,7 +267,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
         for (int i = 0; i < users.length; i++) {
             String user = users[i];
             Properties refererProperties = new Properties();
-            String configurationFile = blojsomConfiguration.getConfigurationBaseDirectory() + user + '/' + refererConfiguration;
+            String configurationFile = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + refererConfiguration;
             InputStream is = servletConfig.getServletContext().getResourceAsStream(configurationFile);
             if (is == null) {
                 _logger.info("No referer log configuration file found: " + configurationFile);
@@ -307,7 +307,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     if (blacklistFilename == null || "".equals(blacklistFilename)) {
                         _logger.error("No value given for: " + BlojsomConstants.BLOG_BLACKLIST_FILE_IP + " configuration parameter for user: " + user);
                     } else {
-                        blacklistFilename = blojsomConfiguration.getConfigurationBaseDirectory() + user + '/' + blacklistFilename;
+                        blacklistFilename = blojsomConfiguration.getBaseConfigurationDirectory() + user + '/' + blacklistFilename;
                         blacklist = populateBlacklistPatterns(servletConfig, blacklistFilename);
                     }
 
