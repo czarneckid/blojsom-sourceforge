@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.27 2004-02-10 15:49:10 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.28 2004-02-25 03:21:24 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -66,6 +66,12 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
+
+    /**
+     * Key under which all the blog categories will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_ALL_CATEGORIES = "BLOJSOM_ALL_CATEGORIES";
 
     /**
      * Key under which the date (RFC 822 format) of the blog will be placed
