@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.52 2003-03-24 18:31:26 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.53 2003-03-24 22:21:45 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -97,12 +97,12 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             BlojsomPlugin plugin = (BlojsomPlugin) _plugins.get(pluginName);
             try {
                 plugin.destroy();
-                _plugins.remove(pluginName);
                 _logger.debug("Removed blojsom plugin: " + plugin.getClass().getName());
             } catch (BlojsomPluginException e) {
                 _logger.error(e);
             }
         }
+
     }
 
     /**
