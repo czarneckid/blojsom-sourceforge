@@ -42,5 +42,36 @@
                 </form>
             </table>
         </center>
+
+        <!-- Delete blog entries form -->
+        <center>
+            <h3>Delete an entry in an existing blog category</h3>
+            <table border="1">
+                <form name="delete-blog-entry" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="delete-blog-entry"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                    <tr>
+                        <td>Blog entry</td>
+                        <td>
+                            <select name="blog-entry-id">
+                            #foreach ($blogEntry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
+                                <option value="$blogEntry.getPermalink()">$blogEntry.getTitle()</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Select entry to delete"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
     </body>
 </html>

@@ -58,7 +58,7 @@ import java.util.Map;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.1 2003-11-20 03:02:02 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.2 2003-11-21 01:53:08 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -78,6 +78,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_ENTRIES_ACTION = "edit-blog-entries";
     private static final String EDIT_BLOG_ENTRY_ACTION = "edit-blog-entry";
     private static final String UPDATE_BLOG_ENTRY_ACTION = "update-blog-entry";
+    private static final String DELETE_BLOG_ENTRY_ACTION = "delete-blog-entry";
 
     // Form elements
     private static final String BLOG_CATEGORY_NAME = "blog-category-name";
@@ -234,6 +235,37 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryToUpdate.setDescription(blogEntryDescription);
                     entryToUpdate.save(user.getBlog());
                     _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
+                } else {
+                    _logger.debug("No entries found in category: " + blogCategoryName);
+                }
+            } catch (BlojsomFetcherException e) {
+                _logger.error(e);
+                entries = new BlogEntry[0];
+            } catch (BlojsomException e) {
+                _logger.error(e);
+                entries = new BlogEntry[0];
+            }
+        } else if (DELETE_BLOG_ENTRY_ACTION.equals(action)) {
+            _logger.debug("User requested delete blog entry action");
+
+            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
+            _logger.debug("Blog entry id: " + blogEntryId);
+
+            BlogCategory category;
+            category = _fetcher.newBlogCategory();
+            category.setCategory(blogCategoryName);
+            category.setCategoryURL(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(blogCategoryName));
+
+            Map fetchMap = new HashMap();
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, category);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, blogEntryId);
+            try {
+                entries = _fetcher.fetchEntries(fetchMap, user);
+                if (entries != null) {
+                    _logger.debug("Retrieved " + entries.length + " entries from category: " + blogCategoryName);
+                    entries[0].delete(user.getBlog());
                 } else {
                     _logger.debug("No entries found in category: " + blogCategoryName);
                 }
