@@ -14,7 +14,7 @@
             </p>
             <p>
                 As indicated in the
-                <link href="site:install">installation</link> documentation, the value for the
+                <link href="site:installation">installation</link> documentation, the value for the
                 <em>blog-comments-enabled</em>
                 parameter can be either
                 <em>true</em> or

@@ -11,7 +11,7 @@
             <p>
                 The blojsom plugin API was designed to be very straightforward. A developer that wants to write a plugin
                 for blojsom will implement the
-                <link href="javadoc/org/blojsom/plugin/BlojsomPlugin.html">BlojsomPlugin</link> interface.
+                <a href="javadoc/org/blojsom/plugin/BlojsomPlugin.html">BlojsomPlugin</a> interface.
                 This interface defines 4 methods that must be overridden:
             </p>
             <ul>
@@ -54,8 +54,8 @@
             </p>
             <p>
                 If you are considering writing a plugin, take a look at the source code for the
-                <link href="javadoc/org/blojsom/plugin/HyperlinkURLPlugin.html">Hyperlink URL plugin</link> or the
-                <link href="javadoc/org/blojsom/plugin/MacroExpansionPlugin.html">Macro Expansion plugin</link>.
+                <a href="javadoc/org/blojsom/plugin/HyperlinkURLPlugin.html">Hyperlink URL plugin</a> or the
+                <a href="javadoc/org/blojsom/plugin/MacroExpansionPlugin.html">Macro Expansion plugin</a>.
             </p>
         </section>
         <section>

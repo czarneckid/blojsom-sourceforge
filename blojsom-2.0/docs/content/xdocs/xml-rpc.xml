@@ -54,11 +54,11 @@
             <p>
                 If you are writing a custom XML-RPC handler for blojsom, you must write your class to implement
                 the
-                <link href="javadoc/org/blojsom/extension/xmlrpc/handlers/AbstractBlojsomAPIHandler.html">AbstractBlojsomAPIHandler</link> interface.
+                <a href="javadoc/org/blojsom/extension/xmlrpc/handlers/AbstractBlojsomAPIHandler.html">AbstractBlojsomAPIHandler</a> interface.
                 Take a look at the source code for the
-                <link href="javadoc/org/blojsom/extension/xmlrpc/handlers/BloggerAPIHandler.html">BloggerAPIHandler</link>
+                <a href="javadoc/org/blojsom/extension/xmlrpc/handlers/BloggerAPIHandler.html">BloggerAPIHandler</a>
                 and the
-                <link href="javadoc/org/blojsom/extension/xmlrpc/handlers/MetaWeblogAPIHandler.html">MetaWeblogAPIHandler</link> to see how it's
+                <a href="javadoc/org/blojsom/extension/xmlrpc/handlers/MetaWeblogAPIHandler.html">MetaWeblogAPIHandler</a> to see how it's
                 done.
             </p>
 

@@ -24,7 +24,7 @@
                 <li>
                     <p>Uses the file system (folders and files) as its content database. blojsom can support
                         any backend storage mechanism through a specific implementation of the
-                        <link href="javadoc/org/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</link> interface.
+                        <a href="javadoc/org/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</a> interface.
                     </p>
                 </li>
                 <li>Allows you to configure the file types that blojsom treats as blog entries (defaults to .txt and .html).</li>
@@ -46,7 +46,7 @@
                     </p>
                     <p>
                         Have another display technology you'd like to use? Simply extend the
-                        <link href="javadoc/org/blojsom/dispatcher/BlojsomDispatcher.html">BlojsomDispatcher</link>
+                        <a href="javadoc/org/blojsom/dispatcher/BlojsomDispatcher.html">BlojsomDispatcher</a>
                         interface and configure a mapping file so that blojsom knows how to map the template extension to the proper
                         dispatcher. That's it!
                     </p>

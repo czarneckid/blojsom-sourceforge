@@ -171,9 +171,9 @@
             <answer>
                 <p>
                     Yes. blojsom includes an
-                    <link href="javadoc/org/blojsom/extension/xmlrpc/package-summary.html">XML-RPC servlet</link>
+                    <a href="javadoc/org/blojsom/extension/xmlrpc/package-summary.html">XML-RPC servlet</a>
                     and
-                    <link href="javadoc/org/blojsom/extension/xmlrpc/handlers/package-summary.html">XML-RPC handlers</link>
+                    <a href="javadoc/org/blojsom/extension/xmlrpc/handlers/package-summary.html">XML-RPC handlers</a>
                     for the
                     <link href="http://plant.blogger.com/api/index.html">Blogger API</link> and
                     the
@@ -207,7 +207,7 @@
                 <p>
                     As blojsom users write plugins for blojsom, we will maintain a list of plugins for blojsom.
                     Starting with blojsom 1.4, there are a number of plugins available using the
-                    <link href="javadoc/org/blojsom/plugin/package-summary.html">plugin API</link>.
+                    <a href="javadoc/org/blojsom/plugin/package-summary.html">plugin API</a>.
                 </p>
             </answer>
         </faq>

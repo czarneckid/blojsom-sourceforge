@@ -291,7 +291,7 @@
             <title>Writing a blojsom custom dispatcher</title>
             <p>
                 For now, check out the
-                <link href="javadoc/index.html">javadocs</link> and the source code for the
+                <a href="javadoc/index.html">javadocs</a> and the source code for the
                 JSPDispatcher and VelocityDispatcher. It's pretty straightforward.
             </p>
             <p>
