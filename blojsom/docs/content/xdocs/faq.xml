@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE faqs PUBLIC "-//APACHE//DTD FAQ V1.2//EN" "dtd/faq-v12.dtd">
 
-<faqs title="Frequently Asked Questions">
+<faqs title="frequently asked questions">
     <authors>
       <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>      
     </authors>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+
+<document>
+    <header>
+        <title>upgrading</title>
+        <authors>
+            <person id="czarneckid" name="David Czarnecki" email="czarneckid@users.sf.net"/>
+        </authors>
+    </header>
+    <body>
+        <section>
+            <title>Upgrading</title>
+            <section>
+                <title>Upgrading from blojsom 1.9.3 to blojsom 1.9.4</title>
+                <p>No changes required</p>
+            </section>
+            <section>
+                <title>Upgrading from blojsom 1.9.2 to blojsom 1.9.3</title>
+                <p>No changes required</p>
+            </section>
+            <section>
+                <title>Upgrading from blojsom 1.9.1 to blojsom 1.9.2</title>
+                <p>No changes required</p>
+            </section>
+        </section>
+    </body>
+</document>

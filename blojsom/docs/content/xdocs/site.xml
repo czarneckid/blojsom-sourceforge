@@ -23,6 +23,7 @@ See http://xml.apache.org/forrest/linking.html for more info
         <installation label="Installation" href="install.html"/>
         <customization label="Customization" href="custom.html"/>
         <FAQ label="FAQ" href="faq.html"/>
+        <index label="Upgrading" href="upgrading.html"/>
         <changelog label="Changelog" href="changes.html"/>
     </about>
 
