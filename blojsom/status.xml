@@ -13,6 +13,16 @@
                 Added <tt>getEscapedBlogName</tt> and <tt>getEscapedBlogDescription</tt> to
                 the <tt>Blog</tt> class.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Changed the "Show Me More" plugin so that if the cutoff length defined is less
+                than or equal to 0 (&lt;=0) that the full text of the entry will be displayed.
+                The plugin's default value for the cutoff length is now -1.
+                <p></p>
+                Also added "BLOJSOM_PLUGIN_SMM_ENABLED" as a context variable output by the
+                "Show Me More" plugin. If the plugin is used in a particular plugin chain,
+                this variable will be populated with a <tt>Boolean</tt> object set to true.
+            </action>
         </release>
 
         <release version="1.9.5" date="July 27, 2003">
