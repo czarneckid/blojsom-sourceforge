@@ -120,12 +120,266 @@
             </action>
         </release>
 
-        <release version="1.4.1" date="March 5, 2003">
-            <action dev="czarneckid" type="fix" context="Core" fixes-bug="697993">
-                Invalid permalink causes NullPointerException
+        <release version="1.9" date="June 2, 2003">
+            <action dev="czarneckid" type="add" context="General">
+                New
+                <i>blacklist.filter</i> file contains regular expressions for use by extensions and plugins to filter content
             </action>
-            <action dev="czarneckid" type="fix" context="Core" fixes-bug="697996">
-                Permalink request can be generated for arbitrary files
+            <action dev="czarneckid" type="update" context="Core">
+                An ETag header is now generated along with the Last-Modified header
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                New
+                <a href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</a> (RSD) flavor provides support for tools like
+                <a href="http://www.audblog.com">AudBlog</a>
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from
+                <i>blog-entry-filename.meta</i>
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Added "Eclipse" theme courtesy of
+                <a href="http://dmartin.org/blog/">Dan Martin</a>
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Added "Shrubbery" theme courtesy of
+                <a href="http://acrump.info/blog/">Andrew Crump</a>
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Normalized mechanism for blojsom to share certain templates across themes (e.g. trackback success and failure pages)
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Added
+                <i>blog-file-encoding</i> parameter to
+                <i>blojsom.properties</i> so that blog entries/comments/trackbacks could
+                be read and written using a particular file encoding. By default, blojsom uses UTF-8 as the
+                file encoding
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added new class
+                <tt>org.ignition.blojsom.BlojsomException</tt> and changed the 2 other
+                exception classes to subclass from this root exception class
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Added
+                <tt>Blog</tt> as a parameter to the
+                <tt>GenericDispatcher.init()</tt> method
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                All setXXX methods in the
+                <tt>Blog</tt> class have been deprecated
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>loadEntry(Blog blog)</tt>,
+                <tt>saveEntry(Blog blog)</tt>,  and
+                <tt>deleteEntry(Blog blog)</tt>
+                to the
+                <tt>BlogEntry</tt> class. These are overridden in a concrete implementation like
+                <tt>FileBackedBlogEntry</tt> of this class
+                to persist the blog entry
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>setAttribute(Map attributeMap)</tt> to the
+                <tt>BlogEntry</tt> class. Concrete implementations of
+                this class such as the
+                <tt>FileBackedBlogEntry</tt> can use this method to allow attributes to be set
+                on the subclass that are not defined in the
+                <tt>BlogEntry</tt> class
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>public abstract BlogEntry newBlogEntry()</tt> method to the
+                <tt>BlojsomFetcher</tt> class.
+                This method is intended to be used to retrieve a new
+                <tt>BlogEntry</tt> class appropriate for
+                the particular Fetcher class that is used by the blog. For example, in the
+                <tt>StandardFetcher</tt>
+                class, this method will return an instance of
+                <tt>FileBackedBlogEntry</tt>
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Changed various methods in the
+                <tt>StandardFetcher</tt> class to be
+                <tt>protected</tt> so that
+                they can be overridden by subclasses
+            </action>
+            <action dev="czarneckid" type="update" context="Extension">
+                Changed Blogger and MetaWeblog API handlers to use the new persistence methods on the
+                <tt>BlogEntry</tt> class. This removes any strict dependency on these APIs from knowledge of the
+                type of blog entry it is dealing with
+            </action>
+
+            <action dev="czarneckid" type="update" context="Extension">
+                The
+                <tt>newPost()</tt> methods for the Blogger and MetaWebLog API now stores the poster's user id as entry
+                meta-data. Template authors can now get the posting user id from the entry meta-data under the
+                key,
+                <tt>blog-entry-author</tt>
+            </action>
+            <action dev="czarneckid" type="add" context="Extension">
+                Implementation of the Blogger API
+                <tt>getUserInfo()</tt> method to allow services like
+                <a href="http://www.audblog.com">AudBlog</a> to work
+            </action>
+            <action dev="czarneckid" type="update" context="Extension">
+                File extension for entries posted via XML-RPC is now configurable via the
+                <i>blog-xmlrpc-entry-extension</i>
+                parameter that can be added to
+                <i>blojsom.properties</i>. If not specified, this parameter defaults to
+                <i>.txt</i>
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugins">
+                Persisted "Remember Me" checkbox value in Comments Plugin
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                Referer plugin filters previously saved referer log through the blacklist filter at startup
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                Referer plugin now utilizes the new
+                <i>blacklist.filter</i> file to filter referer entries
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                Referer plugin was doing some detailed logging that it did not need to do so these debug statements have been removed
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                A new parameter "entry-cutoff-text" was added to the "Show More" plugin so that you can put,
+                for example, a tag like &lt;more/&gt; to indicate the cutoff point for the plugin to insert a link
+                to the full text of the blog entry.
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                Added check in the "Show More" plugin to catch an invalid number for the
+                <i>entry-length-cutoff</i>
+                parameter. It will default to 400 if the number is invalid
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added
+                <a href="plugins-googlehighlight.html">Google Highlight Plugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added
+                <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</a>
+                which simply demonstrates how to sort entries in a different order
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added
+                <a href="plugins-preview.html">Preview Plugin</a>
+                (courtesy of Nick Chalko) which allows you to "hide" entries by including a configurable prefix
+                at the beginning of the title of your blog entries
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added
+                <a href="plugins-textile.html">Textile Plugin</a> which allows you to write entries using
+                the Textile syntax
+            </action>
+
+            <action dev="czarneckid" type="update" context="Library">
+                Upgraded Jakarta Commons Logging package to 1.0.3
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Extension" fixes-bug="730576">
+                Blogger API getRecentPosts sends invalid dateCreated
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="734997">
+                Aggregating "/" category leads to blank category name
+            </action>
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="736842">
+                Macro expansion plugin fails on non-lowercase keys
+            </action>
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="744752">
+                NPE in RefererLog Plugin when Blacklist file is not configured
+            </action>
+            <action dev="czarneckid" type="fix" context="Extension" fixes-bug="745840">
+                BloggerAPI.getRecentPosts() returns wrong postid
+            </action>
+            <action dev="czarneckid" type="fix" context="Extension" fixes-bug="746396">
+                BloggerAPI.deletePost() cannot delete entries with spaces
+            </action>
+
+        </release>
+
+        <release version="1.8" date="April 28, 2003">
+            <action dev="czarneckid" type="add" context="Extension">
+                Support for the
+                <a href="http://wellformedweb.org/story/9">CommentAPI</a> has been added. This API allows comment on blog entries from within aggregators
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Trackback auto-discovery content (commented rdf document) has been added to permalink views, comment view and trackback views
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                The Comments plugin has been updated to do duplicate submission detection based on author name and comment body
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                All the templates have been cleaned up a bit, moving appropriate content out to the stylesheets to facilitate skining
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Updated the JSP templates to include Search, Calendar Navigation and Referers (NOTE: Calendar uses the VelocityCalendarPlugin as a helper)
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                blojsom no longer displays entries in the future
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Added category display to the output of the main index templates
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Added "Remember Me" checkbox to Secondwave comment template
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>Map getMetaData()</tt> and
+                <tt>setMetaData(Map metaData)</tt> methods to
+                <tt>BlogEntry</tt>
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                RSS 2.0 feeds now include
+                <a href="http://dublincore.org/">Dublin Core</a> &lt;creator/&gt; and &lt;publisher/&gt; elements
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                RSS version changed to 0.92 as this is the version of the RSS specification output with the RSS flavor
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added the
+                <a href="javadoc/org/ignition/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</a> interface and
+                the
+                <a href="javadoc/org/ignition/blojsom/fetcher/StandardFetcher.html">StandardFetcher</a> implementation of that interface.
+                The
+                <tt>BlojsomFetcher</tt> interface was added to allow for abstraction of the underlying datasource from
+                which blojsom retrieves categories and entries. This would allow implementations to be written which
+                cache or lazy load blog entries or retrieve categories and entries from a database
+            </action>
+
+            <action dev="czarneckid" type="update" context="Extension">
+                Blogger API handler renamed to
+                <tt>org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler</tt>
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugins">
+                Added trimming of whitespace for parameters to Trackback and Comment plugins
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                Added "BLOJSOM_LAST_MODIFIED" to session so that Last-Modified can be persisted when new comments or trackbacks are added
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                Corrected range checking for Entries Limiter plugin
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Plugins" fixes-bug="721602">
+                Trackback plugin creates URL to comments page
+            </action>
+            <action dev="czarneckid" type="fix" context="Extension" fixes-bug="722277">
+                HTML encoded return from Blogger API's getRecentPosts()
+            </action>
+
+            <action dev="czarneckid" type="rfe" context="Extension" fixes-bug="722275">
+                Add support for deletePost() to Blogger API
+            </action>
+        </release>
+
+        <release version="1.7.2" date="April 16, 2003">
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="721510">
+                blojsom incorrectly sets last-modified
             </action>
         </release>
 
@@ -410,6 +664,15 @@
 
             <action dev="czarneckid" type="fix" context="Plugins" fixes-bug="698768">
                 Adding Comments does not render comments after post
+            </action>
+        </release>
+
+        <release version="1.4.1" date="March 5, 2003">
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="697993">
+                Invalid permalink causes NullPointerException
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="697996">
+                Permalink request can be generated for arbitrary files
             </action>
         </release>
 
