@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,7 +41,7 @@ import org.blojsom.BlojsomException;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcherException.java,v 1.2 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: BlojsomFetcherException.java,v 1.3 2005-01-05 02:32:58 czarneckid Exp $
  */
 public class BlojsomFetcherException extends BlojsomException {
 

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -50,7 +50,7 @@ import java.util.ResourceBundle;
  * ResourceBundleResourceManager
  *
  * @author David Czarnecki
- * @version $Id: ResourceBundleResourceManager.java,v 1.4 2004-11-16 16:09:15 czarneckid Exp $
+ * @version $Id: ResourceBundleResourceManager.java,v 1.5 2005-01-05 02:33:13 czarneckid Exp $
  * @since blojsom 2.13
  */
 public class ResourceBundleResourceManager implements BlojsomConstants, ResourceManager {

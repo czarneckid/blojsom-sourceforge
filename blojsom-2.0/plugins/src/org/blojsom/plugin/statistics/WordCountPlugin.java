@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -53,7 +53,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 2.15
- * @version $Id: WordCountPlugin.java,v 1.1 2004-07-05 18:53:20 czarneckid Exp $
+ * @version $Id: WordCountPlugin.java,v 1.2 2005-01-05 02:32:32 czarneckid Exp $
  */
 public class WordCountPlugin implements BlojsomPlugin {
 

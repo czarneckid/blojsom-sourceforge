@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -52,7 +52,7 @@ import java.util.Properties;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.12 2004-08-31 13:15:50 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.13 2005-01-05 02:30:57 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {

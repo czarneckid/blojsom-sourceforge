@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,7 +41,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEvent.java,v 1.1 2004-08-31 20:14:44 czarneckid Exp $
+ * @version $Id: BlojsomEvent.java,v 1.2 2005-01-05 02:32:54 czarneckid Exp $
  */
 public class BlojsomEvent {
 

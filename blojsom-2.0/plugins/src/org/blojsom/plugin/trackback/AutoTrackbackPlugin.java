@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.12 2004-11-08 04:00:09 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.13 2005-01-05 02:32:33 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 

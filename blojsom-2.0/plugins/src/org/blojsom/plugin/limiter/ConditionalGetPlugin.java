@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -56,7 +56,7 @@ import java.util.ArrayList;
  * ConditionalGetPlugin
  *
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.11 2004-02-13 03:14:55 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.12 2005-01-05 02:31:56 czarneckid Exp $
  * @since blojsom 2.08
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {

@@ -1,9 +1,9 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
- * Portions Copyright (c) 2003-2004 by Nick Chalko
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Nick Chalko
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -57,7 +57,7 @@ import java.util.Map;
  *
  * @author <a href="http://nick.chalko.com"/>Nick Chalko</a>
  * @author David Czarnecki
- * @version $Id: PreviewPlugin.java,v 1.2 2004-03-21 14:30:52 czarneckid Exp $
+ * @version $Id: PreviewPlugin.java,v 1.3 2005-01-05 02:32:06 czarneckid Exp $
  * @since blojsom 1.9
  */
 public class PreviewPlugin implements BlojsomPlugin {

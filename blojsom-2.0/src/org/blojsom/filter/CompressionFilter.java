@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -54,7 +54,7 @@ import java.io.IOException;
  * and the JSP/Servlet/J2EE community.
  *
  * @since blojsom 2.10
- * @version $Id: CompressionFilter.java,v 1.10 2004-03-09 02:04:19 czarneckid Exp $
+ * @version $Id: CompressionFilter.java,v 1.11 2005-01-05 02:32:58 czarneckid Exp $
  */
 public class CompressionFilter implements Filter, BlojsomConstants {
 

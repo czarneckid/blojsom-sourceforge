@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -53,7 +53,7 @@ import java.io.PrintWriter;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
- * @version $Id: GZIPResponseWrapper.java,v 1.2 2004-03-09 02:04:19 czarneckid Exp $
+ * @version $Id: GZIPResponseWrapper.java,v 1.3 2005-01-05 02:32:59 czarneckid Exp $
  * @since blojsom 2.10
  */
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {

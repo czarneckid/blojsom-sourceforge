@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.19 2004-12-03 14:36:01 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.20 2005-01-05 02:32:52 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {

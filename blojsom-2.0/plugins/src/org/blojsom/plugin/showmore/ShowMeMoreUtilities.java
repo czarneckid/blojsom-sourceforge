@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -48,7 +48,7 @@ import java.util.Properties;
  * Show Me More Utilities
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreUtilities.java,v 1.1 2004-10-28 20:50:44 czarneckid Exp $
+ * @version $Id: ShowMeMoreUtilities.java,v 1.2 2005-01-05 02:32:29 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class ShowMeMoreUtilities {

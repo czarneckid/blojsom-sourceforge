@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -53,7 +53,7 @@ import java.util.Properties;
  * PropertiesAuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: PropertiesAuthorizationProvider.java,v 1.1 2004-06-03 01:13:03 czarneckid Exp $
+ * @version $Id: PropertiesAuthorizationProvider.java,v 1.2 2005-01-05 02:32:37 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class PropertiesAuthorizationProvider implements AuthorizationProvider, BlojsomConstants {

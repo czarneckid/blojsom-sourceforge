@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  * BlojsomProperties by Jorg Prante
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jorg Prante
- * @version $Id: BlojsomProperties.java,v 1.9 2004-11-05 03:58:32 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.10 2005-01-05 02:33:03 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class BlojsomProperties extends Properties implements BlojsomConstants {

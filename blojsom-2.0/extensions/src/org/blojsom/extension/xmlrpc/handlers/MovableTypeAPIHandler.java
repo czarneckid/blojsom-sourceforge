@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -57,7 +57,7 @@ import java.util.Vector;
  * <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">MovableType API</a> handler
  *
  * @author David Czarnecki
- * @version $Id: MovableTypeAPIHandler.java,v 1.1 2004-10-26 19:09:08 czarneckid Exp $
+ * @version $Id: MovableTypeAPIHandler.java,v 1.2 2005-01-05 02:31:17 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class MovableTypeAPIHandler extends AbstractBlojsomAPIHandler {

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.9 2004-06-17 03:31:39 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.10 2005-01-05 02:32:06 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 

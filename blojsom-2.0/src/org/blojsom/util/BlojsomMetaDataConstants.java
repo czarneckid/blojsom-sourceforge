@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,7 +38,7 @@ package org.blojsom.util;
  * BlojsomMetaDataConstants
  *
  * @author David Czarnecki
- * @version $Id: BlojsomMetaDataConstants.java,v 1.4 2004-04-26 00:37:17 intabulas Exp $
+ * @version $Id: BlojsomMetaDataConstants.java,v 1.5 2005-01-05 02:33:03 czarneckid Exp $
  * @since blojsom 2.04
  */
 public interface BlojsomMetaDataConstants {

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004, David A. Czarnecki
+ * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004 by Mark Lussier
+ * Portions Copyright (c) 2003-2005 by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -61,7 +61,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.13
- * @version $Id: GroovyDispatcher.java,v 1.2 2004-03-13 16:56:31 czarneckid Exp $
+ * @version $Id: GroovyDispatcher.java,v 1.3 2005-01-05 02:30:56 czarneckid Exp $
  */
 public class GroovyDispatcher implements BlojsomDispatcher {
 

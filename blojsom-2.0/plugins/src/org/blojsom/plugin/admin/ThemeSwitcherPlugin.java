@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2004 , David A. Czarnecki
+ * Copyright (c) 2003-2005 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2004  by Mark Lussier
+ * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -58,7 +58,7 @@ import java.util.Properties;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.4 2004-12-27 18:48:47 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.5 2005-01-05 02:31:21 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
