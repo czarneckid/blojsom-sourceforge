@@ -44,11 +44,11 @@ import java.util.*;
 
 /**
  * Blog
- *
+ * 
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.10 2003-11-20 03:03:06 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.11 2003-12-05 01:53:21 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -76,6 +76,7 @@ public class Blog implements BlojsomConstants {
     private String _blogTrackbackDirectory;
     private String _blogEntryMetaDataExtension;
     private String _blogFileEncoding;
+    private String _blogDefaultFlavor;
 
     private Map _blogProperties;
 
@@ -83,7 +84,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Create a blog with the supplied configuration properties
-     *
+     * 
      * @param blogConfiguration Blog configuration properties
      * @throws BlojsomConfigurationException If there is an error configuring the blog
      */
@@ -258,11 +259,18 @@ public class Blog implements BlojsomConstants {
         _blogFileEncoding = blogFileEncoding;
         _blogProperties.put(BLOG_FILE_ENCODING_IP, blogFileEncoding);
 
+        String blogDefaultFlavor = blogConfiguration.getProperty(BLOG_DEFAULT_FLAVOR_IP);
+        if (blogDefaultFlavor == null || "".equals(blogDefaultFlavor)) {
+            blogDefaultFlavor = DEFAULT_FLAVOR_HTML;
+        }
+        _blogDefaultFlavor = blogDefaultFlavor;
+
         _logger.info("blojsom home: " + _blogHome);
     }
 
     /**
      * Check to see if a username and password is valid for this blog
+     * 
      * @param username Username of the user
      * @param password Password for the Username
      * @return True if the user is authenticated
@@ -281,7 +289,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the directory where blog entries are stored
-     *
+     * 
      * @return Blog home directory
      */
     public String getBlogHome() {
@@ -290,7 +298,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the list of blog file extensions
-     *
+     * 
      * @return Blog file extensions
      */
     public String[] getBlogFileExtensions() {
@@ -299,7 +307,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the list of blog properties file extensions
-     *
+     * 
      * @return Blog proprties extensions
      */
     public String[] getBlogPropertiesExtensions() {
@@ -308,7 +316,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the depth to which blog entries will be searched
-     *
+     * 
      * @return Blog depth
      */
     public int getBlogDepth() {
@@ -317,7 +325,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Name of the blog
-     *
+     * 
      * @return Blog name
      */
     public String getBlogName() {
@@ -326,9 +334,9 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Returns the HTML escaped name of the blog
-     *
-     * @since blojsom 1.9.6
+     * 
      * @return Name of the blog that has been escaped
+     * @since blojsom 1.9.6
      */
     public String getEscapedBlogName() {
         return BlojsomUtils.escapeString(_blogName);
@@ -336,7 +344,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Description of the blog
-     *
+     * 
      * @return Blog description
      */
     public String getBlogDescription() {
@@ -345,9 +353,9 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Returns the HTML escaped description of the blog
-     *
-     * @since blojsom 1.9.6
+     * 
      * @return Description of the blog that has been escaped
+     * @since blojsom 1.9.6
      */
     public String getEscapedBlogDescription() {
         return BlojsomUtils.escapeString(_blogDescription);
@@ -355,7 +363,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * URL for the blog
-     *
+     * 
      * @return Blog URL
      */
     public String getBlogURL() {
@@ -364,7 +372,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Base URL for the blog
-     *
+     * 
      * @return Blog base URL
      */
     public String getBlogBaseURL() {
@@ -373,7 +381,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Language of the blog
-     *
+     * 
      * @return Blog language
      */
     public String getBlogLanguage() {
@@ -382,9 +390,9 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Country of the blog
-     *
-     * @since blojsom 1.9.5
+     * 
      * @return Country for the blog
+     * @since blojsom 1.9.5
      */
     public String getBlogCountry() {
         return _blogCountry;
@@ -392,7 +400,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the number of blog entries to retrieve from the individual categories
-     *
+     * 
      * @return Blog entries to retrieve from the individual categories
      */
     public int getBlogDisplayEntries() {
@@ -401,7 +409,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the list of categories that should be mapped to the default category '/'
-     *
+     * 
      * @return List of categories
      */
     public String[] getBlogDefaultCategoryMappings() {
@@ -411,9 +419,9 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the Username/Password table used for blog authorization.
      * NOTE: This method can only be called once per Blog instances
-     *
+     * 
      * @param authorization HashMap of Usernames and Passwords
-     * @return  True is the authorization table was assigned, otherwise false
+     * @return True is the authorization table was assigned, otherwise false
      */
     public boolean setAuthorization(Map authorization) {
         boolean result = false;
@@ -427,7 +435,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Returns the authorization map for this blog
-     *
+     * 
      * @return Map of authorization usernames/passwords
      */
     public Map getAuthorization() {
@@ -437,7 +445,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the blog owner's e-mail address
-     *
+     * 
      * @return Blog owner's e-mail
      */
     public String getBlogOwnerEmail() {
@@ -446,7 +454,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return the blog owner's name
-     *
+     * 
      * @return Blog owner's name
      */
     public String getBlogOwner() {
@@ -455,7 +463,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Returns a read-only view of the properties for this blog
-     *
+     * 
      * @return Map of blog properties
      */
     public Map getBlogProperties() {
@@ -465,7 +473,7 @@ public class Blog implements BlojsomConstants {
     /**
      * Get the directory where blog comments will be written to under the individual blog
      * category directories
-     *
+     * 
      * @return Blog comments directory
      */
     public String getBlogCommentsDirectory() {
@@ -474,7 +482,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Get the list of directories that should be filtered when looking for categories
-     *
+     * 
      * @return Blog directory filter list
      */
     public String[] getBlogDirectoryFilter() {
@@ -484,7 +492,7 @@ public class Blog implements BlojsomConstants {
     /**
      * Get the directory where blog trackbacks will be written to under the individual blog
      * category directories
-     *
+     * 
      * @return Blog trackbacks directory
      */
     public String getBlogTrackbackDirectory() {
@@ -493,7 +501,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return whether or not comments are enabled
-     *
+     * 
      * @return Whether or not comments are enabled
      */
     public Boolean getBlogCommentsEnabled() {
@@ -502,9 +510,9 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return whether or not trackbacks are enabled
-     *
-     * @since blojsom 1.9.5
+     * 
      * @return <code>true</code> if trackbacks are enabled, <code>false</code> otherwise
+     * @since blojsom 1.9.5
      */
     public Boolean getBlogTrackbacksEnabled() {
         return _blogTrackbacksEnabled;
@@ -512,7 +520,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Get whether or not email is enabled
-     *
+     * 
      * @return Whether or not email is enabled
      */
     public Boolean getBlogEmailEnabled() {
@@ -521,9 +529,9 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Get the file extension for blog entry meta-data
-     *
-     * @since blojsom 1.9
+     * 
      * @return Meta-data file extension
+     * @since blojsom 1.9
      */
     public String getBlogEntryMetaDataExtension() {
         return _blogEntryMetaDataExtension;
@@ -531,9 +539,9 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Get the file encoding for blog entries
-     *
-     * @since blojsom 1.9
+     * 
      * @return File encoding
+     * @since blojsom 1.9
      */
     public String getBlogFileEncoding() {
         return _blogFileEncoding;
@@ -541,10 +549,10 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Return a named property from the blog properties
-     *
-     * @since blojsom 1.9
+     * 
      * @param propertyName Name of the property to retrieve
      * @return Property value as a string or <code>null</code> if the property is not found
+     * @since blojsom 1.9
      */
     public String getBlogProperty(String propertyName) {
         if (_blogProperties.containsKey(propertyName)) {
@@ -555,8 +563,18 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Get the default flavor for this blog
+     * 
+     * @return Default blog flavor
+     * @since blojsom 2.05
+     */
+    public String getBlogDefaultFlavor() {
+        return _blogDefaultFlavor;
+    }
+
+    /**
      * Set the new name for the blog
-     *
+     * 
      * @param blogName Blog name
      */
     public void setBlogName(String blogName) {
@@ -566,7 +584,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new description for the blog
-     *
+     * 
      * @param blogDescription Blog description
      */
     public void setBlogDescription(String blogDescription) {
@@ -576,7 +594,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new URL for the blog
-     *
+     * 
      * @param blogURL Blog URL
      */
     public void setBlogURL(String blogURL) {
@@ -586,7 +604,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new base URL for the blog
-     *
+     * 
      * @param blogBaseURL Blog base URL
      */
     public void setBlogBaseURL(String blogBaseURL) {
@@ -596,7 +614,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new 2 letter country code for the blog
-     *
+     * 
      * @param blogCountry Blog country code
      */
     public void setBlogCountry(String blogCountry) {
@@ -606,7 +624,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new 2 letter language code for the blog
-     *
+     * 
      * @param blogLanguage Blog language code
      */
     public void setBlogLanguage(String blogLanguage) {
@@ -616,7 +634,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the depth to which blojsom should look for directories, where -1 indicates infinite depth search
-     *
+     * 
      * @param blogDepth Blog directory depth
      */
     public void setBlogDepth(int blogDepth) {
@@ -626,7 +644,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the number of entries to display at one time, where -1 indicates to display all entries
-     *
+     * 
      * @param blogDisplayEntries Blog display entries
      */
     public void setBlogDisplayEntries(int blogDisplayEntries) {
@@ -636,7 +654,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new default blog category mappings
-     *
+     * 
      * @param blogDefaultCategoryMappings Blog default category mappings
      */
     public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
@@ -646,7 +664,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new blog owner name
-     *
+     * 
      * @param blogOwner Blog owner
      */
     public void setBlogOwner(String blogOwner) {
@@ -656,7 +674,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new blog owner e-mail address
-     *
+     * 
      * @param blogOwnerEmail Blog owner e-mail
      */
     public void setBlogOwnerEmail(String blogOwnerEmail) {
@@ -666,7 +684,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set whether blog comments are enabled
-     *
+     * 
      * @param blogCommentsEnabled <code>true</code> if comments are enabled, <code>false</code> otherwise
      */
     public void setBlogCommentsEnabled(Boolean blogCommentsEnabled) {
@@ -676,7 +694,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set whether emails are sent on blog comments and trackbacks
-     *
+     * 
      * @param blogEmailEnabled <code>true</code> if email of comments and trackbacks is enabled, <code>false</code> otherwise
      */
     public void setBlogEmailEnabled(Boolean blogEmailEnabled) {
@@ -686,7 +704,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set whether blog trackbacks are enabled
-     *
+     * 
      * @param blogTrackbacksEnabled <code>true</code> if trackbacks are enabled, <code>false</code> otherwise
      */
     public void setBlogTrackbacksEnabled(Boolean blogTrackbacksEnabled) {
@@ -696,7 +714,7 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new blog file encoding
-     *
+     * 
      * @param blogFileEncoding Blog file encoding
      */
     public void setBlogFileEncoding(String blogFileEncoding) {
@@ -706,8 +724,8 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new blog default category mapping for a particular flavor
-     *
-     * @param flavorKey Flavor key (must end in blog-default-category-mapping)
+     * 
+     * @param flavorKey                  Flavor key (must end in blog-default-category-mapping)
      * @param blogDefaultCategoryMapping New blog category mapping
      */
     public void setBlogDefaultCategoryMappingForFlavor(String flavorKey, String blogDefaultCategoryMapping) {
@@ -718,11 +736,21 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the new set of blog file extensions
-     *
+     * 
      * @param blogFileExtensions Comma-separated list of blog file extensions
      */
     public void setBlogFileExtensions(String blogFileExtensions) {
         _blogFileExtensions = BlojsomUtils.parseCommaList(blogFileExtensions);
         _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, blogFileExtensions);
+    }
+
+    /**
+     * Set the new default flavor for this blog
+     *
+     * @param blogDefaultFlavor New default blog flavor
+     * @since blojsom 2.05
+     */
+    public void setBlogDefaultFlavor(String blogDefaultFlavor) {
+        _blogDefaultFlavor = blogDefaultFlavor;
     }
 }
