@@ -37,22 +37,25 @@ package org.blojsom.plugin.moblog;
 import org.blojsom.blog.BlogUser;
 
 import java.util.Map;
+import java.util.HashMap;
 
 /**
- * Mailbox Definition
- * This file is a container for everything the thread will need to connect to and to store into
+ * Mailbox.
+ * <p/>
+ * This file is a container for everything the thread will need to connect to and to store into.
  *
+ * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.7 2004-05-21 01:36:41 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.8 2004-06-12 23:02:04 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
 
     private static final String DEFAULT_FOLDER = "INBOX";
 
-    private String _hostName = null;
-    private String _userId = null;
-    private String _password = null;
+    private String _hostName;
+    private String _userId;
+    private String _password;
     private String _folder = DEFAULT_FOLDER;
     private String _outputDirectory;
     private String _entriesDirectory;
@@ -64,11 +67,17 @@ public class Mailbox {
     private Map _imageMimeTypes;
     private Map _attachmentMimeTypes;
     private Map _textMimeTypes;
+    private Map _authorizedAddresses;
 
     /**
      * Default constructor.
      */
     public Mailbox() {
+        _enabled = false;
+        _imageMimeTypes = new HashMap();
+        _attachmentMimeTypes = new HashMap();
+        _textMimeTypes = new HashMap();
+        _authorizedAddresses = new HashMap();
     }
 
     /**
@@ -335,5 +344,25 @@ public class Mailbox {
      */
     public void setSecretWord(String secretWord) {
         _secretWord = secretWord;
+    }
+
+    /**
+     * Retrieve the authorized e-mail from addresses for this mailbox
+     *
+     * @return Authorized e-mail from addresses for this mailbox
+     * @since blojsom 2.16
+     */
+    public Map getAuthorizedAddresses() {
+        return _authorizedAddresses;
+    }
+
+    /**
+     * Set the authorized e-mail from addresses for this mailbox
+     *
+     * @param authorizedAddresses Authorized e-mail from addresses for this mailbox
+     * @since blojsom 2.16
+     */
+    public void setAuthorizedAddresses(Map authorizedAddresses) {
+        _authorizedAddresses = authorizedAddresses;
     }
 }
