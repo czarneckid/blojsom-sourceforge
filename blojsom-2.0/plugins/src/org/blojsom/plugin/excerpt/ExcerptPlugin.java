@@ -34,6 +34,8 @@
  */
 package org.blojsom.plugin.excerpt;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
@@ -49,14 +51,16 @@ import java.util.Map;
  * ExcerptPlugin
  *
  * @author Mark Lussier
+ * @version $Id: ExcerptPlugin.java,v 1.3 2004-03-29 23:01:15 intabulas Exp $
  * @since blojsom 2.13
- * @version $Id: ExcerptPlugin.java,v 1.2 2004-03-09 01:43:28 czarneckid Exp $
  */
 public class ExcerptPlugin implements BlojsomPlugin {
 
     private static final String EXCERPT_EXPRESSION = "(^|\\s).*<div class=\"excerpt\">(.*)</div>.*";
     private static final String SHOWME_START = "$2 &nbsp;<a href=\"";
     private static final String SHOWME_FINISH = "&amp;smm=y\">Read More</a>";
+
+    private Log _logger = LogFactory.getLog(ExcerptPlugin.class);
 
     /**
      * Default Constructor
@@ -93,6 +97,10 @@ public class ExcerptPlugin implements BlojsomPlugin {
             BlogEntry entry = entries[i];
             String updatedDescription = entry.getDescription();
             if (updatedDescription.matches(EXCERPT_EXPRESSION)) {
+                _logger.info("Performing Excerpt on " + entry.getTitle());
+                entry.setDescription(updatedDescription.replaceAll(EXCERPT_EXPRESSION, SHOWME_START) + entry.getLink() + SHOWME_FINISH);
+            } else {
+                _logger.info("Nothing to excerpt on " + entry.getTitle());
                 entry.setDescription(updatedDescription.replaceAll(EXCERPT_EXPRESSION, SHOWME_START) + entry.getLink() + SHOWME_FINISH);
             }
         }
