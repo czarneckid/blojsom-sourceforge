@@ -50,7 +50,7 @@ import java.util.*;
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.3 2003-03-31 16:16:17 intabulas Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.4 2003-04-01 00:21:32 intabulas Exp $
  */
 public class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -91,7 +91,6 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
     protected String _blogUrlPrefix;
 
 
-
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
@@ -128,7 +127,7 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
 
         // Was a category part of the URL? If so we want to create href's based on the category
         String requestedCategory = httpServletRequest.getPathInfo();
-        if (requestedCategory== null) {
+        if (requestedCategory == null) {
             requestedCategory = "";
         }
 
@@ -163,6 +162,7 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                 }
 
                 month = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
+
                 if (month == null) {
                     month = "";
                 } else if (month.length() < 2) {
@@ -193,10 +193,15 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                     }
                 }
 
+                if (currentDay > calendar.getMaximum(Calendar.DAY_OF_MONTH)) {
+                    _logger.info("Adjusting DOM to  max maximum for selected month");
+                    currentDay = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+                    calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+                }
+
 
             }
             requestedDateKey = year + month + day;
-            _logger.info("Setting Filter Key = " + requestedDateKey);
 
         } else {
             requestedDateKey = null;
@@ -207,8 +212,6 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
         blogCalendar.setCurrentDay(currentDay);
         blogCalendar.setCurrentYear(currentYear);
         blogCalendar.setRequestedDateKey(requestedDateKey);
-
-
 
         context.put(BLOJSOM_CALENDAR, blogCalendar);
 

@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.11 2003-03-31 16:23:37 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.12 2003-04-01 00:21:32 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -262,6 +262,7 @@ public class BlogCalendar {
      */
     public void setCurrentMonth(int currentmonth) {
         this.currentmonth = currentmonth;
+        _calendar.set( Calendar.MONTH, currentmonth ) ;
     }
 
     /**
@@ -270,6 +271,7 @@ public class BlogCalendar {
      */
     public int getCurrentYear() {
         return currentyear;
+
     }
 
     /**
@@ -278,6 +280,7 @@ public class BlogCalendar {
      */
     public void setCurrentYear(int currentyear) {
         this.currentyear = currentyear;
+        _calendar.set( Calendar.YEAR, currentyear ) ;
     }
 
     /**
@@ -294,6 +297,7 @@ public class BlogCalendar {
      */
     public void setCurrentDay(int currentday) {
         this.currentday = currentday;
+        _calendar.set( Calendar.DAY_OF_MONTH, currentday) ;
     }
 
     // ========================
