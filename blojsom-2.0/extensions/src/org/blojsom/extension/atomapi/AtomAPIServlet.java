@@ -79,7 +79,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.42 2004-07-20 02:12:23 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.43 2004-07-20 02:35:07 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -367,8 +367,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     /**
      * Creates an AtomAPI Introspection response
      *
-     * @param blog Blog Instance
-     * @param user BlogUser Instance
+     * @param blog        Blog Instance
+     * @param user        BlogUser Instance
      * @param servletPath URL path to Atom API servlet
      * @return URL appropriate for introspection
      */
@@ -609,6 +609,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.save(blogUser);
                     entry.load(blogUser);
 
+
                     StringBuffer editURI = new StringBuffer();
                     editURI.append(blog.getBlogURL());
                     String entryId = entry.getId();
@@ -618,6 +619,14 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     httpServletResponse.setContentType(CONTENTTYPE_HTML);
                     httpServletResponse.setHeader(HEADER_LOCATION, editURI.toString());
                     httpServletResponse.setStatus(201);
+
+                    atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
+                    OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
+                    osw.write(Sandler.marshallEntry(atomEntry));
+                    osw.flush();
+                } catch (SerializationException e) {
+                    _logger.error(e.getLocalizedMessage(), e);
+                    httpServletResponse.setStatus(404);
                 } catch (MarshallException e) {
                     _logger.error(e.getLocalizedMessage(), e);
                     httpServletResponse.setStatus(404);
