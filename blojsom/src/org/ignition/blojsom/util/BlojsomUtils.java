@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.55 2003-05-30 00:15:52 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.56 2003-05-31 18:38:10 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -817,5 +817,16 @@ public class BlojsomUtils implements BlojsomConstants {
         value = value.replaceAll("\\.*", "");
         value = value.replaceAll("/{2,}", "");
         return value;
+    }
+
+    /**
+     * Check to see if the given input string is <code>null</code> and if so, return a blank string instead
+     *
+     * @since blojsom 1.9
+     * @param input Input string
+     * @return Blank string if the input string is <code>null</code>, otherwise just return the input string
+     */
+    public static String nullToBlank(String input) {
+        return (input == null) ? "" : input;
     }
 }
