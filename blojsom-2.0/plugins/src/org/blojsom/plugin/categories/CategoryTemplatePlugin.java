@@ -76,7 +76,7 @@ import java.util.Map;
  * blojsom will try to load <code>asual-another-page.vm</code> located in the blog's <code>templates</code> directory.  
  *
  * @author David Czarnecki
- * @version $Id: CategoryTemplatePlugin.java,v 1.1 2005-01-11 16:46:12 czarneckid Exp $
+ * @version $Id: CategoryTemplatePlugin.java,v 1.2 2005-01-11 18:40:42 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class CategoryTemplatePlugin implements BlojsomPlugin, BlojsomConstants {
@@ -120,7 +120,12 @@ public class CategoryTemplatePlugin implements BlojsomPlugin, BlojsomConstants {
         if (BlojsomUtils.checkMapForKey(blogCategory.getMetaData(), CATEGORY_TEMPLATE_METADATA)) {
             String pageForCategory = (String) blogCategory.getMetaData().get(CATEGORY_TEMPLATE_METADATA);
             pageForCategory = BlojsomUtils.normalize(pageForCategory);
+            String currentPageParam = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+            if (!BlojsomUtils.checkNullOrBlank(currentPageParam)) {
+                pageForCategory += "-" + currentPageParam;
+            }
 
+            _logger.debug("Using template for category: " + pageForCategory);
             httpServletRequest.setAttribute(PAGE_PARAM, pageForCategory);
         }
 
