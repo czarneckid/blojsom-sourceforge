@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.5 2003-09-28 03:30:28 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.6 2003-09-30 02:28:13 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -95,6 +95,19 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     private void trackbackAutodiscovery(Blog blog, BlogEntry blogEntry) {
         try {
+            // Build the URL parameters for the trackback ping URL
+            StringBuffer trackbackPingURLParameters = new StringBuffer();
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(blogEntry.getLink(), UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(blogEntry.getTitle(), UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
+
+            String excerpt = blogEntry.getDescription().replaceAll("<.*?>", "");
+            if (excerpt.length() > 255) {
+                excerpt = excerpt.substring(0, 251);
+                excerpt += "...";
+            }
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, UTF8));
+            
             // Extract all the HREF links from the blog description
             Matcher hrefMatcher = HREF_PATTERN.matcher(blogEntry.getDescription());
             while (hrefMatcher.find()) {
@@ -141,16 +154,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                                 if (trackbackPingURL.indexOf("?") == -1) {
                                                     trackbackPingURL.append("?");
                                                 }
-                                                trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(blogEntry.getLink(), UTF8));
-                                                trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(blogEntry.getTitle(), UTF8));
-                                                trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
-
-                                                String excerpt = blogEntry.getDescription().replaceAll("<.*?>","");
-                                                if (excerpt.length() > 255) {
-                                                    excerpt = excerpt.substring(0, 251);
-                                                    excerpt += "...";
-                                                }
-                                                trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, UTF8));
+                                                trackbackPingURL.append(trackbackPingURLParameters);
 
                                                 _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
                                                 URL trackbackUrl = new URL(trackbackPingURL.toString());
