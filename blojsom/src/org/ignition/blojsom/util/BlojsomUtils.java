@@ -329,6 +329,25 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     }
 
+
+    /**
+     * Extracts the first line in a given string, otherwise returns the first n bytes
+     * @param input String from which to extract the first line
+     * @param length Number of bytes to  return if line seperator isnot found
+     * @return the first line of the  string
+     */
+    public static String getFirstLine(String input, int length) {
+        String result;
+        String lineSeparator = System.getProperty("line.separator");
+        int titleIndex = input.indexOf(lineSeparator);
+        if (titleIndex == -1) {
+            result = input.substring(0,length)+"...";
+        } else {
+            result = input.substring(0, titleIndex);
+    }
+
+
+
     /**
      * Return a comparator that uses a file's last modified time to order the files. If the
      * files have the same last modified time, the file's names are compared to order the
