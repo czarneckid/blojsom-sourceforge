@@ -31,23 +31,25 @@ package org.ignition.blojsom.plugin;
 
 import org.ignition.blojsom.blog.BlogEntry;
 
+import javax.servlet.ServletConfig;
 import java.util.HashMap;
 
 /**
  * BlojsomPlugin
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPlugin.java,v 1.1 2003-02-25 19:06:12 czarneckid Exp $
+ * @version $Id: BlojsomPlugin.java,v 1.2 2003-02-25 20:40:31 czarneckid Exp $
  */
 public interface BlojsomPlugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
+     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      * @param blogProperties Read-only properties for the Blog
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(HashMap blogProperties) throws BlojsomPluginException;
+    public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException;
 
     /**
      * Process the blog entries
