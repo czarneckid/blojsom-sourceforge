@@ -57,7 +57,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.18 2005-02-17 02:30:05 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.19 2005-03-18 04:52:27 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -66,6 +66,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     // Constants
     protected static final String BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY = "org.blojsom.plugin.admin.Authenticated";
     protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY = "org.blojsom.plugin.admin.Username";
+    protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME = "BLOJSOM_ADMIN_PLUGIN_USERNAME";
     protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM = "username";
     protected static final String BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM = "password";
     protected static final String ACTION_PARAM = "action";
@@ -175,6 +176,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 _authorizationProvider.authorize(blogUser, null, username, password);
                 httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
                 httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
+                httpSession.setAttribute(BLOJSOM_ADMIN_PLUGIN_USERNAME, username);
                 httpSession.setAttribute(BLOJSOM_USER_AUTHENTICATED, Boolean.TRUE);
                 _logger.debug("Passed authentication for username: " + username);
                 return true;
