@@ -58,7 +58,7 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.33 2003-07-07 01:52:02 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.34 2003-07-08 00:43:50 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -495,7 +495,12 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             String type = (String) struct.get(MEMBER_TYPE);
             String bits = (String) struct.get(MEMBER_BITS);
 
+            String extension = BlojsomUtils.getFileExtension(name);
+            if (extension == null) {
+                extension = "";
+            }
             name = BlojsomUtils.normalize(name);
+            name += "." + extension;
             byte[] decodedFile = Base64.decode(bits.getBytes());
 
             if (!_acceptedMimeTypes.containsKey(type.toLowerCase())) {
