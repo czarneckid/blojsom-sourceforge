@@ -12,6 +12,12 @@
                 Added Markdown plugin to allow you to use <a href="http://daringfireball.net/projects/markdown/">Markdown</a>
                 syntax in your blog entries.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Edit Blog Entries plugin so that when you add a new blog entry or edit an existing blog entry,
+                you will be taken to the editing page for that menu instead of having to navigate the menus to edit
+                the particular entry. 
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
