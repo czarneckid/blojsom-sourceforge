@@ -1,0 +1,7 @@
+#macro(showErrorMessage)
+    #if ($BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT)
+    <p>
+        <h4><font color="red">Status</font>: $BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT</h4>
+    </p>
+    #end
+#end
