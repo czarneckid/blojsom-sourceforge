@@ -29,24 +29,27 @@
 <p class="weblogtitle">blojsom 1.7 (codename: Absolut)</p>
 <p class="weblogdateline">(Available from cvs)</p>
 <p />
-<b>NEW:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">Upgrading</a> instructions<br/><br/>
+<b>NEW:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">upgrading</a> instructions<br/><br/>
 General:<br />
 - <a href="plugins-referer.html">Referer plugin</a> has been re-written to allow tracking and totaling by flavor, as well as only showing today's referer's. See the <a href="plugins-referer.html">Referer plugin documentation</a> for more detail<br/>
 - Added a referer history page that display's all referer's (grouped by flavor) with no date filtering<br/>
 - New <a href="plugins-calendar.html">Calendar plugin</a> that renders a visual calendar into your blog, hyperlinking dates that have entries<br/>
-- Calendar navigation code has moved to the new Calendar Filter plugin. If you want to continue to have calendar url navigation on your blog, please be sure to add this plugin to the start od your flavor plugin chain<br/>
+- Calendar navigation code has moved to the new Calendar Filter plugin. If you want to continue to have calendar url navigation on your blog, please be sure to add this plugin to the start of your flavor plugin chain<br/>
 - New alternate theme for blojsom called 'SecondWave'. See <a href="themes.html">themes</a> on how to install and configure this new theme<br/>
 - New search input form in the HTML template to allow users to search your blog entries. This is simply a front end to the Simple Search plugin<br/>
 - Changed the <tt>BlojsomPlugin.process()</tt> method to also accept the <tt>HttpServletResponse</tt> to allow for plugins to manipulate things like cookies<br/>
 - Added the Send Email plugin that allows other plugins to send email messages<br/>
 - Updated the Comments plugin to send email to the blog author when new comments are added<br/>
+- Updated the comments template to fill in information if user checks "Remember Me"<br />
 - Updated the Trackback plugin to send email to the blog author when new trackbacks are received<br/>
 - Fixed permalink filenames to be URL encoded<br />
+- Fixed issue with not being able to determine entry title under Windows<br />
 
 <p />
 The following bugs were fixed:<br />
-<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=709728&group_id=72754&atid=535586">BUG 709728</a>: malicious HTML code can be posted into comments and trackbacks<br/>
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=709728&group_id=72754&atid=535586">BUG 709728</a>: Malicious HTML code can be posted into comments and trackbacks<br/>
 <a href="http://sourceforge.net/tracker/index.php?func=detail&atid=535586&aid=711870&group_id=72754">BUG 711870</a>: Certain characters break HyperlinkURL plugin<br/>
+<a href="http://sourceforge.net/tracker/index.php?func=detail&atid=535586&aid=712838&group_id=72754">BUG 712838</a>: blog-url context cannot be /blog/<br/>
 
 
 <p>
