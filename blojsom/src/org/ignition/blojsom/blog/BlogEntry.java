@@ -117,6 +117,15 @@ public class BlogEntry {
     }
 
     /**
+     * Permalink for the blog entry where any &amp; character will be escaped
+     *
+     * @return
+     */
+    public String getEscapedLink() {
+        return BlojsomUtils.escapeString(_link);
+    }
+
+    /**
      * Set the permalink for the blog entry
      *
      * @param _link Permalink for the blog entry
@@ -154,13 +163,13 @@ public class BlogEntry {
 
     /**
      * Escaped description of the blog entry
-     * This method would be used for generating RSS feeds where &lt; and &gt; need to be
+     * This method would be used for generating RSS feeds where &amp;, &lt;, and &gt; need to be
      * escaped
      *
-     * @return Blog entry description where &lt; and &gt; have been escaped
+     * @return Blog entry description where &amp;, &lt;, and &gt; have been escaped
      */
     public String getEscapedDescription() {
-        return BlojsomUtils.escapeBrackets(_description);
+        return BlojsomUtils.escapeString(_description);
     }
 
     /**
