@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.16 2004-01-11 04:04:12 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.17 2004-01-19 18:20:15 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -447,6 +447,10 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return File extension without the . or <code>null</code> if no file extension is present
      */
     public static String getFileExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        
         int dotIndex = filename.lastIndexOf(".");
         if (dotIndex == -1) {
             return null;
