@@ -56,7 +56,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.14 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.15 2004-08-31 16:54:17 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -72,7 +72,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final int DEFAULT_MAXIMUM_MEMORY_SIZE = 50000;
     private static final String ACCEPTED_FILE_TYPES_IP = "accepted-file-types";
     private static final String[] DEFAULT_ACCEPTED_FILE_TYPES = {"image/jpeg", "image/gif", "image/png"};
-    private static final String RESOURCES_DIRECTORY_IP = "resources-directory";
     private static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
 
     // Pages
@@ -147,7 +146,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             }
             _logger.debug("Using accepted file types: " + BlojsomUtils.arrayOfStringsToString(parsedListOfTypes));
 
-            _resourcesDirectory = configurationProperties.getProperty(RESOURCES_DIRECTORY_IP);
+            _resourcesDirectory = _blojsomConfiguration.getResourceDirectory();
             if (BlojsomUtils.checkNullOrBlank(_resourcesDirectory)) {
                 _resourcesDirectory = DEFAULT_RESOURCES_DIRECTORY;
             }
