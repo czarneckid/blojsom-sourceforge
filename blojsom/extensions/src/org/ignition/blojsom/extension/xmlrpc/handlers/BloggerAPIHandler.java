@@ -48,9 +48,8 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Vector;
 import java.util.Map;
-import java.text.SimpleDateFormat;
+import java.util.Vector;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger v1.0 API
@@ -58,7 +57,7 @@ import java.text.SimpleDateFormat;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.14 2003-05-01 03:52:11 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.15 2003-05-01 03:52:47 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -122,17 +121,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
 
-
-    /**
-     * ISO-8601 format
-     * SimpleDateFormats are not threadsafe, but we should not need more than one per
-     * thread.
-     */
-    private static final ThreadLocal XMLRPC_ISO_8601_DATE_FORMAT_OBJECT = new ThreadLocal() {
-        protected Object initialValue() {
-            return new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
-        }
-    };
 
     /**
      * Default constructor
@@ -232,13 +220,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                     // Delete Comments
                     File _comments = new File(_blog.getBlogHome() + category + _blog.getBlogCommentsDirectory()
-                                              + File.separatorChar + permalink + File.separatorChar);
+                            + File.separatorChar + permalink + File.separatorChar);
                     removeDirectory(_comments);
 
 
                     // Delete Trackbacks
                     File _trackbacks = new File(_blog.getBlogHome() + category + _blog.getBlogTrackbackDirectory()
-                                                + File.separatorChar + permalink + File.separatorChar);
+                            + File.separatorChar + permalink + File.separatorChar);
                     removeDirectory(_trackbacks);
 
 

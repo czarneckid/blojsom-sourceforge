@@ -36,14 +36,14 @@ package org.ignition.blojsom.extension.xmlrpc;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.XmlRpc;
+import org.apache.xmlrpc.XmlRpcServer;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
-import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.fetcher.BlojsomFetcherException;
+import org.ignition.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -67,7 +67,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.11 2003-04-15 03:22:22 intabulas Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.12 2003-05-01 03:52:14 intabulas Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
