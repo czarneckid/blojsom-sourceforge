@@ -11,6 +11,17 @@
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Auto Trackback plugin to be more robust to handling of trackback URLs.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Trackback plugin to check for null category before using category. This could've
+                resulted in a NullPointerException.
+            </action>
+
+            <action dev="czarneckid" type="Extension" context="Extension">
+                Updated MetaWeblog API handler to add other elements for the getPost() and getRecentPosts()
+                methods. blojsom should now work properly with clients such as
+                <link href="http://www.kung-foo.tv/ecto/">ecto</link> which support the MetaWeblog API. 
+            </action>
         </release>
 
         <release version="2.08" date="January 11, 2004">
