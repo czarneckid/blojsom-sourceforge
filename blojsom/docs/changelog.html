@@ -38,7 +38,7 @@ method is called each plugin request after the plugin's <tt>process</tt> method 
 - Added code to the plugins that take configuration parameters to throw a
 <tt>BlojsomPluginException</tt> in <tt>init()</tt> if the required configuration
 parameter is not present<br />
-- Changed blojsom.css to reduce the spacing between blog entries<br />
+- Changed <i>blojsom.css</i> to reduce the spacing between blog entries<br />
 - Velocity templates can now be found in <i>/WEB-INF/classes</i>. They are no longer
 built and bundled as <i>/WEB-INF/lib/blojsom-templates.jar</i> since that way was not amenable to
 editing and customizing the templates by end users<br />
@@ -52,7 +52,7 @@ previous version of blojsom. For example, you would add the following line to yo
 <pre>
 blog-trackbacks-directory=.trackbacks
 </pre>
-- Added entries URL parameter to override the number of entries displayed on a page. <i>entries=&lt;-1 or integer greater than 0&gt;</i>
+- Added "entries" URL parameter to override the number of entries displayed on a page. <i>entries=&lt;-1 or integer greater than 0&gt;</i><br />
 - Refactored comment handling to the Comment Plugin<br />
 
 <p />
