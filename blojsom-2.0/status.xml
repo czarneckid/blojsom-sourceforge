@@ -59,6 +59,10 @@
             <action dev="czarneckid" type="update" context="Libary">
                 Updated the OSCache library to the new 2.0.2 release.
             </action>
+
+            <action dev="czarneckid" type="add" context="Theme">
+                Added "cipher" theme courtesy of <a href="http://www.ciphercraft.com/blojsom/blog/kirk/">Kirk Peterson</a>.
+            </action>
         </release>
  
         <release version="2.12" date="February 19, 2004">
