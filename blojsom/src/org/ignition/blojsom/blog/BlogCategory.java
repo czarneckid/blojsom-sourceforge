@@ -77,10 +77,10 @@ public class BlogCategory implements Comparable {
     /**
      * Set a new URL for this category
      *
-     * @param _categoryURL Category URL
+     * @param categoryURL Category URL
      */
-    public void setCategoryURL(String _categoryURL) {
-        this._categoryURL = _categoryURL;
+    public void setCategoryURL(String categoryURL) {
+        this._categoryURL = categoryURL;
     }
 
     /**
@@ -95,10 +95,10 @@ public class BlogCategory implements Comparable {
     /**
      * Set a new name for this category
      *
-     * @param _category Category name
+     * @param category Category name
      */
-    public void setCategory(String _category) {
-        this._category = _category;
+    public void setCategory(String category) {
+        this._category = category;
     }
 
     /**

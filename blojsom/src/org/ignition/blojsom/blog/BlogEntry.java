@@ -98,10 +98,10 @@ public class BlogEntry {
     /**
      * Set the title of the blog entry
      *
-     * @param _title Title for the blog entry
+     * @param title Title for the blog entry
      */
-    public void setTitle(String _title) {
-        this._title = _title;
+    public void setTitle(String title) {
+        this._title = title;
     }
 
     /**
@@ -125,7 +125,7 @@ public class BlogEntry {
     /**
      * Permalink for the blog entry where the &lt;, &gt;, and &amp; characters are escaped
      *
-     * @return
+     * @return Blog entry permalink which has been escaped
      */
     public String getEscapedLink() {
         return BlojsomUtils.escapeString(_link);
@@ -134,10 +134,10 @@ public class BlogEntry {
     /**
      * Set the permalink for the blog entry
      *
-     * @param _link Permalink for the blog entry
+     * @param link Permalink for the blog entry
      */
-    public void setLink(String _link) {
-        this._link = _link;
+    public void setLink(String link) {
+        this._link = link;
     }
 
     /**
@@ -152,10 +152,10 @@ public class BlogEntry {
     /**
      * Set the file of the blog entry
      *
-     * @param _source File for the blog entry
+     * @param source File for the blog entry
      */
-    public void setSource(File _source) {
-        this._source = _source;
+    public void setSource(File source) {
+        this._source = source;
     }
 
     /**
@@ -274,10 +274,10 @@ public class BlogEntry {
     /**
      * Set the category for the blog entry
      *
-     * @param _category Category for the blog entry
+     * @param category Category for the blog entry
      */
-    public void setCategory(String _category) {
-        this._category = _category;
+    public void setCategory(String category) {
+        this._category = category;
     }
 
     /**
