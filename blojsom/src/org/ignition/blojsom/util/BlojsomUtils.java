@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.31 2003-03-23 19:30:43 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.32 2003-03-25 22:57:10 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -589,6 +589,10 @@ public class BlojsomUtils implements BlojsomConstants {
         }
         return new String(buf1);
     }
+
+
+
+
 
 
 }

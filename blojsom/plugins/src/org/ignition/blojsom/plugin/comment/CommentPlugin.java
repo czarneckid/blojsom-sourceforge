@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.12 2003-03-25 16:25:15 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.13 2003-03-25 22:56:04 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -141,6 +141,7 @@ public class CommentPlugin implements BlojsomPlugin {
                     category += "/";
                 }
 
+
                 BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
                 if (_comment != null) {
                     ArrayList blogComments = entries[0].getComments();
@@ -216,6 +217,10 @@ public class CommentPlugin implements BlojsomPlugin {
                                                     String authorEmail, String authorURL, String userComment) {
         BlogComment comment = null;
         if (_blogCommentsEnabled.booleanValue()) {
+
+            //Escape out any HTML in the post;
+            userComment = escapeString(userComment);
+
             comment = new BlogComment();
             comment.setAuthor(author);
             comment.setAuthorEmail(authorEmail);
@@ -286,4 +291,24 @@ public class CommentPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
     }
+
+
+
+    /**
+     * Return an escaped string where <meta, <link tags are escaped
+     *
+     * @param input Unescaped string
+     * @return Escaped string containing HTML equivalents for &amp;, &lt;, and &gt;
+     */
+    public String escapeString(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        String unescaped = input.toLowerCase();
+        unescaped = BlojsomUtils.replace(unescaped, "<meta", "&lt;meta");
+        unescaped = BlojsomUtils.replace(unescaped, "<link", "&lt;link");
+        return unescaped;
+    }
+
 }
