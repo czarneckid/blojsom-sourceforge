@@ -50,12 +50,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * EditBlogTemplatesPlugin
- * 
+ *
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.16 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.17 2005-01-24 04:46:11 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -90,7 +91,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     * 
+     *
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws org.blojsom.plugin.BlojsomPluginException
@@ -101,8 +102,29 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * Sanitize a filename
+     *
+     * @param blogTemplate Blog template filename
+     * @return Sanitized filename or <code>null</code> if error in sanitizing
+     * @since blojsom 2.23
+     */
+    protected String sanitizeFilename(String blogTemplate) {
+        String templateFilename = new File(blogTemplate).getName();
+        int lastSeparator;
+        blogTemplate = BlojsomUtils.normalize(blogTemplate);
+        lastSeparator = blogTemplate.lastIndexOf(File.separator);
+        if (lastSeparator == -1) {
+            return null;
+        } else {
+            blogTemplate = blogTemplate.substring(0, lastSeparator + 1) + templateFilename;
+        }
+
+        return blogTemplate;
+    }
+
+    /**
      * Process the blog entries
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -132,16 +154,11 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 user.getId() + _blojsomConfiguration.getTemplatesDirectory());
         _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
-        File[] templates = templatesDirectory.listFiles();
+        List templateFiles = new ArrayList();
+        BlojsomUtils.listFilesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateFiles);
+        File[] templates = (File[]) templateFiles.toArray(new File[templateFiles.size()]);
         Arrays.sort(templates);
-        ArrayList templatesList = new ArrayList(templates.length);
-        for (int i = 0; i < templates.length; i++) {
-            File template = templates[i];
-            if (template.isFile()) {
-                templatesList.add(template.getName());
-                _logger.debug("Added template: " + template.getName());
-            }
-        }
+        ArrayList templatesList = new ArrayList(templateFiles);
 
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES, templatesList);
 
@@ -159,6 +176,15 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
+                return entries;
+            }
+
+            blogTemplate = sanitizeFilename(blogTemplate);
+            if (blogTemplate == null) {
+                addOperationResultMessage(context, "Invalid path specified");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
                 return entries;
             }
 
@@ -197,6 +223,15 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
+                return entries;
+            }
+
+            blogTemplate = sanitizeFilename(blogTemplate);
+            if (blogTemplate == null) {
+                addOperationResultMessage(context, "Invalid path specified");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
+
                 return entries;
             }
 
