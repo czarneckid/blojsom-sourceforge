@@ -73,7 +73,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.45 2005-03-05 18:24:57 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.46 2005-04-02 18:47:51 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -245,7 +245,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
 
                 _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entry,
-                    user, httpServletRequest, httpServletResponse, context));
+                        user, httpServletRequest, httpServletResponse, context));
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to retrieve blog entry: " + blogEntryId);
@@ -309,10 +309,22 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryMetaData.remove(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS);
                 }
 
+                String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);
+                if (!BlojsomUtils.checkNullOrBlank(entryPublishDateTime)) {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                    try {
+                        Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
+                        _logger.debug("Publishing blog entry at: " + publishDateTime.toString());
+                        entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(publishDateTime.getTime()).toString());
+                    } catch (ParseException e) {
+                        _logger.error(e);
+                    }
+                }
+
                 entryToUpdate.setMetaData(entryMetaData);
 
                 _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entryToUpdate,
-                    user, httpServletRequest, httpServletResponse, context));
+                        user, httpServletRequest, httpServletResponse, context));
 
                 entryToUpdate.save(user);
                 entryToUpdate.load(user);
@@ -444,7 +456,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
                 entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
-            } 
+            }
 
             entry.setMetaData(entryMetaData);
 
@@ -480,7 +492,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             try {
                 _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entry, user, httpServletRequest, httpServletResponse, context));
-                
+
                 entry.save(user);
                 entry.load(user);
                 StringBuffer entryLink = new StringBuffer();
