@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.4 2003-08-04 15:09:55 intabulas Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.5 2003-08-04 15:15:01 intabulas Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -100,12 +100,13 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
             while (handlerIterator.hasNext()) {
                 String keyword = (String) handlerIterator.next();
                 _macros.put(keyword, macroProperties.get(keyword));
-                _logger.info("Adding macro [" + keyword + "] with value of [" + macroProperties.get(keyword) + "]");
+                _logger.info("Adding macro [" + keyword + "] with value of [" + macroProperties.get(keyword) + ']');
             }
         } catch (IOException e) {
             throw new BlojsomPluginException(e);
         }
     }
+
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.

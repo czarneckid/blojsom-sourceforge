@@ -52,7 +52,7 @@ import java.util.*;
  * to filter content.
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.10 2003-04-26 23:08:26 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.11 2003-08-04 15:14:26 intabulas Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -183,7 +183,7 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
                 if (month == null) {
                     month = "";
                 } else if (month.length() < 2) {
-                    month = "0" + month;
+                    month = '0' + month;
                 }
                 if (!month.equals("")) {
                     try {
@@ -198,7 +198,7 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
                 if (day == null) {
                     day = "";
                 } else if (day.length() < 2) {
-                    day = "0" + day;
+                    day = '0' + day;
                 }
 
                 if (!day.equals("")) {

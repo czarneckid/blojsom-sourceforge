@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.19 2003-05-29 03:56:40 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.20 2003-08-04 15:15:23 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -153,7 +153,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
         _blacklistPatterns = new ArrayList(5);
         if (blacklistFile.exists()) {
             try {
-                _logger.info("Processing blacklist filter [" + blacklistFile.getAbsolutePath() + "]");
+                _logger.info("Processing blacklist filter [" + blacklistFile.getAbsolutePath() + ']');
                 BufferedReader br = new BufferedReader(new FileReader(blacklistFile));
                 String regexp = null;
                 while (((regexp = br.readLine()) != null)) {
@@ -374,14 +374,14 @@ public class RefererLogPlugin implements BlojsomPlugin {
             BlogRefererGroup group = (BlogRefererGroup) _referergroups.get(groupflavor);
             if (group.isHitCounter()) {
 
-                _refererproperties.put(groupflavor + "." + getRefererDate(group.getLastReferralDate()) + "." + group.getReferralCount(), HITCOUNTER_KEY);
+                _refererproperties.put(groupflavor + '.' + getRefererDate(group.getLastReferralDate()) + '.' + group.getReferralCount(), HITCOUNTER_KEY);
             } else {
                 Iterator _flavoriterator = group.keySet().iterator();
                 while (_flavoriterator.hasNext()) {
                     String flavorkey = (String) _flavoriterator.next();
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
 
-                    _refererproperties.put(groupflavor + "." + getRefererDate(referer.getLastReferral()) + "." + referer.getCount(),
+                    _refererproperties.put(groupflavor + '.' + getRefererDate(referer.getLastReferral()) + '.' + referer.getCount(),
                             referer.getUrl());
                 }
             }

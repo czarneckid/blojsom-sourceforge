@@ -55,7 +55,7 @@ import java.io.IOException;
  * MetaPlugin
  *
  * @author David Czarnecki
- * @version $Id: MetaPlugin.java,v 1.1 2003-08-02 22:42:15 czarneckid Exp $
+ * @version $Id: MetaPlugin.java,v 1.2 2003-08-04 15:15:14 intabulas Exp $
  * @since blojsom 1.9.6
  */
 public class MetaPlugin implements BlojsomPlugin {
@@ -117,7 +117,7 @@ public class MetaPlugin implements BlojsomPlugin {
                             key = line.substring(_metaPrefix.length(), equalIndex);
                             value = line.substring(equalIndex + 1);
                             metadata = entry.getMetaData();
-                            _logger.debug("Entry meta-data: " + key + ":" + value);
+                            _logger.debug("Entry meta-data: " + key + ':' + value);
                             if (metadata != null) {
                                 metadata.put(key, value);
                                 entry.setMetaData(metadata);
