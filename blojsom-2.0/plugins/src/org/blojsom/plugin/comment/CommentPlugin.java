@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.12 2004-03-09 01:48:10 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.13 2004-04-08 01:02:30 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataConstants {
 
@@ -72,22 +72,22 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
     /**
      * Initialization parameter for e-mail prefix
      */
-    private static final String COMMENT_PREFIX_IP = "plugin-comment-email-prefix";
+    public static final String COMMENT_PREFIX_IP = "plugin-comment-email-prefix";
 
     /**
      * Initialization parameter to do plugin autoformatting
      */
-    private static final String COMMENT_AUTOFORMAT_IP = "plugin-comment-autoformat";
+    public static final String COMMENT_AUTOFORMAT_IP = "plugin-comment-autoformat";
 
     /**
      * Initialization parameter for the duration of the "remember me" cookies
      */
-    private static final String COMMENT_COOKIE_EXPIRATION_DURATION_IP = "plugin-comment-expiration-duration";
+    public static final String COMMENT_COOKIE_EXPIRATION_DURATION_IP = "plugin-comment-expiration-duration";
 
     /**
      * Initialization parameter for the throttling of comments from IP addresses
      */
-    private static final String COMMENT_THROTTLE_MINUTES_IP = "plugin-comment-throttle";
+    public static final String COMMENT_THROTTLE_MINUTES_IP = "plugin-comment-throttle";
 
     /**
      * Default throttle value for comments from a particular IP address

@@ -76,6 +76,20 @@
                     <tr>
                         <td>#adminResource('blog.default.flavor.text' 'Blog default flavor')</td> <td><input name="blog-default-flavor" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDefaultFlavor()"/></td>
                     </tr>
+                    <p/>
+                    <tr>
+                        <td>#adminResource('comment.prefix.text' 'Prefix for comment e-mail')</td> <td><input name="plugin-comment-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-email-prefix")"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('comment.expiration.duration.text' 'Duration before comment cookies expire')</td> <td><input name="plugin-comment-expiration-duration" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-expiration-duration")"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('comment.throttle.text' 'Comment throttle minutes')</td> <td><input name="plugin-comment-throttle" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-throttle")"/></td>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "plugin-comment-autoformat")
+                        <td>#adminResource('comment.autoformat.text' 'Autoformat comment text?')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("plugin-comment-autoformat"))</td>
+                    </tr>
                     <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('edit.blog.properties.text' 'Edit blog properties')"/>
