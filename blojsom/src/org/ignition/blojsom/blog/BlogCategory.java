@@ -162,7 +162,7 @@ public class BlogCategory implements Comparable {
     /**
      * Sets the name of this category
      *
-     * @param desc The new description of the category
+     * @param name The new name of the category
      */
     public void setName(String name) {
         _name = name;

@@ -466,7 +466,7 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the list of blog properties file extensions to look for
      *
-     * @param blogFileExtensions New list of blog properties file extensions
+     * @param blogPropertiesExtensions New list of blog properties file extensions
      */
     public void setBlogPropertiesExtensions(String[] blogPropertiesExtensions) {
         _blogPropertiesExtensions = blogPropertiesExtensions;
