@@ -305,6 +305,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         _logger.debug("User requested category: " + requestedCategory);
         BlogCategory category = new BlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
+
+        // We might also want to pass the flavor so that we can also have flavor-based category meta-data
         category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
 
         // Determine if a permalink has been requested
@@ -358,11 +360,16 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 entries = _blog.getEntriesForDate(category, year, month, day);
                 // Check for the default category
             } else if (requestedCategory.equals("/")) {
-                entries = _blog.getEntriesAllCategories();
+                entries = _blog.getEntriesAllCategories(flavor);
                 // Check for the requested category
             } else {
                 entries = _blog.getEntriesForCategory(category);
             }
+        }
+
+        // Check to see if the user would like to override the plugin chain
+        if (httpServletRequest.getParameter(PLUGINS_PARAM) != null) {
+            _pluginChain = BlojsomUtils.parseCommaList(httpServletRequest.getParameter(PLUGINS_PARAM));
         }
 
         // Invoke the plugins in the order in which they were specified
