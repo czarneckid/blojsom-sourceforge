@@ -6,7 +6,7 @@
         <description>$BLOJSOM_BLOG.getBlogDescription()</description>
         <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
         <docs>http://backend.userland.com/rss</docs>
-		<generator>Blojsom</generator>
+		<generator>blojsom</generator>
 
         #foreach ($entry in $BLOJSOM_ENTRIES)
         <item>

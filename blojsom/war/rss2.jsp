@@ -14,7 +14,7 @@
     <description><%= blogInformation.getBlogDescription() %></description>
     <language><%= blogInformation.getBlogLanguage() %></language>
     <docs>http://backend.userland.com/rss</docs>
-    <generator>Blojsom</generator>
+    <generator>blojsom</generator>
 
     <%
         if (blogEntries != null) {
