@@ -8,6 +8,11 @@
 
     <changes>
         <release version="2.14" date="Available from CVS">
+            <action dev="czarneckid" type="update" context="Core">
+                Updated Velocity and FreeMarker dispatchers to allow for sharing of Velocity and
+                FreeMarker templates, respectively, across users.
+            </action>
+
             <action dev="czarneckid" type="add" context="Plugin">
                 Added Markdown plugin to allow you to use <a href="http://daringfireball.net/projects/markdown/">Markdown</a>
                 syntax in your blog entries.
@@ -46,6 +51,18 @@
                 </pre>
                 If you do not use the web administration interface, you can still use this property to control
                 the URLs that are sent a ping when the WeblogsPingPlugin executes.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Forgotten Password plugin so authorized users can have their password sent by e-mail if
+                for some reason they forget their password. E-mail addresses can be added to the
+                <code>authorization.properties</code> file by separating the e-mail address with a "," after
+                the password. Example:
+                <pre>
+                    username=password,email@address.com
+                </pre>
+                Any usernames without e-mail addresses are assume to be the property of the blog owner, so in these
+                cases, a forgotten password e-mail message would be sent to the blog owner's e-mail address.
             </action>
         </release>
 
