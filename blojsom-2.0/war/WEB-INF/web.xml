@@ -172,4 +172,8 @@
         <url-pattern>/atomapi/*</url-pattern>
     </servlet-mapping>
 
+    <session-config>
+        <session-timeout>90</session-timeout>
+    </session-config>
+
 </web-app>
