@@ -9,6 +9,77 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.0 to blojsom 2.01</title>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. Add a parameter to <code>/WEB-INF/blojsom.properties</code> called
+                        <code>blojsom-installation-directory</code>. The value of this parameter should
+                        be set to the directory where the <code>blojsom.war</code> file was unpacked. Example:
+                        <pre>
+                            blojsom-installation-directory=/home/tomcat/webapps/blojsom/
+                        </pre>
+                    </p>
+                    <p>
+                        2. Remove the <code>file.resource.loader.path</code> parameter from your
+                        <code>/WEB-INF/velocity.properties</code> file. This parameter is now generated
+                        at runtime based on blojsom's global settings.
+                    </p>
+                    <p>
+                        3. Add the folowing parameter to <code>/WEB-INF/velocity.properties</code>.
+                        <pre>
+                            runtime.log.logsystem.class=org.blojsom.util.BlojsomSimpleLog4JSystem
+                        </pre>
+                    </p>
+                </section>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Copy the sandler-0.1 JAR file into your <code>/WEB-INF/lib</code> directory if you
+                        are using the AtomAPIServlet.
+                    </p>
+                </section>
+                <section>
+                    <title>Template changes</title>
+                    <p>
+                        1. If you are using the Atom templates to generate Atom feeds,
+                        copy the appropriate Atom template into your individual user's template directories.
+                    </p>
+                </section>
+                <section>
+                    <title>Addon changes</title>
+                    <p>
+                        1. A caching fetcher is included in <code>blojsom-addon-core.jar</code>. If you would
+                        like to use this fetcher, do the following.
+                        <ul>
+                            <li>Copy the <code>blojsom-addon-core.jar</code> file into your <code>/WEB-INF/lib</code> directory.</li>
+                            <li>Copy the <code>oscache-2.0b2.jar</code> file into your <code>/WEB-INF/lib</code> directory.</li>
+                            <li>Copy the <code>oscache.properties</code> file into your <code>/WEB-INF</code> directory.</li>
+                            <li>The caching fethcer uses <code>/WEB-INF/oscache.properties</code> as the
+                            default properties for OSCache. If you would like to change the filename used
+                            to initialize OSCache, you can add an init-param to web.xml with a param-name of
+                            <code>oscache-properties</code> and a param-value set to the new directory and filename. The new
+                            directory and filename must be set off your web application root directory.</li>
+                            <li>A user property, <code>caching-fetcher-refresh</code> can be added to an
+                            individual user's <code>blog.properties</code> file to control the number of
+                            seconds before blojsom will refresh its cache.</li>
+                        </ul>
+                    </p>
+                    <p>
+                        2. A wiki formatting plugin is included in <code>blojsom-addon-plugins.jar</code>. If you would
+                        like to use this plugin, do the following.
+                        <ul>
+                            <li>Copy the <code>blojsom-addon-plugins.jar</code> file into your <code>/WEB-INF/lib</code> directory.</li>
+                            <li>Copy the <code>radeox-0.7.jar</code> file into your <code>/WEB-INF/lib</code> directory.</li>
+                            <li>Add the line <code>wiki=org.blojsom.plugin.wiki.WikiPlugin</code> to the global
+                                <code>/WEB-INF/plugin.properties</code>.</li>
+                            <li>You may then add the <code>wiki</code> plugin shortname to the appropriate
+                                flavor-based plugin chains in a user's <code>plugin.properties</code> file.</li>
+                        </ul>
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 1.x to blojsom 2.0</title>
                 <p>
                     <section>
