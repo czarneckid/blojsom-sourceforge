@@ -35,14 +35,14 @@
 package org.blojsom.extension.xmlrpc.handlers;
 
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.Blog;
+import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 
@@ -51,36 +51,37 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.5 2004-01-20 03:55:51 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.6 2004-04-19 18:06:49 intabulas Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
-    public static final int    AUTHORIZATION_EXCEPTION = 0001;
+    public static final int AUTHORIZATION_EXCEPTION = 0001;
     public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid Username and/or Password";
 
-    public static final int    UNKNOWN_EXCEPTION = 1000;
+    public static final int UNKNOWN_EXCEPTION = 1000;
     public static final String UNKNOWN_EXCEPTION_MSG = "An error occured processing your request";
 
-    public static final int    UNSUPPORTED_EXCEPTION = 1001;
+    public static final int UNSUPPORTED_EXCEPTION = 1001;
     public static final String UNSUPPORTED_EXCEPTION_MSG = "Unsupported method - blojsom does not support this blogger concept";
 
-    public static final int    INVALID_POSTID = 2000;
+    public static final int INVALID_POSTID = 2000;
     public static final String INVALID_POSTID_MSG = "The entry postid you submitted is invalid";
 
-    public static final int    NOBLOGS_EXCEPTION = 3000;
+    public static final int NOBLOGS_EXCEPTION = 3000;
     public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
 
     protected Blog _blog;
     protected BlogUser _blogUser;
     protected BlojsomFetcher _fetcher;
+    protected BlojsomConfiguration _configuration;
     protected String _blogEntryExtension;
 
     /**
      * Attach a blog instance to the API Handler so that it can interact with the blog
      *
      * @param blogUser an instance of BlogUser
-     * @see org.blojsom.blog.BlogUser
      * @throws BlojsomException If there is an error setting the blog user instance or properties for the handler
+     * @see org.blojsom.blog.BlogUser
      */
     public abstract void setBlogUser(BlogUser blogUser) throws BlojsomException;
 
@@ -99,6 +100,17 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      */
     public void setFetcher(BlojsomFetcher fetcher) throws BlojsomException {
         _fetcher = fetcher;
+    }
+
+
+    /**
+     * Set the {@link BlojsomConfiguration} instance that will be used to configure the handlers
+     *
+     * @param configuration {@link BlojsomConfiguration} instance
+     * @throws BlojsomException If there is an error in setting the fetcher
+     */
+    public void setConfiguration(BlojsomConfiguration configuration) throws BlojsomException {
+        _configuration = configuration;
     }
 
     /**
@@ -123,9 +135,9 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      * Get the blog category. If the category exists, return the
      * appropriate directory, otherwise return the "root" of this blog.
      *
-     * @since blojsom 1.9
      * @param categoryName Category name
      * @return A directory into which a blog entry can be placed
+     * @since blojsom 1.9
      */
     protected File getBlogCategoryDirectory(String categoryName) {
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));

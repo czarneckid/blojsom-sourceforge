@@ -56,14 +56,11 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.12 2004-01-20 03:55:58 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.13 2004-04-19 18:06:49 intabulas Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
-    private static final String METAWEBLOG_UPLOAD_DIRECTORY_IP = "blojsom-extension-metaweblog-upload-directory";
     private static final String METAWEBLOG_ACCEPTED_TYPES_IP = "blojsom-extension-metaweblog-accepted-types";
-    private static final String METAWEBLOG_STATIC_URL_PREFIX_IP = "blojsom-extension-metaweblog-static-url-prefix";
-
     /**
      * MetaWeblog API "description" key
      */
@@ -167,15 +164,19 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
         }
 
-        _uploadDirectory = _blog.getBlogProperty(METAWEBLOG_UPLOAD_DIRECTORY_IP);
+
+        _uploadDirectory = _configuration.getQualifiedResourceDirectory();
         if (BlojsomUtils.checkNullOrBlank(_uploadDirectory)) {
-            _logger.error("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
-            throw new BlojsomException("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
+            throw new BlojsomException("No upload directory specified in blog configuration");
         }
 
         if (!_uploadDirectory.endsWith("/")) {
             _uploadDirectory += "/";
         }
+
+        _uploadDirectory += _blogUser.getId();
+
+        _logger.debug("MetaWeblogAPI Handler for user [" + _blogUser.getId() + "] is " + _uploadDirectory);
 
         _acceptedMimeTypes = new HashMap(3);
         String acceptedMimeTypes = _blog.getBlogProperty(METAWEBLOG_ACCEPTED_TYPES_IP);
@@ -188,14 +189,9 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             }
         }
 
-        _staticURLPrefix = _blog.getBlogProperty(METAWEBLOG_STATIC_URL_PREFIX_IP);
-        if (_staticURLPrefix == null) {
-            _logger.error("No static URL prefix specified in property: " + METAWEBLOG_STATIC_URL_PREFIX_IP);
-            throw new BlojsomException("No static URL prefix specified in property: " + METAWEBLOG_STATIC_URL_PREFIX_IP);
-        } else {
-            if (!_staticURLPrefix.endsWith("/")) {
-                _staticURLPrefix += "/";
-            }
+        _staticURLPrefix = _configuration.getResourceDirectory();
+        if (!_staticURLPrefix.endsWith("/")) {
+            _staticURLPrefix += "/";
         }
     }
 

@@ -211,7 +211,21 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
-        <javac srcdir="${testing.src.dir}"
+        <!--        <javac srcdir="${testing.src.dir}"-->
+        <!--            destdir="${compile.dir}"-->
+        <!--            debug="${debug}"-->
+        <!--            deprecation="${deprecation}"-->
+        <!--            optimize="${optimize}">-->
+        <!--            <classpath refid="build.classpath"/>-->
+        <!--        </javac>-->
+        <javac srcdir="${addon.core.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <javac srcdir="${addon.plugins.src.dir}"
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"

@@ -39,11 +39,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.blojsom.BlojsomException;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -65,12 +65,11 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  * 
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.7 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.8 2004-04-19 18:06:49 intabulas Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
-
     private Map _xmlrpcServers;
 
     /**
@@ -116,6 +115,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                     AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
                     handler.setBlogUser(blogUser);
                     handler.setFetcher(_fetcher);
+                    handler.setConfiguration(_blojsomConfiguration);
                     xmlRpcServer.addHandler(handler.getName(), handler);
                     if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
                         xmlRpcServer.addHandler(DEFAULT_XMLRPC_HANDLER_KEY, handler);
