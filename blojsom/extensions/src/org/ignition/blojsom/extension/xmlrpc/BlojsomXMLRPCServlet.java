@@ -42,6 +42,8 @@ import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.fetcher.BlojsomFetcher;
+import org.ignition.blojsom.fetcher.BlojsomFetcherException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -65,7 +67,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.9 2003-04-13 18:10:32 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.10 2003-04-15 02:29:33 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
@@ -75,6 +77,8 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
 
     protected Blog _blog = null;
+
+    private BlojsomFetcher _fetcher;
 
     XmlRpcServer _xmlrpc;
 
@@ -103,6 +107,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
                 Class handlerClass = Class.forName(handlerClassName);
                 AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
                 handler.setBlog(_blog);
+                handler.setFetcher(_fetcher);
                 _xmlrpc.addHandler(handler.getName(), handler);
                 _logger.debug("Added [" + handler.getName() + "] API Handler : " + handlerClass);
             }
@@ -169,6 +174,39 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
     }
 
     /**
+     * Configure the {@link BlojsomFetcher} that will be used to fetch categories and
+     * entries
+     *
+     * @param servletConfig Servlet configuration information
+     * @throws ServletException If the {@link BlojsomFetcher} class could not be loaded and/or initialized
+     */
+    private void configureFetcher(ServletConfig servletConfig) throws ServletException {
+        String fetcherClassName = _blog.getBlogFetcher();
+        if ((fetcherClassName == null) || "".equals(fetcherClassName)) {
+            fetcherClassName = BLOG_DEFAULT_FETCHER;
+        }
+
+        try {
+            Class fetcherClass = Class.forName(fetcherClassName);
+            _fetcher = (BlojsomFetcher) fetcherClass.newInstance();
+            _fetcher.init(servletConfig, _blog);
+            _logger.info("Added blojsom fetcher: " + fetcherClassName);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
+            throw new ServletException(e);
+        }
+    }
+
+    /**
      * Initialize the blojsom XML-RPC servlet
      *
      * @param servletConfig Servlet configuration information
@@ -185,12 +223,13 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
 
         processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
         configureAuthorization(servletConfig);
+        configureFetcher(servletConfig);
+        configureAPIHandlers(servletConfig);
 
-        _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
         _xmlrpc = new XmlRpcServer();
         XmlRpc.setEncoding(UTF8);
 
-        configureAPIHandlers(servletConfig);
+        _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
     }
 
     /**
