@@ -35,54 +35,54 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.32 2003-03-19 04:01:24 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.33 2003-03-19 04:29:30 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
     /**
-     * Value under which blog information will be placed
+     * Key under which blog information will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_BLOG = "BLOJSOM_BLOG";
 
     /**
-     * Value under which the blog entries will be placed
+     * Key under which the blog entries will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_ENTRIES = "BLOJSOM_ENTRIES";
 
     /**
-     * Value under which the blog categories will be placed
+     * Key under which the blog categories will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
 
     /**
-     * Value under which the date (RFC 822 format) of the blog will be placed
+     * Key under which the date (RFC 822 format) of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_DATE = "BLOJSOM_DATE";
 
     /**
-     * Value under which the date (ISO 8601 format) of the blog will be placed
+     * Key under which the date (ISO 8601 format) of the blog will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_DATE_ISO8601 = "BLOJSOM_DATE_ISO8601";
 
     /**
-     * Value under which the blog site will be placed
+     * Key under which the blog site will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
 
     /**
-     * Value under which the requested category will be placed
+     * Key under which the requested category will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_REQUESTED_CATEGORY = "BLOJSOM_REQUESTED_CATEGORY";
 
     /**
-     * Value under which whether or not comments are enabled will be placed
+     * Key under which whether or not comments are enabled will be placed
      * (example: on the request for the JSP dispatcher)
      */
     public static final String BLOJSOM_COMMENTS_ENABLED = "BLOJSOM_COMMENTS_ENABLED";

@@ -55,14 +55,51 @@ import java.io.IOException;
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
+    /**
+     * Request parameter to indicate a trackback "tb"
+     */
     private static final String TRACKBACK_PARAM = "tb";
+
+    /**
+     * Request parameter for the trackback "title"
+     */
     private static final String TRACKBACK_TITLE_PARAM = "title";
+
+    /**
+     * Request parameter for the trackback "excerpt"
+     */
     private static final String TRACKBACK_EXCERPT_PARAM = "excerpt";
+
+    /**
+     * Request parameter for the trackback "url"
+     */
     private static final String TRACKBACK_URL_PARAM = "url";
+
+    /**
+     * Request parameter for the trackback "blog_name"
+     */
     private static final String TRACKBACK_BLOG_NAME_PARAM = "blog_name";
+
+    /**
+     * Key under which the trackback return code will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
     private static final String BLOJSOM_TRACKBACK_RETURN_CODE = "BLOJSOM_TRACKBACK_RETURN_CODE";
+
+    /**
+     * Key under which the trackback error message will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
     private static final String BLOJSOM_TRACKBACK_MESSAGE = "BLOJSOM_TRACKBACK_MESSAGE";
+
+    /**
+     * Trackback success page
+     */
     private static final String TRACKBACK_SUCCESS_PAGE = "trackback-success";
+
+    /**
+     * Trackback failure page
+     */
     private static final String TRACKBACK_FAILURE_PAGE = "trackback-failure";
 
     private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
