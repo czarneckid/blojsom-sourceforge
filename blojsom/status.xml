@@ -120,15 +120,162 @@
             </action>
         </release>
 
+        <release version="1.4.1" date="March 5, 2003">
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="697993">
+                Invalid permalink causes NullPointerException
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="697996">
+                Permalink request can be generated for arbitrary files
+            </action>
+        </release>
+
+        <release version="1.6" date="March 24, 2003">
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added <tt>Map context</tt> parameter to the <tt>process</tt> method for the <tt>BlojsomPlugin</tt>
+interface. This will allow developers to add objects to the context for use in their
+templates
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added <tt>destroy()</tt> method to the <tt>BlojsomPlugin</tt> interface. This will allow
+developers to perform any finalization or cleanup activities of the plugin. Note that
+this method differs from the <tt>cleanup()</tt> method in that it is only called when
+<tt>BlojsomServlet</tt> is taken out of service by the servlet container. The <tt>cleanup</tt>
+method is called each plugin request after the plugin's <tt>process</tt> method is called
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                <font color="red">NOTE:</font> "BLOJSOM_*" is a reserved namespace for the context
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Added "BLOJSOM_DATE_ISO8601" to the context
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Modified RDF flavor templates to correctly use the ISO 8601 date format
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Clarified "BLOJSOM_DATE" and "BLOJSOM_DATE_IS8601" to be of type <tt>java.lang.String</tt> in <a href="customization.html">customization</a>
+            </action>
+            <action dev="czarneckid" type="add" context="Plugins">
+                Added Emoticons plugin
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                Added code to the plugins that take configuration parameters to throw a
+<tt>BlojsomPluginException</tt> in <tt>init()</tt> if the required configuration
+parameter is not present
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Changed <i>blojsom.css</i> to reduce the spacing between blog entries
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                Velocity templates can now be found in <i>/WEB-INF/classes</i>. They are no longer
+built and bundled as <i>/WEB-INF/lib/blojsom-templates.jar</i> since that way was not amenable to
+editing and customizing the templates by end users
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Added <tt>setComments</tt> method to <tt>BlogEntry</tt> class so that plugins can
+manipulate blog entry comments
+            </action>
+            <action dev="czarneckid" type="add" context="Plugins">
+                Trackback support added. See the <a href="trackbacks.html">trackbacks</a> documentation for more
+information on Trackback support in blojsom
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                <font color="red">NOTE:</font> You will need to add one parameter, <i>blog-trackbacks-directory</i>
+ to your <i>blojsom.properties</i> file if you are upgrading from a
+previous version of blojsom. For example, you would add the following line to your <i>blojsom.properties</i> file:
+<pre>
+blog-trackbacks-directory=.trackbacks
+</pre>
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                Added "entries" URL parameter to override the number of entries displayed on a page.
+<i>entries=&lt;-1 or integer greater than 0&gt;</i>. This parameter is listed with the
+other URL parameters accepted by blojsom in the <a href="installation.html">installation</a>
+documentation
+            </action>
+            <action dev="czarneckid" type="update" context="Plugins">
+                Refactored comment handling to the Comment plugin
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Plugins" fixes-bug="704184">
+                Calender access doesn't work on sub-categories
+            </action>
+            <action dev="czarneckid" type="fix" context="Plugins" fixes-bug="704356">
+                Fix for Calendar date access
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="706029">
+                Wrong number of entries displayed for categories
+            </action>
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="707310">
+                Blog category cannot have same name as servlet mapping
+            </action>
+        </release>
+
+        <release version="1.5" date="March 13, 2003">
+            <action dev="czarneckid" type="add" context="General">
+                Added a text flavor.
+                <i>flavor=text</i>
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added support for comments. See the
+                <a href="comments.html">comments</a> document for more information on configuring comments
+            </action>
+            <action dev="czarneckid" type="update" context="General">
+                <font color="red">NOTE:</font> You will need to add two parameters,
+                <i>blog-comments-enabled</i>
+                and
+                <i>blog-comments-directory</i> to your
+                <i>blojsom.properties</i> file if you are upgrading from a
+                previous version of blojsom. For example, you would add the following two lines to your
+                <i>blojsom.properties</i> file:
+                <pre>
+                    blog-comments-enabled=true
+                    blog-comments-directory=.comments
+                </pre>
+            </action>
+            <action dev="czarneckid" type="add" context="General">
+                Added "BLOJSOM_COMMENTS_ENABLED" (see
+                <a href="customization.html">customization</a>) as
+                a request attribute to indicate whether or not comments are enabled for this blog
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Enhanced security of permalinks such that only permalinks matching one of the
+                <i>blog-file-extensions</i> will be returned
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Methods on
+                <tt>Blog</tt> that returned
+                <tt>BlogEntry[]</tt> now return
+                <tt>BlogEntry[0]</tt>
+                in the cases where the method would return
+                <tt>null</tt>
+            </action>
+            <action dev="czarneckid" type="add" context="Extensions">
+                XML-RPC Handler supporting a subset of the
+                <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>
+            </action>
+            <action dev="czarneckid" type="add" context="Plugins">
+                Added "Referer Log" plugin
+            </action>
+            <action dev="czarneckid" type="remove" context="Library">
+                Removed Xerces XML parser as Java 1.4.x already contains an XML parser
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Plugins" fixes-bug="698768">
+                Adding Comments does not render comments after post
+            </action>
+        </release>
+
         <release version="1.4" date="March 2, 2003">
             <action dev="czarneckid" type="update" context="General">
                 "BLOG_SITE_URL" no longer contains a trailing "/"
             </action>
             <action dev="czarneckid" type="add" context="Extension">
-                <a href="xmlrpc.html">XML-RPC Interface</a> (Additional Servlet) supporting a subset of the <a href="http://plant.blogger.com/api/index.html">Blogger API</a>
+                <a href="xmlrpc.html">XML-RPC Interface</a> (Additional Servlet) supporting a subset of the
+                <a href="http://plant.blogger.com/api/index.html">Blogger API</a>
             </action>
             <action dev="czarneckid" type="add" context="Plugin">
-                Initial <a href="plugins.html">Plugin API</a> for blojsom
+                Initial
+                <a href="plugins.html">Plugin API</a> for blojsom
             </action>
 
             <action dev="czarneckid" type="fix" context="Core" fixes-bug="692640">
