@@ -19,6 +19,8 @@
 
     <div id="contents">
 
+        #showErrorMessage()
+
         <!-- Update moblog settings -->
         <div id="mainClm">
             <h2>#adminResource('update.moblog.settings.text' 'Update moblog settings')</h2>

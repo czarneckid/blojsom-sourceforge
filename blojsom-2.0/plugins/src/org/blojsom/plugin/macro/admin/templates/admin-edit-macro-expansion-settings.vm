@@ -19,6 +19,8 @@
 
     <div id="contents">
 
+        #showErrorMessage()
+
         <!-- Add macro form -->
         <div id="mainClm">
             <h2>#adminResource('add.macro.expansion.text' 'Add macro expansion')</h2>
