@@ -48,12 +48,12 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * Blojsom XML-RPC Handler for the Blogger API
+ * Blojsom XML-RPC Handler for the Blogger v1.0 API
  *
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.6 2003-03-09 16:05:10 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.7 2003-03-13 01:29:51 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -251,7 +251,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     try {
-                        FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath());
+                        FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath(),false);
                         _fos.write(content.getBytes());
                         _fos.close();
                         result = true;
@@ -312,7 +312,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 try {
-                    FileOutputStream _fos = new FileOutputStream(outputfile);
+                    FileOutputStream _fos = new FileOutputStream(outputfile,false);
                     _fos.write(content.getBytes());
                     _fos.close();
                     result = postid;
