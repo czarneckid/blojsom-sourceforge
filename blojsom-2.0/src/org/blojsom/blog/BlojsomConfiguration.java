@@ -49,10 +49,10 @@ import java.io.IOException;
 
 /**
  * BlojsomConfiguration
- *
+ * 
  * @author David Czarnecki
+ * @version $Id: BlojsomConfiguration.java,v 1.9 2003-12-17 20:11:18 czarneckid Exp $
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.8 2003-11-13 02:38:19 czarneckid Exp $
  */
 public class BlojsomConfiguration implements BlojsomConstants {
 
@@ -70,8 +70,8 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Initialize the BlojsomConfiguration object
-     *
-     * @param servletConfig Servlet configuration information
+     * 
+     * @param servletConfig        Servlet configuration information
      * @param blojsomConfiguration Map of loaded blojsom properties
      */
     public BlojsomConfiguration(ServletConfig servletConfig, Map blojsomConfiguration) throws BlojsomConfigurationException {
@@ -135,11 +135,17 @@ public class BlojsomConfiguration implements BlojsomConstants {
                     throw new BlojsomConfigurationException(e);
                 }
 
-                Blog userBlog = new Blog(userProperties);
-                blogUser.setBlog(userBlog);
+                Blog userBlog = null;
+                try {
+                    userBlog = new Blog(userProperties);
+                    blogUser.setBlog(userBlog);
 
-                _blogUsers.put(user, blogUser);
-                _logger.debug("Added blojsom user: " + blogUser.getId());
+                    _blogUsers.put(user, blogUser);
+                    _logger.debug("Added blojsom user: " + blogUser.getId());
+                } catch (BlojsomConfigurationException e) {
+                    _logger.error(e);
+                    _logger.error("Marking user as invalid: " + blogUser.getId());
+                }
             }
 
             // Determine and set the default user
@@ -166,7 +172,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Returns an unmodifiable map of the blojsom configuration properties
-     *
+     * 
      * @return Unmodifiable map of the blojsom configuration properties
      */
     public Map getBlojsomConfiguration() {
@@ -175,7 +181,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Retrieve a blojsom property as a string
-     *
+     * 
      * @param propertyKey Property key
      * @return Value of blojsom property as a string or <code>null</code> if no property key is found
      */
@@ -189,7 +195,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Return a blojsom configuration property
-     *
+     * 
      * @param propertyKey Property key
      * @return Value of blojsom property
      */
@@ -199,7 +205,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the default user for this blojsom instance
-     *
+     * 
      * @return Default user
      */
     public String getDefaultUser() {
@@ -208,7 +214,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the base directory for obtaining configuration information
-     *
+     * 
      * @return Configuration base directory (e.g. /WEB-INF)
      */
     public String getBaseConfigurationDirectory() {
@@ -217,7 +223,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the classname of the fetcher used for this blojsom instance
-     *
+     * 
      * @return Fetcher classname
      */
     public String getFetcherClass() {
@@ -227,9 +233,9 @@ public class BlojsomConfiguration implements BlojsomConstants {
     /**
      * Get the installation directory for blojsom. This is the directory where the blojsom WAR file will
      * be unpacked.
-     *
-     * @since blojsom 2.01
+     * 
      * @return Installation directory
+     * @since blojsom 2.01
      */
     public String getInstallationDirectory() {
         return _installationDirectory;
@@ -237,9 +243,9 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the directory where templates will be located off the user's directory.
-     *
-     * @since blojsom 2.04
+     * 
      * @return Templates directory
+     * @since blojsom 2.04
      */
     public String getTemplatesDirectory() {
         return _templatesDirectory;
@@ -247,7 +253,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get the list of users for this blojsom instance returned as a String[]
-     *
+     * 
      * @return List of users as a String[]
      */
     public String[] getBlojsomUsers() {
@@ -256,7 +262,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
     /**
      * Get a map of the {@link BlogUser} objects
-     *
+     * 
      * @return Map of {@link BlogUser} objects
      */
     public Map getBlogUsers() {
