@@ -42,29 +42,34 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.listener.BlojsomListener;
+import org.blojsom.listener.event.BlojsomEvent;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.util.BlojsomUtils;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.util.HashMap;
 
 /**
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
+ * @version $Id: WeblogsPingPlugin.java,v 1.12 2004-08-30 14:54:06 czarneckid Exp $
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.11 2004-04-08 01:34:03 czarneckid Exp $
  */
-public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
+public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(WeblogsPingPlugin.class);
 
@@ -89,7 +94,7 @@ public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
@@ -102,16 +107,18 @@ public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
             user = blojsomConfiguration.getBlojsomUsers()[i];
             _userLastPingMap.put(user, new Date());
         }
+
+        blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -189,6 +196,44 @@ public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
     }
 
     /**
+     * Handle an event broadcast from another component
+     *
+     * @param event {@link org.blojsom.listener.event.BlojsomEvent} to be handled
+     */
+    public void handleEvent(BlojsomEvent event) {
+        if (event instanceof AddBlogEntryEvent || event instanceof UpdatedBlogEntryEvent) {
+            AddBlogEntryEvent addEvent = (AddBlogEntryEvent) event;
+            Blog blog = addEvent.getBlogUser().getBlog();
+
+            // Check for meta-data indicating a ping should not be sent
+            Map metaData = addEvent.getBlogEntry().getMetaData();
+            if (metaData != null && metaData.containsKey(NO_PING_WEBLOGS_METADATA)) {
+                return;
+            }
+
+            // If they are provided, loop through that list of URLs to ping
+            String pingURLsIP = blog.getBlogProperty(BLOG_PING_URLS_IP);
+            String[] pingURLs = BlojsomUtils.parseDelimitedList(pingURLsIP, WHITESPACE);
+            if (pingURLs != null && pingURLs.length > 0) {
+                Vector params = new Vector();
+                params.add(blog.getBlogName());
+                params.add(blog.getBlogURL());
+                for (int i = 0; i < pingURLs.length; i++) {
+                    String pingURL = pingURLs[i];
+                    try {
+                        XmlRpcClient weblogsPingClient = new XmlRpcClient(pingURL);
+                        weblogsPingClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                    } catch (MalformedURLException e) {
+                        _logger.error(e);
+                    }
+                }
+            }
+
+            _logger.debug("Pinged notification URLs based on add/update blog entry event");
+        }
+    }
+
+    /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
@@ -218,9 +263,9 @@ public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
         /**
          * Call went ok, handle result.
          *
-         * @param o Return object
+         * @param o   Return object
          * @param url URL
-         * @param s String
+         * @param s   String
          */
         public void handleResult(Object o, URL url, String s) {
             _logger.debug(o.toString());
@@ -229,9 +274,9 @@ public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
         /**
          * Something went wrong, handle error.
          *
-         * @param e Exception containing error from XML-RPC call
+         * @param e   Exception containing error from XML-RPC call
          * @param url URL
-         * @param s String
+         * @param s   String
          */
         public void handleError(Exception e, URL url, String s) {
             _logger.error(e);
