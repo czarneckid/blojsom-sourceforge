@@ -55,7 +55,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.4 2003-04-13 22:54:24 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.5 2003-04-13 22:59:53 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -409,11 +409,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 // If blogging tools only can add a <br/> to seperate lines, then this catches that
-                int eolOffset = content.indexOf(10);
-                int brOffset = content.indexOf(ALTERNATE_EOL);
-                if ( ( eolOffset == -1 && brOffset != -1 )  || brOffset < eolOffset ) {
-                  content =  content.substring(0,brOffset) + "\n" + content.substring(brOffset + ALTERNATE_EOL.length());
-                }
+//                int eolOffset = content.indexOf(10);
+//                int brOffset = content.indexOf(ALTERNATE_EOL);
+//                if ( ( eolOffset == -1 && brOffset != -1 )  || brOffset < eolOffset ) {
+//                  content =  content.substring(0,brOffset) + "\n" + content.substring(brOffset + ALTERNATE_EOL.length());
+//                }
 
                 try {
                     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), UTF8));
@@ -480,7 +480,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                         entrystruct.put(MEMBER_BLOGID, blogid);
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                        entrystruct.put(MEMBER_CONTENT, entry.getDescription());
+                        entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
                         entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
                         entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                         entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
