@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.13 2003-12-20 18:11:04 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.14 2004-01-09 02:51:39 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -859,7 +859,9 @@ public class BlojsomUtils implements BlojsomConstants {
             throw new BlojsomException(e);
         } finally {
             try {
-                is.close();
+                if (is != null) {
+                    is.close();
+                }
             } catch (IOException e) {
                 throw new BlojsomException(e);
             }

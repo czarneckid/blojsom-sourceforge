@@ -55,7 +55,7 @@ import java.io.IOException;
  * @author David Czarnecki
  * @author Jšrg Prante
  * @since blojsom 2.01
- * @version $Id: BlojsomProperties.java,v 1.2 2003-11-11 02:43:22 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.3 2004-01-09 02:51:39 czarneckid Exp $
  */
 public class BlojsomProperties extends Properties {
 
@@ -140,6 +140,10 @@ public class BlojsomProperties extends Properties {
      * @throws IOException If there is an error reading the properties
      */
     public void load(InputStream in) throws IOException {
+        if (in == null) {
+            return;
+        }
+
         BufferedReader reader;
         if (encoding == null) {
             reader = new BufferedReader(new InputStreamReader(in));
