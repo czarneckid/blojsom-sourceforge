@@ -56,7 +56,8 @@ import java.util.ArrayList;
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.9 2004-01-29 01:10:39 czarneckid Exp $
+ * @since blojsom 2.08
+ * @version $Id: ConditionalGetPlugin.java,v 1.10 2004-01-29 01:11:43 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
