@@ -174,13 +174,26 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
-     * Retrieve all of the entries for a requested category
+     * Retrieve all of the entries for a requested category. Uses the value of the blog display entries
+     * to pass to getEntriesForCategory(BlogCategory, int)
      *
      * @param requestedCategory Requested category
      * @return Blog entry array containing the list of blog entries for the requested category,
      * or <code>null</code> if there are no entries for the category
      */
     public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory) {
+        return getEntriesForCategory(requestedCategory, _blogDisplayEntries);
+    }
+
+    /**
+     * Retrieve all of the entries for a requested category
+     *
+     * @param requestedCategory Requested category
+     * @param maxBlogEntries Maximum number of blog entries to retrieve from a blog category
+     * @return Blog entry array containing the list of blog entries for the requested category,
+     * or <code>null</code> if there are no entries for the category
+     */
+    public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int maxBlogEntries) {
         BlogEntry[] entryArray;
         File blogCategory = new File(_blogHome + BlojsomUtils.removeInitialSlash(requestedCategory.getCategory()));
         File[] entries = blogCategory.listFiles(BlojsomUtils.getExtensionsFilter(_blogFileExtensions));
@@ -192,7 +205,13 @@ public class Blog implements BlojsomConstants {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
             entryArray = new BlogEntry[entries.length];
             BlogEntry blogEntry;
-            for (int i = 0; i < entries.length; i++) {
+            int entryCounter;
+            if (maxBlogEntries == -1) {
+                entryCounter = entries.length;
+            } else {
+                entryCounter = (maxBlogEntries > entries.length) ? entries.length : maxBlogEntries;
+            }
+            for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
                 blogEntry = new BlogEntry();
                 blogEntry.setSource(entry);
@@ -220,7 +239,7 @@ public class Blog implements BlojsomConstants {
      * or <code>null</code> if there are no entries
      */
     public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String year, String month, String day) {
-        BlogEntry[] blogEntries = getEntriesForCategory(requestedCategory);
+        BlogEntry[] blogEntries = getEntriesAllCategories(_blogDefaultCategoryMappings, -1);
         ArrayList updatedEntryList = new ArrayList();
         String requestedDateKey = year + month + day;
 
@@ -285,7 +304,7 @@ public class Blog implements BlojsomConstants {
             ArrayList blogEntries = new ArrayList();
             for (int i = 0; i < blogCategories.length; i++) {
                 BlogCategory blogCategory = blogCategories[i];
-                BlogEntry[] entriesForCategory = getEntriesForCategory(blogCategory);
+                BlogEntry[] entriesForCategory = getEntriesForCategory(blogCategory, -1);
                 if (entriesForCategory != null) {
                     Arrays.sort(entriesForCategory, BlojsomUtils.FILE_TIME_COMPARATOR);
                     if (maxBlogEntries != -1) {
@@ -321,10 +340,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the directory where blog entries are stored
      *
-     * @param _blogHome New directory to use to look for blog entries
+     * @param blogHome New directory to use to look for blog entries
      */
-    public void setBlogHome(String _blogHome) {
-        this._blogHome = _blogHome;
+    public void setBlogHome(String blogHome) {
+        this._blogHome = blogHome;
     }
 
     /**
@@ -339,10 +358,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the list of blog file extensions to look for
      *
-     * @param _blogFileExtensions New list of blog file extensions
+     * @param blogFileExtensions New list of blog file extensions
      */
-    public void setBlogFileExtensions(String[] _blogFileExtensions) {
-        this._blogFileExtensions = _blogFileExtensions;
+    public void setBlogFileExtensions(String[] blogFileExtensions) {
+        this._blogFileExtensions = blogFileExtensions;
     }
 
     /**
@@ -357,10 +376,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the septh to which blog entries will be searched
      *
-     * @param _blogDepth Blog depth
+     * @param blogDepth Blog depth
      */
-    public void setBlogDepth(int _blogDepth) {
-        this._blogDepth = _blogDepth;
+    public void setBlogDepth(int blogDepth) {
+        this._blogDepth = blogDepth;
     }
 
     /**
@@ -375,10 +394,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the name of the blog
      *
-     * @param _blogName Name for the blog
+     * @param blogName Name for the blog
      */
-    public void setBlogName(String _blogName) {
-        this._blogName = _blogName;
+    public void setBlogName(String blogName) {
+        this._blogName = blogName;
     }
 
     /**
@@ -393,10 +412,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the description for the blog
      *
-     * @param _blogDescription Description for the blog
+     * @param blogDescription Description for the blog
      */
-    public void setBlogDescription(String _blogDescription) {
-        this._blogDescription = _blogDescription;
+    public void setBlogDescription(String blogDescription) {
+        this._blogDescription = blogDescription;
     }
 
     /**
@@ -411,10 +430,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the URL for the blog
      *
-     * @param _blogURL URL for the blog
+     * @param blogURL URL for the blog
      */
-    public void setBlogURL(String _blogURL) {
-        this._blogURL = _blogURL;
+    public void setBlogURL(String blogURL) {
+        this._blogURL = blogURL;
     }
 
     /**
@@ -429,10 +448,10 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the language for the blog
      *
-     * @param _blogLanguage Language for the blog
+     * @param blogLanguage Language for the blog
      */
-    public void setBlogLanguage(String _blogLanguage) {
-        this._blogLanguage = _blogLanguage;
+    public void setBlogLanguage(String blogLanguage) {
+        this._blogLanguage = blogLanguage;
     }
 
     /**
@@ -445,10 +464,10 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the number of blog entries that should be retrieved from individual categories
-     * @param _blogDisplayEntries Number of blog entries that should be retrieved from individual categories
+     * @param blogDisplayEntries Number of blog entries that should be retrieved from individual categories
      */
-    public void setBlogDisplayEntries(int _blogDisplayEntries) {
-        this._blogDisplayEntries = _blogDisplayEntries;
+    public void setBlogDisplayEntries(int blogDisplayEntries) {
+        this._blogDisplayEntries = blogDisplayEntries;
     }
 
     /**
@@ -461,10 +480,10 @@ public class Blog implements BlojsomConstants {
 
     /**
      * Set the list of categories that should be mapped to the default category '/'
-     * @param _blogDefaultCategoryMappings List of categories
+     * @param blogDefaultCategoryMappings List of categories
      */
-    public void setBlogDefaultCategoryMappings(String[] _blogDefaultCategoryMappings) {
-        this._blogDefaultCategoryMappings = _blogDefaultCategoryMappings;
+    public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
+        this._blogDefaultCategoryMappings = blogDefaultCategoryMappings;
     }
 
     /**
