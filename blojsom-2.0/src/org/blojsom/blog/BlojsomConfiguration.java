@@ -52,7 +52,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.5 2003-09-08 01:08:01 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.6 2003-09-12 02:08:59 czarneckid Exp $
  */
 public class BlojsomConfiguration implements BlojsomConstants {
 
@@ -76,7 +76,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     public BlojsomConfiguration(ServletConfig servletConfig, Map blojsomConfiguration) throws BlojsomConfigurationException {
         _blojsomConfiguration = blojsomConfiguration;
 
-        _installationDirectory = getBlojsomPropertyAsString(BLOJSOM_INSTALLATION_DIRECTORY);
+        _installationDirectory = servletConfig.getServletContext().getRealPath("/");
         if (_installationDirectory == null || "".equals(_installationDirectory)) {
             _logger.error("No installation directory set for blojsom");
             throw new BlojsomConfigurationException("No installation directory set for blojsom");
@@ -85,6 +85,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 _installationDirectory += "/";
             }
         }
+        _logger.debug("Using installation directory" + _installationDirectory);
 
         _baseConfigurationDirectory = getBlojsomPropertyAsString(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP);
         if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
