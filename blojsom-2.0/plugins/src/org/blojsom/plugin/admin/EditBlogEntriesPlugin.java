@@ -36,24 +36,23 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.xmlrpc.AsyncCallback;
+import org.apache.xmlrpc.XmlRpcClient;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.net.URLDecoder;
+import java.io.*;
+import java.util.*;
+import java.net.*;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
@@ -61,7 +60,7 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.19 2004-02-17 04:28:34 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.20 2004-02-27 03:12:34 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -70,6 +69,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
     // XML-RPC constants
     public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
+
+    private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
+
     /**
      * Default file extension for blog entries written via XML-RPC
      */
@@ -104,6 +106,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_COMMENT_ID = "blog-comment-id";
     private static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
     private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
+    private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
+    private static final String BLOG_PING_URLS = "blog-ping-urls";
 
     private BlojsomFetcher _fetcher;
 
@@ -236,6 +240,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         } else if (UPDATE_BLOG_ENTRY_ACTION.equals(action)) {
             _logger.debug("User requested update blog entry action");
 
+            Blog blog = user.getBlog();
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
@@ -243,6 +248,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
+            String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
+            String blogPingURLs = BlojsomUtils.getRequestValue(BLOG_PING_URLS, httpServletRequest);
+
             _logger.debug("Blog entry id: " + blogEntryId);
 
             BlogCategory category;
@@ -284,6 +292,16 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     StringBuffer entryLink = new StringBuffer();
                     entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entryToUpdate.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entryToUpdate.getPermalink()).append("\">").append(entryToUpdate.getTitle()).append("</a>");
                     addOperationResultMessage(context, "Updated blog entry: " + entryLink.toString());
+
+                    // Send trackback pings
+                    if (!BlojsomUtils.checkNullOrBlank(blogTrackbackURLs)) {
+                        sendTrackbackPings(blog, entryToUpdate, blogTrackbackURLs);
+                    }
+
+                    // Send update pings to the ping URLs
+                    if (!BlojsomUtils.checkNullOrBlank(blogPingURLs)) {
+                        sendBlogPings(blog, blogPingURLs);
+                    }
                 } else {
                     _logger.debug("No entries found in category: " + blogCategoryName);
                 }
@@ -344,6 +362,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(PAGE_PARAM, ADD_BLOG_ENTRY_PAGE);
         } else if (ADD_BLOG_ENTRY_ACTION.equals(action)) {
             _logger.debug("User requested add blog entry action");
+            Blog blog = user.getBlog();
 
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
@@ -354,6 +373,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
+            String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
+            String blogPingURLs = BlojsomUtils.getRequestValue(BLOG_PING_URLS, httpServletRequest);
 
             BlogCategory category;
             category = _fetcher.newBlogCategory();
@@ -411,11 +432,22 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 entry.save(user);
                 StringBuffer entryLink = new StringBuffer();
-                entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entry.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entry.getPermalink()).append("\">").append(entry.getTitle()).append("</a>");
+                entry.setLink(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getCategory()) + "?" + PERMALINK_PARAM + "=" + entry.getPermalink());
+                entryLink.append("<a href=\"").append(entry.getLink()).append("\">").append(entry.getTitle()).append("</a>");
                 addOperationResultMessage(context, "Added blog entry: " + entryLink.toString());
             } catch (BlojsomException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to add blog entry to category: " + blogCategoryName);
+            }
+
+            // Send trackback pings
+            if (!BlojsomUtils.checkNullOrBlank(blogTrackbackURLs)) {
+                sendTrackbackPings(blog, entry, blogTrackbackURLs);
+            }
+
+            // Send update pings to the ping URLs
+            if (!BlojsomUtils.checkNullOrBlank(blogPingURLs)) {
+                sendBlogPings(blog, blogPingURLs);
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
@@ -491,6 +523,94 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * @param blog
+     * @param entry
+     * @param blogTrackbackURLs
+     */
+    private void sendTrackbackPings(Blog blog, BlogEntry entry, String blogTrackbackURLs) {
+        // Build the URL parameters for the trackback ping URL
+        StringBuffer trackbackPingURLParameters = new StringBuffer();
+        try {
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(entry.getLink(), UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(entry.getTitle(), UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
+
+            String excerpt = entry.getDescription().replaceAll("<.*?>", "");
+            if (excerpt.length() > 255) {
+                excerpt = excerpt.substring(0, 251);
+                excerpt += "...";
+            }
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, UTF8));
+        } catch (UnsupportedEncodingException e) {
+            _logger.error(e);
+        }
+
+        String[] trackbackURLs = BlojsomUtils.parseCommaList(blogTrackbackURLs);
+        if (trackbackURLs != null && trackbackURLs.length > 0) {
+            for (int i = 0; i < trackbackURLs.length; i++) {
+                String trackbackURL = trackbackURLs[i].trim();
+                StringBuffer trackbackPingURL = new StringBuffer(trackbackURL);
+
+                if (trackbackPingURL.indexOf("?") == -1) {
+                    trackbackPingURL.append("?");
+                }
+
+                trackbackPingURL = new StringBuffer(BlojsomUtils.replace(trackbackPingURL.toString(), "&amp;", "&"));
+                trackbackPingURL.append(trackbackPingURLParameters);
+                _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
+
+                try {
+                    URL trackbackUrl = new URL(trackbackPingURL.toString());
+
+                    // Open a connection to the trackback URL and read its input
+                    HttpURLConnection trackbackUrlConnection = (HttpURLConnection) trackbackUrl.openConnection();
+                    trackbackUrlConnection.setRequestMethod("POST");
+                    trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    trackbackUrlConnection.setDoOutput(true);
+                    trackbackUrlConnection.connect();
+                    BufferedReader trackbackStatus = new BufferedReader(new InputStreamReader(trackbackUrlConnection.getInputStream()));
+                    String line;
+                    StringBuffer status = new StringBuffer();
+                    while ((line = trackbackStatus.readLine()) != null) {
+                        status.append(line).append("\n");
+                    }
+                    trackbackUrlConnection.disconnect();
+
+                    _logger.debug("Trackback status for ping to " + trackbackURL + ": " + status.toString());
+                } catch (IOException e) {
+                    _logger.error(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param blog
+     * @param blogPingURLs
+     */
+    private void sendBlogPings(Blog blog, String blogPingURLs) {
+        String[] pingURLs = BlojsomUtils.parseCommaList(blogPingURLs);
+        EditBlogEntriesPluginAsyncCallback editBlogEntriesPluginAsyncCallback = new EditBlogEntriesPluginAsyncCallback();
+        Vector params = new Vector();
+        params.add(blog.getBlogName());
+        params.add(blog.getBlogURL());
+
+        if (pingURLs != null && pingURLs.length > 0) {
+            for (int i = 0; i < pingURLs.length; i++) {
+                String pingURL = pingURLs[i].trim();
+
+                _logger.debug("Sending ping to: " + pingURL);
+                try {
+                    XmlRpcClient xmlRpcClient = new XmlRpcClient(pingURL);
+                    xmlRpcClient.executeAsync(WEBLOGS_PING_METHOD, params, editBlogEntriesPluginAsyncCallback);
+                } catch (MalformedURLException e) {
+                    _logger.error(e);
+                }
+            }
+        }
+    }
+
+    /**
      * Return a filename appropriate for the blog entry content
      *
      * @param content            Blog entry content
@@ -507,5 +627,39 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
         String filename = baseFilename + blogEntryExtension;
         return filename;
+    }
+
+    /**
+     * Asynchronous callback handler for the weblogs.com ping
+     */
+    private class EditBlogEntriesPluginAsyncCallback implements AsyncCallback {
+
+        /**
+         * Default constructor
+         */
+        public EditBlogEntriesPluginAsyncCallback() {
+        }
+
+        /**
+         * Call went ok, handle result.
+         *
+         * @param o   Return object
+         * @param url URL
+         * @param s   String
+         */
+        public void handleResult(Object o, URL url, String s) {
+            _logger.debug(o.toString());
+        }
+
+        /**
+         * Something went wrong, handle error.
+         *
+         * @param e   Exception containing error from XML-RPC call
+         * @param url URL
+         * @param s   String
+         */
+        public void handleError(Exception e, URL url, String s) {
+            _logger.error(e);
+        }
     }
 }
