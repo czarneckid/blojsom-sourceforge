@@ -87,4 +87,9 @@ public interface BlojsomConstants {
      * Default number of blog entries to display (-1 indicates all entries will be displayed)
      */
     public static final int BLOG_ENTRIES_DISPLAY_DEFAULT = -1;
+
+    /**
+     * HTTP Header Name representing the Last Modified Timstamp of the blog (GMT Based)
+     */
+    public static final String HTTP_LASTMODIFIED = "Last-Modified";
 }

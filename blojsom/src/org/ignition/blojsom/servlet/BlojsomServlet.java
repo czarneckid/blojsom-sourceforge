@@ -46,10 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * BlojsomServlet
@@ -257,13 +254,19 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             // Check to see if we have requested entries by calendar
             if (year != null) {
                 entries = _blog.getEntriesForDate(category, year, month, day);
-            // Check for the default category
+                // Check for the default category
             } else if (requestedCategory.equals("/")) {
                 entries = _blog.getEntriesAllCategories();
-            // Check for the requested category
+                // Check for the requested category
             } else {
                 entries = _blog.getEntriesForCategory(category);
             }
+        }
+
+
+        // If we have entries, construct a last modified on the most recent
+        if (entries != null && entries.length > 0) {
+            httpServletResponse.addDateHeader( HTTP_LASTMODIFIED, entries[0].getLastModified());
         }
 
         // Setup the context for the dispatcher
@@ -296,4 +299,5 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         GenericDispatcher dispatcher = (GenericDispatcher) _templateDispatchers.get(templateExtension);
         dispatcher.dispatch(httpServletRequest, httpServletResponse, context, flavorTemplate, flavorContentType);
     }
+
 }
