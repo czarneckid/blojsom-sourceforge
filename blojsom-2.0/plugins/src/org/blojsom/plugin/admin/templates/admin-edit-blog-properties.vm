@@ -54,7 +54,7 @@
                         <td>#adminResource('blog.base.url.text' 'Blog base URL')</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()"/></td>
                     </tr>
                     <tr>
-                        <td>#adminResource('blog.depth.text' 'Blog depth')</td> <td><input name="blog-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
+                        <td>#adminResource('blog.depth.text' 'Blog depth')</td> <td><input name="blog-directory-depth" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDepth()"/></td>
                     </tr>
                     <tr>
                         <td>#adminResource('blog.display.entries.text' 'Blog display entries')</td> <td><input name="blog-display-entries" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDisplayEntries()"/></td>
