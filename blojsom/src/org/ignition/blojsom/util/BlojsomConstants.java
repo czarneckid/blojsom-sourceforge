@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.25 2003-03-05 04:05:01 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.26 2003-03-06 04:10:31 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -124,6 +124,36 @@ public interface BlojsomConstants {
      * Request parameter for the "page"
      */
     public static final String PAGE_PARAM = "page";
+
+    /**
+     * Request parameter for the "comment"
+     */
+    public static final String COMMENT_PARAM = "comment";
+
+    /**
+     * Request parametert for the "author"
+     */
+    public static final String AUTHOR_PARAM = "author";
+
+    /**
+     * Request parametert for the "authorEmail"
+     */
+    public static final String AUTHOR_EMAIL_PARAM = "authorEmail";
+
+    /**
+     * Request parametert for the "authorURL"
+     */
+    public static final String AUTHOR_URL_PARAM = "authorURL";
+
+    /**
+     * Request parametert for the "commentText"
+     */
+    public static final String COMMENT_TEXT_PARAM = "commentText";
+
+    /**
+     * Request parametert for the "category"
+     */
+    public static final String CATEGORY_PARAM = "category";
 
     /**
      * Value indicating all subdirectories under the blog home should be searched
