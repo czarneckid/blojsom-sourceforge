@@ -43,9 +43,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -56,7 +54,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.1 2003-04-13 17:49:45 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.2 2003-04-13 18:16:09 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -316,9 +314,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     try {
-                        FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath(), false);
-                        _fos.write(content.getBytes());
-                        _fos.close();
+                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), UTF8));
+                        bw.write(content);
+                        bw.close();
                         result = true;
                     } catch (IOException e) {
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
@@ -376,9 +374,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 try {
-                    FileOutputStream _fos = new FileOutputStream(outputfile, false);
-                    _fos.write(content.getBytes());
-                    _fos.close();
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), UTF8));
+                    bw.write(content);
+                    bw.close();
                     result = postid;
                 } catch (IOException e) {
                     throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
