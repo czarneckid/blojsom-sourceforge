@@ -54,10 +54,10 @@ import java.util.ArrayList;
 
 /**
  * ConditionalGetPlugin
- * 
+ *
  * @author czarnecki
+ * @version $Id: ConditionalGetPlugin.java,v 1.11 2004-02-13 03:14:55 czarneckid Exp $
  * @since blojsom 2.08
- * @version $Id: ConditionalGetPlugin.java,v 1.10 2004-01-29 01:11:43 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -97,9 +97,15 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (entries.length > 0) {
+            long ifModifiedSinceHeader = -1;
+            try {
+                ifModifiedSinceHeader = httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER);
+            } catch (Exception e) {
+                ifModifiedSinceHeader = -1;
+            }
+
             // Check first to see if neither of the headers we need to check are present
-            if ((httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) == -1) &&
-                    (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) == null)) {
+            if ((ifModifiedSinceHeader == -1) && (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) == null)) {
                 _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
             } else {
                 ArrayList datesToCheck = new ArrayList(5);
@@ -123,8 +129,15 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
                 // Cache the If-Modified-Since and If-None-Match headers since they will not change
                 Date ifModifiedSinceDate = null;
-                if (httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER) != -1) {
-                    ifModifiedSinceDate = new Date(httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER));
+                ifModifiedSinceHeader = -1;
+                try {
+                    ifModifiedSinceHeader = httpServletRequest.getDateHeader(IF_MODIFIED_SINCE_HEADER);
+                } catch (Exception e) {
+                    ifModifiedSinceHeader = -1;
+                }
+
+                if (ifModifiedSinceHeader != -1) {
+                    ifModifiedSinceDate = new Date(ifModifiedSinceHeader);
                 }
 
                 String ifNoneMatchHeader = null;
@@ -158,7 +171,7 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
                         _logger.error("No If-Modified-Since or If-None-Match HTTP headers present and not caught in initial check.");
                     }
                 }
-             }
+            }
         }
 
         return entries;
