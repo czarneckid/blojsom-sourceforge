@@ -95,15 +95,24 @@ public class VelocityDispatcher implements GenericDispatcher {
             throws IOException, ServletException {
         httpServletResponse.setContentType(flavorContentType);
 
+
+        StringWriter sw = new StringWriter();
+
         // Setup the VelocityContext
-        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
+
         VelocityContext velocityContext = new VelocityContext(context);
         try {
-            Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, osw);
+            Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
         } catch (Exception e) {
             _logger.error(e);
         }
 
+        // We  need that content length, especially for RSS Feeds
+        String content  = sw.toString();
+        httpServletResponse.addIntHeader("Content-Length", content.length());
+
+        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
+        osw.write( content );
         osw.flush();
     }
 }
