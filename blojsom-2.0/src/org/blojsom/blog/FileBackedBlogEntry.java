@@ -47,14 +47,12 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.13 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.14 2004-02-08 20:54:09 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
 
     private Log _logger = LogFactory.getLog(FileBackedBlogEntry.class);
-
-    private static final String SOURCE_ATTRIBUTE = "blog-entry-source";
 
     private File _source;
     private String _commentsDirectory;
