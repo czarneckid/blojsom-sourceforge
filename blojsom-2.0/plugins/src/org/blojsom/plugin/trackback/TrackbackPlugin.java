@@ -54,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.3 2003-08-20 02:55:25 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.4 2003-08-25 03:52:54 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -92,6 +92,12 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * Request parameter for the trackback "blog_name"
      */
     private static final String TRACKBACK_BLOG_NAME_PARAM = "blog_name";
+
+    /**
+     * Key under which the indicator this plugin is "live" will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_TRACKBACK_PLUGIN_ENABLED = "BLOJSOM_TRACKBACK_PLUGIN_ENABLED";
 
     /**
      * Key under which the trackback return code will be placed
@@ -150,6 +156,11 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                                Map context,
                                BlogEntry[] entries) throws BlojsomPluginException {
         Blog blog = user.getBlog();
+        context.put(BLOJSOM_TRACKBACK_PLUGIN_ENABLED, blog.getBlogTrackbacksEnabled());
+        if (!blog.getBlogTrackbacksEnabled().booleanValue()) {
+            _logger.debug("blog trackbacks not enabled for user: " + user.getId());
+            return entries;
+        }
 
         String[] _blogFileExtensions;
         String _blogHome;
