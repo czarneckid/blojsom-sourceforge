@@ -2,7 +2,8 @@
 <status>
 
   <developers>
-    <person name="Nick Chalko"      email="nick@chalko.com"      id="chalko" />
+    <person name="David Czarnecki"      email="czarneckid@users.sourceforge.net"      id="czarneckid" />
+	<person name="Nick Chalko"      email="nick@chalko.com"      id="chalko" />
     <!-- Add more people here -->
   </developers>
 
@@ -38,6 +39,23 @@
 
   <changes>
     <!-- Add new releases here -->
+    <release version="0.9.2" date="June 19, 2003">
+      <!-- Some action types have associated images. By default, images are
+      defined for 'add', 'fix', 'remove' and 'update'. If you add
+      src/documentation/resources/images/<foo>.jpg images, these will
+        automatically be used for entries of type <foo>. -->
+        <action dev="czarneckid" type="add"  contect="General">
+        BlojsomServlet and BlojsomXMLRPCServlet now call the destroy() method on the fetcher in use
+        </action>
+            <action dev="czarneckid" type="add"  contect="plugin">
+            Added new Weblogs Ping plugin that will automatically send a ping to weblogs.com when new entries are detected
+          </action>      
+          <action dev="czarneckid" type="fix" fixes-bug="755698" contect="core">
+            BlogCategory object on BlogEntry does not have meta-data
+          </action>
+       
+        </release>
+  
     <release version="0.1" date="2002">
       <!-- Some action types have associated images. By default, images are
       defined for 'add', 'fix', 'remove' and 'update'. If you add
@@ -47,12 +65,6 @@
           <action dev="JB" type="add" context="admin">
             Initial Import
           </action>
-          <!-- Sample action:
-          <action dev="JB" type="fix" due-to="Joe Contributor"
-            due-to-email="joec@apache.org" fixes-bug="123">
-            Fixed a bug in the Foo class.
-          </action>
-          -->
         </release>
       </changes>
     </status>
