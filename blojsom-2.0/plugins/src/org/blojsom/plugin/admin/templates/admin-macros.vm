@@ -40,6 +40,9 @@
 
 #macro(trueFalseSelectList $selectListName $selectedValue)
     <select name="$selectListName" size="2">
+        #if (!$selectedValue)
+            $selectedValue = "false"
+        #end
         #if ($selectedValue == true || $selectedValue == "true")<option value="true" selected>True</option> #else <option value="true">True</option>#end
         #if ($selectedValue == false || $selectedValue == "false")<option value="false" selected>False</option> #else <option value="false">False</option>#end
     </select>

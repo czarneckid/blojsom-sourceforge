@@ -103,6 +103,15 @@
                         <td>#adminResource('blog.language.text' 'Blog language code')</td> <td><input name="blog-language" type="text" size="50" value="$BLOJSOM_BLOG.getBlogLanguage()"/></td>
                     </tr>
 
+                    <!-- Internal aggregator settings -->
+                    <tr>
+                        <th>#adminResource('blog.properties.aggregator' 'Internal aggregator settings')</th>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "blojsom-plugin-internal-aggegator-opt-out")
+                        <td>#adminResource('aggregator.opt.out.text' 'Opt out of internal aggregation?')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("blojsom-plugin-internal-aggegator-opt-out"))</td>
+                    </tr>
+
                     <!-- Comment settings -->
                     <tr>
                         <th>#adminResource('blog.properties.comments' 'Comment settings')</th>

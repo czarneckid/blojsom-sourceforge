@@ -40,6 +40,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.aggregator.InternalAggregatorPlugin;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
@@ -61,7 +62,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.21 2004-06-17 03:28:25 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.22 2004-07-15 01:29:21 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -149,6 +150,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogDefaultFlavor(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("linear-navigation-enabled", httpServletRequest);
             blog.setLinearNavigationEnabled(Boolean.valueOf(blogPropertyValue));
+
+            // Aggregator properties
+            blogPropertyValue = BlojsomUtils.getRequestValue(InternalAggregatorPlugin.BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_OPT_OUT, httpServletRequest);
+            blog.setBlogProperty(InternalAggregatorPlugin.BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_OPT_OUT, blogPropertyValue);
 
             // Comment plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_AUTOFORMAT_IP, httpServletRequest);
