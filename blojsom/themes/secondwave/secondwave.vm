@@ -33,7 +33,7 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr>
-<td width="100%">
+<td class="tablemaxwidth">
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="entrystyle2">
     <p class="weblogtitle2">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()" title="Permalink to this blojsom entry">Permalink</a>]</span> </p>
@@ -41,20 +41,20 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
     <p>$entry.getDescription()</p>
     <p class="weblogbottomline">
     #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
-    Comments [<a href="$entry.getLink()&page=comments">$entry.getNumComments()</a>]&nbsp;
+    Comments [<a href="$entry.getLink()&amp;page=comments">$entry.getNumComments()</a>]&nbsp;
     #end
-    Trackbacks [<a href="$entry.getLink()&page=trackback">$entry.getNumTrackbacks()</a>]
+    Trackbacks [<a href="$entry.getLink()&amp;page=trackback">$entry.getNumTrackbacks()</a>]
     </p>
     </div>
     #set( $totalEntries = $totalEntries + 1)
 #end
 </td>
-<td  width="100">&nbsp;</td>
+<td  class="tablemaxpxwidth">&nbsp;</td>
 
 <td valign="top" align="center" width="200">
 
 <div class="calendarbox">
-<div align="center"><table cellspacing="0" cellpadding="0" border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+<table cellspacing="0" cellpadding="0" border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>
@@ -91,7 +91,6 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 </tr>
 </table>
 </div>
-</div>
 </td>
 
 
@@ -107,10 +106,10 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 #end
 
 <p>
-<a href="http://blojsom.sf.net"><img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" border="0" alt="Powered By blojsom" /></a>&nbsp;&nbsp;
-<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss"><img src="$BLOJSOM_SITE_URL/xml.gif" border="0" alt="RSS Feed" /></a>&nbsp;
-<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2"><img src="$BLOJSOM_SITE_URL/rss.gif" border="0" alt="RSS2 Feed" /></a>&nbsp;
-<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf"><img src="$BLOJSOM_SITE_URL/rdf.gif" border="0" alt="RDF Feed"/></a>
+<a href="http://blojsom.sf.net"><img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif"  alt="Powered By blojsom" /></a>&nbsp;&nbsp;
+<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss"><img src="$BLOJSOM_SITE_URL/xml.gif"  alt="RSS Feed" /></a>&nbsp;
+<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2"><img src="$BLOJSOM_SITE_URL/rss.gif"  alt="RSS2 Feed" /></a>&nbsp;
+<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf"><img src="$BLOJSOM_SITE_URL/rdf.gif"  alt="RDF Feed"/></a>
 </p>
 
 <!-- Optional Code if you are using the referer plugin -->
