@@ -53,15 +53,15 @@ import java.util.Properties;
  * PropertiesAuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: PropertiesAuthorizationProvider.java,v 1.2 2005-01-05 02:32:37 czarneckid Exp $
+ * @version $Id: PropertiesAuthorizationProvider.java,v 1.3 2005-01-06 00:44:43 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class PropertiesAuthorizationProvider implements AuthorizationProvider, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(PropertiesAuthorizationProvider.class);
 
-    private ServletConfig _servletConfig;
-    private String _baseConfigurationDirectory;
+    protected ServletConfig _servletConfig;
+    protected String _baseConfigurationDirectory;
 
     /**
      * Default constructor
