@@ -84,6 +84,28 @@ and how they affect the entries that get displayed by your blog.
     </tr>
 </table>
 
+<p class="weblogtitle">context attributes and types</p>
+<p />
+The following table describes the context attributes that are available and their associated type.
+<p />
+<table border="1">
+    <th>Context key</th> <th>Input or Output</th> <th>Type</th> <th>Description</th>
+    <tr>
+        <td>BLOJSOM_CALENDAR</td> <td>Output</td>
+        <td><tt>org.ignition.blojsom.plugin.calendar.BlogCalendar</tt></td>
+        <td>Calendar object to indicate on which days there are blog entries. This object is
+        added by the <tt>org.ignition.blojsom.plugin.calendar.CalendarFilterPlugin</tt></td>
+    </tr>
+    <tr>
+        <td>BLOJSOM_CALENDAR_VTLHELPER</td>
+        <td>Output</td>
+        <td><tt>org.ignition.blojsom.plugin.calendar.VelocityHelper</tt></td>
+        <td>Helper class for creating the visual calendar output for Velocity, but this could
+        also be used for JSPs as well. This object is added by the
+        <tt>org.ignition.blojsom.plugin.calendar.VelocityCalendarPlugin</tt></td>
+    </tr>
+</table>
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
