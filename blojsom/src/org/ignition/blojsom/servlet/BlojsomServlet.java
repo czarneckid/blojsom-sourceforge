@@ -52,6 +52,7 @@ import java.util.*;
  * BlojsomServlet
  *
  * @author David Czarnecki
+ * @author Mark Lussier
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -191,6 +192,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      */
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
+        _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
+        _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL().toString());
         _logger.debug("blojsom URL: " + blogSiteURL);
 
         // Determine the user requested category
@@ -263,10 +266,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-
         // If we have entries, construct a last modified on the most recent
         if (entries != null && entries.length > 0) {
-            httpServletResponse.addDateHeader( HTTP_LASTMODIFIED, entries[0].getLastModified());
+            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, entries[0].getLastModified());
         }
 
         // Setup the context for the dispatcher

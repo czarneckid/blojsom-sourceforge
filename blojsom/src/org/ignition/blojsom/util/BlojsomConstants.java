@@ -4,6 +4,7 @@ package org.ignition.blojsom.util;
  * BlojsomConstants
  *
  * @author David Czarnecki
+ * @author Mark Lussier
  * @author Dan Morrill
  */
 public interface BlojsomConstants {
