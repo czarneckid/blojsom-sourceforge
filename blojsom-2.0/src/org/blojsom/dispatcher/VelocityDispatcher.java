@@ -56,7 +56,7 @@ import java.util.zip.GZIPOutputStream;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.7 2003-10-07 16:44:25 intabulas Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.8 2003-10-09 14:27:45 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -156,7 +156,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             return;
         }
 
-        StringWriter sw = new StringWriter();
+        Writer responseWriter = httpServletResponse.getWriter();
         String flavorTemplateForPage = null;
 
         if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
@@ -174,7 +174,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
                 return;
             } else {
                 try {
-                    velocityEngine.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, sw);
+                    velocityEngine.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, responseWriter);
                 } catch (Exception e) {
                     _logger.error(e);
                     return;
@@ -188,7 +188,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
                 return;
             } else {
                 try {
-                    velocityEngine.mergeTemplate(flavorTemplate, UTF8, velocityContext, sw);
+                    velocityEngine.mergeTemplate(flavorTemplate, UTF8, velocityContext, responseWriter);
                 } catch (Exception e) {
                     _logger.error(e);
                     return;
@@ -197,33 +197,6 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             _logger.debug("Dispatched to flavor template: " + flavorTemplate);
         }
 
-        // We need that content length, especially for RSS feeds
-        String content = sw.toString();
-        byte[] contentBytes = null;
-        try {
-            contentBytes = content.getBytes(UTF8);
-        } catch (UnsupportedEncodingException e) {
-            _logger.error(e);
-        }
-
-
-        boolean compressed = false;
-        if (context.containsKey(BLOJSOM_COMPRESSED)) {
-            Boolean compressedIndication = (Boolean) context.get(BLOJSOM_COMPRESSED);
-            compressed = compressedIndication.booleanValue();
-        }
-
-        if (compressed) {
-            _logger.info("Sending GZip'd response");
-            httpServletResponse.addHeader("Content-Encoding", "gzip");
-            GZIPOutputStream gout = new GZIPOutputStream(httpServletResponse.getOutputStream());
-            gout.write(content.getBytes());
-            gout.close();
-        } else {
-            httpServletResponse.addIntHeader("Content-Length", (contentBytes == null ? content.length() : contentBytes.length));
-            OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
-            osw.write(content);
-            osw.flush();
-        }
+        responseWriter.flush();
     }
 }
