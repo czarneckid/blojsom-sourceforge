@@ -51,7 +51,6 @@ import javax.servlet.http.HttpServlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -59,18 +58,15 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.6 2003-09-05 02:45:46 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.7 2003-12-17 20:10:17 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(BlojsomBaseServlet.class);
 
     protected String _baseConfigurationDirectory;
-    protected String _defaultUser;
-    protected Map _users;
     protected BlojsomFetcher _fetcher;
     protected BlojsomConfiguration _blojsomConfiguration;
-
 
     /**
      * Configure the {@link BlojsomFetcher} that will be used to fetch categories and
@@ -114,8 +110,6 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
 
             _blojsomConfiguration = new BlojsomConfiguration(servletConfig, BlojsomUtils.propertiesToMap(configurationProperties));
             _baseConfigurationDirectory = _blojsomConfiguration.getBaseConfigurationDirectory();
-            _users = _blojsomConfiguration.getBlogUsers();
-            _defaultUser = _blojsomConfiguration.getDefaultUser();
 
             // Configure the fetcher for use by this blog
             configureFetcher(servletConfig, _blojsomConfiguration);
@@ -141,12 +135,12 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
         }
 
         // Load the authorization properties files for the individual users
-        Iterator usersIterator = _users.keySet().iterator();
+        Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
         BlogUser blogUser;
         Properties authorizationProperties;
         while (usersIterator.hasNext()) {
             String user = (String) usersIterator.next();
-            blogUser = (BlogUser) _users.get(user);
+            blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
 
             InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + authorizationConfiguration);
             authorizationProperties = new Properties();
@@ -154,7 +148,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
                 authorizationProperties.load(is);
                 is.close();
                 blogUser.getBlog().setAuthorization(BlojsomUtils.propertiesToMap(authorizationProperties));
-                _users.put(user, blogUser);
+                _blojsomConfiguration.getBlogUsers().put(user, blogUser);
                 _logger.debug("Added authorization information for user: " + user);
             } catch (IOException e) {
                 _logger.error(e);
