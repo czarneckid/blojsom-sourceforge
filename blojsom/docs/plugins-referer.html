@@ -40,7 +40,10 @@
 
 <p class="weblogtitle">description</a>
 <p />
-The referer plugin simply logs to a user defined file all of the HTTP referer headers it comes across. This is often useful if you want to see what google searches lead to your site.
+The referer plugin simply logs to a user defined file all of the HTTP referer headers it
+comes across. This is often useful if you want to see what google searches lead to your
+site. It will also group referers by flavor with overall flavor totals and filtered by
+date.
 <p />
 
 <p class="weblogtitle">installation and setup</a>
@@ -59,16 +62,33 @@ html.blojsom-plugin-chain=referer-log
 </pre>
 </ul>
 
-The referer file does not have its own configuration file, but relies on a
-fully qualified filename to be added to <i>web.xml</i> using the <i>referer-log</i>
-parameter. For example:
+The referer plugin has its own configuration file, <i>referer.properties</i>, that is
+referenced in <i>web.xml</i>.
 <pre>
     &lt;init-param&gt;
-        &lt;param-name&gt;referer-log&lt;/param-name&gt;
-        &lt;param-value&gt;/home/myuserid/referer.log&lt;/param-value&gt;
+        &lt;param-name&gt;plugin-referer&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/referer.properties&lt;/param-value&gt;
     &lt;/init-param&gt;
 </pre>
 <p />
+
+The <i>referer.properties</i> contains three configurable parameters:
+<ul>
+<pre>
+#
+# blojsom referer plugin configuration file
+#
+referer-display-size=40
+referer-filename=/change/me/please/blojsom-referer.log
+hit-count-flavors=html, rss
+</pre>
+</ul>
+<p />
+<i>referer-display-size</i> controls the display size of the referer URL<br />
+<i>referer-filename</i> is the location and filename of the log file it should write to on
+shutdown of your application server<br />
+<i>hit-count-flavors</i> is a comma-separated list of the flavors that the plugin should
+track for referers
 
 <p class="weblogtitle">usage and URL parameters</a>
 <p />

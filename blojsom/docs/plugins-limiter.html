@@ -40,7 +40,10 @@
 
 <p class="weblogtitle">description</a>
 <p />
-The entries limiter plugin ...
+The entries limiter plugin limits the number of entries that get displayed and
+is set by the <i>blog-entries-display</i> parameter in <i>blojsom.properties</i>. A value
+of -1 for this parameter indicates that all entries should be shown in which case this
+plugin acts like a pass through filter.
 
 <p class="weblogtitle">installation and setup</a>
 <p />
@@ -60,15 +63,16 @@ html.blojsom-plugin-chain=limiter
 
 <p class="weblogtitle">usage and URL parameters</a>
 <p />
-<p class="weblogdateline">usage</p>
-<p />
 <p class="weblogdateline">URL parameters</p>
-The following table describes the URL parameters that affect the output of the simple search plugin.
+The following table describes the URL parameters that affect the output of the entries limiter plugin.
 <p />
 <table border="1">
     <th>URL parameter</th> <th>Accepted values</th> <th>Usage</th>
     <tr align="center">
-        <td>entries</td> <td align="left">Valid integer that is -1 OR > 0 to specify the
+        <td>entries</td> <td align="left">The "entries" parameter can be used to override the
+        number of entries displayed per category that is set by the <i>blog-entries-display</i>
+        parameter in <i>blojsom.properties</i>.<p />
+        Valid integer that is -1 OR > 0 to specify the
         limit on the number of blog entries displayed. A value of -1 will cause the
         plugin to return all entries it receives.</td> <td>/blog/?entries=7</td>
     </tr>

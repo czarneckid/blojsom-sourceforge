@@ -40,7 +40,10 @@
 
 <p class="weblogtitle">description</a>
 <p />
-The calendar plugin ...
+There are actually two calendar plugins. The Calendar Filter plugin handles the filtering
+of blog entries based on the URL parameters, "year", "month", and "day". The Velocity Calendar
+plugin handles the ability to render a visual calendar component for use in the Velocity
+templates.
 <p />
 
 <p class="weblogtitle">installation and setup</a>
@@ -60,6 +63,28 @@ chain, and "calendar-gui" to the <b>end</b> of the chain. For example:
 html.blojsom-plugin-chain=calendar-fitler,...,calendar-gui
 </pre>
 </ul>
+
+<p class="weblogtitle">usage and URL parameters</p>
+<p />
+<p class="weblogdateline">URL parameters</p>
+The following table describes the URL parameters that the Calendar Filter plugin accepts
+and how they affect the entries that get displayed by your blog.
+<p />
+<table border="1">
+    <th>URL parameter</th> <th>Default value</th> <th>Accepted values</th> <th>Usage</th>
+    <tr align="center">
+        <td>year</td> <td></td> <td align="left">Users can request to see blog entries that fall under a certain date range. The "year" parameter must be a valid 4-digit year.</td> <td align="left">/blog/?year=2003</td>
+    </tr>
+    <tr align="center">
+        <td>month</td> <td></td> <td align="left">The "month" parameter must be used in conjunction with the "year" parameter. Users cannot request blog entries for a month by itself.</td> <td align="left">/blog/?year=2003&month=2</td>
+    </tr>
+    <tr align="center">
+        <td>day</td> <td></td> <td align="left">The "day" parameter must be used in conjunction with the "year" and "month" parameters. Users cannot request blog entries for a day by itself.</td> <td align="left">/blog/?year=2003&month=2&day=14</td>
+    </tr>
+</table>
+
+<p class="weblogtitle">context</p>
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
