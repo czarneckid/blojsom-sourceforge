@@ -31,6 +31,7 @@
 <p />
 <b>NEW:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">upgrading</a> instructions<br/><br/>
 General:<br />
+- New blacklist.filter file contains regular expressions for use by extensions and plugins to filter content<br/>
 - An ETag header is now generated along with the Last-Modified header<br/>
 - New <a href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</a> (RSD) flavor provides support for tools like <a href="http://www.audblog.com">AudBlog</a><br/>
 - Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from <i>blog-entry-filename.meta</i><br />
@@ -47,6 +48,8 @@ key, <tt>blog-entry-author</tt><br/>
 
 <p />
 Plugin changes:<br />
+- Referer plugin now utilizes the new blacklist.filter file to filter referer's <br/>
+- Referer plugin was doing some detailed logging that it did not need to do, removed<br/>
 - Added <a href="javadoc/org/ignition/blojsom/plugin/highlight/GoogleHighlightPlugin.html">GoogleHighlightPlugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query<br/>
 - Added <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">ChronoPlugin</a>
 which simply demonstrates how to sort entries in a different order<br/>

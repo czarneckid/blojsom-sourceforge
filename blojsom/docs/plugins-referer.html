@@ -45,7 +45,8 @@
 The referer plugin simply logs to a user defined file all of the HTTP referer headers it
 comes across. This is often useful if you want to see what google searches lead to your
 site. It will also group referers by flavor with overall flavor totals and filtered by
-date.
+date. This plugin will also filter referer's based on the contents of the blojsom wide
+blacklist filter.
 <p />
 
 <p class="weblogtitle">installation and setup</a>
@@ -94,6 +95,12 @@ shutdown of your application server<br />
 <i>hit-count-flavors</i> is a comma-separated list of the flavors that the plugin should
 track for referers. Flavors added to this list will only have their hit counts tracked,
 but will not have the referer URL tracked
+
+<p class="weblogtitle">filtering</a>
+<p />
+This plugin will use the contents of the blacklist filter to ignore referer's that match any of the filters.
+this helps ignore those spam referers. This is automatic and no configuration, other that editing the
+<i>blacklist.filters</i> file.
 
 <p class="weblogtitle">context attributes and types</p>
 <p />
