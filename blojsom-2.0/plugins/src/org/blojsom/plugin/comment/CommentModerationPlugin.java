@@ -53,7 +53,7 @@ import java.util.Map;
  * Comment moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: CommentModerationPlugin.java,v 1.1 2004-10-20 17:02:40 czarneckid Exp $
+ * @version $Id: CommentModerationPlugin.java,v 1.2 2004-10-20 20:19:56 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class CommentModerationPlugin implements BlojsomPlugin {
@@ -97,6 +97,23 @@ public class CommentModerationPlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        moderateComment(httpServletRequest, httpServletResponse, user, context, entries);
+
+        return entries;
+    }
+
+    /**
+     * Simple check to see if comment moderation is enabled
+     * <p/>
+     * param httpServletRequest  Request
+     *
+     * @param httpServletResponse Response
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
+     * @throws BlojsomPluginException If there is an error in moderating a comment
+     */
+    public void moderateComment(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         Blog blog = user.getBlog();
 
         if ("true".equalsIgnoreCase(blog.getBlogProperty(COMMENT_MODERATION_ENABLED))) {
@@ -108,8 +125,6 @@ public class CommentModerationPlugin implements BlojsomPlugin {
                 _logger.debug("Marking comment as requiring approval");
             }
         }
-
-        return entries;
     }
 
     /**

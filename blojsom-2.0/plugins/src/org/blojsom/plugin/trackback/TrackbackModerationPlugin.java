@@ -53,7 +53,7 @@ import java.util.Map;
  * Trackback moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackModerationPlugin.java,v 1.1 2004-10-20 17:02:41 czarneckid Exp $
+ * @version $Id: TrackbackModerationPlugin.java,v 1.2 2004-10-20 20:20:22 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class TrackbackModerationPlugin implements BlojsomPlugin {
@@ -81,7 +81,7 @@ public class TrackbackModerationPlugin implements BlojsomPlugin {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        _logger.debug("Initialized comment moderation plugin");
+        _logger.debug("Initialized trackback moderation plugin");
     }
 
     /**
@@ -97,6 +97,23 @@ public class TrackbackModerationPlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        moderateTrackback(httpServletRequest, httpServletResponse, user, context, entries);
+
+        return entries;
+    }
+
+    /**
+     * Simple check to see if trackback moderation is enabled
+     * <p/>
+     * param httpServletRequest  Request
+     *
+     * @param httpServletResponse Response
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
+     * @throws BlojsomPluginException If there is an error in moderating a trackback
+     */
+    protected void moderateTrackback(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         Blog blog = user.getBlog();
 
         if ("true".equalsIgnoreCase(blog.getBlogProperty(TRACKBACK_MODERATION_ENABLED))) {
@@ -108,8 +125,6 @@ public class TrackbackModerationPlugin implements BlojsomPlugin {
                 _logger.debug("Marking trackback as requiring approval");
             }
         }
-
-        return entries;
     }
 
     /**
