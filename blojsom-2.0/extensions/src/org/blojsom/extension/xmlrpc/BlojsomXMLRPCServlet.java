@@ -65,7 +65,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  * 
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.5 2003-12-30 23:24:09 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.6 2004-01-08 01:17:34 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -97,14 +97,14 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
             String user;
             BlogUser blogUser;
 
+            // Check for the default XML-RPC handler
+            String defaultXMLRPCHandler = handlerMapProperties.getProperty(DEFAULT_XMLRPC_HANDLER_KEY);
+            handlerMapProperties.remove(DEFAULT_XMLRPC_HANDLER_KEY);
+
             // Instantiate an XML-RPC server and separate handler instances for each user
             while (userIterator.hasNext()) {
                 user = (String) userIterator.next();
                 blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
-
-                // Check for the default XML-RPC handler
-                String defaultXMLRPCHandler = handlerMapProperties.getProperty(DEFAULT_XMLRPC_HANDLER_KEY);
-                handlerMapProperties.remove(DEFAULT_XMLRPC_HANDLER_KEY);
 
                 Iterator handlerIterator = handlerMapProperties.keySet().iterator();
                 XmlRpcServer xmlRpcServer = new XmlRpcServer();
