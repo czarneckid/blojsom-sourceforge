@@ -107,9 +107,9 @@ public class CompressionFilter implements Filter {
             res.setContentLength(byteStream.size());
 
             // Send compressed result to client.
-            OutputStream realOut = res.getOutputStream();
+            OutputStream realOut = responseWrapper.getOutputStream();
             byteStream.writeTo(realOut);
-            realOut.flush();
+            realOut.close();
         }
     }
 
