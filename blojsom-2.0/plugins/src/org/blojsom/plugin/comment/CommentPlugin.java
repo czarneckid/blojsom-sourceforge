@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.13 2004-04-08 01:02:30 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.14 2004-04-13 21:03:33 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataConstants {
 
@@ -549,6 +549,8 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
             String hashedComment = BlojsomUtils.digestString(commentHashable).toUpperCase();
             String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
 
+            comment.setId(hashedComment + BlojsomConstants.COMMENT_EXTENSION);
+            
             File commentDir = new File(commentDirectory.toString());
             if (!commentDir.exists()) {
                 if (!commentDir.mkdirs()) {

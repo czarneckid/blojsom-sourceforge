@@ -59,7 +59,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.14 2004-04-08 01:15:02 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.15 2004-04-13 21:03:04 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -434,6 +434,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         trackbackDirectory.append(permalinkFilename);
         trackbackDirectory.append(File.separator);
         String trackbackFilename = trackbackDirectory.toString() + trackback.getTrackbackDateLong() + TRACKBACK_EXTENSION;
+        trackback.setId(trackback.getTrackbackDateLong() + TRACKBACK_EXTENSION);
         File trackbackDir = new File(trackbackDirectory.toString());
         if (!trackbackDir.exists()) {
             if (!trackbackDir.mkdirs()) {
