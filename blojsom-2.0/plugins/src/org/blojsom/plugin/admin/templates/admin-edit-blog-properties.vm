@@ -107,13 +107,10 @@
                         #set ($selectListName = "blog-administration-locale")
                         <td>#adminResource('blog.administration.locale.text' 'Locale setting for administration console')</td> <td>#selectList($selectListName $!BLOJSOM_BLOG.getBlogAdministrationLocaleAsString() $BLOJSOM_INSTALLED_LOCALES)</td>
                     </tr>
-
-                    <!--
                     <tr>
                         #set ($selectListName = "blog-timezone-id")
                         <td>#adminResource('blog.timezone.text' 'Time zone')</td> <td>#selectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("blog-timezone-id") $BLOJSOM_JVM_TIMEZONES)</td>
                     </tr>
-                    -->
 
                     <!-- Internal aggregator settings -->
                     <tr>
