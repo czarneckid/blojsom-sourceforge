@@ -40,11 +40,13 @@ import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.blojsom.BlojsomException;
 import org.blojsom.authorization.AuthorizationProvider;
+import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfigurationException;
 import org.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
+import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
@@ -55,9 +57,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 
@@ -67,14 +67,14 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  * 
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.10 2004-06-03 01:28:03 czarneckid Exp $
+ * @author David Czarnecki
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.11 2004-06-16 01:49:15 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
-    private Map _xmlrpcServers;
     protected AuthorizationProvider _authorizationProvider;
-
+    protected ServletConfig _servletConfig;
 
     /**
      * Construct a new Blojsom XML-RPC servlet instance
@@ -82,11 +82,16 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
     public BlojsomXMLRPCServlet() {
     }
 
-    protected void configureAuthorization(ServletConfig servletConfig) throws ServletException {
+    /**
+     * Configure the authorization provider
+     *
+     * @throws ServletException If there is an error instantiating and/or initializing the authorization provider
+     */
+    protected void configureAuthorization() throws ServletException {
         try {
             Class authorizationProviderClass = Class.forName(_blojsomConfiguration.getAuthorizationProvider());
             _authorizationProvider = (AuthorizationProvider) authorizationProviderClass.newInstance();
-            _authorizationProvider.init(servletConfig, _blojsomConfiguration);
+            _authorizationProvider.init(_servletConfig, _blojsomConfiguration);
         } catch (ClassNotFoundException e) {
             throw new ServletException(e);
         } catch (InstantiationException e) {
@@ -100,55 +105,75 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     /**
      * Configure the XML-RPC API Handlers
-     * 
-     * @param servletConfig Servlet configuration information
+     *
+     * @param userID User ID
+     * @return {@link XmlRpcServer} configured for the given user or <code>null</code> if the configuration failed
      */
-    protected void configureAPIHandlers(ServletConfig servletConfig) throws ServletException {
-        _xmlrpcServers = new HashMap(_blojsomConfiguration.getBlogUsers().size());
+    protected XmlRpcServer configureXMLRPCServer(String userID) throws ServletException {
+        XmlRpcServer xmlRpcServer = new XmlRpcServer();
 
-        String templateConfiguration = servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
+        String templateConfiguration = _servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
         Properties handlerMapProperties = new Properties();
-        InputStream is = servletConfig.getServletContext().getResourceAsStream(templateConfiguration);
+        InputStream is = _servletConfig.getServletContext().getResourceAsStream(templateConfiguration);
         try {
             handlerMapProperties.load(is);
             is.close();
-            Iterator userIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
-            String user;
-            BlogUser blogUser;
 
             // Check for the default XML-RPC handler
             String defaultXMLRPCHandler = handlerMapProperties.getProperty(DEFAULT_XMLRPC_HANDLER_KEY);
             handlerMapProperties.remove(DEFAULT_XMLRPC_HANDLER_KEY);
 
-            // Instantiate an XML-RPC server and separate handler instances for each user
-            while (userIterator.hasNext()) {
-                user = (String) userIterator.next();
-                blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+            // Instantiate an XML-RPC server and separate handler instances for the user ID
+            BlogUser blogUser = new BlogUser();
+            blogUser.setId(userID);
 
-                Iterator handlerIterator = handlerMapProperties.keySet().iterator();
-                XmlRpcServer xmlRpcServer = new XmlRpcServer();
+            // Load the user's blog properties
+            Properties blogProperties = new BlojsomProperties();
+            is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + userID + '/' + BLOG_DEFAULT_PROPERTIES);
+            try {
+                blogProperties.load(is);
+                is.close();
+            } catch (IOException e) {
+                _logger.error(e);
+                throw new BlojsomConfigurationException(e);
+            }
 
-                while (handlerIterator.hasNext()) {
-                    String handlerName = (String) handlerIterator.next();
-                    String handlerClassName = handlerMapProperties.getProperty(handlerName);
-                    Class handlerClass = Class.forName(handlerClassName);
-                    AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
-                    handler.setFetcher(_fetcher);
-                    handler.setConfiguration(_blojsomConfiguration);
-                    _authorizationProvider.loadAuthenticationCredentials(blogUser);
-                    handler.setBlogUser(blogUser);
-                    handler.setAuthorizationProvider(_authorizationProvider);
-                    xmlRpcServer.addHandler(handler.getName(), handler);
-                    if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
-                        xmlRpcServer.addHandler(DEFAULT_XMLRPC_HANDLER_KEY, handler);
-                        _logger.debug("Added default XML-RPC handler: " + handlerClass + " for user: " + user);
-                    }
-                    _logger.debug("Added [" + handler.getName() + "] API Handler : " + handlerClass + " for user: " + user);
+            Blog blog = null;
+            try {
+                blog = new Blog(blogProperties);
+                blogUser.setBlog(blog);
 
+                _logger.debug("Configured blojsom user: " + blogUser.getId());
+            } catch (BlojsomConfigurationException e) {
+                _logger.error(e);
+                throw new BlojsomConfigurationException(e);
+            }
+
+            // Load the authentication credentials for the user
+            _authorizationProvider.loadAuthenticationCredentials(blogUser);
+
+            // Instantiate and initialize the XML-RPC handlers
+            Iterator handlerIterator = handlerMapProperties.keySet().iterator();
+            while (handlerIterator.hasNext()) {
+                String handlerName = (String) handlerIterator.next();
+                String handlerClassName = handlerMapProperties.getProperty(handlerName);
+                Class handlerClass = Class.forName(handlerClassName);
+                AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
+                handler.setFetcher(_fetcher);
+                handler.setConfiguration(_blojsomConfiguration);
+                handler.setBlogUser(blogUser);
+                handler.setAuthorizationProvider(_authorizationProvider);
+                xmlRpcServer.addHandler(handler.getName(), handler);
+
+                if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
+                    xmlRpcServer.addHandler(DEFAULT_XMLRPC_HANDLER_KEY, handler);
+                    _logger.debug("Added default XML-RPC handler: " + handlerClass + " for user: " + userID);
                 }
 
-                _xmlrpcServers.put(user, xmlRpcServer);
+                _logger.debug("Added [" + handler.getName() + "] API Handler : " + handlerClass + " for user: " + userID);
             }
+
+            return xmlRpcServer;
         } catch (InstantiationException e) {
             throw new ServletException(e);
         } catch (IllegalAccessException e) {
@@ -170,11 +195,13 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
      */
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
+        _servletConfig = servletConfig;
+
+        // Set the default encoding for the XmlRpc classes to UTF-8
         XmlRpc.setEncoding(UTF8);
 
-        configureBlojsom(servletConfig);
-        configureAuthorization(servletConfig);
-        configureAPIHandlers(servletConfig);
+        configureBlojsom(_servletConfig);
+        configureAuthorization();
 
         _logger.debug("blojsom XML-RPC: All Your Blog Are Belong To Us");
     }
@@ -204,7 +231,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
         user = BlojsomUtils.removeInitialSlash(user);
 
         // Make sure that the user exists in the system
-        XmlRpcServer xmlRpcServer = (XmlRpcServer) _xmlrpcServers.get(user);
+        XmlRpcServer xmlRpcServer = configureXMLRPCServer(user);
         if (xmlRpcServer == null) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;

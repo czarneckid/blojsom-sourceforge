@@ -45,6 +45,7 @@ import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 import org.intabulas.sandler.AtomConstants;
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.SyndicationFactory;
@@ -66,9 +67,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * AtomAPIServlet
@@ -76,7 +79,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.38 2004-06-14 12:57:09 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.39 2004-06-16 01:49:14 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -87,7 +90,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     private Log _logger = LogFactory.getLog(AtomAPIServlet.class);
 
     private AuthorizationProvider _authorizationProvider;
-
+    private ServletConfig _servletConfig;
 
     /**
      * Default constructor
@@ -95,24 +98,28 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
     public AtomAPIServlet() {
     }
 
-
     /**
-     * @param servletConfig
-     * @throws ServletException
+     * Configure the authorization provider
+     *
+     * @throws ServletException If there is an error instantiating and/or initializing the authorization provider
      */
-    protected void configureAuthorzation(ServletConfig servletConfig) throws ServletException {
+    protected void configureAuthorization(ServletConfig servletConfig) throws ServletException {
         try {
             Class authorizationProviderClass = Class.forName(_blojsomConfiguration.getAuthorizationProvider());
             _authorizationProvider = (AuthorizationProvider) authorizationProviderClass.newInstance();
             _authorizationProvider.init(servletConfig, _blojsomConfiguration);
         } catch (ClassNotFoundException e) {
             _logger.error(e);
+            throw new ServletException(e);
         } catch (InstantiationException e) {
             _logger.error(e);
+            throw new ServletException(e);
         } catch (IllegalAccessException e) {
             _logger.error(e);
+            throw new ServletException(e);
         } catch (BlojsomConfigurationException e) {
             _logger.error(e);
+            throw new ServletException(e);
         }
     }
 
@@ -124,13 +131,46 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        configureBlojsom(servletConfig);
-        configureAuthorzation(servletConfig);
+        _servletConfig = servletConfig;
 
+        configureBlojsom(servletConfig);
+        configureAuthorization(servletConfig);
 
         _logger.info("AtomAPI initialized");
     }
 
+    /**
+     * Loads a {@link BlogUser} object for a given user ID
+     *
+     * @param userID User ID
+     * @return {@link BlogUser} configured for the given user ID or <code>null</code> if there is an error loading the user
+     */
+    protected BlogUser loadBlogUser(String userID) {
+        BlogUser blogUser = new BlogUser();
+        blogUser.setId(userID);
+
+        try {
+            Properties userProperties = new BlojsomProperties();
+            InputStream is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + userID + '/' + BLOG_DEFAULT_PROPERTIES);
+
+            userProperties.load(is);
+            is.close();
+            Blog userBlog = null;
+
+            userBlog = new Blog(userProperties);
+            blogUser.setBlog(userBlog);
+
+            _logger.debug("Configured blojsom user: " + blogUser.getId());
+        } catch (BlojsomConfigurationException e) {
+            _logger.error(e);
+            return null;
+        } catch (IOException e) {
+            _logger.error(e);
+            return null;
+        }
+
+        return blogUser;
+    }
 
     /**
      * Is the request from an authorized poster to this blog?
@@ -279,7 +319,15 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (BlojsomUtils.checkNullOrBlank(user)) {
             user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+
+        blogUser = loadBlogUser(user);
+        if (blogUser == null) {
+            _logger.error("Unable to configure user: " + user);
+            httpServletResponse.setStatus(404);
+
+            return;
+        }
+
         blog = blogUser.getBlog();
 
         if (isAuthorized(blogUser, httpServletRequest)) {
@@ -325,7 +373,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         String atomuri = blog.getBlogBaseURL() + ATOM_SERVLETMAPPING + user.getId() + "/";
         String atomuri2 = blog.getBlogURL() + "?flavor=atom";
 
-
         Feed feed = SyndicationFactory.newSyndicationFeed();
 
         LinkImpl link = new LinkImpl();
@@ -342,14 +389,12 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         link3.setTitle(blog.getBlogDescription());
         feed.addLink(link3);
 
-
         LinkImpl link2 = new LinkImpl();
         link2.setHref(atomuri2);
         link2.setRelationship(AtomConstants.Rel.SERVICE_FEED);
         link2.setType(AtomConstants.Type.ATOM_XML);
         link2.setTitle(blog.getBlogDescription());
         feed.addLink(link2);
-
 
         String result = "";
         try {
@@ -385,7 +430,15 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (BlojsomUtils.checkNullOrBlank(user)) {
             user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+
+        blogUser = loadBlogUser(user);
+        if (blogUser == null) {
+            _logger.error("Unable to configure user: " + user);
+            httpServletResponse.setStatus(404);
+
+            return;
+        }
+
         blog = blogUser.getBlog();
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
@@ -406,7 +459,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         String content = null;
 
         if (isAuthorized(blogUser, httpServletRequest)) {
-
             if (!hasParams) {
                 content = createIntrospectionResponse(blog, blogUser);
                 httpServletResponse.setContentType(CONTENTTYPE_ATOM);
@@ -423,9 +475,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 blogCategory.setCategory(category);
                 blogCategory.setCategoryURL(blog.getBlogURL() + category);
                 fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+
                 if (permalink != null) {
                     fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
                 }
+
                 try {
                     BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
 
@@ -454,9 +508,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     _logger.error(e);
                     httpServletResponse.setStatus(404);
                 }
-
             }
-
 
             if (content != null) {
                 httpServletResponse.setStatus(200);
@@ -500,7 +552,15 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (BlojsomUtils.checkNullOrBlank(user)) {
             user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+
+        blogUser = loadBlogUser(user);
+        if (blogUser == null) {
+            _logger.error("Unable to configure user: " + user);
+            httpServletResponse.setStatus(404);
+
+            return;
+        }
+
         blog = blogUser.getBlog();
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
@@ -584,7 +644,15 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (BlojsomUtils.checkNullOrBlank(user)) {
             user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
+
+        blogUser = loadBlogUser(user);
+        if (blogUser == null) {
+            _logger.error("Unable to configure user: " + user);
+            httpServletResponse.setStatus(404);
+
+            return;
+        }
+
         blog = blogUser.getBlog();
 
         if (isAuthorized(blogUser, httpServletRequest)) {
