@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.10 2004-07-31 20:33:58 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.11 2004-08-11 02:35:55 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -381,14 +381,14 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
     private void writeBlojsomConfiguration() {
         File blojsomConfigurationFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + "blojsom.properties");
         Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
-        StringBuffer users = new StringBuffer();
+        ArrayList users = new ArrayList();
         while (usersIterator.hasNext()) {
-            users.append(usersIterator.next()).append(", ");
+            users.add(usersIterator.next());
         }
 
-        Properties configurationProperties = new BlojsomProperties();
+        Properties configurationProperties = new BlojsomProperties(true);
 
-        configurationProperties.put(BLOJSOM_USERS_IP, users.toString());
+        configurationProperties.put(BLOJSOM_USERS_IP, users);
         configurationProperties.put(BLOJSOM_FETCHER_IP, _blojsomConfiguration.getFetcherClass());
         configurationProperties.put(BLOJSOM_DEFAULT_USER_IP, _blojsomConfiguration.getDefaultUser());
         configurationProperties.put(BLOJSOM_INSTALLATION_DIRECTORY_IP, _blojsomConfiguration.getInstallationDirectory());
