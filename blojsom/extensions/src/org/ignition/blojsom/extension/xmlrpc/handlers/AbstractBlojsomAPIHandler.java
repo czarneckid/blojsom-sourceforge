@@ -36,13 +36,14 @@ package org.ignition.blojsom.extension.xmlrpc.handlers;
 
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
+import org.ignition.blojsom.BlojsomException;
 
 
 /**
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.5 2003-04-15 02:28:47 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.6 2003-07-07 01:43:26 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 
@@ -56,7 +57,7 @@ public abstract class AbstractBlojsomAPIHandler  {
     public static final String UNSUPPORTED_EXCEPTION_MSG = "Unsupported method - blojsom does not support this blogger concept";
 
     public static final int    INVALID_POSTID = 2000;
-    public static final String INVALID_POSTID_MSG= "The entry postid you submitted is invalid";
+    public static final String INVALID_POSTID_MSG = "The entry postid you submitted is invalid";
 
     public static final int    NOBLOGS_EXCEPTION = 3000;
     public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
@@ -66,8 +67,9 @@ public abstract class AbstractBlojsomAPIHandler  {
      *
      * @param bloginstance an instance of Blog
      * @see org.ignition.blojsom.blog.Blog
+     * @throws BlojsomException If there is an error setting the blog instance or properties for the handler
      */
-    public abstract void setBlog(Blog bloginstance);
+    public abstract void setBlog(Blog bloginstance) throws BlojsomException;
 
     /**
      * Gets the name of API Handler. Used to bind to XML-RPC
@@ -80,7 +82,8 @@ public abstract class AbstractBlojsomAPIHandler  {
      * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
      *
      * @param fetcher {@link BlojsomFetcher} instance
+     * @throws BlojsomException If there is an error in setting the fetcher
      */
-    public abstract void setFetcher(BlojsomFetcher fetcher);
+    public abstract void setFetcher(BlojsomFetcher fetcher) throws BlojsomException;
 }
 
