@@ -37,19 +37,21 @@ Blogger=org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
 </pre>
 
 <p/>
-2. Update <i>/WEB-INF/flavor.properties</i> to include the following if you are using the Velocity dispatcher
+2. Update <i>/WEB-INF/flavor.properties</i> to include the following if you are using the Velocity dispatcher:
 <pre>rsd=rsd.vm, text/xml;charset=UTF-8</pre>
-If you are using the JSP dispatcher, instead include
+If you are using the JSP dispatcher, instead include:
 <pre>rsd=rsd.jsp, text/xml;charset=UTF-8</pre>
 <p/>
 
-3. Be sure to upload <tt>rsd.vm</tt> or <tt>rsd.jsp</tt> to the appropriate directories on your server
+3. Be sure to upload <tt>rsd.vm</tt> or <tt>rsd.jsp</tt> to the appropriate directories on your server.
 <p />
 
 4. If you want to use per-entry meta-data, add the following to <i>/WEB-INF/blojsom.properties</i>
 <pre>
-blog-entry-meta-data-extension=.properties
+blog-entry-meta-data-extension=.meta
 </pre>
+This should be an extension separate from the extensions for blog entries (<i>blog-file-extensions</i>)
+and separate from the extension for category meta-data (<i>blog-properties-extensions</i>).
 
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
