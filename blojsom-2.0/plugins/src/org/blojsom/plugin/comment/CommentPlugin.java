@@ -37,15 +37,15 @@ package org.blojsom.plugin.comment;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.*;
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.common.IPBanningPlugin;
-import org.blojsom.plugin.email.EmailUtils;
-import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.CookieUtils;
-import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.common.VelocityPlugin;
+import org.blojsom.plugin.email.EmailUtils;
+import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.CookieUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.Cookie;
@@ -58,11 +58,16 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.21 2004-04-24 15:15:40 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.22 2004-05-22 19:31:53 czarneckid Exp $
  */
-public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
+public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
+
+    /**
+     * Template for comment e-mails
+     */
+    private static final String COMMENT_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/comment/comment-plugin-email-template.vm";
 
     /**
      * Default prefix for comment e-mail notification
@@ -189,6 +194,17 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_METADATA_IP = "BLOJSOM_COMMENT_PLUGIN_METADATA_IP";
 
+    /**
+     * Key under which the blog entry will be placed for merging the comment e-mail
+     */
+    public static final String BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY = "BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY";
+
+    /**
+     * Key under which the blog comment will be placed for merging the comment e-mail
+     */
+    public static final String BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT = "BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT";
+
+
     private Map _ipAddressCommentTimes;
     private BlojsomFetcher _fetcher;
 
@@ -261,7 +277,6 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
         String[] _blogFileExtensions;
         String _blogHome;
         String _blogCommentsDirectory;
-        String _blogUrlPrefix;
         String _blogFileEncoding;
         String _emailPrefix;
         int _cookieExpiration;
@@ -271,7 +286,6 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
         _blogCommentsEnabled = blog.getBlogCommentsEnabled();
         _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogCommentsDirectory = blog.getBlogCommentsDirectory();
-        _blogUrlPrefix = blog.getBlogURL();
         _blogFileEncoding = blog.getBlogFileEncoding();
         _emailPrefix = blog.getBlogProperty(COMMENT_PREFIX_IP);
         if (_emailPrefix == null) {
@@ -482,8 +496,17 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
                     blogComments.add(_comment);
                     entries[0].setComments(blogComments);
 
+                    // Merge the template e-mail
+                    Map emailTemplateContext = new HashMap();
+                    emailTemplateContext.put(BLOJSOM_BLOG, blog);
+                    emailTemplateContext.put(BLOJSOM_USER, user);
+                    emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, _comment);
+                    emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entries[0]);
+
+                    String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
+
                     if (_blogEmailEnabled.booleanValue()) {
-                        sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context, _blogUrlPrefix, _emailPrefix);
+                        sendCommentEmail(_emailPrefix, title, emailComment, context);
                     }
                 }
 
@@ -506,23 +529,15 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, 
 
 
     /**
-     * Send Comment Email to Blog Author
+     * Send the comment e-mail to the blog author
      *
-     * @param category    Blog entry category
-     * @param permalink   Blog entry permalink
-     * @param author      Comment author
-     * @param authorEmail Comment author e-mail
-     * @param authorURL   Comment author URL
-     * @param userComment Comment
-     * @param context     Context
+     * @param emailPrefix E-mail prefix
+     * @param title Entry title
+     * @param comment Comment text
+     * @param context Context
      */
-    private void sendCommentEmail(String title, String category, String permalink, String author,
-                                  String authorEmail, String authorURL, String userComment, Map context,
-                                  String blogURLPrefix, String emailPrefix) {
-        String url = blogURLPrefix + BlojsomUtils.removeInitialSlash(category);
-        String emailComment = CommentUtils.constructCommentEmail(permalink, author, authorEmail, authorURL, userComment, url);
-
-        EmailUtils.notifyBlogAuthor(emailPrefix + title, emailComment, context);
+    public void sendCommentEmail(String emailPrefix, String title, String comment, Map context) {
+        EmailUtils.notifyBlogAuthor(emailPrefix + title, comment, context);
     }
 
 

@@ -37,14 +37,13 @@ package org.blojsom.plugin.trackback;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.*;
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.common.IPBanningPlugin;
-import org.blojsom.plugin.email.EmailUtils;
-import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.common.VelocityPlugin;
+import org.blojsom.plugin.email.EmailUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -56,11 +55,16 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.24 2004-05-08 19:12:30 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.25 2004-05-22 19:31:44 czarneckid Exp $
  */
-public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
+public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
     private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
+
+    /**
+     * Template for comment e-mails
+     */
+    private static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/trackback/trackback-plugin-email-template.vm";
 
     /**
      * Default prefix for trackback e-mail notification
@@ -145,6 +149,16 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      */
     private static final String TRACKBACK_FAILURE_PAGE = "/trackback-failure";
 
+    /**
+     * Key under which the blog entry will be placed for merging the trackback e-mail
+     */
+    public static final String BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY = "BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY";
+
+    /**
+     * Key under which the blog comment will be placed for merging the trackback e-mail
+     */
+    public static final String BLOJSOM_TRACKBACK_PLUGIN_BLOG_TRACKBACK = "BLOJSOM_TRACKBACK_PLUGIN_BLOG_TRACKBACK";
+
     private Map _ipAddressTrackbackTimes;
     private BlojsomFetcher _fetcher;
 
@@ -214,7 +228,6 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         String _blogTrackbackDirectory;
         Boolean _blogEmailEnabled;
         Boolean _blogTrackbacksEnabled;
-        String _blogUrlPrefix;
         String _blogFileEncoding;
         String _emailPrefix;
 
@@ -223,7 +236,6 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         _blogTrackbackDirectory = blog.getBlogTrackbackDirectory();
         _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogTrackbacksEnabled = blog.getBlogTrackbacksEnabled();
-        _blogUrlPrefix = blog.getBlogURL();
         _blogFileEncoding = blog.getBlogFileEncoding();
         _emailPrefix = blog.getBlogProperty(TRACKBACK_PREFIX_IP);
         if (_emailPrefix == null) {
@@ -271,8 +283,6 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         String excerpt = httpServletRequest.getParameter(TRACKBACK_EXCERPT_PARAM);
         String blogName = httpServletRequest.getParameter(TRACKBACK_BLOG_NAME_PARAM);
         String tb = httpServletRequest.getParameter(TRACKBACK_PARAM);
-
-        String entryTitle = entries[0].getTitle();
 
         if ((permalink != null) && (!"".equals(permalink)) && (tb != null) && ("y".equalsIgnoreCase(tb))) {
             if ((url == null) || ("".equals(url.trim()))) {
@@ -399,16 +409,26 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
             Map trackbackMetaData = new HashMap();
             trackbackMetaData.put(BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP, remoteIPAddress);
 
+            Trackback trackback = new Trackback();
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName,
                     _blogFileExtensions, _blogHome, _blogTrackbackDirectory,
-                    _blogFileEncoding, trackbackMetaData);
+                    _blogFileEncoding, trackbackMetaData, trackback);
 
             // For persisting the Last-Modified time
             context.put(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
+            // Merge the template e-mail
+            Map emailTemplateContext = new HashMap();
+            emailTemplateContext.put(BLOJSOM_BLOG, blog);
+            emailTemplateContext.put(BLOJSOM_USER, user);
+            emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY, entries[0]);
+            emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_BLOG_TRACKBACK, trackback);
+
+            String emailTrackback = mergeTemplate(TRACKBACK_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
+            _logger.debug("Trackback e-mail:\n" + emailTrackback);
+
             if (_blogEmailEnabled.booleanValue()) {
-                sendTrackbackEmail(entryTitle, title, category, permalink, url, excerpt, blogName, context,
-                        _blogUrlPrefix, _emailPrefix);
+                sendTrackbackEmail(_emailPrefix, entries[0].getTitle(), emailTrackback, context);
             }
 
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
@@ -435,8 +455,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     private Integer addTrackback(Map context, String category, String permalink, String title,
                                  String excerpt, String url, String blogName,
                                  String[] blogFileExtensions, String blogHome,
-                                 String blogTrackbackDirectory, String blogFileEncoding, Map trackbackMetaData) {
-        Trackback trackback = new Trackback();
+                                 String blogTrackbackDirectory, String blogFileEncoding, Map trackbackMetaData, Trackback trackback) {
         excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
         trackback.setTitle(title);
         trackback.setExcerpt(excerpt);
@@ -506,41 +525,15 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
 
     /**
-     * Send Trackback Email to Blog Author
+     * Send the trackback e-mail to the blog author
      *
-     * @param entryTitle Blog Entry title for this Trackback
-     * @param title      title of trackback entry
-     * @param category   catagory for trackbacked entry
-     * @param permalink  permalink for trackbacked entry
-     * @param url        URL of site tracking back
-     * @param excerpt    excerpt of trackback post
-     * @param blogName   Title of trackbacking blog
-     * @param context    Context
+     * @param emailPrefix E-mail prefix
+     * @param title Entry title
+     * @param trackback Trackback text
+     * @param context Context
      */
-    private void sendTrackbackEmail(String entryTitle, String title, String category, String permalink, String url,
-                                    String excerpt, String blogName, Map context,
-                                    String blogUrlPrefix, String emailPrefix) {
-
-        StringBuffer _trackback = new StringBuffer();
-        _trackback.append("Trackback on: ").append(blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
-        _trackback.append("?permalink=").append(permalink).append("&page=trackback").append("\n");
-
-        _trackback.append("\n==[ Trackback ]==========================================================").append("\n\n");
-
-        if (title != null && !title.equals("")) {
-            _trackback.append("Title    : ").append(title).append("\n");
-        }
-        if (url != null && !url.equals("")) {
-            _trackback.append("Url      : ").append(url).append("\n");
-        }
-        if (blogName != null && !blogName.equals("")) {
-            _trackback.append("Blog Name: ").append(blogName).append("\n");
-        }
-        if (excerpt != null && !excerpt.equals("")) {
-            _trackback.append("Excerpt  : ").append(excerpt).append("\n");
-        }
-
-        EmailUtils.notifyBlogAuthor(emailPrefix + entryTitle, _trackback.toString(), context);
+    public void sendTrackbackEmail(String emailPrefix, String title, String trackback, Map context) {
+        EmailUtils.notifyBlogAuthor(emailPrefix + title, trackback, context);
     }
 
 
