@@ -8,7 +8,7 @@
 
     <changes>
         <release version="2.07" date="January 3, 2003">
-            <action dev="czarneckid" type="updated" context="Plugin">
+            <action dev="czarneckid" type="update" context="Plugin">
                 Updated administration plugins to report back status of operations.
             </action>
 
