@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - Edit blog categories</title>
+    </head>
+
+    <body>
+        <center>
+            <h3>$BLOJSOM_BLOG.getBlogName() - Edit blog categories</h3>
+        </center>
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
+        <p />
+
+        <!-- Add blog category form -->
+        <center>
+            <table border="1">
+                <form name="add-blog-category" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="add-blog-category"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-categories"/>
+                    <tr>
+                        <td>Category name</td>
+                        <td><input type="text" size="50" name="blog-category-name"/></td>
+                    </tr>
+                    <tr>
+                        <td>Category meta-data</td>
+                        <td><textarea rows="10" cols="80" name="blog-category-meta-data"></textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Add category"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+        <p/>
+
+        <!-- Delete blog category form -->
+        <center>
+            <table border="1">
+                <form name="delete-blog-category" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="delete-blog-category"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-categories"/>
+                    <tr>
+                        <td>Blog category</td>
+                        <td>
+                            <select name="blog-category-name">
+                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+                                <option value="$blogCategory.getCategory()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Delete category"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+        <p/>
+
+        <!-- Edit blog category form -->
+        <center>
+            <table border="1">
+                <form name="display-blog-category" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="edit-blog-category"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-categories"/>
+                    <tr>
+                        <td>Blog category</td>
+                        <td>
+                            <select name="blog-category-name">
+                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+                                <option value="$blogCategory.getCategory()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Edit category"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+    </body>
+</html>

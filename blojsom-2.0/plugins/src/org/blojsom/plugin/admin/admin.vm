@@ -11,6 +11,7 @@
         </center>
         <ul>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-properties&action=page">Edit</a> blog properties.</li>
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=edit-blog-categories&action=page">Edit</a> blog categories.</li>
             <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&action=logout">Logout</a> of administration console.</li>
         </ul>
     </body>
