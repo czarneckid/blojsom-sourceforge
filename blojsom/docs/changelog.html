@@ -17,7 +17,7 @@ ects/blojsom/">Sourceforge</a></p>
 
 <p>
 <p class="weblogtitle">blojsom 1.5 (codename: Hangar One)</p>
-<p class="weblogdateline">Available from CVS</p>
+<p class="weblogdateline">March 13, 2003</p>
 <p />
 General:<br />
 - Added a text flavor. <i>flavor=text</i><br />
@@ -36,6 +36,8 @@ a request attribute to indicate whether or not comments are enabled for this blo
 - Methods on <tt>Blog</tt> that returned <tt>BlogEntry[]</tt> now return <tt>BlogEntry[0]</tt>
 in the cases where the method would return <tt>null</tt><br />
 - XML-RPC Handler supporting a subset of the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a><br />
+- Added "Referer Log" plugin<br />
+- Removed Xerces XML parser as Java 1.4.x already contains an XML parser<br />
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=698768&group_id=72754">BUG 698768</a>: Adding Comments does not render comments after post<br />
