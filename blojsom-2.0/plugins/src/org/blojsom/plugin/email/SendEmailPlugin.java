@@ -45,15 +45,13 @@ import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.mail.Session;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Authenticator;
 import javax.mail.internet.InternetAddress;
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -63,32 +61,11 @@ import java.util.Properties;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.4 2004-11-05 01:03:05 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.5 2004-11-24 15:28:38 czarneckid Exp $
  */
-public class SendEmailPlugin implements BlojsomPlugin {
+public class SendEmailPlugin implements BlojsomPlugin, EmailConstants {
 
     private Log _logger = LogFactory.getLog(SendEmailPlugin.class);
-
-    /**
-     * SMTP server initialization parameter
-     */
-    public static final String SMTPSERVER_IP = "smtp-server";
-
-    /**
-     * SMTP server username
-     */
-    public static final String SMTPSERVER_USERNAME_IP = "smtp-server-username";
-
-    /**
-     * SMTP server password
-     */
-    public static final String SMTPSERVER_PASSWORD_IP = "smtp-server-password";
-
-    /**
-     * SMTP session name
-     */
-    public static final String SESSION_NAME = "mail.smtp.host";
-
 
     /**
      * JavaMail Session Object
@@ -127,7 +104,6 @@ public class SendEmailPlugin implements BlojsomPlugin {
                 }
             }
         }
-
     }
 
     /**
@@ -200,34 +176,5 @@ public class SendEmailPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-    }
-
-    /**
-     * Simple authenticator
-     */
-    private class SimpleAuthenticator extends Authenticator {
-
-        private String username;
-        private String password;
-
-        /**
-         * Construct a new simple authenticator with the given username and password
-         *
-         * @param username Username
-         * @param password Password
-         */
-        public SimpleAuthenticator(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        /**
-         * Returns a {@link PasswordAuthentication} object with username and password
-         *
-         * @return {@link PasswordAuthentication}
-         */
-        protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(username, password);
-        }
     }
 }
