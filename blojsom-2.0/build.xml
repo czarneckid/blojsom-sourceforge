@@ -20,7 +20,8 @@
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
     <property name="build.dir" value="${webinf.dir}/classes"/>
-    <property name="javadoc.dir" value="${basedir}/docs/content/javadoc"/>
+    <property name="docs.dir" value="${basedir}/docs"/>
+    <property name="javadoc.dir" value="${docs.dir}/content/javadoc"/>
     <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
@@ -112,7 +113,7 @@
     <target name="clean" description="Removes generated files from the build">
         <delete dir="${compile.dir}"/>
         <delete dir="${build.dir}"/>
-        <delete dir="${javadoc.dir}"/>
+        <delete dir="${docs.dir}"/>
         <delete dir="${distro.dir}"/>
         <delete dir="${build.dir}"/>
         <delete>
@@ -364,7 +365,7 @@
     <!-- Creates a ZIP of the documentation for the website                  -->
     <!-- =================================================================== -->
     <target name="website-docs" depends="javadoc" description="Creates a ZIP for the blojsom website">
-        <zip zipfile="${website.zip}" basedir="${basedir}/docs"/>
+        <zip zipfile="${website.zip}" basedir="${docs.dir}"/>
     </target>
 
     <!-- =================================================================== -->
