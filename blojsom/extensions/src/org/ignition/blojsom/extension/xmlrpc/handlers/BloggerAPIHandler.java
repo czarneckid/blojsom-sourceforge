@@ -57,7 +57,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.17 2003-05-01 18:25:37 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.18 2003-05-02 01:29:21 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -315,7 +315,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
     }
 
     /**
-     * Authenticates a user and returns basic user info (name, email, userid, etc.). (NOT IMPLEMENTED)
+     * Authenticates a user and returns basic user info (name, email, userid, etc.).
      *
      * @param appkey Unique identifier/passcode of the application sending the post
      * @param userid Login for a Blogger user who has permission to post to the blog
@@ -329,10 +329,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-
         if (_blog.checkAuthorization(userid, password)) {
 
-            Vector results = new Vector();
             Hashtable userinfo = new Hashtable();
             userinfo.put(MEMBER_EMAIL, _blog.getBlogOwnerEmail());
             userinfo.put(MEMBER_NICKNAME, userid);
@@ -355,7 +353,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
-
     }
 
     /**
