@@ -2,12 +2,13 @@
                  org.ignition.blojsom.blog.Blog,
                  org.ignition.blojsom.util.BlojsomConstants,
                  java.util.Iterator,
-                 org.ignition.blojsom.blog.BlogEntry"%>
+                 org.ignition.blojsom.blog.BlogEntry,
+                 org.ignition.blojsom.blog.BlogCategory"%>
 <html>
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] entryArray = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
-    String[] blogCategories = (String[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
+    BlogCategory[] blogCategories = (BlogCategory[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
 %>
 
@@ -35,10 +36,12 @@
 %>
 <%
     for (int i = 0; i < blogCategories.length; i++) {
-        String blogCategory = blogCategories[i];
+        BlogCategory blogCategory = blogCategories[i];
+        if (blogCategory.getNumberOfEntries() > 0) {
 %>
-    <a href="<%= blogCategory %>"><%= blogCategory %></a><br />
+    <a href="<%= blogCategory.getCategoryURL() %>"><%= blogCategory.getCategory() %></a><br />
 <%
+        }
     }
 %>
 </body>

@@ -16,7 +16,9 @@
     <p class="weblogbottomline"><a href="$entry.getLink()">Permalink</a></p>
 #end
 #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-    <a href="$blogCategory">$blogCategory</a><br />
+    #if ($blogCategory.getNumberOfEntries() > 0)
+        <a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a><br />
+    #end
 #end
 </body>
 
