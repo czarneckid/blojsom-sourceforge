@@ -34,31 +34,31 @@
  */
 package org.blojsom.plugin.admin;
 
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileOutputStream;
 
 /**
  * EditBlogFlavorsPlugin
- * 
+ *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.10 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.11 2004-08-23 01:58:19 intabulas Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -71,6 +71,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     // Constants
     private static final String DEFAULT_MIME_TYPE = "text/html";
     private static final String DEFAULT_CHARACTER_SET = UTF8;
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS";
 
@@ -95,7 +96,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     * 
+     *
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws org.blojsom.plugin.BlojsomPluginException
@@ -109,7 +110,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
     /**
      * Process the blog entries
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -143,6 +144,8 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             }
         }
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES, templatesList);
+
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING, user.getFlavorToTemplate());
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
@@ -243,7 +246,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
     /**
      * Write out the flavor configuration file for a particular user
-     * 
+     *
      * @param user Blog user information
      * @throws IOException If there is an error writing the flavor configuration file
      */

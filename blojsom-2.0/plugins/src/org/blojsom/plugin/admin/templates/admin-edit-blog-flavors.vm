@@ -25,6 +25,32 @@
 
         #showErrorMessage()
 
+
+
+
+        <!-- Existing Flavor Maps -->
+        <div id="mainClm">
+            <h2>#adminResource('existing.blog.flavor.text' 'Existing Flavor Settings')</h2>
+            <table>
+             #foreach ($flavorMap in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING.keySet())
+               <tr>
+                  <td>$flavorMap</td>
+                  <td>&nbsp;</td>
+                  <td>$BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING.get($flavorMap)</td>
+               </tr>
+             #end
+            </table>
+        </div>
+
+        <p></p>
+
+
+
+
+
+
+
+
         <!-- Add blog flavor form -->
         <div id="mainClm">
             <h2>#adminResource('add.blog.flavor.text' 'Add blog flavor')</h2>

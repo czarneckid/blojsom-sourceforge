@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.21 2004-08-11 02:27:24 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.22 2004-08-23 01:58:19 intabulas Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -159,9 +159,17 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
         }
 
-        List blojsomUsers = getBlojsomPropertyAsList(BLOJSOM_USERS_IP);
-        String[] users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
-        _blojsomUsers = BlojsomUtils.arrayOfStringsToString(users);
+
+//  Commented out on 8/22 since it just does not work.. You can add a CSL to an ArrayList..        
+//        List blojsomUsers = getBlojsomPropertyAsList(BLOJSOM_USERS_IP);
+//        String[] users = (String[]) blojsomUsers.toArray(new String[blojsomUsers.size()]);
+//        _blojsomUsers = BlojsomUtils.arrayOfStringsToString(users);
+
+
+        _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
+        String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
+
+
         InputStream is;
         if (users.length == 0) {
             _logger.error("No users defined for this blojsom blog");
@@ -174,6 +182,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 blogUser.setId(user);
 
                 Properties userProperties = new BlojsomProperties();
+                _logger.info("Attemping to load " + _baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
                 is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
                 if (is != null) {
                     try {
@@ -280,7 +289,6 @@ public class BlojsomConfiguration implements BlojsomConstants {
     }
 
     /**
-     * 
      * @param propertyKey
      * @return
      */
