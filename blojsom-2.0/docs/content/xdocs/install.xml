@@ -284,13 +284,19 @@
                     <tr>
                         <td>blog-banned-ip-addresses</td>
                         <td></td>
-                        <td>Comma-separated list of regular expressions IP addresses that you would like to
- be banned. Presently, this is only used by the Comment and Trackback plugins.</td>
+                        <td>Comma-separated list of regular expressions IP addresses that you would like to 
+                        be banned. Presently, this is only used by the Comment and Trackback plugins.</td>
                     </tr>
                     <tr>
                         <td>blog-default-flavor</td>
                         <td>html</td>
                         <td>Sets the default flavor used to render the blog if not specified.</td>
+                    </tr>
+                    <tr>
+                        <td>blog-ping-urls</td>
+                        <td></td>
+                        <td>URLs separated by a space that will populate the ping URLs automatically when adding or
+                        editing blog entries.</td>
                     </tr>
                 </table>
                 <p>

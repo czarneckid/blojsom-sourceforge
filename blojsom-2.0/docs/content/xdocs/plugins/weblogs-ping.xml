@@ -36,6 +36,14 @@
             <source>
                 html.blojsom-plugin-chain=weblogs-ping
             </source>
+            <p>
+                You may add the following property to your individual <code>blog.properties</code> file to control
+                the URLs that are sent a ping when the Weblogs Ping plugin executes.
+                <source>
+                    blog-ping-urls=http://rpc.weblogs.com/RPC2 http://ping.blo.gs http://rpc.technorati.com/rpc/ping
+                </source>
+                URLs to ping are separated by a space on a single line.
+            </p>
         </section>
     </body>
 </document>
