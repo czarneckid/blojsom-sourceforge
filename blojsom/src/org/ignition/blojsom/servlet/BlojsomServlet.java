@@ -192,6 +192,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      */
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
+        if (blogSiteURL.endsWith("/")) {
+            blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length()-1);
+        }
         _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
         _logger.debug("blojsom request URI: " + httpServletRequest.getRequestURI());
         _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL().toString());
