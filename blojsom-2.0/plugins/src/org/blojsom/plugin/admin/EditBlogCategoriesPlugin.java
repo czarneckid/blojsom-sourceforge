@@ -1,3 +1,37 @@
+/**
+ * Copyright (c) 2003, David A. Czarnecki
+ * All rights reserved.
+ *
+ * Portions Copyright (c) 2003 by Mark Lussier
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the "David A. Czarnecki" and "blojsom" nor the names of
+ * its contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * Products derived from this software may not be called "blojsom",
+ * nor may "blojsom" appear in their name, without prior written permission of
+ * David A. Czarnecki.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.blojsom.plugin.admin;
 
 import org.blojsom.blog.BlogEntry;
@@ -21,7 +55,7 @@ import java.io.*;
  * EditBlogCategoriesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.2 2003-11-04 06:04:17 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.3 2003-11-05 03:29:40 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -116,7 +150,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 _logger.debug("Deleted blog category: " + existingBlogCategory.toString());
             }
 
-            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (EDIT_BLOG_CATEGORY_ACTION.equals(action)) {
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             _logger.debug("Editing blog category: " + blogCategoryName);
@@ -218,7 +252,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             } else {
                 _logger.debug("Successfully updated blog category: " + blogCategoryName);
             }
-            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         }
 
         return entries;
