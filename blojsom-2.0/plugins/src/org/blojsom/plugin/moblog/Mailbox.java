@@ -35,6 +35,7 @@
 package org.blojsom.plugin.moblog;
 
 import org.blojsom.blog.BlogUser;
+import org.blojsom.util.BlojsomUtils;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.8 2004-06-12 23:02:04 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.9 2004-06-16 01:50:12 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -282,6 +283,16 @@ public class Mailbox {
     }
 
     /**
+     * Retrieve the accepted image MIME types as a string list
+     *
+     * @return String list of accepted image mime types
+     * @since blojsom 2.16
+     */
+    public String getImageMimeTypesAsStringList() {
+        return BlojsomUtils.getKeysAsStringList(_imageMimeTypes);
+    }
+
+    /**
      * Set the {@link Map} of image mime-types
      *
      * @param imageMimeTypes {@link Map} of image mime-types
@@ -300,6 +311,16 @@ public class Mailbox {
     }
 
     /**
+     * Retrieve the accepted attachment MIME types as a string list
+     *
+     * @return String list of accepted attachment mime types
+     * @since blojsom 2.16
+     */
+    public String getAttachmentMimeTypesAsStringList() {
+        return BlojsomUtils.getKeysAsStringList(_attachmentMimeTypes);
+    }
+
+    /**
      * Set the {@link Map} of attachment mime-types
      *
      * @param attachmentMimeTypes {@link Map} of attachment mime-types
@@ -315,6 +336,16 @@ public class Mailbox {
      */
     public Map getTextMimeTypes() {
         return _textMimeTypes;
+    }
+
+    /**
+     * Retrieve the accepted text MIME types as a string list
+     *
+     * @return String list of accepted text mime types
+     * @since blojsom 2.16
+     */
+    public String getTextMimeTypesAsStringList() {
+        return BlojsomUtils.getKeysAsStringList(_textMimeTypes);
     }
 
     /**
