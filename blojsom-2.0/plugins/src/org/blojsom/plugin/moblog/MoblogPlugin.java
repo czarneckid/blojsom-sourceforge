@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.14 2004-06-12 23:02:04 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.15 2004-06-16 04:22:16 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -277,8 +277,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     private class MailboxChecker extends Thread {
 
-        private List _pollingQueue;
-
         /**
          * Allocates a new <code>Thread</code> object. This constructor has
          * the same effect as <code>Thread(null, null,</code>
@@ -291,18 +289,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
          */
         public MailboxChecker() {
             super();
-            _pollingQueue = new ArrayList(2);
-        }
-
-        /**
-         * Add a new mailbox to the polling queue
-         *
-         * @param mailbox Moblog mailbox information for a user
-         */
-        public void addMailbox(Mailbox mailbox) {
-            if (!_pollingQueue.contains(mailbox)) {
-                _pollingQueue.add(mailbox);
-            }
         }
 
         /**
