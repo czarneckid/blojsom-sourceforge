@@ -10,6 +10,12 @@
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
 <link rel="EditURL" type="application/rsd+xml" title="RSD" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rsd" />
+<script type="text/javascript">
+function reloadPreviewDiv() {
+    var previewString = document.getElementById('commentText').value;
+    document.getElementById('commentPreview').innerHTML = previewString;
+}
+</script>
 
 </head>
 
@@ -42,7 +48,7 @@ Available categories:
 
     #foreach ($entryComment in $entry.getComments())
         <div class="commentstyle">
-            Comment by: #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end - 
+            Comment by: #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end -
                 <a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>
             <div class="weblogdateline">Left on: $entryComment.getCommentDate()</div><br/>
             $entryComment.getComment()<br />
@@ -68,7 +74,7 @@ Available categories:
                 <td>URL: </td><td><input type="text" name="authorURL" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end"/></td>
             </tr>
             <tr>
-                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
+                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" id="commentText" value="" rows="7" cols="55" onkeyup="reloadPreviewDiv();"></textarea></td>
             </tr>
             <p />
             <tr>
@@ -77,6 +83,16 @@ Available categories:
             <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
                 <input type="reset" name="reset" value="Reset"/>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td colspan="2"><h4>Live Comment Preview</h4></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div id="commentPreview">
+                    </div>
                 </td>
             </tr>
         </form>

@@ -41,7 +41,12 @@
     <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogInformation.getBlogURL() %>?flavor=rss" />
     <link rel="EditURL" type="application/rsd+xml" title="RSD" href="<%= blogInformation.getBlogURL() %>?flavor=rsd" />
-
+    <script type="text/javascript">
+    function reloadPreviewDiv() {
+        var previewString = document.getElementById('commentText').value;
+        document.getElementById('commentPreview').innerHTML = previewString;
+    }
+    </script>
     </head>
 
     <body>
@@ -145,7 +150,7 @@
                 <td>URL: </td><td><input type="text" name="authorURL" value="<%= initialAuthorURL %>"/></td>
             </tr>
             <tr>
-                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
+                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" id="commentText" value="" rows="7" cols="55" onkeyup="reloadPreviewDiv();"></textarea></td>
             </tr>
             <tr>
                 <td>Remember me?</td> <td><input type="checkbox" name="remember" <% if (commentRememberMe != null && !"".equals(commentRememberMe)) { %>CHECKED<% } %>/></td>
@@ -154,6 +159,16 @@
             <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
                 <input type="reset" name="reset" value="Reset"/>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td colspan="2"><h4>Live Comment Preview</h4></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div id="commentPreview">
+                    </div>
                 </td>
             </tr>
         </form>
