@@ -14,6 +14,7 @@
 
         <!-- Add blog category form -->
         <center>
+            <h3>Add a new blog category</h3>
             <table border="1">
                 <form name="add-blog-category" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-category"/>
@@ -43,6 +44,7 @@
 
         <!-- Delete blog category form -->
         <center>
+            <h3>Delete an existing blog category</h3>
             <table border="1">
                 <form name="delete-blog-category" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-category"/>
@@ -73,6 +75,7 @@
 
         <!-- Edit blog category form -->
         <center>
+            <h3>Edit an existing blog category</h3>
             <table border="1">
                 <form name="display-blog-category" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="edit-blog-category"/>
