@@ -13,7 +13,6 @@
                 Added Atom &lt;link/&gt; tag to the Pumpkin theme
             </action>
 
-
             <action dev="intabulas" type="update" context="Extension">
                 Updated the sandler library to the new 0.5 release.
             </action>
