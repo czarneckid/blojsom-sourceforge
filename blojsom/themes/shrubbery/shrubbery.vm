@@ -15,7 +15,7 @@
 #set( $totalEntries = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="es"><p class="wlt">$entry.getTitle() <span class="st">[<a href="$entry.getLink()">Permalink</a>]</span> </p><p class="wldl">$entry.getDate()</p>$entry.getDescription()</div>
-    <div class="wlbl">#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())<a href="$entry.getLink()&amp;page=comments">Comments [$entry.getNumComments()</a>] | #end
+    <div class="wlbl">#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())<a href="$entry.getLink()&amp;page=comments">Comments [$entry.getNumComments()]</a> | #end
 <a href="$entry.getLink()&amp;page=trackback">Trackbacks [$entry.getNumTrackbacks()]</a></div>
     #set( $totalEntries = $totalEntries + 1)
 #end
