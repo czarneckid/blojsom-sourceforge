@@ -42,6 +42,10 @@
             <param-value>/WEB-INF/authorization.properties</param-value>
         </init-param>
         <init-param>
+            <param-name>smtp-server</param-name>
+            <param-value>localhost</param-value>
+        </init-param>
+        <init-param>
             <param-name>plugin-emoticons</param-name>
             <param-value>/WEB-INF/emoticons.properties</param-value>
         </init-param>
