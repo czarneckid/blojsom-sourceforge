@@ -61,11 +61,11 @@ import java.util.Properties;
 
 /**
  * Blojsom XML-RPC Servlet
- *
+ * <p/>
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
- *
+ * 
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2003-08-20 02:55:40 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.3 2003-12-10 02:28:16 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -81,7 +81,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     /**
      * Configure the XML-RPC API Handlers
-     *
+     * 
      * @param servletConfig Servlet configuration information
      */
     private void configureAPIHandlers(ServletConfig servletConfig) {
@@ -102,8 +102,13 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                 user = (String) userIterator.next();
                 blogUser = (BlogUser) _users.get(user);
 
+                // Check for the default XML-RPC handler
+                String defaultXMLRPCHandler = handlerMapProperties.getProperty(DEFAULT_XMLRPC_HANDLER_KEY);
+                handlerMapProperties.remove(DEFAULT_XMLRPC_HANDLER_KEY);
+
                 Iterator handlerIterator = handlerMapProperties.keySet().iterator();
                 XmlRpcServer xmlRpcServer = new XmlRpcServer();
+
                 while (handlerIterator.hasNext()) {
                     String handlerName = (String) handlerIterator.next();
                     String handlerClassName = handlerMapProperties.getProperty(handlerName);
@@ -112,7 +117,12 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                     handler.setBlogUser(blogUser);
                     handler.setFetcher(_fetcher);
                     xmlRpcServer.addHandler(handler.getName(), handler);
+                    if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
+                        xmlRpcServer.addHandler(DEFAULT_XMLRPC_HANDLER_KEY, handler);
+                        _logger.debug("Added default XML-RPC handler: " + handlerClass + " for user: " + user);
+                    }
                     _logger.debug("Added [" + handler.getName() + "] API Handler : " + handlerClass + " for user: " + user);
+
                 }
 
                 _xmlrpcServers.put(user, xmlRpcServer);
@@ -132,7 +142,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     /**
      * Initialize the blojsom XML-RPC servlet
-     *
+     * 
      * @param servletConfig Servlet configuration information
      * @throws ServletException If there is an error initializing the servlet
      */
@@ -149,11 +159,11 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     /**
      * Service an XML-RPC request by passing the request to the proper handler
-     *
-     * @param httpServletRequest Request
+     * 
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
-     * @throws IOException If there is an error during I/O
+     * @throws IOException      If there is an error during I/O
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         try {
