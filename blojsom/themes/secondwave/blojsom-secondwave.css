@@ -193,11 +193,19 @@ a:hover
 {
     margin-top: 0px;
 	margin-bottom: 0px;
+	align: right;
+}
+.searchimage
+{
+    margin-top: 0px;
+	margin-bottom: 0px;
+	vertical-align: middle;
+	align: right;
 }
 
 #searchbox{
 	float:right;
-	width : 210px;
+	width : 200px;
 	background-color: #FFFFFF;
 	border-left:0px solid #000000;
 	border-right:0px solid #000000;
@@ -206,6 +214,7 @@ a:hover
 	padding:0px;
 	margin-top:5px;
 	margin-bottom:0px;
+	margin-right:0px;
 	align: right;
 }
 
