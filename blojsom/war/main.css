@@ -77,6 +77,15 @@ a:hover
 	padding-top: 0pt;
 }
 
+.weblogpostedbyline
+{
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: smaller;
+	color: #FFFFFF;
+	margin-top: 0pt;
+	padding-top: 0pt;
+}
+
 .weblogbottomline
 {
 	font-family: Helvetica, Arial, sans-serif;
