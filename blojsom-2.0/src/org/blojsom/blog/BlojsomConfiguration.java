@@ -52,7 +52,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.6 2003-09-12 02:08:59 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.7 2003-11-05 13:07:11 czarneckid Exp $
  */
 public class BlojsomConfiguration implements BlojsomConstants {
 
@@ -63,6 +63,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _baseConfigurationDirectory;
     private String _fetcherClass;
     private String _installationDirectory;
+    private String _templatesDirectory;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
@@ -99,6 +100,17 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
         }
         _logger.debug("Using base configuration directory: " + _baseConfigurationDirectory);
+
+        _templatesDirectory = getBlojsomPropertyAsString(BLOJSOM_TEMPLATES_DIRECTORY_IP);
+        if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
+            _templatesDirectory = BLOJSOM_DEFAULT_TEMPLATES_DIRECTORY;
+        } else {
+            if (!_templatesDirectory.startsWith("/")) {
+                _templatesDirectory = '/' + _templatesDirectory;
+            }
+
+        }
+        _logger.debug("Using templates directory: " + _templatesDirectory);
 
         _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
@@ -221,6 +233,16 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public String getInstallationDirectory() {
         return _installationDirectory;
+    }
+
+    /**
+     * Get the directory where templates will be located off the user's directory.
+     *
+     * @since blojsom 2.04
+     * @return Templates directory
+     */
+    public String getTemplatesDirectory() {
+        return _templatesDirectory;
     }
 
     /**
