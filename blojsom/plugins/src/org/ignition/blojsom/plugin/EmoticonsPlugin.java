@@ -50,7 +50,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.7 2003-03-25 15:52:49 intabulas Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.8 2003-03-27 20:03:31 intabulas Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -105,7 +105,9 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     private static final String PLAIN_PARAM = "plain";
 
     private static final String IMG_OPEN = "<img src=\"";
-    private static final String IMG_CLOSE = "\" />";
+    private static final String IMG_CLOSE = "\"";
+    private static final String IMG_ALT_START = " alt=\"";
+    private static final String IMG_ALT_END = "\" />";
 
     private Properties _emoticonsProperties;
 
@@ -194,6 +196,9 @@ public class EmoticonsPlugin implements BlojsomPlugin {
             imageReference.append(url);
             imageReference.append(emoticonImage);
             imageReference.append(IMG_CLOSE);
+            imageReference.append(IMG_ALT_START);
+            imageReference.append(emoticonImage);
+            imageReference.append(IMG_ALT_END);
             return BlojsomUtils.replace(emoticonString, emoticon, imageReference.toString());
         }
 
