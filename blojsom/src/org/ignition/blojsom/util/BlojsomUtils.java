@@ -51,9 +51,40 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.45 2003-04-17 03:33:51 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.46 2003-04-22 01:17:48 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
+
+    /**
+     * Filter only directories
+     */
+    private static final FileFilter DIRECTORY_FILTER = new FileFilter() {
+        public boolean accept(File pathname) {
+            return (pathname.isDirectory());
+        }
+    };
+
+    /**
+     * RFC-822 format
+     * SimpleDateFormats are not threadsafe, but we should not need more than one per
+     * thread.
+     */
+    private static final ThreadLocal RFC_822_DATE_FORMAT_OBJECT = new ThreadLocal() {
+        protected Object initialValue() {
+            return new SimpleDateFormat(RFC_822_DATE_FORMAT);
+        }
+    };
+
+    /**
+     * ISO-8601 format
+     * SimpleDateFormats are not threadsafe, but we should not need more than one per
+     * thread.
+     */
+    private static final ThreadLocal ISO_8601_DATE_FORMAT_OBJECT = new ThreadLocal() {
+        protected Object initialValue() {
+            return new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+        }
+    };
 
     private BlojsomUtils() {
     }
@@ -64,11 +95,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return File filter appropriate for filtering only directories
      */
     public static FileFilter getDirectoryFilter() {
-        return new FileFilter() {
-            public boolean accept(File pathname) {
-                return (pathname.isDirectory());
-            }
-        };
+        return DIRECTORY_FILTER;
     }
 
     /**
@@ -79,6 +106,10 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return File filter appropriate for filtering only directories
      */
     public static FileFilter getDirectoryFilter(final String[] excludedDirectories) {
+        if (excludedDirectories == null) {
+            return DIRECTORY_FILTER;
+        }
+
         return new FileFilter() {
             public boolean accept(File pathname) {
                 if (!pathname.isDirectory()) {
@@ -103,8 +134,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Date formatted as RFC 822
      */
     public static String getRFC822Date(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(RFC_822_DATE_FORMAT);
-        return sdf.format(date);
+        return ((SimpleDateFormat) RFC_822_DATE_FORMAT_OBJECT.get()).format(date);
     }
 
     /**
@@ -127,8 +157,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Date formatted as ISO 8601
      */
     public static String getISO8601Date(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
-        return sdf.format(date);
+        return ((SimpleDateFormat) ISO_8601_DATE_FORMAT_OBJECT.get()).format(date);
     }
 
     /**
