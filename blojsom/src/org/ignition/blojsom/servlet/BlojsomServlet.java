@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.70 2003-04-15 02:26:28 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.71 2003-04-18 02:21:22 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -432,6 +432,15 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 _lastmodified = _entry.getLastModified();
                 _logger.debug("Adding last-modified header for most recent blog entry");
             }
+
+            // Check for the Last-Modified object from one of the plugins
+            if (httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED) != null) {
+                Long lastModified = (Long) httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED);
+                if (lastModified.longValue() > _lastmodified) {
+                    _lastmodified = lastModified.longValue();
+                }
+            }
+
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
             blogdate = entries[0].getRFC822Date();
             blogISO8601Date = entries[0].getISO8601Date();
@@ -442,6 +451,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             blogdate = BlojsomUtils.getRFC822Date(today);
             blogISO8601Date = BlojsomUtils.getISO8601Date(today);
             blogDateObject = today;
+            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, today.getTime());
         }
 
         // Finish setting up the context for the dispatcher

@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.53 2003-04-15 02:24:04 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.54 2003-04-18 02:21:18 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -111,6 +111,12 @@ public interface BlojsomConstants {
      * Key under which whether or not email messages will be sent to the blog author
      */
     public static final String BLOJSOM_EMAIL_ENABLED = "BLOJSOM_EMAIL_ENABLED";
+
+    /**
+     * Key under which the lastmodified date of the blog will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_LAST_MODIFIED = "BLOJSOM_LAST_MODIFIED";
 
     /**
      * Default class for fetching blog entries

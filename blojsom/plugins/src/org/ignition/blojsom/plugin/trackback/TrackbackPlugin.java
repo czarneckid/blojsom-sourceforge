@@ -56,9 +56,9 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.18 2003-04-16 00:51:38 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.19 2003-04-18 02:21:35 czarneckid Exp $
  */
-public class TrackbackPlugin implements BlojsomPlugin {
+public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
     /**
      * Request parameter to indicate a trackback "tb"
@@ -129,11 +129,11 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
-        _blogFileExtensions = (String[]) blogProperties.get(BlojsomConstants.BLOG_FILE_EXTENSIONS_IP);
-        _blogHome = (String) blogProperties.get(BlojsomConstants.BLOG_HOME_IP);
-        _blogTrackbackDirectory = (String) blogProperties.get(BlojsomConstants.BLOG_TRACKBACK_DIRECTORY_IP);
-        _blogEmailEnabled = (Boolean) blogProperties.get(BlojsomConstants.BLOG_EMAIL_ENABLED_IP);
-        _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
+        _blogFileExtensions = (String[]) blogProperties.get(BLOG_FILE_EXTENSIONS_IP);
+        _blogHome = (String) blogProperties.get(BLOG_HOME_IP);
+        _blogTrackbackDirectory = (String) blogProperties.get(BLOG_TRACKBACK_DIRECTORY_IP);
+        _blogEmailEnabled = (Boolean) blogProperties.get(BLOG_EMAIL_ENABLED_IP);
+        _blogUrlPrefix = (String) blogProperties.get(BLOG_URL_IP);
     }
 
     /**
@@ -159,7 +159,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
             category += "/";
         }
         String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
-        String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
+        String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         String title = httpServletRequest.getParameter(TRACKBACK_TITLE_PARAM);
         String excerpt = httpServletRequest.getParameter(TRACKBACK_EXCERPT_PARAM);
         String blogName = httpServletRequest.getParameter(TRACKBACK_BLOG_NAME_PARAM);
@@ -171,7 +171,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
             if ((url == null) || ("".equals(url.trim()))) {
                 context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
                 context.put(BLOJSOM_TRACKBACK_MESSAGE, "No url parameter for trackback. url must be specified.");
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
+                httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
                 return entries;
             }
 
@@ -201,7 +201,11 @@ public class TrackbackPlugin implements BlojsomPlugin {
             if (!category.endsWith("/")) {
                 category += "/";
             }
+
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName);
+
+            // For persisting the Last-Modified time
+            httpServletRequest.getSession().setAttribute(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
             if (_blogEmailEnabled.booleanValue()) {
                 sendTrackbackEmail(entryTitle, title, category, permalink, url, excerpt, blogName, context);
@@ -209,9 +213,9 @@ public class TrackbackPlugin implements BlojsomPlugin {
 
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
             if (code.intValue() == 0) {
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_SUCCESS_PAGE);
+                httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_SUCCESS_PAGE);
             } else {
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
+                httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
             }
         }
 
@@ -258,7 +262,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
         trackbackDirectory.append(File.separator);
         trackbackDirectory.append(permalinkFilename);
         trackbackDirectory.append(File.separator);
-        String trackbackFilename = trackbackDirectory.toString() + trackback.getTrackbackDateLong() + BlojsomConstants.TRACKBACK_EXTENSION;
+        String trackbackFilename = trackbackDirectory.toString() + trackback.getTrackbackDateLong() + TRACKBACK_EXTENSION;
         File trackbackDir = new File(trackbackDirectory.toString());
         if (!trackbackDir.exists()) {
             if (!trackbackDir.mkdirs()) {
@@ -270,7 +274,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
 
         File trackbackEntry = new File(trackbackFilename);
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), BlojsomConstants.UTF8));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), UTF8));
             bw.write(trackback.getTitle());
             bw.newLine();
             bw.write(trackback.getExcerpt());
