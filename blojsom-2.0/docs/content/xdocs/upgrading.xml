@@ -74,6 +74,29 @@
                         <code>blojsom.war</code> file.
                     </p>
                 </section>
+                <section>
+                    <title>Core (addon) changes</title>
+                    <p>
+                        1. If you would like to develop templates using the <link href="http://www.freemarker.org">FreeMarker</link>
+                        template language, copy the <code>freemarker-2.2.5.jar</code> file to your <code>/WEB-INF/lib</code>
+                        directory. You will also need to add the following line to your <code>/WEB-INF/dispatcher.properties</code>
+                        file.
+                        <pre>
+                            fm=org.blojsom.dispatcher.FreeMarkerDispatcher
+                        </pre>
+                    </p>
+                </section>
+                <section>
+                    <title>Plugin (addon) library changes</title>
+                    <p>
+                        1. If you are using the Wiki plugin, replace the radeox-*.jar in your <code>/WEB-INF/lib</code> directory with the
+                        updated radeox-0.9.jar file.
+                    </p>
+                    <p>
+                        2. If you are using the Caching fetcher, replace the oscache-*.jar in your <code>/WEB-INF/lib</code> directory with the
+                        updated oscache-2.0.1.jar file.
+                    </p>
+                </section>
             </section>
             <section>
                 <title>Upgrading from blojsom 2.03 to blojsom 2.04</title>
