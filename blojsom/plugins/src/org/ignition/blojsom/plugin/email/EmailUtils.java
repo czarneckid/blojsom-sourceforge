@@ -36,16 +36,14 @@ package org.ignition.blojsom.plugin.email;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ignition.blojsom.extension.comment.CommentAPIServlet;
-import org.ignition.blojsom.util.BlojsomUtils;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.Message;
-import javax.mail.Transport;
-import javax.mail.MessagingException;
-import javax.mail.Session;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.6 2003-04-15 01:48:40 intabulas Exp $
+ * @version $Id: EmailUtils.java,v 1.7 2003-04-15 01:54:02 intabulas Exp $
  */
 public class EmailUtils {
 
