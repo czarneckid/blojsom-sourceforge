@@ -54,7 +54,7 @@ import java.io.IOException;
  * and the JSP/Servlet/J2EE community.
  *
  * @since blojsom 2.10
- * @version $Id: CompressionFilter.java,v 1.8 2004-02-20 00:10:37 czarneckid Exp $
+ * @version $Id: CompressionFilter.java,v 1.9 2004-02-27 03:10:05 czarneckid Exp $
  */
 public class CompressionFilter implements Filter, BlojsomConstants {
 
@@ -98,8 +98,10 @@ public class CompressionFilter implements Filter, BlojsomConstants {
             }
         } catch (IOException e) {
             _logger.error(e);
+            _logger.error(e.fillInStackTrace());
         } catch (ServletException e) {
             _logger.error(e);
+            _logger.error(e.fillInStackTrace());
         }
     }
 
