@@ -12,6 +12,10 @@
                 Added Conditional GET plugin for RSS aggregators that support this feature.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated e-mail utilities to explicitly set the send date of the e-mail message.
+            </action>
+
             <action dev="czarneckid" type="fix" context="Extension" fixes-bug="871374">
                 Fixed bug where Atom API servlet cannot handle search request.
             </action>
@@ -19,7 +23,6 @@
             <action dev="czarneckid" type="fix" context="Extension" fixes-bug="872415">
                 Fixed bug where default XML-RPC handler will only be set for one user.
             </action>
-
         </release>
 
         <release version="2.07" date="January 3, 2003">
