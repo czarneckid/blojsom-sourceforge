@@ -58,7 +58,7 @@ import java.util.Properties;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.22 2003-05-22 03:11:24 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.23 2003-05-30 00:16:48 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -195,6 +195,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             int pos = postid.indexOf(match);
             if (pos != -1) {
                 category = postid.substring(0, pos);
+                category = BlojsomUtils.normalize(category);
                 permalink = postid.substring(pos + match.length());
 
                 BlogCategory blogCategory = new BlogCategory(category, _blog.getBlogURL() + category);
@@ -263,6 +264,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
         _logger.debug("    Publish: " + publish);
+
+        blogid = BlojsomUtils.normalize(blogid);
 
         if (_blog.checkAuthorization(userid, password)) {
             String result = null;
