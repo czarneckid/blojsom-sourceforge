@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.6 2003-11-11 01:54:52 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.7 2003-11-11 02:09:58 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -475,6 +475,8 @@ public class FileBackedBlogEntry extends BlogEntry {
         }
 
         try {
+            long originalTimestamp = _source.lastModified();
+
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_source.getAbsolutePath(), false), blog.getBlogFileEncoding()));
             if (_title == null || "".equals(_title)) {
                 bw.write(BlojsomUtils.nullToBlank(_description));
@@ -489,15 +491,15 @@ public class FileBackedBlogEntry extends BlogEntry {
             // Preserve original timestamp of the blog entry if its available in the meta-data
             if (_metaData.containsKey(BLOG_ENTRY_METADATA_TIMESTAMP)) {
                 try {
-                    long originalTimestamp = Long.parseLong((String)_metaData.get(BLOG_ENTRY_METADATA_TIMESTAMP));
-                    _source.setLastModified(originalTimestamp);
+                    originalTimestamp = Long.parseLong((String)_metaData.get(BLOG_ENTRY_METADATA_TIMESTAMP));
                 } catch (NumberFormatException e) {
                     _logger.error(e);
                 }
             } else { // Otherwise, preserve original timestamp of the blog entry
-                _metaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(_source.lastModified()).toString());
+                _metaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(originalTimestamp));
             }
 
+            _source.setLastModified(originalTimestamp);
             saveMetaData(blog);
         } catch (IOException e) {
             throw new BlojsomException(e);
