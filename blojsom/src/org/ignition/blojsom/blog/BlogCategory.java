@@ -37,32 +37,33 @@ package org.ignition.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomConstants;
-import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileInputStream;
 
 /**
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.10 2003-03-25 04:38:12 intabulas Exp $
+ * @version $Id: BlogCategory.java,v 1.11 2003-04-17 03:09:01 czarneckid Exp $
  */
 public class BlogCategory implements Comparable {
 
     private Log _logger = LogFactory.getLog(BlogCategory.class);
 
-    private String _categoryURL;
-    private String _category;
-    private Map _metadata = null;
-    private String _description = null;
-    private String _name = null;
+    protected String _categoryURL;
+    protected String _category;
+    protected Map _metadata = null;
+    protected String _description = null;
+    protected String _name = null;
 
+    /**
+     * Default constructor.
+     */
+    public BlogCategory() {
+    }
 
     /**
      * Create a new BlogCategory
@@ -189,6 +190,15 @@ public class BlogCategory implements Comparable {
     }
 
     /**
+     * Set the meta-data associated with this category
+     *
+     * @param metadata The map to be associated with the category as meta-data
+     */
+    public void setMetadata(Map metadata) {
+        _metadata = metadata;
+    }
+
+    /**
      * Sets the meta-data associated with this category
      *
      * @param data The properties to be associated with the category as meta-data
@@ -222,34 +232,5 @@ public class BlogCategory implements Comparable {
      */
     public HashMap getMetaData() {
         return (HashMap) _metadata;
-    }
-
-    /**
-     * Load the meta data for the category
-     *
-     * @param blogHome Directory where blog entries are stored
-     * @param propertiesExtensions List of file extensions to use when looking for category properties
-     */
-    public void loadMetaData(String blogHome, String[] propertiesExtensions) {
-        File blog = new File(blogHome + BlojsomUtils.removeInitialSlash(_category));
-
-        // Load properties file for category (if present)
-        File[] categoryPropertyFiles = blog.listFiles(BlojsomUtils.getExtensionsFilter(propertiesExtensions));
-        if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
-            Properties dirProps = new Properties();
-            for (int i = 0; i < categoryPropertyFiles.length; i++) {
-
-                try {
-                    FileInputStream _fis = new FileInputStream(categoryPropertyFiles[i]);
-                    dirProps.load( _fis);
-                    _fis.close();
-                } catch (IOException ex) {
-                    _logger.warn("Failed loading properties from: " + categoryPropertyFiles[i].toString());
-                    continue;
-                }
-            }
-
-            setMetaData(dirProps);
-        }
     }
 }
