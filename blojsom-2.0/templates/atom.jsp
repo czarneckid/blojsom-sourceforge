@@ -8,7 +8,7 @@
 %>
 <feed xmlns="http://purl.org/atom/ns#"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()"
+    xml:lang="<%= blogInformation.getBlogLanguage() %>"
     version="0.2">
 
     <!-- feed required elements -->
@@ -19,7 +19,7 @@
     <!-- feed optional elements -->
     <tagline><%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%></tagline>
     <generator name="<%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %>">http://blojsom.sf.net</generator>
-    <copyright><!-- Insert your copyright --></copyright>
+    <copyright>Copyright (c) 2003 <%= blogInformation.getBlogOwner() %></copyright>
 
     <%
         if (blogEntries != null) {

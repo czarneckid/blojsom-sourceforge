@@ -13,7 +13,7 @@
     <!-- feed optional elements -->
     <tagline>$BLOJSOM_BLOG.getBlogDescription().replaceAll("<.*?>","")</tagline>
     <generator name="$BLOJSOM_VERSION">http://blojsom.sf.net</generator>
-    <copyright><!-- Insert your copyright --></copyright>
+    <copyright>Copyright (c) 2003 $BLOJSOM_BLOG.getBlogOwner()</copyright>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
