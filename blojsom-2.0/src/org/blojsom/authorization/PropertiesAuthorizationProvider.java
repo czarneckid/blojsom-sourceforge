@@ -55,7 +55,7 @@ import java.util.List;
  * PropertiesAuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: PropertiesAuthorizationProvider.java,v 1.4 2005-01-23 19:19:44 czarneckid Exp $
+ * @version $Id: PropertiesAuthorizationProvider.java,v 1.5 2005-01-25 18:42:59 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class PropertiesAuthorizationProvider implements AuthorizationProvider, BlojsomConstants {
@@ -162,7 +162,7 @@ public class PropertiesAuthorizationProvider implements AuthorizationProvider, B
 
         String permissionsConfiguration = _servletConfig.getInitParameter(BLOG_PERMISSIONS_IP);
         if (BlojsomUtils.checkNullOrBlank(permissionsConfiguration)) {
-            _logger.error("No permissions configuration file specified. Using default: " + DEFAULT_PERMISSIONS_CONFIGURATION_FILE);
+            _logger.warn("No permissions configuration file specified. Using default: " + DEFAULT_PERMISSIONS_CONFIGURATION_FILE);
             permissionsConfiguration = DEFAULT_PERMISSIONS_CONFIGURATION_FILE;
         }
 
