@@ -40,6 +40,12 @@ General:<br />
 - Added "Remember Me" checkbox to Secondwave comment template<br />
 - Added <tt>Map getMetaData()</tt> and <tt>setMetaData(Map metaData)</tt> methods to <tt>BlogEntry</tt><br />
 - RSS 2.0 feeds now include <a href="http://dublincore.org/">Dublin Core</a> &lt;creator/&gt; and &lt;publisher/&gt; elements <br/>
+- RSS version changed to 0.92 as this is the version of the RSS specification output with the RSS flavor<br />
+- Added the <a href="javadoc/org/ignition/blojsom/fetcher/BlojsomFetcher.html">BlojsomFetcher</a> interface and
+the <a href="javadoc/org/ignition/blojsom/fetcher/StandardFetcher.html">StandardFetcher</a> implementation of that interface.
+The <tt>BlojsomFetcher</tt> interface was added to allow for abstraction of the underlying datasource from
+which blojsom retrieves categories and entries. This would allow implementations to be written which
+cache or lazy load blog entries or retrieve categories and entries from a database<br />
 
 <p />
 Extension changes:<br />

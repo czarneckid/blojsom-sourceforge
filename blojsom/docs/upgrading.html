@@ -59,6 +59,18 @@ your <i>web.xml</i> file.
 </pre>
 
 <p />
+3. Change the Blogger API handler in <i>/WEB-INF/blojsom-xmlrpc.properties</i> from
+<pre>
+blogger=org.ignition.blojsom.extension.xmlrpc.handlers.BlojsomBloggerAPIHandler
+</pre>
+
+to
+
+<pre>
+blogger=org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
+</pre>
+
+<p />
 
 <p>
 <p class="weblogtitle">Upgrading blojsom from v1.6.x to v1.7</p>
