@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Edit Plugin Chains")
+#adminPageHeader("#adminResource('edit.plugin.chains.header' 'Edit Plugin Chains')")
 
     <div id="mainClm">
         <table>
             <tr>
-                <th>Flavor</th> <th>Plugin chain map</th>
+                <th>#adminResource('flavor.text' 'Flavor')</th> <th>#adminResource('plugin.chain.map.text' 'Plugin chain map')</th>
             </tr>
             <form name="edit-blog-plugins" action="." method="post" accept-charset="UTF-8">
                 <input type="hidden" name="action" value="modify-plugin-chains"/>
@@ -18,8 +18,8 @@
                 #end
                 <tr>
                     <td colspan="2">
-                        <input type="submit" name="submit" value="Edit blog plugin chains"/>
-                        <input type="reset" name="reset" value="Reset"/>
+                        <input type="submit" name="submit" value="#adminResource('edit.blog.plugin.chains.text' 'Edit blog plugin chains')"/>
+                        <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                     </td>
                 </tr>
             </form>
@@ -27,11 +27,11 @@
     </div>
 
     <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
 
         <p/>
 
-        <h6>Available Plugins</h6>
+        <h6>#adminResource('available.plugins.text' 'Available plugins')</h6>
         <ul>
             #foreach ($plugin in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS.keySet())
             <li>$plugin</li>
