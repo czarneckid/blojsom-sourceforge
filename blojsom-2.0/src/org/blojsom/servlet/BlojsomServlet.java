@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.27 2004-10-05 02:48:23 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.28 2004-10-10 18:22:58 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -367,6 +367,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
         // Setup the resource manager in the context
         context.put(BLOJSOM_RESOURCE_MANAGER_CONTEXT_KEY, _resourceManager);
+        context.put(BLOJSOM_REQUESTED_FLAVOR, flavor);
 
         BlogEntry[] entries = null;
         BlogCategory[] categories = null;
