@@ -126,7 +126,7 @@ public class BlogEntry {
     }
 
     /**
-     * Permalink for the blog entry where any &amp; character will be escaped
+     * Permalink for the blog entry where the &lt;, &gt;, and &amp; characters are escaped
      *
      * @return
      */
@@ -172,8 +172,7 @@ public class BlogEntry {
 
     /**
      * Escaped description of the blog entry
-     * This method would be used for generating RSS feeds where &amp;, &lt;, and &gt; need to be
-     * escaped
+     * This method would be used for generating RSS feeds where the &lt;, &gt;, and &amp; characters are escaped
      *
      * @return Blog entry description where &amp;, &lt;, and &gt; have been escaped
      */
