@@ -54,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.39 2004-11-10 22:00:46 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.40 2004-11-11 02:00:11 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -321,10 +321,10 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Visit a set of directories and add items to a list matching a list of extensions
      *
-     * @param extensions Extensions to match
+     * @param extensions          Extensions to match
      * @param excludedDirectories Directories to exclude
-     * @param directoryOrFile Starting directory
-     * @param items List of items
+     * @param directoryOrFile     Starting directory
+     * @param items               List of items
      * @since blojsom 2.20
      */
     public static void visitFilesAndDirectories(final String[] extensions, final String[] excludedDirectories, final File directoryOrFile, List items) {
@@ -754,7 +754,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return an input string URL encoded
      *
      * @param input Input string
-     * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
+     * @return URL encoded string, <code>null</code> if the input was null,
+     *         or <code>input</code> unmodified there is an encoding exception
      */
     public static final String urlEncode(String input) {
         if (input == null) {
@@ -772,7 +773,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return an input string URL encoded for a URL link where '/' show as '/'
      *
      * @param input Input string
-     * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
+     * @return URL encoded string, <code>null</code> if the input was null,
+     *         or <code>input</code> unmodified there is an encoding exception
      * @since blojsom 2.09
      */
     public static final String urlEncodeForLink(String input) {
@@ -933,7 +935,6 @@ public class BlojsomUtils implements BlojsomConstants {
                 String _ds = toHexString(_digest, 0, _digest.length);
                 result = _ds;
             } catch (NoSuchAlgorithmException e) {
-                result = null;
                 result = null;
             }
         }
@@ -1139,12 +1140,12 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         StringBuffer result = new StringBuffer();
-        String element;
-        for (int i = 0; i < array.length; i++) {
-            element = array[i];
-            result.append(element);
-            if (i < array.length - 1) {
+        if (array.length > 0) {
+            result.append(array[0]);
+            // now loop over the rest of the array, appending separators first
+            for (int i = 1; i < array.length; i++) {
                 result.append(separator);
+                result.append(array[i]);
             }
         }
 
@@ -1614,7 +1615,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a filename appropriate for the blog entry content
      *
-     * @param title Blog entry title
+     * @param title   Blog entry title
      * @param content Blog entry content
      * @return Filename for the new blog entry
      * @since blojsom 2.21
