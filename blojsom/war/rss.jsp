@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
-<!-- name="generator" content="blojsom v1.8" -->
+<!-- name="generator" content="blojsom v1.9.2" -->
 <%@ page import="org.ignition.blojsom.blog.Blog,
                  org.ignition.blojsom.util.BlojsomConstants,
                  org.ignition.blojsom.blog.BlogEntry"
