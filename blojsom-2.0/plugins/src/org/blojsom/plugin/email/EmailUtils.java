@@ -56,7 +56,7 @@ import java.util.Date;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.5 2004-01-24 22:41:25 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.6 2004-04-03 19:48:02 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -173,7 +173,7 @@ public class EmailUtils {
             message.setText(emailmessage.getMessage());
             message.setSentDate(new Date());
 
-            _logger.info("Sending Email to  " + _msgto.getAddress());
+            _logger.info("Sending e-mail message to: " + _msgto.getAddress());
 
             /* Send the email. BLOCKING CALL!! */
             Transport.send(message);
