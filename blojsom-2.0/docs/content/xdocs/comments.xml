@@ -44,14 +44,6 @@
                 </p>
             </section>
             <section>
-                <title>Comment API support</title>
-                <p>
-                    As of blojsom 1.8, support for the
-                    <link href="http://wellformedweb.org/story/9">Comment API</link>
-                    has been added to blojsom.
-                </p>
-            </section>
-            <section>
                 <title>Banning IP addresses from commenting</title>
                 <p>
                     In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
@@ -83,6 +75,27 @@
                         plugin-comment-autoformat=true
                     </source>
                 </p>
+            </section>
+            <section>
+                <title>Setting a prefix for comment e-mail messages</title>
+                <p>
+                    The default subject prefix for comment e-mails is set to <em>[blojsom] Comment on: </em>. If you
+                    would like to configure a different prefix for e-mail messages, set the
+                    <em>plugin-comment-email-prefix</em> property in your individual <em>/WEB-INF/(user-id)/blog.properties</em>.
+                    For example:
+                    <source>
+                        plugin-comment-email-prefix=[your.blog.com] Comment:
+                    </source>
+                </p>
+            </section>
+            <section>
+                <title>Comment API support</title>
+                <p>
+                    As of blojsom 1.8, support for the
+                    <link href="http://wellformedweb.org/story/9">Comment API</link>
+                    has been added to blojsom.
+                </p>
+            </section>
         </section>
     </body>
 </document>

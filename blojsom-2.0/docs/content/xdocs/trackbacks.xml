@@ -65,7 +65,20 @@
             <source>
                 blog-banned-ip-addresses=127\\.0\\.0\\.1
             </source>
-
+        </section>
+        <section>
+            <title>Setting a prefix for trackback e-mail messages</title>
+            <p>
+                    The default subject prefix for trackback e-mails is set to
+                <em>[blojsom] Trackback on: </em>. If you
+                    would like to configure a different prefix for e-mail messages, set the
+                <em>plugin-trackback-email-prefix</em> property in your individual
+                <em>/WEB-INF/(user-id)/blog.properties</em>.
+                    For example:
+                <source>
+                        plugin-trackback-email-prefix=[your.blog.com] Trackback:
+                </source>
+            </p>
         </section>
     </body>
 </document>
