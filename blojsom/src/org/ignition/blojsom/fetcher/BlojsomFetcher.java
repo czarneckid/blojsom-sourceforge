@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.4 2003-04-23 02:02:32 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.5 2003-05-31 18:38:53 czarneckid Exp $
  */
 public interface BlojsomFetcher {
 
@@ -60,6 +60,14 @@ public interface BlojsomFetcher {
      * @throws BlojsomFetcherException If there is an error initializing the fetcher
      */
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomFetcherException;
+
+    /**
+     * Return a new blog entry instance
+     *
+     * @since blojsom 1.9
+     * @return Blog entry instance
+     */
+    public BlogEntry newBlogEntry();
 
     /**
      * Fetch a set of {@link BlogEntry} objects.
@@ -118,7 +126,7 @@ public interface BlojsomFetcher {
     public BlogCategory[] fetchCategories(Map fetchParameters) throws BlojsomFetcherException;
 
     /**
-     * Called when {@link BlojsomServlet} is taken out of service
+     * Called when {@link org.ignition.blojsom.servlet.BlojsomServlet} is taken out of service
      *
      * @throws BlojsomFetcherException If there is an error in finalizing this fetcher
      */
