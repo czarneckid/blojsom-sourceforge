@@ -42,15 +42,13 @@ import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.8 2004-04-29 03:15:54 intabulas Exp $
+ * @version $Id: BlogEntry.java,v 1.9 2004-05-15 14:27:16 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -265,7 +263,7 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * @since blojsom 2.08
      */
     public String getEncodedCategory() {
-        return BlojsomUtils.urlEncode(_category);
+        return BlojsomUtils.urlEncodeForLink(_category);
     }
 
     /**
@@ -307,6 +305,10 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * @return List of comments
      */
     public List getComments() {
+        if (_comments == null) {
+            return new ArrayList();
+        }
+
         return _comments;
     }
 
@@ -327,7 +329,7 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      */
     public BlogComment[] getCommentsAsArray() {
         if (_comments == null) {
-            return null;
+            return new BlogComment[0];
         } else {
             return (BlogComment[]) _comments.toArray(new BlogComment[_comments.size()]);
         }
@@ -360,6 +362,10 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * @return List of trackbacks
      */
     public List getTrackbacks() {
+        if (_trackbacks == null) {
+            return new ArrayList();
+        }
+
         return _trackbacks;
     }
 
@@ -380,7 +386,7 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      */
     public Trackback[] getTrackbacksAsArray() {
         if (_trackbacks == null) {
-            return null;
+            return new Trackback[0];
         } else {
             return (Trackback[]) _trackbacks.toArray(new Trackback[_trackbacks.size()]);
         }
@@ -424,6 +430,10 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * @since blojsom 1.8
      */
     public Map getMetaData() {
+        if (_metaData == null) {
+            return new HashMap();
+        }
+        
         return _metaData;
     }
 
