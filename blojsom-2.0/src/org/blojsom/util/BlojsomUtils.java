@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.29 2004-05-04 01:24:25 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.30 2004-06-16 01:29:24 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1376,5 +1376,34 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return input.replaceAll("[\n\r\f]", "");
+    }
+
+    /**
+     * Return the keys of a map as a comma-separated list
+     *
+     * @param input {@link Map}
+     * @return Keys as a comma-separated list or an empty string if the input is <code>null</code> or contains no keys
+     * @since blojsom 2.16
+     */
+    public static String getKeysAsStringList(Map input) {
+        StringBuffer result = new StringBuffer();
+        if (input == null || input.size() == 0) {
+            return result.toString();
+        }
+
+        Iterator keyIterator = input.keySet().iterator();
+        int counter = 0;
+        while (keyIterator.hasNext()) {
+            Object key = keyIterator.next();
+            result.append(key);
+
+            if (counter < input.size() -1) {
+                result.append(", ");
+            }
+
+            counter++;
+        }
+
+        return result.toString();
     }
 }
