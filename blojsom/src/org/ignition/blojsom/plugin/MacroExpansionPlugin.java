@@ -37,6 +37,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -44,10 +45,10 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 /**
- * MacroExpansionPlugin
+ * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.4 2003-02-26 02:19:54 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.5 2003-02-26 02:38:52 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -57,17 +58,20 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     private Map _macros;
 
     /**
-     * RegExt to identify Macros as $MACRO$ and DOES NOT ignore escaped $'s
+     * Regular expression to identify macros as $MACRO$ and DOES NOT ignore escaped $'s
      */
     private static final String MACRO_REGEX = "(\\$[^\\$]*\\$)";
     private Pattern _macro;
 
+    /**
+     * Default constructor. Compiles the macro regular expression pattern, $MACRO$
+     */
     public MacroExpansionPlugin() {
         _macro = Pattern.compile(MACRO_REGEX);
     }
 
     /**
-     * Load the Macro Mappings
+     * Load the macro mappings
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      */
@@ -81,7 +85,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
             while (handlerIterator.hasNext()) {
                 String keyword = (String) handlerIterator.next();
                 _macros.put(keyword, macroProperties.get(keyword));
-                _logger.info("Adding macro [" + keyword + "] with value of  [" + macroProperties.get(keyword) + "]");
+                _logger.info("Adding macro [" + keyword + "] with value of [" + macroProperties.get(keyword) + "]");
             }
         } catch (IOException e) {
             _logger.error(e);
@@ -102,10 +106,10 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     }
 
     /**
-     * Expand Macro Tokens in an entry
-     * @param content Entry to Process
-     * @return The Macro expanded String
-     * @todo Very Sub-Optimal
+     * Expand macro tokens in an entry
+     *
+     * @param content Entry to process
+     * @return The macro expanded string
      */
     private String replaceMacros(String content) {
         Matcher _matcher = _macro.matcher(content);
@@ -124,11 +128,12 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
     /**
      * Process the blog entries. Expands any macros in title and body.
      *
+     * @param httpServletRequest Request
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
         if (entries == null) {
             return null;
         }

@@ -32,13 +32,14 @@ package org.ignition.blojsom.plugin;
 import org.ignition.blojsom.blog.BlogEntry;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
  * BlojsomPlugin
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPlugin.java,v 1.2 2003-02-25 20:40:31 czarneckid Exp $
+ * @version $Id: BlojsomPlugin.java,v 1.3 2003-02-26 02:38:52 czarneckid Exp $
  */
 public interface BlojsomPlugin {
 
@@ -54,11 +55,12 @@ public interface BlojsomPlugin {
     /**
      * Process the blog entries
      *
+     * @param httpServletRequest Request
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(BlogEntry[] entries) throws BlojsomPluginException;
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException;
 
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
