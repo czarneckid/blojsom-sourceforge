@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.37 2004-11-10 21:59:50 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.38 2004-11-16 01:53:08 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -86,7 +86,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     /**
      * Default file extension for blog entries written via XML-RPC
      */
-    public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
+    public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".html";
 
     // Pages
     private static final String EDIT_BLOG_ENTRIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entries";
