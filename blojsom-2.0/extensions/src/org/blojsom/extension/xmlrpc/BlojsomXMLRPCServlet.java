@@ -69,7 +69,7 @@ import java.util.Properties;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.12 2004-09-12 23:01:14 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.13 2004-10-05 02:49:16 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -110,10 +110,11 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
     /**
      * Configure the XML-RPC API Handlers
      *
+     * @param httpServletRequest Request
      * @param userID User ID
      * @return {@link XmlRpcServer} configured for the given user or <code>null</code> if the configuration failed
      */
-    protected XmlRpcServer configureXMLRPCServer(String userID) throws ServletException {
+    protected XmlRpcServer configureXMLRPCServer(HttpServletRequest httpServletRequest, String userID) throws ServletException {
         XmlRpcServer xmlRpcServer = new XmlRpcServer();
 
         String templateConfiguration = _servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
@@ -145,6 +146,10 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
             Blog blog = null;
             try {
                 blog = new Blog(blogProperties);
+
+                // Check to see if we need to dynamically determine blog-base-url and blog-url?
+                BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, userID);
+
                 blogUser.setBlog(blog);
 
                 _logger.debug("Configured blojsom user: " + blogUser.getId());
@@ -242,7 +247,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
         user = BlojsomUtils.removeInitialSlash(user);
 
         // Make sure that the user exists in the system
-        XmlRpcServer xmlRpcServer = configureXMLRPCServer(user);
+        XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, user);
         if (xmlRpcServer == null) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;

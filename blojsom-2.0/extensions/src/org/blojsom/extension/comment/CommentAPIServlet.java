@@ -79,7 +79,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.8 2004-06-16 01:49:15 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.9 2004-10-05 02:49:39 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -217,6 +217,9 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         }
 
         Blog blog = blogUser.getBlog();
+
+        // Check to see if we need to dynamically determine blog-base-url and blog-url?
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);        
 
         _logger.info("Processing a comment for [" + user + "] in category [" + requestedCategory + "]");
 

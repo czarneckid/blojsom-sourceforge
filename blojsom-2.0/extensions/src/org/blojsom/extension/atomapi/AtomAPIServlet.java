@@ -74,7 +74,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.49 2004-07-25 16:38:39 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.50 2004-10-05 02:50:07 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -440,6 +440,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         }
 
         blog = blogUser.getBlog();
+
+        // Check to see if we need to dynamically determine blog-base-url and blog-url?
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
+
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
             blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
@@ -570,6 +574,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         }
 
         blog = blogUser.getBlog();
+
+        // Check to see if we need to dynamically determine blog-base-url and blog-url?
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
+
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
             blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
@@ -686,6 +694,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         }
 
         blog = blogUser.getBlog();
+
+        // Check to see if we need to dynamically determine blog-base-url and blog-url?
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
 
         if (isAuthorized(blogUser, httpServletRequest)) {
 
@@ -834,6 +845,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         }
 
         blog = blogUser.getBlog();
+
+        // Check to see if we need to dynamically determine blog-base-url and blog-url?
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
+        
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
             blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;

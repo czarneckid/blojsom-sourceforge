@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.26 2004-07-08 00:52:43 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.27 2004-10-05 02:48:23 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -343,6 +343,9 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         BlogUser blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         Blog blog = blogUser.getBlog();
 
+        // Check to see if we need to dynamically determine blog-base-url and blog-url?
+        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
+        
         // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
         if (BlojsomUtils.checkNullOrBlank(flavor)) {
