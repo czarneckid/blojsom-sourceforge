@@ -57,10 +57,12 @@ import java.util.*;
  * file.
  *
  * @author David Czarnecki, jawe
- * @version $Id: EnhancedEmoticonsPlugin.java,v 1.1 2005-01-29 19:31:16 czarneckid Exp $
+ * @version $Id: EnhancedEmoticonsPlugin.java,v 1.2 2005-03-08 15:18:00 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class EnhancedEmoticonsPlugin implements BlojsomPlugin {
+
+    private static final String BLOJSOM_PLUGIN_METADATA_EMOTICONS_DISABLED = "emoticons-disabled";
 
     private static final String EMOTICONS_CONFIGURATION_IP = "plugin-emoticons";
 
@@ -192,14 +194,16 @@ public class EnhancedEmoticonsPlugin implements BlojsomPlugin {
         String blogBaseUrl = user.getBlog().getBlogBaseURL();
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            String updatedDescription = entry.getDescription();
-            Iterator iter = availableEmoticons.iterator();
-            while (iter.hasNext()) {
-                String emoticon = (String) iter.next();
-                updatedDescription = replaceEmoticon(emoticonsForBlog,
-                        updatedDescription, emoticon, blogBaseUrl);
+            if (!BlojsomUtils.checkMapForKey(entry.getMetaData(), BLOJSOM_PLUGIN_METADATA_EMOTICONS_DISABLED)) {
+                String updatedDescription = entry.getDescription();
+                Iterator iter = availableEmoticons.iterator();
+                while (iter.hasNext()) {
+                    String emoticon = (String) iter.next();
+                    updatedDescription = replaceEmoticon(emoticonsForBlog,
+                            updatedDescription, emoticon, blogBaseUrl);
+                }
+                entry.setDescription(updatedDescription);
             }
-            entry.setDescription(updatedDescription);
         }
         return entries;
     }
