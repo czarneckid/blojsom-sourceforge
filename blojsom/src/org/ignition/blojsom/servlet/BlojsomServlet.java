@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.61 2003-03-29 17:54:45 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.62 2003-04-01 00:55:11 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -280,6 +280,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         configureFlavors(servletConfig);
         configureDispatchers(servletConfig);
         configurePlugins(servletConfig);
+
+        _logger.debug("blojsom: All Your Blog Are Belong To Us");
     }
 
     /**
