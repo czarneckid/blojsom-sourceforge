@@ -6,7 +6,7 @@
 <project name="blojsom" default="compile" basedir=".">
 
     <property name="name" value="blojsom"/>
-    <property name="version" value="1.9"/>
+    <property name="version" value="1.9.1"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
     <property name="war.file" value="${distro.dir}/${name}.war"/>
