@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.16 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.17 2004-02-18 00:56:59 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -414,6 +414,20 @@ public class Blog implements BlojsomConstants {
      */
     public String[] getBlogDefaultCategoryMappings() {
         return _blogDefaultCategoryMappings;
+    }
+
+    /**
+     * Return the list of categories that should be mapped to the default category '/' as a String
+     *
+     * @since blojsom 2.12
+     * @return List of categories
+     */
+    public String getBlogDefaultCategoryMappingsAsString() {
+        if (_blogDefaultCategoryMappings == null) {
+            return "";
+        }
+
+        return BlojsomUtils.arrayOfStringsToString(_blogDefaultCategoryMappings);
     }
 
     /**
