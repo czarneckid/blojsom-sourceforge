@@ -56,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.24 2003-06-11 02:39:41 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.25 2003-07-04 20:36:00 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -299,13 +299,13 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         File trackbackEntry = new File(trackbackFilename);
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), _blogFileEncoding));
-            bw.write(trackback.getTitle());
+            bw.write(BlojsomUtils.nullToBlank(trackback.getTitle()).trim());
             bw.newLine();
-            bw.write(trackback.getExcerpt());
+            bw.write(BlojsomUtils.nullToBlank(trackback.getExcerpt()).trim());
             bw.newLine();
-            bw.write(trackback.getUrl());
+            bw.write(BlojsomUtils.nullToBlank(trackback.getUrl()).trim());
             bw.newLine();
-            bw.write(trackback.getBlogName());
+            bw.write(BlojsomUtils.nullToBlank(trackback.getBlogName()).trim());
             bw.newLine();
             bw.close();
             _logger.debug("Added trackback: " + trackbackFilename);

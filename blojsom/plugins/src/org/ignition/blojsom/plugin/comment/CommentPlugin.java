@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.35 2003-06-11 02:39:20 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.36 2003-07-04 20:35:51 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -456,13 +456,13 @@ public class CommentPlugin extends IPBanningPlugin {
             if (!commentEntry.exists()) {
                 try {
                     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), _blogFileEncoding));
-                    bw.write(comment.getAuthor());
+                    bw.write(BlojsomUtils.nullToBlank(comment.getAuthor()).trim());
                     bw.newLine();
-                    bw.write(comment.getAuthorEmail());
+                    bw.write(BlojsomUtils.nullToBlank(comment.getAuthorEmail()).trim());
                     bw.newLine();
-                    bw.write(comment.getAuthorURL());
+                    bw.write(BlojsomUtils.nullToBlank(comment.getAuthorURL()).trim());
                     bw.newLine();
-                    bw.write(comment.getComment());
+                    bw.write(BlojsomUtils.nullToBlank(comment.getComment()).trim());
                     bw.newLine();
                     bw.close();
                     _logger.debug("Added blog comment: " + commentFilename);
