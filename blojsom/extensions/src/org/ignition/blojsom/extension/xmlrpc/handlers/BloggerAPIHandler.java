@@ -55,7 +55,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.3 2003-04-13 22:52:16 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.4 2003-04-13 22:54:24 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -480,7 +480,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                         entrystruct.put(MEMBER_BLOGID, blogid);
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                        entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
+                        entrystruct.put(MEMBER_CONTENT, entry.getDescription());
                         entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
                         entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                         entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
