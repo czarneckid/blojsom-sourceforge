@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.44 2003-03-15 00:01:33 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.45 2003-03-15 17:35:18 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -388,7 +388,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         } else {
             // Check to see if we have requested entries by calendar
             if (year != null) {
-                entries = _blog.getEntriesForDate(category, year, month, day);
+                entries = _blog.getEntriesForDate(category, flavor, year, month, day);
                 // Check for the default category
             } else if (requestedCategory.equals("/")) {
                 entries = _blog.getEntriesAllCategories(flavor);
