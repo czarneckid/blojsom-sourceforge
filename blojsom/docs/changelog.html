@@ -15,6 +15,15 @@
 <p class="weblogtitle">blojsom 1.2</p>
 <p class="weblogdateline">Available from CVS</p>
 <p />
+General:<br />
+- The in-memory blog cache was removed entirely. blojsom does not cache any of the blog entries
+in memory anymore. It was the cause of much frustration trying to keep the in-memory cache
+synchronized with the filesystem. It was certainly a "feature" that was contrary to the original
+zen and philosophy of blosxom. <br />
+- <i>blog-reload-check</i> was removed from <i>blojsom.properties</i> as there is no longer any more caching of blog entries in-memory <br />
+- <i>blog-entries-display</i> was added to <i>blojsom.properties</i> to limit the number of blog entries displayed per category or aggregated when requesting the default or "/" category <br />
+- <i>blog-default-category-mapping</i> was added to <i>blojsom.properties</i> to specify all (by leaving the parameter blank) or a subset (see <a href="customization.html">customization</a>) of your blog directories that should be aggregated when requesting the default or "/" category
+<p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=684666&group_id=72754&atid=535586">BUG 684666</a>: whitespace lost due to readline<br />
 <p>
@@ -22,10 +31,10 @@ The following bugs were fixed:<br />
 <p class="weblogdateline">February 10, 2003</p>
 <p />
 General:<br />
-- blojsom configuration parameters were moved from <i>/WEB-INF/web.xml</i> to <i>/WEB-INF/blojsom.properties</i>. This allows other projects such as <a href="http://sourceforge.net/projects/blojsim">blojsim</a> to share blojsom configuration information.<br />
-- All of the blog-related functionality (e.g. building the blog entry map, looking up blog entries for a category, etc...) has been refactored into the Blog class. BlojsomServlet is now only concerned with processing requests for the blog.<br />
-- A per-category meta-data facility was added. This functionality is described in the <a href="customization.html">customization</a> documentation.<br /> 
-- Calendar-based navigation is now supported in blojsom. This means that users can add "year=YYYY", "month="MM", and "day=DD" parameters when requesting entries per blog category to see entries that fall under a particular date range. The year must be provided, but a user can narrow down the list of entries by providing a month and a day.<br />
+- blojsom configuration parameters were moved from <i>/WEB-INF/web.xml</i> to <i>/WEB-INF/blojsom.properties</i>. This allows other projects such as <a href="http://sourceforge.net/projects/blojsim">blojsim</a> to share blojsom configuration information<br />
+- All of the blog-related functionality (e.g. building the blog entry map, looking up blog entries for a category, etc...) has been refactored into the Blog class. BlojsomServlet is now only concerned with processing requests for the blog<br />
+- A per-category meta-data facility was added. This functionality is described in the <a href="customization.html">customization</a> documentation<br />
+- Calendar-based navigation is now supported in blojsom. This means that users can add "year=YYYY", "month="MM", and "day=DD" parameters when requesting entries per blog category to see entries that fall under a particular date range. The year must be provided, but a user can narrow down the list of entries by providing a month and a day<br />
 - Added "powered by" logo to the HTML flavor templates (JSP and Velocity)<br />
 <p />
 The following bugs were fixed:<br />

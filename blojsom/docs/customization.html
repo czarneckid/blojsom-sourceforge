@@ -16,6 +16,26 @@ ects/blojsom/">Sourceforge</a></p>
 
 <p>
 
+<p class="weblogtitle">blojsom default category ("/") mapping</p>
+<p />
+The default or "/" category has special meaning for blojsom. This category acts as an
+"aggregator" whereby it can be mapped to display entries from all or a subset of your blog
+categories.
+<p />
+By default, the <i>blog-default-category-mapping</i> property in <i>blojsom.properties</i>
+does not contain a value. This means that all your blog categories will be aggregated if someone
+requests the default or "/" category. blojsom will obey the <i>blog-directory-depth</i> parameter so that
+only blog directories will be aggregated to that directory depth. blojsom will also obey the
+<i>blog-entries-display</i> parameter so that only that number of blog entries will be aggregated for the
+individual blog directories.
+<p />
+The <i>blog-default-category-mapping</i> parameter takes a comma-separated list of blog directories underneath
+your <i>blog-home</i>. The following configuration for <i>blog-default-category-mapping</i> will aggregate
+<pre>
+blog-default-category-mapping=/java, /osx, /politics/voting
+</pre>
+the "/java", "/osx", and "/politics/voting" categories if someone requests the default or "/" category.
+
 <p class="weblogtitle">blojsom context</p>
 <p />
 There are a number of objects that get placed in a "Context" that is used by the particular dispatcher handling the template for a requested flavor. A concrete instance of GenericDispatcher will use this "Context" map and make the objects in it available, as appropriate, for the particular presentation technology. For example, in the JSPDispatcher, the objects from this "Context" are placed on the request using the setAttribute method.    
@@ -35,9 +55,12 @@ However, you as a user should be aware of the name and type of objects that are 
 		<td>"BLOJSOM_CATEGORIES"</td> <td>org.ignition.blojsom.blog.BlogCategory[]</td>
 	</tr>
 	<tr>
+	    <td>"BLOJSOM_REQUESTED_CATEGORY"</td> <td>org.ignition.blojsom.blog.BlogCategory</td>
+    </tr>
+	<tr>
 		<td>"BLOJSOM_SITE_URL"</td> <td>URL of the blojsom blog</td>
 	</tr>
-</table> 
+</table>
 
 <p class="weblogtitle">blojsom category meta-data</p>
 <p />
