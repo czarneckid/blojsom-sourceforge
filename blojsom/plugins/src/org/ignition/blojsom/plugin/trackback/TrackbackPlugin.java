@@ -137,17 +137,27 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
+        String category = httpServletRequest.getPathInfo();
+        if (category == null) {
+            category = "/";
+        } else if (!category.endsWith("/")) {
+            category += "/";
+        }
+        String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
         String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
         String title = httpServletRequest.getParameter(TRACKBACK_TITLE_PARAM);
         String excerpt = httpServletRequest.getParameter(TRACKBACK_EXCERPT_PARAM);
-        String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
         String blogName = httpServletRequest.getParameter(TRACKBACK_BLOG_NAME_PARAM);
         String tb = httpServletRequest.getParameter(TRACKBACK_PARAM);
 
-        if ((url != null) && (!"".equals(url)) && (category != null) && (!"".equals(category))
-                && (permalink != null) && (!"".equals(permalink))
-                && (tb != null) && ("y".equalsIgnoreCase(tb))) {
+        if ((permalink != null) && (!"".equals(permalink)) && (tb != null) && ("y".equalsIgnoreCase(tb))) {
+            if ((url == null) || ("".equals(url.trim()))) {
+                context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
+                context.put(BLOJSOM_TRACKBACK_MESSAGE, "No url parameter for trackback. url must be specified.");
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
+                return entries;
+            }
+
             if (title == null || "".equals(title)) {
                 title = url;
             }
@@ -155,7 +165,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
                 excerpt = "";
             } else {
                 if (excerpt.length() >= 255) {
-                    excerpt = excerpt.substring(0,252);
+                    excerpt = excerpt.substring(0, 252);
                     excerpt += "...";
                 }
             }
@@ -187,7 +197,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * @param blogName
      */
     private synchronized Integer addTrackback(Map context, String category, String permalink, String title,
-                                             String excerpt, String url, String blogName) {
+                                              String excerpt, String url, String blogName) {
         Trackback trackback = new Trackback();
         trackback.setTitle(title);
         trackback.setExcerpt(excerpt);
@@ -209,7 +219,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
         if (!blogEntry.exists()) {
             _logger.error("Trying to create trackback for invalid blog entry: " + permalink);
             context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trying to create trackback for invalid permalink");
-            return new Integer(2);
+            return new Integer(1);
         }
         trackbackDirectory.append(_blogTrackbackDirectory);
         trackbackDirectory.append(File.separator);
@@ -221,7 +231,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
             if (!trackbackDir.mkdirs()) {
                 _logger.error("Could not create directory for trackbacks: " + trackbackDirectory);
                 context.put(BLOJSOM_TRACKBACK_MESSAGE, "Could not create directory for trackbacks");
-                return new Integer(3);
+                return new Integer(1);
             }
         }
 
@@ -241,7 +251,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
         } catch (IOException e) {
             _logger.error(e);
             context.put(BLOJSOM_TRACKBACK_MESSAGE, "I/O error on trackback write.");
-            return new Integer(4);
+            return new Integer(1);
         }
 
         return new Integer(0);
