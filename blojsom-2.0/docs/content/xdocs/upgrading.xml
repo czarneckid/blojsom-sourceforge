@@ -41,7 +41,7 @@
                         </pre>
                     </p>
                     <p>
-                        3. Add the following to your <code>/WEB-INF/(user-id)/plugin.properties</code> file if you
+                        3. Add the following to your <code>/WEB-INF/(user-id)/flavor.properties</code> file if you
                         would like to enable blog administration for an individual user.
                         <pre>
                             admin=admin.vm, text/html;charset=UTF-8
