@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.42 2003-03-27 22:41:40 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.43 2003-03-28 19:06:52 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -194,7 +194,18 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseCommaList(String commaList) {
-        StringTokenizer tokenizer = new StringTokenizer(commaList, ", ");
+        return  parseDelimitedList(commaList, ", ");
+    }
+
+    /**
+     * Parse a comma-separated list of values; also parses over internal spaces
+     *
+     * @param commaList Comma-separated list
+     * @param delimiter Field Delimiter
+     * @return Individual strings from the comma-separated list
+     */
+    public static String[] parseDelimitedList(String commaList, String delimiter) {
+        StringTokenizer tokenizer = new StringTokenizer(commaList,delimiter);
         ArrayList list = new ArrayList();
         while (tokenizer.hasMoreTokens()) {
             list.add(tokenizer.nextToken());
@@ -204,6 +215,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
         return (String[]) list.toArray(new String[list.size()]);
     }
+
 
     /**
      * Convert the request parameters to a string
