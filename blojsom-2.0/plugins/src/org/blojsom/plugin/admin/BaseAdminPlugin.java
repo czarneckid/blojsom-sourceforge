@@ -56,18 +56,24 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.5 2003-12-20 18:11:14 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.6 2003-12-23 03:15:37 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
 
     protected static final Log _logger = LogFactory.getLog(BaseAdminPlugin.class);
 
+    // Constants
     protected static final String BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY = "org.blojsom.plugin.admin.Authenticated";
     protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM = "username";
     protected static final String BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM = "password";
     protected static final String ACTION_PARAM = "action";
+    protected static final String BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT = "BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT";
+
+    // Pages
     protected static final String ADMIN_ADMINISTRATION_PAGE = "/org/blojsom/plugin/admin/templates/admin";
     protected static final String ADMIN_LOGIN_PAGE = "/org/blojsom/plugin/admin/templates/admin-login";
+
+    // Actions
     protected static final String LOGIN_ACTION = "login";
     protected static final String LOGOUT_ACTION = "logout";
     protected static final String PAGE_ACTION = "page";
@@ -96,10 +102,11 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
      *
      * @param httpServletRequest Request
      * @param httpServletResponse Response
+     * @param context Context
      * @param blog Blog information
      * @return <code>true</code> if the user is authenticated, <code>false</code> otherwise
      */
-    protected boolean authenticateUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog) {
+    protected boolean authenticateUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, Blog blog) {
         BlojsomUtils.setNoCacheControlHeaders(httpServletResponse);
         HttpSession httpSession = httpServletRequest.getSession();
 
@@ -115,7 +122,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
             String password = httpServletRequest.getParameter(BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM);
 
             if (username == null || password == null || "".equals(username) || "".equals(password)) {
-                _logger.debug("No username/password provided or username/password was empty.");
+                _logger.debug("No username/password provided or username/password was empty");
                 return false;
             }
 
@@ -126,11 +133,22 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
                 return true;
             } else {
                 _logger.debug("Failed authentication for username: " + username);
+                addOperationResultMessage(context, "Failed authentication for username: " + username);
                 return false;
             }
         } else {
             return ((Boolean) httpSession.getAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
+    }
+
+    /**
+     * Adds a message to the context under the <code>BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT</code> key
+     *
+     * @param context Context
+     * @param message Message to add
+     */
+    protected void addOperationResultMessage(Map context, String message) {
+        context.put(BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT, message);
     }
 
     /**
@@ -145,7 +163,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
         } else {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
