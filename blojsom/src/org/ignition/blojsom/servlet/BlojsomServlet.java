@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.45 2003-03-15 17:35:18 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.46 2003-03-16 03:21:04 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -361,10 +361,14 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 month = httpServletRequest.getParameter(MONTH_PARAM);
                 if (month == null) {
                     month = "";
+                } else if (month.length() < 2) {
+                    month = "0" + month;
                 }
                 day = httpServletRequest.getParameter(DAY_PARAM);
                 if (day == null) {
                     day = "";
+                } else if (day.length() < 2) {
+                    day = "0" + day;
                 }
             }
             _logger.debug("Calendar-based request for: " + requestedCategory + year + month + day);

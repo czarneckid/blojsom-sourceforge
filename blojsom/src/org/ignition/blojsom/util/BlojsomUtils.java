@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.27 2003-03-13 02:14:11 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.28 2003-03-16 03:21:11 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -167,7 +167,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return File filter appropriate for filtering out a single file extension
      */
     public static FileFilter getExtensionFilter(final String extension) {
-        return getExtensionsFilter(new String[] {extension});
+        return getExtensionsFilter(new String[]{extension});
     }
 
     /**
@@ -307,18 +307,34 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Return a string of "YYYYMD"
+     * Return a string of "YYYYMMDD"
      *
      * @param date Date from which to extract "key"
-     * @return String of "YYYYMD"
+     * @return String of "YYYYMMDD"
      */
     public static String getDateKey(Date date) {
         StringBuffer value = new StringBuffer();
         Calendar calendar = Calendar.getInstance();
+        long l = 0;
+
         calendar.setTime(date);
         value.append(calendar.get(Calendar.YEAR));
-        value.append(calendar.get(Calendar.MONTH) + 1);
-        value.append(calendar.get(Calendar.DAY_OF_MONTH));
+        // month and date need to be 2 digits; otherwise it is
+        // impossible to distinguish between e.g. November (11)
+        // and January (1) when using the date as a prefix
+        l = calendar.get(Calendar.MONTH) + 1;
+        if (l < 10) {
+            value.append("0");
+        }
+        value.append(l);
+        l = calendar.get(Calendar.DAY_OF_MONTH);
+        if (l < 10) {
+            value.append("0");
+        }
+        value.append(l);
+        // highest possible values above are 12 and 31, so no need to
+        // be generic & handle arbitrary-length digits
+
         return value.toString();
     }
 
@@ -509,7 +525,6 @@ public class BlojsomUtils implements BlojsomConstants {
             e.printStackTrace();
             return null;
         }
-
 
     }
 
