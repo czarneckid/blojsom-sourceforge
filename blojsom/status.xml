@@ -21,6 +21,12 @@
     </todo>
 
     <changes>
+         <release version="1.9.4" date="July 6, 2003">
+            <action dev="intabulas=" type="add" context="code">
+                Added  the ability to disable the setting of the LastModified and ETag header by sending
+                <i>lastmodified=true/false</i> on the request
+            </action>
+        </release>
         <!-- Add new releases here -->
         <release version="1.9.3" date="July 6, 2003">
             <action dev="czarneckid" type="remove" context="General">
@@ -100,10 +106,10 @@
                 <tt>boolean isIPBanned(String ipAddress)</tt> method. Check the
                 <a href="upgrading.html">upgrading</a> instructions for information on how to ban IP addresses
             </action>
-            <action dev="czarneckid" type="update" context="Plugin">
+            <action dev="intabulas" type="update" context="Plugin">
                 Textile code removed and replaced with textile4j.jar
             </action>
-            <action dev="czarneckid" type="update" context="Plugin">
+            <action dev="intabulas" type="update" context="Plugin">
                 The Textile plugin had a bug when processing qtag's. This was found during the
                 <a href="http://sf.net/projects/textile4j">textile4j</a> breakout
             </action>
@@ -121,11 +127,11 @@
         </release>
 
         <release version="1.9" date="June 2, 2003">
-            <action dev="czarneckid" type="add" context="General">
+            <action dev="intabulas" type="add" context="General">
                 New
                 <i>blacklist.filter</i> file contains regular expressions for use by extensions and plugins to filter content
             </action>
-            <action dev="czarneckid" type="update" context="Core">
+            <action dev="intabulas" type="update" context="Core">
                 An ETag header is now generated along with the Last-Modified header
             </action>
             <action dev="czarneckid" type="add" context="General">
@@ -218,7 +224,7 @@
                 key,
                 <tt>blog-entry-author</tt>
             </action>
-            <action dev="czarneckid" type="add" context="Extension">
+            <action dev="intabulas" type="add" context="Extension">
                 Implementation of the Blogger API
                 <tt>getUserInfo()</tt> method to allow services like
                 <a href="http://www.audblog.com">AudBlog</a> to work

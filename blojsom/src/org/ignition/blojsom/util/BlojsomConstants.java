@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.65 2003-07-11 00:54:07 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.66 2003-07-11 18:45:52 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -97,7 +97,7 @@ public interface BlojsomConstants {
      * to generate trackback auto-discovery fragments.
      * (example: on the request for the JSPDispatcher)
      */
-    public static final String BLOJSOM_PERMALINK= "BLOJSOM_PERMALINK";
+    public static final String BLOJSOM_PERMALINK = "BLOJSOM_PERMALINK";
 
     /**
      * Key under which the requested category will be placed
@@ -171,6 +171,12 @@ public interface BlojsomConstants {
      * Request parameter value for the archive page
      */
     public static final String PAGE_PARAM_ARCHIVE = "archive";
+
+
+    /**
+     * Request parameter value for not toggling LastModfied and ETag fromgetting generated
+     */
+    public static final String OVERRIDE_LASTMODIFIED_PARAM = "lastmodified";
 
 
     /**

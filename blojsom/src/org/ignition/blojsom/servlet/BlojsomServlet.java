@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.81 2003-07-10 03:07:10 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.82 2003-07-11 18:45:55 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -434,9 +434,15 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         String blogUTCDate = null;
         Date blogDateObject = null;
 
+        boolean sendLastModified = true;
+        if (httpServletRequest.getParameter(OVERRIDE_LASTMODIFIED_PARAM) != null) {
+            sendLastModified = Boolean.getBoolean(httpServletRequest.getParameter(OVERRIDE_LASTMODIFIED_PARAM));
+        }
+
+
         // If we have entries, construct a last modified on the most recent entry
         // Additionally, set the blog date
-        if ((entries != null) && (entries.length > 0)) {
+        if ((entries != null) && (entries.length > 0) && sendLastModified) {
             BlogEntry _entry = entries[0];
             long _lastmodified;
 
@@ -467,15 +473,18 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             blogDateObject = entries[0].getDate();
             blogUTCDate = BlojsomUtils.getUTCDate(entries[0].getDate());
         } else {
-            _logger.debug("Adding last-modified header for current date");
-            Date today = new Date();
-            blogdate = BlojsomUtils.getRFC822Date(today);
-            blogISO8601Date = BlojsomUtils.getISO8601Date(today);
-            blogUTCDate = BlojsomUtils.getUTCDate(today);
-            blogDateObject = today;
-            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, today.getTime());
-            // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
-            httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
+            // If they have overriden  by  sending lastmodified=fasle then dont set the  header
+            if (sendLastModified) {
+                _logger.debug("Adding last-modified header for current date");
+                Date today = new Date();
+                blogdate = BlojsomUtils.getRFC822Date(today);
+                blogISO8601Date = BlojsomUtils.getISO8601Date(today);
+                blogUTCDate = BlojsomUtils.getUTCDate(today);
+                blogDateObject = today;
+                httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, today.getTime());
+                // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
+                httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
+            }
         }
 
         context.put(BLOJSOM_DATE, blogdate);
