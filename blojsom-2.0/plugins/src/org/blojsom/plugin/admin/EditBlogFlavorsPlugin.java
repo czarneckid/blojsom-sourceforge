@@ -49,16 +49,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * EditBlogFlavorsPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.13 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.14 2005-01-30 17:39:34 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -112,6 +109,35 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * Add flavor information to the context
+     *
+     * @param blogUser {@link BlogUser}
+     * @param context Context
+     */
+    protected void addFlavorInformationToContext(BlogUser blogUser, Map context) {
+
+        // Put the available templates in the context for the edit flavors template
+        File templatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
+                blogUser.getId() + _blojsomConfiguration.getTemplatesDirectory());
+        _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
+
+        File[] templates = templatesDirectory.listFiles();
+        ArrayList templatesList = new ArrayList(templates.length);
+        for (int i = 0; i < templates.length; i++) {
+            File template = templates[i];
+            if (template.isFile()) {
+                templatesList.add(template.getName());
+                _logger.debug("Added template: " + template.getName());
+            }
+        }
+
+        // Put the available flavors in the context for the edit flavors template
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS, new TreeMap(blogUser.getFlavors()));
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES, templatesList);
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING, new TreeMap(blogUser.getFlavorToTemplate()));
+    }
+
+    /**
      * Process the blog entries
      *
      * @param httpServletRequest  Request
@@ -129,9 +155,6 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             return entries;
         }
 
-        // Put the available flavors in the context for the edit flavors template
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS, user.getFlavors());
-
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_FLAVORS_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
@@ -140,23 +163,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             return entries;
         }
 
-        // Put the available templates in the context for the edit flavors template
-        File templatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
-                user.getId() + _blojsomConfiguration.getTemplatesDirectory());
-        _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
-
-        File[] templates = templatesDirectory.listFiles();
-        ArrayList templatesList = new ArrayList(templates.length);
-        for (int i = 0; i < templates.length; i++) {
-            File template = templates[i];
-            if (template.isFile()) {
-                templatesList.add(template.getName());
-                _logger.debug("Added template: " + template.getName());
-            }
-        }
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES, templatesList);
-
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING, user.getFlavorToTemplate());
+        addFlavorInformationToContext(user, context);
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
@@ -174,6 +181,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
                 addOperationResultMessage(context, "No flavor name specified");
+
                 return entries;
             }
 
@@ -181,6 +189,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 _logger.debug("No blog template specified");
                 addOperationResultMessage(context, "No blog template specified");
+
                 return entries;
             }
 
@@ -197,7 +206,6 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             }
 
             Map flavorMapForUser = user.getFlavors();
-
             Map flavorTemplatesForUser = user.getFlavorToTemplate();
             Map flavorContentTypesForUser = user.getFlavorToContentType();
 
@@ -210,6 +218,8 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
                 writeFlavorConfiguration(user);
                 addOperationResultMessage(context, "Successfully added flavor: " + flavorName + " using template: " + blogTemplate + " with content type: " + flavorMimeType + ";" + flavorCharacterSet);
                 _logger.debug("Successfully wrote flavor configuration file for user: " + user.getId());
+
+                addFlavorInformationToContext(user, context);
             } catch (IOException e) {
                 addOperationResultMessage(context, "Unable to update flavor configuration");
                 _logger.error(e);
@@ -244,6 +254,8 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
                 writeFlavorConfiguration(user);
                 _logger.debug("Successfully wrote flavor configuration file for user: " + user.getId());
                 addOperationResultMessage(context, "Successfully deleted flavor: " + flavorName);
+
+                addFlavorInformationToContext(user, context);
             } catch (IOException e) {
                 addOperationResultMessage(context, "Unable to update flavor configuration deleting flavor");
                 _logger.error(e);
