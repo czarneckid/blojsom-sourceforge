@@ -9,6 +9,22 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.06 to blojsom 2.07</title>
+                <section>
+                    <title>Library changes</title>
+                    <p>
+                        1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
+                        blojsom-plugins-templates-*.jar in your
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.07.jar,
+                        blojsom-extensions-2.07.jar, blojsom-plugins-2.07.jar files, and blojsom-plugins-templates-2.07.jar.
+                    </p>
+                    <p>
+                        2. Replace the sandler-0.2.jar file with the sandler-0.4.jar file in your
+                        <code>/WEB-INF/lib</code> directory.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.05 to blojsom 2.06</title>
                 <section>
                     <title>Library changes</title>
