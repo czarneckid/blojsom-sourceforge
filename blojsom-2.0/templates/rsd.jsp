@@ -5,7 +5,7 @@
 
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
-    BlogUser blogUser = (BlogUser) request.getAttribute(BlojsomConstants.BLOJSOM_USER);
+    String blogUser = (String) request.getAttribute(BlojsomConstants.BLOJSOM_USER);
 %>
 
 <rsd version="1.0" xmlns="http://archipelago.phrasewise.com/rsd">
@@ -14,8 +14,8 @@
         <engineLink>http://blojsom.sf.net</engineLink>
         <homePageLink><%= blogInformation.getBlogURL() %></homePageLink>
         <apis>
-            <api name="blogger" preferred="true" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser.getId() %>" blogID=""/>
-            <api name="metaWeblog" preferred="false" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser.getId() %>" blogID=""/>
+            <api name="blogger" preferred="true" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser %>" blogID=""/>
+            <api name="metaWeblog" preferred="false" apiLink="<%= blogInformation.getBlogBaseURL() %>/xmlrpc/<%= blogUser %>" blogID=""/>
         </apis>
     </service>
 </rsd>

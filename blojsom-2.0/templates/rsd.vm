@@ -6,8 +6,8 @@
         <engineLink>http://blojsom.sf.net</engineLink>
         <homePageLink>$BLOJSOM_BLOG.getBlogURL()</homePageLink>
         <apis>
-            <api name="blogger" preferred="true" apiLink="$BLOJSOM_SITE_URL/xmlrpc/$BLOJSOM_USER.getId()" blogID=""/>
-            <api name="metaWeblog" preferred="false" apiLink="$BLOJSOM_SITE_URL/xmlrpc/$BLOJSOM_USER.getId()" blogID=""/>
+            <api name="blogger" preferred="true" apiLink="$BLOJSOM_SITE_URL/xmlrpc/$BLOJSOM_USER" blogID=""/>
+            <api name="metaWeblog" preferred="false" apiLink="$BLOJSOM_SITE_URL/xmlrpc/$BLOJSOM_USER" blogID=""/>
         </apis>
     </service>
 </rsd>
