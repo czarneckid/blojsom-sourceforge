@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.21 2004-04-08 01:36:49 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.22 2004-04-16 03:47:35 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1299,5 +1299,27 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return map.containsKey(key);
+    }
+
+    /**
+     * Return the number of days between two dates
+     *
+     * @param startDate Start date
+     * @param endDate End date
+     * @return Number of days between two dates which may be 0 if either of the dates if <code>null</code>
+     * @since blojsom 2.14
+     */
+    public static int daysBetweenDates(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return 0;
+        }
+
+        Calendar calendarStartDate = Calendar.getInstance();
+        calendarStartDate.setTime(startDate);
+        Calendar calendarEndDate = Calendar.getInstance();
+        calendarEndDate.setTime(endDate);
+
+        long timeDifference = Math.abs(calendarStartDate.getTimeInMillis() - calendarEndDate.getTimeInMillis());
+        return (int) timeDifference / (24*60*60*1000);
     }
 }
