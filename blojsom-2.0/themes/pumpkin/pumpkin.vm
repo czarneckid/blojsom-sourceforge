@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--
-
-  Template based on the great http://www.cocoadevcentral.com/ template. I could not find exact authorship to quote
-
--->
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
@@ -118,7 +112,7 @@ Categories
 </div>
 
 <div class="side">
-
+<p>
 #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
     <a href="$blogCategory.getCategoryURL()">&raquo; #if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</a><br />
 #end</p>
@@ -153,7 +147,7 @@ src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" height="31" width="88" alt="Power
 
 <!-- Creative Commons License -->
 <a href="http://creativecommons.org/licenses/by-nc-sa/1.0"><img alt="Creative Commons
-License" src="http://creativecommons.org/images/public/somerights.gif" border="0" align="right" /></a><br clear="all" /><br/>
+License" src="http://creativecommons.org/images/public/somerights.gif" border="0" align="right" /></a><br clear="all" /><br />
 This work is licensed under a
 <a href="http://creativecommons.org/licenses/by-nc-sa/1.0">Creative Commons License</a>.
 <!-- /Creative Commons License -->
