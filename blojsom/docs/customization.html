@@ -43,7 +43,7 @@ There are a number of objects that get placed in a "Context" that is used by the
 However, you as a user should be aware of the name and type of objects that are available in the "Context". You can see examples of how they are accessed by looking at the html.jsp (JSP page for the html flavor) and html.vm (Velocity template for the html flavor).
 
 <p />
-<table>
+<table border="1">
 	<th>Key</th>	<th>Object type</th>
 	<tr>
 		<td>"BLOJSOM_BLOG"</td> <td>org.ignition.blojsom.blog.Blog</td>
@@ -59,6 +59,9 @@ However, you as a user should be aware of the name and type of objects that are 
     </tr>
 	<tr>
 		<td>"BLOJSOM_SITE_URL"</td> <td>URL of the blojsom blog</td>
+	</tr>
+	<tr>
+		<td>"BLOJSOM_DATE"</td> <td>RFC 822 formatted date of either the most recent entry or the current date if no entries were retrieved for the requests</td>
 	</tr>
 </table>
 
