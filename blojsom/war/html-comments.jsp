@@ -114,6 +114,7 @@
          String commentAuthor = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR);
          String commentAuthorEmail = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL);
          String commentAuthorURL = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL);
+         String commentRememberMe = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME);
          String initialAuthor = (null == commentAuthor) ? "" : commentAuthor;
          String initialAuthorEmail = (null == commentAuthorEmail) ? "" : commentAuthorEmail;
          String initialAuthorURL = (null == commentAuthorURL) ? "" : commentAuthorURL;
@@ -140,7 +141,7 @@
                 <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
             </tr>
             <tr>
-                <td>Remember me?</td> <td><input type="checkbox" name="remember"/></td>
+                <td>Remember me?</td> <td><input type="checkbox" name="remember" <% if (commentRememberMe != null && !"".equals(commentRememberMe)) { %>CHECKED<% } %>/></td>
             </tr>
             <p />
             <tr>
