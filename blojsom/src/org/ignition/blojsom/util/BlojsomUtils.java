@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.56 2003-05-31 18:38:10 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.57 2003-07-08 02:29:15 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -83,6 +83,17 @@ public class BlojsomUtils implements BlojsomConstants {
     private static final ThreadLocal ISO_8601_DATE_FORMAT_OBJECT = new ThreadLocal() {
         protected Object initialValue() {
             return new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+        }
+    };
+
+    /**
+     * UTC format
+     * SimpleDateFormats are not threadsafe, but we should not need more than one per
+     * thread.
+     */
+    private static final ThreadLocal UTC_DATE_FORMAT_OBJECT = new ThreadLocal() {
+        protected Object initialValue() {
+            return new SimpleDateFormat(UTC_DATE_FORMAT);
         }
     };
 
@@ -158,6 +169,17 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String getISO8601Date(Date date) {
         return ((SimpleDateFormat) ISO_8601_DATE_FORMAT_OBJECT.get()).format(date);
+    }
+
+    /**
+     * Return a date in UTC style
+     *
+     * @param date Date
+     * @return Date formatted as ISO 8601
+     * @since blojsom 1.9.4
+     */
+    public static String getUTCDate(Date date) {
+        return ((SimpleDateFormat) UTC_DATE_FORMAT_OBJECT.get()).format(date);
     }
 
     /**
