@@ -68,15 +68,15 @@
                     <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
                 </tr>
                 <tr>
-                    <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
+                    <td>Blog file extenstions</td> <td><input name="blog-file-extensions" type="text" size="50" value="$BLOJSOM_BLOG.getBlogProperty("blog-file-extensions")"/></td>
                 </tr>
                 <tr>
-                    <td>Blog file extenstions</td> <td><input name="blog-file-extensions" type="text" size="50" value="$BLOJSOM_BLOG.getBlogProperty("blog-file-extensions")"/></td>
+                    <td>Blog default flavor</td> <td><input name="blog-default-flavor" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDefaultFlavor()"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <center>
-                            <input type="submit" name="submit" value="Edit"/>
+                            <input type="submit" name="submit" value="Edit blog properties"/>
                             <input type="reset" name="reset" value="Reset"/>
                         </center>
                     </td>

@@ -39,23 +39,26 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.7 2003-11-20 03:01:12 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.8 2003-12-05 04:10:42 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -135,6 +138,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogFileEncoding(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-file-extensions", httpServletRequest);
             blog.setBlogFileExtensions(blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue("blog-default-flavor", httpServletRequest);
+            blog.setBlogDefaultFlavor(blogPropertyValue);
 
             // Set the blog default category mappings
             flavorMap = user.getFlavors();
