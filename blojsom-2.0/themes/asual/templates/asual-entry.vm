@@ -1,4 +1,4 @@
-#set ($categoryForEntry = $entry.getBlogCategory().getCategory()) #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
+                        #friendlyPermalink($entry)
 
 						<div class="entry">
 
@@ -17,6 +17,7 @@
 								#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))<span>Trackbacks [<a href="$entryLink?page=trackback">$entry.getNumTrackbacks()</a>]</span>#end
 
 							</p>
+
 							<!-- Trackback Auto Discovery -->
 							#set( $totalEntries = $totalEntries + 1)
 							#if ($BLOJSOM_PERMALINK)
@@ -26,7 +27,21 @@
 									#set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
 								#end
 							#end
-
+                            <!--
+                                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                         xmlns:dc="http://purl.org/dc/elements/1.1/"
+                                         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+                                    <rdf:Description
+                                         rdf:about="$entryLink"
+                                         dc:identifier="$entryLink"
+                                         dc:title="$entry.getTitle()"
+                                         dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
+                                         dc:description="$blogDescription"
+                                         dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
+                                         dc:date="$entry.getISO8601Date()"
+                                         trackback:ping="$entryLink?tb=y" />
+                                 </rdf:RDF>
+                            -->
 						</div>
 
 
