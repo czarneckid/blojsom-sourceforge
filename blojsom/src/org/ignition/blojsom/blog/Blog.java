@@ -56,6 +56,8 @@ public class Blog implements BlojsomConstants {
     private String[] _blogFileExtensions;
     private String[] _blogPropertiesExtensions;
     private int _blogDepth;
+    private int _blogDisplayEntries;
+    private String[] _blogDefaultCategoryMappings;
 
     /**
      * Blog constructor
@@ -70,7 +72,7 @@ public class Blog implements BlojsomConstants {
      * @param blogDepth Number of directory-levels to traverse in looking for blog entries
      */
     public Blog(String blogHome, String blogName, String blogDescription, String blogURL, String blogLanguage,
-               String[] blogFileExtensions, String[] blogPropertiesExtensions, int blogDepth) {
+                String[] blogFileExtensions, String[] blogPropertiesExtensions, int blogDepth) {
         _blogHome = blogHome;
         _blogName = blogName;
         _blogDescription = blogDescription;
@@ -90,10 +92,8 @@ public class Blog implements BlojsomConstants {
      */
     private void recursiveCategoryBuilder(int blogDepth, String blogDirectory, ArrayList categoryList) {
         blogDepth++;
-        _logger.debug("Working in directory: " + blogDirectory + " at blog depth: " + blogDepth);
         if (_blogDepth != INFINITE_BLOG_DEPTH) {
             if (blogDepth == _blogDepth) {
-                _logger.debug("Reached maximum blog depth: " + blogDepth);
                 return;
             }
         }
@@ -116,7 +116,7 @@ public class Blog implements BlojsomConstants {
                 try {
                     dirProps.load(new java.io.FileInputStream(categoryPropertyFiles[i]));
                 } catch (IOException ex) {
-                    _logger.debug("Failed loading properties from: " + categoryPropertyFiles[i].toString());
+                    _logger.warn("Failed loading properties from: " + categoryPropertyFiles[i].toString());
                     continue;
                 }
             }
@@ -152,7 +152,8 @@ public class Blog implements BlojsomConstants {
      *
      * @param requestedCategory Requested category
      * @param permalink Permalink entry requested
-     * @return Blog entry array containing the single requested permalink entry (possibly null), or null if the permalink entry was not found
+     * @return Blog entry array containing the single requested permalink entry,
+     * or <code>null</code> if the permalink entry was not found
      */
     public BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
@@ -176,7 +177,8 @@ public class Blog implements BlojsomConstants {
      * Retrieve all of the entries for a requested category
      *
      * @param requestedCategory Requested category
-     * @return Blog entry array containing the list of blog entries for the requested category
+     * @return Blog entry array containing the list of blog entries for the requested category,
+     * or <code>null</code> if there are no entries for the category
      */
     public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory) {
         BlogEntry[] entryArray;
@@ -214,7 +216,8 @@ public class Blog implements BlojsomConstants {
      * @param year Year to retrieve entries for
      * @param month Month to retrieve entries for
      * @param day Day to retrieve entries for
-     * @return Blog entry array containing the list of blog entries for the given category, year, month, and day
+     * @return Blog entry array containing the list of blog entries for the given category, year, month, and day,
+     * or <code>null</code> if there are no entries
      */
     public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String year, String month, String day) {
         BlogEntry[] blogEntries = getEntriesForCategory(requestedCategory);
@@ -237,6 +240,72 @@ public class Blog implements BlojsomConstants {
             return null;
         } else {
             return (BlogEntry[]) updatedEntryList.toArray(new BlogEntry[updatedEntryList.size()]);
+        }
+    }
+
+    /**
+     * Convenience method to retrive entries for the categories, using the values set for
+     * the default category mapping and the maximum number of blog entries to retrieve
+     * from each category
+     *
+     * @return Blog entry array containing the list of blog entries for the categories
+     * or <code>null</code> if there are no entries
+     */
+    public BlogEntry[] getEntriesAllCategories() {
+        return getEntriesAllCategories(_blogDefaultCategoryMappings, _blogDisplayEntries);
+    }
+
+    /**
+     * Retrieve entries for all the categories in the blog. This method will the parameter
+     * <code>maxBlogEntries</code> to limit the entries it retrieves from each of the categories.
+     * Entries from the categories are sorted based on file time.
+     *
+     * @param categoryFilter If <code>null</code>, a list of all the categories is retrieved, otherwise only
+     * the categories in the list will be used to search for entries
+     * @param maxBlogEntries Maximum number of blog entries to retrieve from each category
+     * @return Blog entry array containing the list of blog entries for the categories
+     * or <code>null</code> if there are no entries
+     */
+    public BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int maxBlogEntries) {
+        BlogCategory[] blogCategories = null;
+
+        if (categoryFilter == null) {
+            blogCategories = getBlogCategories();
+        } else {
+            blogCategories = new BlogCategory[categoryFilter.length];
+            for (int i = 0; i < categoryFilter.length; i++) {
+                String category = BlojsomUtils.removeInitialSlash(categoryFilter[i]);
+                blogCategories[i] = new BlogCategory(category, _blogURL + category);
+            }
+        }
+
+        if (blogCategories == null) {
+            return null;
+        } else {
+            ArrayList blogEntries = new ArrayList();
+            for (int i = 0; i < blogCategories.length; i++) {
+                BlogCategory blogCategory = blogCategories[i];
+                BlogEntry[] entriesForCategory = getEntriesForCategory(blogCategory);
+                if (entriesForCategory != null) {
+                    Arrays.sort(entriesForCategory, BlojsomUtils.FILE_TIME_COMPARATOR);
+                    if (maxBlogEntries != -1) {
+                        int entryCounter = (maxBlogEntries >= entriesForCategory.length) ? entriesForCategory.length : maxBlogEntries;
+                        for (int j = 0; j < entryCounter; j++) {
+                            BlogEntry blogEntry = entriesForCategory[j];
+                            blogEntries.add(blogEntry);
+                        }
+                    } else {
+                        for (int j = 0; j < entriesForCategory.length; j++) {
+                            BlogEntry blogEntry = entriesForCategory[j];
+                            blogEntries.add(blogEntry);
+                        }
+                    }
+                }
+            }
+
+            BlogEntry[] entries = (BlogEntry[]) blogEntries.toArray(new BlogEntry[blogEntries.size()]);
+            Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
+            return entries;
         }
     }
 
@@ -364,6 +433,38 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogLanguage(String _blogLanguage) {
         this._blogLanguage = _blogLanguage;
+    }
+
+    /**
+     * Return the number of blog entries to retrieve from the individual categories
+     * @return Blog entries to retrieve from the individual categories
+     */
+    public int getBlogDisplayEntries() {
+        return _blogDisplayEntries;
+    }
+
+    /**
+     * Set the number of blog entries that should be retrieved from individual categories
+     * @param _blogDisplayEntries Number of blog entries that should be retrieved from individual categories
+     */
+    public void setBlogDisplayEntries(int _blogDisplayEntries) {
+        this._blogDisplayEntries = _blogDisplayEntries;
+    }
+
+    /**
+     * Return the list of categories that should be mapped to the default category '/'
+     * @return List of categories
+     */
+    public String[] getBlogDefaultCategoryMappings() {
+        return _blogDefaultCategoryMappings;
+    }
+
+    /**
+     * Set the list of categories that should be mapped to the default category '/'
+     * @param _blogDefaultCategoryMappings List of categories
+     */
+    public void setBlogDefaultCategoryMappings(String[] _blogDefaultCategoryMappings) {
+        this._blogDefaultCategoryMappings = _blogDefaultCategoryMappings;
     }
 
     /**
