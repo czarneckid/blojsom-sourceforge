@@ -12,6 +12,10 @@
                 Fixed issue where Conditional GET plugin did not take latest entry comments into account when
                 generating information to check to see if it should or should not send a 304 response.
             </action>
+
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="887739">
+                Fixed issue where Abstract Calendar plugin would incorrectly rollover dates in certain situations.
+            </action>
         </release>
         
         <release version="2.10" date="January 26, 2004">
