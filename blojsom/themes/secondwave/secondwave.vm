@@ -31,7 +31,7 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 #end</p>
 #set( $totalEntries = 0)
 
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table class="mastertable">
 <tr>
 <td class="tablemaxwidth">
 #foreach ($entry in $BLOJSOM_ENTRIES)
@@ -54,7 +54,8 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 <td valign="top" align="center" >
 
 <div class="calendarbox">
-<table cellspacing="0" cellpadding="0" border="0" width="165"><tr><td colspan="7" class="calendarcaption"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+<table class="calendartable">
+<tr><td colspan="7" class="calendarcaption"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>

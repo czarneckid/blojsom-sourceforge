@@ -240,6 +240,7 @@ blockquote {
    margin-bottom: 0pt;
    margin-top: 1pt;
    padding-bottom: 0pt;
+   colspan: 7;
 }
 
 .calendarbox {
@@ -267,3 +268,19 @@ blockquote {
 .tablemaxpxwidth {
    padding:5px;
 }
+
+
+.mastertable {
+      cellspacing: 0px;
+      cellpadding: 0px
+      border:  0px;
+      width: 100%;
+}
+
+.calendartable {
+   cellspacing: 0px;
+   cellpadding: 0px;
+   border: 0px;
+   width: 165px;
+}
+

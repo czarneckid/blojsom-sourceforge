@@ -63,7 +63,7 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 	<h3><%= blogInformation.getBlogDescription() %></h3>
 
 	<p>Available Categories: <%= catString %></p>
-<table cellspacing="0" cellpadding="0" border="0">
+<table class="mastertable">
 <tr>
 <td class="tablemaxwidth">
 
@@ -100,7 +100,7 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 
 
 <div class="calendarbox">
-<table cellspacing="0" cellpadding="0" border="0" width="165"><tr><td colspan="7" class="calendarcaption"><b><%= blogCalendar.getCaption()%></b></td></tr>
+<table class="calendartable"><tr><td colspan="7" class="calendarcaption"><b><%= blogCalendar.getCaption()%></b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>
