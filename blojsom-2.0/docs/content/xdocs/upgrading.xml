@@ -24,7 +24,8 @@
                 <section>
                     <title>Properties file changes</title>
                     <p>
-                        1. Add the following to your <code>/WEB-INF/plugin.properties</code>.
+                        1. Add the following to your <code>/WEB-INF/plugin.properties</code> if you would like to
+                        enable web-based administration.
                         <pre>
                             admin=org.blojsom.plugin.admin.BaseAdminPlugin
                             edit-blog-properties=org.blojsom.plugin.admin.EditBlogPropertiesPlugin
