@@ -37,11 +37,11 @@ package org.blojsom.dispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.util.EnumerationIterator;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
@@ -64,7 +64,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.20 2005-03-11 17:39:51 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.21 2005-03-16 20:01:10 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -187,6 +187,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             Properties updatedVelocityProperties = (Properties) _velocityProperties.clone();
             updatedVelocityProperties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, getVelocityFileLoaderPath(user.getId()));
             velocityEngine.init(updatedVelocityProperties);
+            updatedVelocityProperties = null;
         } catch (Exception e) {
             _logger.error(e);
             return;
@@ -210,12 +211,18 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             // Try and look for the flavor page template for the individual user
             if (!velocityEngine.templateExists(flavorTemplateForPage)) {
                 _logger.error("Could not find flavor page template for user: " + flavorTemplateForPage);
+                responseWriter.flush();
+                velocityEngine = null;
+
                 return;
             } else {
                 try {
                     velocityEngine.mergeTemplate(flavorTemplateForPage, UTF8, velocityContext, responseWriter);
                 } catch (Exception e) {
                     _logger.error(e);
+                    responseWriter.flush();
+                    velocityEngine = null;
+
                     return;
                 }
             }
@@ -225,20 +232,27 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             // Otherwise, fallback and look for the flavor template for the individual user
             if (!velocityEngine.templateExists(flavorTemplate)) {
                 _logger.error("Could not find flavor template for user: " + flavorTemplate);
+                responseWriter.flush();
+                velocityEngine = null;
+
                 return;
             } else {
                 try {
                     velocityEngine.mergeTemplate(flavorTemplate, UTF8, velocityContext, responseWriter);
                 } catch (Exception e) {
                     _logger.error(e);
+                    responseWriter.flush();
+                    velocityEngine = null;
+
                     return;
                 }
             }
 
             _logger.debug("Dispatched to flavor template: " + flavorTemplate);
         }
-        
+
         responseWriter.flush();
+        velocityEngine = null;
     }
 
     /**
@@ -257,7 +271,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         /**
          * Create a new instance of the render tool
          *
-         * @param velocityEngine {@link VelocityEngine}
+         * @param velocityEngine  {@link VelocityEngine}
          * @param velocityContext {@link VelocityContext}
          */
         public BlojsomRenderTool(VelocityEngine velocityEngine, VelocityContext velocityContext) {
