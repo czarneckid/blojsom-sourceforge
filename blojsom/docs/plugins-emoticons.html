@@ -42,16 +42,20 @@ The emoticons plugin expands emoticon references such as :) or ;) to images like
 <p class="weblogtitle">installation and setup</a>
 <p />
 In your <i>plugin.properties</i> file, add the following line:
+<ul>
 <pre>
 emoticons=org.ignition.blojsom.plugin.EmoticonsPlugin
 </pre>
+</ul>
 
 You may then add "emoticons" to one of the flavor-based plugin chains. For example:
+<ul>
 <pre>
 html.blojsom-plugin-chain=emoticons
 </pre>
+</ul>
 
-The emoticons plugin has its own configuration file that is referenced in <i>web.xml</i>. For example:
+The emoticons plugin has its own configuration file, <i>emoticons.properties</i>, that is referenced in <i>web.xml</i>.
 <pre>
     &lt;init-param&gt;
         &lt;param-name&gt;plugin-emoticons&lt;/param-name&gt;
@@ -92,7 +96,7 @@ pack with blojsom. To use the Jive Emoticons image pack, unzip the <i>jive-emoti
 and move the images sub-directory over to your web application's root context directory.
 <p />
 To use the Jive Emoticons image pack, you must also include "Emoticon images copyright
-Jive Software. Used with permission."
+Jive Software. Used with permission." on your website.
 
 <p class="weblogtitle">usage and URL parameters</a>
 <p />
