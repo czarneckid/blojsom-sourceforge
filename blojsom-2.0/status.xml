@@ -53,6 +53,16 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
+                Updated Comment and Trackback plugins to allow for auto-expiration of comments and trackbacks
+                for entries after a certain number of days. These are configured through the following properties
+                for the comment and trackback plugins, respectively.
+                <pre>
+                    plugin-comment-days-expiration={some number of days}
+                    plugin-trackback-days-expiration={some number of days}
+                </pre>
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
                 Adding the blog property <code>blog-ping-urls</code> to your individual <code>blog.properties</code> file
                 allows you to set the list of URLs that should pre-populate the ping URLs box when adding or
                 editing blog entries. For example:
