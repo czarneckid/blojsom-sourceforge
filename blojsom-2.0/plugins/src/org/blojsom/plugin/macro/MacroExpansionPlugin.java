@@ -41,8 +41,8 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -60,7 +59,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.8 2004-06-09 03:12:53 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.9 2004-06-17 03:31:39 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
