@@ -54,7 +54,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.6 2003-08-23 04:03:12 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.7 2003-10-09 14:28:42 czarneckid Exp $
  */
 public class JSPDispatcher implements BlojsomDispatcher {
 
@@ -132,34 +132,42 @@ public class JSPDispatcher implements BlojsomDispatcher {
 
         // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
-            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplateForPage;
+            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
             if (_context.getResource(templateToLoad) != null) {
                 httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                 _logger.debug("Dispatched to flavor page template for user: " + templateToLoad);
+                httpServletResponse.getWriter().flush();
                 return;
             } else {
-                templateToLoad = _baseConfigurationDirectory + BlojsomUtils.removeInitialSlash(_templatesDirectory) + flavorTemplateForPage;
+                templateToLoad = _baseConfigurationDirectory + BlojsomUtils.removeInitialSlash(_templatesDirectory) + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template with page without including any user information
                     httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                     _logger.debug("Dispatched to flavor page template: " + templateToLoad);
+                    httpServletResponse.getWriter().flush();
                     return;
+                } else {
+                    _logger.error("Unable to dispatch to flavor page template: " + templateToLoad);
                 }
             }
         } else {
             // Otherwise, fallback and look for the flavor template for the individual user
-            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + flavorTemplate;
+            String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplate);
             if (_context.getResource(templateToLoad) != null) {
                 httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                 _logger.debug("Dispatched to flavor template for user: " + templateToLoad);
+                httpServletResponse.getWriter().flush();
                 return;
             } else {
-                templateToLoad = _baseConfigurationDirectory + BlojsomUtils.removeInitialSlash(_templatesDirectory) + flavorTemplate;
+                templateToLoad = _baseConfigurationDirectory + BlojsomUtils.removeInitialSlash(_templatesDirectory) + BlojsomUtils.removeInitialSlash(flavorTemplate);
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template without including any user information
                     httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                     _logger.debug("Dispatched to flavor template: " + templateToLoad);
+                    httpServletResponse.getWriter().flush();
                     return;
+                } else {
+                    _logger.error("Unable to dispatch to flavor template: " + templateToLoad);
                 }
             }
         }
