@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.18 2004-09-03 17:46:58 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.19 2004-12-27 18:49:10 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -290,7 +290,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         }
 
         // Create a list of files in the user's resource directory
-        Map resourceFilesMap = new HashMap();
+        Map resourceFilesMap = null;
         if (resourceDirectory.exists()) {
             File[] resourceFiles = resourceDirectory.listFiles();
 
@@ -304,6 +304,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         } else {
             resourceFilesMap = new HashMap();
         }
+        resourceFilesMap = new TreeMap(resourceFilesMap);
         context.put(PLUGIN_ADMIN_FILE_UPLOAD_FILES, resourceFilesMap);
 
         return entries;
