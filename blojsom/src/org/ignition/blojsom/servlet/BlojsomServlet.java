@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.46 2003-03-16 03:21:04 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.47 2003-03-18 03:23:04 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -283,6 +283,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      * @throws IOException If there is an error in IO
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        // Comment handling
         if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blog.areCommentsEnabled().booleanValue()) {
             String author = httpServletRequest.getParameter(AUTHOR_PARAM);
             String authorEmail = httpServletRequest.getParameter(AUTHOR_EMAIL_PARAM);
@@ -290,7 +291,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(CATEGORY_PARAM);
-            if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))) {
+            if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))
+                    && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
                 _blog.addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
             }
         }
