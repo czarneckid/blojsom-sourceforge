@@ -84,12 +84,16 @@ The <i>showmemore.properties</i> contains two configurable parameters:
 <ul>
 <pre>
 entry-length-cutoff=400
+entry-text-cutoff=&lt;more/&gt;
 show-me-more-text=More ...
 </pre>
 </ul>
 
 <i>entry-length-cutoff</i> defines the number of characters after which the link to view the
 full text of the entry will be placed.<br />
+<i>entry-text-cutoff</i> defines a special tag or string that you can use in your blog entry to
+define the place where the plugin should insert a link to view the full text of the entry. If
+this parameter is present and defined, it will override the <i>entry-length-cutoff</i> parameter.<br />
 <i>show-me-more-text</i> controls the text of the hyperlink to view the full text of the entry.
 
 <p class="weblogtitle">usage and URL parameters</a>
