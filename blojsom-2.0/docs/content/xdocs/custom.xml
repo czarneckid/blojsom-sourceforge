@@ -64,7 +64,7 @@
             <title>blojsom context</title>
             <p>
                 There are a number of objects that get placed in a "Context" that is used by the particular
-                dispatcher handling the template for a requested flavor. A concrete instance of GenericDispatcher
+                dispatcher handling the template for a requested flavor. A concrete instance of BlojsomDispatcher
                 will use this "Context" map and make the objects in it available, as appropriate, for the particular
                 presentation technology. For example, in the JSPDispatcher, the objects from this "Context" are placed
                 on the request using the setAttribute method.

@@ -10,7 +10,7 @@
             <section>
                 <title>Requirements</title>
                 <ul>
-                    <li>Servlet 2.3 compliant application server (e.g. Jakarta Tomcat 4.1.18)</li>
+                    <li>Servlet 2.3 compliant application server (e.g. Jakarta Tomcat 4.1.27)</li>
                     <li>Java 1.4.x runtime</li>
                 </ul>
             </section>
@@ -30,7 +30,7 @@
                 </p>
                 <p>
                     2. Unpack
-                    <em>blojsom.war</em> using Java's JAR program (jar xvf blojsom.war) into a directory
+                    <code>blojsom.war</code> using Java's JAR program (jar xvf blojsom.war) into a directory
                     under where the application server will be running blojsom.
                     Under Tomcat, this might be $TOMCAT_HOME/webapps/blojsom. In this case, the servlet context
                     for blojsom will be "blojsom".

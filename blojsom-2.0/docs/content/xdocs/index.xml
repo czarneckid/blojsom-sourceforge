@@ -46,7 +46,7 @@
                     </p>
                     <p>
                         Have another display technology you'd like to use? Simply extend the
-                        <link href="javadoc/org/blojsom/dispatcher/GenericDispatcher.html">GenericDispatcher</link>
+                        <link href="javadoc/org/blojsom/dispatcher/BlojsomDispatcher.html">BlojsomDispatcher</link>
                         interface and configure a mapping file so that blojsom knows how to map the template extension to the proper
                         dispatcher. That's it!
                     </p>
