@@ -64,6 +64,9 @@ Available categories:
             </tr>
             <p />
             <tr>
+                <td>Remember me?</td> <td><input type="checkbox" name="remember"/></td>
+            </tr>
+            <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
                 <input type="reset" name="reset" value="Reset"/>
                 </td>
