@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-04-19 02:44:57 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.3 2003-05-13 05:11:06 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -131,7 +131,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
 
         while (_matcher.find()) {
             String _token = _matcher.group();
-            String _macro = _token.substring(1, _token.length() - 1).toLowerCase();
+            String _macro = _token.substring(1, _token.length() - 1);
             if (_macros.containsKey(_macro)) {
                 content = BlojsomUtils.replace(content, _token, (String) _macros.get(_macro));
             }
