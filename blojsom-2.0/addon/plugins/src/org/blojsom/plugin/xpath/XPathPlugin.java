@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.5 2003-09-24 13:53:30 intabulas Exp $
+ * @version $Id: XPathPlugin.java,v 1.6 2003-09-24 22:23:02 intabulas Exp $
  */
 
 public class XPathPlugin implements BlojsomPlugin {
@@ -95,17 +95,21 @@ public class XPathPlugin implements BlojsomPlugin {
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
         if (xpath != null) {
-            _logger.info("Searching using: " + xpath);
+            _logger.info("Attempting with: " + xpath);
             BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
             List foundEntries = new ArrayList();
             JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
-            Iterator entryIterator = xpathcontext.iterate(xpath);
+            try {
+                Iterator entryIterator = xpathcontext.iterate(xpath);
 
-            while (entryIterator.hasNext()) {
-                Object obj = entryIterator.next();
-                _logger.info(obj.toString());
-                BlogEntry entry = (BlogEntry) obj;
-                foundEntries.add(entry);
+                while (entryIterator.hasNext()) {
+                    Object obj = entryIterator.next();
+                    _logger.info(obj.toString());
+                    BlogEntry entry = (BlogEntry) obj;
+                    foundEntries.add(entry);
+                }
+            } catch (Exception e) {
+                _logger.error(e.getLocalizedMessage(), e);
             }
 
             if (foundEntries.size() == 0) {

@@ -42,7 +42,7 @@ import org.blojsom.blog.BlogEntry;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: BlogEntryWrapper.java,v 1.2 2003-09-24 03:42:46 czarneckid Exp $
+ * @version $Id: BlogEntryWrapper.java,v 1.3 2003-09-24 22:22:40 intabulas Exp $
  */
 
 public class BlogEntryWrapper {
@@ -53,7 +53,7 @@ public class BlogEntryWrapper {
         _entries = entries;
     }
 
-    public BlogEntry[] getEntry() {
+    public BlogEntry[] getEntries() {
         return _entries;
     }
 
