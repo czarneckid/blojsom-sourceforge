@@ -45,6 +45,7 @@ import org.blojsom.plugin.email.EmailMessage;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +58,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.14
- * @version $Id: ForgottenPasswordPlugin.java,v 1.2 2004-04-08 00:32:32 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.3 2004-07-12 23:34:05 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomConstants {
 
@@ -80,6 +81,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
     }
 
     /**
@@ -95,11 +97,21 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        try {
+            _authorizationProvider.loadAuthenticationCredentials(user);
+        } catch (BlojsomException e) {
+            addOperationResultMessage(context, "Error loading authorization credentials for user: " + user.getId());
+            _logger.error(e);
+
+            return entries;
+        }
+
         String username = BlojsomUtils.getRequestValue(FORGOTTEN_USERNAME_PARAM, httpServletRequest);
         if (!BlojsomUtils.checkNullOrBlank(username)) {
             Blog blog = user.getBlog();
             String authorizedUserEmail = blog.getAuthorizedUserEmail(username);
-            if (authorizedUserEmail != null) {
+
+            if (!BlojsomUtils.checkNullOrBlank(authorizedUserEmail)) {
                 EmailMessage emailMessage = new EmailMessage(blog.getBlogOwnerEmail(), authorizedUserEmail, "Forgotten password", "Here is your password: " + blog.getAuthorization().get(username));
                 ArrayList emailMessages = new ArrayList();
                 emailMessages.add(emailMessage);
