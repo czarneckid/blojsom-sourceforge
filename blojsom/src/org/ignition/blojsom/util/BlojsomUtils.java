@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.57 2003-07-08 02:29:15 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.58 2003-07-11 00:55:34 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -82,7 +82,9 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     private static final ThreadLocal ISO_8601_DATE_FORMAT_OBJECT = new ThreadLocal() {
         protected Object initialValue() {
-            return new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+            SimpleDateFormat sdf = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+            sdf.getTimeZone().setID("+00:00");
+            return sdf;
         }
     };
 
@@ -168,7 +170,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Date formatted as ISO 8601
      */
     public static String getISO8601Date(Date date) {
-        return ((SimpleDateFormat) ISO_8601_DATE_FORMAT_OBJECT.get()).format(date);
+        return ((SimpleDateFormat) ISO_8601_DATE_FORMAT_OBJECT.get()).format(date).replaceAll("GMT", "");
     }
 
     /**
