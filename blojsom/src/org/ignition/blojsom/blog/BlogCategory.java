@@ -45,12 +45,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileInputStream;
 
 /**
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.9 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.10 2003-03-25 04:38:12 intabulas Exp $
  */
 public class BlogCategory implements Comparable {
 
@@ -237,8 +238,11 @@ public class BlogCategory implements Comparable {
         if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
             Properties dirProps = new Properties();
             for (int i = 0; i < categoryPropertyFiles.length; i++) {
+
                 try {
-                    dirProps.load(new java.io.FileInputStream(categoryPropertyFiles[i]));
+                    FileInputStream _fis = new FileInputStream(categoryPropertyFiles[i]);
+                    dirProps.load( _fis);
+                    _fis.close();
                 } catch (IOException ex) {
                     _logger.warn("Failed loading properties from: " + categoryPropertyFiles[i].toString());
                     continue;

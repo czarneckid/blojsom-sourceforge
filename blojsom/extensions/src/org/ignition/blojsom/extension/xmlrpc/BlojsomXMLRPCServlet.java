@@ -63,7 +63,7 @@ import java.util.HashMap;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.5 2003-03-23 19:26:58 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.6 2003-03-25 04:38:12 intabulas Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
@@ -93,6 +93,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         InputStream is = servletConfig.getServletContext().getResourceAsStream(templateConfiguration);
         try {
             handlerMapProperties.load(is);
+            is.close();
             Iterator handlerIterator = handlerMapProperties.keySet().iterator();
             while (handlerIterator.hasNext()) {
                 String handlerName = (String) handlerIterator.next();
@@ -127,6 +128,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         InputStream is = servletConfig.getServletContext().getResourceAsStream(authConfiguration);
         try {
             authProperties.load(is);
+            is.close();
             Iterator authIterator = authProperties.keySet().iterator();
             while (authIterator.hasNext()) {
                 String userid = (String) authIterator.next();
@@ -155,6 +157,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
 
         try {
             _configuration.load(_cis);
+            _cis.close();
             _blog = new Blog(_configuration);
         } catch (IOException e) {
             _logger.error(e);
