@@ -40,14 +40,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.11 2005-01-19 21:49:49 intabulas Exp $
+ * @version $Id: BlogComment.java,v 1.12 2005-01-30 18:47:50 czarneckid Exp $
  */
-public class BlogComment {
+public class BlogComment implements Serializable{
 
     protected String _author;
     protected String _authorEmail;

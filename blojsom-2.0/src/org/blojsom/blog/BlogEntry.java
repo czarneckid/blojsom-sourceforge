@@ -43,14 +43,15 @@ import org.blojsom.util.BlojsomUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.12 2005-01-05 02:32:51 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.13 2005-01-30 18:47:50 czarneckid Exp $
  */
-public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
+public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants, Serializable {
 
     protected transient Log _logger = LogFactory.getLog(BlogEntry.class);
 

@@ -41,14 +41,15 @@ import org.blojsom.util.BlojsomUtils;
 import org.blojsom.BlojsomException;
 
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.9 2005-01-19 17:52:42 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.10 2005-01-30 18:47:50 czarneckid Exp $
  */
-public abstract class BlogCategory implements Comparable {
+public abstract class BlogCategory implements Comparable, Serializable {
 
     protected Log _logger = LogFactory.getLog(BlogCategory.class);
 

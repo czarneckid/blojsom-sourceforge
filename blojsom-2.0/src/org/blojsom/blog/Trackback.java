@@ -38,14 +38,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.8 2005-01-19 17:52:43 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.9 2005-01-30 18:47:50 czarneckid Exp $
  */
-public class Trackback {
+public class Trackback implements Serializable {
 
     protected String _title;
     protected String _excerpt;
