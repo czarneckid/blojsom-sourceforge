@@ -351,7 +351,9 @@
     -->
     <!-- =================================================================== -->
     <target name="war" depends="compile" description="Create a deployable WAR file">
-        <copydir src="${themes.dir}" dest="${war.dir}/WEB-INF/themes"/>
+        <copy todir="${war.dir}/WEB-INF/themes">
+            <fileset dir="${themes.dir}"/>
+        </copy>
 
         <!-- Uncomment this if you want to JAR up the templates for running blojsom from a WAR file (i.e. a packed WAR) -->
         <!-- <jar jarfile="${templates.jar}" basedir="${templates.dir}"/> -->
