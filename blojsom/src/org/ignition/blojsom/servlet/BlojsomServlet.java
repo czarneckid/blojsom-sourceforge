@@ -224,6 +224,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         _logger.debug("User requested category: " + requestedCategory);
         BlogCategory category = new BlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
+        category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
 
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter("permalink");
