@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.40 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.41 2005-01-11 02:50:36 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -285,6 +285,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     BlogEntry entryToUpdate = entries[0];
                     entryToUpdate.setTitle(blogEntryTitle);
                     entryToUpdate.setDescription(blogEntryDescription);
+                    entryToUpdate.setCategory(blogCategoryName);
 
                     Map entryMetaData = entryToUpdate.getMetaData();
                     if (entryMetaData == null) {
