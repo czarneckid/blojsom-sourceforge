@@ -22,10 +22,20 @@
                 Added Edit Blog Users plugin to allow a defined set of "administrators" to add and delete users.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated weblogs ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
+                to signal it should not ping weblogs.com, weblo.gs, and Technorati. Also updated the plugin to
+                ping Technorati.
+            </action>
+
             <action dev="czarneckid" type="update" context="Core (add-on)">
                 Added ability to configure FreeMarker dispatcher using a properties configuration file. Use the
                 <tt>freemarker-properties</tt> init-param in <tt>/WEB-INF/web.xml</tt> for the
                 BlojsomServlet and specify the properties file to use. Example: <tt>/WEB-INF/freemarker.properties</tt>.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Library">
+                Updated Jakarta Commons Codec to version 1.2.
             </action>
         </release>
 
