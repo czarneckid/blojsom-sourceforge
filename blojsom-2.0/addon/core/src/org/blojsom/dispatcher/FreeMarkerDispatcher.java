@@ -34,9 +34,10 @@
  */
 package org.blojsom.dispatcher;
 
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
@@ -50,23 +51,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * FreeMarkerDispatcher
- *
+ * 
  * @author czarneckid
+ * @version $Id: FreeMarkerDispatcher.java,v 1.2 2003-12-16 16:57:17 czarneckid Exp $
  * @since blojsom 2.05
- * @version $Id: FreeMarkerDispatcher.java,v 1.1 2003-12-02 04:10:12 czarneckid Exp $
  */
 public class FreeMarkerDispatcher implements BlojsomDispatcher {
 
     private Log _logger = LogFactory.getLog(FreeMarkerDispatcher.class);
 
+    private final static String FREEMARKER_PROPERTIES_IP = "freemarker-properties";
+
     private String _installationDirectory;
     private String _baseConfigurationDirectory;
     private String _templatesDirectory;
+    private Properties _freemarkerProperties;
 
     /**
      * Default constructor.
@@ -76,7 +82,7 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
 
     /**
      * Initialization method for blojsom dispatchers
-     *
+     * 
      * @param servletConfig        ServletConfig for obtaining any initialization parameters
      * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws org.blojsom.BlojsomException If there is an error initializing the dispatcher
@@ -86,12 +92,23 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
         _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
 
+        String freemarkerConfiguration = servletConfig.getInitParameter(FREEMARKER_PROPERTIES_IP);
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(freemarkerConfiguration);
+        try {
+            _freemarkerProperties = new Properties();
+            _freemarkerProperties.load(is);
+            is.close();
+        } catch (IOException e) {
+            _logger.error(e);
+            _freemarkerProperties = null;
+        }
+
         _logger.debug("Initialized FreeMarker dispatcher");
     }
 
     /**
      * Return a path appropriate for loading FreeMarker templates
-     *
+     * 
      * @param userId User ID
      * @return blojsom installation directory + base configuration directory + user id + templates directory
      */
@@ -110,7 +127,7 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
      * any required information for use by the dispatcher. The dispatcher is also
      * provided with the template for the requested flavor along with the content type for the
      * specific flavor.
-     *
+     * 
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -124,10 +141,22 @@ public class FreeMarkerDispatcher implements BlojsomDispatcher {
         httpServletResponse.setContentType(flavorContentType);
 
         String templatePath = getTemplatePath(user.getId());
-        Configuration freemarkerConfiguration = Configuration.getDefaultConfiguration();
 
+        // Configure FreeMarker with the loaded properties
+        Configuration freemarkerConfiguration = Configuration.getDefaultConfiguration();
+        if (_freemarkerProperties != null) {
+            try {
+                freemarkerConfiguration.setSettings(_freemarkerProperties);
+            } catch (TemplateException e) {
+                _logger.error(e);
+            }
+        }
         freemarkerConfiguration.setDirectoryForTemplateLoading(new File(templatePath));
-        freemarkerConfiguration.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
+
+        BeansWrapper wrapper = new BeansWrapper();
+        wrapper.setExposureLevel(BeansWrapper.EXPOSE_PROPERTIES_ONLY);
+        wrapper.setSimpleMapWrapper(true);
+        freemarkerConfiguration.setObjectWrapper(wrapper);
 
         Writer responseWriter = httpServletResponse.getWriter();
         String flavorTemplateForPage = null;
