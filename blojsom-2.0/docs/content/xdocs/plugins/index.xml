@@ -23,7 +23,7 @@
                 </li>
                 <li>
                     <code>process(HttpServletRequest httpServletRequest,
-                        HttpServletResponse httpServletResponse, BlogUser user Map context, BlogEntry[] entries)</code>:
+                        HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries)</code>:
                     After retrieving the blog entries for a request, blojsom will execute the plugins
                     (their order is defined in the
                     <em>blojsom-plugin-chain</em> property of the
