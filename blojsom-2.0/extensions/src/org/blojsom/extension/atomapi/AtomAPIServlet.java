@@ -75,9 +75,9 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.28 2004-02-21 19:59:21 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.29 2004-03-05 03:43:37 czarneckid Exp $
  */
-public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
+public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
 
     /**
      * Logger instance
