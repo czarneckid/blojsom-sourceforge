@@ -12,6 +12,12 @@
                 Added patch for potential NullPointerException when loading BlojsomProperties.
             </action>
 
+            <action dev="czarneckid" type="update" context="Core">
+                Added getEncodedCategory methods to BlogEntry and BlogCategory. Also fixed handling of encoding for
+                permalinks for categories with spaces to make sure feeds validate. Updated Atom template to handle
+                encodedCategory for generating the id tag.
+            </action>
+
             <action dev="czarneckid" type="add" context="Plugin">
                 Added Conditional GET plugin for RSS aggregators that support this feature.
             </action>
