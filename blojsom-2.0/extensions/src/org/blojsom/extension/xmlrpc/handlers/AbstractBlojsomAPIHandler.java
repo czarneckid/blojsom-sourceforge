@@ -55,24 +55,24 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.13 2005-01-11 02:37:02 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.14 2005-01-18 03:30:26 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
     public static final int AUTHORIZATION_EXCEPTION = 0001;
-    public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid Username and/or Password";
+    public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid username and/or password";
 
     public static final int UNKNOWN_EXCEPTION = 1000;
     public static final String UNKNOWN_EXCEPTION_MSG = "An error occured processing your request";
 
     public static final int UNSUPPORTED_EXCEPTION = 1001;
-    public static final String UNSUPPORTED_EXCEPTION_MSG = "Unsupported method - blojsom does not support this blogger concept";
+    public static final String UNSUPPORTED_EXCEPTION_MSG = "Unsupported method";
 
     public static final int INVALID_POSTID = 2000;
     public static final String INVALID_POSTID_MSG = "The entry postid you submitted is invalid";
 
     public static final int NOBLOGS_EXCEPTION = 3000;
-    public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
+    public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined";
 
     protected Blog _blog;
     protected BlogUser _blogUser;
