@@ -43,7 +43,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.17 2003-03-04 03:31:29 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.18 2003-03-05 04:07:41 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -278,24 +278,20 @@ public class BlogEntry implements BlojsomConstants {
      *
      * The first line of the blog entry will be used as the title of the blog
      */
-    public void reloadSource() {
-        try {
-            byte[] fileContents = getBytesFromFile(_source);
-            String lineSeparator = System.getProperty("line.separator");
-            String description = new String(fileContents, "UTF-8");
-            int titleIndex = description.indexOf(lineSeparator);
-            if (titleIndex == -1) {
-                _title = "";
-                _description = description;
-            } else {
-                _title = description.substring(0, titleIndex);
-                _description = description.substring(titleIndex + 1);
-            }
-            _entryDate = new Date(_source.lastModified());
-            _lastModified = _source.lastModified();
-        } catch (IOException e) {
-            _logger.error(e);
+    public void reloadSource() throws IOException {
+        byte[] fileContents = getBytesFromFile(_source);
+        String lineSeparator = System.getProperty("line.separator");
+        String description = new String(fileContents, "UTF-8");
+        int titleIndex = description.indexOf(lineSeparator);
+        if (titleIndex == -1) {
+            _title = "";
+            _description = description;
+        } else {
+            _title = description.substring(0, titleIndex);
+            _description = description.substring(titleIndex + 1);
         }
+        _entryDate = new Date(_source.lastModified());
+        _lastModified = _source.lastModified();
     }
 
     /**
