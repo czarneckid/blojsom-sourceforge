@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.54 2003-07-20 22:07:24 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.55 2003-07-29 02:02:36 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -368,6 +368,16 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Returns the HTML escaped name of the blog
+     *
+     * @since blojsom 1.9.6
+     * @return Name of the blog that has been escaped
+     */
+    public String getEscapedBlogName() {
+        return BlojsomUtils.escapeString(_blogName);
+    }
+
+    /**
      * Set the name of the blog
      *
      * @param blogName Name for the blog
@@ -384,6 +394,16 @@ public class Blog implements BlojsomConstants {
      */
     public String getBlogDescription() {
         return _blogDescription;
+    }
+
+    /**
+     * Returns the HTML escaped description of the blog
+     *
+     * @since blojsom 1.9.6
+     * @return Description of the blog that has been escaped
+     */
+    public String getEscapedBlogDescription() {
+        return BlojsomUtils.escapeString(_blogDescription);
     }
 
     /**
