@@ -32,6 +32,7 @@ package org.ignition.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.util.BlojsomConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +45,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  */
-public class BlogEntry {
+public class BlogEntry implements BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(BlogEntry.class);
 
@@ -223,7 +224,7 @@ public class BlogEntry {
      * @return Blog Id
      */
     public String getId() {
-        return _category +"?permlink=" + _source.getName();
+        return _category + "?" + PERMALINK_PARAM + "=" + _source.getName();
     }
 
     /**

@@ -231,7 +231,7 @@ public class Blog implements BlojsomConstants {
             BlogEntry blogEntry = new BlogEntry();
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
-            blogEntry.setLink(_blogURL + category + "?permalink=" + blogFile.getName());
+            blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
             blogEntry.reloadSource();
             entryArray[0] = blogEntry;
             return entryArray;
@@ -281,7 +281,7 @@ public class Blog implements BlojsomConstants {
                 blogEntry = new BlogEntry();
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
-                blogEntry.setLink(_blogURL + category + "?permalink=" + entry.getName());
+                blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + entry.getName());
                 blogEntry.reloadSource();
                 entryArray[i] = blogEntry;
             }
