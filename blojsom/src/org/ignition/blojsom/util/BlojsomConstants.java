@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.59 2003-05-15 03:44:58 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.60 2003-05-23 01:57:30 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -86,14 +86,12 @@ public interface BlojsomConstants {
      */
     public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
 
-
     /**
      * Key under which the permalink value will be placed. This is used to allow templates
      * to generate trackback auto-discovery fragments.
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_PERMALINK= "BLOJSOM_PERMALINK";
-
 
     /**
      * Key under which the requested category will be placed
@@ -230,11 +228,10 @@ public interface BlojsomConstants {
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
 
-
     /**
      * Entry Meta Data Key for Poster
      */
-    public static final String BLOG_METADATA_ENTRY_AUTHOR ="blog-entry-author";
+    public static final String BLOG_METADATA_ENTRY_AUTHOR = "blog-entry-author";
 
     /**
      * Entry MetaData File Header
