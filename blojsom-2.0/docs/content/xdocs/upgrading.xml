@@ -33,7 +33,7 @@
                     <title>Properties file changes</title>
                     <p>
                         1. Add the following to your <code>/WEB-INF/(user-id)/blog.properties</code> if you would like to
-                        enable auto-formatting of comments.
+                        enable auto-formatting of comments. This will turn all newline characters into &lt;br/&gt; tags.
                         <pre>
                             plugin-comment-autoformat=true
                         </pre>
