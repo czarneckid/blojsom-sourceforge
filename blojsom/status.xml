@@ -8,6 +8,13 @@
 
     <changes>
 
+        <release version="1.9.6" date="dev">
+            <action dev="czarneckid" type="add" context="Core">
+                Added <tt>getEscapedBlogName</tt> and <tt>getEscapedBlogDescription</tt> to
+                the <tt>Blog</tt> class.
+            </action>
+        </release>
+
         <release version="1.9.5" date="July 27, 2003">
             <!-- Core/General changes -->
             <action dev="czarneckid" type="add" context="Core">
