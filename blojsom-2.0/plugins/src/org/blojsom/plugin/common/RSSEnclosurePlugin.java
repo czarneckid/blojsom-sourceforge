@@ -41,7 +41,10 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.event.BlojsomListener;
+import org.blojsom.event.BlojsomEvent;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -49,19 +52,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.5 2005-01-05 02:31:41 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.6 2005-03-05 18:22:11 czarneckid Exp $
  * @since blojsom 2.20
  */
-public class RSSEnclosurePlugin implements BlojsomPlugin {
+public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
 
     private Log _logger = LogFactory.getLog(RSSEnclosurePlugin.class);
 
     private BlojsomConfiguration _blojsomConfiguration;
+
+    private static final String RSS_ENCLOSURE_TEMPLATE = "org/blojsom/plugin/common/templates/admin-rss-enclosure-attachment.vm";
+    private static final String RSS_ENCLOSURE_ATTACHMENT = "RSS_ENCLOSURE_ATTACHMENT";
 
     public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
     public static final String METADATA_RSS_ENCLOSURE = "rss-enclosure";
@@ -90,6 +98,8 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
     public void init(ServletConfig servletConfig, BlojsomConfiguration
             blojsomConfiguration) throws BlojsomPluginException {
         _blojsomConfiguration = blojsomConfiguration;
+        _blojsomConfiguration.getEventBroadcaster().addListener(this);
+
         _logger.debug("Initialized RSS enclosures plugin");
     }
 
@@ -183,6 +193,71 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
     }
 
     /**
+     * Handle an event broadcast from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void handleEvent(BlojsomEvent event) {
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
+        if (event instanceof ProcessBlogEntryEvent) {
+            _logger.debug("Handling process blog entry event");
+
+            ProcessBlogEntryEvent processBlogEntryEvent = (ProcessBlogEntryEvent) event;
+            String blogID = processBlogEntryEvent.getBlogUser().getId();
+
+            Map templateAdditions = (Map) processBlogEntryEvent.getContext().get("BLOJSOM_TEMPLATE_ADDITIONS");
+            if (templateAdditions == null) {
+                templateAdditions = new TreeMap();
+            }
+
+            templateAdditions.put(getClass().getName(), "#parse('" + RSS_ENCLOSURE_TEMPLATE + "')");
+            processBlogEntryEvent.getContext().put("BLOJSOM_TEMPLATE_ADDITIONS", templateAdditions);
+
+            // Create a list of files in the user's resource directory
+            File resourceDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getResourceDirectory() + blogID + "/");
+            Map resourceFilesMap = null;
+            if (resourceDirectory.exists()) {
+                File[] resourceFiles = resourceDirectory.listFiles();
+
+                if (resourceFiles != null) {
+                    resourceFilesMap = new HashMap(resourceFiles.length);
+                    for (int i = 0; i < resourceFiles.length; i++) {
+                        File resourceFile = resourceFiles[i];
+                        resourceFilesMap.put(resourceFile.getName(), resourceFile.getName());
+                    }
+                }
+            } else {
+                resourceFilesMap = new HashMap();
+            }
+
+            // Preserve the current rss enclosure if none submitted
+            if (processBlogEntryEvent.getBlogEntry() != null) {
+                String currentEnclosure = (String) processBlogEntryEvent.getBlogEntry().getMetaData().get(METADATA_RSS_ENCLOSURE);
+                _logger.debug("Current enclosure: " + currentEnclosure);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_ATTACHMENT, currentEnclosure);
+            }
+
+            String rssEnclosure = BlojsomUtils.getRequestValue(METADATA_RSS_ENCLOSURE, processBlogEntryEvent.getHttpServletRequest());
+            if (!BlojsomUtils.checkNullOrBlank(rssEnclosure) && processBlogEntryEvent.getBlogEntry() != null) {
+                processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_RSS_ENCLOSURE, rssEnclosure);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_ATTACHMENT, rssEnclosure);
+                _logger.debug("Added/updated RSS enclosure: " + BlojsomUtils.getFilenameFromPath(rssEnclosure));
+            }
+
+            resourceFilesMap = new TreeMap(resourceFilesMap);
+            processBlogEntryEvent.getContext().put("PLUGIN_RSS_ENCLOSURE_FILES", resourceFilesMap);
+        }
+    }
+
+    /**
      * RSS Enclosure
      *
      * @author David Czarnecki
@@ -197,9 +272,9 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
         /**
          * Construct an RSS enclosure
          *
-         * @param url URL to retrieve enclosure
+         * @param url    URL to retrieve enclosure
          * @param length Length of enclosure
-         * @param type Type of enclosure
+         * @param type   Type of enclosure
          */
         public RSSEnclosure(String url, long length, String type) {
             this.url = url;
