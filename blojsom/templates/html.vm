@@ -38,7 +38,8 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="entrystyle">
     <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()" title="Permalink to this blojsom entry">Permalink</a>]</span> </p>
-    <p class="weblogdateline">$entry.getDate()</p>
+    <p class="weblogdateline">$entry.getDate()<br />
+    Category [#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end]</p>
     <p>$entry.getDescription()</p>
     </div>
     <p class="weblogbottomline">
