@@ -34,14 +34,16 @@
  */
 package org.ignition.blojsom.fetcher;
 
+import org.ignition.blojsom.BlojsomException;
+
 /**
  * BlojsomFetcherException
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcherException.java,v 1.2 2003-04-16 01:46:46 czarneckid Exp $
+ * @version $Id: BlojsomFetcherException.java,v 1.3 2003-05-22 03:04:12 czarneckid Exp $
  */
-public class BlojsomFetcherException extends Exception {
+public class BlojsomFetcherException extends BlojsomException {
 
     /**
      * Constructs a new exception with <code>null</code> as its detail message.
@@ -49,6 +51,7 @@ public class BlojsomFetcherException extends Exception {
      * call to {@link #initCause}.
      */
     public BlojsomFetcherException() {
+        super();
     }
 
     /**
