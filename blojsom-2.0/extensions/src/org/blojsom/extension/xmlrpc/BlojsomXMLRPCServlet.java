@@ -37,6 +37,7 @@ package org.blojsom.extension.xmlrpc;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpc;
+import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.blojsom.BlojsomException;
 import org.blojsom.authorization.AuthorizationProvider;
@@ -68,13 +69,16 @@ import java.util.Properties;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.11 2004-06-16 01:49:15 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.12 2004-09-12 23:01:14 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
     protected AuthorizationProvider _authorizationProvider;
     protected ServletConfig _servletConfig;
+
+    public static final int XMLRPC_DISABLED = 4000;
+    public static final String XMLRPC_DISABLED_MESSAGE = "XML-RPC disabled for the requested blog";
 
     /**
      * Construct a new Blojsom XML-RPC servlet instance
@@ -149,6 +153,12 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                 throw new BlojsomConfigurationException(e);
             }
 
+            // Check to see if XML-RPC is enabled for the blog
+            if (!blog.getXmlrpcEnabled().booleanValue()) {
+                _logger.error(XMLRPC_DISABLED_MESSAGE);
+                throw new ServletException(new XmlRpcException(XMLRPC_DISABLED, XMLRPC_DISABLED_MESSAGE));
+            }
+
             // Load the authentication credentials for the user
             _authorizationProvider.loadAuthenticationCredentials(blogUser);
 
@@ -214,7 +224,8 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
      * @throws ServletException If there is an error processing the request
      * @throws IOException      If there is an error during I/O
      */
-    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws
+            ServletException, IOException {
         try {
             httpServletRequest.setCharacterEncoding(UTF8);
         } catch (UnsupportedEncodingException e) {
