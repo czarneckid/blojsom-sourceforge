@@ -35,6 +35,7 @@ import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -43,7 +44,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.22 2003-03-04 03:31:29 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.23 2003-03-05 04:08:14 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -278,7 +279,11 @@ public class Blog implements BlojsomConstants {
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
-            blogEntry.reloadSource();
+            try {
+                blogEntry.reloadSource();
+            } catch (IOException e) {
+                return null;
+            }
             blogEntry.setCommentsDirectory(_blogCommentsDirectory);
             blogEntry.loadComments();
             entryArray[0] = blogEntry;
@@ -305,7 +310,11 @@ public class Blog implements BlojsomConstants {
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + blogFile.getName());
-            blogEntry.reloadSource();
+            try {
+                blogEntry.reloadSource();
+            } catch (IOException e) {
+                return null;
+            }
             blogEntry.setCommentsDirectory(_blogCommentsDirectory);
             blogEntry.loadComments();
             entryArray[0] = blogEntry;
@@ -357,7 +366,11 @@ public class Blog implements BlojsomConstants {
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
                 blogEntry.setLink(_blogURL + category + "?" + PERMALINK_PARAM + "=" + entry.getName());
-                blogEntry.reloadSource();
+                try {
+                    blogEntry.reloadSource();
+                } catch (IOException e) {
+                    _logger.error(e);
+                }
                 blogEntry.setCommentsDirectory(_blogCommentsDirectory);
                 blogEntry.loadComments();
                 entryArray[i] = blogEntry;
