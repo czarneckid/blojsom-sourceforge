@@ -36,6 +36,7 @@ package org.blojsom.util.password;
 
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,19 +53,29 @@ import java.util.Iterator;
  *
  * @author David Czarnecki
  * @since blojsom 2.24
- * @version $Id: EncryptedPasswordConversion.java,v 1.1 2005-03-06 15:42:54 czarneckid Exp $
+ * @version $Id: EncryptedPasswordConversion.java,v 1.2 2005-03-19 04:53:31 czarneckid Exp $
  */
 public class EncryptedPasswordConversion {
 
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: EncryptedPasswordConversion <Full path to blojsom authorization.properties file>");
+            System.out.println("Usage: EncryptedPasswordConversion <Full path to blojsom authorization.properties file> <Digest Algorithm - Defaults to MD5 (SHA-1 can also be used)>");
         } else {
             File authorizationFile = new File(args[0]);
             if (!authorizationFile.exists()) {
                 System.out.println(authorizationFile.toString() + " does not exist.");
             } else {
                 try {
+                    String digestAlgorithm = BlojsomConstants.DEFAULT_DIGEST_ALGORITHM;
+                    if (args.length == 2) {
+                        digestAlgorithm = args[1];
+                        System.out.println("Requested digest algorithm: " + digestAlgorithm);
+                        if (!"MD5".equalsIgnoreCase(digestAlgorithm) && !"SHA-1".equalsIgnoreCase(digestAlgorithm)) {
+                            digestAlgorithm = BlojsomConstants.DEFAULT_DIGEST_ALGORITHM;
+                        }
+                    }
+
+                    System.out.println("Using digest algorithm: " + digestAlgorithm);
                     System.out.println("Encrypting authorization file: " + authorizationFile.toString());
                     BlojsomProperties authorization = new BlojsomProperties();
                     BlojsomProperties encryptedAuthorization = new BlojsomProperties();
@@ -81,9 +92,9 @@ public class EncryptedPasswordConversion {
                         passwordAndEmailProperty = authorization.getProperty(user);
                         passwordAndEmail = BlojsomUtils.parseLastComma(passwordAndEmailProperty);
                         if (passwordAndEmail.length == 1) {
-                            encryptedAuthorization.setProperty(user, BlojsomUtils.digestString(passwordAndEmail[0]));
+                            encryptedAuthorization.setProperty(user, BlojsomUtils.digestString(passwordAndEmail[0], digestAlgorithm));
                         } else if (passwordAndEmail.length == 2) {
-                            encryptedAuthorization.setProperty(user, BlojsomUtils.digestString(passwordAndEmail[0]) + "," + passwordAndEmail[1]);
+                            encryptedAuthorization.setProperty(user, BlojsomUtils.digestString(passwordAndEmail[0], digestAlgorithm) + "," + passwordAndEmail[1]);
                         }
                     }
 

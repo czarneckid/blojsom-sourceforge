@@ -75,7 +75,7 @@ import java.util.Map;
  * http://www.mozilla.org/directory/.
  *
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.4 2005-03-06 01:20:03 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.5 2005-03-19 04:54:03 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider implements BlojsomConstants {
@@ -204,7 +204,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
             ldapConnection.connect(getServer(), getPort());
 
             if (blogUser.getBlog().getUseEncryptedPasswords().booleanValue()) {
-                password = BlojsomUtils.digestString(password);
+                password = BlojsomUtils.digestString(password, blogUser.getBlog().getDigestAlgorithm());
             }
 
             // Use simple authentication. The first argument

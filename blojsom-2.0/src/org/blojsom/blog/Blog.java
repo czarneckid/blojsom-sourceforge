@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.34 2005-03-06 01:14:38 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.35 2005-03-19 04:53:55 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -84,6 +84,7 @@ public class Blog implements BlojsomConstants {
     private Boolean _xmlrpcEnabled;
     private String _blogPingbacksDirectory;
     private Boolean _useEncryptedPasswords;
+    private String _digestAlgorithm;
 
     private Map _blogProperties;
 
@@ -330,6 +331,13 @@ public class Blog implements BlojsomConstants {
         String useEncryptedPasswords = blogConfiguration.getProperty(USE_ENCRYPTED_PASSWORDS);
         _useEncryptedPasswords = Boolean.valueOf(useEncryptedPasswords);
         _blogProperties.put(USE_ENCRYPTED_PASSWORDS, _useEncryptedPasswords);
+
+        String digestAlgorithm = blogConfiguration.getProperty(DIGEST_ALGORITHM);
+        if (!"MD5".equalsIgnoreCase(digestAlgorithm) && !"SHA-1".equalsIgnoreCase(digestAlgorithm)) {
+            digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
+        }
+        _digestAlgorithm = digestAlgorithm;
+        _blogProperties.put(DIGEST_ALGORITHM, _digestAlgorithm);
 
         _logger.info("blojsom home: " + _blogHome);
     }
@@ -1072,5 +1080,28 @@ public class Blog implements BlojsomConstants {
     public void setBlogAdminURL(String blogAdminURL) {
         _blogAdminURL = blogAdminURL;
         _blogProperties.put(BLOG_ADMIN_URL_IP, blogAdminURL);
+    }
+
+    /**
+     * Retrieve the in-use password digest algorithm
+     *
+     * @return Password digest algorithm
+     */
+    public String getDigestAlgorithm() {
+        return _digestAlgorithm;
+    }
+
+    /**
+     * Set the in-use password digest algorithm
+     *
+     * @param digestAlgorithm Digest algorithm (MD5, SHA-1)
+     */
+    public void setDigestAlgorithm(String digestAlgorithm) {
+        if (!"MD5".equalsIgnoreCase(digestAlgorithm) && !"SHA-1".equalsIgnoreCase(digestAlgorithm)) {
+            digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
+        }
+
+        _digestAlgorithm = digestAlgorithm;
+        _blogProperties.put(DIGEST_ALGORITHM, _digestAlgorithm);
     }
 }

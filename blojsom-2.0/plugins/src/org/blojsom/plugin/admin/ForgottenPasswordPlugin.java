@@ -60,7 +60,7 @@ import java.io.FileOutputStream;
  *
  * @author David Czarnecki
  * @since blojsom 2.14
- * @version $Id: ForgottenPasswordPlugin.java,v 1.7 2005-03-06 18:26:18 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.8 2005-03-19 04:54:03 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomConstants {
 
@@ -131,7 +131,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
                     int password = random.nextInt(Integer.MAX_VALUE);
                     String updatedPassword = new String(Integer.toString(password));
                     emailMessage = new EmailMessage(blog.getBlogOwnerEmail(), authorizedUserEmail, "Forgotten password", "Here is your password: " + updatedPassword);
-                    updatedPassword = BlojsomUtils.digestString(updatedPassword);
+                    updatedPassword = BlojsomUtils.digestString(updatedPassword, blog.getDigestAlgorithm());
 
                     try {
                         blog.setAuthorizedUserPassword(username, updatedPassword);
