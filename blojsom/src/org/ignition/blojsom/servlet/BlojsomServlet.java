@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.68 2003-04-13 17:54:37 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.69 2003-04-15 00:04:40 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -416,7 +416,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             BlogEntry _entry = entries[0];
             long _lastmodified;
 
-            if ((httpServletRequest.getParameter(PAGE_PARAM) != null) && (_entry.getNumComments() > 0)) {
+            if (_entry.getNumComments() > 0) {
                 BlogComment _comment = _entry.getCommentsAsArray()[_entry.getNumComments() - 1];
                 _lastmodified = _comment.getCommentDateLong();
                 _logger.debug("Adding last-modified header for most recent entry comment");
