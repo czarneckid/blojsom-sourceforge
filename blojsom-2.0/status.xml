@@ -8,36 +8,50 @@
 
     <changes>
 
+        <release version="2.02" date="dev">
+            <action dev="czarneckid" type="update" context="Core">
+                Updated <tt>BlojsomConfiguration</tt> to automatically determine blojsom installation directory.
+            </action>
+
+            <action dev="intabulas" type="update" context="Extension">
+                Atom API servlet now supports all Atom API operations.
+            </action>
+
+            <action dev="intabulas" type="update" context="Library">
+                Updated <a href="http://sandler.sf.net">sandler</a> to 0.2.
+            </action>
+        </release>
+
         <release version="2.01" date="September 9, 2003">
             <action dev="czarneckid" type="update" context="Build">
                 Added forrest files to build of source distribution.
             </action>
 
             <action dev="czarneckid" type="update" context="Core">
-                Added BlojsomConfiguration to parameters of BlojsomFetcher init() method.
+                Added <tt>BlojsomConfiguration</tt> to parameters of <tt>BlojsomFetcher init()</tt> method.
             </action>
 
             <action dev="czarneckid" type="add" context="Core">
-                Added CachingFetcher which can cache blog entries to improve blog rendering performance.
+                Added <tt>CachingFetcher</tt> which can cache blog entries to improve blog rendering performance.
             </action>
 
             <action dev="czarneckid" type="add" context="Core">
-                Added BlojsomProperties to properly load properties files in a specific encoding.
+                Added <tt>BlojsomProperties</tt> to properly load properties files in a specific encoding.
             </action>
 
             <action dev="czarneckid" type="add" context="Core">
-                Added BlojsomSimpleLog4JSystem class to capture Velocity Log4J messages. As noted in the
+                Added <tt>BlojsomSimpleLog4JSystem</tt> class to capture Velocity Log4J messages. As noted in the
                 javadocs for this class, it will be removed once a particular bug in Velocity is fixed.
             </action>
 
             <action dev="czarneckid" type="update" context="Core">
-                Updated VelocityDispatcher to use new-able VelocityEngine instance instead of global
+                Updated <tt>VelocityDispatcher</tt> to use new-able VelocityEngine instance instead of global
                 Velocity engine. This allows for a specific user template directory to be searched for
                 Velocity templates along with the fallback to the Velocity CLASSPATH resource loader.
             </action>
 
             <action dev="intabulas" type="update" context="Core">
-                Updated BlojsomUtils to allow for other algorithms to be used when generating a string using
+                Updated <tt>BlojsomUtils</tt> to allow for other algorithms to be used when generating a string using
                 a digest algorithm.
             </action>
 
