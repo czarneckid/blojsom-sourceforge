@@ -15,14 +15,13 @@
     StringBuffer catStringBuf = new StringBuffer(20);
     String blogName = null;
     for (int j = 0; j < blogCategories.length; j++) {
-	BlogCategory blogCategory = blogCategories[j];
-	    if (blogCategory.getNumberOfEntries() > 0) {
+	    BlogCategory blogCategory = blogCategories[j];
 		blogName = blogCategory.getName();
-		if ((blogName == null) || (blogName.length() < 1))
+		if ((blogName == null) || (blogName.length() < 1)) {
 		    blogName = blogCategory.getCategory();
-		    catStringBuf.append("[<i><a href=").append(blogCategory.getCategoryURL());
-		    catStringBuf.append(">").append(blogName).append("</a></i>]");
-	    }
+        }
+        catStringBuf.append("[<i><a href=").append(blogCategory.getCategoryURL());
+        catStringBuf.append(">").append(blogName).append("</a></i>]");
     }
     String catString = catStringBuf.toString();
 %>
