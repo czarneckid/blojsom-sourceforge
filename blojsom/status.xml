@@ -120,6 +120,25 @@
             </action>
         </release>
 
+        <release version="1.4" date="March 2, 2003">
+            <action dev="czarneckid" type="update" context="General">
+                "BLOG_SITE_URL" no longer contains a trailing "/"
+            </action>
+            <action dev="czarneckid" type="add" context="Extension">
+                <a href="xmlrpc.html">XML-RPC Interface</a> (Additional Servlet) supporting a subset of the <a href="http://plant.blogger.com/api/index.html">Blogger API</a>
+            </action>
+            <action dev="czarneckid" type="add" context="Plugin">
+                Initial <a href="plugins.html">Plugin API</a> for blojsom
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Core" fixes-bug="692640">
+                Servlet context name same as url-mapping makes invalid URL
+            </action>
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="693281">
+                plugin chain does not report errors
+            </action>
+        </release>
+
         <release version="1.3" date="February 23, 2003">
             <action dev="czarneckid" type="add" context="Core">
                 blojsom now requires Java 1.4.x as it now uses some of the Java 1.4 regular expression support
