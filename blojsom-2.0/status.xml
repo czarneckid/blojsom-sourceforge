@@ -85,7 +85,11 @@
                 cases, a forgotten password e-mail message would be sent to the blog owner's e-mail address.
             </action>
 
-            <action dev="czarneckid" type="update" context="Libary">
+            <action dev="czarneckid" type="update" context="Template">
+                Updated RDF JSP and Velocity templates to add missing items element inside the channel element.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Library">
                 Updated Velocity to the 1.4 release.
             </action>
         </release>
