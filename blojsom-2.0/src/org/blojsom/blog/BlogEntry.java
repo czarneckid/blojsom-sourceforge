@@ -48,7 +48,7 @@ import java.util.*;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.9 2004-05-15 14:27:16 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.10 2004-05-16 01:48:45 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -257,12 +257,20 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
     }
 
     /**
-     * Return the category name encoded
+     * Return the category name encoded. 
      *
      * @return Category name encoded as UTF-8
      * @since blojsom 2.08
      */
     public String getEncodedCategory() {
+        if (_category == null) {
+            return null;
+        }
+
+        if (!_category.startsWith("/")) {
+            return "/" + BlojsomUtils.urlEncodeForLink(_category);
+        }
+
         return BlojsomUtils.urlEncodeForLink(_category);
     }
 
