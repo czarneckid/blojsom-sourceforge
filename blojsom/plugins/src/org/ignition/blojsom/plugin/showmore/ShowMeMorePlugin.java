@@ -51,16 +51,18 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.2 2003-04-19 02:44:46 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.3 2003-05-31 19:24:54 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
     private static final String SHOW_ME_MORE_CONFIG_IP = "plugin-showmemore";
     private static final String ENTRY_LENGTH_CUTOFF = "entry-length-cutoff";
+    private static final String ENTRY_TEXT_CUTOFF = "entry-text-cutoff";
     private static final String SHOW_ME_MORE_TEXT = "show-me-more-text";
     private static final String SHOW_ME_MORE_PARAM = "smm";
 
     private int _cutoff;
+    private String _textCutoff;
     private String _moreText;
 
     /**
@@ -88,6 +90,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
             showMeMoreProperties.load(is);
             is.close();
             _moreText = showMeMoreProperties.getProperty(SHOW_ME_MORE_TEXT);
+            _textCutoff = showMeMoreProperties.getProperty(ENTRY_TEXT_CUTOFF);
             _cutoff = Integer.parseInt(showMeMoreProperties.getProperty(ENTRY_LENGTH_CUTOFF));
         } catch (IOException e) {
             throw new BlojsomPluginException(e);
@@ -113,18 +116,35 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
             for (int i = 0; i < entries.length; i++) {
                 BlogEntry entry = entries[i];
                 String description = entry.getDescription();
-                if (description.length() > _cutoff) {
-                    StringBuffer partialDescription = new StringBuffer(description.substring(0, _cutoff));
-                    partialDescription.append("&nbsp; <a href=\"");
-                    partialDescription.append(entry.getLink());
-                    partialDescription.append("&amp;");
-                    partialDescription.append(SHOW_ME_MORE_PARAM);
-                    partialDescription.append("=y\">");
-                    partialDescription.append(_moreText);
-                    partialDescription.append("</a>");
-                    entry.setDescription(partialDescription.toString());
+                StringBuffer partialDescription = new StringBuffer();
+                if (_textCutoff == null || "".equals(_textCutoff)) {
+                    if (description.length() > _cutoff) {
+                        partialDescription.append(description.substring(0, _cutoff));
+                        partialDescription.append("&nbsp; <a href=\"");
+                        partialDescription.append(entry.getLink());
+                        partialDescription.append("&amp;");
+                        partialDescription.append(SHOW_ME_MORE_PARAM);
+                        partialDescription.append("=y\">");
+                        partialDescription.append(_moreText);
+                        partialDescription.append("</a>");
+                        entry.setDescription(partialDescription.toString());
+                    }
+                } else {
+                    int indexOfCutoffText = description.indexOf(_textCutoff);
+                    if (indexOfCutoffText != -1) {
+                        partialDescription.append(description.substring(0, indexOfCutoffText));
+                        partialDescription.append("&nbsp; <a href=\"");
+                        partialDescription.append(entry.getLink());
+                        partialDescription.append("&amp;");
+                        partialDescription.append(SHOW_ME_MORE_PARAM);
+                        partialDescription.append("=y\">");
+                        partialDescription.append(_moreText);
+                        partialDescription.append("</a>");
+                        entry.setDescription(partialDescription.toString());
+                    }
                 }
             }
+
             return entries;
         }
     }
