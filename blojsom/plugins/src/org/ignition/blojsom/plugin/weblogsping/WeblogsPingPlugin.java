@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.AsyncCallback;
 import org.apache.xmlrpc.XmlRpcClient;
-import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
@@ -15,28 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Map;
 import java.util.Vector;
-import java.util.HashMap;
 
 /**
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.3 2003-06-18 04:40:35 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.4 2003-06-18 23:00:37 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WeblogsPingPlugin.class);
 
     private static final String DEFAULT_WEBLOGS_URL = "http://rpc.weblogs.com:80/RPC2";
-
-    private static final String WEBLOGS_PING_METADATA = "weblogs-ping";
-    private static final String WEBLOGS_PING_VALUE = "true";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
+
     private Blog _blog;
     private WeblogsPingPluginAsyncCallback _callbackHandler;
+    private Date _lastPingDate;
 
     /**
      * Default constructor
@@ -54,6 +52,7 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomPluginException {
         _blog = blog;
         _callbackHandler = new WeblogsPingPluginAsyncCallback();
+        _lastPingDate = new Date();
     }
 
     /**
@@ -69,42 +68,29 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
-        boolean shouldPingWeblogs = false;
-
-        // Loop through all the entries
-        for (int i = 0; i < entries.length; i++) {
-            BlogEntry entry = entries[i];
-            Map entryMetaData = entry.getMetaData();
-            if (entryMetaData == null) {
-                entryMetaData = new HashMap();
-            }
-
-            // In the default FileBackedBlogEntry, supportComments indicates the blog entry
-            // is writable. So, for now, use this to see if we should check for the meta-data.
-            // If not available, set it on the blog entry and save the blog entry.
-            if (entry.supportsComments() && !entryMetaData.containsKey(WEBLOGS_PING_METADATA)) {
-                shouldPingWeblogs = true;
-                entryMetaData.put(WEBLOGS_PING_METADATA, WEBLOGS_PING_VALUE);
-                entry.setMetaData(entryMetaData);
-                try {
-                    entry.save(_blog);
-                } catch (BlojsomException e) {
-                    _logger.error("Error saving blog entry after adding weblogs-ping meta-data.", e);
+        // If there are no entries return
+        if (entries.length <= 0) {
+            return entries;
+        } else {
+            // Pull the latest entry, check its date to see if its newer than the lastPingDate, and
+            // if so, ping weblogs.com
+            BlogEntry entry = entries[0];
+            if (_lastPingDate.before(entry.getDate())) {
+                synchronized (_lastPingDate) {
+                    _lastPingDate = entry.getDate();
                 }
-            }
-        }
 
-        // If one (or more) of the entries has its meta-data set for pinging weblogs.com, then
-        // go ahead and do an asynchronous call to weblogs.com.
-        if (shouldPingWeblogs) {
-            try {
-                XmlRpcClient client = new XmlRpcClient(DEFAULT_WEBLOGS_URL);
-                Vector params = new Vector();
-                params.add(_blog.getBlogName());
-                params.add(_blog.getBlogURL());
-                client.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
-            } catch (IOException e) {
-                _logger.error(e);
+                try {
+                    XmlRpcClient client = new XmlRpcClient(DEFAULT_WEBLOGS_URL);
+                    Vector params = new Vector();
+                    params.add(_blog.getBlogName());
+                    params.add(_blog.getBlogURL());
+                    client.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                } catch (IOException e) {
+                    _logger.error(e);
+                }
+            } else {
+                _logger.debug("Latest entry date occurs before latest ping date.");
             }
         }
 
