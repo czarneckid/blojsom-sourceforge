@@ -50,12 +50,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Map;
 import java.util.Properties;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.6 2003-09-09 01:35:43 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.7 2003-10-07 16:44:25 intabulas Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -204,10 +205,25 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
         }
-        httpServletResponse.addIntHeader("Content-Length", (contentBytes == null ? content.length() : contentBytes.length));
 
-        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
-        osw.write(content);
-        osw.flush();
+
+        boolean compressed = false;
+        if (context.containsKey(BLOJSOM_COMPRESSED)) {
+            Boolean compressedIndication = (Boolean) context.get(BLOJSOM_COMPRESSED);
+            compressed = compressedIndication.booleanValue();
+        }
+
+        if (compressed) {
+            _logger.info("Sending GZip'd response");
+            httpServletResponse.addHeader("Content-Encoding", "gzip");
+            GZIPOutputStream gout = new GZIPOutputStream(httpServletResponse.getOutputStream());
+            gout.write(content.getBytes());
+            gout.close();
+        } else {
+            httpServletResponse.addIntHeader("Content-Length", (contentBytes == null ? content.length() : contentBytes.length));
+            OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
+            osw.write(content);
+            osw.flush();
+        }
     }
 }
