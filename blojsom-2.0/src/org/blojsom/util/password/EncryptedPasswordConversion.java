@@ -43,6 +43,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Conversion utility to encrypt blojsom authorization properties files
@@ -52,14 +54,14 @@ import java.util.Iterator;
  * </pre>
  *
  * @author David Czarnecki
+ * @version $Id: EncryptedPasswordConversion.java,v 1.3 2005-03-20 16:07:21 czarneckid Exp $
  * @since blojsom 2.24
- * @version $Id: EncryptedPasswordConversion.java,v 1.2 2005-03-19 04:53:31 czarneckid Exp $
  */
 public class EncryptedPasswordConversion {
 
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: EncryptedPasswordConversion <Full path to blojsom authorization.properties file> <Digest Algorithm - Defaults to MD5 (SHA-1 can also be used)>");
+            System.out.println("Usage: EncryptedPasswordConversion <Full path to blojsom authorization.properties file> <Digest Algorithm - Defaults to MD5>");
         } else {
             File authorizationFile = new File(args[0]);
             if (!authorizationFile.exists()) {
@@ -70,7 +72,9 @@ public class EncryptedPasswordConversion {
                     if (args.length == 2) {
                         digestAlgorithm = args[1];
                         System.out.println("Requested digest algorithm: " + digestAlgorithm);
-                        if (!"MD5".equalsIgnoreCase(digestAlgorithm) && !"SHA-1".equalsIgnoreCase(digestAlgorithm)) {
+                        try {
+                            MessageDigest messageDigest = MessageDigest.getInstance(digestAlgorithm);
+                        } catch (NoSuchAlgorithmException e) {
                             digestAlgorithm = BlojsomConstants.DEFAULT_DIGEST_ALGORITHM;
                         }
                     }

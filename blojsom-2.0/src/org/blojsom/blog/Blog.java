@@ -41,6 +41,8 @@ import org.blojsom.util.BlojsomUtils;
 
 import java.io.File;
 import java.util.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Blog
@@ -48,7 +50,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.35 2005-03-19 04:53:55 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.36 2005-03-20 16:06:58 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -333,7 +335,12 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(USE_ENCRYPTED_PASSWORDS, _useEncryptedPasswords);
 
         String digestAlgorithm = blogConfiguration.getProperty(DIGEST_ALGORITHM);
-        if (!"MD5".equalsIgnoreCase(digestAlgorithm) && !"SHA-1".equalsIgnoreCase(digestAlgorithm)) {
+        if (BlojsomUtils.checkNullOrBlank(digestAlgorithm)) {
+            digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
+        }
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(digestAlgorithm);
+        } catch (NoSuchAlgorithmException e) {
             digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
         }
         _digestAlgorithm = digestAlgorithm;
@@ -1094,10 +1101,15 @@ public class Blog implements BlojsomConstants {
     /**
      * Set the in-use password digest algorithm
      *
-     * @param digestAlgorithm Digest algorithm (MD5, SHA-1)
+     * @param digestAlgorithm Digest algorithm
      */
     public void setDigestAlgorithm(String digestAlgorithm) {
-        if (!"MD5".equalsIgnoreCase(digestAlgorithm) && !"SHA-1".equalsIgnoreCase(digestAlgorithm)) {
+        if (BlojsomUtils.checkNullOrBlank(digestAlgorithm)) {
+            digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
+        }
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(digestAlgorithm);
+        } catch (NoSuchAlgorithmException e) {
             digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
         }
 
