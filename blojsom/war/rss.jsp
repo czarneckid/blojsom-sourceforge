@@ -26,8 +26,8 @@
     %>
     	<item>
     		<title><%= blogEntry.getTitle() %></title>
-    		<link><%= blogEntry.getLink() %></link>
-    		<description><%= blogEntry.getDescription() %></description>
+    		<link><%= blogEntry.getEscapedLink() %></link>
+    		<description><%= blogEntry.getEscapedDescription() %></description>
     	</item>
     <%
             }
