@@ -2,9 +2,11 @@ package org.ignition.blojsom.util;
 
 import org.ignition.blojsom.blog.BlogEntry;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
+import java.net.URLEncoder;
 
 /**
  * BlojsomUtils
@@ -117,6 +119,27 @@ public class BlojsomUtils {
         }
         return (String[]) list.toArray(new String[list.size()]);
     }
+
+    /**
+     * Convert the request parameters to a string
+     *
+     * @param request Servlet request
+     * @return Request parameters in the form &amp;name=value
+     */
+    public static String convertRequestParams(HttpServletRequest request) {
+        Enumeration paramNames = request.getParameterNames();
+        StringBuffer buffer = new StringBuffer();
+        while (paramNames.hasMoreElements()) {
+            String name = (String) paramNames.nextElement();
+            String value = request.getParameter(name);
+            buffer.append(URLEncoder.encode(name)).append("=").append(URLEncoder.encode(value));
+            if (paramNames.hasMoreElements()) {
+                buffer.append("&");
+            }
+        }
+        return buffer.toString();
+    }
+
 
     /**
      * Strip off the blog home directory for a requested blog category
