@@ -35,6 +35,10 @@
                 Users can now add, modify, and delete flavors.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin" fixes-bug="863559">
+                Fixed issue where administration plugins could be accessed without authorization.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Weblogs Ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
                 to signal it should not ping weblogs.com, weblo.gs, and Technorati. Also updated the plugin to
