@@ -7,7 +7,7 @@
     </developers>
 
     <changes>
-        <release version="2.14" date="Available from CVS">
+        <release version="2.14" date="April 27, 2004">
             <action dev="czarneckid" type="update" context="Core" fixes-bug="940449">
                 Fixed loading of various properties files, most notably, <code>blog.properties</code>, which did
                 not load properties in UTF-8. The default for the <code>BlojsomProperties</code> class in loading
@@ -61,6 +61,17 @@
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Edit Blog Entries plugin so that entries without titles would not use the entire
                 description as the title.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Comment and Trackback plugins to allow for throttling of comments and trackbacks. Throttling
+                means that a comment or trackback can only be left on your blog from a given IP address every X number
+                of minutes. Times are configured through the following properties
+                for the comment and trackback plugins, respectively.
+                <pre>
+                    plugin-comment-throttle={some number of minutes}
+                    plugin-trackback-throttle={some number of minutes}
+                </pre>
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
