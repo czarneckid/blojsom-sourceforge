@@ -24,6 +24,22 @@
             <action dev="czarneckid" type="add" context="Core">
                 Added BlojsomProperties to properly load properties files in a specific encoding.
             </action>
+
+            <action dev="czarneckid" type="add" context="Core">
+                Added BlojsomSimpleLog4JSystem class to capture Velocity Log4J messages. As noted in the
+                javadocs for this class, it will be removed once a particular bug in Velocity is fixed.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Core">
+                Updated VelocityDispatcher to use new-able VelocityEngine instance instead of global
+                Velocity engine. This allows for a specific user template directory to be searched for
+                Velocity templates along with the fallback to the Velocity CLASSPATH resource loader.
+            </action>
+
+            <action dev="intabulas" type="update" context="Core">
+                Updated BlojsomUtils to allow for other algorithms to be used when generating a string using
+                a digest algorithm.
+            </action>
         </release>
 
         <release version="2.0" date="August 26, 2003">
