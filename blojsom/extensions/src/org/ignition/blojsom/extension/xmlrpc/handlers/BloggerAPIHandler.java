@@ -57,7 +57,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.16 2003-05-01 04:05:54 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.17 2003-05-01 18:25:37 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -114,6 +114,32 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * Blogger API "authorEmail" key
      */
     private static final String MEMBER_AUTHOREMAIL = "authorEmail";
+
+    /**
+     * Blogger API "nickname" key
+     */
+    private static final String MEMBER_NICKNAME = "nickname";
+
+    /**
+     * Blogger API "userid" key
+     */
+    private static final String MEMBER_USERID = "userid";
+
+    /**
+     * Blogger API "email" key
+     */
+    private static final String MEMBER_EMAIL = "email";
+
+    /**
+     * Blogger API "firstname" key
+     */
+    private static final String MEMBER_FIRSTNAME = "firstname";
+
+    /**
+     * Blogger API "lastname" key
+     */
+    private static final String MEMBER_LASTNAME = "lastname";
+
 
     private Blog _blog;
 
@@ -220,13 +246,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                     // Delete Comments
                     File _comments = new File(_blog.getBlogHome() + category + _blog.getBlogCommentsDirectory()
-                            + File.separatorChar + permalink + File.separatorChar);
+                                              + File.separatorChar + permalink + File.separatorChar);
                     removeDirectory(_comments);
 
 
                     // Delete Trackbacks
                     File _trackbacks = new File(_blog.getBlogHome() + category + _blog.getBlogTrackbackDirectory()
-                            + File.separatorChar + permalink + File.separatorChar);
+                                                + File.separatorChar + permalink + File.separatorChar);
                     removeDirectory(_trackbacks);
 
 
@@ -297,13 +323,39 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * @throws XmlRpcException
      * @return
      */
-    public String getUserInfo(String appkey, String userid, String password) throws Exception {
-        _logger.debug("getUserInfo() Called =====[ UNSUPPORTED ]=====");
+    public Object getUserInfo(String appkey, String userid, String password) throws Exception {
+        _logger.debug("getUserInfo() Called =====[ SUPPORTED ]=======");
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+
+        if (_blog.checkAuthorization(userid, password)) {
+
+            Vector results = new Vector();
+            Hashtable userinfo = new Hashtable();
+            userinfo.put(MEMBER_EMAIL, _blog.getBlogOwnerEmail());
+            userinfo.put(MEMBER_NICKNAME, userid);
+            userinfo.put(MEMBER_USERID, "1");
+            userinfo.put(MEMBER_URL, _blog.getBlogURL());
+
+            String _ownerName = _blog.getBlogOwner();
+            int _split = _ownerName.indexOf(" ");
+            if (_split > 0) {
+                userinfo.put(MEMBER_FIRSTNAME, _ownerName.substring(0, _split));
+                userinfo.put(MEMBER_LASTNAME, _ownerName.substring(_split + 1));
+            } else {
+                userinfo.put(MEMBER_FIRSTNAME, "blojsom");
+                userinfo.put(MEMBER_LASTNAME, _ownerName);
+            }
+
+            return userinfo;
+
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+
     }
 
     /**
