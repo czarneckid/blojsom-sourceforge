@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.27 2005-01-11 15:11:24 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.28 2005-01-19 17:59:04 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -513,6 +513,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                         if (blogComments == null) {
                             blogComments = new ArrayList(1);
                         }
+                        _comment.setBlogEntry(entries[0]);
                         blogComments.add(_comment);
                         entries[0].setComments(blogComments);
 

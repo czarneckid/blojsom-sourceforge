@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.33 2005-01-11 15:12:09 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.34 2005-01-19 17:59:06 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -466,6 +466,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
                 if (trackbacks == null) {
                     trackbacks = new ArrayList();
                 }
+                trackback.setBlogEntry(entries[0]);
                 trackbacks.add(trackback);
                 entries[0].setTrackbacks(trackbacks);
             } else {
