@@ -31,7 +31,7 @@
 <p />
 <b>NEW:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">upgrading</a> instructions<br/><br/>
 General:<br />
-- New blacklist.filter file contains regular expressions for use by extensions and plugins to filter content<br/>
+- New <i>blacklist.filter</i> file contains regular expressions for use by extensions and plugins to filter content<br/>
 - An ETag header is now generated along with the Last-Modified header<br/>
 - New <a href="http://archipelago.phrasewise.com/rsd">Really Simple Discovery</a> (RSD) flavor provides support for tools like <a href="http://www.audblog.com">AudBlog</a><br/>
 - Added per-entry meta-data loading that defaults to loading Java properties-sytle meta-data from <i>blog-entry-filename.meta</i><br />
@@ -42,6 +42,10 @@ General:<br />
 - Added <i>blog-file-encoding</i> parameter to <i>blojsom.properties</i> so that blog entries/comments/trackbacks could
 be read and written using a particular file encoding. By default, blojsom uses UTF-8 as the
 file encoding<br />
+- Added new class <tt>org.ignition.blojsom.BlojsomException</tt> and changed the 2 other
+exception classes to subclass from this root exception class<br />
+- File extension for entries posted via XML-RPC is now configurable via the <i>blog-xmlrpc-entry-extension</i>
+parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i>
 <p />
 Extension changes:<br />
 - The newPost() methods for the Blogger and MetaWebLog API now stores the poster's user id as entry

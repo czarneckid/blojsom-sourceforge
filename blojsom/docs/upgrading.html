@@ -72,6 +72,16 @@ For example:
 blog-file-encoding=
 </pre>
 
+8. A parameter has been added to <i>/WEB-INF/blojsom.properties</i> for configuring the blog entry
+file extension for entries written via XML-RPC.<br />
+<i>blog-xmlrpc-entry-extension</i> is not required, however you can add the following line to the
+<i>/WEB-INF/blojsom.properties</i> file for completeness. By default, blojsom will use <i>.txt</i>
+as the file extension.<br />
+For example:
+<pre>
+blog-xmlrpc-entry-extension=.txt
+</pre>
+
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
 1. A parameter has been added to <i>/WEB-INF/blojsom.properties</i>.<br />
