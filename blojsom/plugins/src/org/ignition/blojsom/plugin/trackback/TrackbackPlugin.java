@@ -52,6 +52,7 @@ import java.io.IOException;
  * TrackbackPlugin
  *
  * @author David Czarnecki
+ * @version $Id: TrackbackPlugin.java,v 1.7 2003-03-22 20:03:44 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
