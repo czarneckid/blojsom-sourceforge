@@ -9,7 +9,7 @@
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
 %>
-<rss version="0.91">
+<rss version="0.92">
   <channel>
     <title><%= blogInformation.getBlogName() %></title>
     <link><%= blogInformation.getBlogURL() %></link>
