@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,9 +50,9 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.2 2003-10-17 01:48:06 czarneckid Exp $
  */
-public abstract class BlogEntry implements BlojsomConstants {
+public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
     protected Log _logger = LogFactory.getLog(BlogEntry.class);
 

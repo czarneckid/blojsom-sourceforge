@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.4 2003-10-16 04:52:17 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.5 2003-10-17 01:48:06 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -485,9 +485,8 @@ public class FileBackedBlogEntry extends BlogEntry {
                 bw.write(BlojsomUtils.nullToBlank(_description));
                 bw.close();
             }
-            saveMetaData(blog);
 
-            // Preserve original timestamp of the blog entry
+            // Preserve original timestamp of the blog entry if its available in the meta-data
             if (_metaData.containsKey(BLOG_ENTRY_METADATA_TIMESTAMP)) {
                 try {
                     long originalTimestamp = Long.parseLong((String)_metaData.get(BLOG_ENTRY_METADATA_TIMESTAMP));
@@ -495,7 +494,11 @@ public class FileBackedBlogEntry extends BlogEntry {
                 } catch (NumberFormatException e) {
                     _logger.error(e);
                 }
+            } else { // Otherwise, preserve original timestamp of the blog entry
+                _metaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(_source.lastModified()).toString());
             }
+
+            saveMetaData(blog);
         } catch (IOException e) {
             throw new BlojsomException(e);
         }

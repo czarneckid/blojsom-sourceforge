@@ -46,6 +46,7 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
@@ -75,9 +76,9 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.18 2003-10-16 04:52:17 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.19 2003-10-17 01:48:06 czarneckid Exp $
  */
-public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
+public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
     /**
      * Logger instance
@@ -447,9 +448,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.setTitle(atomEntry.getTitle());
 
                     if (atomEntry.getAuthor() != null) {
-                        blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, atomEntry.getAuthor().getName());
+                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
                     } else {
-                        blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, "AtomAPI");
+                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, "AtomAPI");
                     }
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
@@ -523,7 +524,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.setDescription(atomEntry.getContent(0).getBody());
                     entry.setTitle(atomEntry.getTitle());
                     if (atomEntry.getAuthor() != null) {
-                        blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, atomEntry.getAuthor().getName());
+                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
                     }
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(blog);

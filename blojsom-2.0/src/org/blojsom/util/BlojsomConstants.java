@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.10 2003-10-16 04:52:05 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.11 2003-10-17 01:47:45 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -273,26 +273,6 @@ public interface BlojsomConstants {
      * truncated to this size. NOTE: This only truncates for hash.
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
-
-    /**
-     * Entry Meta Data Key for Poster
-     */
-    public static final String BLOG_METADATA_ENTRY_AUTHOR = "blog-entry-author";
-
-    /**
-     * Entry MetaData File Header
-     */
-    public static final String BLOG_METADATA_HEADER = "blojsom entry metadata";
-
-    /**
-     * Entry Attribute for File()
-     */
-    public static final String SOURCE_ATTRIBUTE = "blog-entry-source";
-
-    /**
-     * Entry meta-data key for entry time
-     */
-    public static final String BLOG_ENTRY_METADATA_TIMESTAMP = "blog-entry-metadata-timestamp";
 
     /**
      * Line separator for the system

@@ -54,7 +54,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.3 2003-10-16 04:52:17 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.4 2003-10-17 01:48:06 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -488,7 +488,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     entry.setAttributes(attributeMap);
                     entry.setCategory(blogid);
                     entry.setDescription(content);
-                    blogEntryMetaData.put(BLOG_METADATA_ENTRY_AUTHOR, userid);
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
                     entry.save(_blog);

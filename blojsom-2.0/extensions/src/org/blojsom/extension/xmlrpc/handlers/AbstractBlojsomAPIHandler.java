@@ -40,15 +40,16 @@ import org.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 
 
 /**
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.1 2003-08-09 20:33:33 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.2 2003-10-17 01:48:06 czarneckid Exp $
  */
-public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
+public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
     public static final int    AUTHORIZATION_EXCEPTION = 0001;
     public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid Username and/or Password";
