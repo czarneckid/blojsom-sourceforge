@@ -57,7 +57,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.8 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.9 2004-01-24 22:43:42 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -72,14 +72,14 @@ public class CommentPlugin extends IPBanningPlugin {
     private static final String COMMENT_PREFIX_IP = "plugin-comment-email-prefix";
 
     /**
+     * Initialization parameter to do plugin autoformatting
+     */
+    private static final String COMMENT_AUTOFORMAT_IP = "plugin-comment-autoformat";
+
+    /**
      * Initialization parameter for the duration of the "remember me" cookies
      */
     private static final String COMMENT_COOKIE_EXPIRATION_DURATION_IP = "plugin-comment-expiration-duration";
-
-    /**
-     *
-     */
-    private static final String COMMENT_AUTOFORMAT_IP = "plugin-comment-autoformat";
 
     /**
      * Request parameter for the "comment"
