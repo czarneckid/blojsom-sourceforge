@@ -19,7 +19,7 @@ See http://xml.apache.org/forrest/linking.html for more info
 
   <about label="About">
     <index label="Index" href="index.html"/>
-    <download label="Download" href="download.html"/>
+    <download label="Download" href="http://sourceforge.net/project/showfiles.php?group_id=72754"/>
     <installation label="Installation" href="install.html"/>
     <customization label="Customization" href="custom.html"/>
     <FAQ label="FAQ" href="faq.html"/>
