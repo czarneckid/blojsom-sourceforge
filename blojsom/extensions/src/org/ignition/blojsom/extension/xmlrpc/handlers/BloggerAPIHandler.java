@@ -40,6 +40,7 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.BlogComment;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
@@ -54,7 +55,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.2 2003-04-13 18:16:09 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.3 2003-04-13 22:52:16 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -106,6 +107,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      */
     private static final String MEMBER_AUTHOREMAIL = "authorEmail";
 
+    private static final String ALTERNATE_EOL = "<br/>";
+
 
     private Blog _blog;
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
@@ -153,7 +156,39 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _logger.info("     PostId: " + postid);
         _logger.info("     UserId: " + userid);
         _logger.info("   Password: " + password);
-        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+
+
+        boolean result = false;
+
+        if (_blog.checkAuthorization(userid, password)) {
+
+            String category;
+            String permalink;
+            String match = "?" + PERMALINK_PARAM + "=";
+
+            int pos = postid.indexOf(match);
+            if (pos != -1) {
+                category = postid.substring(0, pos);
+                permalink = postid.substring(pos + match.length());
+
+                BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
+                if (_entries != null && _entries.length > 0) {
+                    BlogEntry _entry = _entries[0];
+                    //System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
+                    //result = _entry.getSource().delete();
+                } else {
+                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+                }
+            }
+
+
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+
+        return result;
+
     }
 
 
@@ -373,6 +408,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
+                // If blogging tools only can add a <br/> to seperate lines, then this catches that
+                int eolOffset = content.indexOf(10);
+                int brOffset = content.indexOf(ALTERNATE_EOL);
+                if ( ( eolOffset == -1 && brOffset != -1 )  || brOffset < eolOffset ) {
+                  content =  content.substring(0,brOffset) + "\n" + content.substring(brOffset + ALTERNATE_EOL.length());
+                }
+
                 try {
                     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), UTF8));
                     bw.write(content);
@@ -430,7 +472,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 }
 
 
-
                 if (entries != null && entries.length > 0) {
                     for (int x = 0; x < entries.length; x++) {
                         BlogEntry entry = entries[x];
@@ -439,7 +480,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                         entrystruct.put(MEMBER_BLOGID, blogid);
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                        entrystruct.put(MEMBER_CONTENT, entry.getEscapedDescription());
+                        entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
                         entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
                         entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                         entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
