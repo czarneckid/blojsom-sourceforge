@@ -27,7 +27,7 @@
                     After retrieving the blog entries for a request, blojsom will execute the plugins
                     (their order is defined in the
                     <em>blojsom-plugin-chain</em> property of the
-                    <em>plugin.properties</em> file). The
+                    <code>plugin.properties</code> file). The
                     <code>process()</code> method is where the plugin can manipulate the individual blog entries.
                 </li>
                 <li>
@@ -71,7 +71,7 @@
                     <em>plugin-configuration</em> and
                     points to the plugin properties file for the application. Typically, this does not need to
                     change from its value of
-                    <em>plugin.properties</em>. Looking at
+                    <code>plugin.properties</code>. Looking at
                     <em>/WEB-INF/plugin.properties</em>, you will see something like:
                 </p>
                 <source>
@@ -96,7 +96,7 @@
                     user-id will change as appropriate.
                 </p>
                 <p>
-                    In the individual user directories, the <em>plugin.properties</em> file will only contain
+                    In the individual user directories, the <code>plugin.properties</code> file will only contain
                     blojsom-plugin-chain references. The syntax for the value of the
                     <em>&lt;flavor&gt;.blojsom-plugin-chain</em> property is a
                     comma-separated list of the

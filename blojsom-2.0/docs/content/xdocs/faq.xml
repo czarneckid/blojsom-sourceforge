@@ -66,7 +66,7 @@
                     <em>blog-file-extentions</em> and
                     <em>blog-directory-filter</em>
                     entries in
-                    <em>/WEB-INF/blojsom.properties</em>.
+                    <code>/WEB-INF/(user-id)/blog.properties</code>.
                 </p>
             </answer>
         </faq>
@@ -117,7 +117,7 @@
             </question>
             <answer>
                 <p>
-                    Paths such as the <code>blog-home</code> parameter in your individual <code>blog.properties</code>
+                    Paths such as the <code>blog-home</code> parameter in your individual <code>/WEB-INF/(user-id)/blog.properties</code>
                     file should use '/' instead of '\'. For example:
                     <source>
                         ...

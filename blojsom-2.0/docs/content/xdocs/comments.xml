@@ -10,7 +10,7 @@
             <p>
                 Starting with blojsom 1.5, you have the ability to allow users to comment on your blog entries. By default,
                 comments are enabled in the
-                <em>blojsom.properties</em> that ships with blojsom.
+                <code>blojsom.properties</code> that ships with blojsom.
             </p>
             <p>
                 As indicated in the
@@ -62,7 +62,7 @@
                     and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
                     addresses is controlled by the
                     <em>blog-banned-ip-addresses</em> parameter in your individual
-                    <em>/WEB-INF/(user-id)/blog.properties</em>.
+                    <code>/WEB-INF/(user-id)/blog.properties</code>.
                     As an example, the following will ban you from posting locally.
                 </p>
                 <source>
@@ -73,7 +73,7 @@
                     comments left from a particular IP address must wait a configurable number of
                     minutes before another comment can be posted. The comment throttle parameter is
                     controlled by the <em>plugin-comment-throttle</em> parameter in your individual
-                    <em>/WEB-INF/(user-id)/blog.properties</em>. The parameter is specified as minutes.
+                    <code>/WEB-INF/(user-id)/blog.properties</code>. The parameter is specified as minutes.
                 </p>
                 <source>
                     plugin-comment-throttle=5
@@ -84,14 +84,14 @@
                 <p>
                     Expiration of the cookies for the "Remember Me" functionality in the
                     comments plugin can be controlled by the <em>plugin-comment-expiration-duration</em>
-                    parameter in your individual <em>/WEB-INF/(user-id)/blog.properties</em>. This parameter is specified as
+                    parameter in your individual <code>/WEB-INF/(user-id)/blog.properties</code>. This parameter is specified as
                     an integer value in number of seconds until expiration.
                 </p>
             </section>
             <section>
                 <title>Enabling auto-formatting of comments</title>
                 <p>
-                    Add the following to your <em>/WEB-INF/(user-id)/blog.properties</em> if you would like to
+                    Add the following to your <code>/WEB-INF/(user-id)/blog.properties</code> if you would like to
                     enable auto-formatting of comments. This will turn all newline characters into &lt;br/&gt; tags.
                     <source>
                         plugin-comment-autoformat=true
@@ -103,7 +103,7 @@
                 <p>
                     The default subject prefix for comment e-mails is set to <em>[blojsom] Comment on: </em>. If you
                     would like to configure a different prefix for e-mail messages, set the
-                    <em>plugin-comment-email-prefix</em> property in your individual <em>/WEB-INF/(user-id)/blog.properties</em>.
+                    <em>plugin-comment-email-prefix</em> property in your individual <code>/WEB-INF/(user-id)/blog.properties</code>.
                     For example:
                     <source>
                         plugin-comment-email-prefix=[your.blog.com] Comment:

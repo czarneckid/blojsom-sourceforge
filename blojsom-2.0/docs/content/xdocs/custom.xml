@@ -14,7 +14,7 @@
             <p>
                 By default, the
                 <em>blog-default-category-mapping</em> property in your individual
-                <em>blog.properties</em>
+                <code>blog.properties</code>
                 does not contain a value. This means that all your blog categories will be aggregated if someone
                 requests the default or "/" category. blojsom will obey the
                 <em>blog-directory-depth</em> parameter
@@ -55,7 +55,7 @@
                 rss.blog-default-category-mapping=/blojsom, /java
             </source>
             <p>to your individual
-                <em>blog.properties</em> file. In this case, the "/blojsom" and "/java" categories will be
+                <code>blog.properties</code> file. In this case, the "/blojsom" and "/java" categories will be
                 aggregated if someone requests the RSS flavor for the default or "/" category.
 
             </p>
@@ -131,7 +131,7 @@
                 <em>blog.properties</em> was added,
                 <em>blojsom-properties-extensions</em>, which
                 defaults to
-                <em>.properties</em>. As blojsom traverses the blog home directory looking for entries,
+                <code>.properties</code>. As blojsom traverses the blog home directory looking for entries,
                 it will also look for files with the extensions listed in
                 <em>blojsom-properties-extensions</em>. If
                 a file matching an extension listed in this configuration property is found, it will be loaded and
@@ -141,7 +141,7 @@
             </p>
             <p>
                 A sample
-                <em>blojsom.properties</em> file in the blog home directory might look like:
+                <code>category.properties</code> file in the blog home directory might look like:
             </p>
             <source>
                 blojsom.name=the aggregator
@@ -161,7 +161,7 @@
                 description, you could have per-category colors or other personalization features that are extracted
                 by the proper template. An example of printing out a category's alternate name, if found in the category
                 meta-data for a category, is given in the Velocity template for the HTML flavor,
-                <em>html.vm</em>.
+                <code>html.vm</code>.
             </p>
             <p>
                 <link href="screenshots/blojsom-screenshot.jpg">Click here</link> for a screen shot of the meta-data
@@ -175,7 +175,7 @@
             <p>
                 In blojsom 1.9, a per-entry meta-data facility was added to blojsom. A configuration property
                 in your individual
-                <em>blog.properties</em> was added,
+                <code>blog.properties</code> was added,
                 <em>blog-entry-meta-data-extension</em>. There is no
                 default value for this property. If it is left blank, blojsom will not try to look for meta-data
                 for a blog entry. blojsom looks for the appropriate meta-data file by taking the blog entry
@@ -184,7 +184,7 @@
             </p>
             <p>
                 As an example, if this property was set to
-                <em>.properties</em> and you had a blog entry
+                <code>.properties</code> and you had a blog entry
                 titled,
                 <em>some-blog-entry.html</em>, blojsom would look for
                 <em>some-blog-entry.properties</em>.
@@ -212,7 +212,7 @@
         <section>
             <title>Configuring blojsom flavors</title>
             <p>blojsom flavors are configured in
-                <em>WEB-INF/flavor.properties</em>. Here is what the file looks
+                <code>/WEB-INF/(user-id)/flavor.properties</code>. Here is a sample of what the file looks
                 like when you download blojsom.
             </p>
             <source>
@@ -224,7 +224,7 @@
                 <em>flavor template filename</em>,
                 <em>flavor content type</em>. In this configuration, the
                 <em>html</em> flavor uses the
-                <em>html.vm</em> template and also uses a content type of
+                <code>html.vm</code> template and also uses a content type of
                 <em>text/html</em>. Each line must also
                 follow this configuration of
             </p>
@@ -241,7 +241,7 @@
         <section>
             <title>Configuring blojsom dispatchers</title>
             <p>blojsom dispatchers are configured in
-                <em>WEB-INF/dispatcher.properties</em>. Here is what the file
+                <code>WEB-INF/dispatcher.properties</code>. Here is what the file
                 looks like when you download blojsom.
             </p>
             <source>
@@ -257,13 +257,13 @@
             <p>
                 In the above configuration, the
                 <em>html</em> flavor is handled by the
-                <em>html.vm</em> template
+                <code>html.vm</code> template
                 which is dispatched by the
                 <em>org.blojsom.dispatcher.VelocityDispatcher</em>. Got that?
                 OK, well, let's say you wanted to use the JSP template for the HTML flavor to render your blog.
                 Here's how that configuration would look for the
-                <em>flavor.properties</em> and
-                <em>dispatcher.properties</em>, respectively.
+                <code>flavor.properties</code> and
+                <code>dispatcher.properties</code>, respectively.
             </p>
             <p>
                 <em>flavor.properties</em>
@@ -280,8 +280,8 @@
                 vm=org.blojsom.dispatcher.VelocityDispatcher
             </source>
             <p>OK. So, one simple change to the
-                <em>flavor.properties</em> file and no change to the
-                <em>dispatcher.properties</em>. That's it. It's that simple!
+                <code>flavor.properties</code> file and no change to the
+                <code>dispatcher.properties</code>. That's it. It's that simple!
             </p>
             <p>
 
@@ -306,7 +306,7 @@
                 do logging. blojsom also ships with
                 <link href="http://jakarta.apache.org/log4j/docs/index.html">Log4J
                 </link> as its logging package. In the
-                <em>WEB-INF/classes</em> directory, you will find a file called
+                <code>/WEB-INF/classes</code> directory, you will find a file called
                 <code>log4j.properties</code>. Developers who have downloaded blojsom from CVS will find this file in the
                 directory where blojsom was checked out to in
                 <em>/properties</em>.

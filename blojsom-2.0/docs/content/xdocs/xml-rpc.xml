@@ -19,7 +19,7 @@
             </p>
             <p>
                 Edit the contents of
-                <em>/WEB-INF/(user-id)/authorization.properties</em> to setup all the valid
+                <code>/WEB-INF/(user-id)/authorization.properties</code> to setup all the valid
                 username/password pairs to control who can post via XML-RPC. And you're done ;)
             </p>
             <p>
@@ -67,11 +67,11 @@
             <title>Registering a custom XML-RPC handler</title>
             <p>
                 To register your custom XML-RPC handler with blojsom, you must modify the
-                <em>/WEB-INF/xmlrpc.properties</em>
+                <code>/WEB-INF/xmlrpc.properties</code>
                 file. The name of this file can be configured via the
                 <em>blog-xmlrpc-configuration</em> initialization
                 parameter in your
-                <em>web.xml</em> file.
+                <code>/WEB-INF/web.xml</code> file.
             </p>
             <p>
                 The contents of the file looks similar to the following:

@@ -18,7 +18,7 @@
         <section>
             <title>Authorizing Users for the Administration Console</title>
             <p>
-                Authorized users are added to the <em>/WEB-INF/(user-id)/authorization.properties</em> file.
+                Authorized users are added to the <code>/WEB-INF/(user-id)/authorization.properties</code> file.
                 The usernames and passwords in this file control the users that can access the individual blog
                 either via the administration console or XML-RPC. The format of this file is as follows.
                 <source>
@@ -34,7 +34,7 @@
                 for the administration functionality. The default administration flavor is <em>admin</em>. You can
                 access the administration console of your blog by adding <em>?flavor=admin</em> when accessing your blog.
                 At the login prompt for the administration console, use one of the authorized usernames and passwords
-                that you setup in the <em>/WEB-INF/(user-id)/authorization.properties</em> file.
+                that you setup in the <code>/WEB-INF/(user-id)/authorization.properties</code> file.
             </p>
         </section>
     </body>

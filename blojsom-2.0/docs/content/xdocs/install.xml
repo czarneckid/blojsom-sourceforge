@@ -38,7 +38,7 @@
                 </p>
                 <p>
                     3. Configure the
-                    <em>/WEB-INF/blojsom.properties</em> file which contains global properties
+                    <code>/WEB-INF/blojsom.properties</code> file which contains global properties
                     for blojsom.
                 </p>
                 <table>
@@ -87,7 +87,7 @@
                         <td>This parameter will be used by blojsom to generate the proper path from which
                         to retrieve the page templates for the individual users. For example, in a default blojsom
  installation, requesting the default flavor (HTML) for the default user would cause the dispatcher to look for
-                            <em>/WEB-INF/default/templates/html.vm</em>.
+                            <code>/WEB-INF/default/templates/html.vm</code>.
                         </td>
                     </tr>
                 </table>
@@ -105,7 +105,7 @@
                 </p>
                 <p>
                     5. Configure the appropriate
-                    <em>/WEB-INF/(user-id)/blog.properties</em> file for your blog. This will need to be done for each
+                    <code>/WEB-INF/(user-id)/blog.properties</code> file for your blog. This will need to be done for each
                     of the users that you have indicated in the
                     <em>blojsom-users</em> property.
                 </p>
@@ -174,10 +174,10 @@
                             NOTE:
                             The default
                             <em>servlet-mapping</em> configured in the
-                            <em>web.xml</em> for blojsom is set
+                            <code>/WEB-INF/web.xml</code> for blojsom is set
                             to pass all requests for
                             <em>/blog/*</em> to blojsom. If you change the mapping in the
-                            <em>web.xml</em> file, then you will need to make sure that change is reflected in the URL
+                            <code>/WEN-INF/web.xml</code> file, then you will need to make sure that change is reflected in the URL
                             for your blog.
                         </td>
                     </tr>

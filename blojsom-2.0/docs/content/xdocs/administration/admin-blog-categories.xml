@@ -17,7 +17,7 @@
             <title>Installation and Setup</title>
             <p>
                 In your global
-                <em>plugin.properties</em> file, add the following line:
+                <code>plugin.properties</code> file, add the following line:
             </p>
             <source>
                 edit-blog-categories=org.blojsom.plugin.admin.EditBlogCategoriesPlugin

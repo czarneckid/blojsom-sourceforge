@@ -18,14 +18,14 @@
             <title>Installation and Setup</title>
             <p>
                 In your global
-                <em>plugin.properties</em> file, add the following line:
+                <code>plugin.properties</code> file, add the following line:
             </p>
             <source>
                 file-upload=org.blojsom.plugin.admin.FileUploadPlugin
             </source>
             <p>
-                The File Upload plugin has its own configuration file, <em>plugin-admin-upload.properties</em>, that
-                is referenced from an initialization parameter in the <em>/WEB-INF/web.xml</em> file.
+                The File Upload plugin has its own configuration file, <code>plugin-admin-upload.properties</code>, that
+                is referenced from an initialization parameter in the <code>/WEB-INF/web.xml</code> file.
                 <source>
                     &lt;init-param&gt;
                         &lt;param-name&gt;plugin-admin-upload&lt;/param-name&gt;

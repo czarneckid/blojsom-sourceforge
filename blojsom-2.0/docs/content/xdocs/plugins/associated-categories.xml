@@ -20,7 +20,7 @@
             <title>installation and setup</title>
             <p>
                 In your global
-                <em>plugin.properties</em> file, add the following line:
+                <code>plugin.properties</code> file, add the following line:
             </p>
             <source>
                 associated-categories=org.blojsom.plugin.meta.AssociatedCategoriesPlugin

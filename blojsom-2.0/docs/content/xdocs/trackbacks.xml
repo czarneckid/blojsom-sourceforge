@@ -79,7 +79,7 @@
                 and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
                 addresses is controlled by the
                 <em>blog-banned-ip-addresses</em> parameter in your individual
-                <em>/WEB-INF/(user-id)/blog.properties</em>.
+                <code>/WEB-INF/(user-id)/blog.properties</code>.
                 As an example, the following will ban you from posting locally.
             </p>
             <source>
@@ -103,7 +103,7 @@
                 <em>[blojsom] Trackback on: </em>. If you
                     would like to configure a different prefix for e-mail messages, set the
                 <em>plugin-trackback-email-prefix</em> property in your individual
-                <em>/WEB-INF/(user-id)/blog.properties</em>.
+                <code>/WEB-INF/(user-id)/blog.properties</code>.
                     For example:
                 <source>
                         plugin-trackback-email-prefix=[your.blog.com] Trackback:
