@@ -37,6 +37,9 @@ package org.blojsom.dispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.util.EnumerationIterator;
@@ -61,7 +64,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.18 2005-03-05 18:10:16 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.19 2005-03-05 20:09:45 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -267,20 +270,29 @@ public class VelocityDispatcher implements BlojsomDispatcher {
          *
          * @param template VTL markup
          * @return Processed VTL or <code>null</code> if an error in evaluation
-         * @throws Exception If there is an error evaluating the template
          */
-        public String evaluate(String template) throws Exception {
+        public String evaluate(String template) {
             if (BlojsomUtils.checkNullOrBlank(template)) {
                 return null;
             }
 
             StringWriter sw = new StringWriter();
-            boolean success;
+            boolean success = false;
 
-            if (_velocityEngine == null) {
-                success = Velocity.evaluate(_velocityContext, sw, LOG_TAG, template);
-            } else {
-                success = _velocityEngine.evaluate(_velocityContext, sw, LOG_TAG, template);
+            try {
+                if (_velocityEngine == null) {
+                    success = Velocity.evaluate(_velocityContext, sw, LOG_TAG, template);
+                } else {
+                    success = _velocityEngine.evaluate(_velocityContext, sw, LOG_TAG, template);
+                }
+            } catch (ParseErrorException e) {
+                _logger.error(e);
+            } catch (MethodInvocationException e) {
+                _logger.error(e);
+            } catch (ResourceNotFoundException e) {
+                _logger.error(e);
+            } catch (IOException e) {
+                _logger.error(e);
             }
 
             if (success) {
