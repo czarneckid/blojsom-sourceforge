@@ -25,11 +25,8 @@ Available categories:
     <p>$entry.getDescription()</p>
     </div>
     <p class="weblogbottomline"></p>
-    $totalEntries = $totalEntries + 1
+    #set( $totalEntries = $totalEntries + 1)
 #end
-
-<p />
-
 #if ($totalEntries > 0)
     Available categories:
     #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
