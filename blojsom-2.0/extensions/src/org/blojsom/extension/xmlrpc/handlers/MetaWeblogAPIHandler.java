@@ -54,11 +54,11 @@ import java.util.*;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
- *
+ * <p/>
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.8 2004-01-11 03:58:35 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.9 2004-01-18 20:30:14 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -107,6 +107,26 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     private static final String MEMBER_BITS = "bits";
 
     /**
+     * MetaWeblog API "permaLink" key
+     */
+    private static final String MEMBER_PERMALINK = "permaLink";
+
+    /**
+     * MetaWeblog API "dateCreated" key
+     */
+    private static final String MEMBER_DATE_CREATED = "dateCreated";
+
+    /**
+     * MetaWeblog API "categories" key
+     */
+    private static final String MEMBER_CATEGORIES = "categories";
+
+    /**
+     * MetaWeblog API "postid" key
+     */
+    private static final String MEMBER_POSTID = "postid";
+
+    /**
      * MetaWeblog API "url" key
      */
     private static final String MEMBER_URL = "url";
@@ -139,8 +159,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
      * Attach a Blog instance to the API Handler so that it can interact with the blog
      *
      * @param blogUser an instance of BlogUser
-     * @see org.blojsom.blog.BlogUser
      * @throws BlojsomException If there is an error setting the blog instance or properties for the handler
+     * @see org.blojsom.blog.BlogUser
      */
     public void setBlogUser(BlogUser blogUser) throws BlojsomException {
         _blogUser = blogUser;
@@ -196,11 +216,11 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Authenticates a user and returns the categories available in the blojsom
      *
-     * @param blogid Dummy Value for Blojsom
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param blogid   Dummy Value for Blojsom
+     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
-     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
      * @return Blog category list
+     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
      */
     public Object getCategories(String blogid, String userid, String password) throws Exception {
         _logger.debug("getCategories() Called =====[ SUPPORTED ]=====");
@@ -251,14 +271,14 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Edits a given post. Optionally, will publish the blog after making the edit
      *
-     * @param postid Unique identifier of the post to be changed
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param postid   Unique identifier of the post to be changed
+     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
-     * @param struct Contents of the post
-     * @param publish If true, the blog will be published immediately after the post is made
-     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
-     * or if the entry permalink ID is invalid
+     * @param struct   Contents of the post
+     * @param publish  If true, the blog will be published immediately after the post is made
      * @return <code>true</code> if the entry was edited, <code>false</code> otherwise
+     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
+     *                         or if the entry permalink ID is invalid
      */
     public boolean editPost(String postid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
         _logger.debug("editPost() Called ========[ SUPPORTED ]=====");
@@ -270,54 +290,62 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         if (_blog.checkAuthorization(userid, password)) {
             boolean result = false;
 
-            String category;
-            String permalink;
+            String category = null;
+            String permalink = null;
             String match = "?" + PERMALINK_PARAM + "=";
 
             int pos = postid.indexOf(match);
-            if (pos != -1) {
+
+            // Look for categories in struct
+            if (pos == -1) {
+                Vector categories = (Vector) struct.get(MEMBER_CATEGORIES);
+                if (categories == null) {
+                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+                } else {
+                    category = (String) categories.get(0);
+                    permalink = postid;
+                }
+            } else if (pos != -1) {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
                 permalink = postid.substring(pos + match.length());
+            }
 
-                BlogCategory blogCategory = _fetcher.newBlogCategory();
-                blogCategory.setCategory(category);
-                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
+            BlogCategory blogCategory = _fetcher.newBlogCategory();
+            blogCategory.setCategory(category);
+            blogCategory.setCategoryURL(_blog.getBlogURL() + category);
 
-                Map fetchMap = new HashMap();
-                fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
-                fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
-                BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
+            Map fetchMap = new HashMap();
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+            BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, _blogUser);
 
-                if (entries != null && entries.length > 0) {
-                    BlogEntry entry = entries[0];
+            if (entries != null && entries.length > 0) {
+                BlogEntry entry = entries[0];
 
-                    try {
-                        Hashtable postcontent = struct;
+                try {
+                    Hashtable postcontent = struct;
 
-                        String title = (String) postcontent.get(MEMBER_TITLE);
-                        String description = (String) postcontent.get(MEMBER_DESCRIPTION);
+                    String title = (String) postcontent.get(MEMBER_TITLE);
+                    String description = (String) postcontent.get(MEMBER_DESCRIPTION);
 
-                        if (title == null) {
-                            title = "No Title";
-                        }
-
-                        String hashable = description;
-
-                        if (description.length() > MAX_HASHABLE_LENGTH) {
-                            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-                        }
-
-                        entry.setTitle(title);
-                        entry.setDescription(description);
-                        entry.save(_blogUser);
-                        result = true;
-                    } catch (BlojsomException e) {
-                        _logger.error(e);
-                        throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                    if (title == null) {
+                        title = "No Title";
                     }
-                } else {
-                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+
+                    String hashable = description;
+
+                    if (description.length() > MAX_HASHABLE_LENGTH) {
+                        hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+                    }
+
+                    entry.setTitle(title);
+                    entry.setDescription(description);
+                    entry.save(_blogUser);
+                    result = true;
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
                 }
             } else {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
@@ -334,13 +362,13 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
      *
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param blogid   Unique identifier of the blog the post will be added to
+     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
-     * @param struct Contents of the post
-     * @param publish If true, the blog will be published immediately after the post is made
-     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
+     * @param struct   Contents of the post
+     * @param publish  If true, the blog will be published immediately after the post is made
      * @return Post ID of the added entry
+     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
      */
     public String newPost(String blogid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
         _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
@@ -406,12 +434,12 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Retrieves a given post from the blog
      *
-     * @param postid Unique identifier of the post to be changed
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param postid   Unique identifier of the post to be changed
+     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
      * @return Structure containing the minimal attributes for the MetaWeblog API getPost() method: title, link, and description
      * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
-     * or if the entry permalink ID is invalid
+     *                         or if the entry permalink ID is invalid
      * @since blojsom 1.9.4
      */
     public Object getPost(String postid, String userid, String password) throws Exception {
@@ -448,6 +476,13 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                     postcontent.put(MEMBER_TITLE, entry.getTitle());
                     postcontent.put(MEMBER_LINK, entry.getPermalink());
                     postcontent.put(MEMBER_DESCRIPTION, entry.getDescription());
+                    postcontent.put(MEMBER_DATE_CREATED, entry.getDate());
+                    postcontent.put(MEMBER_PERMALINK, entry.getLink());
+                    postcontent.put(MEMBER_POSTID, entry.getId());
+
+                    Vector postCategories = new Vector(1);
+                    postCategories.add(entry.getCategory());
+                    postcontent.put(MEMBER_CATEGORIES, postCategories);
 
                     return postcontent;
                 } else {
@@ -465,11 +500,10 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Retrieves a set of recent posts to the blog
      *
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
-     * @param password Password for said username
+     * @param blogid        Unique identifier of the blog the post will be added to
+     * @param userid        Login for a MetaWeblog user who has permission to post to the blog
+     * @param password      Password for said username
      * @param numberOfPosts Number of posts to be retrieved from the blog
-     *
      * @return Array of structures containing the minimal attributes for the MetaWeblog API getPost() method: title, link, and description
      * @throws Exception If the user was not authenticated correctly
      * @since blojsom 1.9.5
@@ -502,6 +536,13 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                     postcontent.put(MEMBER_TITLE, entry.getTitle());
                     postcontent.put(MEMBER_LINK, entry.getPermalink());
                     postcontent.put(MEMBER_DESCRIPTION, entry.getDescription());
+                    postcontent.put(MEMBER_DATE_CREATED, entry.getDate());
+                    postcontent.put(MEMBER_PERMALINK, entry.getLink());
+                    postcontent.put(MEMBER_POSTID, entry.getId());
+
+                    Vector postCategories = new Vector(1);
+                    postCategories.add(entry.getCategory());
+                    postcontent.put(MEMBER_CATEGORIES, postCategories);
                     blogEntries.add(postcontent);
                 }
             }
@@ -516,13 +557,13 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Uploads an object to the blog to a specified directory
      *
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param blogid   Unique identifier of the blog the post will be added to
+     * @param userid   Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
-     * @param struct Upload structure defined by the MetaWeblog API
+     * @param struct   Upload structure defined by the MetaWeblog API
      * @return Structure containing a link to the uploaded media object
      * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
-     * or if the MIME type of the upload object is not accepted
+     *                         or if the MIME type of the upload object is not accepted
      * @since blojsom 1.9.4
      */
     public Object newMediaObject(String blogid, String userid, String password, Hashtable struct) throws Exception {
