@@ -56,7 +56,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.11 2004-02-06 02:48:59 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.12 2004-02-06 20:11:37 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -254,26 +254,26 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
             }
 
             // Check for trackback throttling
-            String commentThrottleValue = blog.getBlogProperty(TRACKBACK_THROTTLE_MINUTES_IP);
-            if (!BlojsomUtils.checkNullOrBlank(commentThrottleValue)) {
-                int commentThrottleMinutes;
+            String trackbackThrottleValue = blog.getBlogProperty(TRACKBACK_THROTTLE_MINUTES_IP);
+            if (!BlojsomUtils.checkNullOrBlank(trackbackThrottleValue)) {
+                int trackbackThrottleMinutes;
 
                 try {
-                    commentThrottleMinutes = Integer.parseInt(commentThrottleValue);
+                    trackbackThrottleMinutes = Integer.parseInt(trackbackThrottleValue);
                 } catch (NumberFormatException e) {
-                    commentThrottleMinutes = TRACKBACK_THROTTLE_DEFAULT_MINUTES;
+                    trackbackThrottleMinutes = TRACKBACK_THROTTLE_DEFAULT_MINUTES;
                 }
-                _logger.debug("Comment throttling enabled at: " + commentThrottleMinutes + " minutes");
+                _logger.debug("Trackback throttling enabled at: " + trackbackThrottleMinutes + " minutes");
 
                 remoteIPAddress = httpServletRequest.getRemoteAddr();
                 if (_ipAddressTrackbackTimes.containsKey(remoteIPAddress)) {
                     Calendar currentTime = Calendar.getInstance();
-                    Calendar timeOfLastComment = (Calendar) _ipAddressTrackbackTimes.get(remoteIPAddress);
-                    long timeDifference = currentTime.getTimeInMillis() - timeOfLastComment.getTimeInMillis();
+                    Calendar timeOfLastTrackback = (Calendar) _ipAddressTrackbackTimes.get(remoteIPAddress);
+                    long timeDifference = currentTime.getTimeInMillis() - timeOfLastTrackback.getTimeInMillis();
 
                     long differenceInMinutes = timeDifference / (60 * 1000);
-                    if (differenceInMinutes < commentThrottleMinutes) {
-                        _logger.debug("Comment throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + commentThrottleMinutes + " minutes");
+                    if (differenceInMinutes < trackbackThrottleMinutes) {
+                        _logger.debug("Trackback throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + trackbackThrottleMinutes + " minutes");
 
                         context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
                         context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trackback throttling enabled.");
@@ -281,7 +281,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
                         return entries;
                     } else {
-                        _logger.debug("Comment throttle enabled. Resetting date of last comment to current time");
+                        _logger.debug("Trackback throttle enabled. Resetting date of last comment to current time");
                         _ipAddressTrackbackTimes.put(remoteIPAddress, currentTime);
                     }
                 } else {
