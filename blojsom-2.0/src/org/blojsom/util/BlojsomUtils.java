@@ -56,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.53 2005-01-11 18:38:03 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.54 2005-01-14 18:15:31 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1574,6 +1574,31 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return result.toString();
+    }
+
+    /**
+     * Convert a list of values to a {@link Map}. <code>null</code> values are not placed
+     * in the returned <code>Map</code>.
+     *
+     * @param values List of values
+     * @return {@link Map} where each key and value pair is from the list of values
+     * @since blojsom 2.23
+     */
+    public static Map listToMap(List values) {
+        Map valueMap = new HashMap();
+
+        if (values != null && values.size() > 0) {
+            Iterator valueIterator = values.iterator();
+            Object value;
+            while (valueIterator.hasNext()) {
+                value = valueIterator.next();
+                if (value != null) {
+                    valueMap.put(value, value);
+                }
+            }
+        }
+
+        return valueMap;
     }
 
     /**
