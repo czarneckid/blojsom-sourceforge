@@ -79,7 +79,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.40 2004-07-15 22:52:50 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.41 2004-07-16 20:52:31 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -279,7 +279,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 SearchResults searchResult = new SearchResultsImpl();
                 for (int x = 0; x < entries.length; x++) {
                     BlogEntry entry = entries[x];
-                    Entry atomentry = AtomUtils.fromBlogEntrySearch(blog, blogUser, entry, ATOM_SERVLETMAPPING);
+                    Entry atomentry = AtomUtils.fromBlogEntrySearch(blog, blogUser, entry, request.getServletPath());
                     searchResult.addEntry(atomentry);
                 }
 
@@ -369,10 +369,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      *
      * @param blog Blog Instance
      * @param user BlogUser Instance
+     * @param servletPath URL path to Atom API servlet
      * @return URL appropriate for introspection
      */
-    private String createIntrospectionResponse(Blog blog, BlogUser user) {
-        String atomuri = blog.getBlogBaseURL() + ATOM_SERVLETMAPPING + user.getId() + "/";
+    private String createIntrospectionResponse(Blog blog, BlogUser user, String servletPath) {
+        String atomuri = blog.getBlogBaseURL() + servletPath + "/" + user.getId() + "/";
         String atomuri2 = blog.getBlogURL() + "?flavor=atom";
 
         Feed feed = SyndicationFactory.newSyndicationFeed();
@@ -464,7 +465,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         if (isAuthorized(blogUser, httpServletRequest)) {
             if (!hasParams) {
-                content = createIntrospectionResponse(blog, blogUser);
+                content = createIntrospectionResponse(blog, blogUser, httpServletRequest.getServletPath());
                 httpServletResponse.setContentType(CONTENTTYPE_ATOM);
 
             } else if (isSearchRequest(httpServletRequest)) {
@@ -489,10 +490,10 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                     if (entries != null && entries.length > 0) {
                         BlogEntry entry = entries[0];
-                        Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry);
+                        Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
 
 
-                        String edituri = blog.getBlogBaseURL() + "/atomapi" + entry.getEncodedCategory() + "/?permalink=" + entry.getPermalink();
+                        String edituri = blog.getBlogBaseURL() + httpServletRequest.getServletPath() + entry.getEncodedCategory() + "/?permalink=" + entry.getPermalink();
                         LinkImpl link = new LinkImpl();
                         link.setHref(edituri);
                         link.setRelationship(AtomConstants.Rel.SERVICE_EDIT);

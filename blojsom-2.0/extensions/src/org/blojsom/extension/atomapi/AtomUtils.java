@@ -55,7 +55,7 @@ import java.util.Date;
  * AtomUtils
  *
  * @author Mark Lussier
- * @version $Id: AtomUtils.java,v 1.15 2004-04-29 03:15:54 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.16 2004-07-16 20:52:31 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomUtils implements AtomAPIConstants {
@@ -80,9 +80,10 @@ public class AtomUtils implements AtomAPIConstants {
      * @param blog      Blog instance
      * @param user      BlogUser instance
      * @param blogentry BlogEntry to convert
+     * @param servletPath URL path to Atom API servlet
      * @return Entry object populated from the BlogEntry
      */
-    public static Entry fromBlogEntry(Blog blog, BlogUser user, BlogEntry blogentry) {
+    public static Entry fromBlogEntry(Blog blog, BlogUser user, BlogEntry blogentry, String servletPath) {
         Entry result = new EntryImpl();
         result.setTitle(blogentry.getEscapedTitle());
         result.setSummary(blogentry.getEscapedTitle());
@@ -102,7 +103,7 @@ public class AtomUtils implements AtomAPIConstants {
         Link editlink = new LinkImpl();
         editlink.setType("application/x.atom+xml");
         editlink.setRelationship("service.edit");
-        editlink.setHref(blog.getBlogBaseURL() + "/atomapi" + blogentry.getCategory() + "/?permalink=" + blogentry.getPermalink());
+        editlink.setHref(blog.getBlogBaseURL() + servletPath + blogentry.getCategory() + "/?permalink=" + blogentry.getPermalink());
         result.addLink(editlink);
 
 
