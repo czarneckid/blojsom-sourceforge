@@ -58,7 +58,7 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.32 2003-07-07 01:50:31 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.33 2003-07-07 01:52:02 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -160,8 +160,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             throw new BlojsomException("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
         }
 
-        if (!_uploadDirectory.endsWith(File.separator)) {
-            _uploadDirectory += File.separator;
+        if (!_uploadDirectory.endsWith("/")) {
+            _uploadDirectory += "/";
         }
 
         _acceptedMimeTypes = new HashMap(3);
