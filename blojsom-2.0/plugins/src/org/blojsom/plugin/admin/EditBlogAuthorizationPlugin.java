@@ -52,12 +52,13 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 /**
  * EditBlogAuthorizationPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.15 2005-01-23 23:35:06 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.16 2005-01-30 17:51:43 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -212,7 +213,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             }
         }
 
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_AUTHORIZATION_MAP, Collections.unmodifiableMap(user.getBlog().getAuthorization()));
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_AUTHORIZATION_MAP, Collections.unmodifiableMap(new TreeMap(user.getBlog().getAuthorization())));
         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
 
         return entries;
