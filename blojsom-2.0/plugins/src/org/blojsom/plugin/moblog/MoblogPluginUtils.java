@@ -50,7 +50,7 @@ import java.util.Properties;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.7 2005-01-10 21:28:46 intabulas Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.8 2005-01-10 21:46:20 intabulas Exp $
  * @since blojsom 2.16
  */
 public class MoblogPluginUtils {
@@ -167,10 +167,6 @@ public class MoblogPluginUtils {
 
                     Boolean enabled = Boolean.valueOf(moblogProperties.getProperty(MoblogPlugin.PROPERTY_ENABLED, "false"));
                     mailbox.setEnabled(enabled.booleanValue());
-
-
-                    Boolean normalize = Boolean.valueOf(moblogProperties.getProperty(MoblogPlugin.PROPERTY_NORMALIZE, "false"));
-                    mailbox.setCaseInsensativeMimeTypes(normalize.booleanValue());
 
                     String[] types;
 
