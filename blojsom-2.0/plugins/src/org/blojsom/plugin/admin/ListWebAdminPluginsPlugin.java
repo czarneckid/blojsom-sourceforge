@@ -34,29 +34,29 @@
  */
 package org.blojsom.plugin.admin;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.BlojsomPlugin;
+import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.BlojsomException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletConfig;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Iterator;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * List Web Admin Plugins Plugin
  *
  * @author David Czarnecki
- * @version $Id: ListWebAdminPluginsPlugin.java,v 1.2 2004-06-10 01:17:44 czarneckid Exp $
+ * @version $Id: ListWebAdminPluginsPlugin.java,v 1.3 2004-06-12 23:01:11 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class ListWebAdminPluginsPlugin extends BaseAdminPlugin {
@@ -84,7 +84,7 @@ public class ListWebAdminPluginsPlugin extends BaseAdminPlugin {
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
-        _plugins = new HashMap();
+        _plugins = new TreeMap();
 
         String pluginConfiguration = servletConfig.getInitParameter(BLOJSOM_PLUGIN_CONFIGURATION_IP);
         try {
