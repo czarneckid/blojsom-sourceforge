@@ -32,6 +32,10 @@
                 be used for obfuscating e-mail addresses on the comment page.
             </action>
 
+            <action dev="intabulas" type="add" context="Plugin">
+                Added XPath and XPathSearch plugin to allow for XPath queries to be made against a blog.
+            </action>
+
             <action dev="czarneckid" type="update" context="Library">
                 Updated OSCache to 2.0.
             </action>
