@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.29 2003-03-18 03:13:37 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.30 2003-03-21 04:07:39 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -243,7 +243,7 @@ public class BlojsomUtils implements BlojsomConstants {
         if (servletPath == null || "".equals(servletPath)) {
             return blogURL;
         }
-        int servletPathIndex = blogURL.lastIndexOf(servletPath);
+        int servletPathIndex = blogURL.indexOf(servletPath, 7);
         if (servletPathIndex == -1) {
             return blogURL;
         }
