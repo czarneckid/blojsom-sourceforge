@@ -46,7 +46,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.12 2003-07-04 20:29:15 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.13 2003-08-04 15:26:44 intabulas Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -119,7 +119,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @return Blog Id
      */
     public String getId() {
-        return _category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(_source.getName());
+        return _category + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(_source.getName());
     }
 
     /**
@@ -522,14 +522,14 @@ public class FileBackedBlogEntry extends BlogEntry {
         }
 
         // Delete comments
-        File _comments = new File(blog.getBlogHome() + _category + blog.getBlogCommentsDirectory()
+        File comments = new File(blog.getBlogHome() + _category + blog.getBlogCommentsDirectory()
                 + File.separatorChar + _source.getName() + File.separatorChar);
-        removeDirectory(_comments);
+        removeDirectory(comments);
 
         // Delete trackbacks
-        File _trackbacks = new File(blog.getBlogHome() + _category + blog.getBlogTrackbackDirectory()
+        File trackbacks = new File(blog.getBlogHome() + _category + blog.getBlogTrackbackDirectory()
                 + File.separatorChar + _source.getName() + File.separatorChar);
-        removeDirectory(_trackbacks);
+        removeDirectory(trackbacks);
 
         // Delete meta-data
         File metaFile = new File(blog.getBlogHome() + _category + BlojsomUtils.getFilename(_source.getName())
