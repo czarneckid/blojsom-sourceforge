@@ -166,4 +166,5 @@ public interface BlojsomConstants {
     static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
     static final String BLOG_OWNER = "blog-owner";
     static final String BLOG_OWNER_EMAIL = "blog-owner-email";
+    static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
 }
