@@ -85,6 +85,22 @@ public class BlojsomUtils {
     }
 
     /**
+     * Return a URL to the main blog site without the servlet path requested
+     *
+     * @param blogURL URL for the blog
+     * @param servletPath Servlet path under which the blog is placed
+     * @return URL to the blog up to the servlet path
+     */
+    public static String getBlogSiteURL(String blogURL, String servletPath) {
+        int servletPathIndex = blogURL.indexOf(servletPath, 6);
+        if (servletPathIndex == -1) {
+            return blogURL;
+        }
+
+        return blogURL.substring(0, servletPathIndex);
+    }
+
+    /**
      * Return a list of categories for the blog that are appropriate in a hyperlink
      *
      * @param blogURL URL for the blog
