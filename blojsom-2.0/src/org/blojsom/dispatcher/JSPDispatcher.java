@@ -54,7 +54,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.9 2003-10-14 01:42:08 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.10 2003-11-05 13:06:48 czarneckid Exp $
  */
 public class JSPDispatcher implements BlojsomDispatcher {
 
@@ -80,10 +80,8 @@ public class JSPDispatcher implements BlojsomDispatcher {
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
         _context = servletConfig.getServletContext();
         _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
-        _templatesDirectory = blojsomConfiguration.getBlojsomPropertyAsString(TEMPLATES_DIRECTORY_IP);
-        if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
-            _templatesDirectory = DEFAULT_TEMPLATES_DIRECTORY;
-        }
+        _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
+
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
         _logger.debug("Initialized JSP dispatcher");

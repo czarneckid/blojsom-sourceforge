@@ -50,12 +50,9 @@ import java.util.Map;
  * BlojsomDispatcher
  *
  * @author David Czarnecki
- * @version $Id: BlojsomDispatcher.java,v 1.1 2003-08-23 04:03:12 czarneckid Exp $
+ * @version $Id: BlojsomDispatcher.java,v 1.2 2003-11-05 13:06:48 czarneckid Exp $
  */
 public interface BlojsomDispatcher extends BlojsomConstants {
-
-    static final String TEMPLATES_DIRECTORY_IP = "blojsom-templates-directory";
-    static final String DEFAULT_TEMPLATES_DIRECTORY = "/templates/";
 
     /**
      * Initialization method for blojsom dispatchers

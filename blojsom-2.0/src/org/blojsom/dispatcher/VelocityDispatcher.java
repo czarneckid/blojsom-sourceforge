@@ -57,7 +57,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.10 2003-10-14 01:42:08 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.11 2003-11-05 13:06:48 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -85,10 +85,8 @@ public class VelocityDispatcher implements BlojsomDispatcher {
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomException {
         _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
-        _templatesDirectory = blojsomConfiguration.getBlojsomPropertyAsString(TEMPLATES_DIRECTORY_IP);
-        if (_templatesDirectory == null || "".equals(_templatesDirectory)) {
-            _templatesDirectory = DEFAULT_TEMPLATES_DIRECTORY;
-        }
+        _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
+
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
         String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
