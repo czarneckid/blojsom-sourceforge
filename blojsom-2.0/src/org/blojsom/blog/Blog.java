@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.2 2003-08-15 11:35:56 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.3 2003-09-11 17:12:50 intabulas Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -245,7 +245,7 @@ public class Blog implements BlojsomConstants {
         if ("true".equalsIgnoreCase(blogEmailEnabled)) {
             _blogEmailEnabled = Boolean.valueOf(true);
         } else {
-            _blogEmailEnabled =  Boolean.valueOf(false);
+            _blogEmailEnabled = Boolean.valueOf(false);
         }
         _blogProperties.put(BLOG_EMAIL_ENABLED_IP, _blogEmailEnabled);
 
@@ -422,6 +422,15 @@ public class Blog implements BlojsomConstants {
 
         return result;
     }
+
+    /**
+     * Returns the Authorization Map for this Blog
+     * @return a Map of authorization
+     */
+    public Map getAuthorizationMap() {
+        return _authorization;
+    }
+
 
     /**
      * Return the blog owner's e-mail address
