@@ -67,6 +67,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private final static String BLOG_FILE_EXTENSIONS_IP = "blog-file-extensions";
     private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
     private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
+    private static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
 
     // BlojsomServlet initialization properties from web.xml
     private final static String BLOG_FLAVOR_CONFIGURATION_IP = "blog-flavor-configuration";
@@ -151,7 +152,22 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             _blog = new Blog(blogHome, blogName, blogDescription, blogURL, blogLanguage,
                     blogFileExtensions, blogPropertiesExtensions, blogDepth);
 
-            int blogEntriesDisplay = Integer.parseInt(configurationProperties.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
+            int blogDisplayEntries = Integer.parseInt(configurationProperties.getProperty(BLOG_ENTRIES_DISPLAY_IP, Integer.toString(BLOG_ENTRIES_DISPLAY_DEFAULT)));
+            _blog.setBlogDisplayEntries(blogDisplayEntries);
+
+            String blogDefaultCategoryMapping = configurationProperties.getProperty(BLOG_DEFAULT_CATEGORY_MAPPING_IP);
+            String[] blogDefaultCategoriesMap;
+            if (blogDefaultCategoryMapping == null) {
+                blogDefaultCategoriesMap = null;
+                _logger.debug("No mapping supplied for the default category '/'");
+            } else {
+                blogDefaultCategoriesMap = BlojsomUtils.parseCommaList(blogDefaultCategoryMapping);
+                _logger.debug(blogDefaultCategoriesMap.length + " directories mapped to the default category '/'");
+                if (blogDefaultCategoriesMap.length == 0) {
+                    blogDefaultCategoriesMap = null;
+                }
+            }
+            _blog.setBlogDefaultCategoryMappings(blogDefaultCategoriesMap);
         } catch (IOException e) {
             _logger.error(e);
         }
@@ -301,23 +317,14 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        // Get the entries for the requested category
-        boolean categoryHasEntries = _blog.checkCategoryHasEntries(category);
-        if (!categoryHasEntries) {
-            _logger.debug("categoryHasEntries returned false");
-        }
-
-        // Convert the entries from the map into an array
         BlogEntry[] entries;
 
-        // Check first to see if the entries for the requested category is null
-        // If so, there is no use looking for a permalink entry or a calendar-based entry in that category
-        if (!categoryHasEntries) {
-            entries = null;
+        // Check for a permalink entry request first
+        if (permalink != null) {
+            entries = _blog.getPermalinkEntry(category, permalink);
         } else {
-            // Otherwise, check for a permalink entry first
-            if (permalink != null) {
-                entries = _blog.getPermalinkEntry(category, permalink);
+            if (requestedCategory.equals("/")) {
+                entries = _blog.getEntriesAllCategories();
             } else {
                 // Check to see if we have requested entries by calendar
                 if (year != null) {
