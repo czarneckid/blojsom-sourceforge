@@ -56,10 +56,10 @@ import java.util.*;
 
 /**
  * BlojsomServlet
- *
+ * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.17 2003-12-05 01:54:21 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.18 2003-12-05 04:09:42 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -83,7 +83,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     /**
      * Configure the dispatchers that blojsom will use when passing a request/response on to a
      * particular template
-     *
+     * 
      * @param servletConfig Servlet configuration information
      */
     private void configureDispatchers(ServletConfig servletConfig) throws ServletException {
@@ -122,7 +122,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     /**
      * Configure the flavors for the blog which map flavor values like "html" and "rss" to
      * the proper template and content type
-     *
+     * 
      * @param servletConfig Servlet configuration information
      */
     private void configureFlavors(ServletConfig servletConfig) throws ServletException {
@@ -164,7 +164,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     /**
      * Configure the plugins that blojsom will use
-     *
+     * 
      * @param servletConfig Servlet configuration information
      */
     private void configurePlugins(ServletConfig servletConfig) throws ServletException {
@@ -247,7 +247,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     /**
      * Initialize blojsom: configure blog, configure flavors, configure dispatchers
-     *
+     * 
      * @param servletConfig Servlet configuration information
      * @throws ServletException If there is an error initializing blojsom
      */
@@ -265,11 +265,11 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
     /**
      * Service a request to blojsom
-     *
-     * @param httpServletRequest Request
+     * 
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
-     * @throws IOException If there is an error in IO
+     * @throws IOException      If there is an error in IO
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         try {
@@ -321,9 +321,15 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
         if (flavor == null || "".equals(flavor)) {
             flavor = blog.getBlogDefaultFlavor();
+            if (blogUser.getFlavors().get(flavor) == null) {
+                flavor = DEFAULT_FLAVOR_HTML;
+            }
         } else {
             if (blogUser.getFlavors().get(flavor) == null) {
                 flavor = blog.getBlogDefaultFlavor();
+                if (blogUser.getFlavors().get(flavor) == null) {
+                    flavor = DEFAULT_FLAVOR_HTML;
+                }
             }
         }
 
