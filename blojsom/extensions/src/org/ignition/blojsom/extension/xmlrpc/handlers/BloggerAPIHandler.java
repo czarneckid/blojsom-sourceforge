@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.30 2003-06-12 02:08:40 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.31 2003-06-21 00:20:35 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -431,6 +431,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     try {
+                        _entry.setTitle(null);
+                        _entry.setDescription(content);
                         _entry.save(_blog);
                         result = true;
                     } catch (BlojsomException e) {
