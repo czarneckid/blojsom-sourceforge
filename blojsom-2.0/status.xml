@@ -18,6 +18,15 @@
                 you will be taken to the editing page for that menu instead of having to navigate the menus to edit
                 the particular entry. 
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Show Me More plugin to allow arbitrary sections of blog entries to be cut from "public"
+                view.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Simple Search plugin so that the search is case insensitive.
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
