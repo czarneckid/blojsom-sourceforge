@@ -34,7 +34,7 @@ General:<br />
 - The Comments plugin has been updated to do duplicate submission detection based on author name and comment body<br/>
 - All the templates have been cleaned up a bit, moving appropriate content out to the stylesheets to facilitate skining<br/>
 - Updated the JSP templates to include Search, Calendar Navigation and Referers (NOTE: Calendar uses the VelocityCalendarPlugin as a helper)<br/>
-- Added support for the Blogger API getRecentPosts() method<br/>
+- Added "BLOJSOM_LAST_MODIFIED" as constant to persist Last-Modified when new comments or trackbacks are added<br />
 
 <p />
 Extension changes:<br />
@@ -43,10 +43,23 @@ Extension changes:<br />
 <p />
 Plugin changes:<br />
 - Added trimming of whitespace for parameters to Trackback and Comment plugins<br />
+- Added "BLOJSOM_LAST_MODIFIED" to session so that Last-Modified can be persisted when new comments or trackbacks are added<br/>
 
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=721602&group_id=72754&atid=535586">BUG 721602</a>: Trackback plugin creates URL to comments page<br/>
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=722277&group_id=72754&atid=535586">BUG 722277</a>: HTML encoded return from Blogger API's getRecentPosts()<br/>
+
+<p />
+The following RFEs were addressed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=722275&group_id=72754&atid=535589">RFE 722275</a>: Add support for deletePost() to Blogger API<br />
+
+<p class="weblogtitle">blojsom 1.7.2 (codename: Ketel <strike>One</strike> Two)</p>
+<p class="weblogdateline">April 16, 2003 (tag: <b>blojsom-1_7-final</b>)</p>
+
+<p />
+The following bugs were fixed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=721510&group_id=72754&atid=535586">BUG 721510</a>: blojsom incorrectly sets last-modified<br/>
 
 <p class="weblogtitle">blojsom 1.7.1 (codename: Ketel One)</p>
 <p class="weblogdateline">April 12, 2003 (tag: <b>blojsom-1_7-final</b>)</p>
@@ -73,7 +86,6 @@ info level.<br />
 
 <p />
 The following bugs were fixed:<br />
-<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=721510&group_id=72754&atid=535586">BUG 721510</a>: blojsom incorrectly sets last-modified<br/>
 <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=720248&group_id=72754&atid=535586">BUG 720248</a>: blojsom incorrectly handles UTF-8<br/>
 
 <p>
