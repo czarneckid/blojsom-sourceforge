@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.57 2005-01-18 03:28:51 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.58 2005-01-28 00:52:17 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -86,6 +86,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * Logger instance
      */
     private Log _logger = LogFactory.getLog(AtomAPIServlet.class);
+
+    private static final String ATOM_API_PERMISSION = "post_via_atom_api";
 
     private AuthorizationProvider _authorizationProvider;
     private ServletConfig _servletConfig;
@@ -260,13 +262,17 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             Map authMap = blog.getAuthorization();
             if (authMap.containsKey(auth.getUsername())) {
                 try {
+                    _authorizationProvider.checkPermission(blogUser, new HashMap(), auth.getUsername(), ATOM_API_PERMISSION);
                     result = auth.authenticate(BlojsomUtils.parseCommaList((String) authMap.get(auth.getUsername()))[0]);
                 } catch (AuthenticationException e) {
                     _logger.error(e.getMessage(), e);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
                 }
             } else {
                 _logger.info("Unable to locate user [" + auth.getUsername() + "] in authorization table");
             }
+
             if (!result) {
                 _logger.info("Unable to authenticate user [" + auth.getUsername() + "]");
             }
