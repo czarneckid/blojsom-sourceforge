@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.25 2005-03-22 04:24:52 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.26 2005-04-06 14:48:04 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -434,7 +434,23 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             if ("/".equals(category.getCategory())) {
                 return getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
             } else {
-                return getEntriesForCategory(user, category, -1);
+                if ("true".equalsIgnoreCase(blog.getBlogProperty(RECURSIVE_CATEGORIES))) {
+                    List subcategories = category.getSubcategories();
+                    if (subcategories != null && subcategories.size() > 0) {
+                        String[] subcategoriesForEntries = new String[subcategories.size() + 1];
+
+                        subcategoriesForEntries[0] = category.getCategory();
+                        for (int i = 0; i < subcategories.size(); i++) {
+                            subcategoriesForEntries[i + 1] = ((BlogCategory) subcategories.get(i)).getCategory();
+                        }
+
+                        return getEntriesAllCategories(user, subcategoriesForEntries, -1, -1);
+                    }
+
+                    return getEntriesForCategory(user, category, -1);
+                } else {
+                    return getEntriesForCategory(user, category, -1);
+                }
             }
         }
     }

@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.66 2005-03-19 04:52:56 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.67 2005-04-06 14:48:31 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -411,7 +411,8 @@ public interface BlojsomConstants {
     public static final String XMLRPC_ENABLED_IP = "xmlrpc-enabled";
     public static final String BLOG_ADMINISTRATION_LOCALE_IP = "blog-administration-locale";
     public static final String USE_ENCRYPTED_PASSWORDS = "use-encrypted-passwords";
-    public static final String DIGEST_ALGORITHM = "digest-algorithm"; 
+    public static final String DIGEST_ALGORITHM = "digest-algorithm";
+    public static final String RECURSIVE_CATEGORIES = "recursive-categories";
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";
