@@ -50,12 +50,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -64,7 +63,7 @@ import java.util.HashMap;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.7 2003-04-02 16:56:20 intabulas Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.8 2003-04-06 18:40:42 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
@@ -207,7 +206,6 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
         osw.write(content);
         osw.flush();
-
     }
 
     /**
