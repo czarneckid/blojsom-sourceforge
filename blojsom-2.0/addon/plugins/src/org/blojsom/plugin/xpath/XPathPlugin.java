@@ -40,7 +40,6 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.blog.FileBackedBlogEntry;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 
@@ -57,7 +56,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathPlugin.java,v 1.8 2003-09-25 01:20:22 czarneckid Exp $
+ * @version $Id: XPathPlugin.java,v 1.9 2003-09-26 17:07:15 intabulas Exp $
  */
 public class XPathPlugin implements BlojsomPlugin {
 
@@ -92,6 +91,10 @@ public class XPathPlugin implements BlojsomPlugin {
         String xpath = httpServletRequest.getParameter(XPATH_PARAM);
 
         if (xpath != null && !"".equals(xpath)) {
+
+            // because I have added a leading space by mistake
+            xpath = xpath.trim();
+
             _logger.debug("Attempting xpath query with: " + xpath);
             BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
             List foundEntries = new ArrayList();

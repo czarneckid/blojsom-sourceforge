@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.02
- * @version $Id: XPathSearchPlugin.java,v 1.1 2003-09-25 15:06:36 intabulas Exp $
+ * @version $Id: XPathSearchPlugin.java,v 1.2 2003-09-26 17:06:26 intabulas Exp $
  */
 
 public class XPathSearchPlugin extends SimpleSearchPlugin {
@@ -77,34 +77,45 @@ public class XPathSearchPlugin extends SimpleSearchPlugin {
         BlogEntry[] results = null;
 
         String query = httpServletRequest.getParameter(QUERY_PARAM);
-        if (query != null && query.startsWith("/")) {
 
-            _logger.debug("Attempting xpath query with: " + query);
-            BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
-            List foundEntries = new ArrayList();
-            JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
-            try {
-                Iterator entryIterator = xpathcontext.iterate(query);
+        if (query != null) {
 
-                while (entryIterator.hasNext()) {
-                    Object object = entryIterator.next();
-                    BlogEntry entry = (BlogEntry) object;
-                    foundEntries.add(entry);
+            // because I have added a leading space by mistake
+
+            query = query.trim();
+
+            if (query.startsWith("/")) {
+
+
+                _logger.debug("Attempting xpath query with: " + query);
+                BlogEntryWrapper entryWrapper = new BlogEntryWrapper(entries);
+                List foundEntries = new ArrayList();
+                JXPathContext xpathcontext = JXPathContext.newContext(entryWrapper);
+                try {
+                    Iterator entryIterator = xpathcontext.iterate(query);
+
+                    while (entryIterator.hasNext()) {
+                        Object object = entryIterator.next();
+                        BlogEntry entry = (BlogEntry) object;
+                        foundEntries.add(entry);
+                    }
+                } catch (Exception e) {
+                    _logger.error(e.getLocalizedMessage());
                 }
-            } catch (Exception e) {
-                _logger.error(e.getLocalizedMessage());
-            }
 
-            if (foundEntries.size() == 0) {
-                results = new BlogEntry[0];
+                if (foundEntries.size() == 0) {
+                    results = new BlogEntry[0];
+                } else {
+                    results = new BlogEntry[foundEntries.size()];
+                    for (int x = 0; x < foundEntries.size(); x++) {
+                        results[x] = (BlogEntry) foundEntries.get(x);
+                    }
+                }
             } else {
-                results = new BlogEntry[foundEntries.size()];
-                for (int x = 0; x < foundEntries.size(); x++) {
-                    results[x] = (BlogEntry) foundEntries.get(x);
-                }
+                results = super.process(httpServletRequest, httpServletResponse, user, context, entries);
             }
         } else {
-            results = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+            results = new BlogEntry[0];
         }
 
         return results;
