@@ -39,6 +39,28 @@ Available categories:
         </div>
     #end
     #set( $totalEntries = $totalEntries + 1)
+
+    <!-- Trackback Auto Discovery -->
+    #set( $blogDescription = $entry.getEscapedDescription() )
+    #if ($blogDescription.length() > 255 )
+        #set( $blogDescription = $blogDescription.substring(0,252)  + "..." )
+    #end
+<!--
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+        <rdf:Description
+             rdf:about="$entry.getLink()"
+             dc:identifer="$entry.getLink()"
+             dc:title="$entry.getTitle()"
+             dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
+             dc:description="$blogDescription"
+             dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
+             dc:date="$entry.getISO8601Date"
+             trackback:ping="$entry.getLink()&amp;tb=y" />
+     </rdf:RDF>
+-->
+
     <p />
 #end
 #if ($totalEntries > 0)

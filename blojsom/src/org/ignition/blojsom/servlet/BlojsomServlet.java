@@ -58,7 +58,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.66 2003-04-10 01:41:36 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.67 2003-04-13 15:56:03 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -443,6 +443,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_DATE, blogdate);
         context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
         context.put(BLOJSOM_DATE_OBJECT, blogDateObject);
+        if (permalink != null) {
+            context.put(BLOJSOM_PERMALINK, permalink);
+        }
+
         if (requestedCategory.equals("/")) {
             context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
         } else {

@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.50 2003-04-06 18:47:46 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.51 2003-04-13 15:56:03 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -85,6 +85,15 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_SITE_URL = "BLOJSOM_SITE_URL";
+
+
+    /**
+     * Key under which the permalink value will be placed. This is used to allow templates
+     * to generate trackback auto-discovery fragments.
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_PERMALINK= "BLOJSOM_PERMALINK";
+
 
     /**
      * Key under which the requested category will be placed
