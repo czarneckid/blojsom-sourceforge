@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Map;
+import java.text.SimpleDateFormat;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger v1.0 API
@@ -57,7 +58,7 @@ import java.util.Map;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.13 2003-05-01 00:26:33 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.14 2003-05-01 03:52:11 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -72,6 +73,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
      * Blogger API "url" key
      */
     private static final String MEMBER_URL = "url";
+
 
     /**
      * Blogger API "blogid" key
@@ -119,6 +121,18 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
     private BlojsomFetcher _fetcher;
 
     private Log _logger = LogFactory.getLog(BloggerAPIHandler.class);
+
+
+    /**
+     * ISO-8601 format
+     * SimpleDateFormats are not threadsafe, but we should not need more than one per
+     * thread.
+     */
+    private static final ThreadLocal XMLRPC_ISO_8601_DATE_FORMAT_OBJECT = new ThreadLocal() {
+        protected Object initialValue() {
+            return new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
+        }
+    };
 
     /**
      * Default constructor
@@ -529,7 +543,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                         entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
                         entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
-                        entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
+                        //entrystruct.put(MEMBER_DATECREATED, entry.getISO8601Date());
+                        entrystruct.put(MEMBER_DATECREATED, entry.getDate());
                         entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                         entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
                         recentPosts.add(entrystruct);
