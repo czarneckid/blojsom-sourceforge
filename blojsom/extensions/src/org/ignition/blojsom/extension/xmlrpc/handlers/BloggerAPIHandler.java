@@ -54,7 +54,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.19 2003-05-13 21:50:36 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.20 2003-05-14 20:56:04 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -544,6 +544,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     FileOutputStream fos = new FileOutputStream(blogEntryMetaData, false);
                     metaProps.store(fos, BlojsomConstants.BLOG_METADATA_HEADER);
                     fos.close();
+
 
                 } catch (IOException e) {
                     _logger.error(e);
