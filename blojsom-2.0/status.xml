@@ -18,12 +18,25 @@
                 encodedCategory for generating the id tag.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated comment plugin to allow for auto-formatting of comments. This will convert newline characters
+                into &lt;br /&gt; tags so that users leaving comments can create comment paragraphs more easily.
+            </action>
+
             <action dev="czarneckid" type="add" context="Plugin">
                 Added Conditional GET plugin for RSS aggregators that support this feature.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated e-mail utilities to explicitly set the send date of the e-mail message.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated the Wiki and Textile plugins to also check for metadata to specify whether or not processing
+                should occur on a particular entry. You need to run the Meta plugin before either of these plugins in
+                one of your plugin chains. The metadata key for the Wiki plugin would be specified as "meta-run-wiki=y"
+                on a separate line in your blog entry text. The metadata key for the Textile plugin would be specified
+                as "meta-run-textile=y" on a separate line in your blog entry text. 
             </action>
 
             <action dev="czarneckid" type="fix" context="Extension" fixes-bug="871374">
