@@ -11,9 +11,12 @@
  *      this list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice,
  *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the "David A. Czarnecki" nor the names of
+ * Neither the name of the "David A. Czarnecki" and "blojsom" nor the names of
  * its contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
+ * Products derived from this software may not be called "blojsom",
+ * nor may "blojsom" appear in their name, without prior written permission of
+ * David A. Czarnecki.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
  * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
@@ -52,7 +55,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.11 2003-03-16 02:08:59 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.12 2003-03-23 19:27:47 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
