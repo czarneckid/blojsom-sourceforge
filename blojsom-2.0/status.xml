@@ -11,6 +11,16 @@
             <action dev="intabulas" type="update" context="Extension">
                 Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
             </action>
+
+            <action dev="intabulas" type="update" context="Core">
+                Added a getISO8601Date() and getRFC822Date() methods to the BlogComment class for supporting comment api.
+            </action>
+
+            <action dev="intabulas" type="add" context="Core">
+                Added rss and rss2 "-comment.?" templates (both Velocity and JSP) to support comment api rss feeds
+            </action>
+
+
         </release>
  
         <release version="2.12" date="February 19, 2004">
