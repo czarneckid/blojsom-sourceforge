@@ -59,7 +59,7 @@ import java.io.File;
  * FileUploadPlugin
  * 
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.2 2003-11-25 04:11:14 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.3 2003-12-17 20:15:49 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -67,7 +67,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private Log _logger = LogFactory.getLog(FileUploadPlugin.class);
 
     private static final String PLUGIN_ADMIN_UPLOAD_IP = "plugin-admin-upload";
-    private static final String DEFAULT_CONFIGURATION_FILE = "plugin-admin-upload.properties";
     private static final String TEMPORARY_DIRECTORY_IP = "temporary-directory";
     private static final String DEFAULT_TEMPORARY_DIRECTORY = "/tmp";
     private static final String MAXIMUM_UPLOAD_SIZE_IP = "maximum-upload-size";
@@ -80,8 +79,6 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
 
     private String _installationDirectory;
-    private String _baseConfigurationDirectory;
-    private String _configurationFile;
     private String _temporaryDirectory;
     private long _maximumUploadSize;
     private int _maximumMemorySize;
@@ -106,14 +103,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         super.init(servletConfig, blojsomConfiguration);
 
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
-        _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
 
-        _configurationFile = servletConfig.getInitParameter(PLUGIN_ADMIN_UPLOAD_IP);
-        if (_configurationFile == null || "".equals(_configurationFile)) {
-            _configurationFile = DEFAULT_CONFIGURATION_FILE;
-        }
         try {
-            Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, _baseConfigurationDirectory + _configurationFile);
+            Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, PLUGIN_ADMIN_UPLOAD_IP, true);
             _temporaryDirectory = configurationProperties.getProperty(TEMPORARY_DIRECTORY_IP);
             if (_temporaryDirectory == null || "".equals(_temporaryDirectory)) {
                 _temporaryDirectory = DEFAULT_TEMPORARY_DIRECTORY;
