@@ -35,18 +35,21 @@
 General:<br/>
 - Fixed regular expressions in <i>blacklist.filters</i><br/>
 - <tt>BlogCategory</tt> is now an abstract class<br/>
-- Added <tt>loadCategory(Blog blog)</tt> to the <tt>BlogCategory</tt> class. This is overridden
+- Added persistence methods to the <tt>BlogCategory</tt> class. This is overridden
 in a concrete implementation like <tt>FileBackedBlogCategory</tt> of this class to persist the
 blog category<br />
 - Added <tt>public BlogCategory newBlogCategory()</tt> method to <tt>BlojsomFetcher</tt> interface<br/>
+- Persistence methods (loadEntry, saveEntry, deleteEntry) have been renamed to load, save, and delete
+on their respective classes to reduce redundance<br/>
 
 <p />
 Plugin changes:<br />
-- Textile code removed and replaced with textile4j.jar<br/>
+- Added new <a href="plugins-dateformat.html">Date Format plugin</a> to allow for configuration of blog date formatting<br/>
 - Added a new base class <tt>org.ignition.blojsom.plugin.common.IPBanningPlugin</tt> which the
 Comments and Trackback plugin now subclass from. This base plugin provides the capability to check
 if an IP address is banned or not through its <tt>boolean isIPBanned(String ipAddress)</tt> method. Check the
 <a href="upgrading.html">upgrading</a> instructions for information on how to ban IP addresses<br/>
+- Textile code removed and replaced with textile4j.jar<br/>
 - The Textile plugin had a bug when processing qtag's. This was found during the
 <a href="http://sf.net/projects/textile4j">textile4j</a> breakout<br/>
 - The prefix for the Comment and Trackback plugins is configurable via the
