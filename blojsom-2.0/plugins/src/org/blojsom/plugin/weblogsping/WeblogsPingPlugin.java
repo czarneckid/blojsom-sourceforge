@@ -60,7 +60,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.7 2003-12-18 02:22:59 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.8 2003-12-18 16:55:55 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -123,6 +123,13 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
         if (entries.length <= 0) {
             return entries;
         } else {
+            // If we have not seen the user before (because they were added dynamically), then add their last ping date to the map
+            if (!_userLastPingMap.containsKey(user.getId())) {
+                _userLastPingMap.put(user.getId(), new Date());
+
+                return entries;
+            }
+
             // Check the latest entry's metadata to see if we should not do the ping to weblogs.com and weblo.gs.
             Map metaData = entries[0].getMetaData();
             if (metaData != null && metaData.containsKey(NO_PING_WEBLOGS_METADATA)) {
