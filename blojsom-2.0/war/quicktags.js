@@ -56,6 +56,20 @@ edButtons[edButtons.length] = new edButton('ed_strike'
                                           ,'</s>'
                                           );
 
+edButtons[edButtons.length] = new edButton('ed_lt'
+                                          ,'&lt;'
+                                          ,'&lt;'
+                                          ,''
+                                          ,-1
+                                          );
+
+edButtons[edButtons.length] = new edButton('ed_gt'
+                                          ,'&gt;'
+                                          ,'&gt;'
+                                          ,''
+                                          ,-1
+                                          );
+
 edButtons[edButtons.length] = new edButton('ed_quot'
                                           ,'&#34;'
                                           ,'&#34;'
