@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.42 2003-04-01 03:36:42 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.43 2003-04-02 01:16:55 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -144,8 +144,8 @@ public class Blog implements BlojsomConstants {
             _logger.error("No value supplied for blog-base-url");
             throw new BlojsomConfigurationException("No value supplied for blog-base-url");
         }
-        if (!_blogBaseURL.endsWith("/")) {
-            _blogBaseURL += "/";
+        if (_blogBaseURL.endsWith("/")) {
+            _blogBaseURL = _blogBaseURL.substring(0, _blogBaseURL.length() - 1);
         }
         _blogProperties.put(BLOG_BASE_URL_IP, _blogBaseURL);
 
