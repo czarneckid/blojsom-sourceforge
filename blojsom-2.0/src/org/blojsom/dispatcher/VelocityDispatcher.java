@@ -37,6 +37,7 @@ package org.blojsom.dispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.util.EnumerationIterator;
 import org.apache.velocity.app.VelocityEngine;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.BlogUser;
@@ -47,6 +48,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
@@ -57,7 +59,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.14 2004-07-08 00:52:39 intabulas Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.15 2004-08-05 04:00:34 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -109,7 +111,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
      * @param userId User ID
      * @return blojsom installation directory + base configuration directory + user id + templates directory
      */
-    private String getVelocityFileLoaderPath(String userId) {
+    protected String getVelocityFileLoaderPath(String userId) {
         StringBuffer fileLoaderPath = new StringBuffer();
         fileLoaderPath.append(_installationDirectory);
         fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
@@ -121,6 +123,31 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_templatesDirectory));
 
         return fileLoaderPath.toString();
+    }
+
+    /**
+     * Populate the Velocity context with the request and session attributes
+     *
+     * @param httpServletRequest Request
+     * @param context Context
+     */
+    protected void populateVelocityContext(HttpServletRequest httpServletRequest, Map context) {
+        EnumerationIterator iterator = new EnumerationIterator(httpServletRequest.getAttributeNames());
+        while (iterator.hasNext()) {
+            Object key = iterator.next();
+            Object value = httpServletRequest.getAttribute(key.toString());
+            context.put(key, value);
+        }
+
+        HttpSession httpSession = httpServletRequest.getSession();
+        if (httpSession != null) {
+            iterator = new EnumerationIterator(httpSession.getAttributeNames());
+            while (iterator.hasNext()) {
+                Object key = iterator.next();
+                Object value = httpSession.getAttribute(key.toString());
+                context.put(key, value);
+            }
+        }
     }
 
     /**
@@ -168,6 +195,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         }
 
         // Setup the VelocityContext
+        populateVelocityContext(httpServletRequest, context);
         VelocityContext velocityContext = new VelocityContext(context);
 
         if (flavorTemplateForPage != null) {
