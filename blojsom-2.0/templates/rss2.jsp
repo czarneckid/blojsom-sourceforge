@@ -9,8 +9,7 @@
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
 %>
-<rss version="2.0" xmlns="http://backend.userland.com/rss2"
-                   xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title><%= blogInformation.getBlogName() %></title>
     <link><%= blogInformation.getBlogURL() %></link>
