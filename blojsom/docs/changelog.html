@@ -18,7 +18,7 @@
 <a href="trackbacks.html">trackbacks</a> |
 <a href="plugins.html">plugins</a> |
 <a href="xmlrpc.html">xml-rpc</a> |
-<a href="themes.html">themes</a> |s
+<a href="themes.html">themes</a> |
 <a href="faq.html">faq</a> |
 <a href="changelog.html">changelog</a> |
 <a href="javadoc/index.html">javadocs</a> |
@@ -29,14 +29,14 @@
 <p class="weblogtitle">blojsom 1.7 (codename: Absolut)</p>
 <p class="weblogdateline">(Available from cvs)</p>
 <p />
-<b>new:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">Upgrading</a> instructions<br/><br/>
+<b>NEW:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">Upgrading</a> instructions<br/><br/>
 General:<br />
-- Referer Plugin has been re-written to allow tracking and totaling by flavor, as well as only showing today's referer's. See the <a href="plugin-referer.html">documentaion</a> for more detail<br/>
+- <a href="plugins-referer.html">Referer plugin</a> has been re-written to allow tracking and totaling by flavor, as well as only showing today's referer's. See the <a href="plugins-referer.html">Referer plugin documentation</a> for more detail<br/>
 - Added a referer history page that display's all referer's (grouped by flavor) with no date filtering<br/>
-- New <a href="plugins-calendar.html">Calendar Plugin<a> that renders a visual calendar into your blog, hyperlinking dates that have entries<br/>
-- Calendar Navigation code has moved to the CalendarPlugin. If you want to  continue to jave calendar url navigation on your blog, please bne sure to add this plugin to the start flavor plugin chain<br/>
+- New <a href="plugins-calendar.html">Calendar plugin</a> that renders a visual calendar into your blog, hyperlinking dates that have entries<br/>
+- Calendar navigation code has moved to the Calendar plugin. If you want to continue to have calendar url navigation on your blog, please be sure to add this plugin to the start od your flavor plugin chain<br/>
 - New alternate theme for blojsom called 'SecondWave'. See <a href="themes.html">themes</a> on how to install and configure this new theme<br/>
-- New Search input in the HTML template to allow users to search your blog entries. This is simply a front end to the Simple Search plugin<br/>
+- New search input form in the HTML template to allow users to search your blog entries. This is simply a front end to the Simple Search plugin<br/>
 - Changed the <tt>BlojsomPlugin.process()</tt> method to also accept the <tt>HttpServletResponse</tt> to allow for plugins to manipulate things like cookies<br/>
 - Added the Send Email plugin that allows other plugins to send email messages<br/>
 - Updated the Comments plugin to send email to the blog author when new comments are added<br/>
@@ -78,7 +78,7 @@ method is called each plugin request after the plugin's <tt>process</tt> method 
 - Added "BLOJSOM_DATE_ISO8601" to the context<br />
 - Modified RDF flavor templates to correctly use the ISO 8601 date format<br />
 - Clarified "BLOJSOM_DATE" and "BLOJSOM_DATE_IS8601" to be of type <tt>java.lang.String</tt> in <a href="customization.html">customization</a><br />
-- Added Emoticons Plugin<br />
+- Added Emoticons plugin<br />
 - Added code to the plugins that take configuration parameters to throw a
 <tt>BlojsomPluginException</tt> in <tt>init()</tt> if the required configuration
 parameter is not present<br />
@@ -100,7 +100,7 @@ blog-trackbacks-directory=.trackbacks
 <i>entries=&lt;-1 or integer greater than 0&gt;</i>. This parameter is listed with the
 other URL parameters accepted by blojsom in the <a href="installation.html">installation</a>
 documentation<br />
-- Refactored comment handling to the Comment Plugin<br />
+- Refactored comment handling to the Comment plugin<br />
 
 <p />
 The following bugs were fixed:<br />
@@ -154,10 +154,10 @@ General:<br />
 - Initial <a href="plugins.html">Plugin API</a> for blojsom<br />
 - Plugins available:
 <ul>
-    <li>Macro Expansion Plugin that will expand <i>$macro$</i> references in the body of a blog entry
-    <li>HREF Plugin that converts any URLs in text entries to hyperlinks automatically
-    <li>"More ..." Plugin will truncate long entries and add a hyperlink to the full text of the entry
-    <li>The Simple Search Plugin looks for a user's query in either the blog entry title or blog entry description
+    <li>Macro Expansion plugin that will expand <i>$macro$</i> references in the body of a blog entry
+    <li>HREF plugin that converts any URLs in text entries to hyperlinks automatically
+    <li>"More ..." plugin will truncate long entries and add a hyperlink to the full text of the entry
+    <li>The Simple Search plugin looks for a user's query in either the blog entry title or blog entry description
 </ul>
 <p />
 The following bugs were fixed:<br />
@@ -243,8 +243,7 @@ Initial release of blojsom
 </p>
 
 <p />
-<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
-a>
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
 <hr />
 
