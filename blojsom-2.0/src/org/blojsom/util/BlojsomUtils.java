@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.20 2004-03-13 17:14:29 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.21 2004-04-08 01:36:49 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1021,13 +1021,15 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Turn an array of strings into a single string separated by commas. If the incoming array is null, this
+     * Turn an array of strings into a single string separated by a given delimeter. If the incoming array is null, this
      * method returns the <code>null</code> string.
-     * 
+     *
      * @param array Array of strings
-     * @return Single string containing all the strings from the original array separated by commas, or <code>null</code> if the input was null.
+     * @param separator Separator between strings
+     * @return Single string containing all the strings from the original array separated by the given delimeter, or <code>null</code> if the input was null.
+     * @since blojsom 2.14
      */
-    public static String arrayOfStringsToString(String[] array) {
+    public static String arrayOfStringsToString(String[] array, String separator) {
         if (array == null) {
             return null;
         }
@@ -1038,11 +1040,22 @@ public class BlojsomUtils implements BlojsomConstants {
             element = array[i];
             result.append(element);
             if (i < array.length - 1) {
-                result.append(", ");
+                result.append(separator);
             }
         }
 
         return result.toString();
+    }
+
+    /**
+     * Turn an array of strings into a single string separated by commas. If the incoming array is null, this
+     * method returns the <code>null</code> string.
+     * 
+     * @param array Array of strings
+     * @return Single string containing all the strings from the original array separated by commas, or <code>null</code> if the input was null.
+     */
+    public static String arrayOfStringsToString(String[] array) {
+        return arrayOfStringsToString(array, ", ");
     }
 
     /**
