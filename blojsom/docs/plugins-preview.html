@@ -1,14 +1,14 @@
 <html>
 
 <head>
-<title>blojsom - plugins - macro expansion</title>
+<title>blojsom - plugins - preview</title>
 <link rel="stylesheet" href="blojsom.css" />
 <link rel="SHORTCUT ICON" href="favicon.ico" />
 </head>
 
 <body>
 
-<p class="weblogtitle">blojsom - plugins - macro expansion</p>
+<p class="weblogtitle">blojsom - plugins - preview</p>
 
 <p class="navigation"><a href="index.html">home</a> |
 <a href="screenshots.html">screenshots</a> |
@@ -51,55 +51,67 @@
 
 <p class="weblogtitle">description</a>
 <p />
-The macro expansion plugin expands <i>$macro$</i> references that it finds in your blog description and expands
-them into its full form.
-<p />
-It is a timesaver plugin to save you from repeatedly typing in
-portions of blog entries that you use over and over again. For example, you might want to be
-able to expand friend's names into URLs that point to their blogs.
+The preview plugin allows you to hide "preview" entries from normal display. Preview entries
+are identified with a configurable prefix at the start of the title of the blog entry. By default,
+the preview plugin uses the prefix of "PREVIEW" to indicate that an entry is preview only.
 
 <p class="weblogtitle">installation and setup</a>
 <p />
 In your <i>plugin.properties</i> file, add the following line:
 <ul>
 <pre>
-macro-expansion=org.ignition.blojsom.plugin.macro.MacroExpansionPlugin
+preview=org.ignition.blojsom.plugin.limiter.PreviewPlugin
 </pre>
 </ul>
 
-You may then add "macro-expansion" to one of the flavor-based plugin chains. For example:
+You may then add "preview" to one of the flavor-based plugin chains. For example:
 <ul>
 <pre>
-html.blojsom-plugin-chain=macro-expansion
+html.blojsom-plugin-chain=preview
 </pre>
 </ul>
 
-The macro expansion plugin has its own configuration file that is referenced in <i>web.xml</i>. For example:
+The preview plugin can use its own configuration file, <i>preview.properties</i>, that is referenced in <i>web.xml</i>.
 <pre>
     &lt;init-param&gt;
-        &lt;param-name&gt;plugin-macros-expansion&lt;/param-name&gt;
-        &lt;param-value&gt;/WEB-INF/macros.properties&lt;/param-value&gt;
+        &lt;param-name&gt;plugin-preview&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/preview.properties&lt;/param-value&gt;
     &lt;/init-param&gt;
 </pre>
 <p />
 
-The <i>macros.properties</i> contains <i>key=value</i> pairs like the following:
+The <i>preview.properties</i> contains 2 configurable parameters:
 <ul>
 <pre>
-blojsom=http://blojsom.sf.net
-ypm=Yeah, Pretty Much
+TITLE_PREFIX=PREVIEW
+PREVIEW_PASSWORD=true
 </pre>
 </ul>
+<p />
+<i>TITLE_PREFIX</i> controls the prefix that indicates an entry is a preview-only entry<br />
+<i>PREVIEW_PASSWORD</i> is the password that must be supplied for the "preview" URL parameter
+to have preview entries displayed<br />
 
 <p class="weblogtitle">usage and URL parameters</a>
 <p />
 <p class="weblogdateline">usage</p>
-In your entries, simply reference your macros using the <i>$macro$</i> syntax. The <i>$macro$</i> references
-are also case insensitive.
-<p />
+To mark an entry as preview, use the configured prefix at the beginning of the title of your blog entry.
 
-For example, "... and then he said, $ypm$ " in your blog description would expand to
-"... and then he said, Yeah, Pretty Much "
+<p />
+<p class="weblogdateline">URL parameters</p>
+The following table describes the URL parameters that affect the output of the preview plugin.
+<p />
+<table border="1">
+    <th>URL parameter</th> <th>Accepted values</th> <th>Usage</th>
+    <tr align="center">
+        <td>preview</td> <td align="left">By default, the preview plugin uses the value of
+        "true" to indicate that preview entries should be displayed. However, if you have
+        configured the preview plugin to use a different value to indicate that preview entries
+        should be displayed, then you will need to use that value for the "preview" parameter.</td>
+        <td>/blog/?preview=true</td>
+    </tr>
+</table>
+
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>

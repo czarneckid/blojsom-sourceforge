@@ -54,13 +54,13 @@ This should be an extension separate from the extensions for blog entries (<i>bl
 and separate from the extension for category meta-data (<i>blog-properties-extensions</i>).
 <p/>
 
-5. Be sure to upload <tt>blacklist.filters</tt> if you want to use any of the content filtering features. You can edit
+5. Be sure to upload <tt>blacklist.filters</tt> to your <i>/WEB-INF</i> directory if you want to use any of the content filtering features. You can edit
 this yourself to add any other filters, they are just regular expressions.
 <p/>
 
 6. Add the following to <i>/WEB-INF/blojsom.properties</i> to enable blacklist filtering.
 <pre>
-blog-blacklist-file=<i>Path to the uploaded blacklist.filters</i>
+blog-blacklist-file=<i>/WEB-INF/blacklist.filters</i>
 </pre>
 
 7. A parameter has been added to <i>/WEB-INF/blojsom.properties</i>.<br />
@@ -69,7 +69,7 @@ blog-blacklist-file=<i>Path to the uploaded blacklist.filters</i>
 as the file encoding.<br />
 For example:
 <pre>
-blog-file-encoding=
+blog-file-encoding=UTF-8
 </pre>
 
 8. A parameter has been added to <i>/WEB-INF/blojsom.properties</i> for configuring the blog entry
@@ -89,7 +89,7 @@ blog-xmlrpc-entry-extension=.txt
 <i>/WEB-INF/blojsom.properties</i> file for completeness.<br />
 For example:
 <pre>
-blog-fetcher=
+blog-fetcher=org.ignition/blojsom.fetcher.StandardFetcher
 </pre>
 
 <p />

@@ -48,10 +48,10 @@ exception classes to subclass from this root exception class<br />
 
 <p />
 Extension changes:<br />
-- The newPost() methods for the Blogger and MetaWebLog API now stores the poster's user id as entry
+- The <tt>newPost()</tt> methods for the Blogger and MetaWebLog API now stores the poster's user id as entry
 meta-data. Template authors can now get the posting user id from the entry meta-data under the
 key, <tt>blog-entry-author</tt><br/>
-- Implementation of the Blogger API getUserInfo() method to allow services like <a href="http://www.audblog.com">AudBlog</a> to work<br/>
+- Implementation of the Blogger API <tt>getUserInfo()</tt> method to allow services like <a href="http://www.audblog.com">AudBlog</a> to work<br/>
 - File extension for entries posted via XML-RPC is now configurable via the <i>blog-xmlrpc-entry-extension</i>
 parameter that can be added to <i>blojsom.properties</i>. If not specified, this parameter defaults to <i>.txt</i><br />
 
@@ -59,12 +59,14 @@ parameter that can be added to <i>blojsom.properties</i>. If not specified, this
 Plugin changes:<br />
 - Persisted "Remember Me" checkbox value in Comments Plugin<br />
 - Referer plugin filters previously saved referer log through the blacklist filter at startup<br/>
-- Referer plugin now utilizes the new blacklist.filter file to filter referer's <br/>
-- Referer plugin was doing some detailed logging that it did not need to do, removed<br/>
+- Referer plugin now utilizes the new <i>blacklist.filter</i> file to filter referer entries<br/>
+- Referer plugin was doing some detailed logging that it did not need to do so these debug statements have been removed<br/>
 - Added <a href="javadoc/org/ignition/blojsom/plugin/highlight/GoogleHighlightPlugin.html">Google Highlight Plugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query<br/>
 - Added <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</a>
 which simply demonstrates how to sort entries in a different order<br/>
-- Added <a href="javadoc/org/ignition/blojsom/plugin/limiter/PreviewPlugin.html">Preview Plugin</a> courtesy of Nick Chalko<br />
+- Added <a href="javadoc/org/ignition/blojsom/plugin/limiter/PreviewPlugin.html">Preview Plugin</a>
+(courtesy of Nick Chalko) which allows you to "hide" entries by including a configurable prefix
+at the beginning of the title of your blog entries.<br />
 
 <p />
 The following bugs were fixed:<br />
