@@ -48,11 +48,11 @@ import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.intabulas.sandler.Sandler;
+import org.intabulas.sandler.exceptions.MarshallException;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.authentication.AtomAuthentication;
 import org.intabulas.sandler.elements.Entry;
-import org.intabulas.sandler.exceptions.FeedMarshallException;
 import org.intabulas.sandler.introspection.Introspection;
 import org.intabulas.sandler.introspection.impl.IntrospectionImpl;
 
@@ -75,7 +75,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.27 2004-01-26 22:44:25 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.28 2004-02-21 19:59:21 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -467,7 +467,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     String nonce = AtomUtils.generateNextNonce(blogUser);
                     httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                     httpServletResponse.setStatus(201);
-                } catch (FeedMarshallException e) {
+                } catch (MarshallException e) {
                     _logger.error(e.getLocalizedMessage(), e);
                     httpServletResponse.setStatus(404);
                 } catch (BlojsomException e) {
@@ -548,7 +548,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             } catch (BlojsomException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
-            } catch (FeedMarshallException e) {
+            } catch (MarshallException e) {
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
             }

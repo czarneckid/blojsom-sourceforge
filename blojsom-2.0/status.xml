@@ -7,6 +7,12 @@
     </developers>
 
     <changes>
+        <release version="2.13" date="in CVS">
+            <action dev="intabulas" type="update" context="Extension">
+                Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
+            </action>
+        </release>
+ 
         <release version="2.12" date="February 19, 2004">
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated the Edit Blog Properties plugin to allow the "blog-default-category-mapping" property to
