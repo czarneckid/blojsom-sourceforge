@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.22 2004-09-23 03:06:02 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.23 2004-11-10 03:55:43 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -355,25 +355,22 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             //Quick verify that the categories are valid
             File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
-
                 Hashtable postcontent = struct;
 
                 String title = (String) postcontent.get(MEMBER_TITLE);
                 String description = (String) postcontent.get(MEMBER_DESCRIPTION);
-
-                if (title == null) {
-                    title = "No Title";
-                }
-
-                String filename = getBlogEntryFilename(description);
+                String filename = getBlogEntryFilename(title, description);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
-                String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
-
-                StringBuffer post = new StringBuffer();
-                post.append(title).append("\n").append(description);
 
                 try {
-                    File sourceFile = new File(outputfile);
+                    File sourceFile = new File(outputfile + _blogEntryExtension);
+                    int fileTag = 1;
+                    while (sourceFile.exists()) {
+                        sourceFile = new File(outputfile + "-" + fileTag + _blogEntryExtension);
+                        fileTag++;
+                    }
+                    String postid = blogid + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(sourceFile.getName());
+
                     BlogEntry entry = _fetcher.newBlogEntry();
                     HashMap attributeMap = new HashMap();
                     HashMap blogEntryMetaData = new HashMap();
@@ -381,7 +378,11 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
                     entry.setCategory(blogid);
-                    entry.setDescription(post.toString());
+                    if (BlojsomUtils.checkNullOrBlank(title)) {
+                        title = null;
+                    }
+                    entry.setTitle(title);
+                    entry.setDescription(description);
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);

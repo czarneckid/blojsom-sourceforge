@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.35 2004-11-08 03:59:43 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.36 2004-11-10 03:56:30 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -462,7 +462,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 if (BlojsomUtils.checkNullOrBlank(blogEntryTitle)) {
                     filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
                 } else {
-                    filename = BlojsomUtils.normalize(blogEntryTitle);
+                    filename = blogEntryTitle.replaceAll("\\s", "_");
+                    filename = filename.replaceAll("\\p{Punct}", "_");
                 }
             } else {
                 if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {

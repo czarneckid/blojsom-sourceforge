@@ -53,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.15 2004-11-07 19:19:05 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.16 2004-11-10 03:55:43 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -318,13 +318,18 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             // Quick verify that the category is valid
             File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
-
-                String filename = getBlogEntryFilename(content);
+                String title = findTitleInContent(content);
+                String filename = getBlogEntryFilename(title, content);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
-                String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 try {
-                    File sourceFile = new File(outputfile);
+                    File sourceFile = new File(outputfile + _blogEntryExtension);
+                    int fileTag = 1;
+                    while (sourceFile.exists()) {
+                        sourceFile = new File(outputfile + "-" + fileTag + _blogEntryExtension);
+                        fileTag++;
+                    }
+                    String postid = blogid + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(sourceFile.getName());
                     BlogEntry entry = _fetcher.newBlogEntry();
                     Map attributeMap = new HashMap();
                     Map blogEntryMetaData = new HashMap();
@@ -332,7 +337,6 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
                     entry.setCategory(blogid);
-                    String title = findTitleInContent(content);
                     if (title != null) {
                         content = BlojsomUtils.replace(content, TITLE_TAG_START + title + TITLE_TAG_END, "");
                         entry.setTitle(title);
