@@ -52,7 +52,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.11 2003-12-18 00:28:06 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.12 2003-12-18 06:36:50 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1173,5 +1173,20 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return input;
+    }
+
+    /**
+     * Checks to see if the string is null or blank (after trimming)
+     *
+     * @since blojsom 2.06
+     * @param input Input string
+     * @return <code>true</code> if the string is null or blank (after trimming), <code>false</code> otherwise
+     */
+    public static boolean checkNullOrBlank(String input) {
+        if (input == null || "".equals(input.trim())) {
+            return true;
+        }
+
+        return false;
     }
 }
