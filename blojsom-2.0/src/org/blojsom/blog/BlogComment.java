@@ -37,12 +37,13 @@ package org.blojsom.blog;
 import org.blojsom.util.BlojsomUtils;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.5 2004-02-22 17:44:37 intabulas Exp $
+ * @version $Id: BlogComment.java,v 1.6 2004-04-23 22:16:00 czarneckid Exp $
  */
 public class BlogComment {
 
@@ -53,6 +54,7 @@ public class BlogComment {
     private Date _commentDate;
     private long _commentDateLong;
     private String _id;
+    private Map _metaData;
 
     /**
      * Default constructor
@@ -161,6 +163,16 @@ public class BlogComment {
     }
 
     /**
+     * Get the trackback meta-data
+     *
+     * @return Meta-data as a {@link Map}
+     * @since blojsom 2.14
+     */
+    public Map getMetaData() {
+        return _metaData;
+    }
+
+    /**
      * Set the date for the comment
      *
      * @param commentDate Comment date
@@ -207,5 +219,15 @@ public class BlogComment {
         if (_id == null) {
             _id = id;
         }
+    }
+
+    /**
+     * Set the trackback meta-data
+     *
+     * @param metaData {@link Map} containing meta-data for this comment
+     * @since blojsom 2.14
+     */
+    public void setMetaData(Map metaData) {
+        _metaData = metaData;
     }
 }

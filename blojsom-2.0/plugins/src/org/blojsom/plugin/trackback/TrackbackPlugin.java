@@ -50,16 +50,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Date;
-import java.util.Map;
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.19 2004-04-18 22:43:25 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.20 2004-04-23 22:16:21 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -132,6 +129,11 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_TRACKBACK_MESSAGE = "BLOJSOM_TRACKBACK_MESSAGE";
+
+    /**
+     * IP address meta-data
+     */
+    public static final String BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP = "BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP";
 
     /**
      * Trackback success page
@@ -388,9 +390,12 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                 _logger.error(e);
             }
 
+            Map trackbackMetaData = new HashMap();
+            trackbackMetaData.put(BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP, remoteIPAddress);
+
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName,
                     _blogFileExtensions, _blogHome, _blogTrackbackDirectory,
-                    _blogFileEncoding);
+                    _blogFileEncoding, trackbackMetaData);
 
             // For persisting the Last-Modified time
             httpServletRequest.getSession().setAttribute(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
@@ -424,7 +429,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     private Integer addTrackback(Map context, String category, String permalink, String title,
                                  String excerpt, String url, String blogName,
                                  String[] blogFileExtensions, String blogHome,
-                                 String blogTrackbackDirectory, String blogFileEncoding) {
+                                 String blogTrackbackDirectory, String blogFileEncoding, Map trackbackMetaData) {
         Trackback trackback = new Trackback();
         excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
         trackback.setTitle(title);
@@ -478,6 +483,11 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
             bw.newLine();
             bw.close();
             _logger.debug("Added trackback: " + trackbackFilename);
+
+            Properties trackbackMetaDataProperties = BlojsomUtils.mapToProperties(trackbackMetaData, UTF8);
+            String trackbackMetaDataFilename = BlojsomUtils.getFilename(trackbackEntry.toString()) + DEFAULT_METADATA_EXTENSION;
+            trackbackMetaDataProperties.store(new FileOutputStream(new File(trackbackMetaDataFilename)), null);
+            _logger.debug("Wrote trackback meta-data: " + trackbackMetaDataFilename);
         } catch (IOException e) {
             _logger.error(e);
             context.put(BLOJSOM_TRACKBACK_MESSAGE, "I/O error on trackback write.");

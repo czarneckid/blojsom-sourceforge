@@ -58,9 +58,9 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.18 2004-04-18 22:43:51 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.19 2004-04-23 22:16:24 czarneckid Exp $
  */
-public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataConstants {
+public class CommentPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
 
@@ -183,6 +183,11 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME = "BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME";
+
+    /**
+     * IP address meta-data
+     */
+    public static final String BLOJSOM_COMMENT_PLUGIN_METADATA_IP = "BLOJSOM_COMMENT_PLUGIN_METADATA_IP";
 
     private Map _ipAddressCommentTimes;
     private BlojsomFetcher _fetcher;
@@ -459,9 +464,12 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
                     _logger.error(e);
                 }
 
+                Map commentMetaData = new HashMap();
+                commentMetaData.put(BLOJSOM_COMMENT_PLUGIN_METADATA_IP, remoteIPAddress);
+
                 BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL,
                         commentText, _blogCommentsEnabled.booleanValue(), _blogFileExtensions, _blogHome,
-                        _blogCommentsDirectory, _blogFileEncoding);
+                        _blogCommentsDirectory, _blogFileEncoding, commentMetaData);
 
                 // For persisting the Last-Modified time
                 httpServletRequest.getSession().setAttribute(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
@@ -533,7 +541,7 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
                                        String authorEmail, String authorURL, String userComment,
                                        boolean blogCommentsEnabled, String[] blogFileExtensions,
                                        String blogHome, String blogCommentsDirectory,
-                                       String blogFileEncoding) {
+                                       String blogFileEncoding, Map commentMetaData) {
         BlogComment comment = null;
         if (blogCommentsEnabled) {
 
@@ -595,6 +603,11 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
                     bw.newLine();
                     bw.close();
                     _logger.debug("Added blog comment: " + commentFilename);
+
+                    Properties commentMetaDataProperties = BlojsomUtils.mapToProperties(commentMetaData, UTF8);
+                    String commentMetaDataFilename = BlojsomUtils.getFilename(commentEntry.toString()) + DEFAULT_METADATA_EXTENSION;
+                    commentMetaDataProperties.store(new FileOutputStream(new File(commentMetaDataFilename)), null);
+                    _logger.debug("Wrote comment meta-data: " + commentMetaDataFilename);
                 } catch (IOException e) {
                     _logger.error(e);
                     return null;

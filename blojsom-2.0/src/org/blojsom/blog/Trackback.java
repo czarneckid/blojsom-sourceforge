@@ -35,12 +35,13 @@
 package org.blojsom.blog;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.3 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.4 2004-04-23 22:15:51 czarneckid Exp $
  */
 public class Trackback {
 
@@ -50,6 +51,7 @@ public class Trackback {
     private String _blogName;
     private long _trackbackDateLong;
     private String _id;
+    private Map _metaData;
 
     /**
      * Default constructor
@@ -136,6 +138,16 @@ public class Trackback {
     }
 
     /**
+     * Get the trackback meta-data
+     *
+     * @return Meta-data as a {@link Map}
+     * @since blojsom 2.14
+     */
+    public Map getMetaData() {
+        return _metaData;
+    }
+
+    /**
      * Set the blog name of the trackback
      *
      * @param blogName Trackback blog name
@@ -191,5 +203,15 @@ public class Trackback {
         if (_id == null) {
             _id = id;
         }
+    }
+
+    /**
+     * Set the trackback meta-data
+     *
+     * @param metaData {@link Map} containing meta-data for this trackback
+     * @since blojsom 2.14
+     */
+    public void setMetaData(Map metaData) {
+        _metaData = metaData;
     }
 }
