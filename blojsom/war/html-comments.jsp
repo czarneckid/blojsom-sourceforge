@@ -107,7 +107,17 @@
         %>
         </div>
 
-        <% if (blogCommentsEnabled && blogEntry.supportsComments()) { %>
+        <%
+         if (blogCommentsEnabled && blogEntry.supportsComments()) {
+
+         String commentAuthor = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR);
+         String commentAuthorEmail = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL);
+         String commentAuthorURL = (String) request.getAttribute(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL);
+         String initialAuthor = (null == commentAuthor) ? "" : commentAuthor;
+         String initialAuthorEmail = (null == commentAuthorEmail) ? "" : commentAuthorEmail;
+         String initialAuthorURL = (null == commentAuthorURL) ? "" : commentAuthorURL;
+        %>
+
         <hr />
     <table>
         <form name="commentform" method="post" action=".">
@@ -115,24 +125,15 @@
             <input type="hidden" name="page" value="comments"/>
             <input type="hidden" name="category" value="<%= requestedCategory.getCategory() %>"/><br />
             <input type="hidden" name="permalink" value="<%= blogEntry.getPermalink() %>"/> <br />
-            <%
-
-            String commentAuthor = request.getParameter(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR);
-            if (commentAuthor == null) { commentAuthor = ""; }
-            String commentEmail = request.getParameter(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL);
-            if (commentEmail == null) { commentEmail = ""; }
-            String commentUrl = request.getParameter(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL);
-            if (commentUrl == null) { commentUrl = ""; }
-            %>
 
             <tr>
-                <td>Author (<font color="red">*</font>):</td><td><input type="text" name="author" value="<%=commentAuthor%>"/></td>
+                <td>Author (<font color="red">*</font>):</td><td><input type="text" name="author" value="<%= initialAuthor %>"/></td>
             </tr>
             <tr>
-                <td>E-mail:</td><td><input type="text" name="authorEmail" value="<%=commentEmail%>"/></td>
+                <td>E-mail:</td><td><input type="text" name="authorEmail" value="<%= initialAuthorEmail %>"/></td>
             </tr>
             <tr>
-                <td>URL: </td><td><input type="text" name="authorURL" value="<%=commentUrl%>"/></td>
+                <td>URL: </td><td><input type="text" name="authorURL" value="<%= initialAuthorURL %>"/></td>
             </tr>
             <tr>
                 <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="7" cols="55"></textarea></td>
