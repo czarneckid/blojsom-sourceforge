@@ -46,8 +46,7 @@ import org.blojsom.event.BlojsomEvent;
 import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
-import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.BlogEntryEvent;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
@@ -66,7 +65,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.15 2005-01-05 02:32:35 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.16 2005-01-05 18:35:06 czarneckid Exp $
  * @since blojsom 1.9.2
  */
 public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
@@ -201,12 +200,12 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
      * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
      */
     public void handleEvent(BlojsomEvent event) {
-        if (event instanceof AddBlogEntryEvent || event instanceof UpdatedBlogEntryEvent) {
-            AddBlogEntryEvent addEvent = (AddBlogEntryEvent) event;
-            Blog blog = addEvent.getBlogUser().getBlog();
+        if (event instanceof BlogEntryEvent) {
+            BlogEntryEvent entryEvent = (BlogEntryEvent) event;
+            Blog blog = entryEvent.getBlogUser().getBlog();
 
             // Check for meta-data indicating a ping should not be sent
-            Map metaData = addEvent.getBlogEntry().getMetaData();
+            Map metaData = entryEvent.getBlogEntry().getMetaData();
             if (metaData != null && metaData.containsKey(NO_PING_WEBLOGS_METADATA)) {
                 return;
             }
