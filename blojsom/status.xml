@@ -8,7 +8,7 @@
 
     <changes>
 
-        <release version="1.9.5" date="dev">
+        <release version="1.9.5" date="July 27, 2003">
             <!-- Core/General changes -->
             <action dev="czarneckid" type="add" context="Core">
                 The country code for the blog can be configured via the <i>blog-country</i>
