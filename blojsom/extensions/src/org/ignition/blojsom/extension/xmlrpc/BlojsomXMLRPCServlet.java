@@ -46,7 +46,6 @@ import org.ignition.blojsom.fetcher.BlojsomFetcherException;
 import org.ignition.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +66,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.13 2003-05-22 03:08:52 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.14 2003-05-26 06:24:06 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -151,12 +150,12 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
     /**
      * Load blojsom configuration information
      *
-     * @param context Servlet context
+     * @param servletConfig Servlet configuration information
      * @param filename blojsom configuration file to be loaded
      */
-    public void processBlojsomCongfiguration(ServletContext context, String filename) {
+    private void processBlojsomConfiguration(ServletConfig servletConfig, String filename) {
         Properties _configuration = new Properties();
-        InputStream _cis = context.getResourceAsStream(filename);
+        InputStream _cis = servletConfig.getServletContext().getResourceAsStream(filename);
 
         try {
             _configuration.load(_cis);
@@ -220,7 +219,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         _xmlrpc = new XmlRpcServer();
         XmlRpc.setEncoding(UTF8);
 
-        processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
+        processBlojsomConfiguration(servletConfig, _cfgfile);
         configureAuthorization(servletConfig);
         configureFetcher(servletConfig);
         configureAPIHandlers(servletConfig);
