@@ -79,6 +79,10 @@
             <param-value>moblog.properties</param-value>
         </init-param>
         <init-param>
+            <param-name>plugin-weather</param-name>
+            <param-value>weather.properties</param-value>
+        </init-param>
+        <init-param>
             <param-name>plugin-admin-upload</param-name>
             <param-value>/WEB-INF/plugin-admin-upload.properties</param-value>
         </init-param>
