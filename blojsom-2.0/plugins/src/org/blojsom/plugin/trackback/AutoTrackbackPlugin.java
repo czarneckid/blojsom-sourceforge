@@ -63,7 +63,7 @@ import java.net.URLEncoder;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.1 2003-09-19 03:04:23 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.2 2003-09-19 14:54:45 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -138,7 +138,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                                             Matcher trackbackPingMatcher = TRACKBACK_PING_PATTERN.matcher(innerRdfText);
                                             if (trackbackPingMatcher.find()) {
                                                 StringBuffer trackbackPingURL = new StringBuffer(trackbackPingMatcher.group(1));
-                                                trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(blog.getBlogURL(), UTF8));
+                                                trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(URLEncoder.encode(blogEntry.getLink(), UTF8));
                                                 trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(blogEntry.getTitle(), UTF8));
                                                 trackbackPingURL.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
 
