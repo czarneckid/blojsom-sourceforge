@@ -34,30 +34,31 @@
  */
 package org.ignition.blojsom.fetcher;
 
-import org.ignition.blojsom.blog.Blog;
-import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.BlogCategory;
-import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.blog.BlogCategory;
+import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.FileBackedBlogEntry;
+import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * StandardFetcher
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.2 2003-04-16 01:46:46 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.3 2003-04-17 02:35:29 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -104,7 +105,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
-            BlogEntry blogEntry = new BlogEntry();
+            FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
@@ -138,7 +139,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
-            BlogEntry blogEntry = new BlogEntry();
+            FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
@@ -175,7 +176,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
-            BlogEntry blogEntry;
+            FileBackedBlogEntry blogEntry;
             int entryCounter;
             if (maxBlogEntries == -1) {
                 entryCounter = entries.length;
@@ -185,7 +186,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             entryArray = new BlogEntry[entryCounter];
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
-                blogEntry = new BlogEntry();
+                blogEntry = new FileBackedBlogEntry();
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
                 blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));

@@ -40,6 +40,7 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.FileBackedBlogEntry;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -55,7 +56,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.8 2003-04-16 01:45:00 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.9 2003-04-17 02:35:36 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -191,7 +192,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    BlogEntry _entry = _entries[0];
+                    FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
                     System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
                     result = _entry.getSource().delete();
                     // @todo Delete Comment and Trackbacks as well
@@ -367,7 +368,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    BlogEntry _entry = _entries[0];
+                    FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
                     try {
                         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), UTF8));
                         bw.write(content);
@@ -488,7 +489,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
 
                 if (entries != null && entries.length > 0) {
                     for (int x = 0; x < entries.length; x++) {
-                        BlogEntry entry = entries[x];
+                        FileBackedBlogEntry entry = (FileBackedBlogEntry) entries[x];
                         Hashtable entrystruct = new Hashtable();
                         entrystruct.put(MEMBER_POSTID, blogid + "?" + PERMALINK_PARAM + "=" + entry.getSource().getName());
                         entrystruct.put(MEMBER_BLOGID, blogid);

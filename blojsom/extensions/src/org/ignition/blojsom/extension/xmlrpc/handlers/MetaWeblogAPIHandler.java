@@ -40,6 +40,7 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.FileBackedBlogEntry;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
@@ -54,7 +55,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.15 2003-04-16 01:53:27 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.16 2003-04-17 02:35:36 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -194,7 +195,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
 
                 if (_entries != null && _entries.length > 0) {
-                    BlogEntry _entry = _entries[0];
+                    FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
 
                     try {
                         Hashtable postcontent = struct;

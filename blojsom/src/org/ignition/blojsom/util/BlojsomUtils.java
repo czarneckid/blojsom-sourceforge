@@ -34,14 +34,14 @@
  */
 package org.ignition.blojsom.util;
 
-import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.FileBackedBlogEntry;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.43 2003-03-28 19:06:52 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.44 2003-04-17 02:35:47 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -568,9 +568,9 @@ public class BlojsomUtils implements BlojsomConstants {
             File f1;
             File f2;
 
-            if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
-                f1 = ((BlogEntry) o1).getSource();
-                f2 = ((BlogEntry) o2).getSource();
+            if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
+                f1 = ((FileBackedBlogEntry) o1).getSource();
+                f2 = ((FileBackedBlogEntry) o2).getSource();
             } else {
                 f1 = (File) o1;
                 f2 = (File) o2;
@@ -596,9 +596,9 @@ public class BlojsomUtils implements BlojsomConstants {
             File f1;
             File f2;
 
-            if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
-                f1 = ((BlogEntry) o1).getSource();
-                f2 = ((BlogEntry) o2).getSource();
+            if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
+                f1 = ((FileBackedBlogEntry) o1).getSource();
+                f2 = ((FileBackedBlogEntry) o2).getSource();
             } else {
                 f1 = (File) o1;
                 f2 = (File) o2;
