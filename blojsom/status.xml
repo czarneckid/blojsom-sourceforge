@@ -21,7 +21,7 @@
     </todo>
 
     <changes>
-        <!-- Add new releases here -->    
+        <!-- Add new releases here -->
         <release version="1.9.3" date="July 6, 2003">
             <action dev="czarneckid" type="remove" context="General">
                 Added and subsequently removed Blogger 2 API support. Blogger will no longer be supporting the
@@ -60,6 +60,63 @@
 
             <action dev="czarneckid" type="fix" fixes-bug="755698" context="Core">
                 BlogCategory object on BlogEntry does not have meta-data
+            </action>
+        </release>
+
+        <release version="1.9.1" date="June 13, 2003">
+            <action dev="czarneckid" type="fix" context="General">
+                Fixed regular expressions in
+                <i>blacklist.filters</i>
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                <tt>BlogCategory</tt> is now an abstract class
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added persistence methods to the
+                <tt>BlogCategory</tt> class. This is overridden
+                in a concrete implementation like
+                <tt>FileBackedBlogCategory</tt> of this class to persist the
+                blog category
+            </action>
+            <action dev="czarneckid" type="add" context="Core">
+                Added
+                <tt>public BlogCategory newBlogCategory()</tt> method to
+                <tt>BlojsomFetcher</tt> interface
+            </action>
+            <action dev="czarneckid" type="update" context="Core">
+                Persistence methods (loadEntry, saveEntry, deleteEntry) have been renamed to load, save, and delete
+                on their respective classes to reduce redundance
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added new
+                <a href="plugins-dateformat.html">Date Format plugin</a> to allow for configuration of blog date formatting
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                Added a new base class
+                <tt>org.ignition.blojsom.plugin.common.IPBanningPlugin</tt> which the
+                Comments and Trackback plugin now subclass from. This base plugin provides the capability to check
+                if an IP address is banned or not through its
+                <tt>boolean isIPBanned(String ipAddress)</tt> method. Check the
+                <a href="upgrading.html">upgrading</a> instructions for information on how to ban IP addresses
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                Textile code removed and replaced with textile4j.jar
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                The Textile plugin had a bug when processing qtag's. This was found during the
+                <a href="http://sf.net/projects/textile4j">textile4j</a> breakout
+            </action>
+            <action dev="czarneckid" type="update" context="Plugin">
+                The prefix for the Comment and Trackback plugins is configurable via the
+                <i>plugin-comment-email-prefix</i> and
+                <i>plugin-trackback-email-prefix</i> parameters that can be
+                added to
+                <i>/WEB-INF/blojsom.properties</i>
+            </action>
+
+            <action dev="czarneckid" type="fix" context="General" fixes-bug="752254">
+                No meta-data loaded when requesting "/" category
             </action>
         </release>
 
