@@ -35,11 +35,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * BlojsomUtils
@@ -341,11 +341,12 @@ public class BlojsomUtils implements BlojsomConstants {
         String lineSeparator = System.getProperty("line.separator");
         int titleIndex = input.indexOf(lineSeparator);
         if (titleIndex == -1) {
-            result = input.substring(0,length)+"...";
+            result = input.substring(0, length) + "...";
         } else {
             result = input.substring(0, titleIndex);
+        }
+        return result;
     }
-
 
 
     /**
