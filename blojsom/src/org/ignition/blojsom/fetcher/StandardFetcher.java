@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.9 2003-04-23 01:33:27 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.10 2003-04-26 23:35:29 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -66,6 +66,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
     private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
     private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
+
+    private static final String STANDARD_FETCHER_CATEGORY = "STANDARD_FETCHER_CATEGORY";
 
     /**
      * Default constructor
@@ -267,20 +269,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     }
 
     /**
-     * Fetch a set of {@link BlogEntry} objects.
+     * Determine the blog category based on the request
      *
      * @param httpServletRequest Request
-     * @param httpServletResponse Response
-     * @param flavor Flavor
-     * @param context Context
-     * @return Blog entries retrieved for the particular request
-     * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
+     * @return {@link BlogCategory} of the requested category
      */
-    public BlogEntry[] fetchEntries(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    String flavor,
-                                    Map context) throws BlojsomFetcherException {
-
+    private BlogCategory getBlogCategory(HttpServletRequest httpServletRequest) {
         // Determine the user requested category
         String requestedCategory = httpServletRequest.getPathInfo();
         _logger.debug("blojsom path info: " + requestedCategory);
@@ -296,6 +290,26 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         // We might also want to pass the flavor so that we can also have flavor-based category meta-data
         category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+
+        return category;
+    }
+
+    /**
+     * Fetch a set of {@link BlogEntry} objects.
+     *
+     * @param httpServletRequest Request
+     * @param httpServletResponse Response
+     * @param flavor Flavor
+     * @param context Context
+     * @return Blog entries retrieved for the particular request
+     * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
+     */
+    public BlogEntry[] fetchEntries(HttpServletRequest httpServletRequest,
+                                    HttpServletResponse httpServletResponse,
+                                    String flavor,
+                                    Map context) throws BlojsomFetcherException {
+        BlogCategory category = (BlogCategory) context.get(STANDARD_FETCHER_CATEGORY);
+        context.remove(STANDARD_FETCHER_CATEGORY);
 
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
@@ -314,7 +328,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             context.put(BLOJSOM_PERMALINK, permalink);
             return getPermalinkEntry(category, permalink);
         } else {
-            if (requestedCategory.equals("/")) {
+            if (category.getCategory().equals("/")) {
                 return getEntriesAllCategories(flavor, -1);
             } else {
                 return getEntriesForCategory(category, -1);
@@ -480,26 +494,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                                           String flavor,
                                           Map context) throws BlojsomFetcherException {
         BlogCategory[] categories;
+        BlogCategory category = getBlogCategory(httpServletRequest);
 
-        // Determine the user requested category
-        String requestedCategory = httpServletRequest.getPathInfo();
-        _logger.debug("blojsom path info: " + requestedCategory);
-
-        if (requestedCategory == null) {
-            requestedCategory = "/";
-        } else if (!requestedCategory.endsWith("/")) {
-            requestedCategory += "/";
-        }
-
-        _logger.debug("User requested category: " + requestedCategory);
-        FileBackedBlogCategory category = new FileBackedBlogCategory(requestedCategory, _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
-
-        // We might also want to pass the flavor so that we can also have flavor-based category meta-data
-        category.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
-
+        context.put(STANDARD_FETCHER_CATEGORY, category);
         context.put(BLOJSOM_REQUESTED_CATEGORY, category);
 
-        if (requestedCategory.equals("/")) {
+        if (category.getCategory().equals("/")) {
             categories = getBlogCategories();
         } else {
             categories = getBlogCategoryHierarchy(category);
@@ -536,7 +536,12 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         if (fetchParameters == null) {
             return getBlogCategories();
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY)) {
-            return getBlogCategoryHierarchy((BlogCategory) fetchParameters.get(FETCHER_CATEGORY));
+            BlogCategory category = (BlogCategory) fetchParameters.get(FETCHER_CATEGORY);
+            if (category.getCategory().equals("/")) {
+                return getBlogCategories();
+            } else {
+                return getBlogCategoryHierarchy(category);
+            }
         }
 
         return new BlogCategory[0];
