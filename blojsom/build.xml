@@ -9,7 +9,7 @@
 <project name="blojsom" default="compile" basedir=".">
 
     <property name="name" value="blojsom"/>
-    <property name="version" value="1.9.5"/>
+    <property name="version" value="1.9.6"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
     <property name="war.file" value="${distro.dir}/${name}.war"/>
@@ -52,10 +52,10 @@
     <property name="optimize" value="on"/>
 
     <!-- Forrest properties -->
-    <property name="build.dir" value="${basedir}/build"/>
-    <property name="build.tmp.dir" value="${build.dir}/tmp"/>
-    <property name="build.worksite.dir" value="${build.dir}/work-site"/>
-    <property name="forrest.site.dir" location="${build.dir}/site"/>
+    <property name="forrest.build.dir" value="${basedir}/build"/>
+    <property name="forrest.build.tmp.dir" value="${build.dir}/tmp"/>
+    <property name="forrest.build.worksite.dir" value="${build.dir}/work-site"/>
+    <property name="forrest.site.dir" location="${forrest.build.dir}/site"/>
 
     <!-- =================================================================== -->
     <!-- Classpath                                                           -->
@@ -110,8 +110,6 @@
         <delete dir="${javadoc.dir}"/>
         <delete dir="${distro.dir}"/>
         <delete dir="${build.dir}"/>
-        <delete dir="${build.tmp.dir}"/>
-        <delete dir="${build.worksite.dir}"/>
         <delete file="${core.jar}"/>
         <delete file="${plugins.jar}"/>
         <delete file="${extensions.jar}"/>
@@ -387,13 +385,10 @@
         <property name="forrest.site.hostname" value="blojsom.sf.net"/>
         <property name="forrest.site.remotedir" value="/home/groups/b/bl/blojsom/htdocs/"/>
 
-        <property name="forrest.site.work.dir" value="build/work-site"/>
-        <delete dir="${forrest.site.work.dir}"/>
-        <mkdir dir="${forrest.site.work.dir}"/>
-        <mkdir dir="${forrest.site.dir}"/>
-
+        <property name="forrest.site.work.dir" value="${forrest.site.dir}"/>
         <property name="forrest.site.tar.path.and.name" value="${forrest.site.work.dir}/${name}-site"/>
 
+        <mkdir dir="${forrest.site.dir}/javadoc"/>
         <copy todir="${forrest.site.dir}/javadoc">
             <fileset dir="${javadoc.dir}"/>
         </copy>
