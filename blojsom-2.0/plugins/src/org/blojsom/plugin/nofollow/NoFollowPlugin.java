@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.*;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +54,7 @@ import java.util.regex.Pattern;
  * to comments and trackbacks.
  *
  * @author David Czarnecki
- * @version $Id: NoFollowPlugin.java,v 1.1 2005-01-20 01:38:58 czarneckid Exp $
+ * @version $Id: NoFollowPlugin.java,v 1.2 2005-01-25 20:52:56 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class NoFollowPlugin implements BlojsomPlugin {
@@ -92,6 +93,10 @@ public class NoFollowPlugin implements BlojsomPlugin {
      * @return Text with rel="nofollow" attributes added to the hyperlinks
      */
     protected String noFollowFy(String text) {
+        if (BlojsomUtils.checkNullOrBlank(text)) {
+            return text;
+        }
+        
         StringBuffer updatedText = new StringBuffer();
 
         Pattern hyperlinkPattern = Pattern.compile(HYPERLINK_REGEX, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.DOTALL);
