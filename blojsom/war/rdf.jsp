@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <%@ page import="org.ignition.blojsom.blog.Blog,
                  org.ignition.blojsom.util.BlojsomConstants,
                  org.ignition.blojsom.blog.BlogEntry"
