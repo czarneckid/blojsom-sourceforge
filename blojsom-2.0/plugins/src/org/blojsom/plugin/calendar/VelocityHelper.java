@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.8 2004-11-11 19:26:18 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.9 2004-11-14 20:10:38 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -53,8 +53,8 @@ public class VelocityHelper {
 
     private static final String VTL_SPACER = "&nbsp;";
 
-    private static final String HREF_PREFIX = "<a href=\"";
-    private static final String HREF_SUFFIX = "</a>";
+    private String HREF_PREFIX = "<a href=\"";
+    private String HREF_SUFFIX = "</a>";
 
     /**
      * Public Constructor
@@ -187,5 +187,126 @@ public class VelocityHelper {
         _calendar.getCalendar().add(Calendar.MONTH, -1);
 
         return result.toString();
+    }
+
+    /**
+     * Get the link for navigating to the previous month
+     *
+     * @return the previous month link
+     * @since blojsom 2.21
+     */
+    public String getPreviousMonthLink() {
+
+        StringBuffer result = new StringBuffer();
+        _calendar.getCalendar().add(Calendar.MONTH, -1);
+
+        String prevurl =
+                BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+                        (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                        -1, _calendar.getCalendar().get(Calendar.YEAR));
+
+        result.append(prevurl);
+        _calendar.getCalendar().add(Calendar.MONTH, 1);
+
+        return result.toString();
+    }
+
+    /**
+     * Get the visual control for navigating to the previous month
+     *
+     * @return the previous month navigation control
+     * @since blojsom 2.21
+     */
+    public String getPreviousMonthName() {
+
+        StringBuffer result = new StringBuffer();
+        _calendar.getCalendar().add(Calendar.MONTH, -1);
+
+        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+        _calendar.getCalendar().add(Calendar.MONTH, 1);
+
+        return result.toString();
+    }
+
+    /**
+     * Get the link for navigating to the current month
+     *
+     * @return the current month link
+     * @since blojsom 2.21
+     */
+    public String getCurrentMonthLink() {
+
+        StringBuffer result = new StringBuffer();
+        result.append(_calendar.getCalendarUrl());
+
+        return result.toString();
+    }
+
+    /**
+     * Get the link for navigating to the next month
+     *
+     * @return the next month link
+     * @since blojsom 2.21
+     */
+    public String getCurrentMonthName() {
+
+        StringBuffer result = new StringBuffer();
+
+        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+
+        return result.toString();
+    }
+
+
+    /**
+     * Get the link for navigating to the next month
+     *
+     * @return the next month link
+     * @since blojsom 2.21
+     */
+    public String getNextMonthLink() {
+
+        StringBuffer result = new StringBuffer();
+        _calendar.getCalendar().add(Calendar.MONTH, 1);
+
+        String nexturl =
+                BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+                        (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                        -1, _calendar.getCalendar().get(Calendar.YEAR));
+
+        result.append(nexturl);
+        _calendar.getCalendar().add(Calendar.MONTH, -1);
+
+        return result.toString();
+    }
+
+    /**
+     * Get the name for navigating to the next month
+     *
+     * @return the next month name
+     * @since blojsom 2.21
+     */
+    public String getNextMonthName() {
+
+        StringBuffer result = new StringBuffer();
+        _calendar.getCalendar().add(Calendar.MONTH, 1);
+
+        result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
+        _calendar.getCalendar().add(Calendar.MONTH, -1);
+
+        return result.toString();
+    }
+
+    /**
+     * Set the prefix and suffix of the calendar links
+     *
+     * @param prefix the calendar link prefix
+     * @param suffix the calendar link suffix
+     * @since blojsom 2.21
+     */
+    public void setLinkFormat(String prefix, String suffix) {
+        HREF_PREFIX = prefix;
+        HREF_SUFFIX = suffix;
+        buildCalendar();
     }
 }
