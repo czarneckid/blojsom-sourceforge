@@ -88,12 +88,14 @@
             </fileset>
         </copy>
 
+        <mkdir dir="${war.dir}/WEB-INF/default/templates/"/>
         <copy todir="${war.dir}/WEB-INF/default/templates/">
             <fileset dir="${templates.dir}">
                 <include name="**/*.vm"/>
             </fileset>
         </copy>
 
+        <mkdir dir="${war.dir}/WEB-INF/bootstrap/templates/"/>
         <copy todir="${war.dir}/WEB-INF/bootstrap/templates/">
             <fileset dir="${templates.dir}">
                 <include name="**/*.vm"/>
@@ -302,8 +304,7 @@
     <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
-    <target name="war" depends="clean, prepare, compile" description="Create a deployable WAR file">
-        <copydir src="${templates.dir}" dest="${war.dir}/WEB-INF/default/templates"/>
+    <target name="war" depends="compile" description="Create a deployable WAR file">
         <copydir src="${themes.dir}" dest="${war.dir}/themes"/>
 
         <!-- Uncomment this if you want to JAR up the templates for running blojsom from a WAR file (i.e. a packed WAR) -->
@@ -466,6 +467,10 @@
                 <include name="war/WEB-INF/lib"/>
             </zipfileset>
         </zip>
+    </target>
+
+    <target name="create-distribution" depends="clean, war, create-addon-bundle, create-source-distribution"
+        description="Create the WAR, add-on bundle, and source distribution">
     </target>
 
 </project>
