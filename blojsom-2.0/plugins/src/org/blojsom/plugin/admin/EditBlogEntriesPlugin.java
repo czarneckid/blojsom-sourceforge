@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.33 2004-11-05 02:23:39 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.34 2004-11-06 19:47:59 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -459,19 +459,27 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String filename;
             if (BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
-                filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
+                if (BlojsomUtils.checkNullOrBlank(blogEntryTitle)) {
+                    filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
+                } else {
+                    filename = BlojsomUtils.normalize(blogEntryTitle);
+                }
             } else {
                 if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
                     proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
                 }
 
                 proposedBlogFilename = BlojsomUtils.normalize(proposedBlogFilename);
-                proposedBlogFilename += blogEntryExtension;
                 filename = proposedBlogFilename;
                 _logger.debug("Using proposed blog entry filename: " + filename);
             }
 
-            File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename);
+            File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename + blogEntryExtension);
+            int fileTag = 1;
+            while (blogFilename.exists()) {
+                blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename + "-" + fileTag + blogEntryExtension);
+                fileTag++;
+            }
             _logger.debug("New blog entry file: " + blogFilename.toString());
 
             Map attributeMap = new HashMap();
@@ -815,8 +823,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
         }
 
-        String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
-        String filename = baseFilename + blogEntryExtension;
-        return filename;
+        return BlojsomUtils.digestString(hashable).toUpperCase();
     }
 }
