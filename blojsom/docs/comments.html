@@ -50,10 +50,20 @@ an individual entry, you can do so by making that entry <i>read-only</i>. blojso
 this to indicate whether or not it should allow users to comment on an entry. If a blog
 entry is writable, users may comment on that entry.
 
-<p class="weblogtitle">Comment API support</a>
+<p class="weblogtitle">Comment API support</p>
 <p />
 As of blojsom 1.8, support for the <a href="http://wellformedweb.org/story/9">Comment API</a>
 has been added to blojsom.
+
+<p class="weblogtitle">Banning IP addresses from commenting</p>
+<p/>
+In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
+and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
+addresses is controlled by the <i>blog-banned-ip-addresses</i> parameter in <i>/WEB-INF/blojsom.properties</i>.
+As an example, the following will ban you from posting locally.
+<pre>
+blog-banned-ip-addresses=127\\.0\\.0\\.1
+</pre>
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>

@@ -60,6 +60,16 @@ URL parameters that must be supplied for a trackback.
     </tr>
 </table>
 
+<p class="weblogtitle">Banning IP addresses from trackbacks</p>
+<p/>
+In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
+and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
+addresses is controlled by the <i>blog-banned-ip-addresses</i> parameter in <i>/WEB-INF/blojsom.properties</i>.
+As an example, the following will ban you from posting locally.
+<pre>
+blog-banned-ip-addresses=127\\.0\\.0\\.1
+</pre>
+
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
