@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.26 2004-11-16 03:10:15 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.27 2004-11-16 16:11:39 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -62,6 +62,7 @@ public class Blog implements BlojsomConstants {
     private String _blogBaseURL;
     private String _blogCountry;
     private String _blogLanguage;
+    private String _blogAdministrationLocale;
     private String[] _blogFileExtensions;
     private String[] _blogPropertiesExtensions;
     private int _blogDepth;
@@ -291,6 +292,13 @@ public class Blog implements BlojsomConstants {
         }
         _xmlrpcEnabled = Boolean.valueOf(xmlrpcEnabled);
         _blogProperties.put(XMLRPC_ENABLED_IP, _xmlrpcEnabled);
+
+        String blogAdministrationLocale = blogConfiguration.getProperty(BLOG_ADMINISTRATION_LOCALE_IP);
+        if (BlojsomUtils.checkNullOrBlank(blogAdministrationLocale)) {
+            blogAdministrationLocale = BLOG_LANGUAGE_DEFAULT + "_" + BLOG_COUNTRY_DEFAULT;
+        }
+        _blogAdministrationLocale = blogAdministrationLocale;
+        _blogProperties.put(BLOG_ADMINISTRATION_LOCALE_IP, _blogAdministrationLocale);
 
         _logger.info("blojsom home: " + _blogHome);
     }
@@ -929,5 +937,36 @@ public class Blog implements BlojsomConstants {
     public void setXmlrpcEnabled(Boolean xmlrpcEnabled) {
         _xmlrpcEnabled = xmlrpcEnabled;
         _blogProperties.put(XMLRPC_ENABLED_IP, _xmlrpcEnabled);
+    }
+
+    /**
+     * Retrieve the blog administration locale as a String
+     *
+     * @return String of blog administration locale
+     * @since blojsom 2.21
+     */
+    public String getBlogAdministrationLocaleAsString() {
+        return _blogAdministrationLocale;
+    }
+
+    /**
+     * Retrieve the blog administration locale as a {@link Locale} object
+     *
+     * @return {@link Locale} object for blog administration locale
+     * @since blojsom 2.21
+     */
+    public Locale getBlogAdministrationLocale() {
+        return BlojsomUtils.getLocaleFromString(_blogAdministrationLocale);
+    }
+
+    /**
+     * Set the locale used in the administration console
+     *
+     * @param blogAdministrationLocale Locale string of form <code>language_country_variant</code>
+     * @since blojsom 2.21
+     */
+    public void setBlogAdministrationLocale(String blogAdministrationLocale) {
+        _blogAdministrationLocale = blogAdministrationLocale;
+        _blogProperties.put(BLOG_ADMINISTRATION_LOCALE_IP, _blogAdministrationLocale);
     }
 }
