@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.31 2003-05-03 18:01:24 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.32 2003-05-08 03:12:45 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -108,6 +108,11 @@ public class CommentPlugin implements BlojsomPlugin {
     private static final String COOKIE_URL = "blojsom.cookie.authorURL";
 
     /**
+     * Comment "Remember Me" Cookie for the "Remember Me" checkbox
+     */
+    private static final String COOKIE_REMEMBER_ME = "blojsom.cookie.rememberme";
+
+    /**
      * Expiration age for the cookie (1 week)
      */
     private static final int COOKIE_EXPIRATION_AGE = 604800;
@@ -135,6 +140,12 @@ public class CommentPlugin implements BlojsomPlugin {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL = "BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL";
+
+    /**
+     * Key under which the "remember me" checkbox from the "remember me" cookie will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME = "BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME";
 
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
@@ -220,6 +231,7 @@ public class CommentPlugin implements BlojsomPlugin {
         String author = httpServletRequest.getParameter(AUTHOR_PARAM);
         String authorEmail = httpServletRequest.getParameter(AUTHOR_EMAIL_PARAM);
         String authorURL = httpServletRequest.getParameter(AUTHOR_URL_PARAM);
+        String rememberMe = httpServletRequest.getParameter(REMEMBER_ME_PARAM);
 
         // Check to see if the person has requested they be "remembered" and if so
         // extract their information from the appropriate cookies
@@ -252,6 +264,16 @@ public class CommentPlugin implements BlojsomPlugin {
                     authorURL = "";
                 } else {
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
+                }
+            }
+
+            Cookie rememberMeCookie = getCommentCookie(httpServletRequest, COOKIE_REMEMBER_ME);
+            if ((rememberMeCookie != null) && ((rememberMe == null) || "".equals(rememberMe))) {
+                rememberMe = rememberMeCookie.getValue();
+                if (rememberMe == null) {
+                    rememberMe = "";
+                } else {
+                    context.put(BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME, rememberMe);
                 }
             }
         }
@@ -315,6 +337,8 @@ public class CommentPlugin implements BlojsomPlugin {
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL, authorEmail);
                     addCommentCookie(httpServletResponse, COOKIE_URL, authorURL);
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
+                    addCommentCookie(httpServletResponse, COOKIE_REMEMBER_ME, "true");
+                    context.put(BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME, "true");
                 }
             }
         }
