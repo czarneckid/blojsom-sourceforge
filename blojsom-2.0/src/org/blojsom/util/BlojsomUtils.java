@@ -56,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.52 2005-01-05 02:33:03 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.53 2005-01-11 18:38:03 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -707,10 +707,31 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Value of the key as a string, or <code>null</code> if there is no parameter/attribute
      */
     public static final String getRequestValue(String key, HttpServletRequest httpServletRequest) {
-        if (httpServletRequest.getParameter(key) != null) {
-            return httpServletRequest.getParameter(key);
-        } else if (httpServletRequest.getAttribute(key) != null) {
-            return httpServletRequest.getAttribute(key).toString();
+        return getRequestValue(key, httpServletRequest, false);
+    }
+
+    /**
+     * Tries to retrieve a given key using getParameter(key) and if not available, will
+     * use getAttribute(key) from the servlet request
+     *
+     * @param key                Parameter to retrieve
+     * @param httpServletRequest Request
+     * @param preferAttributes   If request attributes should be checked before request parameters
+     * @return Value of the key as a string, or <code>null</code> if there is no parameter/attribute
+     */
+    public static final String getRequestValue(String key, HttpServletRequest httpServletRequest, boolean preferAttributes) {
+        if (!preferAttributes) {
+            if (httpServletRequest.getParameter(key) != null) {
+                return httpServletRequest.getParameter(key);
+            } else if (httpServletRequest.getAttribute(key) != null) {
+                return httpServletRequest.getAttribute(key).toString();
+            }
+        } else {
+            if (httpServletRequest.getAttribute(key) != null) {
+                return httpServletRequest.getAttribute(key).toString();
+            } else if (httpServletRequest.getParameter(key) != null) {
+                return httpServletRequest.getParameter(key);
+            }
         }
 
         return null;
