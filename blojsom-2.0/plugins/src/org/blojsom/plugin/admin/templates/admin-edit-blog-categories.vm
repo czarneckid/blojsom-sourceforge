@@ -42,6 +42,37 @@
         </center>
         <p/>
 
+        <!-- Modify blog category form -->
+        <center>
+            <h3>Modify an existing blog category</h3>
+            <table border="1">
+                <form name="display-blog-category" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="edit-blog-category"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-categories"/>
+                    <tr>
+                        <td>Blog category</td>
+                        <td>
+                            <select name="blog-category-name">
+                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+                                <option value="$blogCategory.getCategory()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Edit category"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+        <p/>
+
         <!-- Delete blog category form -->
         <center>
             <h3>Delete an existing blog category</h3>
@@ -64,37 +95,6 @@
                         <td colspan="2">
                             <center>
                                 <input type="submit" name="submit" value="Delete category"/>
-                                <input type="reset" name="reset" value="Reset"/>
-                            </center>
-                        </td>
-                    </tr>
-                </form>
-            </table>
-        </center>
-        <p/>
-
-        <!-- Edit blog category form -->
-        <center>
-            <h3>Edit an existing blog category</h3>
-            <table border="1">
-                <form name="display-blog-category" action="." method="post" accept-charset="UTF-8">
-                    <input type="hidden" name="action" value="edit-blog-category"/>
-                    <input type="hidden" name="flavor" value="admin"/>
-                    <input type="hidden" name="plugins" value="edit-blog-categories"/>
-                    <tr>
-                        <td>Blog category</td>
-                        <td>
-                            <select name="blog-category-name">
-                            #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
-                                <option value="$blogCategory.getCategory()">#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
-                            #end
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <center>
-                                <input type="submit" name="submit" value="Edit category"/>
                                 <input type="reset" name="reset" value="Reset"/>
                             </center>
                         </td>
