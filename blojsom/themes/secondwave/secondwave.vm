@@ -46,7 +46,7 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
     </div>
     #set( $totalEntries = $totalEntries + 1)
 #end
-<td>
+</td>
 <td  width="100">&nbsp;</td>
 
 <td valign="top" align="center" width="200">
