@@ -188,14 +188,13 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 String plugin = (String) pluginIterator.next();
                 if (plugin.equals(BLOJSOM_PLUGIN_CHAIN)) {
                     _pluginChain = BlojsomUtils.parseCommaList(pluginProperties.getProperty(BLOJSOM_PLUGIN_CHAIN));
-                    _logger.info( "Plugin chain: " + _pluginChain);
                 } else {
                     String pluginClassName = pluginProperties.getProperty(plugin);
                     Class pluginClass = Class.forName(pluginClassName);
                     BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
                     blojsomPlugin.init(servletConfig, _blog.getBlogProperties());
                     _plugins.put(plugin, blojsomPlugin);
-                    _logger.debug("Added blojsom plugin: " + pluginClassName);
+                    _logger.info("Added blojsom plugin: " + pluginClassName);
                 }
             }
         } catch (BlojsomPluginException e) {
@@ -239,7 +238,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     public void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
         if (blogSiteURL.endsWith("/")) {
-            blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length()-1);
+            blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length() - 1);
         }
         _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
         _logger.debug("blojsom request URI: " + httpServletRequest.getRequestURI());
@@ -336,12 +335,16 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         // Invoke the plugins in the order in which they were specified
         for (int i = 0; i < _pluginChain.length; i++) {
             String plugin = _pluginChain[i];
-            BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
-            try {
-                blojsomPlugin.process(entries);
-                blojsomPlugin.cleanup();
-            } catch (BlojsomPluginException e) {
-                _logger.error(e);
+            if (_plugins.containsKey(plugin)) {
+                BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
+                try {
+                    blojsomPlugin.process(entries);
+                    blojsomPlugin.cleanup();
+                } catch (BlojsomPluginException e) {
+                    _logger.error(e);
+                }
+            } else {
+                _logger.error("No plugin loaded for: " + plugin);
             }
         }
 
