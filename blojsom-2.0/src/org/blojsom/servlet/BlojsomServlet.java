@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.34 2005-03-11 03:30:35 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.35 2005-03-16 04:24:16 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -518,6 +518,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         context.put(BLOJSOM_COMMENTS_ENABLED, blog.getBlogCommentsEnabled());
         context.put(BLOJSOM_VERSION, BLOJSOM_VERSION_NUMBER);
         context.put(BLOJSOM_USER, blogUser.getId());
+        context.put(BLOJSOM_PLUGINS, Collections.unmodifiableMap(_plugins));
 
         // Forward the request on to the template for the requested flavor
         String flavorTemplate;
