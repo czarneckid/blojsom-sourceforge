@@ -36,6 +36,7 @@ package org.blojsom.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ import java.util.zip.GZIPOutputStream;
  *  http://www.moreservlets.com/.
  *  &copy; 2002 Marty Hall; may be freely used or adapted.
  */
-public class CompressionFilter implements Filter {
+public class CompressionFilter implements Filter, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(CompressionFilter.class);
     private FilterConfig config;
@@ -95,7 +96,14 @@ public class CompressionFilter implements Filter {
             // it into a byte array.
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             GZIPOutputStream zipOut = new GZIPOutputStream(byteStream);
-            OutputStreamWriter tempOut = new OutputStreamWriter(zipOut);
+
+            // Grab the character encoding for the blog and default to UTF-8 if necessary
+            String blogCharacterEncoding = (String) req.getAttribute(BLOG_CHARACTER_ENCODING);
+            if (blogCharacterEncoding == null || "".equals(blogCharacterEncoding)) {
+                blogCharacterEncoding = UTF8;
+            }
+            _logger.debug("Compressing using character encoding: " + blogCharacterEncoding);
+            OutputStreamWriter tempOut = new OutputStreamWriter(zipOut, blogCharacterEncoding);
       
             // Compress original output and put it into byte array.
             tempOut.write(responseChars);

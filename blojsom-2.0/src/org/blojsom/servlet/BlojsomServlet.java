@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.14 2003-10-22 02:43:04 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.15 2003-11-12 03:02:07 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -445,6 +445,9 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         context.put(BLOJSOM_COMMENTS_ENABLED, blog.getBlogCommentsEnabled());
         context.put(BLOJSOM_VERSION, BLOJSOM_VERSION_NUMBER);
         context.put(BLOJSOM_USER, blogUser.getId());
+
+        // Setup the character encoding for the compression filter (if necessary)
+        httpServletRequest.setAttribute(BLOG_CHARACTER_ENCODING, blog.getBlogFileEncoding());
 
         // Forward the request on to the template for the requested flavor
         String flavorTemplate;
