@@ -38,6 +38,8 @@ import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.dispatcher.GenericDispatcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.ignition.blojsom.plugin.BlojsomPluginException;
+import org.ignition.blojsom.plugin.BlojsomPlugin;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -60,6 +62,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private final static String BLOG_FLAVOR_CONFIGURATION_IP = "blog-flavor-configuration";
     private final static String BLOG_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-map-configuration";
     private final static String BLOG_CONFIGURATION_IP = "blog-configuration";
+    private final static String BLOG_PLUGIN_CONFIGURATION_IP = "blog-plugin-configuration";
 
     private Blog _blog;
 
@@ -67,6 +70,8 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     private Map _flavorToContentTypeMap;
     private Map _flavors;
     private Map _templateDispatchers;
+    private Map _plugins;
+    private String[] _pluginChain;
 
     private Log _logger = LogFactory.getLog(BlojsomServlet.class);
 
@@ -167,6 +172,45 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     }
 
     /**
+     * Configure the plugins that blojsom will use
+     *
+     * @param servletConfig Servlet configuration information
+     */
+    private void configurePlugins(ServletConfig servletConfig) {
+        String pluginConfiguration = servletConfig.getInitParameter(BLOG_PLUGIN_CONFIGURATION_IP);
+        _plugins = new HashMap();
+        Properties pluginProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(pluginConfiguration);
+        try {
+            pluginProperties.load(is);
+            Iterator pluginIterator = pluginProperties.keySet().iterator();
+            while (pluginIterator.hasNext()) {
+                String plugin = (String) pluginIterator.next();
+                if (plugin.equals(BLOJSOM_PLUGIN_CHAIN)) {
+                    _pluginChain = BlojsomUtils.parseCommaList(pluginProperties.getProperty(BLOJSOM_PLUGIN_CHAIN));
+                } else {
+                    String pluginClassName = pluginProperties.getProperty(plugin);
+                    Class pluginClass = Class.forName(pluginClassName);
+                    BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
+                    blojsomPlugin.init(servletConfig, _blog.getBlogProperties());
+                    _plugins.put(plugin, blojsomPlugin);
+                    _logger.debug("Added blojsom plugin: " + pluginClassName);
+                }
+            }
+        } catch (BlojsomPluginException e) {
+            _logger.error(e);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+    }
+
+    /**
      * Initialize blojsom: configure blog, configure flavors, configure dispatchers
      *
      * @param servletConfig Servlet configuration information
@@ -178,6 +222,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         configureBlog(servletConfig);
         configureFlavors(servletConfig);
         configureDispatchers(servletConfig);
+        configurePlugins(servletConfig);
 
         _logger.info("blojsom home: " + _blog.getBlogHome());
     }
@@ -284,6 +329,18 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 // Check for the requested category
             } else {
                 entries = _blog.getEntriesForCategory(category);
+            }
+        }
+
+        // Invoke the plugins in the order in which they were specified
+        for (int i = 0; i < _pluginChain.length; i++) {
+            String plugin = _pluginChain[i];
+            BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
+            try {
+                blojsomPlugin.process(entries);
+                blojsomPlugin.cleanup();
+            } catch (BlojsomPluginException e) {
+                _logger.error(e);
             }
         }
 
