@@ -39,7 +39,7 @@ package org.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomConstants.java,v 1.2 2003-09-07 17:54:54 intabulas Exp $
+ * @version $Id: AtomConstants.java,v 1.3 2003-09-08 00:01:11 czarneckid Exp $
  */
 public interface AtomConstants {
 
@@ -60,9 +60,9 @@ public interface AtomConstants {
     static final String BASE64_AUTH_PREFIX = "Basic ";
 
     /**
-     * Authentication Relm
+     * Authentication Realm
      */
-    static final String AUTHENTICATION_RELM = "basic realm=\"blojsom\"";
+    static final String AUTHENTICATION_REALM = "basic realm=\"blojsom\"";
 
 
     /**

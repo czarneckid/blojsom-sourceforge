@@ -68,7 +68,7 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.5 2003-09-07 23:48:41 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.6 2003-09-08 00:01:11 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, AtomConstants {
 
@@ -149,7 +149,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
     private void sendAuthenticationRequired(HttpServletResponse httpServletResponse) {
         httpServletResponse.setContentType("text/html");
-        httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, AUTHENTICATION_RELM);
+        httpServletResponse.setHeader(HEADER_AUTHCHALLENGE, AUTHENTICATION_REALM);
         httpServletResponse.setStatus(401);
     }
 
