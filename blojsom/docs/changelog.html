@@ -27,23 +27,22 @@
 <a href="license.html">license</a> |
 <a href="http://sourceforge.net/projects/blojsom/">sourceforge</a></p>
 
-<p class="weblogtitle">blojsom 1.9.4 (codename: hypnotik)</p>
-<p class="weblogdateline">in CVS</p>
+<p class="weblogtitle">blojsom 1.9.4 (codename: Hypnotik)</p>
+<p class="weblogdateline">Available from CVS</p>
 <p />
 <b>NEW:</b>&nbsp;If you are upgrading from a previous release, please read the <a href="upgrading.html">upgrading</a> instructions
-<p/>
 
-General:<br/>
-- Upgraded the <a href="http://sf.net/projects/textile4j">textile4j</a> jar to the latest version<br/>
 <p />
 Extension changes:<br />
+- Changed <tt>AbstractBlojsomAPIHandler</tt> to throw <tt>BlojsomException</tt> for the
+<tt>setBlog()</tt> and <tt>setFetcher()</tt> methods<br/>
+- Implemented <tt>getPost()</tt> and <tt>newMediaObject()</tt> for the MetaWeblog API
+handler
 
 <p />
-Plugin changes:<br />
-
-<p />
-The following bugs were fixed:<br />
-
+Library changes:<br />
+- Added Jakarta Commons Codec 1.1 library<br/>
+- Upgraded the <a href="http://sf.net/projects/textile4j">textile4j</a> jar to the latest version<br/>
 
 <p class="weblogtitle">blojsom 1.9.3 (codename: Grey Goose)</p>
 <p class="weblogdateline">July 6, 2003 (tag: <b>blojsom-1_9_3-final</b>)</p>
