@@ -43,7 +43,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.5 2003-03-31 16:23:36 intabulas Exp $
+ * @version $Id: VelocityHelper.java,v 1.6 2003-04-02 17:32:12 intabulas Exp $
  */
 public class VelocityHelper {
 
@@ -95,12 +95,13 @@ public class VelocityHelper {
                     if (!_calendar.dayHasEntry(dowoffset)) {
                         visualcalendar[x][y] = new Integer(dowoffset).toString();
                     } else {
-                        StringBuffer _url = new StringBuffer(HREF_PREFIX );
-                        String _calurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), ( _calendar.getCurrentMonth() + 1 ), dowoffset, _calendar.getCurrentYear());
+                        StringBuffer _url = new StringBuffer(HREF_PREFIX);
+                        String _calurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), (_calendar.getCurrentMonth() + 1), dowoffset, _calendar.getCurrentYear());
                         _url.append(_calurl);
                         _url.append("\">").append(dowoffset).append(HREF_SUFFIX);
                         visualcalendar[x][y] = _url.toString();
                     }
+
                 }
             }
         }
@@ -137,12 +138,12 @@ public class VelocityHelper {
     public String getPreviousMonth() {
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, -1);
-        result.append(HREF_PREFIX );
+        result.append(HREF_PREFIX);
         String prevurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                -1, _calendar.getCalendar().get(Calendar.YEAR));
+                                                               (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                                                               -1, _calendar.getCalendar().get(Calendar.YEAR));
         result.append(prevurl);
-        result.append("\"> &lt;").append( VTL_SPACER ).append(VTL_SPACER );
+        result.append("\"> &lt;").append(VTL_SPACER).append(VTL_SPACER);
         result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
         result.append(HREF_SUFFIX);
         _calendar.getCalendar().add(Calendar.MONTH, 1);
@@ -159,19 +160,19 @@ public class VelocityHelper {
 
         if ((_calendar.getCalendar().get(Calendar.MONTH) < (_calendar.getToday().get(Calendar.MONTH) + 1)) &&
                 (_calendar.getCalendar().get(Calendar.YEAR) <= _calendar.getToday().get(Calendar.YEAR))) {
-            result.append(HREF_PREFIX );
+            result.append(HREF_PREFIX);
             String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                    (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                    -1, _calendar.getCalendar().get(Calendar.YEAR));
+                                                                   (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                                                                   -1, _calendar.getCalendar().get(Calendar.YEAR));
 
             result.append(nexturl);
             result.append("\">");
             result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-            result.append( VTL_SPACER ).append(VTL_SPACER ).append("&gt;").append(HREF_SUFFIX);
+            result.append(VTL_SPACER).append(VTL_SPACER).append("&gt;").append(HREF_SUFFIX);
             _calendar.getCalendar().add(Calendar.MONTH, -1);
         } else {
             result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-            result.append( VTL_SPACER ).append(VTL_SPACER ).append(">");
+            result.append(VTL_SPACER).append(VTL_SPACER).append(">");
         }
         return result.toString();
     }

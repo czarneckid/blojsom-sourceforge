@@ -50,7 +50,7 @@ import java.util.*;
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins to filter content
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.4 2003-04-01 00:21:32 intabulas Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.5 2003-04-02 17:32:13 intabulas Exp $
  */
 public class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -193,9 +193,9 @@ public class AbstractCalendarPlugin implements BlojsomPlugin {
                     }
                 }
 
-                if (currentDay > calendar.getMaximum(Calendar.DAY_OF_MONTH)) {
+                if (currentDay > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                     _logger.info("Adjusting DOM to  max maximum for selected month");
-                    currentDay = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+                    currentDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                     calendar.set(Calendar.DAY_OF_MONTH, currentDay);
                 }
 

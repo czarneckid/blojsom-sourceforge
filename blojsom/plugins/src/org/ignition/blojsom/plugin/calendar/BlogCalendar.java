@@ -35,6 +35,8 @@
 package org.ignition.blojsom.plugin.calendar;
 
 import org.ignition.blojsom.util.BlojsomUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.text.DateFormatSymbols;
 import java.util.*;
@@ -43,7 +45,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.12 2003-04-01 00:21:32 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.13 2003-04-02 17:32:13 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -58,6 +60,7 @@ public class BlogCalendar {
     private int currentyear;
     private int currentday;
     private String _requestedDateKey;
+
 
     /**
      * Public Constructor
@@ -85,7 +88,7 @@ public class BlogCalendar {
         currentmonth = calendar.get(Calendar.MONTH) + 1;// Damm Java!
         currentyear = calendar.get(Calendar.YEAR);
 
-        _dayswithentry = new Boolean[_calendar.getMaximum(Calendar.DAY_OF_MONTH)];
+        _dayswithentry = new Boolean[_calendar.getActualMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(_dayswithentry, Boolean.FALSE);
 
         _shortdownames = new String[7];
@@ -117,7 +120,7 @@ public class BlogCalendar {
      * @return days in this month
      */
     public int getDaysInMonth() {
-        return _calendar.getMaximum(Calendar.DAY_OF_MONTH);
+        return _calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
     /**
