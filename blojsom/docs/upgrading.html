@@ -103,6 +103,14 @@ For example:
 blog-xmlrpc-entry-extension=.txt
 </pre>
 
+9. If you are using the trackback plugin, as of v 1.9, you must have templates with the default
+file names of <tt>trackback-success.vm</tt> and <tt>trackback-error.vm</tt>.
+<p/>
+These files are used no matter what your main HTML template file is named. These replace the template
+files named <tt>html-trackback-sucess.vm</tt> and <tt>html-trackback-error.vm</tt> in previous versions. You may
+move the <tt>html-trackback-success.vm</tt> and <tt>html-trackback-error.vm</tt> files to <tt>trackback-success.vm</tt> and
+<tt>trackback-error.vm</tt>, respectively.
+
 <p class="weblogtitle">Upgrading blojsom from v1.7.x to v1.8</p>
 <p/>
 1. A parameter has been added to <i>/WEB-INF/blojsom.properties</i>.<br />
