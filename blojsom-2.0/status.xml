@@ -28,6 +28,10 @@
             <action dev="czarneckid" type="add" context="Plugins">
                 Added File Upload plugin to allow you to upload resources to your blog from the web administration console.
             </action>
+
+            <action dev="czarneckid" type="add" context="Library">
+                Added <link href="http://jakarta.apache.org/commons/fileupload/">Jakarta Commons FileUpload</link> 1.0.
+            </action>
         </release>
         
         
