@@ -54,7 +54,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.14 2003-04-15 02:28:01 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.15 2003-04-16 01:53:27 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -73,7 +73,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      */
     public MetaWeblogAPIHandler() {
     }
-
 
     /**
      * Gets the name of API Handler. Used to bind to XML-RPC
@@ -109,14 +108,14 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @param blogid Dummy Value for Blojsom
      * @param userid Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
-     * @throws Exception
-     * @return
+     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
+     * @return Blog category list
      */
     public Object getCategories(String blogid, String userid, String password) throws Exception {
-        _logger.info("getCategories() Called =====[ SUPPORTED ]=====");
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
+        _logger.debug("getCategories() Called =====[ SUPPORTED ]=====");
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
 
         if (_blog.checkAuthorization(userid, password)) {
             Hashtable result;
@@ -166,15 +165,16 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @param password Password for said username
      * @param struct Contents of the post
      * @param publish If true, the blog will be published immediately after the post is made
-     * @throws org.apache.xmlrpc.XmlRpcException
-     * @return
+     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
+     * or if the entry permalink ID is invalid
+     * @return <code>true</code> if the entry was edited, <code>false</code> otherwise
      */
     public boolean editPost(String postid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
-        _logger.info("editPost() Called ========[ SUPPORTED ]=====");
-        _logger.info("     PostId: " + postid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("    Publish: " + publish);
+        _logger.debug("editPost() Called ========[ SUPPORTED ]=====");
+        _logger.debug("     PostId: " + postid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("    Publish: " + publish);
 
         if (_blog.checkAuthorization(userid, password)) {
             boolean result = false;
@@ -243,15 +243,15 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * @param password Password for said username
      * @param struct Contents of the post
      * @param publish If true, the blog will be published immediately after the post is made
-     * @throws org.apache.xmlrpc.XmlRpcException
-     * @return
+     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
+     * @return Post ID of the added entry
      */
     public String newPost(String blogid, String userid, String password, Hashtable struct, boolean publish) throws Exception {
-        _logger.info("newPost() Called ===========[ SUPPORTED ]=====");
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
-        _logger.info("    Publish: " + publish);
+        _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+        _logger.debug("    Publish: " + publish);
 
         if (_blog.checkAuthorization(userid, password)) {
             String result = null;
@@ -301,36 +301,38 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
 
     /**
+     * (NOT IMPLEMENTED)
      *
      * @param postid
      * @param userid
      * @param password
      * @return
-     * @throws Exception
+     * @throws XmlRpcException
      */
     public Object getPost(String postid, String userid, String password) throws Exception {
-        _logger.info("getPost() Called =========[ UNSUPPORTED ]=====");
-        _logger.info("     PostId: " + postid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
+        _logger.debug("getPost() Called =========[ UNSUPPORTED ]=====");
+        _logger.debug("     PostId: " + postid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
     }
 
     /**
+     * (NOT IMPLEMENTED)
      *
      * @param blogid
      * @param userid
      * @param password
      * @param struct
      * @return
-     * @throws Exception
+     * @throws XmlRpcException
      */
     public Object newMediaObject(String blogid, String userid, String password, Object struct) throws Exception {
-        _logger.info("newMediaObject() Called =[ UNSUPPORTED ]=====");
-        _logger.info("     BlogId: " + blogid);
-        _logger.info("     UserId: " + userid);
-        _logger.info("   Password: " + password);
+        _logger.debug("newMediaObject() Called =[ UNSUPPORTED ]=====");
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
     }
