@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
- * @version $Id: PermalinkFilter.java,v 1.5 2004-10-07 22:04:06 czarneckid Exp $
+ * @version $Id: PermalinkFilter.java,v 1.6 2004-12-11 15:59:13 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class PermalinkFilter implements Filter {
@@ -188,6 +188,21 @@ public class PermalinkFilter implements Filter {
             String URL = url.substring(0, yearIndex);
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY request: " + pathinfo);
+        } else {
+            // Check for a /category/permalink.html post
+            String permalinkSubstring = "/";
+            int permalinkIndex = pathInfo.lastIndexOf(permalinkSubstring);
+            if (permalinkIndex < pathInfo.length() - 1) {
+                extraParameters = new HashMap();
+                extraParameters.put("permalink", new String[]{pathInfo.substring(permalinkIndex + 1)});
+                String pathinfo = pathInfo.substring(0, permalinkIndex + 1);
+                permalinkIndex = uri.lastIndexOf(permalinkSubstring);
+                String URI = uri.substring(0, permalinkIndex + 1);
+                permalinkIndex = url.lastIndexOf(permalinkSubstring);
+                String URL = url.substring(0, permalinkIndex + 1);
+                _logger.debug("Handling permalink request: " + pathinfo);
+                hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
+            }
         }
 
         chain.doFilter(hreq, response);
