@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.27 2004-11-16 16:11:39 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.28 2004-11-22 17:00:50 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -179,7 +179,11 @@ public class Blog implements BlojsomConstants {
         _blogFileExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
         _blogProperties.put(BLOG_FILE_EXTENSIONS_IP, blogConfiguration.getProperty(BLOG_FILE_EXTENSIONS_IP));
 
-        _blogPropertiesExtensions = BlojsomUtils.parseCommaList(blogConfiguration.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP));
+        String blogPropertiesExtensions = blogConfiguration.getProperty(BLOG_PROPERTIES_EXTENSIONS_IP);
+        if (BlojsomUtils.checkNullOrBlank(blogPropertiesExtensions)) {
+            _blogPropertiesExtensions = DEFAULT_PROPERTIES_EXTENSIONS;
+        }
+        _blogPropertiesExtensions = BlojsomUtils.parseCommaList(blogPropertiesExtensions);
         _blogProperties.put(BLOG_PROPERTIES_EXTENSIONS_IP, _blogPropertiesExtensions);
 
         _blogEntryMetaDataExtension = blogConfiguration.getProperty(BLOG_ENTRY_META_DATA_EXTENSION_IP);
