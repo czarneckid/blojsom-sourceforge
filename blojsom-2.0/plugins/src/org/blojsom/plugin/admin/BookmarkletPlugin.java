@@ -60,7 +60,7 @@ import java.io.File;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.2 2004-11-10 22:01:00 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.3 2004-11-10 22:54:48 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -185,19 +185,22 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                 String filename;
                 if (BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
                     filename = BlojsomUtils.getBlogEntryFilename(blogEntryTitle, blogEntryDescription);
-                    filename += blogEntryExtension;
                 } else {
                     if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
                         proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
                     }
 
                     proposedBlogFilename = BlojsomUtils.normalize(proposedBlogFilename);
-                    proposedBlogFilename += blogEntryExtension;
                     filename = proposedBlogFilename;
                     _logger.debug("Using proposed blog entry filename: " + filename);
                 }
 
-                File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename);
+                File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename + blogEntryExtension);
+                int fileTag = 1;
+                while (blogFilename.exists()) {
+                    blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename + "-" + fileTag + blogEntryExtension);
+                    fileTag++;
+                }
                 _logger.debug("New blog entry file: " + blogFilename.toString());
 
                 Map attributeMap = new HashMap();
