@@ -30,6 +30,7 @@
 	<title><%= blogInformation.getBlogName() %></title>
 	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
     <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogSiteURL %>/rss.jsp" />
     </head>
 
     <body>

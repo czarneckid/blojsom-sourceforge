@@ -4,6 +4,7 @@
 <title>$BLOJSOM_BLOG.getBlogName()</title>
 <link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom.css" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_SITE_URL/rss.vm" />
 </head>
 
 <h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
