@@ -79,7 +79,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.44 2004-07-20 13:33:34 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.45 2004-07-20 15:05:05 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -624,7 +624,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     editURI.append(BlojsomUtils.removeInitialSlash(entryId));
 
                     atomEntry.setId(editURI.toString());
-                    httpServletResponse.setContentType(CONTENTTYPE_HTML);
+                    httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                     httpServletResponse.setHeader(HEADER_LOCATION, editURI.toString());
                     httpServletResponse.setStatus(201);
 
