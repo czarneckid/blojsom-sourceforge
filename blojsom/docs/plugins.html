@@ -14,6 +14,14 @@
  <a href="changelog.html">changelog</a> | <a href="javadoc/index.html">javadocs</a> |
  <a href="http://sourceforge.net/projects/blojsom/">Sourceforge</a></p>
 
+<ul>
+<p class="navigation">Details on: <a href="plugins-hyperlink.html">hyperlink URL plugin</a> |
+<a href="plugins-macro.html">macro expansion plugin</a> |
+<a href="plugins-showmemore.html">"show me more" plugin</a> |
+<a href="plugins-simplesearch.html">simple search plugin</a>
+</p>
+</ul>
+
 <p class="weblogtitle">blojsom plugin architecture</a></p>
 <p/>
 The blojsom plugin API was designed to be very straightforward. A developer that wants to write a plugin
@@ -26,7 +34,14 @@ This interface defines 3 methods that must be overridden:
     <li><tt>cleanup()</tt>: The <tt>cleanup()</tt> method is called directly after the <tt>process</tt> method and is provided so that developers
         can perform any cleanup after processing a plugin request.
 </ul>
-As a developer, you must ensure that any access to class member variables is thread-safe. If you are considering writing a plugin, take a look at the source code for the <a href="javadoc/org/ignition/blojsom/plugin/HyperlinkURLPlugin.html">Hyperlink URL plugin</a> or the <a href="javadoc/org/ignition/blojsom/plugin/MacroExpansionPlugin.html">Macro Expansion plugin</a>.
+As a developer, you must ensure that any access to class member variables is thread-safe.
+<p />
+Also, if you are going to be adding any configuration parameters for your plugin to the <i>web.xml</i>
+file, then we ask that you use the "plugin-&lt;plugin-name&gt;" prefix. For example, the configuration
+parameter in <i>web.xml</i> for the macro expansion plugin to point to its configuration file is called
+<i>plugin-macros-expansion</i>.
+<p />
+If you are considering writing a plugin, take a look at the source code for the <a href="javadoc/org/ignition/blojsom/plugin/HyperlinkURLPlugin.html">Hyperlink URL plugin</a> or the <a href="javadoc/org/ignition/blojsom/plugin/MacroExpansionPlugin.html">Macro Expansion plugin</a>.
 
 <p class="weblogtitle">using blojsom plugins</a></p>
 <p/>
@@ -64,3 +79,5 @@ html.blojsom-plugin-chain=macro-expansion, href-hyperlinks
 <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=72754&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
 
 </body>
+
+</html>
