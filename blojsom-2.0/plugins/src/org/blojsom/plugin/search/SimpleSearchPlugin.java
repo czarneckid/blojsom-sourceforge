@@ -52,7 +52,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.4 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.5 2004-03-25 02:10:14 czarneckid Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -100,13 +100,14 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
             return entries;
         } else {
             _logger.debug("User query: " + query);
+            query = query.toLowerCase();
         }
 
         ArrayList entriesMatchingQuery = new ArrayList(5);
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            if ((entry.getTitle().indexOf(query) != -1) || ((entry.getDescription().indexOf(query) != -1))) {
+            if ((entry.getTitle().toLowerCase().indexOf(query) != -1) || ((entry.getDescription().toLowerCase().indexOf(query) != -1))) {
                 entriesMatchingQuery.add(entry);
             }
         }
