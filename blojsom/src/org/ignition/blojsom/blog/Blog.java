@@ -60,6 +60,8 @@ public class Blog implements BlojsomConstants {
     private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     private static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
     private static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
+    private static final String BLOG_OWNER = "blog-owner";
+    private static final String BLOG_OWNER_EMAIL = "blog-owner-email";
 
     private Log _logger = LogFactory.getLog(Blog.class);
 
@@ -74,6 +76,8 @@ public class Blog implements BlojsomConstants {
     private int _blogDisplayEntries;
     private String[] _blogDefaultCategoryMappings;
     private String[] _blogDirectoryFilter;
+    private String _blogOwner;
+    private String _blogOwnerEmail;
 
     /**
      * Create a blog with the supplied configuration properties
@@ -149,6 +153,9 @@ public class Blog implements BlojsomConstants {
             }
             _logger.debug("blojsom filtering " + _blogDirectoryFilter.length + " directories");
         }
+
+        _blogOwner = blogConfiguration.getProperty(BLOG_OWNER);
+        _blogOwnerEmail = blogConfiguration.getProperty(BLOG_OWNER_EMAIL);
     }
 
     /**
@@ -559,6 +566,38 @@ public class Blog implements BlojsomConstants {
      */
     public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
         _blogDefaultCategoryMappings = blogDefaultCategoryMappings;
+    }
+
+    /**
+     * Return the blog owner's e-mail address
+     * @return Blog owner's e-mail
+     */
+    public String getBlogOwnerEmail() {
+        return _blogOwnerEmail;
+    }
+
+    /**
+     * Set the blog owner's e-mail address
+     * @param blogOwnerEmail New e-mail address for the blog owner
+     */
+    public void setBlogOwnerEmail(String blogOwnerEmail) {
+        _blogOwnerEmail = blogOwnerEmail;
+    }
+
+    /**
+     * Return the blog owner's name
+     * @return Blog owner's name
+     */
+    public String getBlogOwner() {
+        return _blogOwner;
+    }
+
+    /**
+     * Set the name of the blog owner
+     * @param blogOwner New blog owner's name
+     */
+    public void setBlogOwner(String blogOwner) {
+        _blogOwner = blogOwner;
     }
 
     /**
