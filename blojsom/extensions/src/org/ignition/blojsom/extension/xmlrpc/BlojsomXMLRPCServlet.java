@@ -44,6 +44,7 @@ import org.ignition.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.fetcher.BlojsomFetcherException;
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -66,7 +67,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.16 2003-06-16 01:14:43 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.17 2003-07-07 01:46:52 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -113,6 +114,8 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
         } catch (ClassNotFoundException e) {
             _logger.error(e);
         } catch (IOException e) {
+            _logger.error(e);
+        } catch (BlojsomException e) {
             _logger.error(e);
         }
     }
