@@ -16,10 +16,43 @@
 
 <p class="weblogtitle">blojsom plugin architecture</a></p>
 <p/>
-Coming soon...
+The blojsom plugin API was designed to be very straightforward. A developer that wants to write a plugin
+for blojsom will implement the <a href="javadoc/org/ignition/blojsom/plugin/BlojsomPlugin.html">BlojsomPlugin</a> interface.
+This interface defines 3 methods that must be overridden:
+<ul>
+    <li><tt>init(javax.servlet.ServletConfig servletConfig, java.util.HashMap blogProperties)</tt>: This method is called once when the plugin class is instantiated by blojsom. As a developer, you can retrieve any initialization parameters from web.xml and you have read-only access to the blog properties for blojsom.
+    <li><tt>process(javax.servlet.http.HttpServletRequest httpServletRequest, BlogEntry[] entries)</tt>: After retrieving the blog entries for a request, blojsom will execute the plugins (their order is defined in the <i>blog-plugin-chain</i> property of the
+        <i>plugin.properties</i> file). The <tt>process()</tt> method is where the plugin can manipulate the individual blog entries.
+    <li><tt>cleanup()</tt>: The <tt>cleanup()</tt> method is called directly after the <tt>process</tt> method and is provided so that developers
+        can perform any cleanup after processing a plugin request.
+</ul>
+As a developer, you must ensure that any access to class member variables is thread-safe. If you are considering writing a plugin, take a look at the source code for the <a href="javadoc/org/ignition/blojsom/plugin/HyperlinkURLPlugin.html">Hyperlink URL plugin</a> or the <a href="javadoc/org/ignition/blojsom/plugin/MacroExpansionPlugin.html">Macro Expansion plugin</a>.
+
+<p class="weblogtitle">using blojsom plugins</a></p>
+<p/>
+One of the initialization parameters defined in the <i>web.xml</i> for blojsom is called <i>blog-plugin-configuration</i> and
+points to the plugin properties file for the application. Typically, this does not need to change from its value of <i>/WEB-INF/plugin.properties</i>. Looking at <i>plugin.properties</i>, you will see something like:
+<ul>
+<pre>
+hyperlink-url=org.ignition.blojsom.plugin.HyperlinkURLPlugin
+macro-expansion=org.ignition.blojsom.plugin.MacroExpansionPlugin
+blojsom-plugin-chain=
+</pre>
+</ul>
+Each line (aside from the reserved <i>blojsom-plugin-chain</i> line) in this file will follow the <i>plugin-short-name</i>=<i>plugin.class.name</i> convention.
+After blojsom starts up, it will try to instantiate each plugin defined in this file. After blojsom loads the plugin class, it will call its <tt>init()</tt> method
+and add it to the valid plugins. If there is an error loading a particular plugin, blojsom will log this and will make the plugin inactive, even if it is defined in the
+<i>blojsom-plugin-chain</i>.
 <p />
-<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
-a>
+The syntax for the value of the <i>blojsom-plugin-chain</i> property is a comma-separated list of the <i>plugin-short-name</i>s in the order in which they should be executed. So, if we
+wanted to execute the macro expansion plugin before the hyperlink url plugin, we would set the value of this property to:
+<ul>
+<pre>
+blojsom-plugin-chain=macro-expansion, hyperlink-url
+</pre>
+</ul>
+<p />
+<a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
 <hr />
 
