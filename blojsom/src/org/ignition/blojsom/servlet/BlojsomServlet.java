@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.82 2003-07-11 18:45:55 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.83 2003-07-11 21:21:24 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -439,42 +439,40 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             sendLastModified = Boolean.getBoolean(httpServletRequest.getParameter(OVERRIDE_LASTMODIFIED_PARAM));
         }
 
-
         // If we have entries, construct a last modified on the most recent entry
         // Additionally, set the blog date
-        if ((entries != null) && (entries.length > 0) && sendLastModified) {
-            BlogEntry _entry = entries[0];
-            long _lastmodified;
+        if (sendLastModified) {
+            if ((entries != null) && (entries.length > 0)) {
+                BlogEntry _entry = entries[0];
+                long _lastmodified;
 
-            if (_entry.getNumComments() > 0) {
-                BlogComment _comment = _entry.getCommentsAsArray()[_entry.getNumComments() - 1];
-                _lastmodified = _comment.getCommentDateLong();
-                _logger.debug("Adding last-modified header for most recent entry comment");
-            } else {
-                _lastmodified = _entry.getLastModified();
-                _logger.debug("Adding last-modified header for most recent blog entry");
-            }
-
-            // Check for the Last-Modified object from one of the plugins
-            if (httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED) != null) {
-                Long lastModified = (Long) httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED);
-                if (lastModified.longValue() > _lastmodified) {
-                    _lastmodified = lastModified.longValue();
+                if (_entry.getNumComments() > 0) {
+                    BlogComment _comment = _entry.getCommentsAsArray()[_entry.getNumComments() - 1];
+                    _lastmodified = _comment.getCommentDateLong();
+                    _logger.debug("Adding last-modified header for most recent entry comment");
+                } else {
+                    _lastmodified = _entry.getLastModified();
+                    _logger.debug("Adding last-modified header for most recent blog entry");
                 }
-            }
 
-            // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
-            String etagLastModified = BlojsomUtils.getISO8601Date(new Date(_lastmodified));
-            httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
+                // Check for the Last-Modified object from one of the plugins
+                if (httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED) != null) {
+                    Long lastModified = (Long) httpServletRequest.getSession().getAttribute(BLOJSOM_LAST_MODIFIED);
+                    if (lastModified.longValue() > _lastmodified) {
+                        _lastmodified = lastModified.longValue();
+                    }
+                }
 
-            httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
-            blogdate = entries[0].getRFC822Date();
-            blogISO8601Date = entries[0].getISO8601Date();
-            blogDateObject = entries[0].getDate();
-            blogUTCDate = BlojsomUtils.getUTCDate(entries[0].getDate());
-        } else {
-            // If they have overriden  by  sending lastmodified=fasle then dont set the  header
-            if (sendLastModified) {
+                // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
+                String etagLastModified = BlojsomUtils.getISO8601Date(new Date(_lastmodified));
+                httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
+
+                httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
+                blogdate = entries[0].getRFC822Date();
+                blogISO8601Date = entries[0].getISO8601Date();
+                blogDateObject = entries[0].getDate();
+                blogUTCDate = BlojsomUtils.getUTCDate(entries[0].getDate());
+            } else {
                 _logger.debug("Adding last-modified header for current date");
                 Date today = new Date();
                 blogdate = BlojsomUtils.getRFC822Date(today);
