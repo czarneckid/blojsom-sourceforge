@@ -37,8 +37,8 @@ package org.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import java.io.File;
@@ -53,7 +53,7 @@ import java.util.Properties;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.18 2004-04-23 02:10:09 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.19 2004-06-03 01:13:48 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -69,6 +69,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _resourceDirectory;
     private String _qualifiedResourceDirectory;
     private String _resourceManager;
+    private String _authorizationProvider;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
@@ -197,6 +198,12 @@ public class BlojsomConfiguration implements BlojsomConstants {
             _resourceManager = BLOJSOM_DEFAULT_RESOURCE_MANAGER;
         }
         _logger.debug("Using resource manager: " + _resourceManager);
+
+        _authorizationProvider = getBlojsomPropertyAsString(BLOJSOM_AUTHORIZATION_PROVIDER_IP);
+        if (BlojsomUtils.checkNullOrBlank(_authorizationProvider)) {
+            _authorizationProvider = DEFAULT_AUTHORIZATION_PROVIDER;
+        }
+        _logger.debug("Using authorization provider: " + _authorizationProvider);
     }
 
     /**
@@ -327,5 +334,15 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public String getResourceManager() {
         return _resourceManager;
+    }
+
+    /**
+     * Get the name of the authorization provider class
+     *
+     * @return Classname of the authorization provider
+     * @since blojsom 2.16
+     */
+    public String getAuthorizationProvider() {
+        return _authorizationProvider;
     }
 }
