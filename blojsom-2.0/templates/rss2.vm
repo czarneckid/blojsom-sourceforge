@@ -12,7 +12,7 @@
             <link>$BLOJSOM_BLOG.getBlogURL()</link>
         </image>
         <docs>http://backend.userland.com/rss</docs>
-		<generator>blojsom</generator>
+		<generator>$BLOJSOM_VERSION</generator>
 		<dc:publisher>$BLOJSOM_BLOG.getBlogOwner()</dc:publisher>
 		<dc:creator>$BLOJSOM_BLOG.getBlogOwnerEmail()</dc:creator>
 		<dc:date>$BLOJSOM_DATE_ISO8601</dc:date>

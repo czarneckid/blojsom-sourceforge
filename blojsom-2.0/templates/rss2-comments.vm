@@ -8,7 +8,7 @@
         <description>$entry.getEscapedDescription()</description>
         <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
 		<dc:creator>$BLOJSOM_BLOG.getBlogOwnerEmail()</dc:creator>
-
+		<generator>$BLOJSOM_VERSION</generator>
 
         #foreach ($entryComment in $entry.getComments())
         <item>

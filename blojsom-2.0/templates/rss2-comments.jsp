@@ -31,7 +31,7 @@
               <link><%= blogInformation.getBlogURL() %></link>
             </image>
             <docs>http://backend.userland.com/rss</docs>
-            <generator>blojsom</generator>
+            <generator><%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %></generator>
 	        <dc:publisher><%= blogInformation.getBlogOwner()%></dc:publisher>
 	        <dc:creator><%= blogInformation.getBlogOwnerEmail()%></dc:creator>
 
