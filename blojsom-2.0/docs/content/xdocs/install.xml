@@ -282,6 +282,11 @@
                         <td>Comma-separated list of regular expressions IP addresses that you would like to
  be banned. Presently, this is only used by the Comment and Trackback plugins.</td>
                     </tr>
+                    <tr>
+                        <td>blog-default-flavor</td>
+                        <td>html</td>
+                        <td>Sets the default flavor used to render the blog if not specified.</td>
+                    </tr>
                 </table>
                 <p>
                     6. Start your application server. On startup, blojsom will log messages to the console to
