@@ -50,7 +50,7 @@ import java.util.Map;
  * PaginationPlugin
  *
  * @author David Czarnecki
- * @version $Id: PaginationPlugin.java,v 1.1 2003-03-29 17:53:46 czarneckid Exp $
+ * @version $Id: PaginationPlugin.java,v 1.2 2003-03-31 03:52:09 czarneckid Exp $
  */
 public class PaginationPlugin implements BlojsomPlugin {
 
@@ -59,13 +59,22 @@ public class PaginationPlugin implements BlojsomPlugin {
     /**
      * Request parameter for "entries_start"
      */
-    public static final String ENTRIES_START_PARAM = "entries_start";
+    private static final String ENTRIES_START_PARAM = "entries_start";
 
     /**
      * Request parameter for "entries_end"
      */
-    public static final String ENTRIES_END_PARAM = "entries_end";
+    private static final String ENTRIES_END_PARAM = "entries_end";
 
+    /**
+     * Key under which the total entries at the start of this plugin's processing will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_PAGINATION_PLUGIN_TOTAL_ENTRIES = "BLOJSOM_PAGINATION_PLUGIN_TOTAL_ENTRIES";
+
+    /**
+     * Default constructor
+     */
     public PaginationPlugin() {
     }
 
@@ -91,7 +100,6 @@ public class PaginationPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
-
         // Check to see if we have a start and end range for entries (e.g. for pagination)
         Integer entriesStart = null;
         Integer entriesEnd = null;
@@ -100,7 +108,7 @@ public class PaginationPlugin implements BlojsomPlugin {
             _logger.debug("Requested entries start: " + entriesStart.toString());
         } catch (NumberFormatException e) {
             entriesStart = null;
-            _logger.debug("Requested entries start invalid");
+            _logger.debug("Requested entries start invalid or no value supplied");
         }
 
         try {
@@ -108,10 +116,37 @@ public class PaginationPlugin implements BlojsomPlugin {
             _logger.debug("Requested entries end: " + entriesEnd.toString());
         } catch (NumberFormatException e) {
             entriesEnd = null;
-            _logger.debug("Requested entries end invalid");
+            _logger.debug("Requested entries end invalid or no value supplied");
         }
 
-        // XXX: Need processing code hm'yah
+        if ((entriesStart != null) && (entriesEnd != null)) {
+            if (entriesStart.intValue() < 0) {
+                _logger.debug("Entries start < 0");
+                entriesStart = new Integer(0);
+            } else if (entriesStart.intValue() > entries.length) {
+                return entries;
+            }
+
+            if (entriesEnd.intValue() < 0) {
+                _logger.debug("Entries end < 0");
+                return entries;
+            } else if (entriesEnd.intValue() > entries.length) {
+                entriesEnd = new Integer(entries.length);
+            }
+
+            if ((entriesStart.intValue() > entriesEnd.intValue()) || (entriesEnd.intValue() < entriesStart.intValue())) {
+                _logger.debug("Entries start > Entries end OR Entries end < Entries start");
+                return entries;
+            }
+
+            int entryCounter = 0;
+            BlogEntry[] entryArray = new BlogEntry[entriesEnd.intValue() - entriesStart.intValue()];
+            for (int i = entriesStart.intValue(); i < entriesEnd.intValue(); i++) {
+                entryArray[entryCounter++] = entries[i];
+            }
+
+            return entryArray;
+        }
 
         return entries;
     }
