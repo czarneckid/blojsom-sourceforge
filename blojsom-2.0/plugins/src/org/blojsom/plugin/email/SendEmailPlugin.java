@@ -61,7 +61,7 @@ import java.util.Properties;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.7 2005-01-05 02:31:44 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.8 2005-02-23 01:56:56 czarneckid Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin, EmailConstants {
 
@@ -100,6 +100,9 @@ public class SendEmailPlugin implements BlojsomPlugin, EmailConstants {
                 if (BlojsomUtils.checkNullOrBlank(username) || BlojsomUtils.checkNullOrBlank(password)) {
                     _mailsession = Session.getInstance(props, null);
                 } else {
+					props.put("mail.smtp.auth", "true" );
+					props.put("mail.smtp.username", username);
+					props.put("mail.smtp.password", password);
                     _mailsession = Session.getInstance(props, new SimpleAuthenticator(username, password));
                 }
             }
