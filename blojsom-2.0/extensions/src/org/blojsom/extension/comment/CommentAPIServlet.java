@@ -76,7 +76,7 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.3 2003-11-29 16:19:21 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.4 2003-12-17 20:24:39 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -147,11 +147,11 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         String requestedCategory;
 
         if (userFromPath == null) {
-            user = _defaultUser;
+            user = _blojsomConfiguration.getDefaultUser();
             requestedCategory = httpServletRequest.getPathInfo();
         } else {
-            if (!_users.containsKey(userFromPath)) {
-                user = _defaultUser;
+            if (!_blojsomConfiguration.getBlogUsers().containsKey(userFromPath)) {
+                user = _blojsomConfiguration.getDefaultUser();
                 requestedCategory = httpServletRequest.getPathInfo();
             } else {
                 user = userFromPath;
@@ -166,7 +166,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         }
 
         // Fetch the user and their blog
-        BlogUser blogUser = (BlogUser) _users.get(user);
+        BlogUser blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         Blog blog = blogUser.getBlog();
 
         _logger.info("Processing a comment for [" + user + "] in category [" + requestedCategory + "]");

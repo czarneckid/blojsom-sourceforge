@@ -76,7 +76,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.19 2003-10-17 01:48:06 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.20 2003-12-17 20:24:17 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -244,9 +244,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
         if (user == null || "".equals(user)) {
-            user = _defaultUser;
+            user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _users.get(user);
+        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         blog = blogUser.getBlog();
 
         if (isAuthorized(blog, httpServletRequest, "DELETE")) {
@@ -319,9 +319,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
 
         if (user == null || "".equals(user)) {
-            user = _defaultUser;
+            user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _users.get(user);
+        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         blog = blogUser.getBlog();
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
@@ -415,9 +415,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
         if (user == null || "".equals(user)) {
-            user = _defaultUser;
+            user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _users.get(user);
+        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         blog = blogUser.getBlog();
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
@@ -498,9 +498,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("  Permalink: " + permalink);
 
         if (user == null || "".equals(user)) {
-            user = _defaultUser;
+            user = _blojsomConfiguration.getDefaultUser();
         }
-        blogUser = (BlogUser) _users.get(user);
+        blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         blog = blogUser.getBlog();
 
         if (isAuthorized(blog, httpServletRequest, "PUT")) {
