@@ -70,7 +70,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.1 2005-02-10 04:26:24 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.2 2005-02-10 14:18:44 czarneckid Exp $
  * @since blojsom 2.24
  */
 public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants {
@@ -80,7 +80,8 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
     private static final String PINGBACK_METHOD = "pingback.ping";
     private static final String X_PINGBACK_HEADER = "X-Pingback";
     private static final String PINGBACK_LINK_REGEX = "<link rel=\"pingback\" href=\"([^\"]+)\" ?/?>";
-    private static final String HREF_REGEX = "href\\s*=\\s*\"(.*)\"";
+    private static final String HREF_REGEX = "href\\s*=\\s*\"(.*?)\"";
+    private static final String PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS = "send-pingbacks";
 
     private PingbackPluginAsyncCallback _callbackHandler;
 
@@ -149,7 +150,7 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
             BlogEntryEvent blogEntryEvent = (BlogEntryEvent) event;
 
             String text = blogEntryEvent.getBlogEntry().getDescription();
-            if (!BlojsomUtils.checkNullOrBlank(text)) {
+            if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(blogEntryEvent.getBlogEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS)) {
                 String pingbackURL = null;
                 String sourceURI = blogEntryEvent.getBlogEntry().getLink();
                 String targetURI = null;
@@ -202,6 +203,8 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
                         _logger.error(e);
                     }
                 }
+            } else {
+                _logger.debug("No text in blog entry or " + PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS + " not enabled.");
             }
         }
     }
