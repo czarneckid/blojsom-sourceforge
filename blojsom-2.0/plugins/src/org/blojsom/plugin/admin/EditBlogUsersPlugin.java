@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.16 2004-09-15 01:02:48 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.17 2004-09-19 15:24:06 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -196,7 +196,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogConfigurationDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogConfigurationDirectory)) {
                     _logger.error("Unable to remove blog configuration directory: " + blogConfigurationDirectory.toString());
-                    addOperationResultMessage(context, "Unable to remove blog configuration for user: " + blogUserID);                   
+                    addOperationResultMessage(context, "Unable to remove blog configuration for user: " + blogUserID);
                 } else {
                     _logger.debug("Removed blog configuration directory: " + blogConfigurationDirectory.toString());
                 }
@@ -207,6 +207,15 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                     addOperationResultMessage(context, "Unable to remove blog directory for user: " + blogUserID);
                 } else {
                     _logger.debug("Removed blog directory: " + blogDirectory.toString());
+                }
+
+                File blogResourcesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
+                        _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
+                if (!BlojsomUtils.deleteDirectory(blogResourcesDirectory)) {
+                    _logger.error("Unable to remove blog resource directory: " + blogResourcesDirectory.toString());
+                    addOperationResultMessage(context, "Unable to remove resources directory for user: " + blogUserID);
+                } else {
+                    _logger.debug("Removed blog resource directory: " + blogResourcesDirectory.toString());
                 }
 
                 writeBlojsomConfiguration();
@@ -374,6 +383,15 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                             _logger.error(e);
                         } catch (IOException e) {
                             _logger.error(e);
+                        }
+
+                        // Add the resources directory
+                        File blogResourcesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
+                        _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
+                        if (!blogResourcesDirectory.mkdirs()) {
+                            _logger.error("Unable to create blog resource directory: " + blogResourcesDirectory.toString());
+                        } else {
+                            _logger.debug("Added blog resource directory: " + blogResourcesDirectory.toString());                            
                         }
 
                         // Add the user to the global list of users
