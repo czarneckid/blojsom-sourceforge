@@ -49,7 +49,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.8 2003-03-15 00:00:58 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.9 2003-03-15 00:23:38 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -62,7 +62,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private static final String BUG_FIX = "null";
 
     /**
-     * Fully qualified filename to write refere's to
+     * Fully qualified filename to write referers to
      */
     private String _refererlog = null;
     private Map _refererhistory = null;
@@ -81,6 +81,10 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         _refererlog = servletConfig.getInitParameter(REFERER_LOG_IP);
+        if (_refererlog == null || "".equals(_refererlog)) {
+            throw new BlojsomPluginException("No value given for: " + REFERER_LOG_IP + " configuration parameter");
+        }
+
         _refererhistory = new HashMap(20);
         loadRefererLog(_refererlog);
     }
@@ -98,7 +102,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
         if (_referer != null) {
-
             _logger.info("HTTP Referer is " + _referer);
 
             if (_refererhistory.containsKey(_referer)) {
@@ -117,7 +120,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
                 e.printStackTrace();
             }
         }
-
         context.put(REFERER_CONTEXT_NAME, _refererhistory);
 
         return entries;
@@ -129,9 +131,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
-
     }
-
 
     /**
      * Loads the saved referer log from disk after an  blojsom restart. Re-calcs the  count onthe fly.. Kinda slow the

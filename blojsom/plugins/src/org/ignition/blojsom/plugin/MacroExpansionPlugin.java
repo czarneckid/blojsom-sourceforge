@@ -48,7 +48,7 @@ import java.util.regex.Matcher;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.5 2003-03-15 00:00:59 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.6 2003-03-15 00:23:38 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -77,6 +77,10 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      */
     private void loadMacros(ServletConfig servletConfig) throws BlojsomPluginException {
         String macroConfiguration = servletConfig.getInitParameter(BLOG_MACRO_CONFIGURATION_IP);
+        if (macroConfiguration == null || "".equals(macroConfiguration)) {
+            throw new BlojsomPluginException("No value given for: " + BLOG_MACRO_CONFIGURATION_IP + " configuration parameter");
+        }
+
         Properties macroProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(macroConfiguration);
         try {

@@ -88,6 +88,9 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         String emoticonsConfiguration = servletConfig.getInitParameter(EMOTICONS_CONFIGURATION_IP);
+        if (emoticonsConfiguration == null || "".equals(emoticonsConfiguration)) {
+            throw new BlojsomPluginException("No value given for: " + EMOTICONS_CONFIGURATION_IP + " configuration parameter");
+        }
         _emoticonsProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(emoticonsConfiguration);
         try {
