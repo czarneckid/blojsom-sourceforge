@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.41 2003-03-11 01:36:57 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.42 2003-03-11 04:03:58 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -402,6 +402,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 String plugin = pluginChain[i];
                 if (_plugins.containsKey(plugin)) {
                     BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
+                    _logger.debug("blojsom plugin execution: " + blojsomPlugin.getClass().getName());
                     try {
                         entries = blojsomPlugin.process(httpServletRequest, entries);
                         blojsomPlugin.cleanup();
@@ -425,6 +426,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
          */
 
         if ((entries != null) && (entries.length > 0)) {
+            _logger.debug("Adding last-modified header for most recent blog entry");
             BlogEntry _entry = entries[0];
             long _lastmodified;
 
@@ -437,6 +439,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
             _blogdate = entries[0].getRFC822Date();
         } else {
+            _logger.debug("Adding last-modified header for current date");
             _blogdate = BlojsomUtils.getRFC822Date(new Date());
         }
 
