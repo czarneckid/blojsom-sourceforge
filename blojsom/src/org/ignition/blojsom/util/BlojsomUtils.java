@@ -57,7 +57,7 @@ public class BlojsomUtils {
     /**
      * Return a file filter which takes a list of regular expressions to look for
      *
-     * @param extensions List of regular expressions for files to retrieve
+     * @param expressions List of regular expressions for files to retrieve
      * @return File filter appropriate for filtering out a set of files based on regular expressions
      */
     public static FileFilter getRegularExpressionFilter(final String[] expressions) {
