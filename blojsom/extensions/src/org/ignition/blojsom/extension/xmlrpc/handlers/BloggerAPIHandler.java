@@ -54,7 +54,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.20 2003-05-14 20:56:04 intabulas Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.21 2003-05-15 00:49:37 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -458,7 +458,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 if (_entries != null && _entries.length > 0) {
                     FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
                     try {
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), UTF8));
+                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), _blog.getBlogFileEncoding()));
                         bw.write(content);
                         bw.close();
                         result = true;
@@ -519,7 +519,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 try {
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), UTF8));
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), _blog.getBlogFileEncoding()));
                     bw.write(content);
                     bw.close();
                     result = postid;

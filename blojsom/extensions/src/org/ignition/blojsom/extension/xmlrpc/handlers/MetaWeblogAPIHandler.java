@@ -57,7 +57,7 @@ import java.util.Properties;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.20 2003-05-13 21:50:36 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.21 2003-05-15 00:49:36 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -220,7 +220,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                         StringBuffer _post = new StringBuffer();
                         _post.append(_title).append("\n").append(_description);
 
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), UTF8));
+                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(_entry.getSource().getAbsolutePath(), false), _blog.getBlogFileEncoding()));
                         bw.write(_post.toString());
                         bw.close();
                         result = true;
@@ -289,7 +289,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 _post.append(_title).append("\n").append(_description);
 
                 try {
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), UTF8));
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputfile, false), _blog.getBlogFileEncoding()));
                     bw.write(_post.toString());
                     bw.close();
                     result = postid;
