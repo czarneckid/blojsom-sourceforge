@@ -41,7 +41,7 @@ See http://xml.apache.org/forrest/linking.html for more info
   </plugins>
   
  <developer label="Developer"> 
- 	<javadocs label="JavaDocs"  href="api/"/>
+ 	<javadocs label="JavaDocs"  href="javadoc/index.html"/>
  </developer>
 
 
