@@ -105,11 +105,6 @@ public interface BlojsomConstants {
     public static final String DAY_PARAM = "day";
 
     /**
-     * Request parameter for the "query"
-     */
-    public static final String QUERY_PARAM = "query";
-
-    /**
      * Request parameter for the "plugins"
      */
     public static final String PLUGINS_PARAM = "plugins";
