@@ -77,7 +77,7 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.6 2003-04-22 13:40:28 intabulas Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.7 2003-05-15 00:47:54 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
@@ -309,7 +309,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
                 File commentEntry = new File(commentFilename);
                 if (!commentEntry.exists()) {
                     try {
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), BlojsomConstants.UTF8));
+                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), _blog.getBlogFileEncoding()));
                         bw.write(comment.getAuthor());
                         bw.newLine();
                         bw.write(comment.getAuthorEmail());

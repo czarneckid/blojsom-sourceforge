@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.32 2003-05-08 03:12:45 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.33 2003-05-15 00:47:29 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -155,6 +155,7 @@ public class CommentPlugin implements BlojsomPlugin {
     private String _blogHome;
     private String _blogCommentsDirectory;
     private String _blogUrlPrefix;
+    private String _blogFileEncoding;
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -170,6 +171,7 @@ public class CommentPlugin implements BlojsomPlugin {
         _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogCommentsDirectory = blog.getBlogCommentsDirectory();
         _blogUrlPrefix = blog.getBlogURL();
+        _blogFileEncoding = blog.getBlogFileEncoding();
     }
 
     /**
@@ -430,7 +432,7 @@ public class CommentPlugin implements BlojsomPlugin {
 
             if (!commentEntry.exists()) {
                 try {
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), BlojsomConstants.UTF8));
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), _blogFileEncoding));
                     bw.write(comment.getAuthor());
                     bw.newLine();
                     bw.write(comment.getAuthorEmail());
