@@ -391,7 +391,7 @@
     </exec>
 
     <exec dir="." executable="ssh">
-      <arg line="-n ${forrest.site.hostname} -l ${forrest.deployer.username} 'cd ${forrest.site.remotedir};gunzip ${project.name}-site.tar.gz;tar xUvf ${project.name}-site.tar;chgrp -R ${name} *;chmod -R g+rwX *;rm ${name}-site.tar'"/>
+      <arg line="-n ${forrest.site.hostname} -l ${forrest.deployer.username} 'cd ${forrest.site.remotedir};gunzip ${name}-site.tar.gz;tar xUvf ${name}-site.tar;chgrp -R ${name} *;chmod -R g+rwX *;rm ${name}-site.tar'"/>
     </exec>
 
     <delete file="${forrest.site.tar.path.and.name}.tar.gz"/>
