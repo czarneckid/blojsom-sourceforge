@@ -20,6 +20,17 @@
             <action dev="intabulas" type="update" context="Library">
                 Updated <a href="http://sandler.sf.net">sandler</a> to 0.2.
             </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Trackback Auto-Discovery plugin to allow for a simple way to automatically extract URLs from
+                your blog entries, identify those URLs with trackback links, and finally to send a trackback ping to each
+                URL.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Simple Obfuscation plugin to allow for the obfuscation of data. For example, this can
+                be used for obfuscating e-mail addresses on the comment page.
+            </action>
         </release>
 
         <release version="2.01" date="September 9, 2003">
