@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.43 2003-03-14 04:14:38 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.44 2003-03-15 00:01:33 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -80,10 +80,24 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     }
 
     /**
-     * Called when removing the servlet from the servlet container
+     * Called when removing the servlet from the servlet container. Also calls the
+     * {@link BlojsomPlugin#destroy} method for each of the plugins loaded by
+     * blojsom
      */
     public void destroy() {
         super.destroy();
+        Iterator pluginIteratorIterator = _plugins.keySet().iterator();
+        while (pluginIteratorIterator.hasNext()) {
+            String pluginName = (String) pluginIteratorIterator.next();
+            BlojsomPlugin plugin = (BlojsomPlugin) _plugins.get(pluginName);
+            try {
+                plugin.destroy();
+                _plugins.remove(pluginName);
+                _logger.debug("Removed blojsom plugin: " + plugin.getClass().getName());
+            } catch (BlojsomPluginException e) {
+                _logger.error(e);
+            }
+        }
     }
 
     /**
