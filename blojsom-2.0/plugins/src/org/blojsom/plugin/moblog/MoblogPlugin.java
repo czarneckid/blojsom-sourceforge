@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.10 2004-04-30 04:59:44 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.11 2004-05-01 19:35:56 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -150,17 +150,17 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
     private static final String PROPERTY_ENABLED = "moblog-enabled";
 
     /**
-     *
+     * Configuration property for image mime-types
      */
     private static final String PLUGIN_MOBLOG_IMAGE_MIME_TYPES = "moblog-image-mime-types";
 
     /**
-     *
+     * Configuration property for attachment mime-types
      */
     private static final String PLUGIN_MOBLOG_ATTACHMENT_MIME_TYPES = "moblog-attachment-mime-types";
 
     /**
-     *
+     * Configuration property for text mime-types
      */
     private static final String PLUGIN_MOBLOG_TEXT_MIME_TYPES = "moblog-text-mime-types";
 
@@ -519,6 +519,8 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                         Part messagePart = email;
                         if (subject == null) {
                             subject = "";
+                        } else {
+                            subject = subject.trim();
                         }
 
                         if (email.isMimeType(MULTIPART_TYPE)) {
@@ -680,13 +682,33 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                         String filename = BlojsomUtils.digestString(entry.toString());
                         filename += ".txt";
 
-                        BlogCategory category;
-                        category = _fetcher.newBlogCategory();
-                        category.setCategory(mailbox.getCategoryName());
-                        category.setCategoryURL(mailbox.getEntriesDirectory());
+                        // Process subject to change category for moblog post
+                        boolean categoryInSubject = false;
+                        String categoryFromSubject = null;
+                        if (subject.startsWith("[")) {
+                            int startIndex = subject.indexOf("[");
+                            if (startIndex != -1) {
+                                int closingIndex = subject.indexOf("]", startIndex);
+                                if (closingIndex != -1) {
+                                    categoryFromSubject = subject.substring(startIndex + 1, closingIndex);
+                                    subject = subject.substring(closingIndex + 1);                                    
+                                    categoryFromSubject = BlojsomUtils.normalize(categoryFromSubject);
+                                    if (!categoryFromSubject.startsWith("/")) {
+                                        categoryFromSubject = "/" + categoryFromSubject;
+                                    }
+                                    if (!categoryFromSubject.endsWith("/")) {
+                                        categoryFromSubject += "/";
+                                    }
+                                    categoryInSubject = true;
+                                    _logger.info("Using category [" + categoryFromSubject + "] for entry: " + subject);
+                                }
+                            }
+                        }
+
 
                         BlogUser blogUser = mailbox.getBlogUser();
-                        File blogCategory = getBlogCategoryDirectory(blogUser.getBlog(), mailbox.getCategoryName());
+                        String categoryName = categoryInSubject ? categoryFromSubject : mailbox.getCategoryName();
+                        File blogCategory = getBlogCategoryDirectory(blogUser.getBlog(), categoryName);
 
                         if (blogCategory.exists() && blogCategory.isDirectory()) {
                             String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
@@ -702,7 +724,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                                 blogEntry.setAttributes(attributeMap);
 
                                 blogEntry.setTitle(subject);
-                                blogEntry.setCategory(mailbox.getCategoryName());
+                                blogEntry.setCategory(categoryName);
                                 blogEntry.setDescription(entry.toString());
                                 blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                                 blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR_EXT, from);
