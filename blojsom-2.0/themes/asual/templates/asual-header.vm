@@ -6,7 +6,7 @@
 				</h1>
 				<div id="searchbox">
 					<form method="post" action=".">
-						<p id="searchlabel"><label for="searchfield">Search:</label></p>
+						<p id="searchlabel"><label for="query">Search:</label></p>
 						<p id="searchfield"><input type="text" name="query" value="" /></p>
 						<p id="searchimg"><input type="image" src="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/asual-search.jpg" value="submit" alt="Search" /></p>
 					</form>
