@@ -117,13 +117,21 @@
 
         <!-- Copy theme templates and resources for default user -->
         <mkdir dir="${resources.dir}/${default.user}"/>
-        <copydir src="${default.theme.templates.dir}" dest="${war.dir}/WEB-INF/${default.user}/templates"/>
-        <copydir src="${default.theme.resources.dir}" dest="${resources.dir}/${default.user}"/>
+        <copy todir="${war.dir}/WEB-INF/${default.user}/templates">
+            <fileset dir="${default.theme.templates.dir}"/>
+        </copy>
+        <copy todir="${resources.dir}/${default.user}">
+            <fileset dir="${default.theme.resources.dir}"/>
+        </copy>
 
         <!-- Copy theme templates and resources for bootstrap user -->
         <mkdir dir="${war.dir}/WEB-INF/${bootstrap.user}/resources/"/>
-        <copydir src="${default.theme.templates.dir}" dest="${war.dir}/WEB-INF/${bootstrap.user}/templates"/>
-        <copydir src="${default.theme.resources.dir}" dest="${war.dir}/WEB-INF/${bootstrap.user}/resources"/>
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/templates">
+            <fileset dir="${default.theme.templates.dir}"/>
+        </copy>
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/resources">
+            <fileset dir="${default.theme.resources.dir}"/>
+        </copy>
     </target>
 
     <!-- =================================================================== -->
