@@ -40,9 +40,7 @@ import org.blojsom.listener.BlojsomFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * SimpleBlojsomEventBroadcaster.
@@ -53,19 +51,21 @@ import java.util.Iterator;
  * removed at the same time an event is being broadcast.
  *
  * @author David Czarnecki
- * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.2 2004-08-30 04:27:15 czarneckid Exp $
+ * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.3 2004-08-30 14:53:02 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
 
     private static final Log _logger = LogFactory.getLog(SimpleBlojsomEventBroadcaster.class);
     private Set _listeners;
+    private Map _listenerToHandler;
 
     /**
      * Default constructor.
      */
     public SimpleBlojsomEventBroadcaster() {
         _listeners = new HashSet();
+        _listenerToHandler = new HashMap();
     }
 
     /**
@@ -74,7 +74,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
      * @param listener {@link BlojsomListener}
      */
     public void addListener(BlojsomListener listener) {
-        _listeners.add(new EventHandler(listener, new BlojsomFilter() {
+        EventHandler handler = new EventHandler(listener, new BlojsomFilter() {
             /**
              * Determines whether or not a particular event should be processed
              *
@@ -84,9 +84,11 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
             public boolean processEvent(BlojsomEvent event) {
                 return true;
             }
-        }));
+        });
 
-        _logger.debug("Added listener: " + listener.getClass().getName() + " with no-op filter");
+        _listeners.add(handler);
+        _listenerToHandler.put(listener.getClass().getName(), handler);
+        _logger.debug("Added listener: " + listener.getClass().getName() + " with process all events filter");
     }
 
     /**
@@ -97,7 +99,9 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
      * @param filter   {@link org.blojsom.listener.BlojsomFilter} used to filter events
      */
     public void addListener(BlojsomListener listener, BlojsomFilter filter) {
-        _listeners.add(new EventHandler(listener, filter));
+        EventHandler handler = new EventHandler(listener, filter);
+        _listeners.add(handler);
+        _listenerToHandler.put(listener.getClass().getName(), handler);
         _logger.debug("Added listener: " + listener.getClass().getName() + " with filter: " + filter.getClass().getName());
     }
 
@@ -107,8 +111,13 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
      * @param listener {@link BlojsomListener}
      */
     public void removeListener(BlojsomListener listener) {
-        _listeners.remove(listener);
-        _logger.debug("Removed listener: " + listener.getClass().getName());        
+        if (_listenerToHandler.containsKey(listener.getClass().getName())) {
+            EventHandler handler = (EventHandler) _listenerToHandler.get(listener.getClass().getName());
+            _listeners.remove(handler);
+            _listenerToHandler.remove(listener.getClass().getName());
+        }
+
+        _logger.debug("Removed listener: " + listener.getClass().getName());
     }
 
     /**
@@ -153,14 +162,14 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
         }
 
         /**
-         * Iterates over the set of {@link BlojsomListener} registered with this broadcaster and calls
+         * Iterates over the set of {@link EventHandler} registered with this broadcaster and calls
          * the {@link BlojsomListener#handleEvent(BlojsomEvent)} method with the
          * {@link BlojsomEvent}.
          */
         public void run() {
-            Iterator listenerIterator = _listeners.iterator();
-            while (listenerIterator.hasNext()) {
-                EventHandler eventHandler = (EventHandler) listenerIterator.next();
+            Iterator handlerIterator = _listeners.iterator();
+            while (handlerIterator.hasNext()) {
+                EventHandler eventHandler = (EventHandler) handlerIterator.next();
                 if (eventHandler._filter.processEvent(_event)) {
                     eventHandler._listener.handleEvent(_event);
                 }
