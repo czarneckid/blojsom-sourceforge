@@ -54,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.40 2004-11-11 02:00:11 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.41 2004-11-11 19:20:19 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -188,10 +188,11 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param date   Date
      * @param format Date Format String
+     * @param locale Locale Locale for retrieving proper date symbols
      * @return Date formatted date
      */
-    public static String getFormattedDate(Date date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+    public static String getFormattedDate(Date date, String format, Locale locale) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
         return sdf.format(date);
     }
 
