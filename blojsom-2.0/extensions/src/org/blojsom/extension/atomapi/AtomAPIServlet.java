@@ -44,8 +44,8 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.AtomConstants;
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.SyndicationFactory;
@@ -66,8 +66,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +79,7 @@ import java.util.Properties;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.39 2004-06-16 01:49:14 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.40 2004-07-15 22:52:50 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -302,6 +302,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @throws IOException      If there is an error during I/O
      */
     protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.setCharacterEncoding(UTF8);
+
         Blog blog = null;
         BlogUser blogUser = null;
 
@@ -418,6 +420,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @throws IOException      If there is an error during I/O
      */
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.setCharacterEncoding(UTF8);
+
         Blog blog = null;
         BlogUser blogUser = null;
         String blogEntryExtension;
@@ -534,6 +538,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @throws IOException      If there is an error during I/O
      */
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.setCharacterEncoding(UTF8);
+
         Blog blog = null;
         BlogUser blogUser = null;
         String blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
@@ -593,7 +599,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     if (atomEntry.getAuthor() != null) {
                         blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
                     } else {
-                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, "AtomAPI");
+                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, blog.getBlogOwner());
                     }
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
@@ -627,6 +633,8 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @throws IOException      If there is an error during I/O
      */
     protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.setCharacterEncoding(UTF8);
+
         Blog blog = null;
         BlogUser blogUser = null;
 
