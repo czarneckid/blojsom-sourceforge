@@ -57,7 +57,7 @@ import java.util.*;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.4 2003-04-04 02:53:03 czarneckid Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.5 2003-04-14 00:27:13 intabulas Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -66,12 +66,12 @@ public class SendEmailPlugin implements BlojsomPlugin {
     /**
      * SMTP server initialization parameter
      */
-    private static final String SMTPSERVER_IP = "smtp-server";
+    public static final String SMTPSERVER_IP = "smtp-server";
 
     /**
      * SMTP session name
      */
-    private static final String SESSION_NAME = "mail.smtp.host";
+    public static final String SESSION_NAME = "mail.smtp.host";
 
 
     /**
