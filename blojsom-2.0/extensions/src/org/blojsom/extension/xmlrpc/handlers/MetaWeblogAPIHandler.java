@@ -36,7 +36,6 @@ package org.blojsom.extension.xmlrpc.handlers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xmlrpc.Base64;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.Blog;
@@ -58,7 +57,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.10 2004-01-18 20:32:05 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.11 2004-01-19 18:22:12 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -196,7 +195,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _logger.error("No static URL prefix specified in property: " + METAWEBLOG_STATIC_URL_PREFIX_IP);
             throw new BlojsomException("No static URL prefix specified in property: " + METAWEBLOG_STATIC_URL_PREFIX_IP);
         } else {
-            _staticURLPrefix = BlojsomUtils.removeInitialSlash(_staticURLPrefix);
             if (!_staticURLPrefix.endsWith("/")) {
                 _staticURLPrefix += "/";
             }
@@ -574,25 +572,33 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
         if (_blog.checkAuthorization(userid, password)) {
             String name = (String) struct.get(MEMBER_NAME);
+            _logger.debug("newMediaObject name: " + name);
             String type = (String) struct.get(MEMBER_TYPE);
-            String bits = (String) struct.get(MEMBER_BITS);
+            _logger.debug("newMediaObject type: " + type);
+            byte[] bits = (byte[]) struct.get(MEMBER_BITS);
 
-            String extension = BlojsomUtils.getFileExtension(name);
-            if (extension == null) {
-                extension = "";
+            File uploadDirectory = new File(_uploadDirectory);
+            if (!uploadDirectory.exists()) {
+                _logger.error("Upload directory does not exist: " + uploadDirectory.toString());
+                throw new XmlRpcException(UNKNOWN_EXCEPTION, "Upload directory does not exist: " + uploadDirectory.toString());
             }
-            name = BlojsomUtils.normalize(name);
-            name += "." + extension;
-            byte[] decodedFile = Base64.decode(bits.getBytes());
 
-            if (!_acceptedMimeTypes.containsKey(type.toLowerCase())) {
+            if (_acceptedMimeTypes.containsKey(type.toLowerCase())) {
                 try {
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(_uploadDirectory + name));
-                    bos.write(decodedFile);
+                    File uploadDirectoryForUser = new File(uploadDirectory, _blogUser.getId());
+                    if (!uploadDirectoryForUser.exists()) {
+                        if (!uploadDirectoryForUser.mkdir()) {
+                            _logger.error("Could not create upload directory for user: " + uploadDirectoryForUser.toString());
+                            throw new XmlRpcException(UNKNOWN_EXCEPTION, "Could not create upload directory for user: " + _blogUser.getId());
+                        }
+                    }
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(uploadDirectoryForUser, name)));
+                    bos.write(bits);
                     bos.close();
 
                     Hashtable returnStruct = new Hashtable(1);
-                    String mediaURL = _blog.getBlogBaseURL() + _staticURLPrefix + name;
+                    String mediaURL = _blog.getBlogBaseURL() + _staticURLPrefix + _blogUser.getId() + "/" + name;
+                    _logger.debug("newMediaObject URL: " + mediaURL);
                     returnStruct.put(MEMBER_URL, mediaURL);
 
                     return returnStruct;
@@ -602,7 +608,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 }
             } else {
                 _logger.error("MIME type not accepted. Received MIME type: " + type);
-                throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                throw new XmlRpcException(UNKNOWN_EXCEPTION, "MIME type not accepted. Received MIME type: " + type);
             }
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
