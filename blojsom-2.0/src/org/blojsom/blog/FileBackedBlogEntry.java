@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.10 2003-11-30 17:52:03 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.11 2003-12-30 04:46:28 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -463,11 +463,13 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Load a blog entry.
      * 
-     * @param blog Blog
+     * @param blogUser User information
      * @throws BlojsomException If there is an error loading the entry
      * @since blojsom 1.9
      */
-    public void load(Blog blog) throws BlojsomException {
+    public void load(BlogUser blogUser) throws BlojsomException {
+        Blog blog = blogUser.getBlog();
+
         if (_source == null) {
             throw new BlojsomException("No source file set for this blog entry.");
         }
@@ -488,11 +490,13 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Save the blog entry. This method does not write out the comments or trackbacks to disk.
      * 
-     * @param blog Blog
+     * @param blogUser User information
      * @throws BlojsomException If there is an error saving the entry
      * @since blojsom 1.9
      */
-    public void save(Blog blog) throws BlojsomException {
+    public void save(BlogUser blogUser) throws BlojsomException {
+        Blog blog = blogUser.getBlog();
+
         if (_source == null) {
             throw new BlojsomException("No source file set for this blog entry.");
         }
@@ -533,11 +537,13 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Delete the blog entry.
      * 
-     * @param blog Blog
+     * @param blogUser User information
      * @throws BlojsomException If there is an error deleting the entry
      * @since blojsom 1.9
      */
-    public void delete(Blog blog) throws BlojsomException {
+    public void delete(BlogUser blogUser) throws BlojsomException {
+        Blog blog = blogUser.getBlog();
+
         if (_source == null) {
             throw new BlojsomException("No source file set for this blog entry.");
         }

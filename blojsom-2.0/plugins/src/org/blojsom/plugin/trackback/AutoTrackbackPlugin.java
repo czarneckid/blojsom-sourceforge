@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.6 2003-09-30 02:28:13 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.7 2003-12-30 04:46:37 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -206,7 +206,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
                     trackbackAutodiscovery(user.getBlog(), entry);
                     entryMetaData.put("auto-trackback-complete", "true");
                     try {
-                        entry.save(user.getBlog());
+                        entry.save(user);
                     } catch (BlojsomException e) {
                         _logger.error(e);
                     }

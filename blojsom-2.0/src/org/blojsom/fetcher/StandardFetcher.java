@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.6 2003-10-23 01:31:47 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.7 2003-12-30 04:46:23 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -106,12 +106,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Retrieve a permalink entry from the entries for a given category
      *
+     * @param blogUser Blog information
      * @param requestedCategory Requested category
      * @param permalink Permalink entry requested
      * @return Blog entry array containing the single requested permalink entry,
      * or <code>BlogEntry[0]</code> if the permalink entry was not found
      */
-    protected BlogEntry[] getPermalinkEntry(Blog blog, BlogCategory requestedCategory, String permalink) {
+    protected BlogEntry[] getPermalinkEntry(BlogUser blogUser, BlogCategory requestedCategory, String permalink) {
+        Blog blog = blogUser.getBlog();
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         permalink = BlojsomUtils.urlDecode(permalink);
         if (!category.endsWith("/")) {
@@ -150,7 +152,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
             blogEntry.setBlogCategory(blogCategory);
             try {
-                blogEntry.load(blog);
+                blogEntry.load(blogUser);
             } catch (BlojsomException e) {
                 return new BlogEntry[0];
             }
@@ -219,7 +221,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
                 blogEntry.setBlogCategory(blogCategoryForEntry);
                 try {
-                    blogEntry.load(blog);
+                    blogEntry.load(user);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
@@ -403,7 +405,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         // Check for a permalink entry request
         if (permalink != null) {
             context.put(BLOJSOM_PERMALINK, permalink);
-            return getPermalinkEntry(blog, category, permalink);
+            return getPermalinkEntry(user, category, permalink);
         } else {
             if (category.getCategory().equals("/")) {
                 return getEntriesAllCategories(user, flavor, -1, blogDirectoryDepth);
@@ -444,7 +446,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     public BlogEntry[] fetchEntries(Map fetchParameters, BlogUser user) throws BlojsomFetcherException {
         Blog blog = user.getBlog();
         if (fetchParameters.containsKey(FETCHER_CATEGORY) && fetchParameters.containsKey(FETCHER_PERMALINK)) {
-            return getPermalinkEntry(blog, (BlogCategory) fetchParameters.get(FETCHER_CATEGORY), (String) fetchParameters.get(FETCHER_PERMALINK));
+            return getPermalinkEntry(user, (BlogCategory) fetchParameters.get(FETCHER_CATEGORY), (String) fetchParameters.get(FETCHER_PERMALINK));
         } else if (fetchParameters.containsKey(FETCHER_FLAVOR) && fetchParameters.containsKey(FETCHER_NUM_POSTS_INTEGER)) {
             return getEntriesAllCategories(user, (String) fetchParameters.get(FETCHER_FLAVOR), ((Integer) fetchParameters.get(FETCHER_NUM_POSTS_INTEGER)).intValue(), blog.getBlogDepth());
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY) && fetchParameters.containsKey(FETCHER_NUM_POSTS_INTEGER)) {

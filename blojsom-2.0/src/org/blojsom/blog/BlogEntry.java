@@ -50,7 +50,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.3 2003-11-29 16:20:42 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.4 2003-12-30 04:46:28 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -440,26 +440,26 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * Load a blog entry.
      *
      * @since blojsom 1.9
-     * @param blog Blog
+     * @param blogUser User information
      * @throws BlojsomException If there is an error loading the entry
      */
-    public abstract void load(Blog blog) throws BlojsomException;
+    public abstract void load(BlogUser blogUser) throws BlojsomException;
 
     /**
      * Save the blog entry.
      *
      * @since blojsom 1.9
-     * @param blog Blog
+     * @param blogUser User information
      * @throws BlojsomException If there is an error saving the entry
      */
-    public abstract void save(Blog blog) throws BlojsomException;
+    public abstract void save(BlogUser blogUser) throws BlojsomException;
 
     /**
      * Delete the blog entry.
      *
      * @since blojsom 1.9
-     * @param blog Blog
+     * @param blogUser User information
      * @throws BlojsomException If there is an error deleting the entry
      */
-    public abstract void delete(Blog blog) throws BlojsomException;
+    public abstract void delete(BlogUser blogUser) throws BlojsomException;
 }

@@ -54,7 +54,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.5 2003-12-10 03:00:53 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.6 2003-12-30 04:46:46 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -217,7 +217,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
                 if (_entries != null && _entries.length > 0) {
                     try {
-                        _entries[0].delete(_blog);
+                        _entries[0].delete(_blogUser);
                     } catch (BlojsomException e) {
                         _logger.error(e);
                         throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
@@ -426,7 +426,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     try {
                         _entry.setTitle(null);
                         _entry.setDescription(content);
-                        _entry.save(_blog);
+                        _entry.save(_blogUser);
                         result = true;
                     } catch (BlojsomException e) {
                         _logger.error(e);
@@ -491,7 +491,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
-                    entry.save(_blog);
+                    entry.save(_blogUser);
                     result = postid;
                 } catch (BlojsomException e) {
                     _logger.error(e);

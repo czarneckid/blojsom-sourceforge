@@ -76,7 +76,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.21 2003-12-28 21:57:45 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.22 2003-12-30 04:46:46 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -261,7 +261,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
                 if (entries != null && entries.length > 0) {
                     BlogEntry entry = entries[0];
-                    entry.delete(blog);
+                    entry.delete(blogUser);
                 }
 
                 // Okay now we generate a new NextOnce value, just for saftey sake and shove in into the response
@@ -454,7 +454,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     }
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
-                    entry.save(blog);
+                    entry.save(blogUser);
 
                     httpServletResponse.setContentType(CONTENTTYPE_HTML);
                     httpServletResponse.setHeader(HEADER_LOCATION, entry.getEscapedLink());
@@ -527,7 +527,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                         blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
                     }
                     entry.setMetaData(blogEntryMetaData);
-                    entry.save(blog);
+                    entry.save(blogUser);
 
                     String nonce = AtomUtils.generateNextNonce(blogUser);
                     httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");

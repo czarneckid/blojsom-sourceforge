@@ -61,7 +61,7 @@ import java.util.Map;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.11 2003-12-23 18:00:15 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.12 2003-12-30 04:46:37 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -251,7 +251,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     BlogEntry entryToUpdate = entries[0];
                     entryToUpdate.setTitle(blogEntryTitle);
                     entryToUpdate.setDescription(blogEntryDescription);
-                    entryToUpdate.save(user.getBlog());
+                    entryToUpdate.save(user);
                     _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
                     addOperationResultMessage(context, "Updated blog entry: " + blogEntryId);
                 } else {
@@ -288,7 +288,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 entries = _fetcher.fetchEntries(fetchMap, user);
                 if (entries != null) {
                     _logger.debug("Retrieved " + entries.length + " entries from category: " + blogCategoryName);
-                    entries[0].delete(user.getBlog());
+                    entries[0].delete(user);
                     addOperationResultMessage(context, "Deleted blog entry: " + blogEntryId);
                 } else {
                     _logger.debug("No entries found in category: " + blogCategoryName);
@@ -354,7 +354,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setAttributes(attributeMap);
 
             try {
-                entry.save(user.getBlog());
+                entry.save(user);
                 addOperationResultMessage(context, "Added blog entry: " + entry.getId());
             } catch (BlojsomException e) {
                 _logger.error(e);
