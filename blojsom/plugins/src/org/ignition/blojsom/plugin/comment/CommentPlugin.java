@@ -61,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.20 2003-03-29 18:54:24 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.21 2003-03-30 23:26:34 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -103,17 +103,28 @@ public class CommentPlugin implements BlojsomPlugin {
     /**
      * Comment "Remember Me" Cookie for the Authors Email
      */
-    private static final String COOKIE_EMAIL = "blojsom.cookie.email";
+    private static final String COOKIE_EMAIL = "blojsom.cookie.authorEmail";
 
     /**
      * Comment "Remember Me" Cookie for the Authors URL
      */
-    private static final String COOKIE_URL = "blojsom.cookie.url";
+    private static final String COOKIE_URL = "blojsom.cookie.authorURL";
+
+    /**
+     * Expiration age for the cookie (1 week)
+     */
+    private static final int COOKIE_EXPIRATION_AGE = 604800;
 
     /**
      *
+     * Key under which the indicator this plugin is "live" will be placed
+     * (example: on the request for the JSPDispatcher)
      */
-    private static final int COOKIE_EXPIRATION_AGE = 604800;
+    public static final String BLOJSOM_COMMENT_PLUGIN_ENABLED = "BLOJSOM_COMMENT_PLUGIN_ENABLED";
+
+    public static final String BLOJSOM_COMMENT_PLUGIN_AUTHOR = "BLOJSOM_COMMENT_PLUGIN_AUTHOR";
+    public static final String BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL = "BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL";
+    public static final String BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL = "BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL";
 
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
@@ -190,48 +201,57 @@ public class CommentPlugin implements BlojsomPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        context.put(BLOJSOM_COMMENT_PLUGIN_ENABLED, new Boolean(true));
+
         if (entries.length == 0) {
             return entries;
         }
 
+        String author = httpServletRequest.getParameter(AUTHOR_PARAM);
+        String authorEmail = httpServletRequest.getParameter(AUTHOR_EMAIL_PARAM);
+        String authorURL = httpServletRequest.getParameter(AUTHOR_URL_PARAM);
+
+        // Check to see if the person has requested they be "remembered" and if so
+        // extract their information from the appropriate cookies
+        Cookie authorCookie = getCommentCookie(httpServletRequest, COOKIE_AUTHOR);
+        if ((authorCookie != null) && ((author == null) || "".equals(author))) {
+            author = authorCookie.getValue();
+            _logger.debug("Pulling author from cookie: " + author);
+            if ("".equals(author)) {
+                author = null;
+            } else {
+                context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR, author);
+            }
+
+            Cookie authorEmailCookie = getCommentCookie(httpServletRequest, COOKIE_EMAIL);
+            if ((authorEmailCookie != null) && ((authorEmail == null) || "".equals(authorEmail))) {
+                authorEmail = authorEmailCookie.getValue();
+                _logger.debug("Pulling author email from cookie: " + authorEmail);
+                if (authorEmail == null) {
+                    authorEmail = "";
+                } else {
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL, authorEmail);
+                }
+            }
+
+            Cookie authorUrlCookie = getCommentCookie(httpServletRequest, COOKIE_URL);
+            if ((authorUrlCookie != null) && ((authorURL == null) || "".equals(authorURL))) {
+                authorURL = authorUrlCookie.getValue();
+                _logger.debug("Pulling author URL from cookie: " + authorURL);
+                if (authorURL == null) {
+                    authorURL = "";
+                } else {
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
+                }
+            }
+        }
+
         // Comment handling
         if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blogCommentsEnabled.booleanValue()) {
-            String author = httpServletRequest.getParameter(AUTHOR_PARAM);
-            String authorEmail = httpServletRequest.getParameter(AUTHOR_EMAIL_PARAM);
-            String authorURL = httpServletRequest.getParameter(AUTHOR_URL_PARAM);
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
             String remember = httpServletRequest.getParameter(REMEMBER_ME_PARAM);
-
-            // Check to see if the person has requested they be "remembered" and if so
-            // extract their information from the appropriate cookies
-            Cookie authorCookie = getCommentCookie(httpServletRequest, COOKIE_AUTHOR);
-            if ((authorCookie != null) && ((author == null) || "".equals(author))) {
-                author = authorCookie.getValue();
-                _logger.debug("Pulling author from cookie: " + author);
-                if ("".equals(author)) {
-                    author = null;
-                }
-
-                Cookie authorEmailCookie = getCommentCookie(httpServletRequest, COOKIE_EMAIL);
-                if ((authorEmailCookie != null) && ((authorEmail == null) || "".equals(authorEmail))) {
-                    authorEmail = authorEmailCookie.getValue();
-                    _logger.debug("Pulling author email from cookie: " + authorEmail);
-                    if (authorEmail == null) {
-                        authorEmail = "";
-                    }
-                }
-
-                Cookie authorUrlCookie = getCommentCookie(httpServletRequest, COOKIE_URL);
-                if ((authorUrlCookie != null) && ((authorURL == null) || "".equals(authorURL))) {
-                    authorURL = authorUrlCookie.getValue();
-                    _logger.debug("Pulling author URL from cookie: " + authorURL);
-                    if (authorURL == null) {
-                        authorURL = "";
-                    }
-                }
-            }
 
             String title = entries[0].getTitle();
 
@@ -264,8 +284,11 @@ public class CommentPlugin implements BlojsomPlugin {
                 // If we're asked to remember the person, then add the appropriate cookies
                 if ((remember != null) && (!"".equals(remember))) {
                     addCommentCookie(httpServletResponse, COOKIE_AUTHOR, author);
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR, author);
                     addCommentCookie(httpServletResponse, COOKIE_EMAIL, authorEmail);
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL, authorEmail);
                     addCommentCookie(httpServletResponse, COOKIE_URL, authorURL);
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
                 }
             }
         }
