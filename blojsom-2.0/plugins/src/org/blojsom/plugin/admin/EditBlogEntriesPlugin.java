@@ -61,20 +61,18 @@ import java.util.Map;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.4 2003-12-15 00:22:36 intabulas Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.5 2003-12-15 20:43:42 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
+    private static final Log _logger = LogFactory.getLog(EditBlogEntriesPlugin.class);
+
+    // XML-RPC constants
+    public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
     /**
-     * COPIED LOCAL AS TEMP FIX SINCE PLUGINS COMPILED BEFORE EXTENSIONS
      * Default file extension for blog entries written via XML-RPC
      */
     public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
-    public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
-
-
-
-    private static final Log _logger = LogFactory.getLog(EditBlogEntriesPlugin.class);
 
     // Pages
     private static final String EDIT_BLOG_ENTRIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entries";
