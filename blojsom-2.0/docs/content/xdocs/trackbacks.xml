@@ -53,7 +53,7 @@
 
         </section>
         <section>
-            <title>Banning IP addresses from commenting</title>
+            <title>Banning IP addresses from commenting and trackback throttling</title>
             <p>
                 In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
                 and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
@@ -64,6 +64,16 @@
             </p>
             <source>
                 blog-banned-ip-addresses=127\\.0\\.0\\.1
+            </source>
+            <p>
+                In blojsom 2.11, you can configure trackback throttling. If throttling is enabled,
+                trackbacks left from a particular IP address must wait a configurable number of
+                minutes before another trackback can be posted. The tackback throttle parameter is
+                controlled by the <em>plugin-trackback-throttle</em> parameter in your individual
+                <em>/WEB-INF/(user-id)/blog.properties</em>. The parameter is specified as minutes.
+            </p>
+            <source>
+                plugin-trackback-throttle=5
             </source>
         </section>
         <section>
