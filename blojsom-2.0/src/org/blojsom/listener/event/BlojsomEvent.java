@@ -41,7 +41,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEvent.java,v 1.2 2004-08-30 04:25:30 czarneckid Exp $
+ * @version $Id: BlojsomEvent.java,v 1.3 2004-08-30 14:51:27 czarneckid Exp $
  */
 public class BlojsomEvent {
 
@@ -49,9 +49,10 @@ public class BlojsomEvent {
     protected Date _timestamp;
 
     /**
+     * Create a new event.
      *
-     * @param source
-     * @param timestamp
+     * @param source Source of the event
+     * @param timestamp Event timestamp
      */
     public BlojsomEvent(Object source, Date timestamp) {
         _source = source;
@@ -59,16 +60,18 @@ public class BlojsomEvent {
     }
 
     /**
-     * 
-     * @return
+     * Retrieve the source of the event
+     *
+     * @return Event source
      */
     public Object getSource() {
         return _source;
     }
 
     /**
+     * Retrieve the timestamp when the event occurred
      *
-     * @return
+     * @return Event timestamp
      */
     public Date getTimestamp() {
         return _timestamp;
