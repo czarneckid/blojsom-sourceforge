@@ -36,7 +36,6 @@ package org.blojsom.plugin.weather;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.plugin.weather.beans.NWSInformation;
 import org.blojsom.plugin.weather.beans.WeatherInformation;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -57,7 +56,7 @@ import java.util.zip.GZIPInputStream;
  * Portions taken from the ROME Fetcher (http://rome.dev.java.net)
  *
  * @author Mark Lussier
- * @version $Id: WeatherFetcher.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: WeatherFetcher.java,v 1.2 2005-01-12 18:23:24 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class WeatherFetcher {
@@ -84,8 +83,9 @@ public class WeatherFetcher {
         }
     }
 
-    public WeatherInformation retrieveForcast(URL forcastUrl) throws IllegalArgumentException, IOException {
-        WeatherInformation result = null;
+    public WeatherInformation retrieveForcast(WeatherInformation provider) throws IllegalArgumentException, IOException {
+
+        URL forcastUrl = new URL(provider.getProviderUrl());
 
         URLConnection connection = forcastUrl.openConnection();
         if (!(connection instanceof HttpURLConnection)) {
@@ -93,7 +93,7 @@ public class WeatherFetcher {
         }
 
         HttpURLConnection httpConnection = (HttpURLConnection) connection;
-        httpConnection.setRequestProperty("Accept-Encoding",WeatherConstants.GZIP);
+        httpConnection.setRequestProperty("Accept-Encoding", WeatherConstants.GZIP);
         httpConnection.setRequestProperty("User-Agent", WeatherConstants.BLOJSOM_WEATHER_USER_AGENT);
 
         httpConnection.connect();
@@ -116,12 +116,12 @@ public class WeatherFetcher {
 
         try {
             Document document = _documentBuilder.parse(new InputSource(new StringReader(buffer.toString())));
-            result = new NWSInformation(document);
+            provider.parseDocument(document);
         } catch (SAXException e) {
             _logger.error(e);
         }
         bis.close();
 
-        return result;
+        return provider;
     }
 }

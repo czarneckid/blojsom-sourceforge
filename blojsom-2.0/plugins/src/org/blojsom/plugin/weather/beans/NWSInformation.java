@@ -38,14 +38,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.text.MessageFormat;
+
 /**
  * NWSInformation
  *
  * @author Mark Lussier
- * @version $Id: NWSInformation.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: NWSInformation.java,v 1.2 2005-01-12 18:24:06 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class NWSInformation implements WeatherInformation {
+
+    public static final String NWS_URL_FORMAT = "http://www.nws.noaa.gov/data/current_obs/{0}.xml";
 
     public static final String TAG_CREDIT = "credit";
     public static final String TAG_CREDIT_URL = "credit_URL";
@@ -77,18 +81,18 @@ public class NWSInformation implements WeatherInformation {
     /**
      * Public Constructor
      *
-     * @param document Document instance containing Weather data
+     * @param stationCode The Provider Station Id
      */
-    public NWSInformation(Document document) {
-        _document = document;
-        parseDocument();
+    public NWSInformation(String stationCode) {
+        _stationCode = stationCode;
 
     }
 
     /**
      * Parse the Weather Document
      */
-    private void parseDocument() {
+    public void parseDocument(Document document) {
+        _document = document;
 
 
         _temperatureC = getValueOfTag(TAG_TEMP_C);
@@ -152,4 +156,13 @@ public class NWSInformation implements WeatherInformation {
         return _history;
     }
 
+
+    /**
+     * Gets the URL required to fetch this resource
+     *
+     * @return The resource location as a String
+     */
+    public String getProviderUrl() {
+        return MessageFormat.format(NWS_URL_FORMAT, new Object[]{_stationCode});
+    }
 }

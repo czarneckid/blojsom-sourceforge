@@ -40,7 +40,7 @@ import org.blojsom.blog.BlogUser;
  * Weather
  *
  * @author Mark Lussier
- * @version $Id: Weather.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: Weather.java,v 1.2 2005-01-12 18:23:23 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class Weather {
@@ -49,6 +49,7 @@ public class Weather {
     private boolean _enabled = false;
     private BlogUser _blogUser;
     private String _stationCode;
+    private String _providerClass;
 
     /**
      * Public Constructor
@@ -58,7 +59,6 @@ public class Weather {
     }
 
     /**
-     *
      * @return
      */
     public BlogUser getBlogUser() {
@@ -66,7 +66,6 @@ public class Weather {
     }
 
     /**
-     *
      * @param blogUser
      */
     public void setBlogUser(BlogUser blogUser) {
@@ -74,7 +73,6 @@ public class Weather {
     }
 
     /**
-     *
      * @return
      */
     public String getStationCode() {
@@ -82,7 +80,6 @@ public class Weather {
     }
 
     /**
-     *
      * @param stationCode
      */
     public void setStationCode(String stationCode) {
@@ -90,7 +87,6 @@ public class Weather {
     }
 
     /**
-     *
      * @return
      */
     public boolean isEnabled() {
@@ -98,11 +94,24 @@ public class Weather {
     }
 
     /**
-     *
      * @param enabled
      */
     public void setEnabled(boolean enabled) {
         _enabled = enabled;
+    }
+
+    /**
+     * @return
+     */
+    public String getProviderClass() {
+        return _providerClass;
+    }
+
+    /**
+     * @param providerClass
+     */
+    public void setProviderClass(String providerClass) {
+        _providerClass = providerClass;
     }
 
 

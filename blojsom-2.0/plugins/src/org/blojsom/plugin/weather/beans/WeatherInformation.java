@@ -34,16 +34,23 @@
  */
 package org.blojsom.plugin.weather.beans;
 
+import org.w3c.dom.Document;
+
 
 /**
  * WeatherInformation
  *
  * @author Mark Lussier
- * @version $Id: WeatherInformation.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: WeatherInformation.java,v 1.2 2005-01-12 18:24:06 intabulas Exp $
  * @since Blojsom 2.23
  */
 public interface WeatherInformation {
 
+
+    /**
+     * @param document
+     */
+    void parseDocument(Document document);
 
     /**
      * Get the current temperature as Farenheit
@@ -82,14 +89,23 @@ public interface WeatherInformation {
 
     /**
      * Get the current Wind conditions
+     *
      * @return The current wind conditions as a String
      */
     String getWind();
 
     /**
-     * 
      * @return
      */
     String getHistoryUrl();
+
+
+    /**
+     * Gets the URL required to fetch this resource
+     *
+     * @return The resource location as a String
+     */
+    String getProviderUrl();
+
 
 }

@@ -49,7 +49,7 @@ import java.util.Properties;
  * WeatherPluginUtils
  *
  * @author Mark Lussier
- * @version $Id: WeatherPluginUtils.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: WeatherPluginUtils.java,v 1.2 2005-01-12 18:23:24 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPluginUtils {
@@ -79,8 +79,9 @@ public class WeatherPluginUtils {
                 if (weatherProperties.size() > 0) {
                     weather.setBlogUser(blogUser);
                     String stationCode = weatherProperties.getProperty(WeatherPlugin.PROPERTY_WEATHER_CODE, WeatherPlugin.DEFAULT_WEATHER_CODE);
+                    String providerClass = weatherProperties.getProperty(WeatherPlugin.PROPERTY_WEATHER_PROVIDER, WeatherPlugin.DEFAULT_WEATHER_PROVIDER);
                     weather.setStationCode(stationCode);
-
+                    weather.setProviderClass(providerClass);
                 }
             } catch (IOException e) {
                 _logger.error(e);

@@ -39,10 +39,9 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.fetcher.BlojsomFetcher;
-import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.weather.beans.NWSInformation;
 import org.blojsom.plugin.weather.beans.WeatherInformation;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -51,18 +50,16 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.text.MessageFormat;
 
 
 /**
  * WeatherPlugin
  *
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.1 2005-01-12 17:41:10 intabulas Exp $
+ * @version $Id: WeatherPlugin.java,v 1.2 2005-01-12 18:23:24 intabulas Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -90,14 +87,19 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
     public static final String PROPERTY_WEATHER_CODE = "weather-station-code";
 
     /**
-     * Default Weather Station Code - San Jose Internation Airport - San Jose, CA USA
+     *
      */
-    public static final String DEFAULT_WEATHER_CODE = "KSJC";
+    public static final String PROPERTY_WEATHER_PROVIDER = "weather-provider";
 
     /**
      *
      */
-    public static final String NWS_URL_FORMAT = "http://www.nws.noaa.gov/data/current_obs/{0}.xml";
+    public static final String DEFAULT_WEATHER_PROVIDER = "org.blojsom.plugin.weather.beans.NWSInformation";
+
+    /**
+     * Default Weather Station Code - San Jose Internation Airport - San Jose, CA USA
+     */
+    public static final String DEFAULT_WEATHER_CODE = "KSJC";
 
 
     private WeatherChecker _weatherThread;
@@ -208,11 +210,9 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
 
             WeatherInformation result = null;
             try {
-                String url = MessageFormat.format(NWS_URL_FORMAT, new Object[] { weather.getStationCode().toUpperCase()} );
-
-                URL feed = new URL(url);
-                _logger.info("Fetching " + feed.toExternalForm());
-                result = _fetcher.retrieveForcast(feed);
+                _logger.info("Fetching forcast for " + weather.getStationCode());
+                WeatherInformation nws = new NWSInformation(weather.getStationCode());
+                result = _fetcher.retrieveForcast(nws);
                 _logger.info(result);
             } catch (IOException e) {
                 _logger.error(e);
