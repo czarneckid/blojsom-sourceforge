@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.4 2003-04-17 03:09:56 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.5 2003-04-17 03:31:31 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -63,7 +63,6 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     private Blog _blog;
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
-    private static final String FETCHER_CATEGORY_STRING = "FETCHER_CATEGORY_STRING";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
     private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
     private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
@@ -97,40 +96,6 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     private BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         String permalinkEntry = _blog.getBlogHome() + category + permalink;
-        File blogFile = new File(permalinkEntry);
-        if (!blogFile.exists()) {
-            return new BlogEntry[0];
-        } else {
-            BlogEntry[] entryArray = new BlogEntry[1];
-            FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
-            blogEntry.setSource(blogFile);
-            blogEntry.setCategory(category);
-            blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
-            try {
-                blogEntry.reloadSource();
-            } catch (IOException e) {
-                return new BlogEntry[0];
-            }
-            blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
-            if (_blog.areCommentsEnabled().booleanValue()) {
-                blogEntry.loadComments();
-            }
-            blogEntry.loadTrackbacks();
-            entryArray[0] = blogEntry;
-            return entryArray;
-        }
-    }
-
-    /**
-     * Retrieve a permalink entry from the entries for a given category
-     *
-     * @param category Requested category as a String
-     * @param permalink Permalink entry requested
-     * @return Blog entry array containing the single requested permalink entry,
-     * or <code>BlogEntry[0]</code> if the permalink entry was not found
-     */
-    private BlogEntry[] getPermalinkEntry(String category, String permalink) {
-        String permalinkEntry = _blog.getBlogHome() + BlojsomUtils.removeInitialSlash(category) + permalink;
         File blogFile = new File(permalinkEntry);
         if (!blogFile.exists()) {
             return new BlogEntry[0];
@@ -348,7 +313,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * method <b>must</b> be explicit about the exact parameter names and types that are
      * expected to return an appropriate set of {@link BlogEntry} objects.
      *
-     * String "FETCHER_CATEGORY_STRING"
+     * String "FETCHER_CATEGORY"
      * String "FETCHER_PERMALINK"
      *  - @todo XXX
      *
@@ -365,8 +330,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @throws BlojsomFetcherException If there is an error retrieving the blog entries for the request
      */
     public BlogEntry[] fetchEntries(Map fetchParameters) throws BlojsomFetcherException {
-        if (fetchParameters.containsKey(FETCHER_CATEGORY_STRING) && fetchParameters.containsKey(FETCHER_PERMALINK)) {
-            return getPermalinkEntry((String) fetchParameters.get(FETCHER_CATEGORY_STRING), (String) fetchParameters.get(FETCHER_PERMALINK));
+        if (fetchParameters.containsKey(FETCHER_CATEGORY) && fetchParameters.containsKey(FETCHER_PERMALINK)) {
+            return getPermalinkEntry((BlogCategory) fetchParameters.get(FETCHER_CATEGORY), (String) fetchParameters.get(FETCHER_PERMALINK));
         } else if (fetchParameters.containsKey(FETCHER_FLAVOR) && fetchParameters.containsKey(FETCHER_NUM_POSTS_INTEGER)) {
             return getEntriesAllCategories((String) fetchParameters.get(FETCHER_FLAVOR), ((Integer) fetchParameters.get(FETCHER_NUM_POSTS_INTEGER)).intValue());
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY) && fetchParameters.containsKey(FETCHER_NUM_POSTS_INTEGER)) {
