@@ -53,10 +53,11 @@ import java.io.PrintWriter;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
+ * @version $Id: GZIPResponseWrapper.java,v 1.2 2004-03-09 02:04:19 czarneckid Exp $
  * @since blojsom 2.10
- * @version $Id: GZIPResponseWrapper.java,v 1.1 2004-01-26 22:40:08 czarneckid Exp $
  */
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {
+
     protected HttpServletResponse origResponse = null;
     protected ServletOutputStream stream = null;
     protected PrintWriter writer = null;
@@ -84,17 +85,15 @@ public class GZIPResponseWrapper extends HttpServletResponseWrapper {
     /**
      * Finish the response
      */
-    public void finishResponse() {
-        try {
-            if (writer != null) {
-                writer.close();
-            } else {
-                if (stream != null) {
-                    stream.close();
-                }
+    public void finishResponse() throws IOException {
+        if (writer != null) {
+            writer.close();
+        } else {
+            if (stream != null) {
+                stream.close();
             }
-        } catch (IOException e) {
         }
+
     }
 
     /**

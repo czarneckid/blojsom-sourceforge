@@ -50,7 +50,7 @@ import java.util.zip.GZIPOutputStream;
  * the book and help support the authors, development of more free code,
  * and the JSP/Servlet/J2EE community.
  *
- * @version $Id: GZIPResponseStream.java,v 1.1 2004-01-26 22:40:08 czarneckid Exp $
+ * @version $Id: GZIPResponseStream.java,v 1.2 2004-03-09 02:04:19 czarneckid Exp $
  * @since blojsom 2.10
  */
 public class GZIPResponseStream extends ServletOutputStream {
@@ -85,6 +85,7 @@ public class GZIPResponseStream extends ServletOutputStream {
         if (closed) {
             throw new IOException("This output stream has already been closed.");
         }
+        
         gzipstream.finish();
 
         byte[] bytes = baos.toByteArray();
