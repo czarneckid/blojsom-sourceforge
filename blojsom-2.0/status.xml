@@ -8,6 +8,17 @@
 
     <changes>
         <release version="2.09" date="Available from CVS">
+            <action dev="czarneckid" type="Extension" context="Extension">
+                Updated MetaWeblog API handler to add other elements for the getPost() and getRecentPosts()
+                methods. blojsom should now work properly with clients such as
+                <link href="http://www.kung-foo.tv/ecto/">ecto</link> which support the MetaWeblog API.
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Extension" fixes-bug="879497">
+                Updated MetaWeblog API newMediaObject method to correctly handle upload file and be
+                multi-user compliant.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Auto Trackback plugin to be more robust to handling of trackback URLs.
             </action>
@@ -17,10 +28,9 @@
                 resulted in a NullPointerException.
             </action>
 
-            <action dev="czarneckid" type="Extension" context="Extension">
-                Updated MetaWeblog API handler to add other elements for the getPost() and getRecentPosts()
-                methods. blojsom should now work properly with clients such as
-                <link href="http://www.kung-foo.tv/ecto/">ecto</link> which support the MetaWeblog API. 
+            <action dev="czarneckid" type="update" context="Library">
+                Updated XML-RPC library to 1.2b1. This fixes decoding issues seen with the MetaWeblog API 
+                newMediaObject method.
             </action>
         </release>
 
