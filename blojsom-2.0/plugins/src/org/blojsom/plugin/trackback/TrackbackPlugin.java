@@ -59,7 +59,7 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.16 2004-04-16 03:47:55 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.17 2004-04-16 04:10:34 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -372,12 +372,13 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                     String trackbackDaysExpiration = blog.getBlogProperty(TRACKBACK_DAYS_EXPIRATION_IP);
                     try {
                         int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
-                        if (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration) {
+                        if ((daysExpiration > 0) && (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration)) {
                             _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
 
                             return entries;
                         }
                     } catch (NumberFormatException e) {
+                        _logger.error("Error in parameter " + TRACKBACK_DAYS_EXPIRATION_IP + ": " + trackbackDaysExpiration);
                     }
                 }
             } catch (BlojsomFetcherException e) {

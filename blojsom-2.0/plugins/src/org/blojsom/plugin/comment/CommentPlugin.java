@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.15 2004-04-16 03:47:55 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.16 2004-04-16 04:10:40 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataConstants {
 
@@ -443,12 +443,13 @@ public class CommentPlugin extends IPBanningPlugin implements BlojsomMetaDataCon
                         String commentDaysExpiration = blog.getBlogProperty(COMMENT_DAYS_EXPIRATION_IP);
                         try {
                             int daysExpiration = Integer.parseInt(commentDaysExpiration);
-                            if (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration) {
+                            if ((daysExpiration > 0) && (BlojsomUtils.daysBetweenDates(entry.getDate(), new Date()) >= daysExpiration)) {
                                 _logger.debug("Comment period for this entry has expired. Expiration period set at " + daysExpiration + " days.");
 
                                 return entries;
                             }
                         } catch (NumberFormatException e) {
+                            _logger.error("Error in parameter " + COMMENT_DAYS_EXPIRATION_IP + ": " + commentDaysExpiration);
                         }
                     }
                 } catch (BlojsomFetcherException e) {
