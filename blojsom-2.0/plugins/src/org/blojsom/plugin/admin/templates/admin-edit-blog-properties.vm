@@ -125,6 +125,10 @@
                         <td>#adminResource('blog.comments.enabled.text' 'Comments enabled?')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogCommentsEnabled())</td>
                     </tr>
                     <tr>
+                        #set ($selectListName = "comment-moderation-enabled")
+                        <td>#adminResource('blog.comment.moderation.enabled.text' 'Comment moderation enabled?')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("comment-moderation-enabled"))</td>
+                    </tr>
+                    <tr>
                         <td>#adminResource('comment.prefix.text' 'Prefix for comment e-mail')</td> <td><input name="plugin-comment-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-comment-email-prefix")"/></td>
                     </tr>
                     <tr>
@@ -148,6 +152,10 @@
                     <tr>
                         #set ($selectListName = "blog-trackbacks-enabled")
                         <td>#adminResource('blog.trackbacks.enabled.text' 'Trackbacks enabled?')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogTrackbacksEnabled())</td>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "trackback-moderation-enabled")
+                        <td>#adminResource('blog.trackback.moderation.enabled.text' 'Trackback moderation enabled?')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getBlogProperty("trackback-moderation-enabled"))</td>
                     </tr>
                     <tr>
                         <td>#adminResource('trackback.prefix.text' 'Prefix for trackback e-mail')</td> <td><input name="plugin-trackback-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getBlogProperty("plugin-trackback-email-prefix")"/></td>

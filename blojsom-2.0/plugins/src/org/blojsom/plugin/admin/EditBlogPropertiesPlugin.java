@@ -43,7 +43,9 @@ import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.aggregator.InternalAggregatorPlugin;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
+import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
+import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
@@ -62,7 +64,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.24 2004-09-12 23:01:44 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.25 2004-10-20 17:01:56 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -170,6 +172,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogProperty(CommentPlugin.COMMENT_THROTTLE_MINUTES_IP, blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_DAYS_EXPIRATION_IP, httpServletRequest);
             blog.setBlogProperty(CommentPlugin.COMMENT_DAYS_EXPIRATION_IP, blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(CommentModerationPlugin.COMMENT_MODERATION_ENABLED, httpServletRequest);
+            blog.setBlogProperty(CommentModerationPlugin.COMMENT_MODERATION_ENABLED, blogPropertyValue);
 
             // Trackback plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_THROTTLE_MINUTES_IP, httpServletRequest);
@@ -178,6 +182,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_PREFIX_IP, blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackPlugin.TRACKBACK_DAYS_EXPIRATION_IP, httpServletRequest);
             blog.setBlogProperty(TrackbackPlugin.TRACKBACK_DAYS_EXPIRATION_IP, blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(TrackbackModerationPlugin.TRACKBACK_MODERATION_ENABLED, httpServletRequest);
+            blog.setBlogProperty(TrackbackModerationPlugin.TRACKBACK_MODERATION_ENABLED, blogPropertyValue);
 
             // Weblogs Ping plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(WeblogsPingPlugin.BLOG_PING_URLS_IP, httpServletRequest);

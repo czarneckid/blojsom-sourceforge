@@ -58,7 +58,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.22 2004-05-22 19:31:53 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.23 2004-10-20 17:02:40 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -107,27 +107,27 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
     /**
      * Request parameter for the "comment"
      */
-    private static final String COMMENT_PARAM = "comment";
+    public static final String COMMENT_PARAM = "comment";
 
     /**
      * Request parameter for the "author"
      */
-    private static final String AUTHOR_PARAM = "author";
+    public static final String AUTHOR_PARAM = "author";
 
     /**
      * Request parameter for the "authorEmail"
      */
-    private static final String AUTHOR_EMAIL_PARAM = "authorEmail";
+    public static final String AUTHOR_EMAIL_PARAM = "authorEmail";
 
     /**
      * Request parameter for the "authorURL"
      */
-    private static final String AUTHOR_URL_PARAM = "authorURL";
+    public static final String AUTHOR_URL_PARAM = "authorURL";
 
     /**
      * Request parameter for the "commentText"
      */
-    private static final String COMMENT_TEXT_PARAM = "commentText";
+    public static final String COMMENT_TEXT_PARAM = "commentText";
 
     /**
      * Request parameter to "remember" the poster
@@ -204,6 +204,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT = "BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT";
 
+    public static final String BLOJSOM_PLUGIN_COMMENT_METADATA = "BLOJSOM_PLUGIN_COMMENT_METADATA";
 
     private Map _ipAddressCommentTimes;
     private BlojsomFetcher _fetcher;
@@ -480,6 +481,20 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 Map commentMetaData = new HashMap();
                 commentMetaData.put(BLOJSOM_COMMENT_PLUGIN_METADATA_IP, remoteIPAddress);
+
+                // Check to see if a previous plugin populated meta-data for the comment
+                if (context.containsKey(BLOJSOM_PLUGIN_COMMENT_METADATA)) {
+                    Map metaData = (Map) context.get(BLOJSOM_PLUGIN_COMMENT_METADATA);
+
+                    Iterator metaDataKeys = metaData.keySet().iterator();
+                    Object key;
+                    Object value;
+                    while (metaDataKeys.hasNext()) {
+                        key = metaDataKeys.next();
+                        value = metaData.get(key);
+                        commentMetaData.put(key, value);
+                    }
+                }
 
                 BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL,
                         commentText, _blogCommentsEnabled.booleanValue(), _blogFileExtensions, _blogHome,

@@ -119,6 +119,42 @@
 
         <p></p>
 
+        <!-- Approve blog comments form -->
+        <div id="mainClm">
+            <h2>#adminResource('approve.blog.comments.text' 'Approve blog comments')</h2>
+            <table>
+                <form name="approve-blog-comments" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="approve-blog-comments"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                    <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                    #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
+                        #foreach ($blogComment in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
+                        #set ($commentModerated = $!blogComment.getMetaData().get("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED").equals("true"))
+                        #if (!$commentModerated)
+                        <tr>
+                            <td><input type="checkbox" name="blog-comment-id" value="$blogComment.getId()"/>&nbsp;
+                            Comment by: <a href="mailto:$blogComment.getAuthorEmail()">$blogComment.getAuthor()</a> -
+                                <a href="$blogComment.getAuthorURL()">$blogComment.getAuthorURL()</a>
+                                Left on: $blogComment.getCommentDate()<p />
+                                $blogComment.getComment()<br /></td>
+                        </tr>
+                        #end
+                        #end
+                    #end
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="submit" value="#adminResource('approve.checked.comments.text' 'Approve checked comments')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+
+        <p></p>
+
         <!-- Delete blog trackbacks form -->
         <div id="mainClm">
             <h2>#adminResource('delete.blog.trackbacks.text' 'Delete blog trackbacks')</h2>
@@ -143,6 +179,40 @@
                     <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('delete.checked.trackbacks.text' 'Delete checked trackbacks')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+
+        <!-- Approve blog trackbacks form -->
+        <div id="mainClm">
+            <h2>#adminResource('approve.blog.trackbacks.text' 'Approve blog trackbacks')</h2>
+            <table>
+                <form name="approve-blog-trackbacks" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="approve-blog-trackbacks"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                    <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                    #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
+                        #foreach ($blogTrackback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
+                        #set ($trackbackModerated = $!blogComment.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("true"))
+                        #if (!$trackbackModerated)
+                        <tr>
+                            <td><input type="checkbox" name="blog-trackback-id" value="$blogTrackback.getId()"/>&nbsp;
+                            Trackback from: <a href="$blogTrackback.getUrl()">#if ($blogTrackback.getBlogName())$blogTrackback.getBlogName()#else$blogTrackback.getUrl()#end</a>
+                            Left on: $blogTrackback.getTrackbackDate()<br/>
+                            Title: #if ($blogTrackback.getTitle()) $blogTrackback.getTitle() #end<br />
+                            #if ($blogTrackback.getExcerpt()) $blogTrackback.getExcerpt() #end<br /></td>
+                        </tr>
+                        #end
+                        #end
+                    #end
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="submit" value="#adminResource('approve.checked.trackbacks.text' 'Approve checked trackbacks')"/>
                             <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>

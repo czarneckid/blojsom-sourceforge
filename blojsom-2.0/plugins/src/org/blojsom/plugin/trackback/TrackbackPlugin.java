@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.28 2004-07-13 01:14:26 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.29 2004-10-20 17:02:40 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -94,7 +94,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     /**
      * Request parameter to indicate a trackback "tb"
      */
-    private static final String TRACKBACK_PARAM = "tb";
+    public static final String TRACKBACK_PARAM = "tb";
 
     /**
      * Request parameter for the trackback "title"
@@ -158,6 +158,8 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
      * Key under which the blog comment will be placed for merging the trackback e-mail
      */
     public static final String BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK = "BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK";
+
+    public static final String BLOJSOM_PLUGIN_TRACKBACK_METADATA = "BLOJSOM_PLUGIN_TRACKBACK_METADATA";
 
     private Map _ipAddressTrackbackTimes;
     private BlojsomFetcher _fetcher;
@@ -408,6 +410,20 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
 
             Map trackbackMetaData = new HashMap();
             trackbackMetaData.put(BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP, remoteIPAddress);
+
+            // Check to see if a previous plugin populated meta-data for the comment
+            if (context.containsKey(BLOJSOM_PLUGIN_TRACKBACK_METADATA)) {
+                Map metaData = (Map) context.get(BLOJSOM_PLUGIN_TRACKBACK_METADATA);
+
+                Iterator metaDataKeys = metaData.keySet().iterator();
+                Object key;
+                Object value;
+                while (metaDataKeys.hasNext()) {
+                    key = metaDataKeys.next();
+                    value = metaData.get(key);
+                    trackbackMetaData.put(key, value);
+                }
+            }
 
             Trackback trackback = new Trackback();
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName,
