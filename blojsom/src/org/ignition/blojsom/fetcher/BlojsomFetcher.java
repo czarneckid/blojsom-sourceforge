@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.5 2003-05-31 18:38:53 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.6 2003-06-11 02:47:34 czarneckid Exp $
  */
 public interface BlojsomFetcher {
 
@@ -68,6 +68,14 @@ public interface BlojsomFetcher {
      * @return Blog entry instance
      */
     public BlogEntry newBlogEntry();
+
+    /**
+     * Return a new blog category instance
+     *
+     * @since blojsom 1.9.1
+     * @return Blog category instance
+     */
+    public BlogCategory newBlogCategory();
 
     /**
      * Fetch a set of {@link BlogEntry} objects.
