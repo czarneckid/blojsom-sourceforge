@@ -55,9 +55,9 @@ import java.io.IOException;
  * @author David Czarnecki
  * @author Jorg Prante
  * @since blojsom 2.01
- * @version $Id: BlojsomProperties.java,v 1.5 2004-04-04 22:44:30 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.6 2004-04-23 02:06:18 czarneckid Exp $
  */
-public class BlojsomProperties extends Properties {
+public class BlojsomProperties extends Properties implements BlojsomConstants {
 
     private String encoding;
 
@@ -75,7 +75,7 @@ public class BlojsomProperties extends Properties {
      */
     public BlojsomProperties() {
         super();
-        this.encoding = null;
+        this.encoding = UTF8;
     }
 
     /**
@@ -87,7 +87,7 @@ public class BlojsomProperties extends Properties {
      */
     public BlojsomProperties(Properties defaults) {
         super(defaults);
-        this.encoding = null;
+        this.encoding = UTF8;
     }
 
     /**
