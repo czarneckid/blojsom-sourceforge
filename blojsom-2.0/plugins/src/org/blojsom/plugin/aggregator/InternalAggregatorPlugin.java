@@ -55,12 +55,14 @@ import java.util.*;
  * Internal Aggregator Plugin
  *
  * @author David Czarnecki
- * @version $Id: InternalAggregatorPlugin.java,v 1.1 2004-07-07 01:18:27 czarneckid Exp $
+ * @version $Id: InternalAggregatorPlugin.java,v 1.2 2004-07-15 01:29:54 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class InternalAggregatorPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(InternalAggregatorPlugin.class);
+
+    private static final int DEFAULT_MOST_RECENT_ENTRIES_SIZE = 3;
 
     private static final String BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_ENTRIES = "BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_ENTRIES";
     private static final String BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_BLOG_NAME = "BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_BLOG_NAME";
@@ -152,7 +154,7 @@ public class InternalAggregatorPlugin implements BlojsomPlugin {
                     String blogName = blogInformation.getBlogName();
                     String blogURL = blogInformation.getBlogURL();
 
-                    int counter = (entriesFromBlog.length > 3) ? 3 : entriesFromBlog.length;
+                    int counter = (entriesFromBlog.length > DEFAULT_MOST_RECENT_ENTRIES_SIZE) ? DEFAULT_MOST_RECENT_ENTRIES_SIZE : entriesFromBlog.length;
                     for (int i = 0; i < counter; i++) {
                         BlogEntry blogEntry = entriesFromBlog[i];
                         Map blogEntryMetaData = blogEntry.getMetaData();
