@@ -29,7 +29,7 @@ Available categories:
     <p>$entry.getDescription()</p>
     </div>
     <p class="weblogtitle">Trackback for this entry</p>
-    <p class="weblogdateline"><a href="$entry.getLink()&tb=y"><img src="$BLOJSOM_SITE_URL/trackback.gif" border="0"/></a>&nbsp;$entry.getLink()&tb=y</p>
+    <p class="weblogdateline"><a href="$entry.getLink()&amp;tb=y"><img src="$BLOJSOM_SITE_URL/trackback.gif" border="0"/></a>&nbsp;$entry.getLink()&amp;tb=y</p>
     #foreach ($entryTrackback in $entry.getTrackbacks())
         <div class="commentstyle">
             Trackback from: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>

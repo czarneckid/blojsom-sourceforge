@@ -43,7 +43,7 @@ import java.util.Calendar;
  * VelocityHelper
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.1 2003-03-27 15:27:22 intabulas Exp $
+ * @version $Id: VelocityHelper.java,v 1.2 2003-03-27 22:41:40 intabulas Exp $
  */
 public class VelocityHelper {
 
@@ -80,7 +80,8 @@ public class VelocityHelper {
                         visualcalendar[x][y] = new Integer(dowoffset).toString();
                     } else {
                         StringBuffer _url = new StringBuffer("<a href=\"");
-                        _url.append(BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), _calendar.getCurrentMonth(), dowoffset, _calendar.getCurrentYear()));
+                        String _calurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(), _calendar.getCurrentMonth(), dowoffset, _calendar.getCurrentYear());
+                        _url.append( _calurl);
                         _url.append("\">").append(dowoffset).append("</a>");
                         visualcalendar[x][y] = _url.toString();
                     }
@@ -110,10 +111,11 @@ public class VelocityHelper {
         StringBuffer result = new StringBuffer();
         _calendar.getCalendar().add(Calendar.MONTH, -1);
         result.append("<a href=\"");
-        result.append(BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+        String prevurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
                 (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                -1, _calendar.getCalendar().get(Calendar.YEAR)));
-        result.append("\"> <&nbsp;&nbsp;");
+                -1, _calendar.getCalendar().get(Calendar.YEAR));
+        result.append(prevurl);
+        result.append("\"> &lt;&nbsp;&nbsp;");
         result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
         result.append("</a>");
         _calendar.getCalendar().add(Calendar.MONTH, 1);
@@ -127,12 +129,14 @@ public class VelocityHelper {
         if ((_calendar.getCalendar().get(Calendar.MONTH) < (_calendar.getToday().get(Calendar.MONTH)+1)) &&
                 (_calendar.getCalendar().get(Calendar.YEAR) <= _calendar.getToday().get(Calendar.YEAR))) {
             result.append("<a href=\"");
-            result.append(BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+            String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
                     (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                    -1, _calendar.getCalendar().get(Calendar.YEAR)));
+                    -1, _calendar.getCalendar().get(Calendar.YEAR));
+
+            result.append(nexturl);
             result.append("\">");
             result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
-            result.append("&nbsp;&nbsp;> </a>");
+            result.append("&nbsp;&nbsp;&gt; </a>");
             _calendar.getCalendar().add(Calendar.MONTH, -1);
         } else {
             result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH))).append("&nbsp;&nbsp;>" );

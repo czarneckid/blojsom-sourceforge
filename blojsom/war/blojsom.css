@@ -155,3 +155,11 @@ a:hover
 	text-align: center;
 }
 
+.tablemaxwidth {
+   width: 100%;
+   vertical-align: top;
+}
+
+.tablemaxpxwidth {
+   width: 100;
+}

@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.41 2003-03-27 16:58:23 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.42 2003-03-27 22:41:40 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -538,10 +538,10 @@ public class BlojsomUtils implements BlojsomConstants {
            dateurl.append("?month=").append(month);
         }
         if (day != -1) {
-            dateurl.append("&day=").append(day);
+            dateurl.append("&amp;day=").append(day);
         }
         if (year != -1) {
-            dateurl.append("&year=").append(year);
+            dateurl.append("&amp;year=").append(year);
         }
         return dateurl.toString();
     }

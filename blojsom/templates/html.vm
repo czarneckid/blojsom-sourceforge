@@ -32,7 +32,7 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 #set( $totalEntries = 0)
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr>
-<td width="100%" valign="top">
+<td class="tablemaxwidth">
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="entrystyle">
     <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()" title="Permalink to this blojsom entry">Permalink</a>]</span> </p>
@@ -41,19 +41,19 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
     </div>
     <p class="weblogbottomline">
     #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
-    Comments [<a href="$entry.getLink()&page=comments">$entry.getNumComments()</a>] |
+    Comments [<a href="$entry.getLink()&amp;page=comments">$entry.getNumComments()</a>] |
     #end
-    Trackbacks [<a href="$entry.getLink()&page=trackback">$entry.getNumTrackbacks()</a>]
+    Trackbacks [<a href="$entry.getLink()&amp;page=trackback">$entry.getNumTrackbacks()</a>]
     </p>
     #set( $totalEntries = $totalEntries + 1)
 #end
 </td>
-<td  width="100">&nbsp;</td>
+<td  class="tablemaxpxwidth">&nbsp;</td>
 
 <td valign="top" align="center" width="200">
 
 <div class="calendarbox">
-<div align="center"><table cellspacing="0" cellpadding="0" border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+<table cellspacing="0" cellpadding="0" border="0"><tr><td colspan="7" align="center"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
 
 <!-- DOW Name Row -->
 <tr>
@@ -89,7 +89,6 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
 <td colspan="7" class="calendarcolumn">$BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonth()&nbsp;&nbsp;&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getToday()&nbsp;&nbsp;&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getNextMonth()</td>
 </tr>
 </table>
-</div>
 </div>
 </td>
 </tr>

@@ -58,7 +58,7 @@
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
         <p class="weblogtitle">Trackback for this entry</p>
-        <p class="weblogdateline"><%= blogEntry.getLink() %>&tb=y</p>
+        <p class="weblogdateline"><%= blogEntry.getLink() %>&amp;tb=y</p>
         <%
             ArrayList blogTrackbacks = blogEntry.getTrackbacks();
             if (blogTrackbacks != null) {

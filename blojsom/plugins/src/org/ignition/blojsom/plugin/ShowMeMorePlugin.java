@@ -49,7 +49,7 @@ import java.util.Properties;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.7 2003-03-25 15:52:46 intabulas Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.8 2003-03-27 22:41:40 intabulas Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -115,7 +115,7 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
                     StringBuffer partialDescription = new StringBuffer(description.substring(0, _cutoff));
                     partialDescription.append("&nbsp; <a href=\"");
                     partialDescription.append(entry.getLink());
-                    partialDescription.append("&");
+                    partialDescription.append("&amp;");
                     partialDescription.append(SHOW_ME_MORE_PARAM);
                     partialDescription.append("=y\">");
                     partialDescription.append(_moreText);

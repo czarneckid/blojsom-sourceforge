@@ -61,9 +61,9 @@
 		</div>
         <p class="weblogbottomline">
         <% if (blogCommentsEnabled && blogEntry.supportsComments()) { %>
-        Comments [<a href="<%= blogEntry.getLink() %>&page=comments"><%= blogEntry.getNumComments() %></a>] |
+        Comments [<a href="<%= blogEntry.getLink() %>&amp;page=comments"><%= blogEntry.getNumComments() %></a>] |
         <% } %>
-        Trackbacks [<a href="<%= blogEntry.getLink() %>&page=trackback"><%= blogEntry.getNumTrackbacks() %></a>]
+        Trackbacks [<a href="<%= blogEntry.getLink() %>&amp;page=trackback"><%= blogEntry.getNumTrackbacks() %></a>]
         </p>
 <%
 	    }
