@@ -37,7 +37,6 @@ package org.blojsom.servlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.blog.BlojsomConfigurationException;
 import org.blojsom.fetcher.BlojsomFetcher;
@@ -48,9 +47,6 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Properties;
 
 /**
@@ -58,7 +54,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.9 2004-01-11 04:04:12 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.10 2004-06-03 01:19:51 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -119,41 +115,6 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
         } catch (BlojsomException e) {
             _logger.error(e);
             throw new ServletException(e);
-        }
-    }
-
-    /**
-     * Configure the authorization table (user id's and and passwords) for each user
-     *
-     * @param servletConfig Servlet configuration information
-     */
-    protected void configureAuthorization(ServletConfig servletConfig) throws ServletException {
-        String authorizationConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
-        if (BlojsomUtils.checkNullOrBlank(authorizationConfiguration)) {
-            _logger.error("No authorization configuration file specified");
-            throw new ServletException("No authorization configuration file specified");
-        }
-
-        // Load the authorization properties files for the individual users
-        Iterator usersIterator = _blojsomConfiguration.getBlogUsers().keySet().iterator();
-        BlogUser blogUser;
-        Properties authorizationProperties;
-        while (usersIterator.hasNext()) {
-            String user = (String) usersIterator.next();
-            blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
-
-            InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + authorizationConfiguration);
-            authorizationProperties = new Properties();
-            try {
-                authorizationProperties.load(is);
-                is.close();
-                blogUser.getBlog().setAuthorization(BlojsomUtils.propertiesToMap(authorizationProperties));
-                _blojsomConfiguration.getBlogUsers().put(user, blogUser);
-                _logger.debug("Added authorization information for user: " + user);
-            } catch (IOException e) {
-                _logger.error(e);
-                throw new ServletException(e);
-            }
         }
     }
 }
