@@ -56,7 +56,7 @@ import java.util.Map;
  * WikiPlugin
  * 
  * @author David Czarnecki 
- * @version $Id: WikiPlugin.java,v 1.5 2004-01-11 03:04:42 czarneckid Exp $
+ * @version $Id: WikiPlugin.java,v 1.6 2004-01-11 03:08:02 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class WikiPlugin implements BlojsomPlugin {
@@ -71,7 +71,7 @@ public class WikiPlugin implements BlojsomPlugin {
     /**
      * MetaData Key to identify a Wiki post
      */
-    public static final String METADATA_RUN_WIKI = "run-textile";
+    public static final String METADATA_RUN_WIKI = "run-wiki";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
