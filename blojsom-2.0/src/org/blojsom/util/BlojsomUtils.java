@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.2 2003-08-10 15:32:10 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.3 2003-08-11 02:04:17 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -258,14 +258,18 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Parse a comma-separated list of values; also parses over internal spaces
+     * Parse a delimited list of values
      *
-     * @param commaList Comma-separated list
+     * @param delimitedList Delimited list
      * @param delimiter Field Delimiter
      * @return Individual strings from the comma-separated list
      */
-    public static String[] parseDelimitedList(String commaList, String delimiter) {
-        StringTokenizer tokenizer = new StringTokenizer(commaList, delimiter);
+    public static String[] parseDelimitedList(String delimitedList, String delimiter) {
+        if (delimitedList == null) {
+            return null;
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer(delimitedList, delimiter);
         ArrayList list = new ArrayList();
         while (tokenizer.hasMoreTokens()) {
             list.add(tokenizer.nextToken());
@@ -766,12 +770,12 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Convert a Byte  Array to a Hex String
+     * Convert a byte array to a hex string
      *
-     * @param buf Byte Array to convert to Hex String
-     * @param offset Starting Offset for Conversion
-     * @param length Length to convery
-     * @return A Hex String representing the byte array
+     * @param buf Byte array to convert to hex string
+     * @param offset Starting offset for conversion
+     * @param length Length to convert
+     * @return Hex string representing the byte array
      */
     public static String toHexString(byte[] buf, int offset, int length) {
         byte[] buf1 = new byte[length * 2];
@@ -827,12 +831,14 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Try to load a properties file from disk. In this method, the properties file to load must have
+     * an explicit path provided
      *
      * @since blojsom 2.0
-     * @param servletConfig
-     * @param configurationFile
-     * @return
-     * @throws BlojsomException
+     * @param servletConfig Servlet configuration
+     * @param configurationFile Properties file to be loaded from disk (e.g. /WEB-INF/sample.properties)
+     * @return Loaded properties object
+     * @throws BlojsomException If there is an error loading the properties from disk
      */
     public static Properties loadProperties(ServletConfig servletConfig, String configurationFile)
             throws BlojsomException {
@@ -884,10 +890,12 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Convert a set of {@link Properties} to a {@link Map}
      *
      * @since blojsom 2.0
-     * @param properties
-     * @return
+     * @param properties Properties to be converted to a Map
+     * @return Map object containing all the keys and values from the original Properties object. If the
+     * Properties object was null, a new Map is returned with no values.
      */
     public static Map propertiesToMap(Properties properties) {
         if (properties == null) {
@@ -908,10 +916,13 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Returns category information from the path provided to the method where the path provided is
+     * assumed to be everything after the servlet instance with a user id at the very beginning of the path.
+     * For example, /david/this/is/the/category
      *
      * @since blojsom 2.0
-     * @param pathInfo
-     * @return
+     * @param pathInfo Path information
+     * @return Everything after the second "/" character in the path
      */
     public static final String getCategoryFromPath(String pathInfo) {
         if (pathInfo == null || "/".equals(pathInfo)) {
@@ -927,10 +938,13 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Returns user id information from the path provided to the method where the path provided is
+     * assumed to be everything after the servlet instance with a user id at the very beginning of the path.
+     * For example, /david/this/is/the/category
      *
      * @since blojsom 2.0
-     * @param pathInfo
-     * @return
+     * @param pathInfo Path information
+     * @return Everything before the second "/" character in the path
      */
     public static final String getUserFromPath(String pathInfo) {
         if (pathInfo == null || "/".equals(pathInfo)) {
