@@ -55,7 +55,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.15 2005-04-01 22:57:09 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.16 2005-04-02 16:43:58 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -193,6 +193,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
                 addOperationResultMessage(context, "No flavor name specified");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
             }
@@ -201,6 +202,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 _logger.debug("No blog template specified");
                 addOperationResultMessage(context, "No blog template specified");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
             }
@@ -245,6 +247,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
                 addOperationResultMessage(context, "No flavor name specified");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
             }
@@ -252,6 +255,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (flavorName.equalsIgnoreCase(user.getBlog().getBlogDefaultFlavor())) {
                 _logger.debug("Cannot delete the default flavor");
                 addOperationResultMessage(context, "Cannot delete the default flavor");
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
             }
@@ -259,7 +263,8 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (protectedFlavors.indexOf(flavorName) != -1) {
                 _logger.debug("Cannot delete protected flavor: " + flavorName);
                 addOperationResultMessage(context, "Cannot delete protected flavor: " + flavorName);
-
+                httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
+ 
                 return entries;
             }
 
