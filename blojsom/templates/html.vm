@@ -10,6 +10,16 @@
 
 <body>
 
+<div id="searchbox">
+<form class="searchform" name="searchform" method="post" action=".">
+<p class="searchtext">
+Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
+<input type="submit" name="submit" value="go"/>
+</p>
+</form>
+</div>
+
+
 <h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
 <h3>$BLOJSOM_BLOG.getBlogDescription()</h3>
 

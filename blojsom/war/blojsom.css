@@ -113,3 +113,28 @@ a:hover
 	font-size: 50%;
 	font-weight: bold;
 }
+
+.searchtext
+{
+    margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#searchbox{
+	float:right;
+	width : 200px;
+	background-color: #FFFFFF;
+	border-left:1px solid #000000;
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	border-top:1px solid #000000;
+	padding:5px;
+	margin-top:5px;
+	margin-bottom0:px;
+}
+
+.searchform
+{
+    margin-top: 2px;
+	margin-bottom: 2px;
+}
