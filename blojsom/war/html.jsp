@@ -64,7 +64,16 @@
 	    }
 	}
 %>
+<%
+    if ((entryArray != null) && (entryArray.length > 0)) {
+%>
 	<p><b>Available Categories: </b><%= catString %></p>
+<%
+    }
+%>
+
+    <p />
+    <img src="../powered-by-blojsom.gif" border="0" />
 
     </body>
 </html>
