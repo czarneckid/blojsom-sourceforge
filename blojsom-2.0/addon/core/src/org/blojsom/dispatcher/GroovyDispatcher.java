@@ -34,8 +34,9 @@
  */
 package org.blojsom.dispatcher;
 
-import groovy.lang.GroovyShell;
 import groovy.lang.Binding;
+import groovy.text.SimpleTemplateEngine;
+import groovy.text.Template;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
@@ -49,7 +50,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
@@ -61,7 +61,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.13
- * @version $Id: GroovyDispatcher.java,v 1.1 2004-03-02 02:42:16 czarneckid Exp $
+ * @version $Id: GroovyDispatcher.java,v 1.2 2004-03-13 16:56:31 czarneckid Exp $
  */
 public class GroovyDispatcher implements BlojsomDispatcher {
 
@@ -134,25 +134,18 @@ public class GroovyDispatcher implements BlojsomDispatcher {
 
         Writer responseWriter = httpServletResponse.getWriter();
 
-        // Create a new GroovyShell with the context for the script
-        GroovyShell shell = new GroovyShell(binding);
+        SimpleTemplateEngine simpleTemplateEngine = new SimpleTemplateEngine();
 
         // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
             String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
             if (_context.getResource(templateToLoad) != null) {
                 InputStreamReader isr = new InputStreamReader(_context.getResourceAsStream(templateToLoad), UTF8);
-                StringBuffer template = new StringBuffer();
-                BufferedReader br = new BufferedReader(isr);
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    template.append(line).append(LINE_SEPARATOR);
-                }
 
                 try {
-                    Object result = shell.evaluate(template.toString(), user.getId() + "/" + flavorTemplateForPage);
-                    responseWriter.write(result.toString());
+                    Template groovyTemplate = simpleTemplateEngine.createTemplate(isr);
+                    groovyTemplate.setBinding(context);
+                    groovyTemplate.writeTo(responseWriter);
                 } catch (SyntaxException e) {
                     _logger.error(e);
                 } catch (ClassNotFoundException e) {
@@ -167,17 +160,11 @@ public class GroovyDispatcher implements BlojsomDispatcher {
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template with page without including any user information
                     InputStreamReader isr = new InputStreamReader(_context.getResourceAsStream(templateToLoad), UTF8);
-                    StringBuffer template = new StringBuffer();
-                    BufferedReader br = new BufferedReader(isr);
-                    String line;
-
-                    while ((line = br.readLine()) != null) {
-                        template.append(line).append(LINE_SEPARATOR);
-                    }
 
                     try {
-                        Object result = shell.evaluate(template.toString(), user.getId() + "/" + flavorTemplateForPage);
-                        responseWriter.write(result.toString());
+                        Template groovyTemplate = simpleTemplateEngine.createTemplate(isr);
+                        groovyTemplate.setBinding(context);
+                        groovyTemplate.writeTo(responseWriter);
                     } catch (SyntaxException e) {
                         _logger.error(e);
                     } catch (ClassNotFoundException e) {
@@ -198,17 +185,11 @@ public class GroovyDispatcher implements BlojsomDispatcher {
             if (_context.getResource(templateToLoad) != null) {
 
                 InputStreamReader isr = new InputStreamReader(_context.getResourceAsStream(templateToLoad), UTF8);
-                StringBuffer template = new StringBuffer();
-                BufferedReader br = new BufferedReader(isr);
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    template.append(line).append(LINE_SEPARATOR);
-                }
 
                 try {
-                    Object result = shell.evaluate(template.toString(), user.getId() + "/" + flavorTemplate);
-                    responseWriter.write(result.toString());
+                    Template groovyTemplate = simpleTemplateEngine.createTemplate(isr);
+                    groovyTemplate.setBinding(context);
+                    groovyTemplate.writeTo(responseWriter);
                 } catch (SyntaxException e) {
                     _logger.error(e);
                 } catch (ClassNotFoundException e) {
@@ -222,17 +203,11 @@ public class GroovyDispatcher implements BlojsomDispatcher {
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template without including any user information
                     InputStreamReader isr = new InputStreamReader(_context.getResourceAsStream(templateToLoad), UTF8);
-                    StringBuffer template = new StringBuffer();
-                    BufferedReader br = new BufferedReader(isr);
-                    String line;
-
-                    while ((line = br.readLine()) != null) {
-                        template.append(line).append(LINE_SEPARATOR);
-                    }
 
                     try {
-                        Object result = shell.evaluate(template.toString(), user.getId() + "/" + flavorTemplate);
-                        responseWriter.write(result.toString());
+                        Template groovyTemplate = simpleTemplateEngine.createTemplate(isr);
+                        groovyTemplate.setBinding(context);
+                        groovyTemplate.writeTo(responseWriter);
                     } catch (SyntaxException e) {
                         _logger.error(e);
                     } catch (ClassNotFoundException e) {
