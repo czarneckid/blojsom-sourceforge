@@ -45,17 +45,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * StandardFetcher
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.14 2004-02-25 03:22:01 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.15 2004-02-27 03:11:41 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -122,42 +119,57 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         String permalinkEntry = blog.getBlogHome() + category + permalink;
         File blogFile = new File(permalinkEntry);
+        
         if (!blogFile.exists()) {
             return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
-            FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
-            FileBackedBlogCategory blogCategory;
+            BlogEntry blogEntry = newBlogEntry();
+            BlogCategory blogCategory;
+
             if ("/".equals(category)) {
-                blogCategory = new FileBackedBlogCategory(category, blog.getBlogURL());
+                blogCategory = newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(blog.getBlogURL());
+
                 try {
                     blogCategory.load(blog);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
             } else {
-                blogCategory = new FileBackedBlogCategory(category, blog.getBlogURL() + category);
+                blogCategory = newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(blog.getBlogURL() + category);
+
                 try {
                     blogCategory.load(blog);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
             }
-            blogEntry.setSource(blogFile);
+
+            Map entryAttributes = new HashMap();
+            entryAttributes.put(FileBackedBlogEntry.SOURCE_ATTRIBUTE, blogFile);
+            blogEntry.setAttributes(entryAttributes);
             blogEntry.setCategory(category);
+
             if ("/".equals(category)) {
                 blogEntry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             } else {
                 blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(blogFile.getName()));
             }
-            blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
+
             blogEntry.setBlogCategory(blogCategory);
+
             try {
                 blogEntry.load(blogUser);
             } catch (BlojsomException e) {
                 return new BlogEntry[0];
             }
+
             entryArray[0] = blogEntry;
+
             return entryArray;
         }
     }
@@ -182,52 +194,70 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         File[] entries = blogCategory.listFiles(BlojsomUtils.getRegularExpressionFilter(blog.getBlogFileExtensions()));
         if (entries == null) {
             _logger.debug("No blog entries in blog directory: " + blogCategory);
+
             return new BlogEntry[0];
         } else {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
-            FileBackedBlogEntry blogEntry;
+            BlogEntry blogEntry;
             int entryCounter;
+
             if (maxBlogEntries == -1) {
                 entryCounter = entries.length;
             } else {
                 entryCounter = (maxBlogEntries > entries.length) ? entries.length : maxBlogEntries;
             }
+
             entryArray = new BlogEntry[entryCounter];
+
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
-                blogEntry = new FileBackedBlogEntry();
-                FileBackedBlogCategory blogCategoryForEntry;
+                blogEntry = newBlogEntry();
+                BlogCategory blogCategoryForEntry;
+
                 if ("/".equals(category)) {
-                    blogCategoryForEntry = new FileBackedBlogCategory(category, blog.getBlogURL());
+                    blogCategoryForEntry = newBlogCategory();
+                    blogCategoryForEntry.setCategory(category);
+                    blogCategoryForEntry.setCategoryURL(blog.getBlogURL());
+
                     try {
                         blogCategoryForEntry.load(blog);
                     } catch (BlojsomException e) {
                         _logger.error(e);
                     }
                 } else {
-                    blogCategoryForEntry = new FileBackedBlogCategory(category, blog.getBlogURL() + category);
+                    blogCategoryForEntry = newBlogCategory();
+                    blogCategoryForEntry.setCategory(category);
+                    blogCategoryForEntry.setCategoryURL(blog.getBlogURL() + category);
+
                     try {
                         blogCategoryForEntry.load(blog);
                     } catch (BlojsomException e) {
                         _logger.error(e);
                     }
                 }
-                blogEntry.setSource(entry);
+
+                Map entryAttributes = new HashMap();
+                entryAttributes.put(FileBackedBlogEntry.SOURCE_ATTRIBUTE, entry);
+                blogEntry.setAttributes(entryAttributes);
                 blogEntry.setCategory(category);
+
                 if ("/".equals(category)) {
                     blogEntry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 } else {
                     blogEntry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(entry.getName()));
                 }
-                blogEntry.setBlogFileEncoding(blog.getBlogFileEncoding());
+
                 blogEntry.setBlogCategory(blogCategoryForEntry);
+
                 try {
                     blogEntry.load(user);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
+
                 entryArray[i] = blogEntry;
             }
+
             return entryArray;
         }
     }
@@ -283,11 +313,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             blogCategories = new BlogCategory[categoryFilter.length];
             for (int i = 0; i < categoryFilter.length; i++) {
                 String category = BlojsomUtils.removeInitialSlash(categoryFilter[i]);
+                BlogCategory blogCategory = newBlogCategory();
+                blogCategory.setCategoryURL(blog.getBlogURL() + category);
                 if ("".equals(category)) {
-                    blogCategories[i] = new FileBackedBlogCategory("/", blog.getBlogURL() + category);
+                    blogCategory.setCategory("/");
                 } else {
-                    blogCategories[i] = new FileBackedBlogCategory(category, blog.getBlogURL() + category);
+                    blogCategory.setCategory(category);
                 }
+                blogCategories[i] = blogCategory;
             }
         }
 
@@ -361,7 +394,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         requestedCategory = BlojsomUtils.urlDecode(requestedCategory);
         _logger.debug("User requested category: " + requestedCategory);
-        FileBackedBlogCategory category = new FileBackedBlogCategory(requestedCategory, blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
+        BlogCategory category = newBlogCategory();
+        category.setCategory(requestedCategory);
+        category.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(requestedCategory));
 
         // We might also want to pass the flavor so that we can also have flavor-based category meta-data
         try {
@@ -490,7 +525,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             categoryKey += "/";
         }
 
-        FileBackedBlogCategory blogCategory = new FileBackedBlogCategory(categoryKey, blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
+        BlogCategory blogCategory = newBlogCategory();
+        blogCategory.setCategory(categoryKey);
+        blogCategory.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
         try {
             blogCategory.load(blog);
         } catch (BlojsomException e) {
@@ -541,18 +578,20 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         ArrayList categoryList = new ArrayList();
         ArrayList sanitizedCategoryList = new ArrayList();
         BlogCategory category;
-        FileBackedBlogCategory fileBackedCategory;
+        BlogCategory updatedBackedCategory;
 
         while (slashTokenizer.hasMoreTokens()) {
             previousCategoryName += slashTokenizer.nextToken() + '/';
             if (!previousCategoryName.equals(currentCategory.getCategory())) {
-                fileBackedCategory = new FileBackedBlogCategory(previousCategoryName, blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
+                updatedBackedCategory = newBlogCategory();
+                updatedBackedCategory.setCategory(previousCategoryName);
+                updatedBackedCategory.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(previousCategoryName));
                 try {
-                    fileBackedCategory.load(blog);
+                    updatedBackedCategory.load(blog);
                 } catch (BlojsomException e) {
                     _logger.error(e);
                 }
-                categoryList.add(fileBackedCategory);
+                categoryList.add(updatedBackedCategory);
             }
         }
 
@@ -565,7 +604,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             }
         }
 
-        FileBackedBlogCategory rootCategory = new FileBackedBlogCategory("/", blog.getBlogURL());
+        BlogCategory rootCategory = newBlogCategory();
+        rootCategory.setCategory("/");
+        rootCategory.setCategoryURL(blog.getBlogURL());
         try {
             rootCategory.load(blog);
         } catch (BlojsomException e) {
