@@ -39,6 +39,11 @@
                 Fixed issue where administration plugins could be accessed without authorization.
             </action>
 
+            <action dev="czarneckid" type="update" context="Plugin" fixes-bug="864504">
+                Fixed issue where the action the file upload plugin posts to was broken. Additionally, users could
+                not upload more than one file to their blog.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated Weblogs Ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
                 to signal it should not ping weblogs.com, weblo.gs, and Technorati. Also updated the plugin to
