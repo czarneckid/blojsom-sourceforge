@@ -37,6 +37,7 @@ package org.ignition.blojsom.extension.xmlrpc.handlers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.Base64;
 import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
@@ -46,7 +47,7 @@ import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.io.File;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -57,24 +58,70 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.31 2003-07-06 22:25:39 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.32 2003-07-07 01:50:31 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
 
+    private static final String METAWEBLOG_UPLOAD_DIRECTORY_IP = "blojsom-extension-metaweblog-upload-directory";
+    private static final String METAWEBLOG_ACCEPTED_TYPES_IP = "blojsom-extension-metaweblog-accepted-types";
+    private static final String METAWEBLOG_STATIC_URL_PREFIX_IP = "blojsom-extension-metaweblog-static-url-prefix";
+
+    /**
+     * MetaWeblog API "description" key
+     */
     private static final String MEMBER_DESCRIPTION = "description";
+
+    /**
+     * MetaWeblog API "htmlUrl" key
+     */
     private static final String MEMBER_HTML_URL = "htmlUrl";
+
+    /**
+     * MetaWeblog API "rssUrl" key
+     */
     private static final String MEMBER_RSS_URL = "rssUrl";
+
+    /**
+     * MetaWeblog API "title" key
+     */
     private static final String MEMBER_TITLE = "title";
+
+    /**
+     * MetaWeblog API "link" key
+     */
     private static final String MEMBER_LINK = "link";
+
+    /**
+     * MetaWeblog API "name" key
+     */
+    private static final String MEMBER_NAME = "name";
+
+    /**
+     * MetaWeblog API "type" key
+     */
+    private static final String MEMBER_TYPE = "type";
+
+    /**
+     * MetaWeblog API "bits" key
+     */
+    private static final String MEMBER_BITS = "bits";
+
+    /**
+     * MetaWeblog API "url" key
+     */
+    private static final String MEMBER_URL = "url";
 
     public static final String API_PREFIX = "metaWeblog";
 
     private Blog _blog;
     private BlojsomFetcher _fetcher;
     private String _blogEntryExtension;
+    private String _uploadDirectory;
+    private HashMap _acceptedMimeTypes;
+    private String _staticURLPrefix;
 
     private Log _logger = LogFactory.getLog(MetaWeblogAPIHandler.class);
 
@@ -98,12 +145,45 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      *
      * @param bloginstance an instance of Blog
      * @see org.ignition.blojsom.blog.Blog
+     * @throws BlojsomException If there is an error setting the blog instance or properties for the handler
      */
-    public void setBlog(Blog bloginstance) {
+    public void setBlog(Blog bloginstance) throws BlojsomException {
         _blog = bloginstance;
         _blogEntryExtension = _blog.getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
         if (_blogEntryExtension == null || "".equals(_blogEntryExtension)) {
             _blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
+        }
+
+        _uploadDirectory = bloginstance.getBlogProperty(METAWEBLOG_UPLOAD_DIRECTORY_IP);
+        if (_uploadDirectory == null || "".equals(_uploadDirectory)) {
+            _logger.error("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
+            throw new BlojsomException("No upload directory specified in property: " + METAWEBLOG_UPLOAD_DIRECTORY_IP);
+        }
+
+        if (!_uploadDirectory.endsWith(File.separator)) {
+            _uploadDirectory += File.separator;
+        }
+
+        _acceptedMimeTypes = new HashMap(3);
+        String acceptedMimeTypes = bloginstance.getBlogProperty(METAWEBLOG_ACCEPTED_TYPES_IP);
+        if (acceptedMimeTypes != null && !"".equals(acceptedMimeTypes)) {
+            String[] types = BlojsomUtils.parseCommaList(acceptedMimeTypes);
+            for (int i = 0; i < types.length; i++) {
+                String type = types[i];
+                type = type.toLowerCase();
+                _acceptedMimeTypes.put(type, type);
+            }
+        }
+
+        _staticURLPrefix = bloginstance.getBlogProperty(METAWEBLOG_STATIC_URL_PREFIX_IP);
+        if (_staticURLPrefix == null) {
+            _logger.error("No static URL prefix specified in property: " + METAWEBLOG_STATIC_URL_PREFIX_IP);
+            throw new BlojsomException("No static URL prefix specified in property: " + METAWEBLOG_STATIC_URL_PREFIX_IP);
+        } else {
+            _staticURLPrefix = BlojsomUtils.removeInitialSlash(_staticURLPrefix);
+            if (!_staticURLPrefix.endsWith("/")) {
+                _staticURLPrefix += "/";
+            }
         }
     }
 
@@ -111,8 +191,9 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * Set the {@link BlojsomFetcher} instance that will be used to fetch categories and entries
      *
      * @param fetcher {@link BlojsomFetcher} instance
+     * @throws BlojsomException If there is an error in setting the fetcher
      */
-    public void setFetcher(BlojsomFetcher fetcher) {
+    public void setFetcher(BlojsomFetcher fetcher) throws BlojsomException {
         _fetcher = fetcher;
     }
 
@@ -242,6 +323,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 } else {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
+            } else {
+                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
 
             return result;
@@ -331,13 +414,15 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
 
     /**
-     * (NOT IMPLEMENTED)
+     * Retrieves a given post from the blog
      *
-     * @param postid
-     * @param userid
-     * @param password
-     * @return
-     * @throws XmlRpcException
+     * @param postid Unique identifier of the post to be changed
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @return Structure containing the minimal attributes for the MetaWeblog API getPost() method: title, link, and description
+     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
+     * or if the entry permalink ID is invalid
+     * @since blojsom 1.9.4
      */
     public Object getPost(String postid, String userid, String password) throws Exception {
         _logger.debug("getPost() Called =========[ SUPPORTED ]=====");
@@ -345,26 +430,97 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+        if (_blog.checkAuthorization(userid, password)) {
+
+            String category;
+            String permalink;
+            String match = "?" + PERMALINK_PARAM + "=";
+
+            int pos = postid.indexOf(match);
+            if (pos != -1) {
+                category = postid.substring(0, pos);
+                category = BlojsomUtils.normalize(category);
+                permalink = postid.substring(pos + match.length());
+
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
+
+                Map fetchMap = new HashMap();
+                fetchMap.put(FETCHER_CATEGORY, blogCategory);
+                fetchMap.put(FETCHER_PERMALINK, permalink);
+                BlogEntry[] entries = _fetcher.fetchEntries(fetchMap);
+
+                if (entries != null && entries.length > 0) {
+                    BlogEntry entry = entries[0];
+
+                    Hashtable postcontent = new Hashtable(3);
+                    postcontent.put(MEMBER_TITLE, entry.getTitle());
+                    postcontent.put(MEMBER_LINK, entry.getPermalink());
+                    postcontent.put(MEMBER_DESCRIPTION, entry.getDescription());
+
+                    return postcontent;
+                } else {
+                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+                }
+            } else {
+                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+            }
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
     }
 
     /**
-     * (NOT IMPLEMENTED)
+     * Uploads an object to the blog to a specified directory
      *
-     * @param blogid
-     * @param userid
-     * @param password
-     * @param struct
-     * @return
-     * @throws XmlRpcException
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @param struct Upload structure defined by the MetaWeblog API
+     * @return Structure containing a link to the uploaded media object
+     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
+     * or if the MIME type of the upload object is not accepted
+     * @since blojsom 1.9.4
      */
-    public Object newMediaObject(String blogid, String userid, String password, Object struct) throws Exception {
-        _logger.debug("newMediaObject() Called =[ UNSUPPORTED ]=====");
+    public Object newMediaObject(String blogid, String userid, String password, Hashtable struct) throws Exception {
+        _logger.debug("newMediaObject() Called =[ SUPPORTED ]=====");
         _logger.debug("     BlogId: " + blogid);
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
 
-        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
+        if (_blog.checkAuthorization(userid, password)) {
+            String name = (String) struct.get(MEMBER_NAME);
+            String type = (String) struct.get(MEMBER_TYPE);
+            String bits = (String) struct.get(MEMBER_BITS);
+
+            name = BlojsomUtils.normalize(name);
+            byte[] decodedFile = Base64.decode(bits.getBytes());
+
+            if (!_acceptedMimeTypes.containsKey(type.toLowerCase())) {
+                try {
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(_uploadDirectory + name));
+                    bos.write(decodedFile);
+                    bos.close();
+
+                    Hashtable returnStruct = new Hashtable(1);
+                    String mediaURL = _blog.getBlogURL() + _staticURLPrefix + name;
+                    returnStruct.put(MEMBER_URL, mediaURL);
+
+                    return returnStruct;
+                } catch (IOException e) {
+                    _logger.error(e);
+                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                }
+            } else {
+                _logger.error("MIME type not accepted. Received MIME type: " + type);
+                throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+            }
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
     }
 
     /**
