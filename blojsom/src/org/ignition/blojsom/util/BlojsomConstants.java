@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.66 2003-07-11 18:45:52 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.67 2003-07-14 12:58:58 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -271,6 +271,11 @@ public interface BlojsomConstants {
      * Line separator for the system
      */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    /**
+     * Echo Date Format
+     */
+    public static final String BLOJSOM_ECHO_DATE = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 
     // Blog initialization parameters from blojsom.properties

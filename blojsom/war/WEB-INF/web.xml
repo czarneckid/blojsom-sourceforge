@@ -85,6 +85,21 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>blojsomechoapi</servlet-name>
+        <servlet-class>org.ignition.blojsom.extension.echoapi.EchoAPIServlet</servlet-class>
+        <init-param>
+            <param-name>blog-configuration</param-name>
+            <param-value>/WEB-INF/blojsom.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>blog-authorization</param-name>
+            <param-value>/WEB-INF/authorization.properties</param-value>
+        </init-param>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
         <url-pattern>/blog/*</url-pattern>
@@ -99,5 +114,11 @@
         <servlet-name>blojsomcommentapi</servlet-name>
         <url-pattern>/commentapi/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>blojsomechoapi</servlet-name>
+        <url-pattern>/echoapi/*</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

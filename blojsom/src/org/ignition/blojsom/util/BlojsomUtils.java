@@ -34,11 +34,11 @@
  */
 package org.ignition.blojsom.util;
 
-import org.ignition.blojsom.blog.FileBackedBlogEntry;
 import org.ignition.blojsom.BlojsomException;
+import org.ignition.blojsom.blog.FileBackedBlogEntry;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.58 2003-07-11 00:55:34 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.59 2003-07-14 12:58:58 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -853,4 +853,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String nullToBlank(String input) {
         return (input == null) ? "" : input;
     }
+
+
+
 }
