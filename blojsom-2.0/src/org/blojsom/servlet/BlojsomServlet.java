@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.5 2003-08-11 13:31:27 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.6 2003-08-15 11:34:47 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -182,35 +182,12 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             _logger.error(e);
             throw new ServletException(e);
         }
-        Iterator pluginIterator = pluginProperties.keySet().iterator();
-        while (pluginIterator.hasNext()) {
-            String plugin = (String) pluginIterator.next();
-            if (plugin.indexOf(BLOJSOM_PLUGIN_CHAIN) != -1) {
-                // Just in case we are migrating from a blojsom 1.x installation
-                _logger.debug("Skipping blojsom plugin chain in global plugin configuration file");
-            } else {
-                String pluginClassName = pluginProperties.getProperty(plugin);
-                try {
-                    Class pluginClass = Class.forName(pluginClassName);
-                    BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
-                    blojsomPlugin.init(servletConfig, _blojsomConfiguration);
-                    _plugins.put(plugin, blojsomPlugin);
-                    _logger.info("Added blojsom plugin: " + pluginClassName);
-                } catch (BlojsomPluginException e) {
-                    _logger.error(e);
-                } catch (InstantiationException e) {
-                    _logger.error(e);
-                } catch (IllegalAccessException e) {
-                    _logger.error(e);
-                } catch (ClassNotFoundException e) {
-                    _logger.error(e);
-                }
-            }
-        }
 
         // Load the plugin chains for the individual users
         Iterator usersIterator = _users.keySet().iterator();
+        Iterator pluginIterator = pluginProperties.keySet().iterator();
         BlogUser blogUser;
+
         while (usersIterator.hasNext()) {
             Map pluginChainMap = new HashMap();
             String user = (String) usersIterator.next();
@@ -234,6 +211,33 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             } catch (IOException e) {
                 _logger.error(e);
                 throw new ServletException(e);
+            }
+        }
+
+        // Instantiate the plugin classes
+        pluginIterator = pluginProperties.keySet().iterator();
+        while (pluginIterator.hasNext()) {
+            String plugin = (String) pluginIterator.next();
+            if (plugin.indexOf(BLOJSOM_PLUGIN_CHAIN) != -1) {
+                // Just in case we are migrating from a blojsom 1.x installation
+                _logger.debug("Skipping blojsom plugin chain in global plugin configuration file");
+            } else {
+                String pluginClassName = pluginProperties.getProperty(plugin);
+                try {
+                    Class pluginClass = Class.forName(pluginClassName);
+                    BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
+                    blojsomPlugin.init(servletConfig, _blojsomConfiguration);
+                    _plugins.put(plugin, blojsomPlugin);
+                    _logger.info("Added blojsom plugin: " + pluginClassName);
+                } catch (BlojsomPluginException e) {
+                    _logger.error(e);
+                } catch (InstantiationException e) {
+                    _logger.error(e);
+                } catch (IllegalAccessException e) {
+                    _logger.error(e);
+                } catch (ClassNotFoundException e) {
+                    _logger.error(e);
+                }
             }
         }
     }
