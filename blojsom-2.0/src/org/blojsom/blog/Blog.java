@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.4 2003-09-12 00:35:23 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.5 2003-10-21 03:35:58 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -550,5 +550,155 @@ public class Blog implements BlojsomConstants {
         }
 
         return null;
+    }
+
+    /**
+     * Set the new name for the blog
+     *
+     * @param blogName Blog name
+     */
+    public void setBlogName(String blogName) {
+        _blogName = blogName;
+        _blogProperties.put(BLOG_NAME_IP, blogName);
+    }
+
+    /**
+     * Set the new description for the blog
+     *
+     * @param blogDescription Blog description
+     */
+    public void setBlogDescription(String blogDescription) {
+        _blogDescription = blogDescription;
+        _blogProperties.put(BLOG_DESCRIPTION_IP, blogDescription);
+    }
+
+    /**
+     * Set the new URL for the blog
+     *
+     * @param blogURL Blog URL
+     */
+    public void setBlogURL(String blogURL) {
+        _blogURL = blogURL;
+        _blogProperties.put(BLOG_URL_IP, blogURL);
+    }
+
+    /**
+     * Set the new base URL for the blog
+     *
+     * @param blogBaseURL Blog base URL
+     */
+    public void setBlogBaseURL(String blogBaseURL) {
+        _blogBaseURL = blogBaseURL;
+        _blogProperties.put(BLOG_BASE_URL_IP, blogBaseURL);
+    }
+
+    /**
+     * Set the new 2 letter country code for the blog
+     *
+     * @param blogCountry Blog country code
+     */
+    public void setBlogCountry(String blogCountry) {
+        _blogCountry = blogCountry;
+        _blogProperties.put(BLOG_COUNTRY_IP, blogCountry);
+    }
+
+    /**
+     * Set the new 2 letter language code for the blog
+     *
+     * @param blogLanguage Blog language code
+     */
+    public void setBlogLanguage(String blogLanguage) {
+        _blogLanguage = blogLanguage;
+        _blogProperties.put(BLOG_LANGUAGE_IP, blogLanguage);
+    }
+
+    /**
+     * Set the depth to which blojsom should look for directories, where -1 indicates infinite depth search
+     *
+     * @param blogDepth Blog directory depth
+     */
+    public void setBlogDepth(int blogDepth) {
+        _blogDepth = blogDepth;
+        _blogProperties.put(BLOG_DEPTH_IP, new Integer(blogDepth));
+    }
+
+    /**
+     * Set the number of entries to display at one time, where -1 indicates to display all entries
+     *
+     * @param blogDisplayEntries Blog display entries
+     */
+    public void setBlogDisplayEntries(int blogDisplayEntries) {
+        _blogDisplayEntries = blogDisplayEntries;
+        _blogProperties.put(BLOG_ENTRIES_DISPLAY_IP, new Integer(blogDisplayEntries));
+    }
+
+    /**
+     * Set the new default blog category mappings
+     *
+     * @param blogDefaultCategoryMappings Blog default category mappings
+     */
+    public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
+        _blogDefaultCategoryMappings = blogDefaultCategoryMappings;
+        _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, blogDefaultCategoryMappings);
+    }
+
+    /**
+     * Set the new blog owner name
+     *
+     * @param blogOwner Blog owner
+     */
+    public void setBlogOwner(String blogOwner) {
+        _blogOwner = blogOwner;
+        _blogProperties.put(BLOG_OWNER, blogOwner);
+    }
+
+    /**
+     * Set the new blog owner e-mail address
+     *
+     * @param blogOwnerEmail Blog owner e-mail
+     */
+    public void setBlogOwnerEmail(String blogOwnerEmail) {
+        _blogOwnerEmail = blogOwnerEmail;
+        _blogProperties.put(BLOG_OWNER_EMAIL, blogOwnerEmail);
+    }
+
+    /**
+     * Set whether blog comments are enabled
+     *
+     * @param blogCommentsEnabled <code>true</code> if comments are enabled, <code>false</code> otherwise
+     */
+    public void setBlogCommentsEnabled(Boolean blogCommentsEnabled) {
+        _blogCommentsEnabled = blogCommentsEnabled;
+        _blogProperties.put(BLOG_COMMENTS_ENABLED_IP, blogCommentsEnabled);
+    }
+
+    /**
+     * Set whether emails are sent on blog comments and trackbacks
+     *
+     * @param blogEmailEnabled <code>true</code> if email of comments and trackbacks is enabled, <code>false</code> otherwise
+     */
+    public void setBlogEmailEnabled(Boolean blogEmailEnabled) {
+        _blogEmailEnabled = blogEmailEnabled;
+        _blogProperties.put(BLOG_EMAIL_ENABLED_IP, blogEmailEnabled);
+    }
+
+    /**
+     * Set whether blog trackbacks are enabled
+     *
+     * @param blogTrackbacksEnabled <code>true</code> if trackbacks are enabled, <code>false</code> otherwise
+     */
+    public void setBlogTrackbacksEnabled(Boolean blogTrackbacksEnabled) {
+        _blogTrackbacksEnabled = blogTrackbacksEnabled;
+        _blogProperties.put(BLOG_TRACKBACKS_ENABLED_IP, blogTrackbacksEnabled);
+    }
+
+    /**
+     * Set the new blog file encoding
+     *
+     * @param blogFileEncoding Blog file encoding
+     */
+    public void setBlogFileEncoding(String blogFileEncoding) {
+        _blogFileEncoding = blogFileEncoding;
+        _blogProperties.put(BLOG_FILE_ENCODING_IP, blogFileEncoding);
     }
 }
