@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.57 2003-03-27 16:40:45 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.58 2003-03-28 01:08:07 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -343,38 +343,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-
-        // Moved to Calendar Plugin... Leaving here just in  case
-        /*
-        // Determine a calendar-based request
-        String year = null;
-        String month = null;
-        String day = null;
-
-
-        year = httpServletRequest.getParameter(YEAR_PARAM);
-        if (year != null) {
-
-            // Must be a 4 digit year
-            if (year.length() != 4) {
-                year = null;
-            } else {
-                month = httpServletRequest.getParameter(MONTH_PARAM);
-                if (month == null) {
-                    month = "";
-                } else if (month.length() < 2) {
-                    month = "0" + month;
-                }
-                day = httpServletRequest.getParameter(DAY_PARAM);
-                if (day == null) {
-                    day = "";
-                } else if (day.length() < 2) {
-                    day = "0" + day;
-                }
-            }
-            _logger.debug("Calendar-based request for: " + requestedCategory + year + month + day);
-        }
-          */
         // Determine if the user wants to override the number of displayed entries
         String entriesParam = httpServletRequest.getParameter(ENTRIES_PARAM);
         Integer entriesToDisplay = null;
@@ -406,16 +374,6 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         if (permalink != null) {
             entries = _blog.getPermalinkEntry(category, permalink);
         } else {
-
-            // Moved to Calendar Plugin... Leaving here just in  case
-            /*
-            // Check to see if we have requested entries by calendar
-            if (year != null) {
-                entries = _blog.getEntriesForDate(category, flavor, year, month, day);
-                // Check for the default category
-            } else if (requestedCategory.equals("/")) {
-           */
-
             if  (requestedCategory.equals("/")) {
 
                 if (entriesToDisplay == null) {
