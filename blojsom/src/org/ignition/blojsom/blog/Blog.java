@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.29 2003-03-15 17:34:35 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.30 2003-03-16 03:20:03 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -405,8 +405,8 @@ public class Blog implements BlojsomConstants {
      * @param requestedCategory Requested category
      * @param flavor Flavor
      * @param year Year to retrieve entries for
-     * @param month Month to retrieve entries for
-     * @param day Day to retrieve entries for
+     * @param month Month to retrieve entries for in 2-digit format (01-12)
+     * @param day Day to retrieve entries for in 2-digit format (01-31)
      * @return Blog entry array containing the list of blog entries for the given category, year, month, and day,
      * or <code>BlogEntry[0]</code> if there are no entries
      */
