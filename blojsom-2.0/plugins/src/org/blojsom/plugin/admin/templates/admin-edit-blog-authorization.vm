@@ -26,6 +26,10 @@
                         <td>#adminResource('authorized.user.password.check.text' 'Authorized user password (check)')</td>
                         <td><input type="password" size="15" name="blog-user-password-check"/></td>
                     </tr>
+                    <tr>
+                        <td>#adminResource('authorized.user.email.text' 'Authorized user email address')</td>
+                        <td><input type="text" size="25" name="blog-user-email"/></td>
+                    </tr>
                     <tr />
                     <tr>
                         <td colspan="2">
@@ -42,7 +46,7 @@
             <h2>#adminResource('modify.user.text' 'Modify an existing authorized user to the current blog')</h2>
             <table>
                 <form name="add-blog-authorization" action="." method="post" accept-charset="UTF-8">
-                    <input type="hidden" name="action" value="add-blog-authorization"/>
+                    <input type="hidden" name="action" value="modify-blog-authorization"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-authorization"/>
                     <tr>
@@ -62,6 +66,10 @@
                     <tr>
                         <td>#adminResource('authorized.user.password.check.text' 'Authorized user password (check)')</td>
                         <td><input type="password" size="15" name="blog-user-password-check"/></td>
+                    </tr>
+                    <tr>
+                        <td>#adminResource('authorized.user.email.text' 'Authorized user email address')</td>
+                        <td><input type="text" size="25" name="blog-user-email"/></td>
                     </tr>
                     <tr />
                     <tr>
