@@ -31,6 +31,11 @@
                 interface.
             </action>
 
+            <action dev="czarneckid" type="add" context="Core">
+                Added GroovyDispatcher to the addon core source tree. This dispatcher would allow you to write
+                templates using <a href="http://groovy.codehaus.org">Groovy</a>.
+            </action>
+
             <action dev="intabulas" type="update" context="Library">
                 Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
             </action>
