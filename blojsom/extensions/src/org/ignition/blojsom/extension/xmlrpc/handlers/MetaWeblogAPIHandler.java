@@ -36,7 +36,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlogCategory;
-import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
@@ -52,7 +51,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.4 2003-03-08 22:57:59 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.5 2003-03-09 03:31:23 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -62,14 +61,14 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
     private Log _logger = LogFactory.getLog(MetaWeblogAPIHandler.class);
 
     /**
-     *
+     * Default constructor
      */
     public MetaWeblogAPIHandler() {
     }
 
 
     /**
-     * Gets the Name of API Handler. Used to Bind to XML-RPC
+     * Gets the name of API Handler. Used to bind to XML-RPC
      *
      * @return The API Name (ie: blogger)
      */
@@ -79,6 +78,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
 
     /**
      * Attach a Blog instance to the API Handler so that it can interact with the blog
+     *
      * @param bloginstance an instance of Blog
      * @see org.ignition.blojsom.blog.Blog
      */
@@ -119,7 +119,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                     _blogid = BlojsomUtils.removeInitialSlash(_blogid);
                 }
 
-                String _description = "Not Category Metadata Found";
+                String _description = "No Category Metadata Found";
                 HashMap _metadata = _category.getMetaData();
                 if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
                     _description = (String) _metadata.get(DESCRIPTION_KEY);
@@ -130,18 +130,12 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 _catlist.put("rssUrl", _category.getCategoryURL() + "?flavor=rss");
 
                 result.put(_blogid, _catlist);
-
-
             }
-
-
         } else {
             throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
         }
 
         return result;
-
-
     }
 
     /**
@@ -163,8 +157,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("    Publish: " + publish);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-        //throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
-
     }
 
 
@@ -192,7 +184,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
 
-            Hashtable postcontent =  struct;
+            Hashtable postcontent = struct;
 
             String _title = (String) postcontent.get("title");
             String _description = (String) postcontent.get("description");
@@ -222,13 +214,20 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             } catch (IOException e) {
                 throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
             }
-
         }
 
         return result;
     }
 
 
+    /**
+     *
+     * @param postid
+     * @param userid
+     * @param password
+     * @return
+     * @throws Exception
+     */
     public Object getPost(String postid, String userid, String password) throws Exception {
         _logger.info("getPost() Called =========[ UNSUPPORTED ]=====");
         _logger.info("     PostId: " + postid);
@@ -236,9 +235,17 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-
     }
 
+    /**
+     *
+     * @param blogid
+     * @param userid
+     * @param password
+     * @param struct
+     * @return
+     * @throws Exception
+     */
     public Object newMediaObject(String blogid, String userid, String password, Object struct) throws Exception {
         _logger.info("newMediaObject() Called =[ UNSUPPORTED ]=====");
         _logger.info("     BlogId: " + blogid);
@@ -246,8 +253,5 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("   Password: " + password);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-
     }
-
-
 }
