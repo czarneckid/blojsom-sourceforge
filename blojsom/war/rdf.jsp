@@ -18,12 +18,8 @@
         <title><%= blogInformation.getBlogName() %></title>
         <link><%= blogInformation.getBlogURL() %></link>
         <description><%= blogInformation.getBlogDescription() %></description>
-
-        <!--
-		<dc:publisher></dc:publisher>
-		<dc:creator></dc:creator>
-		-->
-
+		<dc:publisher><%= blogInformation.getBlogOwner() %></dc:publisher>
+		<dc:creator><%= blogInformation.getBlogOwnerEmail() %></dc:creator>
 		<dc:date><%= blogDate %></dc:date>
         <dc:language><%= blogInformation.getBlogLanguage() %></dc:language>
 	</channel>

@@ -8,13 +8,10 @@
 		<title>$BLOJSOM_BLOG.getBlogName()</title>
 		<link>$BLOJSOM_BLOG.getBlogURL()</link>
 		<description>$BLOJSOM_BLOG.getBlogDescription()</description>
-        <!--
-		<dc:publisher></dc:publisher>
-		<dc:creator></dc:creator>
-		-->
+		<dc:publisher>$BLOJSOM_BLOG.getBlogOwner()</dc:publisher>
+		<dc:creator>$BLOJSOM_BLOG.getBlogOwnerEmail()</dc:creator>
 		<dc:date>$BLOJSOM_DATE</dc:date>
 		<dc:language>$BLOJSOM_BLOG.getBlogLanguage()</dc:language>
-
 	</channel>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
