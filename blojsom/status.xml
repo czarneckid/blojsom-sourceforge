@@ -9,7 +9,6 @@
     <changes>
 
         <release version="1.9.5" date="dev">
-
             <!-- Core/General changes -->
             <action dev="czarneckid" type="add" context="Core">
                 The country code for the blog can be configured via the <i>blog-country</i>
@@ -38,7 +37,8 @@
             <action dev="czarneckid" type="add" context="Plugin">
                 Duration of "remember me" cookies for the comment plugin can be configured
                 via the <i>plugin-comment-expiration-duration</i> parameter in
-                <i>/WEB-INF/blojsom.properties</i>.
+                <i>/WEB-INF/blojsom.properties</i>. This parameter is specified as
+                an integer value in number of seconds until expiration.
             </action>
 
             <!-- Extension changes -->
@@ -53,9 +53,8 @@
             </action>
 
             <action dev="czarneckid" type="add" context="Extension">
-                Implemented the <tt>getRecentPosts</tt> method to the MetaWeblog API handler.
+                Implemented the <tt>getRecentPosts</tt> method for the MetaWeblog API handler.
             </action>
-
         </release>
 
         <release version="1.9.4" date="July 13, 2003">

@@ -52,7 +52,10 @@
     <property name="optimize" value="on"/>
 
     <!-- Forrest properties -->
-    <property name="forrest.site.dir" location="${basedir}/build/site"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.tmp.dir" value="${build.dir}/tmp"/>
+    <property name="build.worksite.dir" value="${build.dir}/work-site"/>
+    <property name="forrest.site.dir" location="${build.dir}/site"/>
 
     <!-- =================================================================== -->
     <!-- Classpath                                                           -->
@@ -106,7 +109,9 @@
         <delete dir="${build.dir}"/>
         <delete dir="${javadoc.dir}"/>
         <delete dir="${distro.dir}"/>
-        <delete dir="${forrest.site.dir}"/>
+        <delete dir="${build.dir}"/>
+        <delete dir="${build.tmp.dir}"/>
+        <delete dir="${build.worksite.dir}"/>
         <delete file="${core.jar}"/>
         <delete file="${plugins.jar}"/>
         <delete file="${extensions.jar}"/>
