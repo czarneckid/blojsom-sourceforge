@@ -20,6 +20,10 @@
         <a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()#if ($blogCategory.getDescription()) ($blogCategory.getDescription())#end</a><br />
     #end
 #end
+
+<p />
+<img src="../powered-by-blojsom.gif" border="0" />
+
 </body>
 
 </html>
