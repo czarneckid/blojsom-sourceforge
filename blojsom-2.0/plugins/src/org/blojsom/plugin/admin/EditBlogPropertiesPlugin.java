@@ -62,7 +62,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.23 2004-07-31 20:32:28 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.24 2004-09-12 23:01:44 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -110,15 +110,15 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         } else if (EDIT_BLOG_PROPERTIES_ACTION.equals(action)) {
             _logger.debug("User requested edit action");
 
-            String blogPropertyValue = BlojsomUtils.getRequestValue("blog-name", httpServletRequest);
+            String blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_NAME_IP, httpServletRequest);
             blog.setBlogName(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-description", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_DESCRIPTION_IP, httpServletRequest);
             blog.setBlogDescription(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-country", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_COUNTRY_IP, httpServletRequest);
             blog.setBlogCountry(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-language", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_LANGUAGE_IP, httpServletRequest);
             blog.setBlogLanguage(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-depth", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_DEPTH_IP, httpServletRequest);
             try {
                 int blogDepth = Integer.parseInt(blogPropertyValue);
                 blog.setBlogDepth(blogDepth);
@@ -132,23 +132,23 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             } catch (NumberFormatException e) {
                 _logger.error("Blog display entries parameter invalid.", e);
             }
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-owner", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_OWNER, httpServletRequest);
             blog.setBlogOwner(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-owner-email", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_OWNER_EMAIL, httpServletRequest);
             blog.setBlogOwnerEmail(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-comments-enabled", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_COMMENTS_ENABLED_IP, httpServletRequest);
             blog.setBlogCommentsEnabled(Boolean.valueOf(blogPropertyValue));
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-trackbacks-enabled", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_TRACKBACKS_ENABLED_IP, httpServletRequest);
             blog.setBlogTrackbacksEnabled(Boolean.valueOf(blogPropertyValue));
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-email-enabled", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_EMAIL_ENABLED_IP, httpServletRequest);
             blog.setBlogEmailEnabled(Boolean.valueOf(blogPropertyValue));
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-file-encoding", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_FILE_ENCODING_IP, httpServletRequest);
             blog.setBlogFileEncoding(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-file-extensions", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_FILE_EXTENSIONS_IP, httpServletRequest);
             blog.setBlogFileExtensions(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("blog-default-flavor", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_DEFAULT_FLAVOR_IP, httpServletRequest);
             blog.setBlogDefaultFlavor(blogPropertyValue);
-            blogPropertyValue = BlojsomUtils.getRequestValue("linear-navigation-enabled", httpServletRequest);
+            blogPropertyValue = BlojsomUtils.getRequestValue(LINEAR_NAVIGATION_ENABLED_IP, httpServletRequest);
             blog.setLinearNavigationEnabled(Boolean.valueOf(blogPropertyValue));
             blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_URL_IP, httpServletRequest);
             blog.setBlogURL(blogPropertyValue);
@@ -187,6 +187,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             } else {
                 blog.setBlogProperty(WeblogsPingPlugin.BLOG_PING_URLS_IP, "");
             }
+
+            // XML-RPC settings
+            blogPropertyValue = BlojsomUtils.getRequestValue(XMLRPC_ENABLED_IP, httpServletRequest);
+            blog.setXmlrpcEnabled(Boolean.valueOf(blogPropertyValue));
 
             // Set the blog default category mappings
             flavorMap = user.getFlavors();

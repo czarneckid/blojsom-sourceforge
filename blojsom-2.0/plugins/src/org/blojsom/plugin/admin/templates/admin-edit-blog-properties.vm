@@ -166,6 +166,15 @@
                     <tr>
                         <td>#adminResource('ping.urls.text' 'URLs to ping when adding or editing a new entry')</td> <td><textarea name="blog-ping-urls" rows="6" cols="50">$!BLOJSOM_BLOG.getBlogProperty("blog-ping-urls")</textarea></td>
                     </tr>
+
+                    <!-- XML-RPC service settings -->
+                    <tr>
+                        <th>#adminResource('xmlrpc.settings.text' 'XML-RPC settings')</th>
+                    </tr>
+                    <tr>
+                        #set ($selectListName = "xmlrpc-enabled")
+                        <td>#adminResource('xmlrpc.enabled.text' 'XML-RPC enabled?')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getXmlrpcEnabled())</td>
+                    </tr>
                     <tr>
                         <td colspan="2">
                             <input type="submit" name="submit" value="#adminResource('edit.blog.properties.text' 'Edit blog properties')"/>
