@@ -93,4 +93,9 @@ public interface BlojsomConstants {
      * HTTP Header Name representing the Last Modified Timstamp of the blog (GMT Based)
      */
     public static final String HTTP_LASTMODIFIED = "Last-Modified";
+
+    /**
+     * RFC 822 style date format
+     */
+    public static final String RFC_822_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
 }
