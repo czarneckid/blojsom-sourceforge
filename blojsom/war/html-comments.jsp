@@ -90,7 +90,7 @@
             <input type="hidden" name="category" value="<%= requestedCategory.getCategory() %>"/><br />
             <input type="hidden" name="permalink" value="<%= blogEntry.getPermalink() %>"/> <br />
             <tr>
-                <td>Author:</td><td><input type="text" name="author" value=""/></td>
+                <td>Author (<font color="red">*</font>):</td><td><input type="text" name="author" value=""/></td>
             </tr>
             <tr>
                 <td>E-mail:</td><td><input type="text" name="authorEmail" value=""/></td>
@@ -99,7 +99,7 @@
                 <td>URL: </td><td><input type="text" name="authorURL" value=""/></td>
             </tr>
             <tr>
-                <td>Comment:</td><td><textarea name="commentText" value="" rows="5" columns="120"></textarea></td>
+                <td>Comment (<font color="red">*</font>):</td><td><textarea name="commentText" value="" rows="5" columns="120"></textarea></td>
             </tr>
             <p />
             <tr>
