@@ -34,8 +34,18 @@
  */
 package org.ignition.blojsom.plugin.email;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.extension.comment.CommentAPIServlet;
+import org.ignition.blojsom.util.BlojsomUtils;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.Message;
+import javax.mail.Transport;
+import javax.mail.MessagingException;
+import javax.mail.Session;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +57,14 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.4 2003-04-04 02:52:52 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.5 2003-04-15 01:42:48 intabulas Exp $
  */
 public class EmailUtils {
+
+    /**
+     * Logger Instance
+     */
+    private static Log _logger = LogFactory.getLog(EmailUtils.class);
 
     /**
      * Variable name for the message arraylist in the context on the plugin chain
@@ -133,5 +148,65 @@ public class EmailUtils {
         }
 
         return result;
+    }
+
+
+    /**
+     * Send an Email Message
+     * @param mailsession Session Inastance
+     * @param emailmessage EmailMessage Instance
+     * @param defaultaddress InternetAddress Instance of Recipient/Sender
+     */
+    public static synchronized void sendMailMessage(Session mailsession, EmailMessage emailmessage, InternetAddress defaultaddress) {
+        try {
+            MimeMessage message = new MimeMessage(mailsession);
+            InternetAddress _msgto;
+            InternetAddress _msgfrom;
+
+            /* Create the From Address */
+            _msgfrom = EmailUtils.constructSenderAddress(emailmessage.getFrom(), "blojsom", defaultaddress.getAddress());
+            /* Create the To Address */
+            _msgto = defaultaddress;
+
+            message.setFrom(_msgfrom);
+            message.addRecipient(Message.RecipientType.TO, _msgto);
+            message.setSubject(emailmessage.getSubject());
+            message.setText(emailmessage.getMessage());
+
+            _logger.info("Sending Email to  " + _msgto.getAddress());
+
+            /* Send the email. BLOCKING CALL!! */
+            Transport.send(message);
+
+        } catch (UnsupportedEncodingException e) {
+            _logger.error(e);
+        } catch (MessagingException e) {
+            _logger.error(e);
+        }
+
+    }
+
+    public static String constructCommentEmail(String permalink, String author, String authorEmail, String authorURL,
+                                               String userComment, String url) {
+
+        StringBuffer emailcomment = new StringBuffer();
+        emailcomment.append("Comment on: ").append(url);
+        emailcomment.append("?permalink=").append(permalink).append("&page=comments").append("\n");
+
+        if (author != null && !author.equals("")) {
+            emailcomment.append("Comment by: ").append(author).append("\n");
+        }
+        if (authorEmail != null && !authorEmail.equals("")) {
+            emailcomment.append("            ").append(authorEmail).append("\n");
+        }
+        if (authorURL != null && !authorURL.equals("")) {
+            emailcomment.append("            ").append(authorURL).append("\n");
+        }
+
+        emailcomment.append("\n==[ Comment ]==========================================================").append("\n\n");
+        emailcomment.append(userComment);
+
+        return emailcomment.toString();
+
     }
 }
