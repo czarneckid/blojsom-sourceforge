@@ -14,7 +14,7 @@
     xml:lang="<%= blogInformation.getBlogLanguage() %>">
 
     <!-- required feed elements -->
-    <title><%= blogInformation.getBlogName() %></title>
+    <title mode="escaped"><%= blogInformation.getBlogName() %></title>
     <link rel="alternate" type="text/html" href="<%= blogInformation.getBlogURL() %>"/>
     <modified><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE_UTC) %></modified>
 
@@ -40,7 +40,7 @@
     <!-- optional feed elements -->
     <tagline><%= blogInformation.getBlogDescription().replaceAll("<.*?>","")%></tagline>
     <generator url="http://blojsom.sf.net" version="<%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %>">blojsom</generator>
-    <copyright>Copyright (c) 2003 <%= blogInformation.getBlogOwner() %></copyright>
+    <copyright mode="escaped">Copyright &#169; <%= blogInformation.getBlogOwner() %></copyright>
 
     <%
         if (blogEntries != null) {
@@ -49,7 +49,7 @@
     %>
     <entry>
         <!-- entry required elements -->
-        <title><%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%></title>
+        <title mode="escaped"><%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%></title>
         <link rel="alternate" type="text/html" href="<%= blogEntry.getLink() %>"/>
         <modified><%= blogEntry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") %></modified>
         <issued><%= blogEntry.getISO8601Date() %></issued>

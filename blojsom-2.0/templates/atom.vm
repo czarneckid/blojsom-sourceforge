@@ -7,7 +7,7 @@
     xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
 
     <!-- required feed elements -->
-    <title>$BLOJSOM_BLOG.getBlogName()</title>
+    <title mode="escaped">$BLOJSOM_BLOG.getBlogName()</title>
     <link rel="alternate" type="text/html" href="$BLOJSOM_BLOG.getBlogURL()"/>
     <modified>$BLOJSOM_DATE_UTC</modified>
 
@@ -33,7 +33,7 @@
     <!-- optional feed elements -->
     <tagline>$BLOJSOM_BLOG.getBlogDescription().replaceAll("<.*?>","")</tagline>
     <generator url="http://blojsom.sf.net" version="$BLOJSOM_VERSION">blojsom</generator>
-    <copyright>Copyright (c) 2003 $BLOJSOM_BLOG.getBlogOwner()</copyright>
+    <copyright mode="escaped">Copyright &#169; 2004 $BLOJSOM_BLOG.getBlogOwner()</copyright>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
