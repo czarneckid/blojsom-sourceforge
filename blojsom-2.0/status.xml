@@ -36,7 +36,12 @@
                 should occur on a particular entry. You need to run the Meta plugin before either of these plugins in
                 one of your plugin chains. The metadata key for the Wiki plugin would be specified as "meta-run-wiki=y"
                 on a separate line in your blog entry text. The metadata key for the Textile plugin would be specified
-                as "meta-run-textile=y" on a separate line in your blog entry text. 
+                as "meta-run-textile=y" on a separate line in your blog entry text.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated the edit blog entries plugin to allow blog entries to be "scheduled" by specifying the
+                date and time. 
             </action>
 
             <action dev="czarneckid" type="fix" context="Extension" fixes-bug="871374">
