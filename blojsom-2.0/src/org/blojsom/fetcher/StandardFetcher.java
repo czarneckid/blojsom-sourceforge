@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.18 2004-07-30 03:38:06 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.19 2004-09-01 18:14:06 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -742,7 +742,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     public BlogCategory[] fetchCategories(Map fetchParameters, BlogUser user) throws BlojsomFetcherException {
         Blog blog = user.getBlog();
         if (fetchParameters == null) {
-            return getBlogCategories(blog, blog.getBlogDepth());
+            return getBlogCategories(blog, INFINITE_BLOG_DEPTH);
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY)) {
             BlogCategory category = (BlogCategory) fetchParameters.get(FETCHER_CATEGORY);
             if ("/".equals(category.getCategory())) {
