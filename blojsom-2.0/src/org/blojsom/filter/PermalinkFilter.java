@@ -37,6 +37,7 @@ package org.blojsom.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +51,7 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
- * @version $Id: PermalinkFilter.java,v 1.1 2004-06-25 02:37:46 czarneckid Exp $
+ * @version $Id: PermalinkFilter.java,v 1.2 2004-06-26 18:58:18 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class PermalinkFilter implements Filter {
@@ -110,6 +111,9 @@ public class PermalinkFilter implements Filter {
         String uri = hreq.getRequestURI();
         StringBuffer url = hreq.getRequestURL();
         String pathInfo = hreq.getPathInfo();
+        if (BlojsomUtils.checkNullOrBlank(pathInfo)) {
+            pathInfo = "/";
+        }
 
         Matcher ymdpMatcher = YMD_PERMALINK_PATTERN.matcher(pathInfo);
         Matcher ymdMatcher = YMD_PATTERN.matcher(pathInfo);
