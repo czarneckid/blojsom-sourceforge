@@ -15,8 +15,8 @@
                     <p>
                         1. Replace the blojsom-core-*.jar, blojsom-extensions-*.jar, blojsom-plugins-*.jar, and
                         blojsom-plugins-templates-*.jar in your
-                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.12.jar,
-                        blojsom-extensions-2.12.jar, blojsom-plugins-2.12.jar files, and blojsom-plugins-templates-2.12.jar.
+                        <code>/WEB-INF/lib</code> directory with the updated blojsom-core-2.13.jar,
+                        blojsom-extensions-2.13.jar, blojsom-plugins-2.13.jar files, and blojsom-plugins-templates-2.13.jar.
                     </p>
                     <p>
                         2. Replace the sandler-0.5.jar file with the sandler-0.6.jar file in your
@@ -26,7 +26,6 @@
                         3. Replace the mail-1.3.jar file with the mail-1.3.1.jar file in your
                         <code>/WEB-INF/lib</code> directory.
                     </p>
-
                 </section>
             </section>
 
