@@ -57,7 +57,7 @@ import java.util.Map;
  * <a href="http://daringfireball.net/projects/markdown/">John Gruber's Markdown site</a>.
  *
  * @author David Czarnecki
- * @version $Id: MarkdownPlugin.java,v 1.2 2004-03-20 18:09:20 czarneckid Exp $
+ * @version $Id: MarkdownPlugin.java,v 1.3 2004-04-15 00:49:23 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MarkdownPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -79,6 +79,8 @@ public class MarkdownPlugin implements BlojsomPlugin, BlojsomConstants {
      */
     private static final String PLUGIN_MARKDOWN_EXECUTION_IP = "plugin-markdown-execution";
 
+    private String _markdownExecution;
+
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
@@ -88,6 +90,11 @@ public class MarkdownPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        _markdownExecution = servletConfig.getInitParameter(PLUGIN_MARKDOWN_EXECUTION_IP);
+
+        if (BlojsomUtils.checkNullOrBlank(_markdownExecution)) {
+            _logger.error("No Markdown execution string provided. Use initialization parameter: " + PLUGIN_MARKDOWN_EXECUTION_IP);
+        }
     }
 
     /**
@@ -103,27 +110,29 @@ public class MarkdownPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        for (int i = 0; i < entries.length; i++) {
-            BlogEntry entry = entries[i];
-            String markdownExecution = user.getBlog().getBlogProperty(PLUGIN_MARKDOWN_EXECUTION_IP);
+        if (!BlojsomUtils.checkNullOrBlank(_markdownExecution)) {
+            for (int i = 0; i < entries.length; i++) {
+                BlogEntry entry = entries[i];
+                String markdownExecution = user.getBlog().getBlogProperty(PLUGIN_MARKDOWN_EXECUTION_IP);
 
-            if ((entry.getPermalink().endsWith(MARKDOWN_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_MARKDOWN)) && !BlojsomUtils.checkNullOrBlank(markdownExecution)) {
-                _logger.debug("Markdown processing: " + entry.getTitle());
-                try {
-                    Process process = Runtime.getRuntime().exec(markdownExecution);
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), UTF8));
-                    BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), UTF8));
-                    bw.write(entry.getDescription());
-                    bw.close();
-                    String input;
-                    StringBuffer collectedDescription = new StringBuffer();
-                    while ((input = br.readLine()) != null) {
-                        collectedDescription.append(input).append(BlojsomConstants.LINE_SEPARATOR);
+                if ((entry.getPermalink().endsWith(MARKDOWN_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_MARKDOWN)) && !BlojsomUtils.checkNullOrBlank(markdownExecution)) {
+                    _logger.debug("Markdown processing: " + entry.getTitle());
+                    try {
+                        Process process = Runtime.getRuntime().exec(markdownExecution);
+                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), UTF8));
+                        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), UTF8));
+                        bw.write(entry.getDescription());
+                        bw.close();
+                        String input;
+                        StringBuffer collectedDescription = new StringBuffer();
+                        while ((input = br.readLine()) != null) {
+                            collectedDescription.append(input).append(BlojsomConstants.LINE_SEPARATOR);
+                        }
+                        entry.setDescription(collectedDescription.toString());
+                        br.close();
+                    } catch (IOException e) {
+                        _logger.error(e);
                     }
-                    entry.setDescription(collectedDescription.toString());
-                    br.close();
-                } catch (IOException e) {
-                    _logger.error(e);
                 }
             }
         }
