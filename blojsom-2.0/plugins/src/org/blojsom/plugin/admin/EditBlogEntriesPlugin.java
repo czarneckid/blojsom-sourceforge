@@ -60,7 +60,7 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.20 2004-02-27 03:12:34 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.21 2004-03-01 01:39:16 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -71,6 +71,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
 
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
+    private static final int MAXIMUM_FILENAME_LENGTH = 32;
 
     /**
      * Default file extension for blog entries written via XML-RPC
@@ -108,6 +109,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
     private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
     private static final String BLOG_PING_URLS = "blog-ping-urls";
+    private static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
 
     private BlojsomFetcher _fetcher;
 
@@ -375,6 +377,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String blogPingURLs = BlojsomUtils.getRequestValue(BLOG_PING_URLS, httpServletRequest);
+            String proposedBlogFilename = BlojsomUtils.getRequestValue(BLOG_ENTRY_PROPOSED_NAME, httpServletRequest);
 
             BlogCategory category;
             category = _fetcher.newBlogCategory();
@@ -421,7 +424,20 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
             }
 
-            String filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
+            String filename;
+            if (BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
+                filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
+            } else {
+                if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
+                    proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
+                }
+                
+                proposedBlogFilename = BlojsomUtils.normalize(proposedBlogFilename);
+                proposedBlogFilename += blogEntryExtension;
+                filename = proposedBlogFilename;
+                _logger.debug("Using proposed blog entry filename: " + filename);
+            }
+
             File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename);
             _logger.debug("New blog entry file: " + blogFilename.toString());
 
