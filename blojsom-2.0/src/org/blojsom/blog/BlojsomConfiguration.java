@@ -52,7 +52,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.3 2003-08-22 04:40:09 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.4 2003-09-08 01:03:44 czarneckid Exp $
  */
 public class BlojsomConfiguration implements BlojsomConstants {
 
@@ -62,6 +62,8 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _defaultUser;
     private String _baseConfigurationDirectory;
     private String _fetcherClass;
+    private String _installationDirectory;
+
     private Map _blogUsers;
     private Map _blojsomConfiguration;
 
@@ -73,6 +75,12 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public BlojsomConfiguration(ServletConfig servletConfig, Map blojsomConfiguration) throws BlojsomConfigurationException {
         _blojsomConfiguration = blojsomConfiguration;
+
+        _installationDirectory = getBlojsomPropertyAsString(BLOJSOM_INSTALLATION_DIRECTORY);
+        if (_installationDirectory == null || "".equals(_installationDirectory)) {
+            _logger.error("No installation directory set for blojsom");
+            throw new BlojsomConfigurationException("No installation directory set for blojsom");
+        }
 
         _baseConfigurationDirectory = getBlojsomPropertyAsString(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP);
         if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
@@ -197,6 +205,17 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public String getFetcherClass() {
         return _fetcherClass;
+    }
+
+    /**
+     * Get the installation directory for blojsom. This is the directory where the blojsom WAR file will
+     * be unpacked.
+     *
+     * @since blojsom 2.01
+     * @return Installation directory
+     */
+    public String getInstallationDirectory() {
+        return _installationDirectory;
     }
 
     /**
