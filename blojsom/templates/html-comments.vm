@@ -31,6 +31,13 @@ Available categories:
     <p class="weblogdateline">$entry.getDate()</p>
     <p>$entry.getDescription()</p>
     </div>
+    <p class="weblogbottomline">
+    #if ($entry.getMetaData())
+        #if ($entry.getMetaData().get("blog-entry-author"))
+            Posted by: <b>$entry.getMetaData().get("blog-entry-author")</b><br />
+        #end
+    #end
+    </p>
     <p class="weblogtitle">Comments on this entry</p><br/>
 
     #foreach ($entryComment in $entry.getComments())
