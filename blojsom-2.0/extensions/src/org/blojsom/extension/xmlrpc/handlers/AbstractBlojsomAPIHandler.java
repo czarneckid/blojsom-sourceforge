@@ -45,6 +45,7 @@ import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 
+import javax.servlet.ServletConfig;
 import java.io.File;
 
 
@@ -52,7 +53,7 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.8 2004-08-03 20:37:49 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.9 2004-10-28 18:56:24 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -77,6 +78,7 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
     protected BlojsomConfiguration _configuration;
     protected String _blogEntryExtension;
     protected AuthorizationProvider _authorizationProvider;
+    protected ServletConfig _servletConfig;
 
     /**
      * Attach a blog instance to the API Handler so that it can interact with the blog
@@ -122,6 +124,15 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      */
     public void setConfiguration(BlojsomConfiguration configuration) throws BlojsomException {
         _configuration = configuration;
+    }
+
+    /**
+     * Set the {@link ServletConfig} instance that can be used to retrieve servlet parameters
+     *
+     * @param servletConfig {@link ServletConfig} instance
+     */
+    public void setServletConfig(ServletConfig servletConfig) {
+        _servletConfig = servletConfig;
     }
 
     /**

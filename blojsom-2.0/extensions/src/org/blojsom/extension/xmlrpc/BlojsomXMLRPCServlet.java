@@ -69,7 +69,7 @@ import java.util.Properties;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.13 2004-10-05 02:49:16 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.14 2004-10-28 18:55:37 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -178,6 +178,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                 handler.setConfiguration(_blojsomConfiguration);
                 handler.setBlogUser(blogUser);
                 handler.setAuthorizationProvider(_authorizationProvider);
+                handler.setServletConfig(_servletConfig);
                 xmlRpcServer.addHandler(handler.getName(), handler);
 
                 if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
