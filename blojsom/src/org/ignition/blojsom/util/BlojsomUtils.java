@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.44 2003-04-17 02:35:47 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.45 2003-04-17 03:33:51 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -401,7 +401,6 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     }
 
-
     /**
      * Extracts the first line in a given string, otherwise returns the first n bytes
      * @param input String from which to extract the first line
@@ -535,9 +534,9 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     }
 
-
     /**
      * Create a Calendar Navigatation URL
+     *
      * @param prefix Any URL Prefix
      * @param month Month of navigation
      * @param day Day of navigation
@@ -633,7 +632,6 @@ public class BlojsomUtils implements BlojsomConstants {
         (byte) 'c', (byte) 'd', (byte) 'e', (byte) 'f'
     };
 
-
     /**
      * Performs an MD5 Digest onthe given String content
      *
@@ -648,15 +646,13 @@ public class BlojsomUtils implements BlojsomConstants {
             String _ds = toHexString(_digest, 0, _digest.length);
             return _ds;
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             return null;
         }
-
     }
-
 
     /**
      * Convert Byte Array to Hex Value
+     *
      * @param buf Byte Array to convert to Hex Value
      * @param offset Starting Offset for Conversion
      * @param length Length to convery
@@ -673,9 +669,9 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     }
 
-
     /**
      * Convert a Byte  Array to a Hex String
+     *
      * @param buf Byte Array to convert to Hex String
      * @param offset Starting Offset for Conversion
      * @param length Length to convery
@@ -688,6 +684,4 @@ public class BlojsomUtils implements BlojsomConstants {
         }
         return new String(buf1);
     }
-
-
 }
