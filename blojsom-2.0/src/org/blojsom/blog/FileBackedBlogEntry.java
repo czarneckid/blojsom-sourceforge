@@ -45,9 +45,9 @@ import java.util.*;
 
 /**
  * FileBackedBlogEntry
- *
+ * 
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.9 2003-11-29 16:20:42 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.10 2003-11-30 17:52:03 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -71,11 +71,11 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Create a new blog entry
-     *
-     * @param title Entry title
-     * @param link Permalink to the entry
+     * 
+     * @param title       Entry title
+     * @param link        Permalink to the entry
      * @param description Entry description
-     * @param source File containing the blog entry
+     * @param source      File containing the blog entry
      */
     public FileBackedBlogEntry(String title, String link, String description, File source) {
         super();
@@ -88,9 +88,9 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the file encoding to use when loading the blog entry
-     *
-     * @since blojsom 1.9
+     * 
      * @param blogFileEncoding File encoding
+     * @since blojsom 1.9
      */
     public void setBlogFileEncoding(String blogFileEncoding) {
         _blogFileEncoding = blogFileEncoding;
@@ -98,7 +98,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * File containing the blog entry
-     *
+     * 
      * @return Blog entry file
      */
     public File getSource() {
@@ -107,7 +107,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the file of the blog entry
-     *
+     * 
      * @param source File for the blog entry
      */
     public void setSource(File source) {
@@ -116,7 +116,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Returns the BlogId  for this entry
-     *
+     * 
      * @return Blog Id
      */
     public String getId() {
@@ -125,7 +125,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Return the permalink name for this blog entry
-     *
+     * 
      * @return Permalink name
      */
     public String getPermalink() {
@@ -134,7 +134,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Reload the blog entry from disk
-     *
+     * <p/>
      * The first line of the blog entry will be used as the title of the blog
      */
     protected void reloadSource() throws IOException {
@@ -166,7 +166,7 @@ public class FileBackedBlogEntry extends BlogEntry {
     /**
      * Determines whether or not this blog entry supports comments by testing to see if
      * the blog entry is writable.
-     *
+     * 
      * @return <code>true</code> if the blog entry is writable, <code>false</code> otherwise
      */
     public boolean supportsComments() {
@@ -175,9 +175,9 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Determines whether or not this blog entry supports trackbacks.
-     *
-     * @since blojsom 2.05
+     * 
      * @return <code>true</code> if the blog entry supports trackbacks, <code>false</code> otherwise
+     * @since blojsom 2.05
      */
     public boolean supportsTrackbacks() {
         return _source.canWrite();
@@ -185,7 +185,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the directory for comments
-     *
+     * 
      * @param commentsDirectory Comments directory
      */
     public void setCommentsDirectory(String commentsDirectory) {
@@ -226,7 +226,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * author e-mail address<br />
      * author url<br />
      * everything else after is the comment
-     *
+     * 
      * @param commentFile Comment file
      * @return BlogComment Blog comment loaded from disk
      */
@@ -276,7 +276,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set the directory for trackbacks
-     *
+     * 
      * @param trackbacksDirectory Trackbacks directory
      */
     public void setTrackbacksDirectory(String trackbacksDirectory) {
@@ -313,7 +313,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * excerpt<br />
      * url<br />
      * blog_name
-     *
+     * 
      * @param trackbackFile Trackback file
      * @return Trackback Trackback loaded from disk
      */
@@ -369,9 +369,9 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Load the meta data for the entry
-     *
-     * @since blojsom 1.9
+     * 
      * @param blog Blog information
+     * @since blojsom 1.9
      */
     protected void loadMetaData(Blog blog) {
         String blogHome = blog.getBlogHome();
@@ -403,6 +403,17 @@ public class FileBackedBlogEntry extends BlogEntry {
                     _metaData.put(key, entryMetaData.getProperty(key));
                 }
 
+                // Preserve the original timestamp is that metadata is available
+                if (_metaData.containsKey(BLOG_ENTRY_METADATA_TIMESTAMP)) {
+                    try {
+                        long originalTimestamp = Long.parseLong((String) _metaData.get(BLOG_ENTRY_METADATA_TIMESTAMP));
+                        _entryDate = new Date(originalTimestamp);
+                        _lastModified = originalTimestamp;
+                    } catch (NumberFormatException e) {
+                        _logger.error(e);
+                    }
+                }
+
                 _logger.debug("Loaded meta-data from: " + blogEntryMetaData.toString());
             } catch (IOException e) {
                 _logger.error("Failed loading meta-data from: " + blogEntryMetaData.toString());
@@ -414,9 +425,9 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Store the meta data for the entry
-     *
-     * @since blojsom 1.9
+     * 
      * @param blog Blog information
+     * @since blojsom 1.9
      */
     protected void saveMetaData(Blog blog) {
         String blogHome = blog.getBlogHome();
@@ -451,10 +462,10 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Load a blog entry.
-     *
-     * @since blojsom 1.9
+     * 
      * @param blog Blog
      * @throws BlojsomException If there is an error loading the entry
+     * @since blojsom 1.9
      */
     public void load(Blog blog) throws BlojsomException {
         if (_source == null) {
@@ -476,10 +487,10 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Save the blog entry. This method does not write out the comments or trackbacks to disk.
-     *
-     * @since blojsom 1.9
+     * 
      * @param blog Blog
      * @throws BlojsomException If there is an error saving the entry
+     * @since blojsom 1.9
      */
     public void save(Blog blog) throws BlojsomException {
         if (_source == null) {
@@ -503,7 +514,7 @@ public class FileBackedBlogEntry extends BlogEntry {
             // Preserve original timestamp of the blog entry if its available in the meta-data
             if (_metaData.containsKey(BLOG_ENTRY_METADATA_TIMESTAMP)) {
                 try {
-                    originalTimestamp = Long.parseLong((String)_metaData.get(BLOG_ENTRY_METADATA_TIMESTAMP));
+                    originalTimestamp = Long.parseLong((String) _metaData.get(BLOG_ENTRY_METADATA_TIMESTAMP));
                 } catch (NumberFormatException e) {
                     _logger.error(e);
                 }
@@ -521,10 +532,10 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Delete the blog entry.
-     *
-     * @since blojsom 1.9
+     * 
      * @param blog Blog
      * @throws BlojsomException If there is an error deleting the entry
+     * @since blojsom 1.9
      */
     public void delete(Blog blog) throws BlojsomException {
         if (_source == null) {
@@ -557,7 +568,7 @@ public class FileBackedBlogEntry extends BlogEntry {
 
     /**
      * Set any attributes of the blog entry using data from the map.
-     *
+     * 
      * @param attributeMap Attributes
      */
     public void setAttributes(Map attributeMap) {
