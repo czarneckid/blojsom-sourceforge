@@ -54,7 +54,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.7 2003-12-30 23:24:09 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.8 2004-01-11 03:03:48 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -186,12 +186,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
      * @return <code>true</code> if the entry was delete, <code>false</code> otherwise
      */
     public boolean deletePost(String appkey, String postid, String userid, String password, boolean publish) throws Exception {
-        _logger.debug("deletePost() Called =====[ UNSUPPORTED ]=====");
+        _logger.debug("deletePost() Called =====[ SUPPORTED ]=====");
         _logger.debug("     Appkey: " + appkey);
         _logger.debug("     PostId: " + postid);
         _logger.debug("     UserId: " + userid);
         _logger.debug("   Password: " + password);
-
 
         boolean result = false;
 
