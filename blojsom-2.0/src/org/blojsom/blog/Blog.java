@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.33 2005-03-05 18:05:10 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.34 2005-03-06 01:14:38 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -358,7 +358,7 @@ public class Blog implements BlojsomConstants {
      */
     public String getAuthorizedUserEmail(String username) {
         if (_authorization.containsKey(username)) {
-            String[] parsedPasswordAndEmail = BlojsomUtils.parseCommaList((String)_authorization.get(username));
+            String[] parsedPasswordAndEmail = BlojsomUtils.parseLastComma((String)_authorization.get(username));
             if (parsedPasswordAndEmail.length < 2) {
                 return getBlogOwnerEmail();
             } else {
@@ -378,7 +378,7 @@ public class Blog implements BlojsomConstants {
      */
     public void setAuthorizedUserEmail(String username, String email) {
         if (_authorization.containsKey(username)) {
-            String[] parsedPasswordAndEmail = BlojsomUtils.parseCommaList((String)_authorization.get(username));
+            String[] parsedPasswordAndEmail = BlojsomUtils.parseLastComma((String)_authorization.get(username));
             StringBuffer updatedPasswordAndEmail = new StringBuffer();
             updatedPasswordAndEmail.append(parsedPasswordAndEmail[0]);
             updatedPasswordAndEmail.append(",");
@@ -397,7 +397,7 @@ public class Blog implements BlojsomConstants {
      */
     public void setAuthorizedUserPassword(String username, String password) {
         if (_authorization.containsKey(username)) {
-            String[] parsedPasswordAndEmail = BlojsomUtils.parseCommaList((String)_authorization.get(username));
+            String[] parsedPasswordAndEmail = BlojsomUtils.parseLastComma((String)_authorization.get(username));
             StringBuffer updatedPasswordAndEmail = new StringBuffer();
             updatedPasswordAndEmail.append(password);
             if (parsedPasswordAndEmail.length == 2) {

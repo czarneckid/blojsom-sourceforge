@@ -55,7 +55,7 @@ import java.util.List;
  * PropertiesAuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: PropertiesAuthorizationProvider.java,v 1.6 2005-03-05 18:11:09 czarneckid Exp $
+ * @version $Id: PropertiesAuthorizationProvider.java,v 1.7 2005-03-06 01:16:15 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class PropertiesAuthorizationProvider implements AuthorizationProvider, BlojsomConstants {
@@ -129,7 +129,7 @@ public class PropertiesAuthorizationProvider implements AuthorizationProvider, B
 
         if (authorizationMap != null) {
             if (authorizationMap.containsKey(username)) {
-                String parsedPassword = BlojsomUtils.parseCommaList((String) authorizationMap.get(username))[0];
+                String parsedPassword = BlojsomUtils.parseLastComma((String) authorizationMap.get(username))[0];
 
                 if (blogUser.getBlog().getUseEncryptedPasswords().booleanValue()) {
                     password = BlojsomUtils.digestString(password);
