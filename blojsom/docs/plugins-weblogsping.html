@@ -1,14 +1,14 @@
 <html>
 
 <head>
-<title>blojsom - plugins - macro expansion</title>
+<title>blojsom - plugins - weblogs.com ping</title>
 <link rel="stylesheet" href="blojsom.css" />
 <link rel="SHORTCUT ICON" href="favicon.ico" />
 </head>
 
 <body>
 
-<p class="weblogtitle">blojsom - plugins - macro expansion</p>
+<p class="weblogtitle">blojsom - plugins - weblogs.com ping</p>
 
 <p class="navigation"><a href="index.html">home</a> |
 <a href="screenshots.html">screenshots</a> |
@@ -57,54 +57,28 @@
 
 <p class="weblogtitle">description</a>
 <p />
-The macro expansion plugin expands <i>$macro$</i> references that it finds in your blog description and expands
-them into its full form.
+This plugin sends a ping to weblogs.com after new blog entries have been detected. The ping is
+sent via XML-RPC according to the weblogs.com ping XML-RPC <a href="http://www.xmlrpc.com/weblogsCom">specification</a>.
+On server startup, the plugin uses the current date and time to determine whether new entries
+have been added. If a new entry has been detected, the plugin will set its check to that entry's
+date and time.
 <p />
-It is a timesaver plugin to save you from repeatedly typing in
-portions of blog entries that you use over and over again. For example, you might want to be
-able to expand friend's names into URLs that point to their blogs.
 
 <p class="weblogtitle">installation and setup</a>
 <p />
 In your <i>plugin.properties</i> file, add the following line:
 <ul>
 <pre>
-macro-expansion=org.ignition.blojsom.plugin.macro.MacroExpansionPlugin
+weblogs-ping=org.ignition.blojsom.plugin.weblogsping.WeblogsPingPlugin
 </pre>
 </ul>
 
-You may then add "macro-expansion" to one of the flavor-based plugin chains. For example:
+You may then add "weblogs-ping" to one of the flavor-based plugin chains. For example:
 <ul>
 <pre>
-html.blojsom-plugin-chain=macro-expansion
+html.blojsom-plugin-chain=weblogs-ping
 </pre>
 </ul>
-
-The macro expansion plugin has its own configuration file that is referenced in <i>web.xml</i>. For example:
-<pre>
-    &lt;init-param&gt;
-        &lt;param-name&gt;plugin-macros-expansion&lt;/param-name&gt;
-        &lt;param-value&gt;/WEB-INF/macros.properties&lt;/param-value&gt;
-    &lt;/init-param&gt;
-</pre>
-<p />
-
-The <i>macros.properties</i> contains <i>key=value</i> pairs like the following:
-<ul>
-<pre>
-blojsom=http://blojsom.sf.net
-ypm=Yeah, Pretty Much
-</pre>
-</ul>
-
-<p class="weblogtitle">usage and URL parameters</a>
-<p />
-In your entries, simply reference your macros using the <i>$macro$</i> syntax. The <i>$macro$</i> references
-are also case insensitive.
-<p />
-
-For example, "... and then he said, $ypm$ " in your blog description would expand to
-"... and then he said, Yeah, Pretty Much "
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
