@@ -40,16 +40,13 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
 
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.3 2003-03-27 04:43:34 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.4 2003-03-27 05:47:16 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -57,9 +54,9 @@ public class BlogCalendar {
 
 
     private Calendar _calendar;
-    private Date _today;
+    private Calendar _today;
     private DateFormatSymbols _symbols;
-    private Locale _local;
+    private Locale _locale;
     private Boolean[] _dayswithentry;
     private String[] _shortdownames;
     private String _blogURL;
@@ -78,13 +75,14 @@ public class BlogCalendar {
     }
 
     public BlogCalendar(Calendar calendar, String blogurl, Locale locale) {
-        _local = locale;
+        _locale = locale;
         _calendar = calendar;
-        _today = new Date();
-        _symbols = new DateFormatSymbols(_local);
+        _today = new GregorianCalendar(_locale);
+        _today.setTime(new Date());
+        _symbols = new DateFormatSymbols(_locale);
         _blogURL = blogurl;
 
-        currentmonth = calendar.get(Calendar.MONTH) + 1 ;// Damm Java!
+        currentmonth = calendar.get(Calendar.MONTH) + 1;// Damm Java!
         currentyear = calendar.get(Calendar.YEAR);
 
 
@@ -128,7 +126,6 @@ public class BlogCalendar {
     public Boolean[] getEntryDates() {
         return _dayswithentry;
     }
-
 
     public String getMonthName(int month) {
         return getMonthNames()[month];
@@ -179,7 +176,7 @@ public class BlogCalendar {
                         visualcalendar[x][y] = new Integer(dowoffset).toString();
                     } else {
                         StringBuffer _url = new StringBuffer("<a href=\"");
-                        _url.append( BlojsomUtils.getCalendarNavigationUrl(_blogURL, currentmonth, dowoffset, currentyear) );
+                        _url.append(BlojsomUtils.getCalendarNavigationUrl(_blogURL, currentmonth, dowoffset, currentyear));
                         _url.append("\">").append(dowoffset).append("</a>");
                         visualcalendar[x][y] = _url.toString();
                     }
@@ -194,6 +191,47 @@ public class BlogCalendar {
         StringBuffer result = new StringBuffer();
         for (int x = 0; x < 7; x++) {
             result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
+        }
+        return result.toString();
+    }
+
+
+    public String getVisualToday() {
+        StringBuffer result = new StringBuffer();
+        result.append("<a href=\"").append(_blogURL).append("\">Today</a>");
+        return result.toString();
+    }
+
+    public String getVisualPreviousMonth() {
+        StringBuffer result = new StringBuffer();
+        _calendar.add(Calendar.MONTH, -1);
+        result.append("<a href=\"");
+        result.append(BlojsomUtils.getCalendarNavigationUrl(_blogURL,
+                (_calendar.get(Calendar.MONTH) + 1),
+                -1, _calendar.get(Calendar.YEAR)));
+        result.append("\"> <&nbsp;&nbsp;");
+        result.append(getShortMonthName(_calendar.get(Calendar.MONTH)));
+        result.append("</a>");
+        _calendar.add(Calendar.MONTH, 1);
+        return result.toString();
+    }
+
+    public String getVisualNextMonth() {
+        StringBuffer result = new StringBuffer();
+        _calendar.add(Calendar.MONTH, 1);
+
+        if ((_calendar.get(Calendar.MONTH) < (_today.get(Calendar.MONTH)+1)) &&
+                (_calendar.get(Calendar.YEAR) <= _today.get(Calendar.YEAR))) {
+            result.append("<a href=\"");
+            result.append(BlojsomUtils.getCalendarNavigationUrl(_blogURL,
+                    (_calendar.get(Calendar.MONTH) + 1),
+                    -1, _calendar.get(Calendar.YEAR)));
+            result.append("\">");
+            result.append(getShortMonthName(_calendar.get(Calendar.MONTH)));
+            result.append("&nbsp;&nbsp;> </a>");
+            _calendar.add(Calendar.MONTH, -1);
+        } else {
+            result.append(result.append(getShortMonthName(_calendar.get(Calendar.MONTH))));
         }
         return result.toString();
     }

@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.39 2003-03-27 04:43:23 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.40 2003-03-27 05:47:11 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -532,11 +532,17 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param year Year of navigation
      * @return Properly formatted calendar navigation url
      */
-    public static String getCalendarNavigationUrl( String prefix, int month, int day, int year) {
-        StringBuffer dateurl= new StringBuffer(prefix);
-        dateurl.append("?month=").append(month);
-        dateurl.append("&day=").append(day);
-        dateurl.append("&year=").append(year);
+    public static String getCalendarNavigationUrl(String prefix, int month, int day, int year) {
+        StringBuffer dateurl = new StringBuffer(prefix);
+        if (month != -1) {
+            dateurl.append("?month=").append(month);
+        }
+        if (day != -1) {
+            dateurl.append("&day=").append(day);
+        }
+        if (year != -1) {
+            dateurl.append("&year=").append(year);
+        }
         return dateurl.toString();
     }
 
@@ -670,10 +676,6 @@ public class BlojsomUtils implements BlojsomConstants {
         }
         return new String(buf1);
     }
-
-
-
-
 
 
 }

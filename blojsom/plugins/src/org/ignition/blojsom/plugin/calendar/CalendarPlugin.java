@@ -52,7 +52,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.9 2003-03-27 04:43:34 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.10 2003-03-27 05:47:16 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -62,6 +62,10 @@ public class CalendarPlugin implements BlojsomPlugin {
      * Locale to use for the Calendar.
      */
     private Locale _locale = Locale.getDefault();
+
+    /**
+     * Blog Prefix URL used for Calender Hyperlinks
+     */
     private String _blogUrlPrefix;
 
     /**
@@ -74,9 +78,12 @@ public class CalendarPlugin implements BlojsomPlugin {
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
         // If blog-language is set in blojsom.properties, use it instead
         String locale = (String)blogProperties.get(BlojsomConstants.BLOG_LANGUAGE_DEFAULT);
+
+        // If no locale is configured, use the system default
         if ( locale != null ) {
              _locale = new Locale(locale);
         }
+
         _blogUrlPrefix = (String) blogProperties.get(BlojsomConstants.BLOG_URL_IP);
     }
 
@@ -93,6 +100,7 @@ public class CalendarPlugin implements BlojsomPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
+        // Was a category part of the URL? If so we want to create href's based on the category
         String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
         if ( category == null ) {
             category = "";
@@ -107,8 +115,8 @@ public class CalendarPlugin implements BlojsomPlugin {
         // If a  Month is seen on the URL, either by design or calnav params, use it!
         String navmonth = httpServletRequest.getParameter(BlojsomConstants.MONTH_PARAM);
         if (navmonth != null) {
-            currentmonth = new Integer(navmonth).intValue();
-            calendar.set(Calendar.MONTH, currentmonth);
+            currentmonth = new Integer(navmonth).intValue() - 1; // Damm Sun!
+            calendar.set(Calendar.MONTH, currentmonth );
         }
 
         // If a Year is seen on the URL, either by design or calnav params, use it!
@@ -116,7 +124,6 @@ public class CalendarPlugin implements BlojsomPlugin {
         if (navyear != null) {
             currentyear = new Integer(navyear).intValue();
             calendar.set(Calendar.YEAR, currentyear);
-
         }
 
         String _calurl =_blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
