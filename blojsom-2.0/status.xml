@@ -7,6 +7,12 @@
     </developers>
 
     <changes>
+        <release version="2.09" date="Available from CVS">
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated Auto Trackback plugin to be more robust to handling of trackback URLs.
+            </action>
+        </release>
+
         <release version="2.08" date="January 11, 2004">
             <action dev="czarneckid" type="update" context="Core">
                 Added patch for potential NullPointerException when loading BlojsomProperties.
