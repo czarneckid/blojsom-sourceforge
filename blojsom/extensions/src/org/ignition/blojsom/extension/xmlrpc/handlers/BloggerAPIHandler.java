@@ -57,7 +57,7 @@ import java.util.Map;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.11 2003-04-23 02:01:34 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.12 2003-04-25 03:26:38 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -154,6 +154,25 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         _fetcher = fetcher;
     }
 
+
+    /**
+     * Helper method to empty a directory
+     *
+     * @param directory File instance of directory to empty
+     */
+    private void removeDirectory(File directory) {
+        if (directory.exists() && directory.isDirectory()) {
+            File[] _children = directory.listFiles();
+            if (_children != null && _children.length > 0) {
+                for (int x = 0; x < _children.length; x++) {
+                    _children[x].delete();
+                }
+            }
+            directory.delete();
+        }
+
+    }
+
     /**
      * Delete a Post
      *
@@ -196,7 +215,19 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                     FileBackedBlogEntry _entry = (FileBackedBlogEntry) _entries[0];
                     System.out.println("Deleting post " + _entry.getSource().getAbsolutePath());
                     result = _entry.getSource().delete();
-                    // @todo Delete Comment and Trackbacks as well
+
+                    // Delete Comments
+                    File _comments = new File(_blog.getBlogHome() + category + _blog.getBlogCommentsDirectory()
+                                              + File.separatorChar + permalink + File.separatorChar);
+                    removeDirectory(_comments);
+
+
+                    // Delete Trackbacks
+                    File _trackbacks = new File(_blog.getBlogHome() + category + _blog.getBlogTrackbackDirectory()
+                                                + File.separatorChar + permalink + File.separatorChar);
+                    removeDirectory(_trackbacks);
+
+
                 } else {
                     throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
