@@ -67,7 +67,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.10 2003-04-15 02:29:33 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.11 2003-04-15 03:22:22 intabulas Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
@@ -221,13 +221,14 @@ public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstant
             _cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
         }
 
+        _xmlrpc = new XmlRpcServer();
+        XmlRpc.setEncoding(UTF8);
+
         processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
         configureAuthorization(servletConfig);
         configureFetcher(servletConfig);
         configureAPIHandlers(servletConfig);
 
-        _xmlrpc = new XmlRpcServer();
-        XmlRpc.setEncoding(UTF8);
 
         _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
     }
