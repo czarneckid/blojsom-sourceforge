@@ -59,7 +59,7 @@ import java.util.Map;
  * WeatherPlugin
  *
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.5 2005-03-10 05:06:28 czarneckid Exp $
+ * @version $Id: WeatherPlugin.java,v 1.6 2005-04-01 22:47:16 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -158,7 +158,7 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        WeatherInformation info = (WeatherInformation) _userWeatherMap.get(user);
+        WeatherInformation info = (WeatherInformation) _userWeatherMap.get(user.getId());
 
         if (info != null) {
             context.put(WeatherConstants.BLOJSOM_WEATHER_INFORMATION, info);
@@ -257,7 +257,7 @@ public class WeatherPlugin implements BlojsomPlugin, BlojsomConstants {
                                 if (weather.isEnabled()) {
                                     WeatherInformation info = collectWeatherData(weather);
                                     if (info != null) {
-                                        _userWeatherMap.put(blogUser, info);
+                                        _userWeatherMap.put(blogUser.getId(), info);
                                     }
                                 }
                             }
