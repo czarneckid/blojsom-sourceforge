@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <%@ page import="org.ignition.blojsom.blog.Blog,
                  org.ignition.blojsom.util.BlojsomConstants,
-                 java.util.TreeMap,
-                 java.util.Iterator,
                  org.ignition.blojsom.blog.BlogEntry"
                  session="false"%>
 <%

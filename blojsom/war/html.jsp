@@ -1,7 +1,5 @@
-<%@ page import="java.util.TreeMap,
-		 org.ignition.blojsom.blog.Blog,
+<%@ page import="org.ignition.blojsom.blog.Blog,
 		 org.ignition.blojsom.util.BlojsomConstants,
-		 java.util.Iterator,
 		 org.ignition.blojsom.blog.BlogEntry,
 		 org.ignition.blojsom.blog.BlogCategory"
 		 session="false"%>
