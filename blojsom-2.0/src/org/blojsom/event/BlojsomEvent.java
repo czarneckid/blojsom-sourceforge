@@ -41,12 +41,13 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEvent.java,v 1.2 2005-01-05 02:32:54 czarneckid Exp $
+ * @version $Id: BlojsomEvent.java,v 1.3 2005-01-06 03:19:37 czarneckid Exp $
  */
 public class BlojsomEvent {
 
     protected Object _source;
     protected Date _timestamp;
+    protected boolean _eventHandled = false;
 
     /**
      * Create a new event.
@@ -75,5 +76,25 @@ public class BlojsomEvent {
      */
     public Date getTimestamp() {
         return _timestamp;
+    }
+
+    /**
+     * Check to see if the event has already been handled or not
+     *
+     * @return <code>true</code> if the event has been handled, <code>false</code> otherwise
+     * @since blojsom 2.22
+     */
+    public boolean isEventHandled() {
+        return _eventHandled;
+    }
+
+    /**
+     * Set whether or not the event has been handled
+     *
+     * @param eventHandled <code>true</code> if the event has been handled, <code>fasle</code> otherwise
+     * @since blojsom 2.22
+     */
+    public void setEventHandled(boolean eventHandled) {
+        _eventHandled = eventHandled;
     }
 }
