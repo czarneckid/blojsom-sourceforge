@@ -19,16 +19,29 @@
                         blojsom-extensions-2.13.jar, blojsom-plugins-2.13.jar files, and blojsom-plugins-templates-2.13.jar.
                     </p>
                     <p>
-                        2. Replace the sandler-0.5.jar file with the sandler-0.6.jar file in your
+                        2. Add the blojsom-resources-2.13.jar file to your <code>/WEB-INF/lib</code> directory.
+                    </p>
+                    <p>
+                        3. Replace the sandler-0.5.jar file with the sandler-0.6.jar file in your
                         <code>/WEB-INF/lib</code> directory.
                     </p>
                     <p>
-                        3. Replace the mail-1.3.jar file with the mail-1.3.1.jar file in your
+                        4. Replace the mail-1.3.jar file with the mail-1.3.1.jar file in your
                         <code>/WEB-INF/lib</code> directory.
                     </p>
                     <p>
-                        4. Replace the oscache-2.0.1.jar file with the oscache-2.0.2.jar file in your
+                        5. Replace the oscache-2.0.1.jar file with the oscache-2.0.2.jar file in your
                         <code>/WEB-INF/lib</code> directory if you are using the <code>CachingFetcher</code>. 
+                    </p>
+                </section>
+                <section>
+                    <title>Properties changes</title>
+                    <p>
+                        1. Add the following to your <code>/WEB-INF/blojsom.properties</code> file.
+                        <pre>
+                            blojsom-resource-manager=org.blojsom.util.resources.ResourceBundleResourceManager
+                            blojsom-resource-manager-bundles=org.blojsom.plugin.admin.resources.messages
+                        </pre>
                     </p>
                 </section>
             </section>
