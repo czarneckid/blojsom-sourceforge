@@ -46,7 +46,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.4 2003-03-27 05:47:16 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.5 2003-03-27 05:48:27 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -231,7 +231,7 @@ public class BlogCalendar {
             result.append("&nbsp;&nbsp;> </a>");
             _calendar.add(Calendar.MONTH, -1);
         } else {
-            result.append(result.append(getShortMonthName(_calendar.get(Calendar.MONTH))));
+            result.append(getShortMonthName(_calendar.get(Calendar.MONTH))).append("&nbsp;&nbsp;>" );
         }
         return result.toString();
     }
