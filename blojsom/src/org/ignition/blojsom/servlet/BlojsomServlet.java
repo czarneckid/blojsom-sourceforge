@@ -138,6 +138,36 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
     }
 
     /**
+     * Configure the authorization table blog (user id's and and passwords)
+     *
+     * @param servletConfig Servlet configuration information
+     */
+    private void configureAuthorization(ServletConfig servletConfig) {
+        Map _authorization = new HashMap();
+
+        String authConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
+        Properties authProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(authConfiguration);
+        try {
+            authProperties.load(is);
+            Iterator authIterator = authProperties.keySet().iterator();
+            while (authIterator.hasNext()) {
+                String userid = (String) authIterator.next();
+                String password = authProperties.getProperty(userid);
+                _authorization.put(userid, password);
+            }
+
+            if ( !_blog.setAuthorization( _authorization)) {
+              _logger.error("Authorization table could not be assigned");
+            }
+
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+    }
+
+
+    /**
      * Configure the dispatchers that blojsom will use when passing a request/response on to a
      * particular template
      *
@@ -224,6 +254,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         configureBlog(servletConfig);
         configureFlavors(servletConfig);
         configureDispatchers(servletConfig);
+        configureAuthorization(servletConfig);
         configurePlugins(servletConfig);
 
         _logger.info("blojsom home: " + _blog.getBlogHome());

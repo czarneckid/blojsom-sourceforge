@@ -38,9 +38,12 @@ import org.ignition.blojsom.blog.Blog;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.1 2003-02-26 22:05:49 intabulas Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.2 2003-02-27 16:20:35 intabulas Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
+
+    public static final int    AUTHORIZATION_EXCEPTION = 0001;
+    public static final String AUTHORIZATION_EXCEPTION_MSG = "Invalid Username and/or Password";
 
     public static final int    UNKNOWN_EXCEPTION = 1000;
     public static final String UNKNOWN_EXCEPTION_MSG = "An error occured processing your request";

@@ -169,6 +169,8 @@ public interface BlojsomConstants {
     static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
     static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
+    static final String BLOG_AUTHORIZATION_IP = "blog-authorization";
+
     static final String BLOG_OWNER = "blog-owner";
     static final String BLOG_OWNER_EMAIL = "blog-owner-email";
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";

@@ -57,13 +57,12 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.1 2003-02-26 21:57:53 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2003-02-27 16:20:36 intabulas Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
     private static final String BLOG_XMLRPC_CONFIGURATION_IP  = "blog-xmlrpc-configuration";
-    private static final String BLOG_XMLRPC_AUTHORIZATION  = "blog-authorization";
 
     private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
 

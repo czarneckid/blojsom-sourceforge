@@ -63,6 +63,8 @@ public class Blog implements BlojsomConstants {
 
     private HashMap _blogProperties;
 
+    private Map _authorization = null;
+
     /**
      * Create a blog with the supplied configuration properties
      *
@@ -200,6 +202,23 @@ public class Blog implements BlojsomConstants {
             }
         }
     }
+
+    /**
+     * Check to see if a username and password is valid for this blog
+     * @param username Username of the user
+     * @param password Password for the Username
+     * @return True if the user is authenticated
+     */
+    public boolean checkAuthorization(String username, String password) {
+        boolean result = false;
+
+        if (_authorization != null && _authorization.containsKey(username)) {
+            result = password.equals((String) _authorization.get(username));
+        }
+
+        return result;
+    }
+
 
     /**
      * Check to see if a blog category contains any entries
@@ -593,6 +612,24 @@ public class Blog implements BlojsomConstants {
     public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
         _blogDefaultCategoryMappings = blogDefaultCategoryMappings;
     }
+
+
+    /**
+     * Set the Username/Password table used for blog authorization.
+     * NOTE: This method can only be called once per Blog instances
+     * @param authorization HashMap of Usernames and Passwords
+     * @return  True is the authorization table was assigned, otherwise false
+     */
+    public boolean setAuthorization(Map authorization) {
+        boolean result = false;
+        if (_authorization == null) {
+            _authorization = authorization;
+            result = true;
+        }
+
+        return result;
+    }
+
 
     /**
      * Return the blog owner's e-mail address

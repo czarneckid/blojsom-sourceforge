@@ -53,7 +53,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.1 2003-02-26 21:58:03 czarneckid Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.2 2003-02-27 16:20:34 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -172,39 +172,44 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("     UserId: " + userid);
         _logger.info("   Password: " + password);
 
-        Vector result = new Vector();
 
-        BlogCategory[] _categories = _blog.getBlogCategories();
+        if (_blog.checkAuthorization(userid, password)) {
+            Vector result = new Vector();
 
-        if (_categories != null) {
-            for (int x = 0; x < _categories.length; x++) {
-                Hashtable _bloglist = new Hashtable(3);
-                BlogCategory _category = _categories[x];
+            BlogCategory[] _categories = _blog.getBlogCategories();
 
-                String _blogid = _category.getCategory();
-                if (_blogid.length() > 1) {
-                    _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+            if (_categories != null) {
+                for (int x = 0; x < _categories.length; x++) {
+                    Hashtable _bloglist = new Hashtable(3);
+                    BlogCategory _category = _categories[x];
+
+                    String _blogid = _category.getCategory();
+                    if (_blogid.length() > 1) {
+                        _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                    }
+
+                    String _description = "";
+                    HashMap _metadata = _category.getMetaData();
+                    if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
+                        _description = (String) _metadata.get(NAME_KEY);
+                    } else {
+                        _description = _blogid;
+                    }
+
+                    _bloglist.put(MEMBER_URL, _category.getCategoryURL());
+                    _bloglist.put(MEMBER_BLOGID, _blogid);
+                    _bloglist.put(MEMBER_BLOGNAME, _description);
+
+                    result.add(_bloglist);
                 }
-
-                String _description = "";
-                HashMap _metadata = _category.getMetaData();
-                if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
-                    _description = (String) _metadata.get(NAME_KEY);
-                } else {
-                    _description = _blogid;
-                }
-
-                _bloglist.put(MEMBER_URL, _category.getCategoryURL());
-                _bloglist.put(MEMBER_BLOGID, _blogid);
-                _bloglist.put(MEMBER_BLOGNAME, _description);
-
-                result.add(_bloglist);
+            } else {
+                throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
             }
-        } else {
-            throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
-        }
 
-        return result;
+            return result;
+        } else {
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
     }
 
     /**
@@ -228,34 +233,41 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("    Publish: " + publish);
         _logger.info("     Content:\n " + content);
 
-        boolean result = false;
+        if (_blog.checkAuthorization(userid, password)) {
 
-        String category;
-        String permalink;
-        String match = "?" + PERMALINK_PARAM + "=";
+            boolean result = false;
 
-        int pos = postid.indexOf(match);
-        if (pos != -1) {
-            category = postid.substring(0, pos);
-            permalink = postid.substring(pos + match.length());
+            String category;
+            String permalink;
+            String match = "?" + PERMALINK_PARAM + "=";
 
-            BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
-            if (_entries != null && _entries.length > 0) {
-                BlogEntry _entry = _entries[0];
-                try {
-                    FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath());
-                    _fos.write(content.getBytes());
-                    _fos.close();
-                    result = true;
-                } catch (IOException e) {
-                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+            int pos = postid.indexOf(match);
+            if (pos != -1) {
+                category = postid.substring(0, pos);
+                permalink = postid.substring(pos + match.length());
+
+                BlogEntry[] _entries = _blog.getPermalinkEntry(category, permalink);
+                if (_entries != null && _entries.length > 0) {
+                    BlogEntry _entry = _entries[0];
+                    try {
+                        FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath());
+                        _fos.write(content.getBytes());
+                        _fos.close();
+                        result = true;
+                    } catch (IOException e) {
+                        throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                    }
+                } else {
+                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
                 }
-            } else {
-                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
+
+            return result;
+
+        } else {
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
 
-        return result;
     }
 
     /**
@@ -279,33 +291,41 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("    Publish: " + publish);
         _logger.info("     Content:\n " + content);
 
-        String result = null;
 
-        //Quick verify that the categories are valid
-        File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
-        if (blogCategory.exists() && blogCategory.isDirectory()) {
+        if (_blog.checkAuthorization(userid, password)) {
 
-            String hashable = content;
+            String result = null;
 
-            if (content.length() > MAX_HASHABLE_LENGTH) {
-                hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+            //Quick verify that the categories are valid
+            File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
+            if (blogCategory.exists() && blogCategory.isDirectory()) {
+
+                String hashable = content;
+
+                if (content.length() > MAX_HASHABLE_LENGTH) {
+                    hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+                }
+
+                String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
+                String outputfile = blogCategory.getAbsolutePath() + "/" + filename;
+                String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
+
+                try {
+                    FileOutputStream _fos = new FileOutputStream(outputfile);
+                    _fos.write(content.getBytes());
+                    _fos.close();
+                    result = postid;
+                } catch (IOException e) {
+                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                }
+
             }
 
-            String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
-            String outputfile = blogCategory.getAbsolutePath() + "/" + filename;
-            String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
+            return result;
 
-            try {
-                FileOutputStream _fos = new FileOutputStream(outputfile);
-                _fos.write(content.getBytes());
-                _fos.close();
-                result = postid;
-            } catch (IOException e) {
-                throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
-            }
-
+        } else {
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
 
-        return result;
     }
 }
