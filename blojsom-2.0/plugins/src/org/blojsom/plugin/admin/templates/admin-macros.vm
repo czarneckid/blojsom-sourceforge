@@ -49,3 +49,9 @@
 #end
 
 #macro( adminResource $resourceID $fallback )$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogLanguage(), $BLOJSOM_BLOG.getBlogCountry())#end
+
+#macro(friendlyPermalink $entry)
+    #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
+    #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
+#end
