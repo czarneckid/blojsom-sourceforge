@@ -10,7 +10,17 @@
             <title>Upgrading</title>
             <section>
                 <title>Upgrading from blojsom 1.9.3 to blojsom 1.9.4</title>
-                <p>No changes required</p>
+                <p>
+                    If you are using the MetaWeblog API handler for blojsom, there are 3
+                    parameters you'll need to add to
+                    <code>/WEB-INF/blojsom.properties</code>.
+                    <code>blojsom-extension-metaweblog-upload-directory</code>: location where files can be
+                    uploaded through the newMediaObject method
+                    <code>blojsom-extension-metaweblog-accepted-types</code>: comma-separated list of
+                    mime-types accepted for the newMediaObject method
+                    <code>blojsom-extension-metaweblog-static-url-prefix</code>: url prefix used to generate
+                    the return URL for the newMediaObject method
+                </p>
             </section>
             <section>
                 <title>Upgrading from blojsom 1.9.2 to blojsom 1.9.3</title>
