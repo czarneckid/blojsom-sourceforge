@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  * Portions Copyright (c) 2003-2004  by Mark Lussier
- * BlojsomProperties by Jšrg Prante
+ * BlojsomProperties by Jorg Prante
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -53,9 +53,9 @@ import java.io.IOException;
  * Saving properties in non-ISO encodings, based on java.util.Properties
  *
  * @author David Czarnecki
- * @author Jšrg Prante
+ * @author Jorg Prante
  * @since blojsom 2.01
- * @version $Id: BlojsomProperties.java,v 1.4 2004-01-11 04:04:12 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.5 2004-04-04 22:44:30 czarneckid Exp $
  */
 public class BlojsomProperties extends Properties {
 
