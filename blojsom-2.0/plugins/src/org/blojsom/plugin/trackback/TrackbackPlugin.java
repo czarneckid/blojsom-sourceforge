@@ -55,7 +55,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.26 2004-05-22 19:46:05 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.27 2004-05-22 19:47:25 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -422,10 +422,9 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             emailTemplateContext.put(BLOJSOM_BLOG, blog);
             emailTemplateContext.put(BLOJSOM_USER, user);
             emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY, entries[0]);
-            emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_BLOG_TRACKBACK, trackback);
+            emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK, trackback);
 
             String emailTrackback = mergeTemplate(TRACKBACK_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
-            _logger.debug("Trackback e-mail:\n" + emailTrackback);
 
             if (_blogEmailEnabled.booleanValue()) {
                 sendTrackbackEmail(_emailPrefix, entries[0].getTitle(), emailTrackback, context);
