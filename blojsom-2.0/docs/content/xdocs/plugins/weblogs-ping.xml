@@ -9,7 +9,9 @@
         <section>
             <title>description</title>
             <p>
-                This plugin sends a ping to weblogs.com and weblo.gs after new blog entries have been detected. The ping is
+                This plugin sends a ping to <link href="http://weblogs.com">weblogs.com</link>,
+                <link href="http://weblo.gs">weblo.gs</link>, and <link href="http://technorati.com">Technorati
+                </link> after new blog entries have been detected. The ping is
                 sent via XML-RPC according to the weblogs.com ping XML-RPC
                 <link href="http://www.xmlrpc.com/weblogsCom">specification</link>.
                 On server startup, the plugin uses the current date and time to determine whether new entries
