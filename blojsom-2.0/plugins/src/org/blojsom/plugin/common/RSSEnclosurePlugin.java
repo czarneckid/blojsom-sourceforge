@@ -54,7 +54,7 @@ import java.util.Map;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.1 2004-10-15 22:17:09 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.2 2004-11-05 00:16:04 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin {
@@ -65,6 +65,9 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
 
     public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
     public static final String METADATA_RSS_ENCLOSURE = "rss-enclosure";
+
+    protected static final String MIME_TYPE_XMPEGURL = "audio/x-mpegurl m3u";
+    protected static final String MIME_TYPE_XMPEG = "audio/x-mpeg mp1 mp2 mp3 mpa mpega";
 
     /**
      * Default constructor
@@ -87,6 +90,16 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
             blojsomConfiguration) throws BlojsomPluginException {
         _blojsomConfiguration = blojsomConfiguration;
         _logger.debug("Initialized RSS enclosures plugin");
+    }
+
+    /**
+     * Add additional mime types to the map
+     *
+     * @param mimeTypes Mime types map
+     */
+    protected void addAdditionalMimeTypes(MimetypesFileTypeMap mimeTypes) {
+        mimeTypes.addMimeTypes(MIME_TYPE_XMPEGURL);
+        mimeTypes.addMimeTypes(MIME_TYPE_XMPEG);
     }
 
     /**
@@ -120,6 +133,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
 
                     MimetypesFileTypeMap mimetypesFileTypeMap = new
                             MimetypesFileTypeMap();
+                    addAdditionalMimeTypes(mimetypesFileTypeMap);
                     String type =
                             mimetypesFileTypeMap.getContentType(enclosure);
 
