@@ -79,7 +79,7 @@
         <pathelement path="${plugins.src.dir}"/>
         <pathelement path="${extensions.src.dir}"/>
         <pathelement path="${addon.core.src.dir}"/>
-        <pathelement path="${addon.extensions.src.dir}"/>
+        <!-- <pathelement path="${addon.extensions.src.dir}"/> -->
         <pathelement path="${addon.plugins.src.dir}"/>
     </path>
 
