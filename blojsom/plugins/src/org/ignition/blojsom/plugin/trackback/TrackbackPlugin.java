@@ -34,31 +34,32 @@
  */
 package org.ignition.blojsom.plugin.trackback;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.blog.Trackback;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.plugin.email.EmailUtils;
-import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Date;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.9 2003-03-24 18:55:09 intabulas Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.10 2003-03-25 15:52:44 intabulas Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin {
 
@@ -143,12 +144,14 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String category = httpServletRequest.getPathInfo();
         if (category == null) {
             category = "/";

@@ -34,32 +34,33 @@
  */
 package org.ignition.blojsom.plugin.comment;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.blog.BlogComment;
+import org.ignition.blojsom.blog.BlogEntry;
 import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.plugin.email.EmailUtils;
-import org.ignition.blojsom.blog.BlogEntry;
-import org.ignition.blojsom.blog.BlogComment;
-import org.ignition.blojsom.util.BlojsomUtils;
 import org.ignition.blojsom.util.BlojsomConstants;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Date;
-import java.util.ArrayList;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.10 2003-03-25 04:28:38 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.11 2003-03-25 15:52:45 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -117,12 +118,14 @@ public class CommentPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         // Comment handling
         if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blogCommentsEnabled.booleanValue()) {
             String author = httpServletRequest.getParameter(AUTHOR_PARAM);

@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.54 2003-03-25 00:57:23 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.55 2003-03-25 15:52:36 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -444,7 +444,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                     BlojsomPlugin blojsomPlugin = (BlojsomPlugin) _plugins.get(plugin);
                     _logger.debug("blojsom plugin execution: " + blojsomPlugin.getClass().getName());
                     try {
-                        entries = blojsomPlugin.process(httpServletRequest, context, entries);
+                        entries = blojsomPlugin.process(httpServletRequest, httpServletResponse, context, entries);
                         blojsomPlugin.cleanup();
                     } catch (BlojsomPluginException e) {
                         _logger.error(e);

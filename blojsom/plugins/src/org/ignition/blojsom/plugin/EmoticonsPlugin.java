@@ -39,6 +39,7 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.6 2003-03-25 04:23:20 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.7 2003-03-25 15:52:49 intabulas Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -140,12 +141,14 @@ public class EmoticonsPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String blogSiteURL = BlojsomUtils.getBlogSiteURL(httpServletRequest.getRequestURL().toString(), httpServletRequest.getServletPath());
         if (blogSiteURL.endsWith("/")) {
             blogSiteURL = blogSiteURL.substring(0, blogSiteURL.length() - 1);

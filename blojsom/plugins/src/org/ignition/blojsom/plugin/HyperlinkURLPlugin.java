@@ -38,6 +38,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ import java.util.Map;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.8 2003-03-23 19:27:47 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.9 2003-03-25 15:52:47 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -79,12 +80,14 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
 

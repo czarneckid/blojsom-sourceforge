@@ -41,6 +41,7 @@ import org.ignition.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ import java.util.Map;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.13 2003-03-24 22:21:03 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.14 2003-03-25 15:52:46 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -118,12 +119,14 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
-I  close     */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+     I  close     */
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
         if ((_referer != null) && (!_referer.startsWith(_blogurlfilter))) {

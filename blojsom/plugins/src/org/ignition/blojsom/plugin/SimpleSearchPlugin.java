@@ -40,6 +40,7 @@ import org.ignition.blojsom.blog.BlogEntry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.6 2003-03-23 19:27:47 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.7 2003-03-25 15:52:45 intabulas Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -79,12 +80,14 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String query = httpServletRequest.getParameter(QUERY_PARAM);
         if (query == null) {
             return entries;

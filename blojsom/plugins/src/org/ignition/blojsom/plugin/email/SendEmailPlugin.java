@@ -49,6 +49,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -56,7 +57,7 @@ import java.util.*;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.1 2003-03-24 17:13:47 intabulas Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.2 2003-03-25 15:52:45 intabulas Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -116,12 +117,14 @@ public class SendEmailPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
 
         List _messagelist = (ArrayList) context.get(EmailUtils.CONTEXT_VARIABLE);
         if (_messagelist != null) {

@@ -41,17 +41,21 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.8 2003-03-25 04:23:27 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.9 2003-03-25 15:52:46 intabulas Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
@@ -137,12 +141,14 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      * Process the blog entries. Expands any macros in title and body.
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                               Map context, BlogEntry[] entries) throws BlojsomPluginException {
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
             entry.setTitle(replaceMacros(entry.getTitle()));
