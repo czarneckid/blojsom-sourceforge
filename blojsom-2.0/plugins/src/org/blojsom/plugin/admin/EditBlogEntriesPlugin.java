@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.36 2004-11-10 03:56:30 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.37 2004-11-10 21:59:50 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -459,12 +459,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String filename;
             if (BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
-                if (BlojsomUtils.checkNullOrBlank(blogEntryTitle)) {
-                    filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
-                } else {
-                    filename = blogEntryTitle.replaceAll("\\s", "_");
-                    filename = filename.replaceAll("\\p{Punct}", "_");
-                }
+                filename = BlojsomUtils.getBlogEntryFilename(blogEntryTitle, blogEntryDescription);
             } else {
                 if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
                     proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
@@ -805,22 +800,5 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 }
             }
         }
-    }
-
-    /**
-     * Return a filename appropriate for the blog entry content
-     *
-     * @param content            Blog entry content
-     * @param blogEntryExtension Extension to be used for the blog entry filename
-     * @return Filename for the new blog entry
-     */
-    protected String getBlogEntryFilename(String content, String blogEntryExtension) {
-        String hashable = content;
-
-        if (content.length() > MAX_HASHABLE_LENGTH) {
-            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-        }
-
-        return BlojsomUtils.digestString(hashable).toUpperCase();
     }
 }

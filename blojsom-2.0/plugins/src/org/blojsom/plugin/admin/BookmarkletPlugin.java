@@ -60,7 +60,7 @@ import java.io.File;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.1 2004-10-07 03:02:45 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.2 2004-11-10 22:01:00 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -184,7 +184,8 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
 
                 String filename;
                 if (BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
-                    filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
+                    filename = BlojsomUtils.getBlogEntryFilename(blogEntryTitle, blogEntryDescription);
+                    filename += blogEntryExtension;
                 } else {
                     if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
                         proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
