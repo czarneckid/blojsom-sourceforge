@@ -259,10 +259,10 @@
 #macro(MultiBlogFriendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
-    #set ($entryLink = $entry.getMetaData().get("BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_BLOG_URL")$categoryForEntry$entry.getDateAsFormat("yyyy")/$entry.getDateAsFormat("MM")/$entry.getDateAsFormat("dd")/$entry.getPermalink()")
+    #set ($entryLink = "$entry.getMetaData().get('BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_BLOG_URL')$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
 
-#macro(Obfuscate $text)$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
+#macro(Obfuscate $text)$!BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
 
-#macro(RSSEnclosure $entry) $entry.getMetaData().get("rss-enclosure") #end
+#macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
 
