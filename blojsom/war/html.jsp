@@ -29,6 +29,7 @@
     <head>
 	<title><%= blogInformation.getBlogName() %></title>
 	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
+    <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
     </head>
 
     <body>
