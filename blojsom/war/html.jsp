@@ -38,6 +38,18 @@
     </head>
 
     <body>
+
+<!-- Search Box Code -->
+<div id="searchbox">
+<form class="searchform" method="post" action=".">
+<p class="searchtext">
+Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
+<input class="searchimage" type="image" src="<%= blogSiteURL %>/search.png" value="submit"/>
+</p>
+</form>
+</div>
+
+
 	<h1><a href="<%= blogInformation.getBlogURL() %>">
 		<%= blogInformation.getBlogName() %>
 	</a></h1>
