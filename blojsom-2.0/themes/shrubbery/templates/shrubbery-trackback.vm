@@ -6,7 +6,7 @@
 
 <head>
 <title>$BLOJSOM_BLOG.getBlogName()</title>
-<link rel="stylesheet" type="text/css" href="$BLOJSOM_SITE_URL/blojsom-shrubbery.css" />
+<link rel="stylesheet" type="text/css" href="$BLOJSOM_SITE_URL/resources/$BLOJSOM_USER/shrubbery.css" />
 <link rel="SHORTCUT ICON" type="image/gif" href="$BLOJSOM_SITE_URL/favicon.ico" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
 </head>
@@ -25,7 +25,7 @@
     </div>
 
     <p class="wlt">Trackback for this entry</p>
-    <p class="wldl"><a href="$entry.getLink()&amp;tb=y"><img src="$BLOJSOM_SITE_URL/tb.gif" border="0" /></a>$entry.getLink()&amp;tb=y</p>
+    <p class="wldl"><a href="$entry.getLink()&amp;tb=y"><img src="$BLOJSOM_SITE_URL/trackback.gif" border="0" /></a>$entry.getLink()&amp;tb=y</p>
     #foreach ($entryTrackback in $entry.getTrackbacks())
         <div class="cs">
             Trackback from: <a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a>
