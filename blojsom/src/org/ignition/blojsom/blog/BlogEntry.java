@@ -278,7 +278,7 @@ public class BlogEntry implements BlojsomConstants {
         try {
             byte[] fileContents = getBytesFromFile(_source);
             String lineSeparator = System.getProperty("line.separator");
-            String description = new String(fileContents);
+            String description = new String(fileContents, "UTF-8");
             int titleIndex = description.indexOf(lineSeparator);
             if (titleIndex == -1) {
                 _title = "";
