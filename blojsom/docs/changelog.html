@@ -25,14 +25,16 @@
 <a href="http://sourceforge.net/projects/blojsom/">sourceforge project page</a></p>
 
 
-<p class="weblogtitle">blojsom 1.8 (codename: ???)</p>
+<p class="weblogtitle">blojsom 1.8 (codename: Ketel One)</p>
 <p class="weblogdateline">Available from CVS</p>
 <p />
 General:<br />
 - Upgraded Velocity from version 1.3 to 1.3.1<br />
+- Upgraded log4j from version 1.2.7 to 1.2.8<br />
 - Changed Referer Log plugin to log each referer at the debug level rather than at the
-info level. It is the expectation that you do not need to log twice each referral since
-they will eventually be written out to disk<br />
+info level.<br />
+- <tt>BlojsomServlet</tt> now correctly falls back to <i>blojsom-plugin-chain</i> if
+<i>&lt;flavor&gt;.blojsom-plugin-chain</i> is not present in <i>plugin.properties</i><br />
 
 <p>
 <p class="weblogtitle">blojsom 1.7 (codename: Absolut)</p>
