@@ -37,6 +37,8 @@ package org.blojsom.authorization;
 
 import netscape.ldap.LDAPConnection;
 import netscape.ldap.LDAPException;
+import netscape.ldap.LDAPSearchResults;
+import netscape.ldap.LDAPv2;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
@@ -73,7 +75,7 @@ import java.util.Map;
  * http://www.mozilla.org/directory/.
  *
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.1 2005-01-06 00:43:53 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.2 2005-02-11 03:01:40 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider implements BlojsomConstants {
@@ -224,7 +226,32 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
     }
 
     protected String getDN(String username) {
-        return "uid=" + username + "," + _ldapDN;
+        try {
+            LDAPConnection ldapConnection = new LDAPConnection();
+
+            // Connect to the directory server
+            ldapConnection.connect(getServer(), getPort());
+
+            // Search for the dn of the user given the username (uid).
+            String[] attrs = {};
+            LDAPSearchResults res = ldapConnection.search(getBaseDN(),
+                    LDAPv2.SCOPE_SUB, "(uid=" + username + ")", attrs, true);
+
+            if (!res.hasMoreElements()) {
+                // No such user.
+                _logger.debug("User '" + username + "' does not exist in LDAP directory.");
+                return null;
+            }
+
+            String dn = res.next().getDN();
+            ldapConnection.disconnect();
+            _logger.debug("Successfully got user DN '" + dn + "' via LDAP.");
+            
+            return dn;
+        } catch (LDAPException e) {
+            // Some exception occurred above; the search for the dn failed.
+            return null;
+        }
     }
 
     protected String getServer() {
@@ -233,5 +260,9 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
 
     protected int getPort() {
         return _ldapPort;
+    }
+
+    protected String getBaseDN() {
+        return _ldapDN;
     }
 }
