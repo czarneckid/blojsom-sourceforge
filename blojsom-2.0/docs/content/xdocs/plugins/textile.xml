@@ -33,8 +33,8 @@
                 html.blojsom-plugin-chain=textile
             </source>
             <p>
-                In your
-                <em>blojsom.properties</em> be sure to add
+                In your individual
+                <code>blog.properties</code> file, be sure to add
                 <code>.*textile</code> to the
                 <em>blog-file-extensions</em> value.
                 The textile plugin uses

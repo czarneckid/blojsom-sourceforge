@@ -41,14 +41,13 @@
 
             </p>
             <p>
-                In your
-                <em>blojsom.properties</em> file, add the following line:
+                In your individual
+                <em>blog.properties</em> file, add the following line:
             </p>
             <source>
                 blog-email-enabled=true
             </source>
             <p>
-
                 The Send Email plugin requires the smtp server be defined in
                 <em>web.xml</em>. For example:
             </p>

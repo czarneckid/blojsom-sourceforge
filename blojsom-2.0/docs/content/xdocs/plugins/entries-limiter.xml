@@ -11,8 +11,8 @@
             <p>
                 The entries limiter plugin limits the number of entries that get displayed and
                 is set by the
-                <em>blog-entries-display</em> parameter in
-                <em>blojsom.properties</em>. A value
+                <em>blog-entries-display</em> parameter in your individual
+                <code>blog.properties</code> file. A value
                 of -1 for this parameter indicates that all entries should be shown in which case this
                 plugin acts like a pass through filter.
             </p>
