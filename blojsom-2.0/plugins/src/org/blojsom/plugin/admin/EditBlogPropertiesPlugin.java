@@ -62,7 +62,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.22 2004-07-15 01:29:21 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.23 2004-07-31 20:32:28 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -150,6 +150,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogDefaultFlavor(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("linear-navigation-enabled", httpServletRequest);
             blog.setLinearNavigationEnabled(Boolean.valueOf(blogPropertyValue));
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_URL_IP, httpServletRequest);
+            blog.setBlogURL(blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BLOG_BASE_URL_IP, httpServletRequest);
+            blog.setBlogBaseURL(blogPropertyValue);
 
             // Aggregator properties
             blogPropertyValue = BlojsomUtils.getRequestValue(InternalAggregatorPlugin.BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_OPT_OUT, httpServletRequest);
