@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.21 2005-01-11 02:49:49 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.22 2005-01-11 14:56:28 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -285,7 +285,9 @@ public class FileBackedBlogEntry extends BlogEntry {
             if (commentMetaData.exists()) {
                 _logger.debug("Loading comment meta-data: " + commentMetaData.toString());
                 Properties commentMetaDataProperties = new BlojsomProperties();
-                commentMetaDataProperties.load(new FileInputStream(commentMetaData));
+                FileInputStream fis = new FileInputStream(commentMetaData);
+                commentMetaDataProperties.load(fis);
+                fis.close();
                 comment.setMetaData(BlojsomUtils.propertiesToMap(commentMetaDataProperties));
             }
         } catch (IOException e) {
@@ -391,7 +393,9 @@ public class FileBackedBlogEntry extends BlogEntry {
             if (trackbackMetaData.exists()) {
                 _logger.debug("Loading trackback meta-data: " + trackbackMetaData.toString());
                 Properties trackbackMetaDataProperties = new BlojsomProperties();
-                trackbackMetaDataProperties.load(new FileInputStream(trackbackMetaData));
+                FileInputStream fis = new FileInputStream(trackbackMetaData);
+                trackbackMetaDataProperties.load(fis);
+                fis.close();
                 trackback.setMetaData(BlojsomUtils.propertiesToMap(trackbackMetaDataProperties));
             }
         } catch (IOException e) {
