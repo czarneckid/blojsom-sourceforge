@@ -273,11 +273,14 @@ div.comment {
 	margin: 0 0 20px 0;
 }
 div.trackback {
-	margin: 20px 0;
+	margin: 0 20em 20px 0;
+}
+#trackback {
+	margin: 0 20em 20px 0;
 }
 #comments {
 	padding: 0;
-	margin: 0 23em 3em 0;
+	margin: 0 20em 3em 0;
 }
 #comments h3 {
 	font-size: 100%;
@@ -302,6 +305,10 @@ div.trackback {
 	width: 240px;
 	float: left;
 	margin-bottom: 5px;
+}
+#commentform .button {
+	width: auto;
+	float: left;
 }
 #commentform .fixed {
 	width: 240px;

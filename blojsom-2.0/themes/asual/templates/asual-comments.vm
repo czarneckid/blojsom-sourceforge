@@ -62,8 +62,10 @@
 									<p class="label">&nbsp;</p>
 									<p class="input"><input type="checkbox" name="remember" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)checked #end /> Remember me?</p>
 
+									<p />
+
 									<p class="label">&nbsp;</p>
-									<p class="input"><input type="submit" name="submit" value="Comment" /><input type="reset" name="reset" value="Reset" /></p>
+									<p class="input"><input type="submit" name="submit" value="Comment" class="button" /><input type="reset" name="reset" value="Reset" class="button" /></p>
 								</form>
 
 								<h3>Live Comment Preview:</h3>

@@ -17,7 +17,7 @@
 						#set( $totalEntries = 0)
 						#foreach ($entry in $BLOJSOM_ENTRIES)
 							#parse( "asual-entry.vm" )
-							<p>[<a href="$entryLink?tb=y" title="Trackback">Trackback</a>]</p>
+							<p id="trackback">[<a href="$entryLink?tb=y" title="Trackback">Trackback</a>]</p>
 							<div>
 								#foreach ($entryTrackback in $entry.getTrackbacks())
 
