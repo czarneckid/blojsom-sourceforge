@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.29 2004-09-12 18:40:04 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.30 2004-09-13 20:27:02 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -242,7 +242,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                     Blog userBlog = null;
                     try {
                         // If a global blog-home directory has been defined, use it for each user
-                        if (_globalBlogHome != null) {
+                        if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome)) {
                             String usersBlogHome = _globalBlogHome + user + "/";
                             File blogHomeDirectory = new File(usersBlogHome);
                             if (!blogHomeDirectory.exists()) {
