@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.8 2003-10-23 01:31:27 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.9 2003-11-11 11:48:02 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -192,11 +192,8 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_COMMENTS_DIRECTORY_IP, _blogCommentsDirectory);
 
         String commentsDirectoryRegex;
-        if (_blogCommentsDirectory.startsWith(".")) {
-            commentsDirectoryRegex = ".*" + File.separator + "\\" + _blogCommentsDirectory;
-        } else {
-            commentsDirectoryRegex = ".*" + File.separator + _blogCommentsDirectory;
-        }
+
+        commentsDirectoryRegex = ".*" + File.separator + _blogCommentsDirectory;
 
         _blogTrackbackDirectory = blogConfiguration.getProperty(BLOG_TRACKBACK_DIRECTORY_IP);
         if ((_blogTrackbackDirectory == null) || ("".equals(_blogTrackbackDirectory))) {
@@ -206,17 +203,24 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_TRACKBACK_DIRECTORY_IP, _blogTrackbackDirectory);
 
         String trackbackDirectoryRegex;
-        if (_blogTrackbackDirectory.startsWith(".")) {
-            trackbackDirectoryRegex = ".*" + File.separator + "\\" + _blogTrackbackDirectory;
-        } else {
-            trackbackDirectoryRegex = ".*" + File.separator + _blogTrackbackDirectory;
-        }
+
+        trackbackDirectoryRegex = ".*" + File.separator + _blogTrackbackDirectory;
 
         String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
-        // Add the blog comments directory to the blog directory filter
-        if (blogDirectoryFilter == null) {
+        // Add the blog comments and trackback directories to the blog directory filter
+        if (blogDirectoryFilter == null || "".equals(blogDirectoryFilter)) {
             blogDirectoryFilter = commentsDirectoryRegex + ", " + trackbackDirectoryRegex;
+        } else {
+            if (blogDirectoryFilter.indexOf(commentsDirectoryRegex) == -1) {
+                blogDirectoryFilter += ", " + commentsDirectoryRegex;
+            }
+
+            if (blogDirectoryFilter.indexOf(trackbackDirectoryRegex) == -1) {
+                blogDirectoryFilter += ", " + trackbackDirectoryRegex;
+            }
         }
+        _logger.debug("Comments directory regex: " + commentsDirectoryRegex);
+        _logger.debug("Trackbacks directory regex: " + trackbackDirectoryRegex);
 
         _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
         for (int i = 0; i < _blogDirectoryFilter.length; i++) {
