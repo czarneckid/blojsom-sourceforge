@@ -35,8 +35,8 @@
 package org.blojsom.util;
 
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.FileBackedBlogEntry;
 import org.blojsom.blog.Blog;
+import org.blojsom.blog.FileBackedBlogEntry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.35 2004-10-05 02:46:14 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.36 2004-10-27 19:41:53 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -229,10 +229,11 @@ public class BlojsomUtils implements BlojsomConstants {
             private Date today = new Date();
 
             public boolean accept(File pathname) {
+                if (pathname.isDirectory()) {
+                    return false;
+                }
+
                 for (int i = 0; i < expressions.length; i++) {
-                    if (pathname.isDirectory()) {
-                        return false;
-                    }
                     String expression = expressions[i];
                     if (pathname.getName().matches(expression)) {
                         if (pathname.lastModified() <= today.getTime()) {
@@ -256,15 +257,52 @@ public class BlojsomUtils implements BlojsomConstants {
     public static FileFilter getExtensionsFilter(final String[] extensions) {
         return new FileFilter() {
             public boolean accept(File pathname) {
+                if (pathname.isDirectory()) {
+                    return false;
+                }
+
                 for (int i = 0; i < extensions.length; i++) {
-                    if (pathname.isDirectory()) {
-                        return false;
-                    }
                     String extension = extensions[i];
                     if (pathname.getName().endsWith(extension)) {
                         return true;
                     }
                 }
+                return false;
+            }
+        };
+    }
+
+    /**
+     * Return a file filter which takes a list of file extensions to look for
+     *
+     * @param extensions        List of file extensions
+     * @param returnDirectories Whether or not to return
+     * @return File filter appropriate for filtering out a set of file extensions
+     * @since blojsom 2.20
+     */
+    public static FileFilter getExtensionsFilter(final String[] extensions, final String[] excludedDirectories, final boolean returnDirectories) {
+        return new FileFilter() {
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory() && returnDirectories) {
+                    String path = pathname.toString();
+
+                    for (int i = 0; i < excludedDirectories.length; i++) {
+                        String excludedDirectory = excludedDirectories[i];
+                        if (path.matches(excludedDirectory)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                for (int i = 0; i < extensions.length; i++) {
+                    String extension = extensions[i];
+                    if (pathname.getName().matches(extension)) {
+                        return true;
+                    }
+                }
+
                 return false;
             }
         };
@@ -278,6 +316,26 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static FileFilter getExtensionFilter(final String extension) {
         return getExtensionsFilter(new String[]{extension});
+    }
+
+    /**
+     * Visit a set of directories and add items to a list matching a list of extensions
+     *
+     * @param extensions Extensions to match
+     * @param excludedDirectories Directories to exclude
+     * @param directoryOrFile Starting directory
+     * @param items List of items
+     * @since blojsom 2.20
+     */
+    public static void visitFilesAndDirectories(final String[] extensions, final String[] excludedDirectories, final File directoryOrFile, List items) {
+        File[] subDirectories = directoryOrFile.listFiles(getExtensionsFilter(extensions, excludedDirectories, true));
+        for (int i = 0; i < subDirectories.length; i++) {
+            if (subDirectories[i].isDirectory()) {
+                visitFilesAndDirectories(extensions, excludedDirectories, subDirectories[i], items);
+            } else {
+                items.add(subDirectories[i]);
+            }
+        }
     }
 
     /**
@@ -313,7 +371,6 @@ public class BlojsomUtils implements BlojsomConstants {
         return (String[]) list.toArray(new String[list.size()]);
     }
 
-
     /**
      * Convert the request parameters to a string
      *
@@ -336,7 +393,6 @@ public class BlojsomUtils implements BlojsomConstants {
         }
         return buffer.toString();
     }
-
 
     /**
      * Strip off the blog home directory for a requested blog category
@@ -580,7 +636,6 @@ public class BlojsomUtils implements BlojsomConstants {
             return input.substring(0, input.length() - 1);
         }
     }
-
 
     /**
      * Extracts the first line in a given string, otherwise returns the first n bytes
@@ -874,7 +929,6 @@ public class BlojsomUtils implements BlojsomConstants {
         return result;
     }
 
-
     /**
      * Convert Byte Array to Hex Value
      *
@@ -910,8 +964,6 @@ public class BlojsomUtils implements BlojsomConstants {
         return new String(buf1);
     }
 
-
-
     /**
      * Try to load a properties file from disk
      *
@@ -931,9 +983,9 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Try to load a properties file from disk
      *
-     * @param servletConfig   Servlet configuration
-     * @param configurationIP Name of the file to load the properties from
-     * @param required        If the properties file is required
+     * @param servletConfig       Servlet configuration
+     * @param configurationIP     Name of the file to load the properties from
+     * @param required            If the properties file is required
      * @param allowMultipleValues If the {@link BlojsomProperties} object should allow multiple values
      * @return Properties from the file. NEVER returns null.
      * @throws BlojsomException If there is an I/O error or if configurationIP is
@@ -1482,7 +1534,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Construct a blog URL from the request
      *
      * @param httpServletRequest Request
-     * @param blogID Blog ID
+     * @param blogID             Blog ID
      * @return URL of the form <code>http://server:port/context_path/servlet_path/blog_id/</code>
      * @since blojsom 2.20
      */
@@ -1499,8 +1551,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * {@link #constructBaseURL(javax.servlet.http.HttpServletRequest)} and {@link #constructBlogURL(javax.servlet.http.HttpServletRequest, String)}.
      *
      * @param httpServletRequest Request
-     * @param blog {@link Blog}
-     * @param blogID Blog ID
+     * @param blog               {@link Blog}
+     * @param blogID             Blog ID
      * @since blojsom 2.20
      */
     public static void resolveDynamicBaseAndBlogURL(HttpServletRequest httpServletRequest, Blog blog, String blogID) {

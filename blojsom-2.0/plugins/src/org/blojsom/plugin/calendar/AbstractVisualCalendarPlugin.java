@@ -37,19 +37,19 @@ package org.blojsom.plugin.calendar;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Map;
-import java.util.Locale;
+import java.io.File;
+import java.util.*;
 
 /**
  * AbstractVisualCalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.3 2004-01-13 02:10:51 czarneckid Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.4 2004-10-27 19:41:38 czarneckid Exp $
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
@@ -58,11 +58,11 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -76,7 +76,7 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
         Locale locale = (Locale) context.get(BLOJSOM_CALENDAR_LOCALE);
         BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
 
-        Calendar entrycalendar = new GregorianCalendar(locale);
+        Calendar entrycalendar = Calendar.getInstance(locale);
         if (entries != null && entries.length > 0) {
             for (int x = 0; x < entries.length; x++) {
                 BlogEntry entry = entries[x];
@@ -88,9 +88,25 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
                     blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
                 }
             }
+
+            if (context.containsKey(BlojsomConstants.BLOJSOM_PERMALINK)) {
+                ArrayList files = new ArrayList();
+                BlojsomUtils.visitFilesAndDirectories(user.getBlog().getBlogFileExtensions(), user.getBlog().getBlogDirectoryFilter(), new File(user.getBlog().getBlogHome()), files);
+                Calendar checkCalendar = Calendar.getInstance(locale);
+                for (int i = 0; i < files.size(); i++) {
+                    File entryOnDisk = (File) files.get(i);
+                    checkCalendar.setTimeInMillis(entryOnDisk.lastModified());
+                    int entrymonth = checkCalendar.get(Calendar.MONTH);
+                    int entryyear = checkCalendar.get(Calendar.YEAR);
+                    if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryyear == blogCalendar.getCurrentYear())) {
+                        blogCalendar.setEntryForDOM(checkCalendar.get(Calendar.DAY_OF_MONTH));
+                    }
+                }
+            }
         }
 
         context.put(BLOJSOM_CALENDAR, blogCalendar);
         return entries;
     }
+
 }
