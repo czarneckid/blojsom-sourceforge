@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.26 2003-03-11 01:34:36 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.27 2003-03-11 04:08:18 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -275,14 +275,14 @@ public class Blog implements BlojsomConstants {
      * @param requestedCategory Requested category
      * @param permalink Permalink entry requested
      * @return Blog entry array containing the single requested permalink entry,
-     * or <code>null</code> if the permalink entry was not found
+     * or <code>BlogEntry[0]</code> if the permalink entry was not found
      */
     public BlogEntry[] getPermalinkEntry(BlogCategory requestedCategory, String permalink) {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         String permalinkEntry = _blogHome + category + permalink;
         File blogFile = new File(permalinkEntry);
         if (!blogFile.exists()) {
-            return null;
+            return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
             BlogEntry blogEntry = new BlogEntry();
@@ -292,7 +292,7 @@ public class Blog implements BlojsomConstants {
             try {
                 blogEntry.reloadSource();
             } catch (IOException e) {
-                return null;
+                return new BlogEntry[0];
             }
             blogEntry.setCommentsDirectory(_blogCommentsDirectory);
             if (_blogCommentsEnabled.booleanValue()) {
@@ -309,13 +309,13 @@ public class Blog implements BlojsomConstants {
      * @param category Requested category as a String
      * @param permalink Permalink entry requested
      * @return Blog entry array containing the single requested permalink entry,
-     * or <code>null</code> if the permalink entry was not found
+     * or <code>BlogEntry[0]</code> if the permalink entry was not found
      */
     public BlogEntry[] getPermalinkEntry(String category, String permalink) {
         String permalinkEntry = _blogHome + BlojsomUtils.removeInitialSlash(category) + permalink;
         File blogFile = new File(permalinkEntry);
         if (!blogFile.exists()) {
-            return null;
+            return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
             BlogEntry blogEntry = new BlogEntry();
@@ -325,7 +325,7 @@ public class Blog implements BlojsomConstants {
             try {
                 blogEntry.reloadSource();
             } catch (IOException e) {
-                return null;
+                return new BlogEntry[0];
             }
             blogEntry.setCommentsDirectory(_blogCommentsDirectory);
             if (_blogCommentsEnabled.booleanValue()) {
@@ -354,7 +354,7 @@ public class Blog implements BlojsomConstants {
      * @param requestedCategory Requested category
      * @param maxBlogEntries Maximum number of blog entries to retrieve from a blog category
      * @return Blog entry array containing the list of blog entries for the requested category,
-     * or <code>null</code> if there are no entries for the category
+     * or <code>BlogEntry[0]</code> if there are no entries for the category
      */
     public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int maxBlogEntries) {
         BlogEntry[] entryArray;
@@ -363,7 +363,7 @@ public class Blog implements BlojsomConstants {
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         if (entries == null) {
             _logger.debug("No blog entries in blog directory: " + blogCategory);
-            return null;
+            return new BlogEntry[0];
         } else {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
             entryArray = new BlogEntry[entries.length];
@@ -407,7 +407,7 @@ public class Blog implements BlojsomConstants {
      * @param month Month to retrieve entries for
      * @param day Day to retrieve entries for
      * @return Blog entry array containing the list of blog entries for the given category, year, month, and day,
-     * or <code>null</code> if there are no entries
+     * or <code>BlogEntry[0]</code> if there are no entries
      */
     public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String year, String month, String day) {
         BlogEntry[] blogEntries = getEntriesAllCategories(_blogDefaultCategoryMappings, -1);
@@ -415,7 +415,7 @@ public class Blog implements BlojsomConstants {
         String requestedDateKey = year + month + day;
 
         if (blogEntries == null) {
-            return null;
+            return new BlogEntry[0];
         }
 
         for (int i = 0; i < blogEntries.length; i++) {
@@ -427,7 +427,7 @@ public class Blog implements BlojsomConstants {
         }
 
         if (updatedEntryList.size() == 0) {
-            return null;
+            return new BlogEntry[0];
         } else {
             return (BlogEntry[]) updatedEntryList.toArray(new BlogEntry[updatedEntryList.size()]);
         }
@@ -465,7 +465,7 @@ public class Blog implements BlojsomConstants {
      * the categories in the list will be used to search for entries
      * @param maxBlogEntries Maximum number of blog entries to retrieve from each category
      * @return Blog entry array containing the list of blog entries for the categories
-     * or <code>null</code> if there are no entries
+     * or <code>BlogEntry[0]</code> if there are no entries
      */
     public BlogEntry[] getEntriesAllCategories(String[] categoryFilter, int maxBlogEntries) {
         BlogCategory[] blogCategories = null;
@@ -481,7 +481,7 @@ public class Blog implements BlojsomConstants {
         }
 
         if (blogCategories == null) {
-            return null;
+            return new BlogEntry[0];
         } else {
             ArrayList blogEntries = new ArrayList();
             for (int i = 0; i < blogCategories.length; i++) {
