@@ -7,20 +7,24 @@
     </developers>
 
     <changes>
-        <release version="2.13" date="in CVS">
-            <action dev="intabulas" type="update" context="Extension">
-                Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
+        <release version="2.13" date="Available from CVS">
+            <action dev="czarneckid" type="add" context="Core">
+                All available categories are now placed under the key <code>BLOJSOM_ALL_CATEGORIES</code>. This would
+                allow you to display all your categories to your users in your templates, not just the categories available underneath
+                the current category.
             </action>
 
             <action dev="intabulas" type="update" context="Core">
-                Added a getISO8601Date() and getRFC822Date() methods to the BlogComment class for supporting comment api.
+                Added a getISO8601Date() and getRFC822Date() methods to the BlogComment class for supporting Comment API.
             </action>
 
             <action dev="intabulas" type="add" context="Core">
-                Added rss and rss2 "-comment.?" templates (both Velocity and JSP) to support comment api rss feeds
+                Added rss and rss2 "-comment.?" templates (both Velocity and JSP) to support Comment API rss feeds.
             </action>
 
-
+            <action dev="intabulas" type="update" context="Library">
+                Updated the <a href="http://sandler.sf.net">Sandler</a> library to the new 0.6 release.
+            </action>
         </release>
  
         <release version="2.12" date="February 19, 2004">
