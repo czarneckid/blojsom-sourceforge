@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.26 2004-04-26 01:58:58 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.27 2004-05-03 23:36:28 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1360,5 +1360,19 @@ public class BlojsomUtils implements BlojsomConstants {
         } else {
             return new File(filenameWithoutExtension + "-" + new Date().getTime() + "." + fileExtension);
         }
+    }
+
+    /**
+     * Strip line terminator characters from an input string
+     *
+     * @param input Input string
+     * @return Input with line terminator characters stripped or <code>null</code> if the input was <code>null</code>
+     */
+    public static String stripLineTerminators(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        return input.replaceAll("[\n\r\f]", "");
     }
 }
