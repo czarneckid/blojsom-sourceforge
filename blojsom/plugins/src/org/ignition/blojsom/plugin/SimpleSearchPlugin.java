@@ -39,12 +39,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.3 2003-03-01 20:18:25 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.4 2003-03-14 04:13:16 czarneckid Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -75,11 +76,12 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String query = httpServletRequest.getParameter(QUERY_PARAM);
         if (query == null) {
             return entries;

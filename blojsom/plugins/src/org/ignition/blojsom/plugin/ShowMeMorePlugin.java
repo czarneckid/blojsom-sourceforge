@@ -37,12 +37,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Map;
 
 /**
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMorePlugin.java,v 1.1 2003-03-01 18:02:52 czarneckid Exp $
+ * @version $Id: ShowMeMorePlugin.java,v 1.2 2003-03-14 04:13:16 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements BlojsomPlugin {
 
@@ -84,11 +85,12 @@ public class ShowMeMorePlugin implements BlojsomPlugin {
      * Process the blog entries
      *
      * @param httpServletRequest Request
+     * @param context Context
      * @param entries Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         String wantsToSeeMore = httpServletRequest.getParameter(SHOW_ME_MORE_PARAM);
         if ("y".equalsIgnoreCase(wantsToSeeMore)) {
             return entries;
