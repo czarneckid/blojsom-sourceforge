@@ -36,12 +36,13 @@ package org.blojsom.blog;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.4 2004-04-23 22:15:51 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.5 2004-05-16 22:37:45 czarneckid Exp $
  */
 public class Trackback {
 
@@ -144,6 +145,10 @@ public class Trackback {
      * @since blojsom 2.14
      */
     public Map getMetaData() {
+        if (_metaData == null) {
+            return new HashMap();
+        }
+        
         return _metaData;
     }
 

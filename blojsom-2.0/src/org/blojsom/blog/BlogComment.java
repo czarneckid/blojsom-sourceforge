@@ -38,12 +38,13 @@ import org.blojsom.util.BlojsomUtils;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.6 2004-04-23 22:16:00 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.7 2004-05-16 22:37:45 czarneckid Exp $
  */
 public class BlogComment {
 
@@ -169,6 +170,10 @@ public class BlogComment {
      * @since blojsom 2.14
      */
     public Map getMetaData() {
+        if (_metaData == null) {
+            return new HashMap();
+        }
+
         return _metaData;
     }
 
