@@ -36,6 +36,7 @@ package org.ignition.blojsom.servlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ignition.blojsom.BlojsomException;
 import org.ignition.blojsom.blog.*;
 import org.ignition.blojsom.dispatcher.GenericDispatcher;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
@@ -44,7 +45,6 @@ import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
-import org.ignition.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -61,15 +61,15 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.83 2003-07-11 21:21:24 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.84 2003-08-04 15:32:36 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
     // BlojsomServlet initialization properties from web.xml
-    private final static String BLOG_FLAVOR_CONFIGURATION_IP = "blog-flavor-configuration";
-    private final static String BLOG_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-map-configuration";
-    private final static String BLOG_CONFIGURATION_IP = "blog-configuration";
-    private final static String BLOG_PLUGIN_CONFIGURATION_IP = "blog-plugin-configuration";
+    private static final String BLOG_FLAVOR_CONFIGURATION_IP = "blog-flavor-configuration";
+    private static final String BLOG_DISPATCHER_MAP_CONFIGURATION_IP = "dispatcher-map-configuration";
+    private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
+    private static final String BLOG_PLUGIN_CONFIGURATION_IP = "blog-plugin-configuration";
 
     private Blog _blog;
 
@@ -258,7 +258,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 String plugin = (String) pluginIterator.next();
                 if (plugin.indexOf(BLOJSOM_PLUGIN_CHAIN) != -1) {
                     _pluginChainMap.put(plugin, BlojsomUtils.parseCommaList(pluginProperties.getProperty(plugin)));
-                    _logger.debug("Added plugin chain: " + plugin + "=" + pluginProperties.getProperty(plugin));
+                    _logger.debug("Added plugin chain: " + plugin + '=' + pluginProperties.getProperty(plugin));
                 } else {
                     String pluginClassName = pluginProperties.getProperty(plugin);
                     try {
@@ -353,7 +353,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         _logger.debug("blojsom servlet path: " + httpServletRequest.getServletPath());
         _logger.debug("blojsom request URI: " + httpServletRequest.getRequestURI());
-        _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL().toString());
+        _logger.debug("blojsom request URL: " + httpServletRequest.getRequestURL());
         _logger.debug("blojsom URL: " + _blog.getBlogBaseURL());
 
         // Make sure that we have a request URI ending with a / otherwise we need to
@@ -366,7 +366,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 redirectURL.append("?");
                 redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest));
             }
-            _logger.debug("Redirecting the user to: " + redirectURL.toString());
+            _logger.debug("Redirecting the user to: " + redirectURL);
             httpServletResponse.sendRedirect(redirectURL.toString());
             return;
         }
@@ -382,7 +382,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         }
 
         // Setup the initial context for the dispatcher
-        HashMap context = new HashMap();
+        Map context = new HashMap();
 
         BlogEntry[] entries = null;
         BlogCategory[] categories = null;
@@ -401,7 +401,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         if (httpServletRequest.getParameter(PLUGINS_PARAM) != null) {
             pluginChain = BlojsomUtils.parseCommaList(httpServletRequest.getParameter(PLUGINS_PARAM));
         } else {
-            String pluginChainMapKey = flavor + "." + BLOJSOM_PLUGIN_CHAIN;
+            String pluginChainMapKey = flavor + '.' + BLOJSOM_PLUGIN_CHAIN;
             String[] pluginChainValue = (String[]) _pluginChainMap.get(pluginChainMapKey);
             if (pluginChainValue != null && pluginChainValue.length > 0) {
                 pluginChain = (String[]) _pluginChainMap.get(pluginChainMapKey);
@@ -465,7 +465,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
                 // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
                 String etagLastModified = BlojsomUtils.getISO8601Date(new Date(_lastmodified));
-                httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
+                httpServletResponse.addHeader(HTTP_ETAG, '\"' + BlojsomUtils.digestString(etagLastModified) + '\"');
 
                 httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
                 blogdate = entries[0].getRFC822Date();
@@ -481,7 +481,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 blogDateObject = today;
                 httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, today.getTime());
                 // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
-                httpServletResponse.addHeader(HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
+                httpServletResponse.addHeader(HTTP_ETAG, '\"' + BlojsomUtils.digestString(blogISO8601Date) + '\"');
             }
         }
 
