@@ -29,7 +29,7 @@
                 conditional-get=org.blojsom.plugin.limiter.ConditionalGetPlugin
             </source>
             <p>
-                You may then add "weblogs-ping" to one of the flavor-based plugin chains. This would typically be
+                You may then add "conditional-get" to one of the flavor-based plugin chains. This would typically be
                 done for the syndication feeds such as RSS and Atom.
                 These plugin chains can be found in the individual user's
                 <code>plugin.properties</code> file. For example:
