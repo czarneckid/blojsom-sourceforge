@@ -9,6 +9,9 @@
     <!-- required feed elements -->
     <title mode="escaped">$BLOJSOM_BLOG.getBlogName()</title>
     <link rel="alternate" type="text/html" href="$BLOJSOM_BLOG.getBlogURL()"/>
+
+    <link href="$BLOJSOM_BLOG.getBlogBaseURL()/atomapi/" rel="service.post" title="$BLOJSOM_BLOG.getBlogName()" type="application/x.atom+xml"/>
+
     <modified>$BLOJSOM_DATE_UTC</modified>
 
     <!-- optional feed elements -->
@@ -40,8 +43,10 @@
         <!-- required entry elements -->
         <title>$entry.getEscapedTitle().replaceAll("<.*?>","")</title>
         <link rel="alternate" type="text/html" href="$entry.getLink()"/>
-        <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
-        <issued>$entry.getISO8601Date()</issued>
+        <link href="$BLOJSOM_BLOG.getBlogBaseURL()/atomapi$entry.getEncodedCategory()/?permalink=$entry.getPermalink()" rel="service.edit" title="Edit $entry.getEscapedTitle()" type="application/x.atom+xml"/>
+
+        <modified>$entry.getUTCDate()</modified>
+        <issued>$entry.getUTCDate()</issued>
         <id>tag:$BLOJSOM_BLOG.getBlogOwnerEmail(),$entry.getDateAsFormat("yyyy-MM-dd"):$entry.getEncodedCategory().$entry.getPermalink()</id>
 
         <!-- optional entry elements -->
