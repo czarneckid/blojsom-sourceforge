@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.32 2004-03-20 15:11:28 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.33 2004-04-01 03:10:24 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -284,6 +284,8 @@ public interface BlojsomConstants {
      * Line separator for the system
      */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    public static final String WHITESPACE = " \t\n\f\r";    
 
     /**
      * Various HTTP caching headers

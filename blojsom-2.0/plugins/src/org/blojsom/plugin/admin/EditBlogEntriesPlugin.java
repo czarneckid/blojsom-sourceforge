@@ -60,7 +60,7 @@ import java.text.ParseException;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.24 2004-03-30 02:13:44 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.25 2004-04-01 03:11:27 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -578,7 +578,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             _logger.error(e);
         }
 
-        String[] trackbackURLs = BlojsomUtils.parseDelimitedList(blogTrackbackURLs, " \t\n\f\r");
+        String[] trackbackURLs = BlojsomUtils.parseDelimitedList(blogTrackbackURLs, WHITESPACE);
         if (trackbackURLs != null && trackbackURLs.length > 0) {
             for (int i = 0; i < trackbackURLs.length; i++) {
                 String trackbackURL = trackbackURLs[i].trim();
@@ -624,7 +624,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
      * @param blogPingURLs Ping URLs
      */
     private void sendBlogPings(Blog blog, String blogPingURLs) {
-        String[] pingURLs = BlojsomUtils.parseDelimitedList(blogPingURLs, " \t\n\f\r");
+        String[] pingURLs = BlojsomUtils.parseDelimitedList(blogPingURLs, WHITESPACE);
         EditBlogEntriesPluginAsyncCallback editBlogEntriesPluginAsyncCallback = new EditBlogEntriesPluginAsyncCallback();
         Vector params = new Vector();
         params.add(blog.getBlogName());
