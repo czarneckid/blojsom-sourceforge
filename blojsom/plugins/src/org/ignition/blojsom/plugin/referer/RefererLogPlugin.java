@@ -57,7 +57,7 @@ import java.util.*;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.13 2003-04-19 02:44:57 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.14 2003-04-25 03:13:29 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -311,7 +311,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
             if (group.isHitCounter()) {
 
                 _refererproperties.put(groupflavor + "." + getRefererDate(group.getLastReferralDate()) + "." + group.getReferralCount(), HITCOUNTER_KEY);
-                //_refererproperties.put(groupflavor + ".hitcounter", getRefererDate(group.getLastReferralDate()) + "," + group.getReferralCount());
             } else {
                 Iterator _flavoriterator = group.keySet().iterator();
                 while (_flavoriterator.hasNext()) {
