@@ -55,7 +55,7 @@ import java.util.Hashtable;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.11 2003-03-23 19:27:13 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.12 2003-04-06 18:43:20 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -112,7 +112,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             BlogCategory[] _categories = _blog.getBlogCategories();
 
             if (_categories != null) {
-
                 result = new Hashtable(_categories.length);
 
                 for (int x = 0; x < _categories.length; x++) {
@@ -141,7 +140,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
             }
 
             return result;
-
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
@@ -167,7 +165,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("    Publish: " + publish);
 
         if (_blog.checkAuthorization(userid, password)) {
-
             boolean result = false;
 
             String category;
@@ -263,7 +260,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 }
 
                 String filename = BlojsomUtils.digestString(hashable).toUpperCase() + ".txt";
-                String outputfile = blogCategory.getAbsolutePath() + "/" + filename;
+                String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
                 String postid = blogid + "?" + PERMALINK_PARAM + "=" + filename;
 
                 StringBuffer _post = new StringBuffer();
