@@ -48,11 +48,11 @@ import java.util.regex.Matcher;
  * Macro Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: MacroExpansionPlugin.java,v 1.1 2003-02-26 21:49:41 czarneckid Exp $
+ * @version $Id: MacroExpansionPlugin.java,v 1.2 2003-03-01 18:04:32 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements BlojsomPlugin {
 
-    private static final String BLOG_MACRO_CONFIGURATION_IP = "blog-macros-expansion";
+    private static final String BLOG_MACRO_CONFIGURATION_IP = "plugin-macros-expansion";
 
     private Log _logger = LogFactory.getLog(MacroExpansionPlugin.class);
     private Map _macros;
@@ -75,7 +75,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
      */
-    private void loadMacros(ServletConfig servletConfig) {
+    private void loadMacros(ServletConfig servletConfig) throws BlojsomPluginException {
         String macroConfiguration = servletConfig.getInitParameter(BLOG_MACRO_CONFIGURATION_IP);
         Properties macroProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(macroConfiguration);
@@ -88,7 +88,7 @@ public class MacroExpansionPlugin implements BlojsomPlugin {
                 _logger.info("Adding macro [" + keyword + "] with value of [" + macroProperties.get(keyword) + "]");
             }
         } catch (IOException e) {
-            _logger.error(e);
+            throw new BlojsomPluginException(e);
         }
     }
 
