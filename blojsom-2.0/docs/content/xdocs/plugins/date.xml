@@ -34,7 +34,7 @@
 
             <p>
                 The date format plugin has two properties that are added to the
-                <em>/WEB-INF/blojsom.properties</em>
+                <code>/WEB-INF/(user-id)/blog.properties</code>
                 file:
             </p>
             <source>
