@@ -27,23 +27,23 @@
                 is HTML.
             </action>
 
-            <action dev="czarneckid" type="update" context="Plugins">
+            <action dev="czarneckid" type="update" context="Plugin">
                 Removed <tt>synchronized</tt> methods from Comment and Trackback plugins.
             </action>
 
-            <action dev="czarneckid" type="update" context="Plugins">
+            <action dev="czarneckid" type="update" context="Plugin">
                 Moved administration plugin Velocity templates to separate directory under admin plugin package.
             </action>
 
-            <action dev="czarneckid" type="add" context="Plugins">
+            <action dev="czarneckid" type="add" context="Plugin">
                 Added File Upload plugin to allow you to upload resources to your blog from the web administration console.
             </action>
 
-            <action dev="czarneckid" type="add" context="Plugins">
+            <action dev="czarneckid" type="add" context="Plugin">
                 Added Edit Blog Entries plugin to allow you to edit blog entries from the web.
             </action>
 
-            <action dev="czarneckid" type="add" context="Plugins">
+            <action dev="czarneckid" type="add" context="Plugin">
                 Added Edit Blog Flavors plugin to allow you to add new flavors from the web.
             </action>
 
