@@ -19,6 +19,11 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
+                Updated Edit Blog Properties plugin to allow for editing of comment, trackback, and weblogs ping
+                plugin proprerties.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
                 Updated Edit Blog Entries plugin so that when you add a new blog entry or edit an existing blog entry,
                 you will be taken to the editing page for that menu instead of having to navigate the menus to edit
                 the particular entry. 
