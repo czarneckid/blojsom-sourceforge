@@ -76,7 +76,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.20 2003-12-17 20:24:17 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.21 2003-12-28 21:57:45 intabulas Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -445,7 +445,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.setCategory(category);
                     entry.setDescription(atomEntry.getContent(0).getBody());
                     entry.setDate(atomEntry.getCreated());
-                    entry.setTitle(atomEntry.getTitle());
+                    entry.setTitle(atomEntry.getTitle().getBody());
 
                     if (atomEntry.getAuthor() != null) {
                         blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
@@ -522,7 +522,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     Map blogEntryMetaData = entry.getMetaData();
                     entry.setCategory(category);
                     entry.setDescription(atomEntry.getContent(0).getBody());
-                    entry.setTitle(atomEntry.getTitle());
+                    entry.setTitle(atomEntry.getTitle().getBody());
                     if (atomEntry.getAuthor() != null) {
                         blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
                     }

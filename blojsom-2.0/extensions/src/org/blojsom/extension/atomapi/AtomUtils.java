@@ -43,9 +43,11 @@ import org.intabulas.sandler.authentication.DigestUtilities;
 import org.intabulas.sandler.elements.Author;
 import org.intabulas.sandler.elements.Content;
 import org.intabulas.sandler.elements.Entry;
+import org.intabulas.sandler.elements.Link;
 import org.intabulas.sandler.elements.impl.AuthorImpl;
 import org.intabulas.sandler.elements.impl.ContentImpl;
 import org.intabulas.sandler.elements.impl.EntryImpl;
+import org.intabulas.sandler.elements.impl.LinkImpl;
 
 import java.util.Date;
 
@@ -54,7 +56,7 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.9 2003-09-13 01:00:39 czarneckid Exp $
+ * @version $Id: AtomUtils.java,v 1.10 2003-12-28 21:57:33 intabulas Exp $
  */
 public class AtomUtils implements AtomConstants {
 
@@ -88,7 +90,14 @@ public class AtomUtils implements AtomConstants {
         result.setIssued(blogentry.getDate());
         result.setModified(new Date(blogentry.getLastModified()));
         result.setId(blogentry.getEscapedLink());
-        result.setLink(blogentry.getEscapedLink());
+
+
+        Link link = new LinkImpl();
+        link.setType("text/html");
+        link.setRelationship("alternate");
+        link.setHref(blogentry.getEscapedLink());
+        result.addLink(link);
+
         Author author = new AuthorImpl();
         author.setName(blog.getBlogOwner());
         author.setEmail(blog.getBlogOwnerEmail());
