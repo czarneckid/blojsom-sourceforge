@@ -54,7 +54,7 @@ import java.util.Map;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.3 2004-12-09 17:39:20 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.4 2004-12-23 17:06:25 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin {
@@ -188,7 +188,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin {
      * @author David Czarnecki
      * @since blojsom 2.22
      */
-    private class RSSEnclosure {
+    public class RSSEnclosure {
 
         private String url;
         private long length;
