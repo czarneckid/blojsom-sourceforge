@@ -43,17 +43,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.nio.channels.FileChannel;
 
 /**
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.24 2004-04-23 22:13:50 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.25 2004-04-26 00:24:00 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -563,6 +563,25 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Remove the trailing "/" from a string
+     *
+     * @param input Input string
+     * @return Input string with trailing "/" removed or <code>null</code> if the input was null
+     */
+    public static String removeTrailingSlash(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        if (!input.endsWith("/")) {
+            return input;
+        } else {
+            return input.substring(0, input.length() - 1);
+        }
+    }
+
+
+    /**
      * Extracts the first line in a given string, otherwise returns the first n bytes
      * 
      * @param input  String from which to extract the first line
@@ -1024,7 +1043,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Turn an array of strings into a single string separated by a given delimeter. If the incoming array is null, this
      * method returns the <code>null</code> string.
      *
-     * @param array Array of strings
+     * @param array     Array of strings
      * @param separator Separator between strings
      * @return Single string containing all the strings from the original array separated by the given delimeter, or <code>null</code> if the input was null.
      * @since blojsom 2.14
@@ -1305,7 +1324,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return the number of days between two dates
      *
      * @param startDate Start date
-     * @param endDate End date
+     * @param endDate   End date
      * @return Number of days between two dates which may be 0 if either of the dates if <code>null</code>
      * @since blojsom 2.14
      */
