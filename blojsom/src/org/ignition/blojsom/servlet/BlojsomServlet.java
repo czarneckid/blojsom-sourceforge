@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.64 2003-04-05 18:10:48 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.65 2003-04-06 18:50:57 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -402,6 +402,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
         String blogdate = null;
         String blogISO8601Date = null;
+        Date blogDateObject = null;
         // If we have entries, construct a last modified on the most recent entry
         // Additionally, set the blog date
         if ((entries != null) && (entries.length > 0)) {
@@ -419,11 +420,13 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
             blogdate = entries[0].getRFC822Date();
             blogISO8601Date = entries[0].getISO8601Date();
+            blogDateObject = entries[0].getDate();
         } else {
             _logger.debug("Adding last-modified header for current date");
             Date today = new Date();
             blogdate = BlojsomUtils.getRFC822Date(today);
             blogISO8601Date = BlojsomUtils.getISO8601Date(today);
+            blogDateObject = today;
         }
 
         // Finish setting up the context for the dispatcher
@@ -432,6 +435,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         context.put(BLOJSOM_ENTRIES, entries);
         context.put(BLOJSOM_DATE, blogdate);
         context.put(BLOJSOM_DATE_ISO8601, blogISO8601Date);
+        context.put(BLOJSOM_DATE_OBJECT, blogDateObject);
         if (requestedCategory.equals("/")) {
             context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategories());
         } else {
