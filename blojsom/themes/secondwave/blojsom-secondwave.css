@@ -84,11 +84,24 @@ a:hover
 .weblogdateline
 {
 	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
 	font-size: smaller;
 	color: #555555;
 	margin-top: 0pt;
 	padding-top: 0pt;
 }
+
+.refererhistory
+{
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-size: 75%;
+	color: #555555;
+	margin-top: 0pt;
+	margin-top: 0pt;
+	padding-top: 0pt;
+}
+
 
 
 .weblogpostedbyline

@@ -66,11 +66,33 @@ a:hover
 	padding-bottom: 0pt;
 }
 
+.weblogtitle2
+{
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: larger;
+	margin-bottom: 0pt;
+	margin-top: 1pt;
+	padding-bottom: 0pt;
+}
+
 .weblogdateline
 {
 	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
 	font-size: smaller;
 	color: #555555;
+	margin-top: 0pt;
+	padding-top: 0pt;
+}
+
+.refererhistory
+{
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-size: 75%;
+	color: #555555;
+	margin-top: 0pt;
 	margin-top: 0pt;
 	padding-top: 0pt;
 }
