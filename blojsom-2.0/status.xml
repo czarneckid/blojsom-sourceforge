@@ -7,7 +7,7 @@
     </developers>
 
     <changes>
-        <release version="2.08" date="Available from CVS">
+        <release version="2.08" date="January 11, 2004">
             <action dev="czarneckid" type="update" context="Core">
                 Added patch for potential NullPointerException when loading BlojsomProperties.
             </action>
