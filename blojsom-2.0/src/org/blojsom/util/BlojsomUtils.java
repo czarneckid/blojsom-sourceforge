@@ -56,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.55 2005-01-23 19:19:01 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.56 2005-01-24 04:38:55 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1882,5 +1882,27 @@ public class BlojsomUtils implements BlojsomConstants {
         Arrays.sort(timezones, collator);
 
         return timezones;
+    }
+
+    /**
+     * List the files in a sub-directory of a given directory and strip the parent directory from the path
+     * of the files added to the list.
+     *
+     * @param directory Sub-directory to start looking for files
+     * @param parentDirectory Parent directory to strip
+     * @param files List of files to add
+     * @since blojsom 2.23
+     */
+    public static void listFilesInSubdirectories(File directory, String parentDirectory, List files) {
+        if (directory.isDirectory()) {
+            String[] children = directory.list();
+            for (int i = 0; i < children.length; i++) {
+                listFilesInSubdirectories(new File(directory, children[i]), parentDirectory, files);
+            }
+        } else {
+            if (directory.getPath().startsWith(parentDirectory)) {
+                files.add(new File(directory.getPath().substring(parentDirectory.length() + 1)));
+            }
+        }
     }
 }
