@@ -10,7 +10,7 @@
 								$entry.getDescription()
 							</div>
 							<p>
-								#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))<span class="blue">Posted on $entry.getDateAsFormat('EEE, d MMM yyyy HH:mm') by $entry.getMetaData().get("blog-entry-author") ($!entry.getMetaData().get("vampire-plugin-days-since-posted") day(s) old)</span>#end
+								#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))<span class="blue">Posted on $entry.getDateAsFormat('EEE, d MMM yyyy HH:mm') by $entry.getMetaData().get("blog-entry-author") ($!entry.getMetaData().get("blojsom-plugin-days-since-posted") day(s) old)</span>#end
 
 								#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))<span>Comments [<a href="$entryLink?page=comments">$entry.getNumComments()</a>]</span>#end
 
