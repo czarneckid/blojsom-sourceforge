@@ -53,7 +53,7 @@ import java.util.Map;
  * Comment moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: CommentModerationPlugin.java,v 1.4 2005-01-05 02:31:38 czarneckid Exp $
+ * @version $Id: CommentModerationPlugin.java,v 1.5 2005-01-06 17:07:33 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class CommentModerationPlugin implements BlojsomPlugin {
@@ -105,8 +105,7 @@ public class CommentModerationPlugin implements BlojsomPlugin {
     /**
      * Simple check to see if comment moderation is enabled
      * <p/>
-     * param httpServletRequest  Request
-     *
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
      * @param context             Context
@@ -118,7 +117,13 @@ public class CommentModerationPlugin implements BlojsomPlugin {
 
         if ("true".equalsIgnoreCase(blog.getBlogProperty(COMMENT_MODERATION_ENABLED))) {
             if ("y".equalsIgnoreCase(httpServletRequest.getParameter(CommentPlugin.COMMENT_PARAM)) && user.getBlog().getBlogCommentsEnabled().booleanValue()) {
-                HashMap commentMetaData = new HashMap();
+                Map commentMetaData;
+                if (context.containsKey(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA)) {
+                    commentMetaData = (Map) context.get(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA);
+                } else {
+                    commentMetaData = new HashMap();
+                }
+                
                 commentMetaData.put(BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
                 context.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA, commentMetaData);
 

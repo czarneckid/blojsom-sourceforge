@@ -52,7 +52,7 @@ import java.util.HashMap;
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.3 2005-01-05 02:31:38 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.4 2005-01-06 17:10:16 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
@@ -77,8 +77,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
     /**
      * Simple check to see if comment moderation is enabled
      * <p/>
-     * param httpServletRequest  Request
-     *
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
      * @param context             Context
@@ -111,7 +110,13 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                 }
 
                 if (!passedCheck) {
-                    HashMap commentMetaData = new HashMap();
+                    Map commentMetaData;
+                    if (context.containsKey(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA)) {
+                        commentMetaData = (Map) context.get(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA);
+                    } else {
+                        commentMetaData = new HashMap();
+                    }
+                    
                     commentMetaData.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY, Boolean.TRUE);
                     context.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA, commentMetaData);
 
