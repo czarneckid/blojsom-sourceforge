@@ -79,6 +79,8 @@ Plugin changes:<br />
 - A new parameter "entry-cutoff-text" was added to the "Show More" plugin so that you can put,
 for example, a tag like &lt;more/&gt; to indicate the cutoff point for the plugin to insert a link
 to the full text of the blog entry.<br />
+- Added check in the "Show More" plugin to catch an invalid number for the <i>entry-length-cutoff</i>
+parameter. It will default to 400 if the number is invalid<br />
 - Added <a href="plugins-googlehighlight.html">Google Highlight Plugin</a> which will automaticaly highlight search words in your blog if the refer comes from a google query<br/>
 - Added <a href="javadoc/org/ignition/blojsom/plugin/chrono/ChronoPlugin.html">Chrono Plugin</a>
 which simply demonstrates how to sort entries in a different order<br/>
