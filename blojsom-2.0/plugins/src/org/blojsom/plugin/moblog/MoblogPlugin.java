@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.12 2004-05-03 23:37:40 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.13 2004-05-21 01:36:41 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -148,6 +148,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
      * Configuration property for whether or not moblog is enabled for this blog
      */
     private static final String PROPERTY_ENABLED = "moblog-enabled";
+
+    /**
+     * Configuration property for the secret word that must be present at the beginning of the subject
+     */
+    private static final String PLUGIN_MOBLOG_SECRET_WORD = "moblog-secret-word";
 
     /**
      * Configuration property for image mime-types
@@ -290,7 +295,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                         mailbox.setBlogUser(blogUser);
 
                         String hostname = moblogProperties.getProperty(PROPERTY_HOSTNAME);
-                        if (hostname != null) {
+                        if (!BlojsomUtils.checkNullOrBlank(hostname)) {
                             mailbox.setHostName(hostname);
                         } else {
                             mailbox.setEnabled(false);
@@ -299,7 +304,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                         }
 
                         String userid = moblogProperties.getProperty(PROPERTY_USERID);
-                        if (userid != null) {
+                        if (!BlojsomUtils.checkNullOrBlank(userid)) {
                             mailbox.setUserId(userid);
                         } else {
                             mailbox.setEnabled(false);
@@ -308,7 +313,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                         }
 
                         String password = moblogProperties.getProperty(PROPERTY_PASSWORD);
-                        if (password != null) {
+                        if (!BlojsomUtils.checkNullOrBlank(password)) {
                             mailbox.setPassword(password);
                         } else {
                             mailbox.setEnabled(false);
@@ -380,6 +385,14 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                             }
                         } else {
                             mailbox.setTextMimeTypes(new HashMap());
+                        }
+
+                        // Extract the secret word
+                        String secretWord = moblogProperties.getProperty(PLUGIN_MOBLOG_SECRET_WORD);
+                        if (BlojsomUtils.checkNullOrBlank(secretWord)) {
+                            mailbox.setSecretWord(null);
+                        } else {
+                            mailbox.setSecretWord(secretWord);
                         }
 
                         _checker.addMailbox(mailbox);
@@ -521,6 +534,18 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
                             subject = "";
                         } else {
                             subject = subject.trim();
+                        }
+
+                        String secretWord = mailbox.getSecretWord();
+                        if (secretWord != null) {
+                            if (!subject.startsWith(secretWord)) {
+                                _logger.error("Message does not begin with secret word for user id: " + mailbox.getUserId());
+                                msgs[msgNum].setFlag(Flags.Flag.DELETED, true);
+
+                                continue;
+                            } else {
+                                subject = subject.substring(secretWord.length());
+                            }
                         }
 
                         if (email.isMimeType(MULTIPART_TYPE)) {

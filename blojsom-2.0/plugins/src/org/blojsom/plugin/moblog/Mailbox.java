@@ -43,7 +43,7 @@ import java.util.Map;
  * This file is a container for everything the thread will need to connect to and to store into
  *
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.6 2004-04-27 17:13:18 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.7 2004-05-21 01:36:41 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -58,6 +58,7 @@ public class Mailbox {
     private String _entriesDirectory;
     private String _categoryName;
     private String _urlPrefix;
+    private String _secretWord;
     private boolean _enabled;
     private BlogUser _user;
     private Map _imageMimeTypes;
@@ -314,5 +315,25 @@ public class Mailbox {
      */
     public void setTextMimeTypes(Map textMimeTypes) {
         _textMimeTypes = textMimeTypes;
+    }
+
+    /**
+     * Retrieve the secret word for this mailbox
+     *
+     * @since blojsom 2.15
+     * @return Secret word which must be present at the start of the subject of the e-mail
+     */
+    public String getSecretWord() {
+        return _secretWord;
+    }
+
+    /**
+     * Set the secret word for this mailbox.
+     *
+     * @since blojsom 2.15
+     * @param secretWord Secret word which must be present at the start of the subject of the e-mail
+     */
+    public void setSecretWord(String secretWord) {
+        _secretWord = secretWord;
     }
 }
