@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.31 2003-03-19 03:17:16 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.32 2003-03-19 04:01:24 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -142,30 +142,6 @@ public interface BlojsomConstants {
      */
     public static final String PAGE_PARAM = "page";
 
-    /**
-     * Request parameter for the "comment"
-     */
-    public static final String COMMENT_PARAM = "comment";
-
-    /**
-     * Request parameter for the "author"
-     */
-    public static final String AUTHOR_PARAM = "author";
-
-    /**
-     * Request parameter for the "authorEmail"
-     */
-    public static final String AUTHOR_EMAIL_PARAM = "authorEmail";
-
-    /**
-     * Request parameter for the "authorURL"
-     */
-    public static final String AUTHOR_URL_PARAM = "authorURL";
-
-    /**
-     * Request parameter for the "commentText"
-     */
-    public static final String COMMENT_TEXT_PARAM = "commentText";
 
     /**
      * Request parameter for the "category"
