@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Edit Flavors")
+#adminPageHeader("#adminResource('edit.flavors.page.header' 'Edit Flavors')")
 
-        <div id="sideBar">
-            <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
-        </div>
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
+    </div>
 
         <!-- Add blog flavor form -->
         <div id="mainClm">
-            <h2>Add a blog flavor</h2>
+            <h2>#adminResource('add.blog.flavor.text' 'Add blog flavor')</h2>
             <table>
                 <form name="add-blog-flavor" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="add-blog-flavor"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-flavors"/>
                     <tr>
-                        <td>Flavor name</td>
+                        <td>#adminResource('flavor.name.text' 'Flavor name')</td>
                         <td><input type="text" size="50" name="flavor-name"/></td>
                     </tr>
                     <tr>
-                        <td>Flavor MIME type (defaults to text/html if not specified)</td>
+                        <td>#adminResource('flavor.mime.type.text' 'Flavor MIME type (defaults to text/html if not specified)')</td>
                         <td><input type="text" size="50" name="flavor-mime-type"/></td>
                     </tr>
                     <tr>
-                        <td>Flavor character set (defaults to UTF-8 if not specified)</td>
+                        <td>#adminResource('flavor.character.set.text' 'Flavor character set (defaults to UTF-8 if not specified)')</td>
                         <td><input type="text" size="50" name="flavor-character-set"/></td>
                     </tr>
                     <tr>
-                        <td>Blog template for flavor</td>
+                        <td>#adminResource('blog.template.for.flavor.text' 'Blog template for flavor')</td>
                         <td>
                             <select name="blog-template">
                             #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES)
@@ -38,8 +38,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Add blog flavor"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('add.blog.flavor.text' 'Add blog flavor')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
@@ -48,14 +48,14 @@
 
         <!-- Modify blog flavor form -->
         <div id="mainClm">
-            <h2>Modify a blog flavor</h2>
+            <h2>#adminResource('modify.blog.flavor.text' 'Modify blog flavor')</h2>
             <table>
                 <form name="modify-blog-flavor" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="modify-blog-flavor"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-flavors"/>
                     <tr>
-                        <td>Flavor name</td>
+                        <td>#adminResource('flavor.name.text' 'Flavor name')</td>
                         <td>
                             <select name="flavor-name">
                             #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS)
@@ -65,15 +65,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Flavor MIME type (defaults to text/html if not specified)</td>
+                        <td>#adminResource('flavor.mime.type.text' 'Flavor MIME type (defaults to text/html if not specified)')</td>
                         <td><input type="text" size="50" name="flavor-mime-type"/></td>
                     </tr>
                     <tr>
-                        <td>Flavor character set (defaults to UTF-8 if not specified)</td>
+                        <td>#adminResource('flavor.character.set.text' 'Flavor character set (defaults to UTF-8 if not specified)')</td>
                         <td><input type="text" size="50" name="flavor-character-set"/></td>
                     </tr>
                     <tr>
-                        <td>Blog template for flavor</td>
+                        <td>#adminResource('blog.template.for.flavor.text' 'Blog template for flavor')</td>
                         <td>
                             <select name="blog-template">
                             #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES)
@@ -84,8 +84,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Modify blog flavor"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('modify.blog.flavor.text' 'Modify blog flavor')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
@@ -94,14 +94,14 @@
 
         <!-- Delete blog flavor form -->
         <div id="mainClm">
-            <h2>Delete a blog flavor</h2>
+            <h2>#adminResource('delete.blog.flavor.text' 'Delete blog flavor')</h2>
             <table>
                 <form name="delete-blog-flavor" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="delete-blog-flavor"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-flavors"/>
                     <tr>
-                        <td>Flavor name</td>
+                        <td>#adminResource('flavor.name.text' 'Flavor name')</td>
                         <td>
                             <select name="flavor-name">
                             #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS)
@@ -112,8 +112,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Delete blog flavor"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('delete.blog.flavor.text' 'Delete blog flavor')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
