@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 
@@ -51,7 +52,7 @@ import java.util.Map;
  * EntriesLimiterPlugin
  *
  * @author David Czarnecki
- * @version $Id: EntriesLimiterPlugin.java,v 1.1 2003-08-09 20:36:23 czarneckid Exp $
+ * @version $Id: EntriesLimiterPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
  */
 public class EntriesLimiterPlugin implements BlojsomPlugin {
 
@@ -72,9 +73,10 @@ public class EntriesLimiterPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
     }
 
     /**

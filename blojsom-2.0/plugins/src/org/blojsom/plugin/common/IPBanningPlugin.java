@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.blog.BlojsomConfiguration;
 
 import javax.servlet.ServletConfig;
 
@@ -45,7 +46,7 @@ import javax.servlet.ServletConfig;
  * IPBanningPlugin
  *
  * @author David Czarnecki
- * @version $Id: IPBanningPlugin.java,v 1.1 2003-08-09 20:36:23 czarneckid Exp $
+ * @version $Id: IPBanningPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
  */
 public abstract class IPBanningPlugin implements BlojsomPlugin {
 
@@ -57,9 +58,10 @@ public abstract class IPBanningPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
     }
 
     /**

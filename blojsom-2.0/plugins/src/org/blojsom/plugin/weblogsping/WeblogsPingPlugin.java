@@ -41,6 +41,7 @@ import org.apache.xmlrpc.XmlRpcClient;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 
@@ -58,7 +59,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.1 2003-08-09 20:36:22 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.2 2003-08-11 02:05:14 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -80,9 +81,10 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig) throws BlojsomPluginException {
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         _callbackHandler = new WeblogsPingPluginAsyncCallback();
         _lastPingDate = new Date();
     }

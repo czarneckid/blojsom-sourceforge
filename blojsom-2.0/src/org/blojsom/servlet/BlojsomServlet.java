@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.3 2003-08-10 21:32:16 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.4 2003-08-11 02:03:10 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -193,7 +193,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
                 try {
                     Class pluginClass = Class.forName(pluginClassName);
                     BlojsomPlugin blojsomPlugin = (BlojsomPlugin) pluginClass.newInstance();
-                    blojsomPlugin.init(servletConfig);
+                    blojsomPlugin.init(servletConfig, _blojsomConfiguration);
                     _plugins.put(plugin, blojsomPlugin);
                     _logger.info("Added blojsom plugin: " + pluginClassName);
                 } catch (BlojsomPluginException e) {

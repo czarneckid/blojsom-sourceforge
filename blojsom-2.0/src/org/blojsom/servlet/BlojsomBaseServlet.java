@@ -41,6 +41,7 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlojsomConfigurationException;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.BlojsomException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -60,7 +61,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.2 2003-08-10 15:29:39 intabulas Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.3 2003-08-11 02:03:22 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -70,6 +71,8 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
     protected String _defaultUser;
     protected Map _users;
     protected BlojsomFetcher _fetcher;
+    protected BlojsomConfiguration _blojsomConfiguration;
+
 
     /**
      * Configure the {@link BlojsomFetcher} that will be used to fetch categories and
@@ -128,7 +131,8 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
             _logger.debug("Using base directory: " + _baseConfigurationDirectory);
 
             // Configure users
-            String[] users = BlojsomUtils.parseCommaList(configurationProperties.getProperty(BLOJSOM_USERS_IP));
+            String usersProperty = configurationProperties.getProperty(BLOJSOM_USERS_IP);
+            String[] users = BlojsomUtils.parseCommaList(usersProperty);
             InputStream is;
             if (users.length == 0) {
                 _logger.error("No users defined for this blojsom blog");
@@ -169,6 +173,7 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
 
                 // Configure the fetcher for use by this blog
                 configureFetcher(servletConfig, configurationProperties);
+                _blojsomConfiguration = new BlojsomConfiguration(usersProperty, _defaultUser, _baseConfigurationDirectory, configurationProperties.getProperty(BLOJSOM_FETCHER_IP));
             }
         } catch (BlojsomConfigurationException e) {
             _logger.error(e);

@@ -36,6 +36,7 @@ package org.blojsom.plugin;
 
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +47,7 @@ import java.util.Map;
  * BlojsomPlugin
  *
  * @author David Czarnecki
- * @version $Id: BlojsomPlugin.java,v 1.1 2003-08-09 20:40:13 czarneckid Exp $
+ * @version $Id: BlojsomPlugin.java,v 1.2 2003-08-11 02:03:10 czarneckid Exp $
  */
 public interface BlojsomPlugin {
 
@@ -54,9 +55,10 @@ public interface BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig) throws BlojsomPluginException;
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException;
 
     /**
      * Process the blog entries

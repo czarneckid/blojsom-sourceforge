@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
@@ -53,7 +54,7 @@ import java.util.*;
  * to filter content.
  *
  * @author Mark Lussier
- * @version $Id: AbstractCalendarPlugin.java,v 1.1 2003-08-09 20:36:23 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
 
@@ -106,10 +107,10 @@ public abstract class AbstractCalendarPlugin implements BlojsomPlugin {
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     * @param blojsomConfiguration {@link BlojsomConfiguration} information
+     * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig) throws BlojsomPluginException {
-
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
     }
 
     /**

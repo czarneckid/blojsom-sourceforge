@@ -36,10 +36,7 @@ package org.blojsom.plugin.trackback;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.Trackback;
-import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.*;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.common.IPBanningPlugin;
 import org.blojsom.plugin.email.EmailUtils;
@@ -57,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.1 2003-08-09 20:36:22 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.2 2003-08-11 02:05:16 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -130,10 +127,10 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
-    public void init(ServletConfig servletConfig) throws BlojsomPluginException {
-
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
     }
 
     /**
