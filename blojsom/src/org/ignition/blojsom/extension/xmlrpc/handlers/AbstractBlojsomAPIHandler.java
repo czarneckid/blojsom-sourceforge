@@ -40,7 +40,7 @@ import org.ignition.blojsom.blog.Blog;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.2 2003-02-25 22:54:13 intabulas Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.3 2003-02-26 15:54:52 intabulas Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 
@@ -52,6 +52,10 @@ public abstract class AbstractBlojsomAPIHandler  {
 
     public static final int    INVALID_POSTID = 2000;
     public static final String INVALID_POSTID_MSG= "The entry postid your submitted was invalid";
+
+
+    public static final int    NOBLOGS_EXCEPTION = 3000;
+    public static final String NOBLOGS_EXCEPTION_MSG = "There are no categories defined for this blojsom";
 
     /**
      * Attach a Blog instance to the API Handler so that it can interact with the blog
