@@ -32,7 +32,6 @@ See http://xml.apache.org/forrest/linking.html for more info
 	<features label="Features">
 		<comments label="Comments" href="comments.html"/>
 		<trackbacks label="Trackbacks" href="trackbacks.html"/>
-		<plugins label="Plugins" href="plugins/"/>
 		<themes label="Themes" href="themes.html"/>
 		<xml-rpc label="XLM-RPC" href="xml-rpc.html"/>
    </features>	

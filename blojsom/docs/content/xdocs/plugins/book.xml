@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//APACHE//DTD Cocoon Documentation Book V1.0//EN" "book-cocoon-v10.dtd">
+
+<!-- Sample book.xml file.  If this file is renamed to 'book.xml', it will be
+used to define the menu in this subdirectory, instead of that generated from
+site.xml. -->
+
+<book software="MyProj"
+  title="MyProj"
+  copyright="@year@ The Apache Software Foundation"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <menu label="About">
+    <menu-item label="Index" href="site:index"/>
+    <menu-item label="Download" href="site:download"/>
+    <menu-item label="Installation" href="site:installation"/>
+    <menu-item label="Customization" href="site:custom"/>
+    <menu-item label="FAQ" href="site:faq"/>
+    <menu-item label="Changes" href="site:changes"/>
+    <menu-item label="Todo" href="site:todo"/>
+    <menu-item label="Screenshots" href="site:screenshots"/>
+  </menu>
+
+
+
+  <menu label="Plugins">
+    <menu-item label="Overview" href="site:plugins/index"/>
+    <menu-item label="calendar" href="calendar.html"/>
+    <menu-item label="date" href="date.html"/>
+    <menu-item label="emoticons" href="emoticons.html"/>
+    <menu-item label="entries limiter" href="entries-limiter.html"/>
+    <menu-item label="google highlight" href="google-highlight.html"/>
+    <menu-item label="hyperlink URL " href="hyperlink-URL.html"/>
+    <menu-item label="macro expansion" href="macro-expansion.html"/>
+    <menu-item label="preview" href="preview.html"/>
+    <menu-item label="referer" href="referer.html"/>
+    <menu-item label="simple search" href="simple-search.html"/>
+    <menu-item label="send email" href="send-email.html"/>
+    <menu-item label="show me more" href="show-me-more.html"/>
+    <menu-item label="textile" href="textile.html"/>
+    <menu-item label="weblogs ping" href="weblogs-ping.html"/>
+  </menu>
+
+  
+
+</book>
