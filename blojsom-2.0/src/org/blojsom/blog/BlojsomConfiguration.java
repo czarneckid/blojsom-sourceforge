@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.25 2004-08-26 13:23:20 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.26 2004-08-28 16:53:05 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -102,6 +102,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
         } else {
             _baseConfigurationDirectory = BlojsomUtils.checkStartingAndEndingSlash(_baseConfigurationDirectory);
         }
+        _baseConfigurationDirectory = _baseConfigurationDirectory.trim();
         _logger.debug("Using base configuration directory: " + _baseConfigurationDirectory);
 
         _templatesDirectory = getBlojsomPropertyAsString(BLOJSOM_TEMPLATES_DIRECTORY_IP);
@@ -113,6 +114,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
 
         }
+        _templatesDirectory = _templatesDirectory.trim();
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
         _resourceDirectory = getBlojsomPropertyAsString(BLOJSOM_RESOURCE_DIRECTORY_IP);
@@ -124,6 +126,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
 
         }
+        _resourceDirectory = _resourceDirectory.trim();
         _logger.debug("Using resources directory: " + _resourceDirectory);
 
         String eventBroadcaster = getBlojsomPropertyAsString(BLOJSOM_BROADCASTER_IP);
@@ -185,6 +188,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
             }
 
             if (_globalBlogHome != null) {
+                _globalBlogHome = _globalBlogHome.trim();
                 File blogHomeDirectory = new File(_globalBlogHome);
                 if (!blogHomeDirectory.exists()) {
                     if (!blogHomeDirectory.mkdirs()) {

@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.22 2004-07-12 03:48:50 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.23 2004-08-28 16:54:44 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -105,6 +105,7 @@ public class Blog implements BlojsomConstants {
             _logger.error("No value supplied for blog-home");
             throw new BlojsomConfigurationException("No valued supplied for blog-home");
         }
+        _blogHome = _blogHome.trim();
         if (!_blogHome.endsWith("/")) {
             _blogHome += "/";
         }
