@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<rss version="2.0" xmlns="http://backend.userland.com/rss2">
+<rss version="2.0" xmlns="http://backend.userland.com/rss2"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>$BLOJSOM_BLOG.getBlogName()</title>
         <link>$BLOJSOM_BLOG.getBlogURL()</link>
@@ -7,6 +8,9 @@
         <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
         <docs>http://backend.userland.com/rss</docs>
 		<generator>blojsom</generator>
+		<dc:publisher>$BLOJSOM_BLOG.getBlogOwner()</dc:publisher>
+		<dc:creator>$BLOJSOM_BLOG.getBlogOwnerEmail()</dc:creator>
+		<dc:date>$BLOJSOM_DATE_ISO8601</dc:date>
 
         #foreach ($entry in $BLOJSOM_ENTRIES)
         <item>

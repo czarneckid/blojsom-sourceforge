@@ -7,7 +7,8 @@
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
 %>
-<rss version="2.0" xmlns="http://backend.userland.com/rss2">
+<rss version="2.0" xmlns="http://backend.userland.com/rss2"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title><%= blogInformation.getBlogName() %></title>
     <link><%= blogInformation.getBlogURL() %></link>
@@ -15,6 +16,8 @@
     <language><%= blogInformation.getBlogLanguage() %></language>
     <docs>http://backend.userland.com/rss</docs>
     <generator>blojsom</generator>
+	<dc:publisher><%= blogInformation.getBlogOwner()%></dc:publisher>
+	<dc:creator><%= blogInformation.getBlogOwnerEmail()%></dc:creator>
     <%
         if (blogEntries != null) {
             for (int i = 0; i < blogEntries.length; i++) {
