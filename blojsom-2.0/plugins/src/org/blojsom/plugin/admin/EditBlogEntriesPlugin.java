@@ -61,11 +61,11 @@ import java.util.Map;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.5 2003-12-15 20:43:42 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.6 2003-12-18 02:21:50 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
-    private static final Log _logger = LogFactory.getLog(EditBlogEntriesPlugin.class);
+    private Log _logger = LogFactory.getLog(EditBlogEntriesPlugin.class);
 
     // XML-RPC constants
     public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";

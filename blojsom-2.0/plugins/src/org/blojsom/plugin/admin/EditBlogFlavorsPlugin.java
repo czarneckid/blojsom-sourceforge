@@ -54,11 +54,11 @@ import java.io.File;
  * 
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.1 2003-12-04 03:52:22 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.2 2003-12-18 02:21:50 czarneckid Exp $
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
-    private static final Log _logger = LogFactory.getLog(EditBlogFlavorsPlugin.class);
+    private Log _logger = LogFactory.getLog(EditBlogFlavorsPlugin.class);
 
     private String _templatesDirectory;
     private String _installationDirectory;
