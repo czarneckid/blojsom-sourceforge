@@ -34,7 +34,7 @@ A minimal build.xml would thus be:
 </project>
 -->
 
-<target name="site" depends="forrest.init" description="Generates static HTML documentation">
+<target name="site" depends="clean, forrest.init" description="Generates static HTML documentation">
     <ant antfile="${forrest.home}/forrest.antproxy.xml" target="site"/>
 </target>
 
