@@ -49,7 +49,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.3 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.4 2004-04-23 22:11:36 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -113,6 +113,17 @@ public abstract class BlogCategory implements Comparable {
      */
     public String getEncodedCategory() {
         return BlojsomUtils.urlEncode(_category);
+    }
+
+    /**
+     * Return the category URL encoded for a link
+     *
+     * @see {@link BlojsomUtils#urlEncodeForLink(java.lang.String)}
+     * @return Category URL encoded as UTF-8 with preserved "/" characters
+     * @since blojsom 2.14
+     */
+    public String getEncodedCategoryURL() {
+        return BlojsomUtils.urlEncodeForLink(_categoryURL);
     }
 
     /**
