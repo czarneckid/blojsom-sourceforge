@@ -7,6 +7,11 @@
         <link>$BLOJSOM_BLOG.getBlogURL()</link>
         <description>$BLOJSOM_BLOG.getBlogDescription()</description>
         <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
+        <image>
+            <url>$BLOJSOM_SITE_URL/favicon.ico</url>
+            <title>$BLOJSOM_BLOG.getBlogName()</title>
+            <link>$BLOJSOM_BLOG.getBlogURL()</link>
+        </image>
         <docs>http://backend.userland.com/rss</docs>
 		<generator>blojsom</generator>
 		<dc:publisher>$BLOJSOM_BLOG.getBlogOwner()</dc:publisher>
