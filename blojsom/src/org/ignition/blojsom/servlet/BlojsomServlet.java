@@ -57,7 +57,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.51 2003-03-23 19:30:45 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.52 2003-03-24 18:31:26 intabulas Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -455,15 +455,16 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         // If we have entries, construct a last modified on the most recent entry
         // Additionally, set the blog date
         if ((entries != null) && (entries.length > 0)) {
-            _logger.debug("Adding last-modified header for most recent blog entry");
             BlogEntry _entry = entries[0];
             long _lastmodified;
 
             if ((httpServletRequest.getParameter(PAGE_PARAM) != null) && (_entry.getNumComments() > 0)) {
-                BlogComment _comment = _entry.getCommentsAsArray()[0];
+                BlogComment _comment = _entry.getCommentsAsArray()[_entry.getNumComments() - 1];
                 _lastmodified = _comment.getCommentDateLong();
+                _logger.debug("Adding last-modified header for most recent entry comment");
             } else {
                 _lastmodified = _entry.getLastModified();
+                _logger.debug("Adding last-modified header for most recent blog entry");
             }
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, _lastmodified);
             blogdate = entries[0].getRFC822Date();
