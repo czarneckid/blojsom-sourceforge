@@ -87,7 +87,7 @@ h4
 /* <div id="container"> */
 #container
 {
-/*	background:#fff;	
+/*	background:#fff;
 	border:1px solid #fff;	*/
 }
 
@@ -99,7 +99,7 @@ h4
 	padding-top:15px;
 	padding-left:7px;
 	padding-right:7px;
-	width: 225px;	
+	width: 225px;
 	background-color:#fff;
 	border-left:1px solid #999;
 	border-bottom:1px solid #999;
@@ -325,7 +325,7 @@ h4
 	padding-left:15px;
 	padding-right:15px;
 	padding-top:5px;
-	padding-bottom:5px;	
+	padding-bottom:5px;
 }
 
 
@@ -369,3 +369,48 @@ li /* used to space out lists without manual insertion of <br><br><br><br> ad na
 
 li.tight /* used to over-ride the thing above in case you want a tight grouping */
 {margin-bottom: +0pt}
+
+.calendarcaption {
+   font-family: 'Lucida Grande', palatino, georgia, verdana, arial, sans-serif;
+   text-align:center;
+   font-weight: bold;
+   font-size: larger;
+   margin-bottom: 0pt;
+   margin-top: 1pt;
+   padding-bottom: 0pt;
+}
+
+.calendarbox {
+   background-color: #FFFFFF;
+   border-left: 1px solid #000000;
+   border-right: 1px solid #000000;
+   border-bottom: 1px solid #000000;
+   border-top: 1px solid #000000;
+   padding: 5px;
+   margin-bottom: 15px;
+}
+
+.calendarcolumn {
+	font-family: 'Lucida Grande', palatino, georgia, verdana, arial, sans-serif;
+	font-size: 10px;
+	text-align: center;
+}
+
+.tablemaxwidth {
+   width: 100%;
+   vertical-align: top;
+}
+
+.tablemaxpxwidth {
+   padding:5px;
+}
+
+.mastertable {
+      border: 0px;
+      width: 100%;
+}
+
+.calendartable {
+   border: 0px;
+   width: 200px;
+}

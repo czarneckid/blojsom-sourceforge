@@ -103,6 +103,46 @@ Calendar Navigation
 </div>
 
 <div class="side">
+<table class="calendartable"><tr><td colspan="7" class="calendarcaption"><b>$BLOJSOM_CALENDAR.getCaption()</b></td></tr>
+
+<!-- DOW Name Row -->
+<tr>
+#foreach( $downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())
+        #if($downame)
+		<td class="calendarcolumn">$downame&nbsp;</td>
+		#end
+#end
+</tr>
+
+## Dear Velocity Authors, give us a real for loop!!!!!!
+
+<tr>
+    $BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow(1,"calendarcolumn")
+</tr>
+<tr>
+    $BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow(2,"calendarcolumn")
+</tr>
+<tr>
+    $BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow(3,"calendarcolumn")
+</tr>
+<tr>
+    $BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow(4,"calendarcolumn")
+</tr>
+<tr>
+    $BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow(5,"calendarcolumn")
+</tr>
+<tr>
+    $BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow(6,"calendarcolumn")
+</tr>
+
+<tr>
+<td colspan="7" class="calendarcolumn">$BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonth()&nbsp;&nbsp;&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getToday()&nbsp;&nbsp;&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getNextMonth()</td>
+</tr>
+</table>
+
+</div>
+
+<div class="side">
 
 <!-- -->
 
