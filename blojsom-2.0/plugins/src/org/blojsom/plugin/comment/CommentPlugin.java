@@ -57,7 +57,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.6 2003-12-30 23:24:08 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.7 2004-01-10 18:12:06 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -75,6 +75,11 @@ public class CommentPlugin extends IPBanningPlugin {
      * Initialization parameter for the duration of the "remember me" cookies
      */
     private static final String COMMENT_COOKIE_EXPIRATION_DURATION_IP = "plugin-comment-expiration-duration";
+
+    /**
+     *
+     */
+    private static final String COMMENT_AUTOFORMAT_IP = "plugin-comment-autoformat";
 
     /**
      * Request parameter for the "comment"
@@ -314,6 +319,12 @@ public class CommentPlugin extends IPBanningPlugin {
 
                 author = author.trim();
                 commentText = commentText.trim();
+
+                // Check if autoformatting of comment text should be done
+                boolean autoformatComments = Boolean.valueOf(blog.getBlogProperty(COMMENT_AUTOFORMAT_IP)).booleanValue();
+                if (autoformatComments) {
+                    commentText = BlojsomUtils.replace(commentText, "\n", "<br />");
+                }
 
                 if (authorEmail != null) {
                     authorEmail = authorEmail.trim();
