@@ -130,6 +130,36 @@
         <delete dir="${compile.dir}"/>
     </target>
 
+
+    <!-- =================================================================== -->
+    <!-- Compiles the source code and does not delete nor jar. For Testing   -->
+    <!-- =================================================================== -->
+    <target name="compile-for-testing" depends="prepare" description="Compiles the class files">
+        <!-- Core -->
+        <javac srcdir="${src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <javac srcdir="${plugins.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <javac srcdir="${extensions.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+
     <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
