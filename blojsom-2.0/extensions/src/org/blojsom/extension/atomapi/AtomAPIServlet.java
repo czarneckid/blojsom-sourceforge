@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.47 2004-07-20 16:52:13 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.48 2004-07-20 19:29:36 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -603,28 +603,18 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                     entry.setMetaData(blogEntryMetaData);
 
-
                     // Insert an escaped Link into the Blog Entry
-                    if ("/".equals(category)) {
-                        entry.setLink(blog.getBlogURL() + '?' + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(sourceFile.getName()));
-                    } else {
-                        entry.setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(category.substring(0, category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(sourceFile.getName()));
-                    }
+                    entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
 
                     entry.save(blogUser);
                     entry.load(blogUser);
 
-                    StringBuffer editURI = new StringBuffer();
-                    editURI.append(blog.getBlogURL());
-                    String entryId = entry.getId();
-                    editURI.append(BlojsomUtils.removeInitialSlash(entryId));
-
-                    atomEntry.setId(editURI.toString());
                     httpServletResponse.setContentType(CONTENTTYPE_ATOM);
-
                     httpServletResponse.setStatus(201);
 
                     atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
+
+                    // Extract the service.edit link to send for the Location: header
                     Collection links = atomEntry.getLinks();
                     Iterator linksIterator = links.iterator();
                     while (linksIterator.hasNext()) {
