@@ -38,70 +38,69 @@ package org.blojsom.plugin.crosspost;
  * CrosspostConstants
  *
  * @author Mark Lussier
- * @version $Id: CrosspostConstants.java,v 1.1 2005-01-13 21:33:00 intabulas Exp $
- * @since Blojsom 2.23
+ * @version $Id: CrosspostConstants.java,v 1.2 2005-03-11 17:34:01 czarneckid Exp $
+ * @since blojsom 2.23
  */
 public class CrosspostConstants {
 
     /**
-     *
+     * Blogger API type
      */
     public static final int API_BLOGGER = 0;
 
     /**
-     *
+     * MetaWeblog API type
      */
     public static final int API_METAWEBLOG = 1;
 
     /**
-     *
+     * Blogger API
      */
     public static final String TYPE_BLOGGER = "blogger";
 
     /**
-     *
+     * MetaWeblog API
      */
     public static final String TYPE_METAWEBLOG = "metaweblog";
 
     /**
-     *
+     * Destinations configuration parameter
      */
     public static final String XPOST_TAG_DESTINATIONS = "destinations";
     
     /**
-     *
+     * Destination title
      */
     public static final String XPOST_TAG_TITLE = ".title";
 
     /**
-     *
+     * Destination type
      */
     public static final String XPOST_TAG_TYPE = ".type";
 
 
     /**
-     *
+     * Destination XML-RPC URL
      */
     public static final String XPOST_TAG_URL = ".url";
 
     /**
-     *
+     * Destination user ID
      */
     public static final String XPOST_TAG_USERID = ".userid";
 
     /**
-     *
+     * Destination password for user ID
      */
     public static final String XPOST_TAG_PASSWORD = ".password";
 
     /**
-     *
+     * Destination category
      */
     public static final String XPOST_TAG_CATEGORY = ".category";
 
     /**
-     *
+     * Destination blog ID
      */
     public static final String XPOST_TAG_BLOGID  =".blogid";
-
 }

@@ -38,8 +38,8 @@ package org.blojsom.plugin.crosspost.beans;
  * Destination POJO
  *
  * @author Mark Lussier
- * @version $Id: Destination.java,v 1.1 2005-01-13 21:33:01 intabulas Exp $
- * @since Blojsom 2.23
+ * @version $Id: Destination.java,v 1.2 2005-03-11 17:34:52 czarneckid Exp $
+ * @since blojsom 2.23
  */
 public class Destination {
 
@@ -52,67 +52,134 @@ public class Destination {
     private String _category;
 
     /**
-     * Public Constructor
+     * Default constructor
      */
     public Destination() {
-
     }
 
+    /**
+     * Title of the destination
+     *
+     * @return Title
+     */
     public String getTitle() {
         return _title;
     }
 
+    /**
+     * Set the title of the destination
+     *
+     * @param title Title
+     */
     public void setTitle(String title) {
         this._title = title;
     }
 
+    /**
+     * XML-RPC URL for the destination
+     *
+     * @return XML-RPC URL
+     */
     public String getUrl() {
         return _url;
     }
 
+    /**
+     * Set the XML-RPC URL for the destination
+     *
+     * @param url XML-RPC URL
+     */
     public void setUrl(String url) {
         this._url = url;
     }
 
+    /**
+     * Get the API type for the destination. Currently 0 = Blogger, 1 = MetaWeblog
+     *
+     * @return API type for destination
+     */
     public int getApiType() {
         return _apiType;
     }
 
+    /**
+     * Set the API type for the destination. Currently 0 = Blogger, 1 = MetaWeblog
+     *
+     * @param apiType API type for destination
+     */
     public void setApiType(int apiType) {
         this._apiType = apiType;
     }
 
+    /**
+     * Get the user ID posting to the destination
+     *
+     * @return User ID
+     */
     public String getUserId() {
         return _userId;
     }
 
+    /**
+     * Set the user ID posting to the destination
+     *
+     * @param userId User ID posting to the destination
+     */
     public void setUserId(String userId) {
         this._userId = userId;
     }
 
+    /**
+     * Get the password for the user ID posting to the destination
+     *
+     * @return Password for the user ID posting to the destination
+     */
     public String getPassword() {
         return _password;
     }
 
+    /**
+     * Set the password for the user ID posting to the destination
+     *
+     * @param password Password for the user ID posting to the destination
+     */
     public void setPassword(String password) {
         this._password = password;
     }
 
+    /**
+     * Get the blog ID of the destination
+     *
+     * @return Blog ID of the destination
+     */
     public String getBlogId() {
         return _blogId;
     }
 
+    /**
+     * Set the blog ID of the destination
+     *
+     * @param blogId Blog ID of the destination
+     */
     public void setBlogId(String blogId) {
         this._blogId = blogId;
     }
 
+    /**
+     * Get the category of the destination
+     *
+     * @return category of the destination
+     */
     public String getCategory() {
         return _category;
     }
 
+    /**
+     * Set the category of the destination
+     *
+     * @param category Category of the destination
+     */
     public void setCategory(String category) {
         this._category = category;
     }
-
-
 }
