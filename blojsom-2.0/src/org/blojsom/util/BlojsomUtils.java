@@ -54,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.42 2004-11-16 01:51:39 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.43 2004-11-16 16:08:01 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1633,5 +1633,39 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return filename;
+    }
+
+    /**
+     * Create a {@link Locale} object from a string of form <code>language_country_variant</code>
+     *
+     * @param locale Locale string of form <code>language_country_variant</code>
+     * @return {@link Locale} object with language, country, variant settings or {@link java.util.Locale#getDefault()}
+     *         if <code>locale</code> input is <code>null</code> or blank
+     * @since blojsom 2.21
+     */
+    public static Locale getLocaleFromString(String locale) {
+        if (checkNullOrBlank(locale)) {
+            return Locale.getDefault();
+        }
+
+        String language = locale;
+        String country = "";
+        String variant = "";
+
+        // Check for language
+        int index = language.indexOf('_');
+        if (index >= 0) {
+            country = language.substring(index + 1);
+            language = language.substring(0, index);
+        }
+
+        // Check for country and variant
+        index = country.indexOf('_');
+        if (index >= 0) {
+            variant = country.substring(index + 1);
+            country = country.substring(0, index);
+        }
+
+        return new Locale(language, country, variant);
     }
 }
