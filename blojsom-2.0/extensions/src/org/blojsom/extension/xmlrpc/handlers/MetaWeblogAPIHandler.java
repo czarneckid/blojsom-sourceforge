@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.21 2004-09-21 13:21:12 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.22 2004-09-23 03:06:02 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -224,11 +224,33 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             _authorizationProvider.authorize(_blogUser, null, userid, password);
 
             Vector result = new Vector();
-            Hashtable bloglist = new Hashtable(3);
-            bloglist.put(MEMBER_URL, _blog.getBlogURL());
-            bloglist.put(MEMBER_BLOGID, _blogUser.getId());
-            bloglist.put(MEMBER_BLOGNAME, _blog.getBlogName());
-            result.add(bloglist);
+            BlogCategory[] _categories = _fetcher.fetchCategories(null, _blogUser);
+
+            if (_categories != null) {
+                for (int x = 0; x < _categories.length; x++) {
+                    Hashtable _bloglist = new Hashtable(3);
+                    BlogCategory _category = _categories[x];
+
+                    String _blogid = _category.getCategory();
+                    if (_blogid.length() > 1) {
+                        _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                    }
+
+                    String _description = "";
+                    Map _metadata = _category.getMetaData();
+                    if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
+                        _description = (String) _metadata.get(NAME_KEY);
+                    } else {
+                        _description = _blogid;
+                    }
+
+                    _bloglist.put(MEMBER_URL, _category.getCategoryURL());
+                    _bloglist.put(MEMBER_BLOGID, _blogid);
+                    _bloglist.put(MEMBER_BLOGNAME, _description);
+
+                    result.add(_bloglist);
+                }
+            }
 
             return result;
         } catch (BlojsomException e) {
