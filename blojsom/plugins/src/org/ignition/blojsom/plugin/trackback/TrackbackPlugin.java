@@ -56,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.25 2003-07-04 20:36:00 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.26 2003-07-20 22:13:29 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -123,6 +123,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     private String _blogHome;
     private String _blogTrackbackDirectory;
     private Boolean _blogEmailEnabled;
+    private Boolean _blogTrackbacksEnabled;
     private String _blogUrlPrefix;
     private String _blogFileEncoding;
     private String _emailPrefix;
@@ -145,6 +146,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         _blogHome = blog.getBlogHome();
         _blogTrackbackDirectory = blog.getBlogTrackbackDirectory();
         _blogEmailEnabled = blog.getBlogEmailEnabled();
+        _blogTrackbacksEnabled = blog.getBlogTrackbacksEnabled();
         _blogUrlPrefix = blog.getBlogURL();
         _blogFileEncoding = blog.getBlogFileEncoding();
         _emailPrefix = blog.getBlogProperty(TRACKBACK_PREFIX_IP);
@@ -166,6 +168,10 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (entries.length == 0) {
+            return entries;
+        }
+
+        if (!_blogTrackbacksEnabled.booleanValue()) {
             return entries;
         }
 
@@ -247,13 +253,14 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     }
 
     /**
+     * Add a trackback to the permalink entry
      *
-     * @param category
-     * @param permalink
-     * @param title
-     * @param excerpt
-     * @param url
-     * @param blogName
+     * @param category Category where the permalink exists
+     * @param permalink Permalink
+     * @param title Trackback title
+     * @param excerpt Excerpt for the trackback (not more than 255 characters in length)
+     * @param url URL for the trackback
+     * @param blogName Name of the blog making the trackback
      */
     private synchronized Integer addTrackback(Map context, String category, String permalink, String title,
                                               String excerpt, String url, String blogName) {
