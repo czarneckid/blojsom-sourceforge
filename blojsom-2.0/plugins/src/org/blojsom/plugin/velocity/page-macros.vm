@@ -46,6 +46,88 @@ $BLOJSOM_BLOG.getBlogOwnerEmail()
 $BLOJSOM_BLOG.getBlogDefaultFlavor()
 #end
 
+#macro(TotalCommentsPendingModeration $entry)
+#set($totalCommentsPendingModeration = 0)
+#foreach ($entryComment in $entry.getComments())
+    #if ($!entryComment.getMetaData().get("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED").equals("false"))
+        #set($totalCommentsPendingModeration = $totalCommentsPendingModeration + 1)
+    #end
+#end
+#end
+
+#macro(TotalCommentsApproved $entry)
+#set($totalCommentsApproved = 0)
+#foreach ($entryComment in $entry.getComments())
+    #if ($!entryComment.getMetaData().get("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED").equals("true"))
+        #set($totalCommentsApproved = $totalCommentsApproved + 1)
+    #end
+#end
+#end
+
+#macro(TotalTrackbacksPendingModeration $entry)
+#set($totalTrackbacksPendingModeration = 0)
+#foreach ($entryTrackback in $entry.getTrackbacks())
+    #if ($!$entryTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("false"))
+        #set($totalTrackbacksPendingModeration = $totalTrackbacksPendingModeration + 1)
+    #end
+#end
+#end
+
+#macro(TotalTrackbacksApproved $entry)
+#set($totalTrackbacksApproved = 0)
+#foreach ($entryTrackback in $entry.getTrackbacks())
+    #if ($!$entryTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("false"))
+        #set($totalTrackbacksApproved = $totalTrackbacksApproved + 1)
+    #end
+#end
+#end
+
+#macro(Author $entry)
+#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))
+    $entry.getMetaData().get("blog-entry-author")
+#end
+#end
+
+#macro(CommentsAllowed $entry)
+#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
+    #set($commentsAllowed = true)
+#end
+#end
+
+#macro(TrackbacksAllowed $entry)
+#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))
+    #set($trackbacksAllowed = true)
+#end
+#end
+
+#macro(DaysSincePosted $entry)
+$!entry.getMetaData().get("blojsom-plugin-days-since-posted")
+#end
+
+#macro(FormatDate $entry $format)
+$entry.getDateAsFormat($format)
+#end
+
+#macro(NavigationLinks $homeText)
+#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) <a href="$entryLink">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">$homeText</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end #end
+#end
+
+#macro(EntryCategoryName $entry)
+#if ($entry.getBlogCategory().getName())
+    $entry.getBlogCategory().getName()
+#else
+    $entry.getBlogCategory().getCategory()
+#end
+#end
+
+#macro(CategoryName $blogCategory)
+#if ($blogCategory.getName())
+    $blogCategory.getName()
+#else
+    $blogCategory.getCategory()
+#end
+#end
+
 #macro(SearchBox)
 <div id="searchbox">
     <form method="post" action=".">
@@ -116,4 +198,27 @@ $BLOJSOM_BLOG.getBlogDefaultFlavor()
 
     <h3>Live Comment Preview:</h3>
     <div id="commentPreview">&nbsp;</div>
+#end
+
+#macro(Calendar)
+<div id="calendar">
+    <table>
+        <caption>$BLOJSOM_CALENDAR.getCaption()</caption>
+        <thead>
+            <tr>#foreach( $downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())#if($downame)<th>$downame&nbsp;</th>#end#end</tr>
+        </thead>
+        <tfoot>
+            <tr><td colspan="7">$BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonth()&nbsp;|&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getToday()&nbsp;|&nbsp;$BLOJSOM_CALENDAR_VTLHELPER.getNextMonth()</td></tr>
+        </tfoot>
+        <tbody>
+            #foreach( $number in [1..6] )
+            <tr>$BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow($number,"calendarcolumn")</tr>
+            #end
+        </tbody>
+    </table>
+</div>
+#end
+
+#macro(Obfuscate $text)
+$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)
 #end
