@@ -40,7 +40,8 @@
 
 <p class="weblogtitle">description</a>
 <p />
-The Send Email plugin will ...<br/>
+The Send Email plugin will take an <tt>ArrayList</tt> of <tt>org.ignition.blojsom.plugin.email.EmailMessage</tt>
+objects and send them via SMTP.<br/>
 
 <p class="weblogtitle">installation and setup</a>
 <p />
@@ -57,7 +58,12 @@ You may then add "sendemail" to the <b>end</b> one of the flavor-based plugin ch
 html.blojsom-plugin-chain=...,sendemail
 </pre>
 </ul>
+<p />
+Typically, this would be done after the comment and trackback plugins are run as they
+publish comments and trackbacks in the context that are picked up later on in the plugin
+chain by this plugin.
 
+<p />
 In your <i>blojsom.properties</i> file, add the following line:
 <ul>
 <pre>
@@ -65,18 +71,21 @@ blog-email-enabled=true
 </pre>
 </ul>
 
-
-
-
 The Send Email plugin requires the smtp server be defined in <i>web.xml</i>. For example:
+<ul>
 <pre>
-    &lt;init-param&gt;
-        &lt;param-name&gt;smtp-server&lt;/param-name&gt;
-        &lt;param-value&gt;localhost&lt;/param-value&gt;
-    &lt;/init-param&gt;
+&lt;init-param&gt;
+    &lt;param-name&gt;smtp-server&lt;/param-name&gt;
+    &lt;param-value&gt;localhost&lt;/param-value&gt;
+&lt;/init-param&gt;
 </pre>
+</ul>
 <p />
 
+<p class="weblogtitle">usage and URL parameters</a>
+<p />
+<p class="weblogdateline">usage parameters</p>
+There are no URL parameters to control the operation of the Send Email plugin.
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
