@@ -16,6 +16,7 @@ Available categories:
 #end
 
 <body>
+
 #foreach ($entry in $BLOJSOM_ENTRIES)
     <div class="entrystyle">
     <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
@@ -24,6 +25,8 @@ Available categories:
     </div>
     <p class="weblogbottomline"></p>
 #end
+
+<p />
 
 Available categories:
 #foreach ($blogCategory in $BLOJSOM_CATEGORIES)

@@ -58,6 +58,9 @@
 	    }
 	}
 %>
+
+<p />
+
 <%
     if ((entryArray != null) && (entryArray.length > 0)) {
 %>
