@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.11 2003-04-29 01:29:00 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.12 2003-05-06 02:23:02 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -121,6 +121,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             try {
                 blogEntry.reloadSource();
                 blogCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+                blogEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogEntryMetaDataExtension());
             } catch (IOException e) {
                 return new BlogEntry[0];
             }
@@ -171,6 +172,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 try {
                     blogEntry.reloadSource();
                     blogCategoryForEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
+                    blogEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogEntryMetaDataExtension());
                 } catch (IOException e) {
                     _logger.error(e);
                 }
