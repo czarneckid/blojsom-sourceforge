@@ -40,7 +40,7 @@ import java.util.Date;
  * BlogReferer
  *
  * @author Mark Lussier
- * @version $Id: BlogReferer.java,v 1.5 2003-04-01 01:54:19 intabulas Exp $
+ * @version $Id: BlogReferer.java,v 1.6 2003-04-01 02:10:34 intabulas Exp $
  */
 public class BlogReferer {
 
@@ -138,7 +138,7 @@ public class BlogReferer {
      *
      * @return Number of referrals
      */
-    public int getRefererCount() {
+    public int getCount() {
         return _count;
     }
 

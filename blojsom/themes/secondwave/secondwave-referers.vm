@@ -26,7 +26,7 @@
      #else
        <p class="weblogtitle">$flavorgroup referers&nbsp;<span class="refererhistory">($group.getReferralCount() total)</span></p><p class="weblogdateline">
        #foreach( $refererurl in $group.keySet())
-           <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getReferralCount())<br/>
+           <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getCount())<br/>
        #end
        </p>
      #end

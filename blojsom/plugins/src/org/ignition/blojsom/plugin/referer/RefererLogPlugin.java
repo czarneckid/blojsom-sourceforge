@@ -60,7 +60,7 @@ import java.util.*;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.7 2003-04-01 01:55:04 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.8 2003-04-01 02:10:34 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -312,7 +312,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     String flavorkey = (String) _flavoriterator.next();
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
 
-                    _refererproperties.put(groupflavor +"." + getRefererDate(referer.getLastReferral()) + "." + referer.getRefererCount(),
+                    _refererproperties.put(groupflavor +"." + getRefererDate(referer.getLastReferral()) + "." + referer.getCount(),
                                            referer.getUrl());
                 }
             }

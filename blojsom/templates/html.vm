@@ -119,7 +119,7 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
          <p class="weblogdateline">
          #foreach( $refererurl in $group.keySet())
              #if ( $group.get($refererurl).isToday() )
-               <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getReferralCount())<br/>
+               <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getCount())<br/>
              #end
          #end
          </p>
