@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.48 2003-04-01 20:06:48 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.49 2003-04-03 03:01:45 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -121,21 +121,6 @@ public interface BlojsomConstants {
      * Request parameter for a "permalink"
      */
     public static final String PERMALINK_PARAM = "permalink";
-
-    /**
-     * Request parameter for the "year"
-     */
-    public static final String YEAR_PARAM = "year";
-
-    /**
-     * Request parameter for the "month"
-     */
-    public static final String MONTH_PARAM = "month";
-
-    /**
-     * Request parameter for the "day"
-     */
-    public static final String DAY_PARAM = "day";
 
     /**
      * Request parameter for the "plugins"
