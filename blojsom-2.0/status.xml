@@ -9,13 +9,20 @@
     <changes>
         <release version="2.12" date="Available from CVS">
             <action dev="czarneckid" type="update" context="Plugin">
-                Updated Edit Blog Entries plugin to create a link to the new post in the status message when
-                adding an entry to a category.
+                Updated Edit Blog Entries plugin to create a link to the new or edited post in the status message when
+                adding or updating an entry in a category.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
                 Improved handling of getDateHeader calls in Conditional GET plugin when a call can result
                 in an IllegalArgumentException.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Comments and trackbacks can be disabled for individual entries. You need to run the Meta plugin
+                before either of these plugins in one of your plugin chains. The metadata key to disable comments
+                would be specified as "meta-blog-entry-comments-disabled=y" in your blog entry. The metadata key to
+                disable trackbacks would be specified as "meta-blog-entry-trackbacks-disabled=y" in your blog entry.
             </action>
 
             <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="898242">
