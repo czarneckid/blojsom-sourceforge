@@ -111,6 +111,22 @@
             </answer>
         </faq>
 
+        <faq id="windows">
+            <question>
+                Any special instructions for running blojsom under Windows?
+            </question>
+            <answer>
+                <p>
+                    Paths such as the <code>blog-home</code> parameter in your individual <code>blog.properties</code>
+                    file should use '/' instead of '\'. For example:
+                    <source>
+                        ...
+                        blog-home=C:/blogs/default/
+                        ...
+                    </source>
+                </p>
+            </answer>
+        </faq>
     </part>
     <part id="moblogging">
         <title>Moblogging</title>
