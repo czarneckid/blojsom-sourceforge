@@ -23,6 +23,8 @@
 
     <div id="contents">
 
+        #showErrorMessage()
+        
         <!-- File upload form -->
         <div id="mainClm">
             <h2>#adminResource('file.upload.text' 'Upload a file')</h2>
