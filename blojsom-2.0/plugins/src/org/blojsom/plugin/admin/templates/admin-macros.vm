@@ -5,3 +5,10 @@
     </p>
     #end
 #end
+
+#macro(trueFalseSelectList $selectListName $selectedValue)
+    <select name="$selectListName" size="2">
+        #if ($selectedValue == true)<option value="true" selected>True</option> #else <option value="true">True</option>#end
+        #if ($selectedValue == false)<option value="false" selected>False</option> #else <option value="false">False</option>#end
+    </select>
+#end

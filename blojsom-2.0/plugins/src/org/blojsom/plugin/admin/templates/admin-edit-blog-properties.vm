@@ -60,13 +60,16 @@
                     <td>Blog owner e-mail</td> <td><input name="blog-owner-email" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwnerEmail()"/></td>
                 </tr>
                 <tr>
-                    <td>Blog comments enabled?</td> <td><input name="blog-comments-enabled" type="text" size="50" value="$BLOJSOM_BLOG.getBlogCommentsEnabled()"/></td>
+                    #set ($selectListName = "blog-comments-enabled")
+                    <td>Blog comments enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogCommentsEnabled())</td>
                 </tr>
                 <tr>
-                    <td>Blog trackbacks enabled?</td> <td><input name="blog-trackbacks-enabled" type="text" size="50" value="$BLOJSOM_BLOG.getBlogTrackbacksEnabled()"/></td>
+                    #set ($selectListName = "blog-trackbacks-enabled")
+                    <td>Blog trackbacks enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogTrackbacksEnabled())</td>
                 </tr>
                 <tr>
-                    <td>Blog e-mail comments/trackbacks enabled?</td> <td><input name="blog-email-enabled" type="text" size="50" value="$BLOJSOM_BLOG.getBlogEmailEnabled()"/></td>
+                    #set ($selectListName = "blog-email-enabled")
+                    <td>Blog e-mail comments/trackbacks enabled?</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogEmailEnabled())</td>
                 </tr>
                 <tr>
                     <td>Blog encoding</td> <td><input name="blog-file-encoding" type="text" size="50" value="$BLOJSOM_BLOG.getBlogFileEncoding()"/></td>
