@@ -45,7 +45,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.28 2003-03-16 03:21:11 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.29 2003-03-18 03:13:37 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -398,6 +398,24 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Tries to retrieve a given key using getParameter(key) and if not available, will
+     * use getAttribute(key) from the servlet request
+     *
+     * @param key Parameter to retrieve
+     * @param httpServletRequest Request
+     * @return Value of the key as a string, or <code>null</code> if there is no parameter/attribute
+     */
+    public static final String getRequestValue(String key, HttpServletRequest httpServletRequest) {
+        if (httpServletRequest.getParameter(key) != null) {
+            return httpServletRequest.getParameter(key);
+        } else if (httpServletRequest.getAttribute(key) != null) {
+            return httpServletRequest.getAttribute(key).toString();
+        }
+
+        return null;
+    }
+
+    /**
      * Return only the filename of a permalink request
      *
      * @param permalink Permalink request
@@ -405,6 +423,10 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Filename portion of permalink request
      */
     public static final String getFilenameForPermalink(String permalink, String[] blogEntryExtensions) {
+        if (permalink == null) {
+            return null;
+        }
+
         boolean matchesExtension = false;
         for (int i = 0; i < blogEntryExtensions.length; i++) {
             String blogEntryExtension = blogEntryExtensions[i];
