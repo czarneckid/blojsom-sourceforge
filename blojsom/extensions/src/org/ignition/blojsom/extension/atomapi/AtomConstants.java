@@ -32,15 +32,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.extension.echoapi;
+package org.ignition.blojsom.extension.atomapi;
 
 /**
- * EchoConstants
+ * AtomConstants
  *
  * @author Mark Lussier
- * @version $Id: EchoConstants.java,v 1.5 2003-07-15 15:50:37 intabulas Exp $
+ * @version $Id: AtomConstants.java,v 1.1 2003-07-18 01:20:55 czarneckid Exp $
  */
-public interface EchoConstants {
+public interface AtomConstants {
 
     /**
      * Author Element Tag Name
@@ -108,9 +108,9 @@ public interface EchoConstants {
     public static final String ELEMENT_CONTENT = "content";
 
     /**
-     * Echo Date Format
+     * Atom Date Format
      */
-    public static final String ECHO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final String ATOM_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
      * Header Value prefix for Basic Relm Auth.. NOTE: THE TRAILING SLASH IS INTENDED!

@@ -32,7 +32,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.extension.echoapi;
+package org.ignition.blojsom.extension.atomapi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,15 +61,15 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * EchoAPIServlet
+ * AtomAPIServlet
  *
- * Implementation of J.C. Gregorio's EchoAPI
+ * Implementation of J.C. Gregorio's AtomAPI
  * <a href="http://bitworking.org/rfc/draft-gregorio-04.html">http://bitworking.org/rfc/draft-gregorio-04.html</a>
  *
  * @author Mark Lussier
- * @version $Id: EchoAPIServlet.java,v 1.9 2003-07-16 14:18:07 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.1 2003-07-18 01:20:55 czarneckid Exp $
  */
-public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, EchoConstants {
+public class AtomAPIServlet extends HttpServlet implements BlojsomConstants, AtomConstants {
 
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
     private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
@@ -80,9 +80,9 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
 
-    private static final String CONTENTTYPE_ECHO = "application/not-echo+xml";
+    private static final String CONTENTTYPE_ATOM = "application/not-atom+xml";
 
-    private Log _logger = LogFactory.getLog(EchoAPIServlet.class);
+    private Log _logger = LogFactory.getLog(AtomAPIServlet.class);
 
     protected Blog _blog = null;
 
@@ -91,7 +91,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
     /**
      * Public Constructor
      */
-    public EchoAPIServlet() {
+    public AtomAPIServlet() {
     }
 
     /**
@@ -181,7 +181,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
 
     /**
-     * Initialize the blojsom EchoAPI servlet
+     * Initialize the blojsom AtomAPI servlet
      *
      * @param servletConfig Servlet configuration information
      * @throws javax.servlet.ServletException If there is an error initializing the servlet
@@ -200,7 +200,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
         configureAuthorization(servletConfig);
         configureFetcher(servletConfig);
 
-        _logger.info("EchoAPI initialized, home is [" + _blog.getBlogHome() + "]");
+        _logger.info("AtomAPI initialized, home is [" + _blog.getBlogHome() + "]");
 
     }
 
@@ -265,7 +265,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      */
     protected void doDelete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        _logger.info("EchoAPI Delete Called =====[ SUPPORTED ]=====");
+        _logger.info("AtomAPI Delete Called =====[ SUPPORTED ]=====");
         _logger.info("       Path: " + httpServletRequest.getPathInfo());
 
         if (isAuthorized(httpServletRequest)) {
@@ -288,7 +288,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
 
-        _logger.info("EchoAPI GET Called =====[ SUPPORTED ]=====");
+        _logger.info("AtomAPI GET Called =====[ SUPPORTED ]=====");
         _logger.info("       Path: " + httpServletRequest.getPathInfo());
 
         // NOTE: Assumes that the getPathInfo() returns only category data
@@ -307,11 +307,11 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
 
             if (_entries != null && _entries.length > 0) {
                 BlogEntry entry = _entries[0];
-                // EchoEntry converts a BlogEntry to an Echo Entry XML stream..
+                // AtomEntry converts a BlogEntry to an Atom Entry XML stream..
                 // VERY messy right now and it will be refactored to be bidi
-                EchoEntry echo = new EchoEntry(_blog, entry);
-                String content = echo.getAsString();
-                httpServletResponse.setContentType(CONTENTTYPE_ECHO);
+                AtomEntry atom = new AtomEntry(_blog, entry);
+                String content = atom.getAsString();
+                httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                 httpServletResponse.setStatus(200);
                 httpServletResponse.setContentLength(content.length());
                 OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
@@ -337,7 +337,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      */
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        _logger.info("EchoAPI POST Called =====[ SUPPORTED ]=====");
+        _logger.info("AtomAPI POST Called =====[ SUPPORTED ]=====");
         _logger.info("       Path: " + httpServletRequest.getPathInfo());
 
         if (isAuthorized(httpServletRequest)) {
@@ -358,7 +358,7 @@ public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, Ech
      */
     protected void doPut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        _logger.info("EchoAPI PUT Called =====[ SUPPORTED ]=====");
+        _logger.info("AtomAPI PUT Called =====[ SUPPORTED ]=====");
         _logger.info("       Path: " + httpServletRequest.getPathInfo());
 
         if (isAuthorized(httpServletRequest)) {

@@ -32,7 +32,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.ignition.blojsom.extension.echoapi;
+package org.ignition.blojsom.extension.atomapi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,20 +56,20 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
 
 /**
- * EchoEntry
+ * AtomEntry
  *
  * @author Mark Lussier
- * @version $Id: EchoEntry.java,v 1.3 2003-07-14 21:49:44 intabulas Exp $
+ * @version $Id: AtomEntry.java,v 1.1 2003-07-18 01:20:55 czarneckid Exp $
  */
-public class EchoEntry implements EchoConstants, BlojsomConstants {
+public class AtomEntry implements AtomConstants, BlojsomConstants {
 
-    private Document echodocument = null;
+    private Document atomdocument = null;
 
-    private Log _logger = LogFactory.getLog(EchoEntry.class);
+    private Log _logger = LogFactory.getLog(AtomEntry.class);
 
-    public EchoEntry(Blog blog, BlogEntry entry) {
-        echodocument = initializeDocument();
-        if (echodocument != null) {
+    public AtomEntry(Blog blog, BlogEntry entry) {
+        atomdocument = initializeDocument();
+        if (atomdocument != null) {
             populateDocument(blog, entry);
         }
 
@@ -86,18 +86,18 @@ public class EchoEntry implements EchoConstants, BlojsomConstants {
      * @return a populated Element
      */
     private Element createTextElement(String name, String value) {
-        Element result = echodocument.createElement(name);
-        result.appendChild(echodocument.createTextNode(value));
+        Element result = atomdocument.createElement(name);
+        result.appendChild(atomdocument.createTextNode(value));
         return result;
     }
 
     /**
-     * Creates the Author section of the NEcho Document
+     * Creates the Author section of the Atom Document
      * @param blog
      * @return
      */
     private Element createAuthorElement(Blog blog) {
-        Element author = echodocument.createElement(ELEMENT_AUTHOR);
+        Element author = atomdocument.createElement(ELEMENT_AUTHOR);
 
         if (blog.getBlogOwner() != null) {
             author.appendChild(createTextElement(ELEMENT_NAME, blog.getBlogOwner()));
@@ -140,7 +140,7 @@ public class EchoEntry implements EchoConstants, BlojsomConstants {
      */
     private void populateDocument(Blog blog, BlogEntry entry) {
 
-        Element theentry = echodocument.getDocumentElement();
+        Element theentry = atomdocument.getDocumentElement();
 
         theentry.appendChild(createTextElement(ELEMENT_TITLE, entry.getTitle()));
         theentry.appendChild(createTextElement(ELEMENT_SUBTITLE, ""));
@@ -149,17 +149,17 @@ public class EchoEntry implements EchoConstants, BlojsomConstants {
         theentry.appendChild(createAuthorElement(blog));
 
         theentry.appendChild(createTextElement(ELEMENT_ISSUED, entry.getISO8601Date()));
-        theentry.appendChild(createTextElement(ELEMENT_CREATED, entry.getDateAsFormat(ECHO_DATE_FORMAT)));
-        theentry.appendChild(createTextElement(ELEMENT_MODIFIED, entry.getDateAsFormat(ECHO_DATE_FORMAT)));
+        theentry.appendChild(createTextElement(ELEMENT_CREATED, entry.getDateAsFormat(ATOM_DATE_FORMAT)));
+        theentry.appendChild(createTextElement(ELEMENT_MODIFIED, entry.getDateAsFormat(ATOM_DATE_FORMAT)));
 
         theentry.appendChild(createTextElement(ELEMENT_LINK, entry.getLink()));
         theentry.appendChild(createTextElement(ELEMENT_ID, entry.getLink()));
 
 
-        Element content = echodocument.createElement(ELEMENT_CONTENT);
+        Element content = atomdocument.createElement(ELEMENT_CONTENT);
         content.setAttribute("type", "text/html");
         content.setAttribute("xml:lang", blog.getBlogLanguage());
-        content.appendChild(echodocument.createCDATASection(entry.getDescription()));
+        content.appendChild(atomdocument.createCDATASection(entry.getDescription()));
 
 
         theentry.appendChild(content);
@@ -169,14 +169,14 @@ public class EchoEntry implements EchoConstants, BlojsomConstants {
 
     /**
      * Convert the Entry DOM into an XML String
-     * @return The EchoEntry as a String
+     * @return The AtomEntry as a String
      */
     public String getAsString() {
         String result = "";
 
         try {
             Transformer xform = TransformerFactory.newInstance().newTransformer();
-            DOMSource source = new DOMSource(echodocument.getDocumentElement());
+            DOMSource source = new DOMSource(atomdocument.getDocumentElement());
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             StreamResult dest = new StreamResult(os);
             xform.transform(source, dest);

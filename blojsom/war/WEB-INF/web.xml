@@ -86,8 +86,8 @@
     </servlet>
 
     <servlet>
-        <servlet-name>blojsomechoapi</servlet-name>
-        <servlet-class>org.ignition.blojsom.extension.echoapi.EchoAPIServlet</servlet-class>
+        <servlet-name>blojsomatomapi</servlet-name>
+        <servlet-class>org.ignition.blojsom.extension.atomapi.AtomAPIServlet</servlet-class>
         <init-param>
             <param-name>blog-configuration</param-name>
             <param-value>/WEB-INF/blojsom.properties</param-value>
@@ -116,7 +116,7 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>blojsomechoapi</servlet-name>
+        <servlet-name>blojsomatomapi</servlet-name>
         <url-pattern>/echoapi/*</url-pattern>
     </servlet-mapping>
 

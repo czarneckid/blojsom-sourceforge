@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<feed xmlns="http://purl.org/echo/" version="1.0"
+<feed xmlns="http://purl.org/atom/" version="1.0"
     xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" xml:base="http://example.com">
 
     <title>$BLOJSOM_BLOG.getBlogName()</title>
