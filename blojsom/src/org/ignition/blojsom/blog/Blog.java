@@ -34,9 +34,11 @@ import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomConstants;
 import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.util.*;
-import java.io.IOException;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 /**
  * Blog
@@ -178,23 +180,7 @@ public class Blog implements BlojsomConstants {
         }
 
         BlogCategory blogCategory = new BlogCategory(categoryKey, _blogURL + BlojsomUtils.removeInitialSlash(categoryKey));
-
-        // Load properties file for category (if present)
-        File[] categoryPropertyFiles = blog.listFiles(BlojsomUtils.getExtensionsFilter(_blogPropertiesExtensions));
-        if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
-            Properties dirProps = new Properties();
-            for (int i = 0; i < categoryPropertyFiles.length; i++) {
-                try {
-                    dirProps.load(new java.io.FileInputStream(categoryPropertyFiles[i]));
-                } catch (IOException ex) {
-                    _logger.warn("Failed loading properties from: " + categoryPropertyFiles[i].toString());
-                    continue;
-                }
-            }
-
-            blogCategory.setMetaData(dirProps);
-        }
-
+        blogCategory.loadMetaData(_blogHome, _blogPropertiesExtensions);
         categoryList.add(blogCategory);
 
         if (directories == null) {
@@ -414,7 +400,7 @@ public class Blog implements BlojsomConstants {
      * @param blogHome New directory to use to look for blog entries
      */
     public void setBlogHome(String blogHome) {
-        this._blogHome = blogHome;
+        _blogHome = blogHome;
     }
 
     /**
@@ -432,7 +418,25 @@ public class Blog implements BlojsomConstants {
      * @param blogFileExtensions New list of blog file extensions
      */
     public void setBlogFileExtensions(String[] blogFileExtensions) {
-        this._blogFileExtensions = blogFileExtensions;
+        _blogFileExtensions = blogFileExtensions;
+    }
+
+    /**
+     * Return the list of blog properties file extensions
+     *
+     * @return Blog proprties extensions
+     */
+    public String[] getBlogPropertiesExtensions() {
+        return _blogPropertiesExtensions;
+    }
+
+    /**
+     * Set the list of blog properties file extensions to look for
+     *
+     * @param blogFileExtensions New list of blog properties file extensions
+     */
+    public void setBlogPropertiesExtensions(String[] blogPropertiesExtensions) {
+        _blogPropertiesExtensions = blogPropertiesExtensions;
     }
 
     /**
@@ -450,7 +454,7 @@ public class Blog implements BlojsomConstants {
      * @param blogDepth Blog depth
      */
     public void setBlogDepth(int blogDepth) {
-        this._blogDepth = blogDepth;
+        _blogDepth = blogDepth;
     }
 
     /**
@@ -468,7 +472,7 @@ public class Blog implements BlojsomConstants {
      * @param blogName Name for the blog
      */
     public void setBlogName(String blogName) {
-        this._blogName = blogName;
+        _blogName = blogName;
     }
 
     /**
@@ -486,7 +490,7 @@ public class Blog implements BlojsomConstants {
      * @param blogDescription Description for the blog
      */
     public void setBlogDescription(String blogDescription) {
-        this._blogDescription = blogDescription;
+        _blogDescription = blogDescription;
     }
 
     /**
@@ -504,7 +508,7 @@ public class Blog implements BlojsomConstants {
      * @param blogURL URL for the blog
      */
     public void setBlogURL(String blogURL) {
-        this._blogURL = blogURL;
+        _blogURL = blogURL;
     }
 
     /**
@@ -522,7 +526,7 @@ public class Blog implements BlojsomConstants {
      * @param blogLanguage Language for the blog
      */
     public void setBlogLanguage(String blogLanguage) {
-        this._blogLanguage = blogLanguage;
+        _blogLanguage = blogLanguage;
     }
 
     /**
@@ -538,7 +542,7 @@ public class Blog implements BlojsomConstants {
      * @param blogDisplayEntries Number of blog entries that should be retrieved from individual categories
      */
     public void setBlogDisplayEntries(int blogDisplayEntries) {
-        this._blogDisplayEntries = blogDisplayEntries;
+        _blogDisplayEntries = blogDisplayEntries;
     }
 
     /**
@@ -554,7 +558,7 @@ public class Blog implements BlojsomConstants {
      * @param blogDefaultCategoryMappings List of categories
      */
     public void setBlogDefaultCategoryMappings(String[] blogDefaultCategoryMappings) {
-        this._blogDefaultCategoryMappings = blogDefaultCategoryMappings;
+        _blogDefaultCategoryMappings = blogDefaultCategoryMappings;
     }
 
     /**
@@ -593,6 +597,7 @@ public class Blog implements BlojsomConstants {
             previousCategoryName += slashTokenizer.nextToken() + "/";
             if (!previousCategoryName.equals(currentCategory.getCategory())) {
                 category = new BlogCategory(previousCategoryName, _blogURL + BlojsomUtils.removeInitialSlash(previousCategoryName));
+                category.loadMetaData(_blogHome, _blogPropertiesExtensions);
                 categoryList.add(category);
             }
         }
@@ -605,7 +610,10 @@ public class Blog implements BlojsomConstants {
                 sanitizedCategoryList.add(category);
             }
         }
-        sanitizedCategoryList.add(0, new BlogCategory("/", _blogURL));
+
+        BlogCategory rootCategory = new BlogCategory("/", _blogURL);
+        rootCategory.loadMetaData(_blogHome, _blogPropertiesExtensions);
+        sanitizedCategoryList.add(0, rootCategory);
 
         if (sanitizedCategoryList.size() > 0) {
             return (BlogCategory[]) sanitizedCategoryList.toArray(new BlogCategory[sanitizedCategoryList.size()]);

@@ -32,11 +32,14 @@ package org.ignition.blojsom.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ignition.blojsom.util.BlojsomConstants;
+import org.ignition.blojsom.util.BlojsomUtils;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Properties;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * BlogCategory
@@ -80,7 +83,7 @@ public class BlogCategory implements Comparable {
      * @param categoryURL Category URL
      */
     public void setCategoryURL(String categoryURL) {
-        this._categoryURL = categoryURL;
+        _categoryURL = categoryURL;
     }
 
     /**
@@ -98,7 +101,7 @@ public class BlogCategory implements Comparable {
      * @param category Category name
      */
     public void setCategory(String category) {
-        this._category = category;
+        _category = category;
     }
 
     /**
@@ -212,5 +215,31 @@ public class BlogCategory implements Comparable {
      */
     public HashMap getMetaData() {
         return (HashMap) _metadata;
+    }
+
+    /**
+     * Load the meta data for the category
+     *
+     * @param blogHome Directory where blog entries are stored
+     * @param propertiesExtensions List of file extensions to use when looking for category properties
+     */
+    public void loadMetaData(String blogHome, String[] propertiesExtensions) {
+        File blog = new File(blogHome + BlojsomUtils.removeInitialSlash(_category));
+
+        // Load properties file for category (if present)
+        File[] categoryPropertyFiles = blog.listFiles(BlojsomUtils.getExtensionsFilter(propertiesExtensions));
+        if ((categoryPropertyFiles != null) && (categoryPropertyFiles.length > 0)) {
+            Properties dirProps = new Properties();
+            for (int i = 0; i < categoryPropertyFiles.length; i++) {
+                try {
+                    dirProps.load(new java.io.FileInputStream(categoryPropertyFiles[i]));
+                } catch (IOException ex) {
+                    _logger.warn("Failed loading properties from: " + categoryPropertyFiles[i].toString());
+                    continue;
+                }
+            }
+
+            setMetaData(dirProps);
+        }
     }
 }
