@@ -55,7 +55,7 @@ import java.util.Map;
  * ConditionalGetPlugin
  * 
  * @author czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.4 2004-01-05 04:04:39 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.5 2004-01-06 02:52:09 czarneckid Exp $
  */
 public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -67,7 +67,7 @@ public class ConditionalGetPlugin implements BlojsomPlugin, BlojsomConstants {
     private Map _defaultConditionalGetFlavors;
 
     /**
-     *
+     * Default constructor.
      */
     public ConditionalGetPlugin() {
     }
