@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.47 2003-04-01 02:21:53 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.48 2003-04-01 20:06:48 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -201,7 +201,7 @@ public interface BlojsomConstants {
      * ISO 8601 style date format
      * ISO 8601 [W3CDTF] date format (used in rdf flavor)
      */
-    public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ssZZZZZ";
+    public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'kk:mm:ssZ";
 
     /**
      * If a entry is longer that this length, then when any content hashing is performed, it is
