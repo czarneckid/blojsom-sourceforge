@@ -8,7 +8,11 @@
 
     <changes>
         <release version="2.09" date="Available from CVS">
-            <action dev="czarneckid" type="Extension" context="Extension">
+            <action dev="czarneckid" type="update" context="Core">
+                Modified setting of link to correctly encode '/'.
+            </action>
+            
+            <action dev="czarneckid" type="update" context="Extension">
                 Updated MetaWeblog API handler to add other elements for the getPost() and getRecentPosts()
                 methods. blojsom should now work properly with clients such as
                 <link href="http://www.kung-foo.tv/ecto/">ecto</link> which support the MetaWeblog API.
@@ -29,7 +33,7 @@
             </action>
 
             <action dev="czarneckid" type="update" context="Library">
-                Updated XML-RPC library to 1.2b1. This fixes decoding issues seen with the MetaWeblog API 
+                Updated XML-RPC library to 1.2b1. This fixes decoding issues seen with the MetaWeblog API
                 newMediaObject method.
             </action>
         </release>
