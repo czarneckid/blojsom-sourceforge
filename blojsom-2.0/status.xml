@@ -11,6 +11,11 @@
             <action dev="czarneckid" type="updated" context="Plugin">
                 Updated administration plugins to report back status of operations.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Updated edit blog entries plugin to use the username of the person logged into the administration
+                interface as the entry author when adding entries.
+            </action>
         </release>
 
         <release version="2.06" date="December 22, 2003">
