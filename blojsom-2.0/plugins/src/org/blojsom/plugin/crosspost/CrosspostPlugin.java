@@ -60,7 +60,7 @@ import java.util.*;
  * CrosspostPlugin
  *
  * @author Mark Lussier
- * @version $Id: CrosspostPlugin.java,v 1.1 2005-01-13 21:33:00 intabulas Exp $
+ * @version $Id: CrosspostPlugin.java,v 1.2 2005-03-05 18:17:11 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants {
@@ -122,12 +122,10 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
 
 
     /**
-     *
      * @param blogUser
      * @param configuration
      */
     private void processConfiguration(BlogUser blogUser, Properties configuration) {
-
         Map userDestinations;
         Map configMap = BlojsomUtils.propertiesToMap(configuration);
         String destinationChain = (String) configMap.get(CrosspostConstants.XPOST_TAG_DESTINATIONS);
@@ -159,7 +157,7 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
                     int apiType = CrosspostConstants.API_BLOGGER;
                     String type = (String) configMap.get(id + CrosspostConstants.XPOST_TAG_TYPE);
 
-                    if ( type.toLowerCase().equalsIgnoreCase(CrosspostConstants.TYPE_METAWEBLOG)) {
+                    if (type.toLowerCase().equalsIgnoreCase(CrosspostConstants.TYPE_METAWEBLOG)) {
                         apiType = CrosspostConstants.API_METAWEBLOG;
                     }
                     destination.setApiType(apiType);
@@ -173,8 +171,6 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
                 }
             }
         }
-
-
     }
 
 
@@ -201,7 +197,6 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
      *          If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
-
     }
 
     /**
@@ -211,7 +206,6 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-
     }
 
     /**
@@ -238,8 +232,8 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
                             for (int x = 0; x < destinations.length; x++) {
                                 String destination = destinations[x];
                                 _logger.info("Crossposting to " + destination);
-                                Map destMap = (Map)_destinations.get(addEntryEvent.getBlogUser().getId());
-                                Destination d = (Destination)destMap.get(destination);
+                                Map destMap = (Map) _destinations.get(addEntryEvent.getBlogUser().getId());
+                                Destination d = (Destination) destMap.get(destination);
                                 publishCrosspost(addEntryEvent.getBlogEntry(), d);
                             }
                         }
@@ -255,9 +249,16 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
 
     }
 
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
+    }
 
     /**
-     *
      * @param entry
      * @param destination
      */
@@ -273,7 +274,7 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
             method = "blogger.newPost";
             param.add(entry.getTitle() + "\n" + entry.getDescription());
         } else {
-            method="metaWeblog.newPost";
+            method = "metaWeblog.newPost";
             param.add(entry.getTitle() + "\n" + entry.getDescription());
         }
         param.add(Boolean.TRUE);
@@ -285,12 +286,9 @@ public class CrosspostPlugin implements BlojsomPlugin, BlojsomListener, BlojsomC
         } catch (XmlRpcException e) {
             _logger.error(e);
         } catch (IOException e) {
-            _logger.error(e.getMessage(),e);
+            _logger.error(e.getMessage(), e);
 
         }
-
-
     }
-
 }
 

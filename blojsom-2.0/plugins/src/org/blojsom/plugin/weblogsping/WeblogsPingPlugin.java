@@ -65,7 +65,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.16 2005-01-05 18:35:06 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.17 2005-03-05 18:18:52 czarneckid Exp $
  * @since blojsom 1.9.2
  */
 public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
@@ -230,6 +230,15 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
 
             _logger.debug("Pinged notification URLs based on add/update blog entry event");
         }
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
     }
 
     /**

@@ -56,7 +56,7 @@ import java.util.Iterator;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.14 2005-01-06 03:36:53 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.15 2005-03-05 18:15:48 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -342,6 +342,15 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
 
             event.setEventHandled(true);
         }
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
     }
 
     /**

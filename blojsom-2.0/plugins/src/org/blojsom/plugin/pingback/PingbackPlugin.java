@@ -70,7 +70,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.3 2005-02-10 16:12:29 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.4 2005-03-05 18:19:25 czarneckid Exp $
  * @since blojsom 2.24
  */
 public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants {
@@ -208,6 +208,15 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
                 _logger.debug("No text in blog entry or " + PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS + " not enabled.");
             }
         }
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
     }
 
     /**
