@@ -49,7 +49,7 @@ import java.io.Serializable;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.14 2005-01-31 02:41:06 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.15 2005-04-06 22:27:00 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants, Serializable {
 
@@ -131,13 +131,30 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
      * @since blojsom 1.9.3
      */
     public String getDateAsFormat(String format) {
+        return getDateAsFormat(format, null);
+    }
+
+    /**
+     * Return the blog entry date formatted with a specified date format
+     *
+     * @param format Date format
+     * @param locale Locale for date formatting
+     * @return <code>null</code> if the entry date or format is null, otherwise returns the entry date formatted to the specified format. If the format is invalid, returns <tt>entryDate.toString()</tt>
+     * @since blojsom 2.25
+     */
+    public String getDateAsFormat(String format, Locale locale) {
         if (_entryDate == null || format == null) {
             return null;
         }
 
         SimpleDateFormat sdf = null;
         try {
-            sdf = new SimpleDateFormat(format);
+            if (locale == null) {
+                sdf = new SimpleDateFormat(format);
+            } else {
+                sdf = new SimpleDateFormat(format, locale);
+            }
+
             return sdf.format(_entryDate);
         } catch (IllegalArgumentException e) {
             return _entryDate.toString();
