@@ -40,17 +40,14 @@ import org.ignition.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CalendarFilterPlugin filters entries based on the calendar navigation parameters
  * in the URL
  *
  * @author Mark Lussier
- * @version $Id: CalendarFilterPlugin.java,v 1.4 2003-04-04 01:44:21 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.5 2003-08-04 15:00:56 intabulas Exp $
  */
 
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
@@ -72,7 +69,7 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
         BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
 
-        ArrayList updatedEntryList = new ArrayList();
+        List updatedEntryList = new ArrayList();
 
         Calendar entrycalendar = new GregorianCalendar(_locale);
         if (entries != null && entries.length > 0) {

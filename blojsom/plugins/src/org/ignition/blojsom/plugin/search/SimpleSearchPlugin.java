@@ -46,12 +46,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.List;
 
 /**
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.4 2003-05-01 00:26:32 intabulas Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.5 2003-08-04 15:01:10 intabulas Exp $
  */
 public class SimpleSearchPlugin implements BlojsomPlugin {
 
@@ -97,7 +98,7 @@ public class SimpleSearchPlugin implements BlojsomPlugin {
             _logger.debug("User query: " + query);
         }
 
-        ArrayList entriesMatchingQuery = new ArrayList(5);
+        List entriesMatchingQuery = new ArrayList(5);
 
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
