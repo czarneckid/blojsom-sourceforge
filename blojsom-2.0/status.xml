@@ -13,6 +13,10 @@
                 Added version number to JAR files.
             </action>
 
+            <action dev="czarneckid" type="add" context="Core">
+                Added CompressionFilter to send GZIP'd content.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
                 Moved generation of trackback URL parameters outside of inner most loop so that they are not
                 built each time a URL is encountered in the blog entry.
@@ -21,6 +25,11 @@
             <action dev="czarneckid" type="update" context="Plugin">
                 Fixed issue with weblogs ping plugin to be multi-user compliant. Also, the plugin will now ping
                 weblo.gs using the same method as weblogs.com.
+            </action>
+
+            <action dev="czarneckid" type="update" context="Plugin" fixes-bug="823145">
+                Fix for calendar navigation where when clicking the previous month in the calendar, then,
+               after the new page loads displaying the previous month, the next month link is invisible.
             </action>
         </release>
 
