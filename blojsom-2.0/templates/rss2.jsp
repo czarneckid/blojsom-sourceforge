@@ -17,7 +17,7 @@
 
 
 %>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+<rss version="2.0" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
   <channel>
     <title><%= blogInformation.getBlogName() %></title>
     <link><%= blogInformation.getBlogURL() %></link>
@@ -30,8 +30,10 @@
     </image>
     <docs>http://backend.userland.com/rss</docs>
     <generator><%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %></generator>
-	<dc:publisher><%= blogInformation.getBlogOwner()%></dc:publisher>
-	<dc:creator><%= blogInformation.getBlogOwnerEmail()%></dc:creator>
+    <managingEditor><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></managingEditor>
+    <webMaster><%= request.getAttribute(BlojsomConstants.BLOG_OWNER_EMAIL) %></webMaster>
+    <pubDate><%= request.getAttribute(BlojsomConstants.BLOJSOM_DATE) %>
+
     <%
         if (blogEntries != null) {
             for (int i = 0; i < blogEntries.length; i++) {
@@ -41,10 +43,10 @@
     		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
-            <guid isPermaLink="true"><%= blogEntry.getEscapedLink() %></guid>
+            <guid><%= blogEntry.getEscapedLink() %></guid>
 			<pubDate><%= blogEntry.getRFC822Date() %></pubDate>
             <% if (blogCommentsEnabled && blogEntry.supportsComments() && !BlojsomUtils.checkMapForKey(blogEntry.getMetaData(), "blog-entry-comments-disabled")) { %>
-			  <wfw:comment><%= blogInformation.getBlogBaseURL()%>/commentapi/<%= blogEntry.getId()%></wfw:comment>
+			  <wfw:comment><%= blogInformation.getBlogBaseURL()%>/commentapi/<%= request.getAttribute(BlojsomConstants.BLOJSOM_USER) %><%= blogEntry.getId()%></wfw:comment>
               <wfw:commentRss><%= blogEntry.getEscapedLink()%>&amp;page=comments&amp;flavor=rss</wfw:commentRss>
             <% } %>
     	</item>
