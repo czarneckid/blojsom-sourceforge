@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Entries")
+#adminPageHeader("#adminResource('entries.page.header' 'Entries')")
 
     <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
     </div>
 
         <!-- Add blog entry form -->
         <div id="mainClm">
-            <h2>Add entry in an existing blog category</h2>
+            <h2>#adminResource('add.entry.to.category.text' 'Add entry to category')</h2>
             <table>
                 <form name="add-blog-entry" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="new-blog-entry"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-entries"/>
                     <tr>
-                        <td>Blog category</td>
+                        <td>#adminResource('blog.category.text' 'Blog category')</td>
                         <td>
                             <select name="blog-category-name">
                             #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
@@ -26,8 +26,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Add entry to category"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('add.entry.to.category.text' 'Add entry to category')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
@@ -36,14 +36,14 @@
 
         <!-- Edit blog entries form -->
         <div id="mainClm">
-            <h2>Edit entries in an existing blog category</h2>
+            <h2>#adminResource('edit.entries.in.category.text' 'Edit entries in an existing blog category')</h2>
             <table>
                 <form name="edit-blog-entries" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="edit-blog-entries"/>
                     <input type="hidden" name="flavor" value="admin"/>
                     <input type="hidden" name="plugins" value="edit-blog-entries"/>
                     <tr>
-                        <td>Blog category</td>
+                        <td>#adminResource('blog.category.text' 'Blog category')</td>
                         <td>
                             <select name="blog-category-name">
                             #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
@@ -54,8 +54,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Edit entries in category"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="#adminResource('edit.entries.in.category.text' 'Edit entries in category')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>

@@ -8,7 +8,7 @@
 
         <!-- Edit blog entries form -->
         <div id="mainClm">
-            <h2>#adminResource('edit.entries.in.category.text' 'Edit entry in an existing blog category')</h2>
+            <h2>#adminResource('edit.entry.in.category.text' 'Edit entry in an existing blog category')</h2>
             <table>
                 <form name="edit-blog-entry" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="edit-blog-entry"/>
