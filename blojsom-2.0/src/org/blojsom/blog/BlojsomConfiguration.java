@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.35 2005-01-05 18:15:49 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.36 2005-01-15 16:19:47 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -94,6 +94,11 @@ public class BlojsomConfiguration implements BlojsomConstants {
             if (!_installationDirectory.endsWith("/")) {
                 _installationDirectory += "/";
             }
+        }
+        try {
+            System.setProperty("blojsom.installation.directory", _installationDirectory);
+        } catch (Exception e) {
+            _logger.error(e);
         }
         _logger.debug("Using installation directory: " + _installationDirectory);
 
