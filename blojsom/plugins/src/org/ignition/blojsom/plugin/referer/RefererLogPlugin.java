@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.16 2003-05-15 03:44:58 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.17 2003-05-25 20:36:15 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -344,19 +344,21 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
                     String _flavor = _details[FIELD_FLAVOR];
                     String _url = (String) _refererproperties.get(_key);
-                    BlogRefererGroup _group;
-                    if (_referergroups.containsKey(_flavor)) {
-                        _group = (BlogRefererGroup) _referergroups.get(_flavor);
-                    } else {
-                        _group = new BlogRefererGroup(_hitcountflavors.contains(_flavor));
-                    }
+                    if (!isBlacklisted(_url)) {
+                        BlogRefererGroup _group;
+                        if (_referergroups.containsKey(_flavor)) {
+                            _group = (BlogRefererGroup) _referergroups.get(_flavor);
+                        } else {
+                            _group = new BlogRefererGroup(_hitcountflavors.contains(_flavor));
+                        }
 
-                    if (_hitcountflavors.contains(_flavor)) {
-                        _group.addHitCount(getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
-                    } else {
-                        _group.addReferer(_flavor, _url, getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
+                        if (_hitcountflavors.contains(_flavor)) {
+                            _group.addHitCount(getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
+                        } else {
+                            _group.addReferer(_flavor, _url, getDateFromReferer(_details[FIELD_DATE]), Integer.parseInt(_details[FIELD_COUNT]));
+                        }
+                        _referergroups.put(_flavor, _group);
                     }
-                    _referergroups.put(_flavor, _group);
                 }
 
             } catch (IOException e) {
@@ -389,7 +391,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
 
                     _refererproperties.put(groupflavor + "." + getRefererDate(referer.getLastReferral()) + "." + referer.getCount(),
-                            referer.getUrl());
+                                           referer.getUrl());
                 }
             }
         }
