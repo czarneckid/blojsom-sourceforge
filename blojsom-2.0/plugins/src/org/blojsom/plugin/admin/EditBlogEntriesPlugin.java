@@ -68,7 +68,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.29 2004-08-30 17:58:24 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.30 2004-09-30 18:42:54 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -527,7 +527,28 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, "Deleted " + blogCommentIDs.length + " comments");
             }
 
-            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
+
+            BlogCategory category;
+            category = _fetcher.newBlogCategory();
+            category.setCategory(blogCategoryName);
+            category.setCategoryURL(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(blogCategoryName));
+
+            Map fetchMap = new HashMap();
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, category);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, blogEntryId);
+            try {
+                entries = _fetcher.fetchEntries(fetchMap, user);
+                if (entries != null) {
+                    _logger.debug("Retrieved " + entries.length + " entries from category: " + blogCategoryName);
+                    BlogEntry entryToUpdate = entries[0];
+
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entryToUpdate);
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY, blogCategoryName);
+                }
+            } catch (BlojsomFetcherException e) {
+                _logger.error(e);
+            }
         } else if (DELETE_BLOG_TRACKBACKS.equals(action)) {
             _logger.debug("User requested delete blog trackbacks action");
 
@@ -560,7 +581,28 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, "Deleted " + blogTrackbackIDs.length + " trackbacks");
             }
 
-            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
+
+            BlogCategory category;
+            category = _fetcher.newBlogCategory();
+            category.setCategory(blogCategoryName);
+            category.setCategoryURL(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(blogCategoryName));
+
+            Map fetchMap = new HashMap();
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, category);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, blogEntryId);
+            try {
+                entries = _fetcher.fetchEntries(fetchMap, user);
+                if (entries != null) {
+                    _logger.debug("Retrieved " + entries.length + " entries from category: " + blogCategoryName);
+                    BlogEntry entryToUpdate = entries[0];
+
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entryToUpdate);
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY, blogCategoryName);
+                }
+            } catch (BlojsomFetcherException e) {
+                _logger.error(e);
+            }
         }
 
         return entries;
