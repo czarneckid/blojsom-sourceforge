@@ -48,6 +48,7 @@ import org.blojsom.util.BlojsomUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,12 +61,23 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.9 2004-04-28 00:14:08 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.10 2004-04-30 04:59:44 czarneckid Exp $
  * @since blojsom 2.14
  */
-public class MoblogPlugin implements BlojsomPlugin {
+public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(MoblogPlugin.class);
+
+    /**
+     * Multipart/alternative mime-type
+     *
+     */
+    private static final String MULTIPART_ALTERNATIVE_MIME_TYPE = "multipart/alternative";
+
+    /**
+     * Text/html mime-type
+     */
+    private static final String TEXT_HTML_MIME_TYPE = "text/html";
 
     /**
      * Default mime-types for text
@@ -510,9 +522,18 @@ public class MoblogPlugin implements BlojsomPlugin {
                         }
 
                         if (email.isMimeType(MULTIPART_TYPE)) {
+                            // Check for multipart/alternative
+                            String overallType = email.getContentType();
+                            overallType = sanitizeContentType(overallType);
+                            boolean isMultipartAlternative = false;
+                            if (MULTIPART_ALTERNATIVE_MIME_TYPE.equals(overallType)) {
+                                isMultipartAlternative = true;
+                            }
+
                             Multipart mp = (Multipart)
                                     messagePart.getContent();
                             int count = mp.getCount();
+
                             for (int i = 0; i < count; i++) {
                                 BodyPart bp = mp.getBodyPart(i);
                                 String type = bp.getContentType();
@@ -523,66 +544,108 @@ public class MoblogPlugin implements BlojsomPlugin {
                                     Map attachmentMimeTypes = mailbox.getAttachmentMimeTypes();
                                     Map textMimeTypes = mailbox.getTextMimeTypes();
 
-                                    if (imageMimeTypes.containsKey(type)) {
-                                        _logger.debug("Creating image of type: " + type);
-                                        InputStream is = bp.getInputStream();
-                                        byte[] imageFile = new byte[is.available()];
-                                        is.read(imageFile, 0, is.available());
-                                        is.close();
-                                        String outputFilename =
-                                                BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
-                                        String extension = BlojsomUtils.getFileExtension(bp.getFileName());
-                                        if (BlojsomUtils.checkNullOrBlank(extension)) {
-                                            extension = "";
+                                    // Check for multipart alternative as part of a larger e-mail block
+                                    if (MULTIPART_ALTERNATIVE_MIME_TYPE.equals(type)) {
+                                        Object mimeMultipartContent = bp.getContent();
+                                        if (mimeMultipartContent instanceof MimeMultipart) {
+                                            MimeMultipart mimeMultipart = (MimeMultipart) mimeMultipartContent;
+                                            int mimeMultipartCount = mimeMultipart.getCount();
+                                            for (int j = 0; j < mimeMultipartCount; j++) {
+                                                BodyPart mimeMultipartBodyPart = mimeMultipart.getBodyPart(j);
+                                                String mmpbpType = mimeMultipartBodyPart.getContentType();
+                                                if (mmpbpType != null) {
+                                                    mmpbpType = sanitizeContentType(mmpbpType);
+                                                    if (TEXT_HTML_MIME_TYPE.equals(mmpbpType)) {
+                                                        _logger.debug("Using HTML part of multipart/alternative: " + type);
+                                                        InputStream is = bp.getInputStream();
+
+                                                        BufferedReader reader = new
+                                                                BufferedReader(new InputStreamReader(is, UTF8));
+                                                        String thisLine;
+
+                                                        while ((thisLine = reader.readLine()) !=
+                                                                null) {
+                                                            description.append(thisLine);
+                                                            description.append(BlojsomConstants.LINE_SEPARATOR);
+                                                        }
+
+                                                        reader.close();
+                                                        entry.append(description);
+                                                    } else {
+                                                        _logger.debug("Skipping non-HTML part of multipart/alternative block");
+                                                    }
+                                                } else {
+                                                    _logger.info("Unknown mimetype for multipart/alternative block");
+                                                }
+                                            }
+                                        } else {
+                                            _logger.debug("Multipart alternative block not instance of MimeMultipart");
                                         }
-
-                                        _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
-                                                outputFilename + "." + extension);
-                                        FileOutputStream fos = new
-                                                FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
-                                        fos.write(imageFile);
-                                        fos.close();
-                                        String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
-                                        entry.append("<p /><img src=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\" border=\"0\"/ >");
-                                    } else if (attachmentMimeTypes.containsKey(type)) {
-                                        _logger.debug("Creating attachment of type: " + type);
-                                        InputStream is = bp.getInputStream();
-                                        byte[] attachmentFile = new byte[is.available()];
-                                        is.read(attachmentFile, 0, is.available());
-                                        is.close();
-                                        String outputFilename =
-                                                BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
-                                        String extension = BlojsomUtils.getFileExtension(bp.getFileName());
-                                        if (BlojsomUtils.checkNullOrBlank(extension)) {
-                                            extension = "";
-                                        }
-
-                                        _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
-                                                outputFilename + "." + extension);
-                                        FileOutputStream fos = new
-                                                FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
-                                        fos.write(attachmentFile);
-                                        fos.close();
-                                        String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
-                                        entry.append("<p /><a href=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\">").append(bp.getFileName()).append("</a>");
-                                    } else if (textMimeTypes.containsKey(type)) {
-                                        _logger.debug("Using text part of type: " + type);
-                                        InputStream is = bp.getInputStream();
-
-                                        BufferedReader reader = new
-                                                BufferedReader(new InputStreamReader(is));
-                                        String thisLine;
-
-                                        while ((thisLine = reader.readLine()) !=
-                                                null) {
-                                            description.append(thisLine);
-                                            description.append(BlojsomConstants.LINE_SEPARATOR);
-                                        }
-
-                                        reader.close();
-                                        entry.append(description);
                                     } else {
-                                        _logger.error("Unknown mimetype for multipart: " + type);
+
+                                        if (imageMimeTypes.containsKey(type)) {
+                                            _logger.debug("Creating image of type: " + type);
+                                            InputStream is = bp.getInputStream();
+                                            byte[] imageFile = new byte[is.available()];
+                                            is.read(imageFile, 0, is.available());
+                                            is.close();
+                                            String outputFilename =
+                                                    BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
+                                            String extension = BlojsomUtils.getFileExtension(bp.getFileName());
+                                            if (BlojsomUtils.checkNullOrBlank(extension)) {
+                                                extension = "";
+                                            }
+
+                                            _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
+                                                    outputFilename + "." + extension);
+                                            FileOutputStream fos = new
+                                                    FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
+                                            fos.write(imageFile);
+                                            fos.close();
+                                            String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+                                            entry.append("<p /><img src=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\" border=\"0\"/ >");
+                                        } else if (attachmentMimeTypes.containsKey(type)) {
+                                            _logger.debug("Creating attachment of type: " + type);
+                                            InputStream is = bp.getInputStream();
+                                            byte[] attachmentFile = new byte[is.available()];
+                                            is.read(attachmentFile, 0, is.available());
+                                            is.close();
+                                            String outputFilename =
+                                                    BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
+                                            String extension = BlojsomUtils.getFileExtension(bp.getFileName());
+                                            if (BlojsomUtils.checkNullOrBlank(extension)) {
+                                                extension = "";
+                                            }
+
+                                            _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
+                                                    outputFilename + "." + extension);
+                                            FileOutputStream fos = new
+                                                    FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
+                                            fos.write(attachmentFile);
+                                            fos.close();
+                                            String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
+                                            entry.append("<p /><a href=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\">").append(bp.getFileName()).append("</a>");
+                                        } else if (textMimeTypes.containsKey(type)) {
+                                            if ((isMultipartAlternative && (TEXT_HTML_MIME_TYPE.equals(type))) || !isMultipartAlternative) {
+                                                _logger.debug("Using text part of type: " + type);
+                                                InputStream is = bp.getInputStream();
+
+                                                BufferedReader reader = new
+                                                        BufferedReader(new InputStreamReader(is, UTF8));
+                                                String thisLine;
+
+                                                while ((thisLine = reader.readLine()) !=
+                                                        null) {
+                                                    description.append(thisLine);
+                                                    description.append(BlojsomConstants.LINE_SEPARATOR);
+                                                }
+
+                                                reader.close();
+                                                entry.append(description);
+                                            }
+                                        } else {
+                                            _logger.info("Unknown mimetype for multipart: " + type);
+                                        }
                                     }
                                 } else {
                                     _logger.debug("Body part has no defined mime type. Skipping.");
@@ -599,7 +662,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                             if ((mimeType != null) && (textMimeTypes.containsKey(mimeType))) {
                                 InputStream is = email.getInputStream();
 
-                                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(is, UTF8));
                                 String thisLine;
 
                                 while ((thisLine = reader.readLine()) != null) {
@@ -610,7 +673,7 @@ public class MoblogPlugin implements BlojsomPlugin {
                                 reader.close();
                                 entry.append(description);
                             } else {
-                                _logger.error("Unknown mimetype: " + mimeType);
+                                _logger.info("Unknown mimetype: " + mimeType);
                             }
                         }
 
