@@ -44,6 +44,8 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -60,9 +62,9 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.9 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.10 2004-04-01 03:10:40 czarneckid Exp $
  */
-public class WeblogsPingPlugin implements BlojsomPlugin {
+public class WeblogsPingPlugin implements BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(WeblogsPingPlugin.class);
 
@@ -71,6 +73,7 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
     private static final String TECHNORATI_PING_URL = "http://rpc.technorati.com/rpc/ping";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
 
+    private static final String BLOG_PING_URLS_IP = "blog-ping-urls";
     private static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
 
     private WeblogsPingPluginAsyncCallback _callbackHandler;
@@ -149,17 +152,31 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
                     params.add(blog.getBlogName());
                     params.add(blog.getBlogURL());
 
-                    // Ping weblogs.com
-                    XmlRpcClient weblogsComclient = new XmlRpcClient(WEBLOGS_PING_URL);
-                    weblogsComclient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                    String pingURLsIP = blog.getBlogProperty(BLOG_PING_URLS_IP);
+                    // Check to see if no ping URLs are provided
+                    if (BlojsomUtils.checkNullOrBlank(pingURLsIP)) {
+                        // Ping weblogs.com
+                        XmlRpcClient weblogsComclient = new XmlRpcClient(WEBLOGS_PING_URL);
+                        weblogsComclient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
 
-                    // Ping weblo.gs
-                    XmlRpcClient weblogsClient = new XmlRpcClient(WEBLO_GS_PING_URL);
-                    weblogsClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                        // Ping weblo.gs
+                        XmlRpcClient weblogsClient = new XmlRpcClient(WEBLO_GS_PING_URL);
+                        weblogsClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
 
-                    // Ping technorati
-                    XmlRpcClient technoratiClient = new XmlRpcClient(TECHNORATI_PING_URL);
-                    technoratiClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                        // Ping technorati
+                        XmlRpcClient technoratiClient = new XmlRpcClient(TECHNORATI_PING_URL);
+                        technoratiClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                    } else {
+                        // If they are provided, loop through that list of URLs to ping
+                        String[] pingURLs = BlojsomUtils.parseDelimitedList(pingURLsIP, WHITESPACE);
+                        if (pingURLs != null && pingURLs.length > 0) {
+                            for (int i = 0; i < pingURLs.length; i++) {
+                                String pingURL = pingURLs[i];
+                                XmlRpcClient weblogsPingClient = new XmlRpcClient(pingURL);
+                                weblogsPingClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                            }
+                        }
+                    }
                 } catch (IOException e) {
                     _logger.error(e);
                 }

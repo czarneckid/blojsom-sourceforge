@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <td>#adminResource('blog.entry.pingURLs.text' 'Blog ping URLs')</td>
-                        <td><textarea rows="3" cols="80" name="blog-ping-urls"></textarea></td>
+                        <td><textarea rows="3" cols="80" name="blog-ping-urls">$!BLOJSOM_BLOG.getBlogProperty("blog-ping-urls")</textarea></td>
                     </tr>
                     <tr>
                         <td>#adminResource('blog.disable.comments.text' 'Disable comments?')</td>
