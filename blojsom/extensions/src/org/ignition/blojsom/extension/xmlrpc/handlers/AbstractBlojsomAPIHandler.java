@@ -38,7 +38,7 @@ import org.ignition.blojsom.blog.Blog;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.4 2003-02-26 19:40:38 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.1 2003-02-26 22:05:49 intabulas Exp $
  */
 public abstract class AbstractBlojsomAPIHandler  {
 
