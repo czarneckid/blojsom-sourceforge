@@ -31,23 +31,27 @@ package org.ignition.blojsom.dispatcher;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.ignition.blojsom.util.BlojsomUtils;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import javax.servlet.ServletConfig;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
-import java.io.*;
 
 /**
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.6 2003-03-05 04:08:46 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.7 2003-03-13 02:30:03 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -98,16 +102,31 @@ public class VelocityDispatcher implements GenericDispatcher {
         httpServletResponse.setContentType(flavorContentType);
 
         StringWriter sw = new StringWriter();
+        String flavorTemplateForPage = null;
 
         if (httpServletRequest.getParameter(PAGE_PARAM) != null) {
-            flavorTemplate = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
-            _logger.debug("Retrieved template for page: " + flavorTemplate);
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
+            _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 
         // Setup the VelocityContext
         VelocityContext velocityContext = new VelocityContext(context);
         try {
-            Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
+            if (flavorTemplateForPage != null) {
+                Velocity.mergeTemplate(flavorTemplateForPage, "UTF-8", velocityContext, sw);
+            } else {
+                Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
+            }
+        } catch (ResourceNotFoundException e) {
+            _logger.error(e);
+            if (flavorTemplateForPage != null) {
+                _logger.debug("Trying to fallback to original flavor template: " + flavorTemplate);
+                try {
+                    Velocity.mergeTemplate(flavorTemplate, "UTF-8", velocityContext, sw);
+                } catch (Exception internale) {
+                    _logger.error(internale);
+                }
+            }
         } catch (Exception e) {
             _logger.error(e);
         }
