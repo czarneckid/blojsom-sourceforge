@@ -55,19 +55,19 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.23 2003-06-12 02:07:48 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.24 2003-06-16 01:16:12 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
-    private Log _logger = LogFactory.getLog(StandardFetcher.class);
-    private Blog _blog;
+    protected Log _logger = LogFactory.getLog(StandardFetcher.class);
+    protected Blog _blog;
 
-    private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
-    private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
-    private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
-    private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
+    protected static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
+    protected static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
+    protected static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
+    protected static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";
 
-    private static final String STANDARD_FETCHER_CATEGORY = "STANDARD_FETCHER_CATEGORY";
+    protected static final String STANDARD_FETCHER_CATEGORY = "STANDARD_FETCHER_CATEGORY";
 
     /**
      * Default constructor
@@ -85,16 +85,6 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     public void init(ServletConfig servletConfig, Blog blog) throws BlojsomFetcherException {
         _blog = blog;
         _logger.debug("Initialized standard fetcher");
-    }
-
-    /**
-     * Initialize this fetcher. This method only called when the fetcher is instantiated.
-     *
-     * @param blog {@link Blog} instance
-     * @throws BlojsomFetcherException If there is an error initializing the fetcher
-     */
-    public void init(Blog blog) throws BlojsomFetcherException {
-        init(null, blog);
     }
 
     /**
