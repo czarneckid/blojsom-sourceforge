@@ -36,6 +36,7 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
@@ -45,7 +46,6 @@ import org.blojsom.plugin.email.EmailMessage;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +58,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.14
- * @version $Id: ForgottenPasswordPlugin.java,v 1.5 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.6 2005-03-05 18:20:57 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomConstants {
 
@@ -122,7 +122,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
             } else {
                 _logger.debug("Authorized e-mail address was blank for user: " + username);
-                addOperationResultMessage(context, "No authorized user found with username: " + username);
+                addOperationResultMessage(context, "Authorized e-mail address was blank for user: " + username);
                 httpServletRequest.setAttribute(PAGE_PARAM, FORGOTTEN_PASSWORD_PAGE);
             }
         } else {
