@@ -68,7 +68,7 @@ import java.util.HashMap;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.19 2005-01-11 02:37:38 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.20 2005-01-18 03:31:25 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -162,9 +162,10 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
     protected XmlRpcServer configureXMLRPCServer(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String userID) throws ServletException {
         XmlRpcServer xmlRpcServer = new XmlRpcServer();
 
-        String templateConfiguration = _servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
+        String xmlrpcConfigurationFile = _servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
         Properties handlerMapProperties = new Properties();
-        InputStream is = _servletConfig.getServletContext().getResourceAsStream(templateConfiguration);
+        InputStream is = _servletConfig.getServletContext().getResourceAsStream(xmlrpcConfigurationFile);
+
         try {
             handlerMapProperties.load(is);
             is.close();
@@ -180,6 +181,10 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
             // Load the user's blog properties
             Properties blogProperties = new BlojsomProperties();
             is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + userID + '/' + BLOG_DEFAULT_PROPERTIES);
+            if (is == null) {
+                return null;
+            }
+
             try {
                 blogProperties.load(is);
                 is.close();
@@ -303,13 +308,11 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
         }
 
         // Determine the appropriate user from the URL
-        String user = httpServletRequest.getPathInfo();
+        String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
         if (BlojsomUtils.checkNullOrBlank(user) || "/".equals(user)) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;
         }
-
-        user = BlojsomUtils.removeInitialSlash(user);
 
         // Make sure that the user exists in the system
         XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, httpServletResponse, user);
