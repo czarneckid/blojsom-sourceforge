@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.25 2003-05-31 18:45:58 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.26 2003-05-31 20:11:34 intabulas Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -489,8 +489,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
                 try {
                     File sourceFile = new File(outputfile);
                     BlogEntry entry = _fetcher.newBlogEntry();
-                    HashMap attributeMap = new HashMap();
-                    HashMap blogEntryMetaData = new HashMap();
+                    Map attributeMap = new HashMap();
+                    Map blogEntryMetaData = new HashMap();
 
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
