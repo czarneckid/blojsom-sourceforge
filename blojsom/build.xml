@@ -375,7 +375,7 @@
     <property name="forrest.site.hostname" value="shell.sf.net"/>
     <property name="forrest.site.remotedir" value="/home/groups/b/bl/blojsom/htdocs/test-site"/>
     
-    <property name="forrest.site.work.dir" value="${forrest.work.dir}/site/"/>
+    <property name="forrest.site.work.dir" value="build/work-site"/>
     <delete dir="${forrest.site.work.dir}"/>
     <mkdir dir="${forrest.site.work.dir}"/>
 
