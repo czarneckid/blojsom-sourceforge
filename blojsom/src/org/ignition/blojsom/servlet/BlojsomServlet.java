@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.37 2003-03-06 16:04:54 intabulas Exp $
+ * @version $Id: BlojsomServlet.java,v 1.38 2003-03-07 01:46:24 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -269,7 +269,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
      * @throws IOException If there is an error in IO
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM))) {
+        if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blog.areCommentsEnabled().booleanValue()) {
             String author = httpServletRequest.getParameter(AUTHOR_PARAM);
             String authorEmail = httpServletRequest.getParameter(AUTHOR_EMAIL_PARAM);
             String authorURL = httpServletRequest.getParameter(AUTHOR_URL_PARAM);
@@ -446,6 +446,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             context.put(BLOJSOM_CATEGORIES, _blog.getBlogCategoryHierarchy(category));
         }
         context.put(BLOJSOM_REQUESTED_CATEGORY, category);
+        context.put(BLOJSOM_COMMENTS_ENABLED, _blog.areCommentsEnabled());
 
         // Forward the request on to the template for the requested flavor
         String flavorTemplate;

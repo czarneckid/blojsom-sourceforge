@@ -14,6 +14,8 @@
             BlogCategory[] blogCategories = (BlogCategory[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
             String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
             BlogCategory requestedCategory = (BlogCategory) request.getAttribute(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
+            boolean blogCommentsEnabled = ((Boolean) request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED)).booleanValue();
+
 
             StringBuffer catStringBuf = new StringBuffer(20);
             String blogName = null;
@@ -62,20 +64,52 @@
         <div class="entrystyle">
         <%
             ArrayList blogComments = blogEntry.getComments();
+            if (blogComments != null) {
             for (int j = 0; j < blogComments.size(); j++) {
                 BlogComment blogComment = (BlogComment) blogComments.get(j);
         %>
         <div class="commentstyle">
             Comment by: <a href="mailto:<%= blogComment.getAuthorEmail() %>"><%= blogComment.getAuthor() %></a> -
                 <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a>
-            <div class="weblogdateline">Left on: <%= blogComment.getCommentDate() %><span><br/>
+            <div class="weblogdateline">Left on: <%= blogComment.getCommentDate() %></div><br/>
             <%= blogComment.getComment() %><br />
         </div>
 
         <%
                     }
+            }
         %>
         </div>
+
+        <% if (blogCommentsEnabled) { %>
+        <hr />
+    <table>
+        <form name="commentform" method="post" action=".">
+            <input type="hidden" name="comment" value="y"/>
+            <input type="hidden" name="page" value="comments"/>
+            <input type="hidden" name="category" value="<%= requestedCategory.getCategory() %>"/><br />
+            <input type="hidden" name="permalink" value="<%= blogEntry.getPermalink() %>"/> <br />
+            <tr>
+                <td>Author:</td><td><input type="text" name="author" value=""/></td>
+            </tr>
+            <tr>
+                <td>E-mail:</td><td><input type="text" name="authorEmail" value=""/></td>
+            </tr>
+            <tr>
+                <td>URL: </td><td><input type="text" name="authorURL" value=""/></td>
+            </tr>
+            <tr>
+                <td>Comment:</td><td><textarea name="commentText" value="" rows="5" columns="120"></textarea></td>
+            </tr>
+            <p />
+            <tr>
+                <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
+                <input type="reset" name="reset" value="Reset"/>
+                </td>
+            </tr>
+        </form>
+    </table>
+        <% } %>
 <%
                 }
             }

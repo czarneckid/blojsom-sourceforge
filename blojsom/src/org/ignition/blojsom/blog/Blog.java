@@ -46,7 +46,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.24 2003-03-06 04:06:54 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.25 2003-03-07 01:45:58 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -66,6 +66,7 @@ public class Blog implements BlojsomConstants {
     private String _blogOwner;
     private String _blogOwnerEmail;
     private String _blogCommentsDirectory;
+    private Boolean _blogCommentsEnabled;
 
     private HashMap _blogProperties;
 
@@ -187,6 +188,13 @@ public class Blog implements BlojsomConstants {
 
         _blogOwnerEmail = blogConfiguration.getProperty(BLOG_OWNER_EMAIL);
         _blogProperties.put(BLOG_OWNER_EMAIL, _blogOwnerEmail);
+
+        String blogCommentsEnabled = blogConfiguration.getProperty(BLOG_COMMENTS_ENABLED_IP);
+        if ("true".equalsIgnoreCase(blogCommentsEnabled)) {
+            _blogCommentsEnabled = new Boolean(true);
+        } else {
+            _blogCommentsEnabled = new Boolean(false);
+        }
     }
 
     /**
@@ -287,7 +295,9 @@ public class Blog implements BlojsomConstants {
                 return null;
             }
             blogEntry.setCommentsDirectory(_blogCommentsDirectory);
-            blogEntry.loadComments();
+            if (_blogCommentsEnabled.booleanValue()) {
+                blogEntry.loadComments();
+            }
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -318,7 +328,9 @@ public class Blog implements BlojsomConstants {
                 return null;
             }
             blogEntry.setCommentsDirectory(_blogCommentsDirectory);
-            blogEntry.loadComments();
+            if (_blogCommentsEnabled.booleanValue()) {
+                blogEntry.loadComments();
+            }
             entryArray[0] = blogEntry;
             return entryArray;
         }
@@ -374,7 +386,9 @@ public class Blog implements BlojsomConstants {
                     _logger.error(e);
                 }
                 blogEntry.setCommentsDirectory(_blogCommentsDirectory);
-                blogEntry.loadComments();
+                if (_blogCommentsEnabled.booleanValue()) {
+                    blogEntry.loadComments();
+                }
                 entryArray[i] = blogEntry;
             }
             return entryArray;
@@ -793,6 +807,15 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Return whether or not blog comments are enabled
+     *
+     * @return <code>true</code> if comments are enabled, <code>false</code> otherwise
+     */
+    public Boolean areCommentsEnabled() {
+        return _blogCommentsEnabled;
+    }
+
+    /**
      * Add a comment to a particular blog entry
      *
      * @param category Blog entry category
@@ -804,38 +827,40 @@ public class Blog implements BlojsomConstants {
      */
     public synchronized void addBlogComment(String category, String permalink, String author,
                                             String authorEmail, String authorURL, String userComment) {
-        BlogComment comment = new BlogComment();
-        comment.setAuthor(author);
-        comment.setAuthorEmail(authorEmail);
-        comment.setAuthorURL(authorURL);
-        comment.setComment(userComment);
-        comment.setCommentDate(new Date());
+        if (_blogCommentsEnabled.booleanValue()) {
+            BlogComment comment = new BlogComment();
+            comment.setAuthor(author);
+            comment.setAuthorEmail(authorEmail);
+            comment.setAuthorURL(authorURL);
+            comment.setComment(userComment);
+            comment.setCommentDate(new Date());
 
-        String commentDirectory = _blogHome + BlojsomUtils.removeInitialSlash(category) + _blogCommentsDirectory + File.separator + BlojsomUtils.getFilenameForPermalink(permalink) + File.separator;
-        String commentFilename = commentDirectory + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
-        File commentDir = new File(commentDirectory);
-        if (!commentDir.exists()) {
-            if (!commentDir.mkdirs()) {
-                _logger.error("Could not create directory for comments: " + commentDirectory);
-                return;
+            String commentDirectory = _blogHome + BlojsomUtils.removeInitialSlash(category) + _blogCommentsDirectory + File.separator + BlojsomUtils.getFilenameForPermalink(permalink) + File.separator;
+            String commentFilename = commentDirectory + comment.getCommentDate().getTime() + BlojsomConstants.COMMENT_EXTENSION;
+            File commentDir = new File(commentDirectory);
+            if (!commentDir.exists()) {
+                if (!commentDir.mkdirs()) {
+                    _logger.error("Could not create directory for comments: " + commentDirectory);
+                    return;
+                }
             }
-        }
 
-        File commentEntry = new File(commentFilename);
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
-            bw.write(comment.getAuthor());
-            bw.newLine();
-            bw.write(comment.getAuthorEmail());
-            bw.newLine();
-            bw.write(comment.getAuthorURL());
-            bw.newLine();
-            bw.write(comment.getComment());
-            bw.newLine();
-            bw.close();
-            _logger.debug("Added blog comment: " + commentFilename);
-        } catch (IOException e) {
-            _logger.error(e);
+            File commentEntry = new File(commentFilename);
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(commentEntry));
+                bw.write(comment.getAuthor());
+                bw.newLine();
+                bw.write(comment.getAuthorEmail());
+                bw.newLine();
+                bw.write(comment.getAuthorURL());
+                bw.newLine();
+                bw.write(comment.getComment());
+                bw.newLine();
+                bw.close();
+                _logger.debug("Added blog comment: " + commentFilename);
+            } catch (IOException e) {
+                _logger.error(e);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@
     BlogCategory[] blogCategories = (BlogCategory[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
     BlogCategory requestedCategory = (BlogCategory) request.getAttribute(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
+    boolean blogCommentsEnabled = ((Boolean) request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED)).booleanValue();
 
     StringBuffer catStringBuf = new StringBuffer(20);
     String blogName = null;
@@ -56,7 +57,9 @@
 		<p class="weblogdateline"><%= blogEntry.getDate() %></p>
 		<p><%= blogEntry.getDescription() %></p>
 		</div>
+        <% if (blogCommentsEnabled) { %>
         <p class="weblogbottomline">Comments [<a href="<%= blogEntry.getLink() %>&page=comments"><%= blogEntry.getNumComments() %></a>]</p>
+        <% } %>
 <%
 	    }
 	}

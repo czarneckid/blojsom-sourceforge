@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.26 2003-03-06 04:10:31 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.27 2003-03-07 01:46:33 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -74,6 +74,12 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_REQUESTED_CATEGORY = "BLOJSOM_REQUESTED_CATEGORY";
+
+    /**
+     * Value under which whether or not comments are enabled will be placed
+     * (example: on the request for the JSP dispatcher)
+     */
+    public static final String BLOJSOM_COMMENTS_ENABLED = "BLOJSOM_COMMENTS_ENABLED";
 
     /**
      * Default flavor for blojsom if none is requested or the flavor requested is invalid
@@ -219,6 +225,7 @@ public interface BlojsomConstants {
     static final String BLOG_OWNER = "blog-owner";
     static final String BLOG_OWNER_EMAIL = "blog-owner-email";
     static final String BLOG_COMMENTS_DIRECTORY_IP = "blog-comments-directory";
+    static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
 
     static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
 }
