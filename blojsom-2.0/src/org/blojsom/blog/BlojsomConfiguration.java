@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 
 import javax.servlet.ServletConfig;
 import java.io.File;
@@ -52,7 +53,7 @@ import java.util.Properties;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.17 2004-04-20 01:24:41 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.18 2004-04-23 02:10:09 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -139,7 +140,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                 BlogUser blogUser = new BlogUser();
                 blogUser.setId(user);
 
-                Properties userProperties = new Properties();
+                Properties userProperties = new BlojsomProperties();
                 is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
                 try {
                     userProperties.load(is);
