@@ -18,7 +18,7 @@
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
         <!-- entry required elements -->
-        <title>$entry.getTitle().replaceAll("<.*?>","")</title>
+        <title>$entry.getEscapedTitle().replaceAll("<.*?>","")</title>
         <link>$entry.getLink()</link>
         <id>$entry.getLink()</id>
         <issued>$entry.getISO8601Date()</issued>

@@ -28,7 +28,7 @@
     %>
     <entry>
         <!-- entry required elements -->
-        <title><%= blogEntry.getTitle().replaceAll("<.*?>","")%></title>
+        <title><%= blogEntry.getEscapedTitle().replaceAll("<.*?>","")%></title>
         <link><%= blogEntry.getLink() %></link>
         <id><%= blogEntry.getLink() %></id>
         <issued><%= blogEntry.getISO8601Date() %></issued>
