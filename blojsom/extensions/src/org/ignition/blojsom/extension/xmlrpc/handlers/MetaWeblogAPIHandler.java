@@ -53,7 +53,7 @@ import java.util.Vector;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.8 2003-03-13 01:29:51 intabulas Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.9 2003-03-13 02:09:39 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -72,7 +72,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
     /**
      * Gets the name of API Handler. Used to bind to XML-RPC
      *
-     * @return The API Name (ie: blogger)
+     * @return The API Name (ie: metaWeblog)
      */
     public String getName() {
         return API_PREFIX;
@@ -93,7 +93,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * Authenticates a user and returns the categories available in the blojsom
      *
      * @param blogid Dummy Value for Blojsom
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
      * @throws Exception
      * @return
@@ -105,40 +105,40 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
         _logger.info("   Password: " + password);
 
         if (_blog.checkAuthorization(userid, password)) {
-        Hashtable result;
+            Hashtable result;
 
-        BlogCategory[] _categories = _blog.getBlogCategories();
+            BlogCategory[] _categories = _blog.getBlogCategories();
 
-        if (_categories != null) {
+            if (_categories != null) {
 
-            result = new Hashtable(_categories.length);
+                result = new Hashtable(_categories.length);
 
-            for (int x = 0; x < _categories.length; x++) {
-                Hashtable _catlist = new Hashtable(3);
-                BlogCategory _category = _categories[x];
+                for (int x = 0; x < _categories.length; x++) {
+                    Hashtable _catlist = new Hashtable(3);
+                    BlogCategory _category = _categories[x];
 
-                String _blogid = _category.getCategory();
-                if (_blogid.length() > 1) {
-                    _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                    String _blogid = _category.getCategory();
+                    if (_blogid.length() > 1) {
+                        _blogid = BlojsomUtils.removeInitialSlash(_blogid);
+                    }
+
+                    String _description = "No Category Metadata Found";
+                    HashMap _metadata = _category.getMetaData();
+                    if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
+                        _description = (String) _metadata.get(DESCRIPTION_KEY);
+                    }
+
+                    _catlist.put("description", _description);
+                    _catlist.put("htmlUrl", _category.getCategoryURL());
+                    _catlist.put("rssUrl", _category.getCategoryURL() + "?flavor=rss");
+
+                    result.put(_blogid, _catlist);
                 }
-
-                String _description = "No Category Metadata Found";
-                HashMap _metadata = _category.getMetaData();
-                if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
-                    _description = (String) _metadata.get(DESCRIPTION_KEY);
-                }
-
-                _catlist.put("description", _description);
-                _catlist.put("htmlUrl", _category.getCategoryURL());
-                _catlist.put("rssUrl", _category.getCategoryURL() + "?flavor=rss");
-
-                result.put(_blogid, _catlist);
+            } else {
+                throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
             }
-        } else {
-            throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
-        }
 
-        return result;
+            return result;
 
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
@@ -150,7 +150,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * Edits a given post. Optionally, will publish the blog after making the edit
      *
      * @param postid Unique identifier of the post to be changed
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
      * @param struct Contents of the post
      * @param publish If true, the blog will be published immediately after the post is made
@@ -200,7 +200,6 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                         StringBuffer _post = new StringBuffer();
                         _post.append(_title).append("\n").append(_description);
 
-
                         FileOutputStream _fos = new FileOutputStream(_entry.getSource().getAbsolutePath(), false);
                         _fos.write(_post.toString().getBytes());
                         _fos.close();
@@ -213,15 +212,11 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
                 }
             }
 
-
             return result;
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
-
-
-
     }
 
 
@@ -229,7 +224,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler implements B
      * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
      *
      * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
      * @param struct Contents of the post
      * @param publish If true, the blog will be published immediately after the post is made
