@@ -34,34 +34,32 @@
  */
 package org.blojsom.servlet;
 
-import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.BlojsomConfigurationException;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.BlojsomConfigurationException;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.BlojsomException;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.io.InputStream;
-import java.io.IOException;
 
 /**
  * BlojsomBaseServlet
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.4 2003-08-12 14:45:18 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.5 2003-08-22 04:41:10 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -79,15 +77,11 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
      * entries
      *
      * @param servletConfig Servlet configuration information
-     * @param blogProperties blojsom properties
+     * @param blojsomConfiguration blojsom properties
      * @throws javax.servlet.ServletException If the {@link BlojsomFetcher} class could not be loaded and/or initialized
      */
-    protected void configureFetcher(ServletConfig servletConfig, Properties blogProperties) throws ServletException {
-        String fetcherClassName = blogProperties.getProperty(BLOJSOM_FETCHER_IP);
-        if ((fetcherClassName == null) || "".equals(fetcherClassName)) {
-            fetcherClassName = BLOG_DEFAULT_FETCHER;
-        }
-
+    protected void configureFetcher(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws ServletException {
+        String fetcherClassName = blojsomConfiguration.getFetcherClass();
         try {
             Class fetcherClass = Class.forName(fetcherClassName);
             _fetcher = (BlojsomFetcher) fetcherClass.newInstance();
@@ -115,73 +109,20 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
      */
     protected void configureBlojsom(ServletConfig servletConfig) throws ServletException {
         try {
-            // Configure the base directory
+            // Configure blojsom's properties
             Properties configurationProperties = BlojsomUtils.loadProperties(servletConfig, BLOJSOM_CONFIGURATION_IP, true);
-            _baseConfigurationDirectory = configurationProperties.getProperty(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP);
-            if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
-                _baseConfigurationDirectory = BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY;
-            } else {
-                if (!_baseConfigurationDirectory.startsWith("/")) {
-                    _baseConfigurationDirectory = '/' + _baseConfigurationDirectory;
-                }
-                if (!_baseConfigurationDirectory.endsWith("/")) {
-                    _baseConfigurationDirectory += "/";
-                }
-            }
-            _logger.debug("Using base directory: " + _baseConfigurationDirectory);
 
-            // Configure users
-            String usersProperty = configurationProperties.getProperty(BLOJSOM_USERS_IP);
-            String[] users = BlojsomUtils.parseCommaList(usersProperty);
-            InputStream is;
-            if (users.length == 0) {
-                _logger.error("No users defined for this blojsom blog");
-                throw new ServletException("No users defined for this blojsom blog");
-            } else {
-                _users = new HashMap(users.length);
-                for (int i = 0; i < users.length; i++) {
-                    String user = users[i];
-                    BlogUser blogUser = new BlogUser();
-                    blogUser.setId(user);
+            _blojsomConfiguration = new BlojsomConfiguration(servletConfig, BlojsomUtils.propertiesToMap(configurationProperties));
+            _baseConfigurationDirectory = _blojsomConfiguration.getBaseConfigurationDirectory();
+            _users = _blojsomConfiguration.getBlogUsers();
+            _defaultUser = _blojsomConfiguration.getDefaultUser();
 
-                    Properties userProperties = new Properties();
-                    is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
-                    userProperties.load(is);
-                    is.close();
-
-                    Blog userBlog = new Blog(userProperties);
-                    blogUser.setBlog(userBlog);
-
-                    _users.put(user, blogUser);
-                    _logger.debug("Added blojsom user: " + blogUser.getId());
-                }
-
-                // Determine and set the default user
-                String defaultUser = configurationProperties.getProperty(BLOJSOM_DEFAULT_USER_IP);
-                if (defaultUser == null || "".equals(defaultUser)) {
-                    _logger.error("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
-                    throw new ServletException("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
-                }
-
-                if (!_users.containsKey(defaultUser)) {
-                    _logger.error("Default user does not match any of the registered blojsom users: " + defaultUser);
-                    throw new ServletException("Default user does not match any of the registered blojsom users: " + defaultUser);
-                }
-
-                _defaultUser = defaultUser;
-                _logger.debug("blojsom default user: " + _defaultUser);
-
-                // Configure the fetcher for use by this blog
-                configureFetcher(servletConfig, configurationProperties);
-                _blojsomConfiguration = new BlojsomConfiguration(usersProperty, _defaultUser, _baseConfigurationDirectory, configurationProperties.getProperty(BLOJSOM_FETCHER_IP), _users);
-            }
+            // Configure the fetcher for use by this blog
+            configureFetcher(servletConfig, _blojsomConfiguration);
         } catch (BlojsomConfigurationException e) {
             _logger.error(e);
             throw new ServletException(e);
         } catch (BlojsomException e) {
-            _logger.error(e);
-            throw new ServletException(e);
-        } catch (IOException e) {
             _logger.error(e);
             throw new ServletException(e);
         }
