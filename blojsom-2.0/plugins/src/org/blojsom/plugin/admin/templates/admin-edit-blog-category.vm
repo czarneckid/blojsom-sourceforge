@@ -26,7 +26,7 @@
 
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="U#adminResource('update.category.text' 'Update category')"/>
+                            <input type="submit" name="submit" value="#adminResource('update.category.text' 'Update category')"/>
                             <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
