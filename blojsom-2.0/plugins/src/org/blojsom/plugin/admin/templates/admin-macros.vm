@@ -38,6 +38,18 @@
     #end
 #end
 
+#macro(selectList $selectListName $currentOption $options)
+    <select name="$selectListName" size="1">
+        #foreach ($option in $options)
+        #if ($currentOption.equals($option))
+        <option value="$option" selected>$option</option>
+        #else
+        <option value="$option">$option</option>
+        #end
+        #end
+    </select>
+#end
+
 #macro(trueFalseSelectList $selectListName $selectedValue)
     <select name="$selectListName" size="2">
         #if (!$selectedValue)
