@@ -43,8 +43,9 @@ import org.ignition.blojsom.util.BlojsomUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger API
@@ -52,7 +53,7 @@ import java.util.HashMap;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.5 2003-03-09 03:36:37 czarneckid Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.6 2003-03-09 16:05:10 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -173,13 +174,13 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
         _logger.info("   Password: " + password);
 
         if (_blog.checkAuthorization(userid, password)) {
-            ArrayList result = new ArrayList();
+            Vector result = new Vector();
 
             BlogCategory[] _categories = _blog.getBlogCategories();
 
             if (_categories != null) {
                 for (int x = 0; x < _categories.length; x++) {
-                    HashMap _bloglist = new HashMap(3);
+                    Hashtable _bloglist = new Hashtable(3);
                     BlogCategory _category = _categories[x];
 
                     String _blogid = _category.getCategory();
