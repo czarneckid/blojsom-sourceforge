@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.12 2004-01-26 22:45:02 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.13 2004-02-18 00:58:36 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -248,10 +248,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         String flavorMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
         String categoryMappingForFlavor = (String) blog.getBlogProperty(flavorMappingKey);
         String[] categoryMappingsForFlavor = null;
-        if (categoryMappingForFlavor != null && !"".equals(categoryMappingForFlavor)) {
+        if (!BlojsomUtils.checkNullOrBlank(categoryMappingForFlavor)) {
             _logger.debug("Using category mappings for flavor: " + flavor);
             categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
-        } else if ("".equals(categoryMappingForFlavor)) {
+        } else if (blog.getBlogDefaultCategoryMappings() != null && blog.getBlogDefaultCategoryMappings().length > 0) {
+            _logger.debug("Using default category mapping");
+            categoryMappingsForFlavor = blog.getBlogDefaultCategoryMappings();
+        } else {
             categoryMappingsForFlavor = null;
         }
 
