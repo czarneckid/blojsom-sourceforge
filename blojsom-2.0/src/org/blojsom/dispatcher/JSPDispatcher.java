@@ -54,7 +54,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.8 2003-10-14 00:22:38 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.9 2003-10-14 01:42:08 czarneckid Exp $
  */
 public class JSPDispatcher implements BlojsomDispatcher {
 
@@ -135,6 +135,7 @@ public class JSPDispatcher implements BlojsomDispatcher {
             String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
             if (_context.getResource(templateToLoad) != null) {
                 httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                httpServletResponse.getWriter().flush();
                 _logger.debug("Dispatched to flavor page template for user: " + templateToLoad);
                 return;
             } else {
@@ -142,6 +143,7 @@ public class JSPDispatcher implements BlojsomDispatcher {
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template with page without including any user information
                     httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                    httpServletResponse.getWriter().flush();
                     _logger.debug("Dispatched to flavor page template: " + templateToLoad);
                     return;
                 } else {
@@ -153,6 +155,7 @@ public class JSPDispatcher implements BlojsomDispatcher {
             String templateToLoad = _baseConfigurationDirectory + user.getId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplate);
             if (_context.getResource(templateToLoad) != null) {
                 httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                httpServletResponse.getWriter().flush();
                 _logger.debug("Dispatched to flavor template for user: " + templateToLoad);
                 return;
             } else {
@@ -160,6 +163,7 @@ public class JSPDispatcher implements BlojsomDispatcher {
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template without including any user information
                     httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                    httpServletResponse.getWriter().flush();
                     _logger.debug("Dispatched to flavor template: " + templateToLoad);
                     return;
                 } else {

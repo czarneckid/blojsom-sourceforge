@@ -47,16 +47,17 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.9 2003-10-14 00:22:38 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.10 2003-10-14 01:42:08 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -196,5 +197,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             }
             _logger.debug("Dispatched to flavor template: " + flavorTemplate);
         }
+
+        responseWriter.flush();
     }
 }
