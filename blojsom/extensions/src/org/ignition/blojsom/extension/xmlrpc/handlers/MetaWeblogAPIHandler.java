@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -59,12 +60,13 @@ import java.util.Map;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.36 2003-07-15 00:17:36 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.37 2003-07-26 15:48:46 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
     private static final String FETCHER_CATEGORY = "FETCHER_CATEGORY";
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
+    private static final String FETCHER_NUM_POSTS_INTEGER = "FETCHER_NUM_POSTS_INTEGER";
 
     private static final String METAWEBLOG_UPLOAD_DIRECTORY_IP = "blojsom-extension-metaweblog-upload-directory";
     private static final String METAWEBLOG_ACCEPTED_TYPES_IP = "blojsom-extension-metaweblog-accepted-types";
@@ -457,6 +459,57 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             } else {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
+
+    /**
+     * Retrieves a set of recent posts to the blog
+     *
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @param numberOfPosts Number of posts to be retrieved from the blog
+     *
+     * @return Array of structures containing the minimal attributes for the MetaWeblog API getPost() method: title, link, and description
+     * @throws Exception If the user was not authenticated correctly
+     * @since blojsom 1.9.5
+     */
+    public Object getRecentPosts(String blogid, String userid, String password, int numberOfPosts) throws Exception {
+        _logger.debug("getRecentPosts() Called =========[ SUPPORTED ]=====");
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+
+        if (_blog.checkAuthorization(userid, password)) {
+            blogid = BlojsomUtils.normalize(blogid);
+            BlogCategory category = _fetcher.newBlogCategory();
+            category.setCategory(blogid);
+            category.setCategoryURL(_blog.getBlogURL() + blogid);
+
+            Map fetchMap = new HashMap();
+            fetchMap.put(FETCHER_CATEGORY, category);
+            fetchMap.put(FETCHER_NUM_POSTS_INTEGER, new Integer(numberOfPosts));
+
+            BlogEntry[] entries = _fetcher.fetchEntries(fetchMap);
+            Vector blogEntries = new Vector();
+            Hashtable postcontent;
+            if (entries != null && entries.length > 0) {
+                blogEntries = new Vector(entries.length);
+                BlogEntry entry;
+                for (int i = 0; i < entries.length; i++) {
+                    entry = entries[i];
+                    postcontent = new Hashtable(3);
+                    postcontent.put(MEMBER_TITLE, entry.getTitle());
+                    postcontent.put(MEMBER_LINK, entry.getPermalink());
+                    postcontent.put(MEMBER_DESCRIPTION, entry.getDescription());
+                    blogEntries.add(postcontent);
+                }
+            }
+
+            return blogEntries;
         } else {
             _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
