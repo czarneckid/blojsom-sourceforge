@@ -8,7 +8,10 @@
 
     <changes>
         <release version="2.14" date="Available from CVS">
-            
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Markdown plugin to allow you to use <a href="http://daringfireball.net/projects/markdown/">Markdown</a>
+                syntax in your blog entries.
+            </action>
         </release>
 
         <release version="2.13" date="March 17, 2004">
