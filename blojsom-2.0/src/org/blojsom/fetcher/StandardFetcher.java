@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.4 2003-09-12 02:00:36 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.5 2003-10-23 00:18:40 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -242,21 +242,14 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     protected BlogEntry[] getEntriesAllCategories(BlogUser user, String flavor, int maxBlogEntries, int blogDirectoryDepth) {
         Blog blog = user.getBlog();
-        if (flavor.equals(DEFAULT_FLAVOR_HTML)) {
-            return getEntriesAllCategories(user, blog.getBlogDefaultCategoryMappings(), maxBlogEntries, blogDirectoryDepth);
-        } else {
-            String flavorMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
-            String categoryMappingForFlavor = (String) blog.getBlogProperties().get(flavorMappingKey);
-            String[] categoryMappingsForFlavor = null;
-            if (categoryMappingForFlavor != null) {
-                _logger.debug("Using category mappings for flavor: " + flavor);
-                categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
-            } else {
-                _logger.debug("Fallback to default category mappings for flavor: " + flavor);
-                categoryMappingsForFlavor = blog.getBlogDefaultCategoryMappings();
-            }
-            return getEntriesAllCategories(user, categoryMappingsForFlavor, maxBlogEntries, blogDirectoryDepth);
+        String flavorMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_MAPPING_IP;
+        String categoryMappingForFlavor = (String) blog.getBlogProperties().get(flavorMappingKey);
+        String[] categoryMappingsForFlavor = null;
+        if (categoryMappingForFlavor != null) {
+            _logger.debug("Using category mappings for flavor: " + flavor);
+            categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
         }
+        return getEntriesAllCategories(user, categoryMappingsForFlavor, maxBlogEntries, blogDirectoryDepth);
     }
 
     /**
