@@ -39,6 +39,7 @@ import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.intabulas.sandler.AtomConstants;
 import org.intabulas.sandler.authentication.DigestUtilities;
 import org.intabulas.sandler.elements.Content;
 import org.intabulas.sandler.elements.Entry;
@@ -55,10 +56,10 @@ import java.util.Date;
  * AtomUtils
  *
  * @author Mark Lussier
- * @version $Id: AtomUtils.java,v 1.13 2004-02-23 18:25:10 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.14 2004-02-23 18:27:21 intabulas Exp $
  * @since blojsom 2.0
  */
-public class AtomUtils implements AtomConstants {
+public class AtomUtils implements AtomAPIConstants {
 
     /**
      * Generate a NONCE value based on the the current blog
@@ -106,7 +107,7 @@ public class AtomUtils implements AtomConstants {
 
         Content content = new ContentImpl();
         content.setMimeType(CONTENTTYPE_HTML);
-        content.setMode(org.intabulas.sandler.AtomConstants.Mode.ESCAPED);
+        content.setMode(AtomConstants.Mode.ESCAPED);
         content.setBody(blogentry.getEscapedDescription());
         result.addContent(content);
 
