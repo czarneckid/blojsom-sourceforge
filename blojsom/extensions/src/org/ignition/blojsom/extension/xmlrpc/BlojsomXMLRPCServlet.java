@@ -57,7 +57,7 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2003-02-25 22:54:14 intabulas Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.1 2003-02-26 21:57:53 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";

@@ -53,7 +53,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.5 2003-02-26 20:43:34 czarneckid Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.1 2003-02-26 21:58:03 czarneckid Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
