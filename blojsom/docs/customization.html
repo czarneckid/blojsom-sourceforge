@@ -93,26 +93,26 @@ Each line represents a configuration of <i>flavor</i>=<i>flavor template filenam
 This is the first half of the flavor/template equation. If you wanted to have the HTML flavor for your blog rendered using JavaServer Pages (JSP), you can do this. 
 <p />
 <p class="weblogdateline">Configuring blojsom dispatchers</p>
-blojsom dispatchers are configured in <i>WEB-INF/dispatcher-map.properties</i>. Here is what the file looks like when you download blojsom.
+blojsom dispatchers are configured in <i>WEB-INF/dispatcher.properties</i>. Here is what the file looks like when you download blojsom.
 <pre>
 jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
 vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
 </pre>
 Each line represents a configuration of <i>template extension</i>=<i>fully qualified dispatcher classname</i>. For the template dispatcher to be configured correctly, the template extension must be present in one of the configured flavors. 
 <p />
-In the above configuration, the <i>html</i> flavor is handled by the <i>html.vm</i> template which is dispatched by the <i>org.ignition.blojsom.dispatcher.VelocityDispatcher</i>. Got that? OK, well, let's say you wanted to use the JSP template for the HTML flavor to render your blog. Here's how that configuration would look for the <i>flavor.properties</i> and <i>dispatcher-map.properties</i>, respectively.
+In the above configuration, the <i>html</i> flavor is handled by the <i>html.vm</i> template which is dispatched by the <i>org.ignition.blojsom.dispatcher.VelocityDispatcher</i>. Got that? OK, well, let's say you wanted to use the JSP template for the HTML flavor to render your blog. Here's how that configuration would look for the <i>flavor.properties</i> and <i>dispatcher.properties</i>, respectively.
 <p />
 <i>flavor.properties</i>
 <pre>
 html=html.jsp, text/html
 rss=rss.vm, text/xml
 </pre>
-<i>dispatcher-map.properties</i>
+<i>dispatcher.properties</i>
 <pre>
 jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
 vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
 </pre>
-OK. So, one simple change to the <i>flavor.properties</i> file and no change to the <i>dispatcher-map.properties</i>. That's it. It's that simple!
+OK. So, one simple change to the <i>flavor.properties</i> file and no change to the <i>dispatcher.properties</i>. That's it. It's that simple!
 <p />
 
 <p class="weblogtitle">writing a blojsom custom dispatcher</p>
