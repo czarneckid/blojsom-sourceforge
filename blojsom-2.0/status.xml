@@ -21,6 +21,12 @@
                 Preserved timestamp metadata on loading blog entries even if the original file timestamp has changed.
             </action>
 
+            <action dev="czarneckid" type="add" context="Core">
+                Added <tt>blog-default-flavor</tt> as a configurable parameter for an individual's <tt>blog.properties</tt> so
+                that one can set a default flavor for rendering your blog. If not specified, the default flavor used
+                is HTML.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugins">
                 Removed <tt>synchronized</tt> methods from Comment and Trackback plugins.
             </action>
@@ -31,6 +37,14 @@
 
             <action dev="czarneckid" type="add" context="Plugins">
                 Added File Upload plugin to allow you to upload resources to your blog from the web administration console.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugins">
+                Added Edit Blog Entries plugin to allow you to edit blog entries from the web.
+            </action>
+
+            <action dev="czarneckid" type="add" context="Plugins">
+                Added Edit Blog Flavors plugin to allow you to add new flavors from the web.
             </action>
 
             <action dev="czarneckid" type="update" context="Extension">
