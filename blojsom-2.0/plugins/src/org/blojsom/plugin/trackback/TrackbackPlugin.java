@@ -42,6 +42,9 @@ import org.blojsom.plugin.common.IPBanningPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.fetcher.BlojsomFetcher;
+import org.blojsom.fetcher.BlojsomFetcherException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -56,9 +59,11 @@ import java.util.HashMap;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.12 2004-02-06 20:11:37 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.13 2004-02-17 03:28:04 czarneckid Exp $
  */
-public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
+public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants, BlojsomMetaDataConstants {
+
+    private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
 
     /**
      * Default prefix for trackback e-mail notification
@@ -134,8 +139,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     private static final String TRACKBACK_FAILURE_PAGE = "/trackback-failure";
 
     private Map _ipAddressTrackbackTimes;
-
-    private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
+    private BlojsomFetcher _fetcher;
 
     /**
      * Default constructor
@@ -154,6 +158,25 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
         super.init(servletConfig, blojsomConfiguration);
 
         _ipAddressTrackbackTimes = new HashMap(10);
+        String fetcherClassName = blojsomConfiguration.getFetcherClass();
+        try {
+            Class fetcherClass = Class.forName(fetcherClassName);
+            _fetcher = (BlojsomFetcher) fetcherClass.newInstance();
+            _fetcher.init(servletConfig, blojsomConfiguration);
+            _logger.info("Added blojsom fetcher: " + fetcherClassName);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (InstantiationException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        } catch (BlojsomFetcherException e) {
+            _logger.error(e);
+            throw new BlojsomPluginException(e);
+        }
     }
 
     /**
@@ -315,6 +338,33 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
             if (!category.endsWith("/")) {
                 category += "/";
+            }
+
+            // Check to see if comments have been disabled for this blog entry
+            BlogCategory blogCategory = _fetcher.newBlogCategory();
+            blogCategory.setCategory(category);
+            blogCategory.setCategoryURL(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(category));
+
+            Map fetchMap = new HashMap();
+            fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+
+            try {
+                BlogEntry[] fetchedEntries = _fetcher.fetchEntries(fetchMap, user);
+                if (entries.length > 0) {
+                    BlogEntry entry = fetchedEntries[0];
+                    if (BlojsomUtils.checkMapForKey(entry.getMetaData(), BLOG_METADATA_TRACKBACKS_DISABLED)) {
+                        _logger.debug("Trackbacks have been disabled for blog entry: " + entry.getId());
+
+                        context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trackbacks have been disabled for this blog entry");
+                        context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
+                        httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
+
+                        return entries;
+                    }
+                }
+            } catch (BlojsomFetcherException e) {
+                _logger.error(e);
             }
 
             Integer code = addTrackback(context, category, permalink, title, excerpt, url, blogName,
