@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.6 2003-04-19 02:44:46 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.7 2003-04-19 14:38:17 czarneckid Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -102,14 +102,17 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
             FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
+            FileBackedBlogCategory blogCategory = new FileBackedBlogCategory(requestedCategory.getCategory(), _blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category));
             blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(blogFile.getName()));
             try {
                 blogEntry.reloadSource();
+                blogCategory.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
             } catch (IOException e) {
                 return new BlogEntry[0];
             }
+            blogEntry.setBlogCategory(blogCategory);
             blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
             if (_blog.getBlogCommentsEnabled().booleanValue()) {
                 blogEntry.loadComments();
@@ -149,15 +152,18 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
                 blogEntry = new FileBackedBlogEntry();
+                FileBackedBlogCategory blogCategoryForEntry = new FileBackedBlogCategory(requestedCategory.getCategory(), _blog.getBlogURL() + category);
                 blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
                 blogEntry.setLink(_blog.getBlogURL() + category + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(entry.getName()));
                 try {
                     blogEntry.reloadSource();
+                    blogCategoryForEntry.loadMetaData(_blog.getBlogHome(), _blog.getBlogPropertiesExtensions());
                 } catch (IOException e) {
                     _logger.error(e);
                 }
                 blogEntry.setCommentsDirectory(_blog.getBlogCommentsDirectory());
+                blogEntry.setBlogCategory(blogCategoryForEntry);
                 if (_blog.getBlogCommentsEnabled().booleanValue()) {
                     blogEntry.loadComments();
                 }

@@ -46,7 +46,7 @@ import java.util.Date;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.28 2003-04-17 02:34:45 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.29 2003-04-19 14:36:19 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -60,6 +60,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     protected long _lastModified;
     protected ArrayList _comments;
     protected ArrayList _trackbacks;
+    protected BlogCategory _blogCategory;
 
     /**
      * Create a new blog entry with no data
@@ -212,7 +213,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     public abstract String getPermalink();
 
     /**
-     * Category for the blog entry
+     * Category for the blog entry. This corresponds to the category directory name.
      *
      * @return Blog entry category
      */
@@ -221,7 +222,7 @@ public abstract class BlogEntry implements BlojsomConstants {
     }
 
     /**
-     * Set the category for the blog entry
+     * Set the category for the blog entry. This corresponds to the category directory name.
      *
      * @param category Category for the blog entry
      */
@@ -341,5 +342,23 @@ public abstract class BlogEntry implements BlojsomConstants {
         } else {
             return _trackbacks.size();
         }
+    }
+
+    /**
+     * Get the {@link BlogCategory} object for this blog entry
+     *
+     * @return {@link BlogCategory} object
+     */
+    public BlogCategory getBlogCategory() {
+        return _blogCategory;
+    }
+
+    /**
+     * Set the {@link BlogCategory} object for this blog entry
+     *
+     * @param blogCategory New {@link BlogCategory} object
+     */
+    public void setBlogCategory(BlogCategory blogCategory) {
+        _blogCategory = blogCategory;
     }
 }
