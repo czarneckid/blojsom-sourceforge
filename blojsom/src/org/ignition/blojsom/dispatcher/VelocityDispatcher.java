@@ -45,10 +45,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Map;
 import java.util.Properties;
 
@@ -56,7 +53,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.10 2003-03-25 04:25:22 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.11 2003-04-10 01:41:15 czarneckid Exp $
  */
 public class VelocityDispatcher implements GenericDispatcher {
 
@@ -139,7 +136,12 @@ public class VelocityDispatcher implements GenericDispatcher {
 
         // We need that content length, especially for RSS Feeds
         String content = sw.toString();
-        httpServletResponse.addIntHeader("Content-Length", content.length());
+        byte[] contentBytes = null;
+        try {
+            contentBytes = content.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+        }
+        httpServletResponse.addIntHeader("Content-Length", (contentBytes == null ? content.length() : contentBytes.length));
 
         OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
         osw.write(content);
