@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.38 2004-11-16 01:53:08 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.39 2004-11-26 16:00:21 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -420,7 +420,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setDescription(blogEntryDescription);
 
             Map entryMetaData = new HashMap();
-            String username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
+            String username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
             entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, username);
 
             String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);
