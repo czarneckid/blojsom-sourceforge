@@ -12,6 +12,12 @@
                 Updated Edit Blog Entries plugin to create a link to the new post in the status message when
                 adding an entry to a category.
             </action>
+
+            <action dev="czarneckid" type="update" context="Plugin">
+                Improved handling of getDateHeader calls in Conditional GET plugin when a call can result
+                in an IllegalArgumentException.
+            </action>
+
         </release>
 
         <release version="2.11" date="February 9, 2004">
