@@ -16,15 +16,18 @@
 <p class="weblogdateline">Available from CVS</p>
 <p />
 General:<br />
-- Plugin API
 - "BLOG_SITE_URL" no longer contains a trailing "/"<br />
-- XML-RPC Interface (Additional Servlet) supporting a subset of the <a href="http://plant.blogger.com/api/index.html">Blogger API</a>
-- Macro Expansion Plugin that will expand $MACRO$ keywords in both the subject and body of a blog entry (see macros.properties)
-- HREF Plugin that convert any URLs in text entries to hrefs automatically
-
+- Initial Plugin API for blojsom<br />
+- XML-RPC Interface (Additional Servlet) supporting a subset of the <a href="http://plant.blogger.com/api/index.html">Blogger API</a> <br />
+- Plugins available:<br />
+<ul>
+- Macro Expansion Plugin that will expand $MACRO$ keywords in both the subject and body of a blog entry (see macros.properties)<br />
+- HREF Plugin that converts any URLs in text entries to hrefs automatically<br />
+</ul>
 <p />
 The following bugs were fixed:<br />
 <a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=692640&group_id=72754">BUG 692640</a>: Servlet context name same as url-mapping makes invalid URL<br />
+<a href="http://sourceforge.net/tracker/?func=detail&atid=535586&aid=693281&group_id=72754">BUG 693281</a>: plugin chain does not report errors<br />
 <p>
 <p class="weblogtitle">blojsom 1.3</p>
 <p class="weblogdateline">February 23, 2003</p>

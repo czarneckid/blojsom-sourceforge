@@ -14,6 +14,10 @@
 ml">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/proj
 ects/blojsom/">Sourceforge</a></p>
 
+<ul>
+<p class="navigation">Details on: <a href="plugins.html">blojsom plugins</a> | <a href="xmlrpc.html">blojsom XML-RPC support</a></p>
+</ul>
+
 <p>
 
 <p class="weblogtitle">blojsom default category ("/") mapping</p>
@@ -38,7 +42,7 @@ the "/java", "/osx", and "/politics/voting" categories if someone requests the d
 
 <p class="weblogtitle">blojsom context</p>
 <p />
-There are a number of objects that get placed in a "Context" that is used by the particular dispatcher handling the template for a requested flavor. A concrete instance of GenericDispatcher will use this "Context" map and make the objects in it available, as appropriate, for the particular presentation technology. For example, in the JSPDispatcher, the objects from this "Context" are placed on the request using the setAttribute method.    
+There are a number of objects that get placed in a "Context" that is used by the particular dispatcher handling the template for a requested flavor. A concrete instance of GenericDispatcher will use this "Context" map and make the objects in it available, as appropriate, for the particular presentation technology. For example, in the JSPDispatcher, the objects from this "Context" are placed on the request using the setAttribute method.
 <p />
 However, you as a user should be aware of the name and type of objects that are available in the "Context". You can see examples of how they are accessed by looking at the html.jsp (JSP page for the html flavor) and html.vm (Velocity template for the html flavor).
 
@@ -74,15 +78,15 @@ A sample <i>blojsom.properties</i> file in the blog home directory might look li
 blojsom.name=Top
 blojsom.description=This is my top-level category
 </pre>
-There are two reserved properties for blojsom, <i>blojsom.name</i> and <i>blojsom.description</i>. These two properties can be used to set another descriptive name for the current blog category and to provide a detailed description of the entries in that category. Other properties can be extracted by calling the <i>BlogCategory.getMetaData()</i> method and then looking for the particular property in the returned HashMap. 
+There are two reserved properties for blojsom, <i>blojsom.name</i> and <i>blojsom.description</i>. These two properties can be used to set another descriptive name for the current blog category and to provide a detailed description of the entries in that category. Other properties can be extracted by calling the <i>BlogCategory.getMetaData()</i> method and then looking for the particular property in the returned HashMap.
 <p />
-As a user, you can use the meta-data in any way you like. For example, besides an alternate name and description, you could have per-category colors or other personalization features that are extracted by the proper template. An example of printing out a category's detailed description, if found in the category meta-data for a category, is given in the Velocity template for the HTML flavor, <i>html.vm</i>. 
+As a user, you can use the meta-data in any way you like. For example, besides an alternate name and description, you could have per-category colors or other personalization features that are extracted by the proper template. An example of printing out a category's detailed description, if found in the category meta-data for a category, is given in the Velocity template for the HTML flavor, <i>html.vm</i>.
 <p />
-<a href="blojsom-screenshot.jpg">Click here</a> for a screen shot of the meta-data facility in action. Look for the string, "This is my top-level category". 
+<a href="blojsom-screenshot.jpg">Click here</a> for a screen shot of the meta-data facility in action. Look for the string, "This is my top-level category".
 
 <p class="weblogtitle">blojsom flavor and template customization</p>
-<p /> 
-In blojsom, you have the ability to configure both the flavor and the template mechanism. Why would you want to do this? Well, out of the box, blojsom can generate a few simple flavors for people to view your blog, HTML and RSS. However, these flavors may be insufficient to "describe" your blog and you may also want to use a particular presentation technology for rendering your blog. 
+<p />
+In blojsom, you have the ability to configure both the flavor and the template mechanism. Why would you want to do this? Well, out of the box, blojsom can generate a few simple flavors for people to view your blog, HTML and RSS. However, these flavors may be insufficient to "describe" your blog and you may also want to use a particular presentation technology for rendering your blog.
 <p />
 <p class="weblogdateline">Configuring blojsom flavors</p>
 blojsom flavors are configured in <i>WEB-INF/flavor.properties</i>. Here is what the file looks like when you download blojsom.
@@ -92,8 +96,8 @@ rss=rss.vm, text/xml
 </pre>
 Each line represents a configuration of <i>flavor</i>=<i>flavor template filename</i>, <i>flavor content type</i>. In this configuration, the <i>html</i> flavor uses the <i>html.vm</i> template and also uses a content type of <i>text/html</i>. Each line must also follow this configuration of
 <pre><i>flavor</i>=<i>flavor template filename</i>, <i>flavor content type</i></pre>
- 
-This is the first half of the flavor/template equation. If you wanted to have the HTML flavor for your blog rendered using JavaServer Pages (JSP), you can do this. 
+
+This is the first half of the flavor/template equation. If you wanted to have the HTML flavor for your blog rendered using JavaServer Pages (JSP), you can do this.
 <p />
 <p class="weblogdateline">Configuring blojsom dispatchers</p>
 blojsom dispatchers are configured in <i>WEB-INF/dispatcher.properties</i>. Here is what the file looks like when you download blojsom.
@@ -101,7 +105,7 @@ blojsom dispatchers are configured in <i>WEB-INF/dispatcher.properties</i>. Here
 jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
 vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
 </pre>
-Each line represents a configuration of <i>template extension</i>=<i>fully qualified dispatcher classname</i>. For the template dispatcher to be configured correctly, the template extension must be present in one of the configured flavors. 
+Each line represents a configuration of <i>template extension</i>=<i>fully qualified dispatcher classname</i>. For the template dispatcher to be configured correctly, the template extension must be present in one of the configured flavors.
 <p />
 In the above configuration, the <i>html</i> flavor is handled by the <i>html.vm</i> template which is dispatched by the <i>org.ignition.blojsom.dispatcher.VelocityDispatcher</i>. Got that? OK, well, let's say you wanted to use the JSP template for the HTML flavor to render your blog. Here's how that configuration would look for the <i>flavor.properties</i> and <i>dispatcher.properties</i>, respectively.
 <p />

@@ -25,25 +25,86 @@ ects/blojsom/">Sourceforge</a></p>
 1. Download <a href="http://sourceforge.net/projects/blojsom">blojsom</a>.<p />
 2. Unpack <i>blojsom.war</i> using Java's JAR program (jar xvf blojsom.war) into the directory where the application server will be running blojsom. Under Tomcat, this might be $TOMCAT_HOME/webapps.<br /><p />
 3. Configure the <i>WEB-INF/blojsom.properties</i> file for your blog.
-<ul>
-	<li>Edit <i>blog-home</i> to point to the directory where your blog entries will be located
-	<li>Edit <i>blog-directory-depth</i> to indicate the number of levels deep that blojsom should traverse in <i>blog-home</i> to look for entries. A value of -1 indicates that blojsom should traverse all directories
-	<li>Edit <i>blog-language</i> to indicate the language code for this blog. This parameter is used when generating RSS feeds for your blog
-	<li>Edit <i>blog-name</i> to the name of your blog
-	<li>Edit <i>blog-description</i> to provide a concise description of your blog
-	<li>Edit <i>blog-url</i> to the URL for your blog
-	<li>Edit <i>blog-file-extensions</i> to customize the file extensions blojsom uses for blog entries. By default, blojsom will look for .txt and .html file extensions in the blog directories for entries
-	<li>Edit <i>blog-properties-extensions</i> to identify the file extensions that blojsom should look for in the blog category directories. Any properties files discovered when loading the blog from disk will be used as meta-data for the current category. This feature is described in the <a href="customization.html">customization</a> reference
-	<li>Edit <i>blog-entries-display</i> to set the maximum number of display entries per category. If this value is -1, all entries will be displayed. This parameter also controls the number of entries that get aggregated for individual categories if requesting the default or "/" category.
-	<li>Edit <i>blog-default-category-mapping</i> to customize the blog directories that will be "aggregated" to the default or "/" category. If left blank, all directories, up to <i>blog-directory-depth</i> will be aggregated. This feature is described in the <a href="customization.html">customization</a> reference
-	<li>Edit <i>blog-owner</i> to identify the name of the blog owner. This is a personalization feature used in the RDF flavor
-	<li>Edit <i>blog-owner-email</i> with the e-mail address of the blog owner. This is a personalization feature used in the RDF flavor
-</ul>
+<p />
+<table border="1">
+    <th>Configuration parameter</th> <th>Default value</th> <th>Usage</th>
+    <tr align="center">
+        <td>blog-home</td> <td></td> <td align="left">Points to the directory where your blog entries will be located</td>
+    </tr>
+    <tr align="center">
+        <td>blog-directory-depth</td> <td>-1</td> <td align="left">Indicates the number of levels deep that blojsom should traverse in <i>blog-home</i> to look for entries. A value of -1 indicates that blojsom should traverse all directories</td>
+    </tr>
+    <tr align="center">
+        <td>blog-language</td> <td>en</td> <td align="left">Indicates the language code for this blog. This parameter is used when generating RSS feeds for your blog</td>
+    </tr>
+    <tr align="center">
+        <td>blog-name</td> <td></td> <td align="left">The name of your blog</td>
+    </tr>
+    <tr align="center">
+        <td>blog-description</td> <td></td> <td align="left">A concise description of your blog</td>
+    </tr>
+    <tr align="center">
+        <td>blog-url</td> <td></td> <td align="left">URL for your blog</td>
+    </tr>
+    <tr align="center">
+        <td>blog-file-extensions</td> <td></td> <td align="left">Customize the regular expressions to identify file extensions blojsom uses for blog entries. By default, blojsom will look for .txt and .html file extensions in the blog directories for entries</td>
+    </tr>
+    <tr align="center">
+        <td>blog-properties-extensions</td> <td></td> <td align="left">File extensions that blojsom should look for in the blog category directories. Any properties files discovered when loading the blog from disk will be used as meta-data for the current category. This feature is described in the <a href="customization.html">customization</a> reference</td>
+    </tr>
+    <tr align="center">
+        <td>blog-entries-display</td> <td>-1</td> <td align="left">Sets the maximum number of display entries per category. If this value is -1, all entries will be displayed. This parameter also controls the number of entries that get aggregated for individual categories if requesting the default or "/" category</td>
+    </tr>
+    <tr align="center">
+        <td>blog-default-category-mapping</td> <td></td> <td align="left">customize the blog directories that will be "aggregated" to the default or "/" category. If left blank, all directories, up to <i>blog-directory-depth</i> will be aggregated. This feature is described in the <a href="customization.html">customization</a> reference</td>
+    </tr>
+    <tr align="center">
+        <td>blog-owner</td> <td></td> <td align="left">Identifies the name of the blog owner. This is a personalization feature used in the RDF flavor</td>
+    </tr>
+    <tr align="center">
+        <td>blog-owner-email</td> <td></td> <td align="left">Identifies the e-mail address of the blog owner. This is a personalization feature used in the RDF flavor</td>
+    </tr>
+</table>
+<p />
 4. Start your application server. On startup, blojsom will log messages to the console to indicate what it is doing. Configuring blojsom's log capability is described in a later section of this document.
+<p />
+<p class="weblogtitle">adding, removing, and updating blog entries and categories</p>
+<p/>
+blojsom uses the filesystem as its database. In blojsom, files matching the files indicated in the <i>blog-file-extensions</i> configuration property will be picked up as your
+blog entries. Directories that blojsom discovers under <i>blog-home</i> will be used as the categories for your blog. The following is an oversimplified example of how to
+manipulate your blog to add, update, and remove blog entries and categories.
+<p/>
+<p class="weblogdateline">blojsom blog entry format</p>
+The first line of a blojsom blog entry is used as the title for that entry. Everything after that is treated as the body or description
+of that blog entry. The filename of the blog entry will be used in generating a "permalink" (a permanent link) to that individual blog entry.
+<ul>
+<pre>
+This is a blog entry title
 
+And everything after will show up as the body for the blog entry
+</pre>
+</ul>
+<p />
+<p class="weblogdateline">Adding blog entries and categories</p>
+1. Change to your <i>blog-home</i> directory.<br/>
+2. Add a directory called "general". There you go, you've just created a category!<br />
+3. Open up your favorite editor and create a file called "my-first-entry.html" in the "general" directory. Again, the first line of your blog entry is used
+as the title and everything after the title will be used as the body of the entry.<br />
+4. In your browser, open up the URL to your blog and you should see your entry displayed on the screen.<br />
+<p />
+<p class="weblogdateline">Updating blog entries and categories</p>
+1. Change to your <i>blog-home</i> directory.<br/>
+2. Rename the "general" directory to "news". There you go, you've just updated a category!<br />
+3. Open up your favorite editor and edit the file "my-first-entry.html", now in the "news" directory. Update the title and/or the entry body. It's that simple.<br />
+4. In your browser, open up the URL to your blog and you should see your entry displayed on the screen.<br />
+<p/>
+<p class="weblogdateline">Removing blog entries and categories</p>
+1. Change to your <i>blog-home</i> directory.<br/>
+2. Remove the "news" directory. There you go, you've just removed a category (and removed your first blog entry)!<br />
+3. In your browser, open up the URL to your blog and you should see that the "news" category and your first entry are gone.<br />
 <p class="weblogtitle">blog navigation</p>
 <p/>
-After blojsom is setup and running, your users will be able to navigate around your blog in those categories that have entries. No surprise there, eh?! 
+After blojsom is setup and running, your users will be able to navigate around your blog in those categories that have entries. No surprise there, eh?!
 <p />
 The following table describes the URL parameters that blojsom accepts and how they affect the entries that get displayed by your blog.
 <p />
