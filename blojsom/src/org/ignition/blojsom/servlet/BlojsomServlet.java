@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.40 2003-03-10 12:09:12 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.41 2003-03-11 01:36:57 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -276,7 +276,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(CATEGORY_PARAM);
-            if (author != null && commentText != null) {
+            if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))) {
                 _blog.addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
             }
         }
@@ -324,8 +324,12 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         if (permalink != null) {
-            permalink = BlojsomUtils.getFilenameForPermalink(permalink);
-            _logger.debug("Permalink request for: " + permalink);
+            permalink = BlojsomUtils.getFilenameForPermalink(permalink, _blog.getBlogFileExtensions());
+            if (permalink == null) {
+                _logger.error("Permalink request for invalid permalink: " + httpServletRequest.getParameter(PERMALINK_PARAM));
+            } else {
+                _logger.debug("Permalink request for: " + permalink);
+            }
         }
 
         // Determine a calendar-based request
