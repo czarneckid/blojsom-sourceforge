@@ -46,6 +46,8 @@ import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 
 
@@ -53,7 +55,7 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.12 2005-01-05 02:31:15 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.13 2005-01-11 02:37:02 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -79,6 +81,8 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
     protected String _blogEntryExtension;
     protected AuthorizationProvider _authorizationProvider;
     protected ServletConfig _servletConfig;
+    protected HttpServletRequest _httpServletRequest;
+    protected HttpServletResponse _httpServletResponse;
 
     /**
      * Attach a blog instance to the API Handler so that it can interact with the blog
@@ -133,6 +137,26 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      */
     public void setServletConfig(ServletConfig servletConfig) {
         _servletConfig = servletConfig;
+    }
+
+    /**
+     * Set the {@link HttpServletRequest} instance or the handler
+     *
+     * @param httpServletRequest {@link HttpServletRequest} instance
+     * @since blojsom 2.23
+     */
+    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
+        _httpServletRequest = httpServletRequest;
+    }
+
+    /**
+     * Set the {@link HttpServletResponse} instance or the handler
+     *
+     * @param httpServletResponse {@link HttpServletResponse} instance
+     * @since blojsom 2.23
+     */
+    public void setHttpServletResponse(HttpServletResponse httpServletResponse) {
+        _httpServletResponse = httpServletResponse;
     }
 
     /**

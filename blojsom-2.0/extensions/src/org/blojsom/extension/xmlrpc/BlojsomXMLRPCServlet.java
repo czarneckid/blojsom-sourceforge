@@ -68,7 +68,7 @@ import java.util.HashMap;
  * 
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.18 2005-01-06 03:39:24 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.19 2005-01-11 02:37:38 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -155,10 +155,11 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
      * Configure the XML-RPC API Handlers
      *
      * @param httpServletRequest Request
+     * @param httpServletResponse Response
      * @param userID User ID
      * @return {@link XmlRpcServer} configured for the given user or <code>null</code> if the configuration failed
      */
-    protected XmlRpcServer configureXMLRPCServer(HttpServletRequest httpServletRequest, String userID) throws ServletException {
+    protected XmlRpcServer configureXMLRPCServer(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String userID) throws ServletException {
         XmlRpcServer xmlRpcServer = new XmlRpcServer();
 
         String templateConfiguration = _servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
@@ -240,6 +241,8 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
                 handler.setBlogUser(blogUser);
                 handler.setAuthorizationProvider(_authorizationProvider);
                 handler.setServletConfig(_servletConfig);
+                handler.setHttpServletRequest(httpServletRequest);
+                handler.setHttpServletResponse(httpServletResponse);
                 xmlRpcServer.addHandler(handler.getName(), handler);
 
                 if (defaultXMLRPCHandler != null && defaultXMLRPCHandler.equals(handlerName)) {
@@ -309,19 +312,18 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
         user = BlojsomUtils.removeInitialSlash(user);
 
         // Make sure that the user exists in the system
-        XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, user);
+        XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, httpServletResponse, user);
         if (xmlRpcServer == null) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
             return;
         }
 
         byte[] result = xmlRpcServer.execute(httpServletRequest.getInputStream());
-        String content = new String(result, UTF8);
         httpServletResponse.setContentType("text/xml; charset=UTF-8");
         httpServletResponse.setContentLength(result.length);
-        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
-        osw.write(content);
-        osw.flush();
+        OutputStream os = httpServletResponse.getOutputStream();
+        os.write(result);
+        os.flush();
     }
 
     /**
