@@ -71,12 +71,11 @@ import java.util.Date;
 /**
  * AtomAPIServlet
  *
- * Implementation of J.C. Gregorio's AtomAPI
- * <a href="http://bitworking.org/rfc/draft-gregorio-08.xml">http://bitworking.org/rfc/draft-gregorio-08.xml</a>
+ * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomAPIServlet.java,v 1.24 2004-01-05 22:29:58 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.25 2004-01-06 02:10:58 czarneckid Exp $
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomConstants {
 
@@ -152,7 +151,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         String nonce = AtomUtils.generateNextNonce(user);
         String relm = MessageFormat.format(AUTHENTICATION_REALM, new Object[]{nonce});
 
-        // send the NextNonce as part of a WWW-Authenticate header
+        // Send the NextNonce as part of a WWW-Authenticate header
         httpServletResponse.setHeader(HEADER_WWWAUTHENTICATE, relm);
 
         httpServletResponse.setStatus(401);
@@ -182,8 +181,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @param blog Blog instance
      * @param blogUser BlogUser instance
      * @return the search result as a String
-     *
-     * todo just hable BlogUser since we can get the Blog instance from it
      */
     private String processSearchRequest(HttpServletRequest request, String category, Blog blog, BlogUser blogUser) {
         String result = null;
@@ -193,6 +190,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         if (paramMap.containsKey(KEY_ATOMLAST)) {
             try {
                 numPosts = Integer.parseInt(((String []) paramMap.get(KEY_ATOMLAST))[0]);
+                if (numPosts < -1 || numPosts == 0) {
+                    numPosts = -1;
+                }
             } catch (NumberFormatException e) {
                 numPosts = -1;
             }
@@ -291,8 +291,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @param blog Blog Instance
      * @param user BlogUser Instance
      * @return URL appropriate for introspection
-     *
-     * todo just hable BlogUser since we can get the Blog instance from it
      */
     private String createIntrospectionResponse(Blog blog, BlogUser user) {
         String atomuri = blog.getBlogBaseURL() + ATOM_SERVLETMAPPING + user.getId() + "/";
