@@ -35,7 +35,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.24 2003-03-04 03:30:25 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.25 2003-03-05 04:05:01 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -119,6 +119,11 @@ public interface BlojsomConstants {
      * Request parameter for the "plugins"
      */
     public static final String PLUGINS_PARAM = "plugins";
+
+    /**
+     * Request parameter for the "page"
+     */
+    public static final String PAGE_PARAM = "page";
 
     /**
      * Value indicating all subdirectories under the blog home should be searched
