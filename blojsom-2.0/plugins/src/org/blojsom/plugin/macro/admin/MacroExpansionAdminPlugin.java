@@ -58,7 +58,7 @@ import java.util.Properties;
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.1 2004-06-09 03:14:45 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.2 2004-07-13 00:57:34 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -139,6 +139,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                             String macro = macrosToDelete[i];
                             macros.remove(macro);
                         }
+                        addOperationResultMessage(context, "Deleted " + macrosToDelete.length + " macros");
                     } else {
                         addOperationResultMessage(context, "No macros selected for deletion");
                     }
@@ -151,6 +152,8 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                     } else {
                         if (!macros.containsKey(macroShortName)) {
                             macros.put(macroShortName, macroExpansion);
+
+                            addOperationResultMessage(context, "Added macro: " + macroShortName);
                         } else {
                             addOperationResultMessage(context, "Macro short name: " + macroShortName + " already exists");
                         }
