@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.55 2003-07-29 02:02:36 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.56 2003-08-04 15:31:28 intabulas Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -78,7 +78,7 @@ public class Blog implements BlojsomConstants {
     private String _blogEntryMetaDataExtension;
     private String _blogFileEncoding;
 
-    private HashMap _blogProperties;
+    private Map _blogProperties;
 
     private Map _authorization = null;
 
@@ -194,7 +194,7 @@ public class Blog implements BlojsomConstants {
 
         String commentsDirectoryRegex;
         if (_blogCommentsDirectory.startsWith(".")) {
-            commentsDirectoryRegex = ".*" + File.separator + "\\" + _blogCommentsDirectory;
+            commentsDirectoryRegex = ".*" + File.separator + '\\' + _blogCommentsDirectory;
         } else {
             commentsDirectoryRegex = ".*" + File.separator + _blogCommentsDirectory;
         }
@@ -208,7 +208,7 @@ public class Blog implements BlojsomConstants {
 
         String trackbackDirectoryRegex;
         if (_blogTrackbackDirectory.startsWith(".")) {
-            trackbackDirectoryRegex = ".*" + File.separator + "\\" + _blogTrackbackDirectory;
+            trackbackDirectoryRegex = ".*" + File.separator + '\\' + _blogTrackbackDirectory;
         } else {
             trackbackDirectoryRegex = ".*" + File.separator + _blogTrackbackDirectory;
         }
