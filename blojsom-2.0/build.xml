@@ -465,6 +465,7 @@
                 <include name="war/"/>
                 <include name="war/WEB-INF"/>
                 <include name="war/WEB-INF/lib"/>
+                <exclude name="war/WEB-INF/lib/blojsom*.jar"/> 
             </zipfileset>
         </zip>
     </target>
