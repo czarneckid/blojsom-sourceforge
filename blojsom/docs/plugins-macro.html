@@ -21,7 +21,20 @@
 <a href="plugins-simplesearch.html">simple search plugin</a>
 </p>
 </ul>
+<p class="weblogtitle">macro expansion plugin</p>
+<p/>
 
+The macro expansion plugin will extract tokens from a blog entry and replace them with other content. This is a greate
+timesaver when you can simply enter <b>$HOME$</b> in your blog entry and macro plugin will convert that to
+<a href="http://www.javaslash.org/blog">My Blog Home</a> as an example.<br/>
+
+<p class="weblogtitle">managing your macros</p><br/>
+
+The file <i>/WEB-INF/macros.properties</i> contains simple name=value pairs that represent the token and the value to
+replace it with. It can be simple text expanstion or a full &lt;a href="http://www.news.com"&gt;NEWS!&lt;/a&gt; URL<br/><br/>
+When you write your entries, simply surround your macro tokens with the <b>$</b> symbol. An example is <b>$blogsom$</b>
+(tokens are case insensative)
+<br/><br/>
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></a>
 
