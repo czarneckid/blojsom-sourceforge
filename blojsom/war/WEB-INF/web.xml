@@ -29,6 +29,10 @@
             <param-name>blog-plugin-configuration</param-name>
             <param-value>/WEB-INF/plugin.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>blog-macros-expansion</param-name>
+            <param-value>/WEB-INF/macros.properties</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -44,6 +48,11 @@
             <param-name>blog-xmlrpc-configuration</param-name>
             <param-value>/WEB-INF/blojsom-xmlrpc.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>blog-authorization</param-name>
+            <param-value>/WEB-INF/blojsom-authorization.properties</param-value>
+        </init-param>
+
         <load-on-startup>2</load-on-startup>
     </servlet>
 
