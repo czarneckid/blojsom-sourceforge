@@ -41,7 +41,11 @@
 
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated the edit blog entries plugin to allow blog entries to be "scheduled" by specifying the
-                date and time. 
+                date and time.
+            </action>
+
+            <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="875832">
+                Fixed bug where calendar plugin does not correctly handle last day in month.	
             </action>
 
             <action dev="czarneckid" type="fix" context="Extension" fixes-bug="871374">
