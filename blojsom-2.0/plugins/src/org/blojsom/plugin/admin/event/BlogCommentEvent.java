@@ -43,12 +43,12 @@ import java.util.Date;
  * BlogCommentEvent
  *
  * @author Mark Lussier
- * @version $Id: BlogCommentEvent.java,v 1.1 2005-01-19 19:21:28 intabulas Exp $
+ * @version $Id: BlogCommentEvent.java,v 1.2 2005-01-27 00:06:54 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class BlogCommentEvent extends BlogEntryEvent {
 
-    private BlogComment _blogComment;
+    protected BlogComment _blogComment;
 
     /**
      * Create a new event indicating something happened with an entry in the system.
