@@ -201,5 +201,24 @@
     <target name="website-docs" depends="javadoc" description="Creates a ZIP for the blojsom website">
         <zip zipfile="${website.zip}" basedir="${basedir}/docs"/>
     </target>
+
+    <!-- =================================================================== -->
+    <!-- Copies the shrubbery theme                                          -->
+    <!-- =================================================================== -->
+    <target name="shrubbery">
+        <tstamp/>
+        <copy todir="${build.dir}">
+            <fileset dir="${themes.dir}/shrubbery">
+                <include name="**/*.vm"/>
+            </fileset>
+        </copy>
+        <copy todir="${war.dir}">
+            <fileset dir="${themes.dir}/shrubbery">
+                <include name="**/*.css"/>
+                <include name="**/*.jpg"/>
+                <include name="**/*.gif"/>
+            </fileset>
+        </copy>
+    </target>
 </project>
 
