@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.36 2003-03-25 16:25:11 intabulas Exp $
+ * @version $Id: BlojsomConstants.java,v 1.37 2003-03-26 04:25:56 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -61,6 +61,13 @@ public interface BlojsomConstants {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_CATEGORIES = "BLOJSOM_CATEGORIES";
+
+    /**
+     * Key under which the blog calendar will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_CALENDAR = "BLOJSOM_CALENDAR";
+
 
     /**
      * Key under which the date (RFC 822 format) of the blog will be placed
