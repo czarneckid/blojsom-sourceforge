@@ -92,8 +92,8 @@
             <section>
                 <title>Individual user plugin configuration</title>
                 <p>
-                    An individual user's plugin configuration file is stored in <em>/WEB-INF/&lt;userid&gt;/plugin.properties</em>. The
-                    userid will change as appropriate.
+                    An individual user's plugin configuration file is stored in <em>/WEB-INF/&lt;user-id&gt;/plugin.properties</em>. The
+                    user-id will change as appropriate.
                 </p>
                 <p>
                     In the individual user directories, the <em>plugin.properties</em> file will only contain

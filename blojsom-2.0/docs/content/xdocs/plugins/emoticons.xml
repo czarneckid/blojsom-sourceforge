@@ -36,13 +36,14 @@
                 <source>
                     &lt;init-param&gt;
                     &lt;param-name&gt;plugin-emoticons&lt;/param-name&gt;
-                    &lt;param-value&gt;/WEB-INF/emoticons.properties&lt;/param-value&gt;
+                    &lt;param-value&gt;emoticons.properties&lt;/param-value&gt;
                     &lt;/init-param&gt;
                 </source>
                 <p>
 
                     The
-                    <em>emoticons.properties</em> contains
+                    <em>emoticons.properties</em> file will be located in the respective
+                    <code>/WEB-INF/(user-id)</code> directory and contains
                     <em>key=value</em> pairs like the following:
                 </p>
                 <source>

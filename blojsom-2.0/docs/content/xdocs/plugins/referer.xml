@@ -43,13 +43,14 @@
             <source>
                 &lt;init-param&gt;
                 &lt;param-name&gt;plugin-referer&lt;/param-name&gt;
-                &lt;param-value&gt;/WEB-INF/referer.properties&lt;/param-value&gt;
+                &lt;param-value&gt;referer.properties&lt;/param-value&gt;
                 &lt;/init-param&gt;
             </source>
             <p>
 
                 The
-                <em>referer.properties</em> contains three configurable parameters:
+                <em>referer.properties</em> file will be located in the respective
+                    <code>/WEB-INF/(user-id)</code> directory and contains three configurable parameters:
             </p>
             <source>
                 #

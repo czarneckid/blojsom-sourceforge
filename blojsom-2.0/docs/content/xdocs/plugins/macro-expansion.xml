@@ -44,13 +44,14 @@
             <source>
                 &lt;init-param&gt;
                 &lt;param-name&gt;plugin-macros-expansion&lt;/param-name&gt;
-                &lt;param-value&gt;/WEB-INF/macros.properties&lt;/param-value&gt;
+                &lt;param-value&gt;macros.properties&lt;/param-value&gt;
                 &lt;/init-param&gt;
             </source>
             <p>
 
                 The
-                <em>macros.properties</em> contains
+                <em>macros.properties</em> file will be located in the respective
+                    <code>/WEB-INF/(user-id)</code> directory and contains
                 <em>key=value</em> pairs like the following:
             </p>
             <source>

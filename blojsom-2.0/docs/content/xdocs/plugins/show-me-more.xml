@@ -38,13 +38,14 @@
             <source>
                 &lt;init-param&gt;
                 &lt;param-name&gt;plugin-showmemore&lt;/param-name&gt;
-                &lt;param-value&gt;/WEB-INF/showmemore.properties&lt;/param-value&gt;
+                &lt;param-value&gt;showmemore.properties&lt;/param-value&gt;
                 &lt;/init-param&gt;
             </source>
             <p>
 
                 The
-                <em>showmemore.properties</em> contains two configurable parameters:
+                <em>showmemore.properties</em> file will be located in the respective
+                    <code>/WEB-INF/(user-id)</code> directory and contains three configurable parameters:
             </p>
             <source>
                 entry-length-cutoff=400
@@ -54,7 +55,9 @@
             <p>
 
                 <em>entry-length-cutoff</em> defines the number of characters after which the link to view the
-                full text of the entry will be placed.
+                full text of the entry will be placed. If this value is less than or equal to zero, the plugin
+                will not try to cutoff the entry unless the value for the <em>entry-text-cutoff</em> parameter
+                is present in the description.
                 <br/>
                 <em>entry-text-cutoff</em> defines a special tag or string that you can use in your blog entry to
                 define the place where the plugin should insert a link to view the full text of the entry. If
