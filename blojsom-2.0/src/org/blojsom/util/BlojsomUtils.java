@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.60 2005-01-31 01:01:21 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.61 2005-03-05 18:04:12 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1715,7 +1715,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String constructBlogURL(HttpServletRequest httpServletRequest, String blogID) {
         StringBuffer result = new StringBuffer(constructBaseURL(httpServletRequest));
 
-        result.append("/").append(httpServletRequest.getServletPath()).append("/").append(blogID).append("/");
+        result.append(httpServletRequest.getServletPath()).append("/").append(blogID).append("/");
 
         return result.toString();
     }
@@ -1736,6 +1736,10 @@ public class BlojsomUtils implements BlojsomConstants {
 
         if (checkNullOrBlank(blog.getBlogURL())) {
             blog.setBlogURL(constructBlogURL(httpServletRequest, blogID));
+        }
+
+        if (checkNullOrBlank(blog.getBlogAdminURL())) {
+            blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID));
         }
     }
 
