@@ -26,18 +26,18 @@
             </action>
 
             <action dev="czarneckid" type="add" context="Plugin">
-                Added <link href="plugins/trackback-autodiscovery.html">Trackback Auto-Discovery</a> plugin to allow for a simple way to automatically extract URLs from
+                Added <link href="plugins/trackback-autodiscovery.html">Trackback Auto-Discovery</link> plugin to allow for a simple way to automatically extract URLs from
                 your blog entries, identify those URLs with trackback links, and finally to send a trackback ping to each
                 URL.
             </action>
 
             <action dev="czarneckid" type="add" context="Plugin">
-                Added <link href="plugins/obfuscation.html">Simple Obfuscation</a> plugin to allow for the obfuscation of data. For example, this can
+                Added <link href="plugins/obfuscation.html">Simple Obfuscation</link> plugin to allow for the obfuscation of data. For example, this can
                 be used for obfuscating e-mail addresses on the comment page.
             </action>
 
             <action dev="intabulas" type="add" context="Plugin">
-                Added Added <link href="plugins/xpath.html">XPath and XPathSearch</a> plugins to allow for XPath queries to be made against a blog.
+                Added Added <link href="plugins/xpath.html">XPath and XPathSearch</link> plugins to allow for XPath queries to be made against a blog.
             </action>
         </release>
 
