@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.32 2004-07-14 02:15:51 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.33 2004-08-11 02:22:23 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -909,6 +909,8 @@ public class BlojsomUtils implements BlojsomConstants {
         return new String(buf1);
     }
 
+
+
     /**
      * Try to load a properties file from disk
      *
@@ -922,10 +924,28 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static Properties loadProperties(ServletConfig servletConfig, String configurationIP, boolean required)
             throws BlojsomException {
+        return loadProperties(servletConfig, configurationIP, required, false);
+    }
+
+    /**
+     * Try to load a properties file from disk
+     *
+     * @param servletConfig   Servlet configuration
+     * @param configurationIP Name of the file to load the properties from
+     * @param required        If the properties file is required
+     * @param allowMultipleValues If the {@link BlojsomProperties} object should allow multiple values
+     * @return Properties from the file. NEVER returns null.
+     * @throws BlojsomException If there is an I/O error or if configurationIP is
+     *                          not set and required == true.
+     * @since blojsom 1.9
+     */
+    public static Properties loadProperties(ServletConfig servletConfig, String configurationIP,
+                                            boolean required, boolean allowMultipleValues)
+            throws BlojsomException {
         String configuration =
                 servletConfig.getInitParameter(configurationIP);
 
-        Properties properties = new BlojsomProperties();
+        Properties properties = new BlojsomProperties(allowMultipleValues);
 
         if (configuration == null || "".equals(configuration)) {
             if (required) {
@@ -1027,12 +1047,12 @@ public class BlojsomUtils implements BlojsomConstants {
             return new HashMap();
         } else {
             Iterator keyIterator = properties.keySet().iterator();
-            String key;
-            String value;
+            Object key;
+            Object value;
             HashMap convertedProperties = new HashMap();
             while (keyIterator.hasNext()) {
                 key = (String) keyIterator.next();
-                value = properties.getProperty(key);
+                value = properties.get(key);
                 convertedProperties.put(key, value);
             }
 
@@ -1403,6 +1423,35 @@ public class BlojsomUtils implements BlojsomConstants {
             }
 
             counter++;
+        }
+
+        return result.toString();
+    }
+
+    /**
+     * Convert a list to a comma-separated string. If values in the list are <code>null</code>, a
+     * space is printed. If the input is null or there are no items in the list, an empty
+     * string is returned.
+     *
+     * @param values List of values
+     * @return Comma-separated string
+     * @since blojsom 2.18
+     */
+    public static String listToCSV(List values) {
+        StringBuffer result = new StringBuffer();
+
+        if (values != null && values.size() > 0) {
+            for (int i = 0; i < values.size(); i++) {
+                if (values.get(i) == null) {
+                    result.append(" ");
+                } else {
+                    result.append(values.get(i));
+                }
+
+                if (i < values.size() - 1) {
+                    result.append(", ");
+                }
+            }
         }
 
         return result.toString();
