@@ -29,8 +29,17 @@
 <p>
 <p class="weblogtitle">Upgrading blojsom from v1.9.x to blojsom development</p>
 <p />
-1. Upload <i>&lt;blojsomprojectdir&gt;/war/WEB-INF/lib/textile4j-1.01.jar</i> your servers </i>/WEB-INF/lib</i><br>
+1. In blojsom 1.9.1, both the Comment and Trackback plugins can ban IP addresses from posting comments
+and trackbacks by specifying regular expressions for banned IP addresses. The list of banned IP
+addresses is controlled by the <i>blog-banned-ip-addresses</i> parameter in <i>/WEB-INF/blojsom.properties</i>.
+As an example, the following will ban you from posting locally.
+<pre>
+blog-banned-ip-addresses=127\\.0\\.0\\.1
+</pre>
 
+<p/>
+2. Upload <i>&lt;blojsomprojectdir&gt;/war/WEB-INF/lib/textile4j-1.01.jar</i> to
+your servers </i>/WEB-INF/lib</i><br>
 
 <p>
 <p class="weblogtitle">Upgrading blojsom from v1.8.x to v1.9</p>

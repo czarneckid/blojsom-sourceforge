@@ -34,14 +34,28 @@
 
 General:<br/>
 - Fixed regular expressions in <i>blacklist.filters</i><br/>
+- <tt>BlogCategory</tt> is now an abstract class<br/>
+- Added <tt>loadCategory(Blog blog)</tt> to the <tt>BlogCategory</tt> class. This is overridden
+in a concrete implementation like <tt>FileBackedBlogCategory</tt> of this class to persist the
+blog category<br />
+- Added <tt>public BlogCategory newBlogCategory()</tt> method to <tt>BlojsomFetcher</tt> interface<br/>
 
 <p />
 Plugin changes:<br />
 - Textile code removed and replaced with textile4j.jar<br/>
 - Added a new base class <tt>org.ignition.blojsom.plugin.common.IPBanningPlugin</tt> which the
 Comments and Trackback plugin now subclass from. This base plugin provides the capability to check
-if an IP address is banned or not through its <tt>boolean isIPBanned(String ipAddress)</tt> method<br/>
-- The Textile plugin had a bug when processing qtag's. This was found during the <a href="http://sf.net/projects/textile4j">textile4j</a> breakout<br/>
+if an IP address is banned or not through its <tt>boolean isIPBanned(String ipAddress)</tt> method. Check the
+<a href="upgrading.html">upgrading</a> instructions for information on how to ban IP addresses<br/>
+- The Textile plugin had a bug when processing qtag's. This was found during the
+<a href="http://sf.net/projects/textile4j">textile4j</a> breakout<br/>
+- The prefix for the Comment and Trackback plugins is configurable via the
+<i>plugin-comment-email-prefix</i> and <i>plugin-trackback-email-prefix</i> parameters that can be
+added to <i>/WEB-INF/blojsom.properties</i><br/>
+
+<p />
+The following bugs were fixed:<br />
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=752254&group_id=72754&atid=535586">BUG 752254</a>: No meta-data loaded when requesting "/" category<br/>
 
 <p class="weblogtitle">blojsom 1.9 (codename: Pearl)</p>
 <p class="weblogdateline">June 2, 2003 (tag: <b>blojsom-1_9-final</b>)</p>
