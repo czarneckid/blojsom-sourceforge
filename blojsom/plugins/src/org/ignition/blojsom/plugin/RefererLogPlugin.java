@@ -37,19 +37,19 @@ import org.ignition.blojsom.blog.BlogEntry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Enumeration;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Generic Referer Plugin
- * This plugin will log to a file all the http referes it see's. It makes no attempt to filter, sort and resolve
- * duplicates (that is an excercise for the reader). It dumps this log to what ever file you set in the refer-log
- * init-param in web.xml. If not file is setup, it will dump it to the log as a backup
+ * <p />
+ * This plugin will log to a file all the http referer headers it encounters. It makes no attempt to filter, sort and resolve
+ * duplicates. It dumps this log to what ever file you set in the <i>referer-log</i>
+ * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.2 2003-03-13 01:13:46 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.3 2003-03-13 04:20:51 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -57,6 +57,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * HTTP Header for Referer Information
      */
     private static final String HEADER_REFERER = "referer";
+    private static final String REFERER_LOG_IP = "referer-log";
 
     /**
      * Fully qualified filename to write refere's to
@@ -76,7 +77,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, HashMap blogProperties) throws BlojsomPluginException {
-        _refererlog = servletConfig.getInitParameter("referer-log");
+        _refererlog = servletConfig.getInitParameter(REFERER_LOG_IP);
     }
 
     /**
@@ -88,12 +89,11 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, BlogEntry[] entries) throws BlojsomPluginException {
-
         String _referer = httpServletRequest.getHeader(HEADER_REFERER);
 
         if (_refererlog != null) {
             try {
-                String output = _referer + "\n"; // Yeah Yeah Yeah
+                String output = _referer + "\n";
                 FileOutputStream _fos = new FileOutputStream(_refererlog, true);
                 _fos.write(output.getBytes());
                 _fos.close();
@@ -114,6 +114,4 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public void cleanup() throws BlojsomPluginException {
     }
-
-
 }
