@@ -183,7 +183,7 @@ public class TrackbackPlugin implements BlojsomPlugin {
      * @param url
      * @param blogName
      */
-    public synchronized Integer addTrackback(Map context, String category, String permalink, String title,
+    private synchronized Integer addTrackback(Map context, String category, String permalink, String title,
                                              String excerpt, String url, String blogName) {
         Trackback trackback = new Trackback();
         trackback.setTitle(title);

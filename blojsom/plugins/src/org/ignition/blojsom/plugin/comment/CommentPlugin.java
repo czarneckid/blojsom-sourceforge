@@ -91,6 +91,9 @@ public class CommentPlugin implements BlojsomPlugin {
             String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
             if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))
                     && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
+                if (!category.endsWith("/")) {
+                    category += "/";
+                }
                 addBlogComment(category, permalink, author, authorEmail, authorURL, commentText);
             }
         }
@@ -108,7 +111,7 @@ public class CommentPlugin implements BlojsomPlugin {
      * @param authorURL Comment author URL
      * @param comment Comment
      */
-    public synchronized void addBlogComment(String category, String permalink, String author,
+    private synchronized void addBlogComment(String category, String permalink, String author,
                                             String authorEmail, String authorURL, String userComment) {
         if (_blogCommentsEnabled.booleanValue()) {
             BlogComment comment = new BlogComment();
@@ -126,6 +129,11 @@ public class CommentPlugin implements BlojsomPlugin {
             }
             commentDirectory.append(_blogHome);
             commentDirectory.append(BlojsomUtils.removeInitialSlash(category));
+            File blogEntry = new File(commentDirectory.toString() + File.separator + permalink);
+            if (!blogEntry.exists()) {
+                _logger.error("Trying to create comment for invalid blog entry: " + permalink);
+                return;
+            }
             commentDirectory.append(_blogCommentsDirectory);
             commentDirectory.append(File.separator);
             commentDirectory.append(permalink);
