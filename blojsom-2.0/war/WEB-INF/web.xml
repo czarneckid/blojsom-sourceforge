@@ -66,7 +66,11 @@
         </init-param>
         <init-param>
             <param-name>plugin-admin-upload</param-name>
-            <param-value>plugin-admin-upload.properties</param-value>
+            <param-value>/WEB-INF/plugin-admin-upload.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>plugin-admin-edit-users</param-name>
+            <param-value>/WEB-INF/plugin-admin-edit-users.properties</param-value>
         </init-param>
         <init-param>
             <param-name>plugin-contextloader</param-name>
