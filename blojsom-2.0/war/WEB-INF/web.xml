@@ -49,6 +49,10 @@
             <param-name>plugin-emoticons</param-name>
             <param-value>emoticons.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>plugin-referer</param-name>
+            <param-value>referer.properties</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
