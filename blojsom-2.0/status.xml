@@ -15,9 +15,14 @@
                 meta-data is now populated through the Blogger, MetaWeblog, and Atom API handlers.
             </action>
 
+            <action dev="czarneckid" type="update" context="Core">
+                Updated Compression Filter to handle character encoding used for the blog entries.
+            </action>
+
             <action dev="czarneckid" type="add" context="Plugins">
                 Added Base Admin and Edit Blog Properties, Edit Blog Categories, and Edit Blog Templates plugins.
             </action>
+
         </release>
 
         <release version="2.03" date="October 15, 2003">
@@ -26,7 +31,7 @@
             </action>
 
             <action dev="czarneckid" type="add" context="Core">
-                Added CompressionFilter to send GZIP'd content.
+                Added Compression Filter to send GZIP'd content.
             </action>
 
             <action dev="czarneckid" type="update" context="Plugin">
