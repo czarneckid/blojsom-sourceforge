@@ -10,7 +10,7 @@
 <project name="blojsom" default="compile" basedir=".">
 
     <property name="name" value="blojsom"/>
-    <property name="version" value="2.04"/>
+    <property name="version" value="2.05"/>
 
     <property name="distro.dir" value="${basedir}/distro"/>
     <property name="war.file" value="${distro.dir}/${name}.war"/>
@@ -205,7 +205,7 @@
     <!-- =================================================================== -->
     <!-- Compiles the add-on source code                                     -->
     <!-- =================================================================== -->
-    <target name="compile-addon" depends="prepare" description="Compiles the add-on core, extensions, and plugins">
+    <target name="compile-addon" depends="prepare, compile" description="Compiles the add-on core, extensions, and plugins">
         <!-- Add-on core -->
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
