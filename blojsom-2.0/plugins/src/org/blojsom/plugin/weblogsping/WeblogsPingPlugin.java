@@ -60,13 +60,13 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.5 2003-11-11 03:28:45 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.6 2003-11-11 04:00:54 czarneckid Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(WeblogsPingPlugin.class);
 
-    private static final String WEBLOGS_PING_URL = "http://rpc.weblogs.com:80/RPC2";
+    private static final String WEBLOGS_PING_URL = "http://rpc.weblogs.com/RPC2";
     private static final String WEBLO_GS_PING_URL = "http://ping.blo.gs/";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
 
@@ -129,12 +129,12 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
                 _userLastPingMap.put(user.getId(), lastPingDate);
 
                 try {
-                    XmlRpcClient weblogsComclient = new XmlRpcClient(WEBLOGS_PING_URL);
                     Vector params = new Vector();
                     params.add(blog.getBlogName());
                     params.add(blog.getBlogURL());
 
                     // Ping weblogs.com
+                    XmlRpcClient weblogsComclient = new XmlRpcClient(WEBLOGS_PING_URL);
                     weblogsComclient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
 
                     // Ping weblo.gs
