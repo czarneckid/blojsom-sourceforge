@@ -43,7 +43,7 @@ import java.util.Arrays;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.22 2003-03-18 03:08:49 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.23 2003-03-21 02:09:21 czarneckid Exp $
  */
 public class BlogEntry implements BlojsomConstants {
 
@@ -585,25 +585,33 @@ public class BlogEntry implements BlojsomConstants {
                 switch (trackbackSwitch) {
                     case 0:
                         {
-                            trackback.setTitle(trackbackLine);
+                            if (!"".equals(trackbackLine.trim())) {
+                                trackback.setTitle(trackbackLine);
+                            }
                             trackbackSwitch++;
                             break;
                         }
                     case 1:
                         {
-                            trackback.setExcerpt(trackbackLine);
+                            if (!"".equals(trackbackLine.trim())) {
+                                trackback.setExcerpt(trackbackLine);
+                            }
                             trackbackSwitch++;
                             break;
                         }
                     case 2:
                         {
-                            trackback.setUrl(trackbackLine);
+                            if (!"".equals(trackbackLine.trim())) {
+                                trackback.setUrl(trackbackLine);
+                            }
                             trackbackSwitch++;
                             break;
                         }
                     case 3:
                         {
-                            trackback.setBlogName(trackbackLine);
+                            if (!"".equals(trackbackLine.trim())) {
+                                trackback.setBlogName(trackbackLine);
+                            }
                             trackbackSwitch++;
                             break;
                         }
