@@ -56,7 +56,7 @@ import java.util.*;
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.11 2003-04-04 02:44:16 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.12 2003-04-04 23:16:57 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -203,7 +203,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
         }
 
         if (_hitcountflavors.contains(flavor)) {
-            _logger.info("[HitCounter] flavor=" + flavor + " - referer=" + referer);
+            _logger.debug("[HitCounter] flavor=" + flavor + " - referer=" + referer);
 
             BlogRefererGroup group;
             if (_referergroups.containsKey(flavor)) {
@@ -215,7 +215,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
             _referergroups.put(flavor, group);
 
         } else if ((referer != null) && (!referer.startsWith(_blogurlfilter))) {
-            _logger.info("[Referer] flavor=" + flavor + " - referer=" + referer);
+            _logger.debug("[Referer] flavor=" + flavor + " - referer=" + referer);
 
             BlogRefererGroup group;
             if (_referergroups.containsKey(flavor)) {
