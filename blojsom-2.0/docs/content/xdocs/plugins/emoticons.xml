@@ -10,8 +10,8 @@
             <title>description</title>
             <p>
                 The emoticons plugin expands emoticon references such as :) or ;) to images like
-                <img alt="happy" src="/images/emoticons/happy.gif"/> and
-                <img alt="wink" src="/images/emoticons/wink.gif"/>.
+                <img alt="happy" src="images/emoticons/happy.gif"/> and
+                <img alt="wink" src="images/emoticons/wink.gif"/>.
             </p>
 
             <section>
