@@ -23,7 +23,7 @@
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
     <property name="build.dir" value="${webinf.dir}/classes"/>
-    <property name="javadoc.dir" value="${basedir}/docs/javadoc"/>
+    <property name="javadoc.dir" value="${basedir}/docs/content/javadoc"/>
     <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
