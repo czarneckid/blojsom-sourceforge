@@ -24,6 +24,14 @@
                         <td><textarea rows="10" cols="80" name="blog-entry-description"></textarea></td>
                     </tr>
                     <tr>
+                        <td>Blog trackback URLs</td>
+                        <td><textarea rows="3" cols="80" name="blog-trackback-urls"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Blog ping URLs</td>
+                        <td><textarea rows="3" cols="80" name="blog-ping-urls"></textarea></td>
+                    </tr>
+                    <tr>
                         <td>Disable comments?</td>
                         <td><input type="checkbox" name="blog-entry-comments-disabled" value="y"/></td>
                     </tr>
