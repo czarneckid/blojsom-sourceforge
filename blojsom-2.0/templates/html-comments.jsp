@@ -3,8 +3,8 @@
                  org.blojsom.blog.BlogEntry,
                  org.blojsom.blog.BlogCategory,
                  org.blojsom.blog.BlogComment,
-                 java.util.ArrayList,
-                 org.blojsom.plugin.comment.CommentPlugin"
+                 org.blojsom.plugin.comment.CommentPlugin,
+                 java.util.List"
 		 session="false"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
@@ -90,13 +90,19 @@
     <p class="weblogtitle">Comments on this entry</p><br/>
     <div class="entrystyle">
         <%
-                    ArrayList blogComments = blogEntry.getComments();
+                    List blogComments = blogEntry.getComments();
                     if (blogComments != null) {
                     for (int j = 0; j < blogComments.size(); j++) {
                         BlogComment blogComment = (BlogComment) blogComments.get(j);
+                        String commentAuthorLink;
+                        if (blogComment.getAuthorEmail() != null && !"".equals(blogComment.getAuthorEmail())) {
+                            commentAuthorLink = "<a href=\"mailto:" + blogComment.getAuthorEmail() + "\">" + blogComment.getAuthor() + "</a>";
+                        } else {
+                            commentAuthorLink = blogComment.getAuthor();
+                        }
         %>
                 <div class="commentstyle">
-            Comment by: <a href="mailto:<%= blogComment.getAuthorEmail() %>"><%= blogComment.getAuthor() %></a> -
+            Comment by: <%= commentAuthorLink %> -
                 <a href="<%= blogComment.getAuthorURL() %>"><%= blogComment.getAuthorURL() %></a>
             <div class="weblogdateline">Left on: <%= blogComment.getCommentDate() %></div><br/>
             <%= blogComment.getComment() %><br />
