@@ -57,7 +57,7 @@ import java.io.FileOutputStream;
  * 
  * @author czarnecki
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.9 2004-01-11 04:01:05 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.10 2004-04-03 19:52:47 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -78,6 +78,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     private static final String BLOG_USER_ID = "blog-user-id";
     private static final String BLOG_USER_PASSWORD = "blog-user-password";
     private static final String BLOG_USER_PASSWORD_CHECK = "blog-user-password-check";
+    private static final String BLOG_USER_EMAIL = "blog-user-email";
 
     private String _authorizationConfiguration;
 
@@ -136,12 +137,17 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             String blogUserPassword = BlojsomUtils.getRequestValue(BLOG_USER_PASSWORD, httpServletRequest);
             String blogUserPasswordCheck = BlojsomUtils.getRequestValue(BLOG_USER_PASSWORD_CHECK, httpServletRequest);
+            String blogUserEmail = BlojsomUtils.getRequestValue(BLOG_USER_EMAIL, httpServletRequest);
 
             if (!BlojsomUtils.checkNullOrBlank(blogUserID) && !BlojsomUtils.checkNullOrBlank(blogUserPassword)
                 && !BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
                 if (blogUserPassword.equals(blogUserPasswordCheck)) {
-                    Map authorizationMap = user.getBlog().getAuthorization();
-                    authorizationMap.put(blogUserID, blogUserPassword);
+                    user.getBlog().setAuthorizedUserPassword(blogUserID, blogUserPassword);
+                    if (!BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
+                        user.getBlog().setAuthorizedUserEmail(blogUserID, blogUserEmail);
+                    }
+                    Map authorizationMap = user.getBlog().getAuthorization();                    
+
                     if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action)) {
                         _logger.debug("Added user: " + blogUserID + " to authorization map");
                     } else {
