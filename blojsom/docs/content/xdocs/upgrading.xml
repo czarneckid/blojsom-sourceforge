@@ -9,6 +9,14 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 1.9.4 to blojsom 1.9.5</title>
+                <p>
+                    Add the following parameter, <code>blog-trackbacks-enabled</code> with a
+                    value of <code>true</code> to <code>/WEB-INF/blojsom.properties</code> if
+                    you want to keep trackbacks enabled on your blog.
+                </p>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 1.9.3 to blojsom 1.9.4</title>
                 <p>
                     If you are using the MetaWeblog API handler for blojsom, there are 3
