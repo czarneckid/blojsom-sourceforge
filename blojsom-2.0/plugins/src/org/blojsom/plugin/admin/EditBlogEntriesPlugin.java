@@ -62,7 +62,7 @@ import java.text.ParseException;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.16 2004-01-12 04:03:55 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.17 2004-02-10 15:51:15 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -376,7 +376,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             try {
                 entry.save(user);
-                addOperationResultMessage(context, "Added blog entry: " + entry.getId());
+                StringBuffer entryLink = new StringBuffer();
+                entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entry.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entry.getPermalink()).append("\">").append(entry.getTitle()).append("</a>");
+                addOperationResultMessage(context, "Added blog entry: " + entryLink.toString());
             } catch (BlojsomException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to add blog entry to category: " + blogCategoryName);
