@@ -47,16 +47,18 @@ import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.intabulas.sandler.AtomConstants;
 import org.intabulas.sandler.Sandler;
+import org.intabulas.sandler.SyndicationFactory;
 import org.intabulas.sandler.api.SearchResults;
 import org.intabulas.sandler.api.impl.SearchResultsImpl;
 import org.intabulas.sandler.authentication.AtomAuthentication;
 import org.intabulas.sandler.authentication.AuthenticationException;
 import org.intabulas.sandler.builders.XPPBuilder;
 import org.intabulas.sandler.elements.Entry;
+import org.intabulas.sandler.elements.Feed;
+import org.intabulas.sandler.elements.impl.LinkImpl;
 import org.intabulas.sandler.exceptions.MarshallException;
-import org.intabulas.sandler.introspection.Introspection;
-import org.intabulas.sandler.introspection.impl.IntrospectionImpl;
 import org.intabulas.sandler.serialization.SerializationException;
 
 import javax.servlet.ServletConfig;
@@ -76,7 +78,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.32 2004-05-09 18:08:51 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.33 2004-05-10 03:24:14 intabulas Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -115,7 +117,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * @param httpServletRequest Request
      * @return a boolean indicating if the user was authorized or not
      */
-    private boolean isAuthorized(Blog blog, HttpServletRequest httpServletRequest, String verb) {
+    private boolean isAuthorized(Blog blog, HttpServletRequest httpServletRequest) {
         boolean result = false;
 
         if (httpServletRequest.getHeader(ATOMHEADER_WSSE_AUTHORIZATION) != null) {
@@ -123,7 +125,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             Map authMap = blog.getAuthorization();
             if (authMap.containsKey(auth.getUsername())) {
                 try {
-                    result = auth.authenticate((String) authMap.get(auth.getUsername()), verb);
+                    result = auth.authenticate((String) authMap.get(auth.getUsername()));
                 } catch (AuthenticationException e) {
                     _logger.error(e.getMessage(), e);
                 }
@@ -260,7 +262,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         blog = blogUser.getBlog();
 
-        if (isAuthorized(blog, httpServletRequest, "DELETE")) {
+        if (isAuthorized(blog, httpServletRequest)) {
             _logger.info("Fetching " + permalink);
             Map fetchMap = new HashMap();
             BlogCategory blogCategory = _fetcher.newBlogCategory();
@@ -277,7 +279,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
                 // Okay now we generate a new NextOnce value, just for saftey sake and shove in into the response
                 String nonce = AtomUtils.generateNextNonce(blogUser);
-                httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
+                //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                 httpServletResponse.setStatus(200);
             } catch (BlojsomFetcherException e) {
                 _logger.error(e.getLocalizedMessage(), e);
@@ -301,12 +303,36 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      */
     private String createIntrospectionResponse(Blog blog, BlogUser user) {
         String atomuri = blog.getBlogBaseURL() + ATOM_SERVLETMAPPING + user.getId() + "/";
+        String atomuri2 = blog.getBlogURL() + "?flavor=atom";
 
-        Introspection introspection = new IntrospectionImpl();
-        introspection.setSearchUrl(atomuri);
-        introspection.setCreateUrl(atomuri);
 
-        return introspection.toString();
+        Feed feed = SyndicationFactory.newSyndicationFeed();
+
+        LinkImpl link = new LinkImpl();
+        link.setHref(atomuri);
+        link.setRelationship(AtomConstants.Rel.SERVICE_POST);
+        link.setType(AtomConstants.Type.ATOM_XML);
+        link.setTitle(blog.getBlogDescription());
+        feed.addLink(link);
+
+        LinkImpl link2 = new LinkImpl();
+        link2.setHref(atomuri2);
+        link2.setRelationship(AtomConstants.Rel.SERVICE_FEED);
+        link2.setType(AtomConstants.Type.ATOM_XML);
+        link2.setTitle(blog.getBlogDescription());
+        feed.addLink(link2);
+
+
+        String result = "";
+        try {
+            result = Sandler.marshallFeed(feed);
+        } catch (MarshallException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (SerializationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return result;
     }
 
 
@@ -344,37 +370,53 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         _logger.info("   Category: " + category);
         _logger.info("  Permalink: " + permalink);
         _logger.info("      Query: " + httpServletRequest.getQueryString());
+        _logger.info(" Params Cnt: " + httpServletRequest.getParameterMap().size());
 
         boolean hasParams = ((httpServletRequest.getParameterMap().size() > 0) || httpServletRequest.getQueryString() != null);
 
         // NOTE: Assumes that the getPathInfo() returns only category data
-        
-        //if (isAuthorized(blog, httpServletRequest)) {
-
         String content = null;
-        if (!hasParams) {
-            content = createIntrospectionResponse(blog, blogUser);
-            httpServletResponse.setContentType(CONTENTTYPE_XML);
 
-        } else if (isSearchRequest(httpServletRequest)) {
-            httpServletResponse.setContentType(CONTENTTYPE_XML);
-            if (isSearchRequest(httpServletRequest)) {
-                content = processSearchRequest(httpServletRequest, category, blog, blogUser);
-            }
-        } else {
+        if (isAuthorized(blog, httpServletRequest)) {
+
+            _logger.info("Authorized");
+
+//        if (!hasParams) {
+//            _logger.info("hasParams = True");
+//            content = createIntrospectionResponse(blog, blogUser);
+//            httpServletResponse.setContentType(CONTENTTYPE_XML);
+//
+//        } else if (isSearchRequest(httpServletRequest)) {
+//            _logger.info("isSearch = True");
+//            httpServletResponse.setContentType(CONTENTTYPE_XML);
+//            if (isSearchRequest(httpServletRequest)) {
+//                content = processSearchRequest(httpServletRequest, category, blog, blogUser);
+//            }
+//        } else {
             _logger.info("Fetching " + permalink);
             Map fetchMap = new HashMap();
             BlogCategory blogCategory = _fetcher.newBlogCategory();
             blogCategory.setCategory(category);
             blogCategory.setCategoryURL(blog.getBlogURL() + category);
             fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
-            fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+            if (permalink != null) {
+                fetchMap.put(BlojsomFetcher.FETCHER_PERMALINK, permalink);
+            }
             try {
                 BlogEntry[] entries = _fetcher.fetchEntries(fetchMap, blogUser);
 
                 if (entries != null && entries.length > 0) {
                     BlogEntry entry = entries[0];
                     Entry atomentry = AtomUtils.fromBlogEntry(blog, blogUser, entry);
+
+
+                    String edituri = blog.getBlogBaseURL() + "/atomapi" + entry.getEncodedCategory() + "/?permalink=" + entry.getPermalink();
+                    LinkImpl link = new LinkImpl();
+                    link.setHref(edituri);
+                    link.setRelationship(AtomConstants.Rel.SERVICE_EDIT);
+                    link.setType(AtomConstants.Type.ATOM_XML);
+                    atomentry.addLink(link);
+
                     content = Sandler.marshallEntry(atomentry);
                     httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                 }
@@ -388,23 +430,25 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 _logger.error(e);
                 httpServletResponse.setStatus(404);
             }
-        }
 
-        if (content != null) {
-            String nonce = AtomUtils.generateNextNonce(blogUser);
-            httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
-            httpServletResponse.setStatus(200);
-            httpServletResponse.setContentLength(content.length());
-            OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
-            osw.write(content);
-            osw.flush();
+
+            if (content != null) {
+                _logger.info("Sending a 200");
+                //String nonce = AtomUtils.generateNextNonce(blogUser);
+                //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
+                httpServletResponse.setStatus(200);
+                httpServletResponse.setContentLength(content.length());
+                OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
+                osw.write(content);
+                osw.flush();
+            } else {
+                _logger.info("Sending a 404");
+                httpServletResponse.setStatus(404);
+            }
+
         } else {
-            httpServletResponse.setStatus(404);
+            sendAuthenticationRequired(httpServletResponse, blogUser);
         }
-//
-//        } else {
-//            sendAuthenticationRequired(httpServletResponse);
-//        }
     }
 
     /**
@@ -441,7 +485,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
         }
 
-        if (isAuthorized(blog, httpServletRequest, "POST")) {
+        if (isAuthorized(blog, httpServletRequest)) {
 
             // Quick verify that the category is valid
             File blogCategory = getBlogCategoryDirectory(blog, category);
@@ -477,7 +521,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     httpServletResponse.setHeader(HEADER_LOCATION, entry.getEscapedLink());
 
                     String nonce = AtomUtils.generateNextNonce(blogUser);
-                    httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
+                    //httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
                     httpServletResponse.setStatus(201);
                 } catch (MarshallException e) {
                     _logger.error(e.getLocalizedMessage(), e);
@@ -521,7 +565,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         blogUser = (BlogUser) _blojsomConfiguration.getBlogUsers().get(user);
         blog = blogUser.getBlog();
 
-        if (isAuthorized(blog, httpServletRequest, "PUT")) {
+        if (isAuthorized(blog, httpServletRequest)) {
 
             Map fetchMap = new HashMap();
             BlogCategory blogCategory = _fetcher.newBlogCategory();
@@ -548,7 +592,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                     entry.save(blogUser);
 
                     String nonce = AtomUtils.generateNextNonce(blogUser);
-                    httpServletResponse.setHeader(ATOMHEADER_AUTHENTICATION_INFO, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
+                    //httpServletResponse.setHeader(x, ATOM_TOKEN_NEXTNONCE + nonce + "\"");
 
                     httpServletResponse.setStatus(204);
                 } else {
