@@ -23,6 +23,7 @@
                 before either of these plugins in one of your plugin chains. The metadata key to disable comments
                 would be specified as "meta-blog-entry-comments-disabled=y" in your blog entry. The metadata key to
                 disable trackbacks would be specified as "meta-blog-entry-trackbacks-disabled=y" in your blog entry.
+                You can also enable and disable comments and trackbacks from the web administration console.
             </action>
 
             <action dev="czarneckid" type="fix" context="Plugin" fixes-bug="898242">
