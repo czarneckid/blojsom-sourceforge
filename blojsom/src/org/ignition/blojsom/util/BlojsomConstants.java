@@ -145,6 +145,13 @@ public interface BlojsomConstants {
      */
     public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-d'T'kk:mm:ssZZZZZ";
 
+    /**
+     * If a entry is longer that this length, then when any content hashing is performed, it is
+     * truncated to this size. NOTE: This only truncates for hash.
+     */
+    public static final int MAX_HASHABLE_LENGTH = 300;
+
+
     // Blog initialization parameters from blojsom.properties
     final static String BLOG_HOME_IP = "blog-home";
     final static String BLOG_NAME_IP = "blog-name";
