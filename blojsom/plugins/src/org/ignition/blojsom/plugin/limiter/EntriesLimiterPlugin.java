@@ -50,7 +50,7 @@ import java.util.Map;
  * EntriesLimiterPlugin
  *
  * @author David Czarnecki
- * @version $Id: EntriesLimiterPlugin.java,v 1.5 2003-04-19 02:45:21 czarneckid Exp $
+ * @version $Id: EntriesLimiterPlugin.java,v 1.6 2003-04-25 03:12:53 czarneckid Exp $
  */
 public class EntriesLimiterPlugin implements BlojsomPlugin {
 
@@ -99,7 +99,9 @@ public class EntriesLimiterPlugin implements BlojsomPlugin {
         if (entriesParam != null || !"".equals(entriesParam)) {
             try {
                 blogDisplayEntries = new Integer(Integer.parseInt(entriesParam));
-                if ((blogDisplayEntries.intValue() <= 0) || (blogDisplayEntries.intValue() > entries.length)) {
+                if (blogDisplayEntries.intValue() <= 0) {
+                    blogDisplayEntries = new Integer(-1);
+                } else if (blogDisplayEntries.intValue() > entries.length) {
                     _logger.debug("Display entries value out of range: " + blogDisplayEntries);
                     blogDisplayEntries = new Integer(_blogDisplayEntries.intValue());
                 }
