@@ -19,10 +19,16 @@ ects/blojsom/">sourceforge project page</a></p>
 
 <p class="weblogtitle">installation and default configuration</a></p>
 <p/>
-1. Starting with blojsom 1.4, an XML-RPC servlet is included with blojsom that provides support for the Blogger API.<br/>
+1. Starting with blojsom 1.4, an XML-RPC servlet is included with blojsom that provides support for the Blogger API and the MetaWeblog API.<br/>
 2. Edit the contents of <i>/WEB-INF/authorization.properties</i> to setup all the valid username/password pairs to control who can post via XML-RPC<br/><br/>
-And you're done ;) By default, blojsom's XML-RPC interface is enabled and setup to work with a subset of the <a href="http://plant.blogger.com/api/index.html">Blogger API</a>.<br/><br/>
-To send a message to the service, point you blogger tool or XML-RPC client at your http://$BLOG_URL/xmlrpc (replace $BLOG_URL with the url for your blog) and get blojing!
+And you're done ;)
+<p />
+By default, blojsom's XML-RPC interface is enabled and setup to work with a subset of
+the <a href="http://plant.blogger.com/api/index.html">Blogger API</a> as well as the
+<a href="http://www.xmlrpc.com/metaweblogAPI">MetaWeblog API</a>.<br/><br/>
+To send a message to the service, point you blogger tool or XML-RPC client at
+your http://$BLOG_URL/xmlrpc (replace $BLOG_URL with the url for your blog) and get
+blogging!
 <br/>
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></
