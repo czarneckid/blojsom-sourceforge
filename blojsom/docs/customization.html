@@ -40,6 +40,17 @@ your <i>blog-home</i>. The following configuration for <i>blog-default-category-
 blog-default-category-mapping=/java, /osx, /politics/voting
 </pre>
 the "/java", "/osx", and "/politics/voting" categories if someone requests the default or "/" category.
+<p />
+<p class="weblogdateline">flavor-based default category mapping</p>
+Starting with blojsom 1.4, you have the ability to configure a default category mapping based on
+the particular flavor. The default flavor, HTML, will still be mapped using the <i>blog-default-category-mapping</i>
+parameter. However, if you would like to configure the RSS flavor to map a different set of categories than
+the HTML flavor for the default or "/" category, then you can add a line such as
+<pre>
+rss.blog-default-category-mapping=/blojsom, /java
+</pre>
+to your <i>blojsom.properties</i> file. In this case, the "/blojsom" and "/java" categories will be
+aggregated if someone requests the RSS flavor for the default or "/" category.
 
 <p class="weblogtitle">blojsom context</p>
 <p />
