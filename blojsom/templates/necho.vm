@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<feed xmlns="http://example.com/newformat#"
+    xmlns:ent="http://www.purl.org/NET/ENT/1.0/"
+    version="1.0">
+
+    <title>$BLOJSOM_BLOG.getBlogName()</title>
+    <subtitle>$BLOJSOM_BLOG.getBlogDescription()</subtitle>
+    <link>$BLOJSOM_BLOG.getBlogURL()</link>
+
+    <modified>$BLOJSOM_DATE_ISO8601</modified>
+
+    #foreach ($entry in $BLOJSOM_ENTRIES)
+    <entry>
+        <title>$entry.getTitle().replaceAll("<.*?>","")</title>
+
+        <author>
+            <name>$BLOJSOM_BLOG.getBlogOwner()</name>
+            <homepage>$BLOJSOM_BLOG.getBlogURL()</homepage>
+            <weblog>$BLOJSOM_BLOG.getBlogURL()</weblog>
+        </author>
+
+        <link>$entry.getLink()</link>
+        <id>$entry.getLink()</id>
+
+        <created>$entry.getISO8601Date()</created>
+        <issued>$entry.getISO8601Date()</issued>
+        <modified>$entry.getISO8601Date()</modified>
+
+        <content type="text/html" xml:lang="en-us" mode="escaped">
+            <![CDATA[ $entry.getDescription() ]]>
+        </content>
+
+        <ent:topic id="introductory">$entry.getCategory()</ent:topic>
+    </entry>
+    #end
+</feed>
