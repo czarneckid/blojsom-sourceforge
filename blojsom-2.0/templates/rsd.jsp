@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <%@ page contentType="text/xml; charset=UTF-8"
          import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogUser"%>
-<?xml version="1.0" ?>
 
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);

@@ -1,10 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <%@ page contentType="text/xml; charset=UTF-8"
          import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
                  org.blojsom.blog.BlogEntry,
                  org.blojsom.util.BlojsomUtils"
          session="false"%>
-<?xml version="1.0"?>
 <!-- name="generator" content="<%= request.getAttribute(BlojsomConstants.BLOJSOM_VERSION) %>" -->
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);

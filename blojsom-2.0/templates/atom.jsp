@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <%@ page contentType="application/atom+xml; charset=UTF-8"
          import="org.blojsom.blog.Blog,
                  org.blojsom.util.BlojsomConstants,
@@ -7,7 +8,6 @@
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
     String blogUser = (String) request.getAttribute(BlojsomConstants.BLOJSOM_USER);
 %>
-<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="<%= blogInformation.getBlogBaseURL() %>/atom.css" type="text/css"?>
 
 <feed version="0.3"
