@@ -35,43 +35,141 @@
 package org.blojsom.blog;
 
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.ServletConfig;
 import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Properties;
+import java.io.InputStream;
+import java.io.IOException;
 
 /**
  * BlojsomConfiguration
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomConfiguration.java,v 1.2 2003-08-12 14:44:50 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.3 2003-08-22 04:40:09 czarneckid Exp $
  */
-public class BlojsomConfiguration {
+public class BlojsomConfiguration implements BlojsomConstants {
+
+    private Log _logger = LogFactory.getLog(BlojsomConfiguration.class);
 
     private String _blojsomUsers;
     private String _defaultUser;
-    private String _configurationBaseDirectory;
+    private String _baseConfigurationDirectory;
     private String _fetcherClass;
     private Map _blogUsers;
+    private Map _blojsomConfiguration;
 
     /**
-     * Instantiate a new configuration object
+     * Initialize the BlojsomConfiguration object
      *
-     * @param blojsomUsers Comma-separated list of users
-     * @param defaultUser Default user for the system
-     * @param configurationBaseDirectory Base directory for configuration information
-     * @param fetcherClass Fetcher class
-     * @param blogUsers {@link BlogUser} objects
+     * @param servletConfig Servlet configuration information
+     * @param blojsomConfiguration Map of loaded blojsom properties
      */
-    public BlojsomConfiguration(String blojsomUsers,
-                                String defaultUser,
-                                String configurationBaseDirectory,
-                                String fetcherClass,
-                                Map blogUsers) {
-        _blojsomUsers = blojsomUsers;
-        _defaultUser = defaultUser;
-        _configurationBaseDirectory = configurationBaseDirectory;
-        _fetcherClass = fetcherClass;
-        _blogUsers = blogUsers;
+    public BlojsomConfiguration(ServletConfig servletConfig, Map blojsomConfiguration) throws BlojsomConfigurationException {
+        _blojsomConfiguration = blojsomConfiguration;
+
+        _baseConfigurationDirectory = getBlojsomPropertyAsString(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP);
+        if (_baseConfigurationDirectory == null || "".equals(_baseConfigurationDirectory)) {
+            _baseConfigurationDirectory = BLOJSOM_DEFAULT_CONFIGURATION_BASE_DIRECTORY;
+        } else {
+            if (!_baseConfigurationDirectory.startsWith("/")) {
+                _baseConfigurationDirectory = '/' + _baseConfigurationDirectory;
+            }
+            if (!_baseConfigurationDirectory.endsWith("/")) {
+                _baseConfigurationDirectory += "/";
+            }
+        }
+        _logger.debug("Using base configuration directory: " + _baseConfigurationDirectory);
+
+        _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
+        String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
+        InputStream is;
+        if (users.length == 0) {
+            _logger.error("No users defined for this blojsom blog");
+            throw new BlojsomConfigurationException("No users defined for this blojsom blog");
+        } else {
+            _blogUsers = new HashMap(users.length);
+            for (int i = 0; i < users.length; i++) {
+                String user = users[i];
+                BlogUser blogUser = new BlogUser();
+                blogUser.setId(user);
+
+                Properties userProperties = new Properties();
+                is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + BLOG_DEFAULT_PROPERTIES);
+                try {
+                    userProperties.load(is);
+                    is.close();
+                } catch (IOException e) {
+                    _logger.error(e);
+                    throw new BlojsomConfigurationException(e);
+                }
+
+                Blog userBlog = new Blog(userProperties);
+                blogUser.setBlog(userBlog);
+
+                _blogUsers.put(user, blogUser);
+                _logger.debug("Added blojsom user: " + blogUser.getId());
+            }
+
+            // Determine and set the default user
+            String defaultUser = getBlojsomPropertyAsString(BLOJSOM_DEFAULT_USER_IP);
+            if (defaultUser == null || "".equals(defaultUser)) {
+                _logger.error("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
+                throw new BlojsomConfigurationException("No default user defined in configuration property: " + BLOJSOM_DEFAULT_USER_IP);
+            }
+
+            if (!_blogUsers.containsKey(defaultUser)) {
+                _logger.error("Default user does not match any of the registered blojsom users: " + defaultUser);
+                throw new BlojsomConfigurationException("Default user does not match any of the registered blojsom users: " + defaultUser);
+            }
+
+            _defaultUser = defaultUser;
+            _logger.debug("blojsom default user: " + _defaultUser);
+
+            _fetcherClass = getBlojsomPropertyAsString(BLOJSOM_FETCHER_IP);
+            if ((_fetcherClass == null) || "".equals(_fetcherClass)) {
+                _fetcherClass = BLOG_DEFAULT_FETCHER;
+            }
+        }
+    }
+
+    /**
+     * Returns an unmodifiable map of the blojsom configuration properties
+     *
+     * @return Unmodifiable map of the blojsom configuration properties
+     */
+    public Map getBlojsomConfiguration() {
+        return Collections.unmodifiableMap(_blojsomConfiguration);
+    }
+
+    /**
+     * Retrieve a blojsom property as a string
+     *
+     * @param propertyKey Property key
+     * @return Value of blojsom property as a string or <code>null</code> if no property key is found
+     */
+    public String getBlojsomPropertyAsString(String propertyKey) {
+        if (_blojsomConfiguration.containsKey(propertyKey)) {
+            return (String) _blojsomConfiguration.get(propertyKey);
+        }
+
+        return null;
+    }
+
+    /**
+     * Return a blojsom configuration property
+     *
+     * @param propertyKey Property key
+     * @return Value of blojsom property
+     */
+    public Object getBlojsomProperty(String propertyKey) {
+        return _blojsomConfiguration.get(propertyKey);
     }
 
     /**
@@ -88,8 +186,8 @@ public class BlojsomConfiguration {
      *
      * @return Configuration base directory (e.g. /WEB-INF)
      */
-    public String getConfigurationBaseDirectory() {
-        return _configurationBaseDirectory;
+    public String getBaseConfigurationDirectory() {
+        return _baseConfigurationDirectory;
     }
 
     /**
