@@ -53,7 +53,7 @@ import java.util.Properties;
  * BlojsomConfiguration
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.19 2004-06-03 01:13:48 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.20 2004-07-31 20:33:05 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -70,6 +70,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
     private String _qualifiedResourceDirectory;
     private String _resourceManager;
     private String _authorizationProvider;
+    private String _globalBlogHome;
 
     private Map _blogUsers;
     private Map _blojsomConfiguration;
@@ -128,6 +129,39 @@ public class BlojsomConfiguration implements BlojsomConstants {
         _qualifiedResourceDirectory = servletConfig.getServletContext().getRealPath(_resourceDirectory);
         _logger.debug("Using qualified resource directory: " + _qualifiedResourceDirectory);
 
+        // Configure a global blog home directory
+        _globalBlogHome = getBlojsomPropertyAsString(BLOJSOM_BLOG_HOME_IP);
+        if (!BlojsomUtils.checkNullOrBlank(_globalBlogHome)) {
+            if (_globalBlogHome.startsWith("{")) {
+                int closingBraceIndex = _globalBlogHome.indexOf("}");
+                String property = _globalBlogHome.substring(1, closingBraceIndex);
+                property = System.getProperty(property);
+                if (BlojsomUtils.checkNullOrBlank(property)) {
+                    _logger.error("Global blog home directory property not found: " + property);
+                    _globalBlogHome = null;
+                } else {
+                    String afterProperty = _globalBlogHome.substring(closingBraceIndex + 1);
+                    _globalBlogHome = property + afterProperty;
+                    // Normalize the blog-home path
+                    _globalBlogHome = BlojsomUtils.replace(_globalBlogHome, "\\", "/");
+                }
+            }
+
+            if (_globalBlogHome != null) {
+                File blogHomeDirectory = new File(_globalBlogHome);
+                if (!blogHomeDirectory.exists()) {
+                    if (!blogHomeDirectory.mkdirs()) {
+                        _logger.error("Unable to create global blog home directory: " + _globalBlogHome);
+                        _globalBlogHome = null;
+                    }
+                }
+            }
+
+            if (_globalBlogHome != null) {
+                _logger.debug("Using global blog-home directory: " + _globalBlogHome);
+            }
+        }
+
         _blojsomUsers = getBlojsomPropertyAsString(BLOJSOM_USERS_IP);
         String[] users = BlojsomUtils.parseCommaList(_blojsomUsers);
         InputStream is;
@@ -153,6 +187,21 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
                 Blog userBlog = null;
                 try {
+                    // If a global blog-home directory has been defined, use it for each user
+                    if (_globalBlogHome != null) {
+                        String usersBlogHome = _globalBlogHome + user + "/";
+                        File blogHomeDirectory = new File(usersBlogHome);
+                        if (!blogHomeDirectory.exists()) {
+                            if (!blogHomeDirectory.mkdirs()) {
+                                _logger.error("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
+                                throw new BlojsomConfigurationException("Unable to create blog-home directory for user: " + blogHomeDirectory.toString());
+                            }
+                        }
+
+                        userProperties.setProperty(BLOG_HOME_IP, usersBlogHome);
+                        _logger.debug("Setting user blog-home directory: " + usersBlogHome);
+                    }
+
                     userBlog = new Blog(userProperties);
                     blogUser.setBlog(userBlog);
 
@@ -344,5 +393,15 @@ public class BlojsomConfiguration implements BlojsomConstants {
      */
     public String getAuthorizationProvider() {
         return _authorizationProvider;
+    }
+
+    /**
+     * Get the name of the global blog home directory
+     *
+     * @return Global blog home directory
+     * @since blojsom 2.18
+     */
+    public String getGlobalBlogHome() {
+        return _globalBlogHome;
     }
 }
