@@ -57,6 +57,7 @@ public class Blog implements BlojsomConstants {
     private final static String BLOG_PROPERTIES_EXTENSIONS_IP = "blog-properties-extensions";
     private static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     private static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
+    private static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
 
     private Log _logger = LogFactory.getLog(Blog.class);
 
@@ -70,6 +71,7 @@ public class Blog implements BlojsomConstants {
     private int _blogDepth;
     private int _blogDisplayEntries;
     private String[] _blogDefaultCategoryMappings;
+    private String[] _blogDirectoryFilter;
 
     /**
      * Create a blog with the supplied configuration properties
@@ -133,6 +135,18 @@ public class Blog implements BlojsomConstants {
                 _blogDefaultCategoryMappings = null;
             }
         }
+
+        String blogDirectoryFilter = blogConfiguration.getProperty(BLOG_DIRECTORY_FILTER_IP);
+        if (blogDirectoryFilter == null) {
+            _blogDirectoryFilter = null;
+            _logger.debug("blojsom not filtering 0 directories");
+        } else {
+            _blogDirectoryFilter = BlojsomUtils.parseCommaList(blogDirectoryFilter);
+            for (int i = 0; i < _blogDirectoryFilter.length; i++) {
+                _logger.debug("blojsom to filter: " + _blogDirectoryFilter[i]);
+            }
+            _logger.debug("blojsom filtering " + _blogDirectoryFilter.length + " directories");
+        }
     }
 
     /**
@@ -151,7 +165,12 @@ public class Blog implements BlojsomConstants {
         }
 
         File blog = new File(blogDirectory);
-        File[] directories = blog.listFiles(BlojsomUtils.getDirectoryFilter());
+        File[] directories;
+        if (_blogDirectoryFilter == null) {
+            directories = blog.listFiles(BlojsomUtils.getDirectoryFilter());
+        } else {
+            directories = blog.listFiles(BlojsomUtils.getDirectoryFilter(_blogDirectoryFilter));
+        }
 
         String categoryKey = BlojsomUtils.getBlogCategory(_blogHome, blogDirectory);
         if (!categoryKey.endsWith("/")) {
@@ -248,7 +267,7 @@ public class Blog implements BlojsomConstants {
     public BlogEntry[] getEntriesForCategory(BlogCategory requestedCategory, int maxBlogEntries) {
         BlogEntry[] entryArray;
         File blogCategory = new File(_blogHome + BlojsomUtils.removeInitialSlash(requestedCategory.getCategory()));
-        File[] entries = blogCategory.listFiles(BlojsomUtils.getExtensionsFilter(_blogFileExtensions));
+        File[] entries = blogCategory.listFiles(BlojsomUtils.getRegularExpressionFilter(_blogFileExtensions));
         String category = BlojsomUtils.removeInitialSlash(requestedCategory.getCategory());
         if (entries == null) {
             _logger.debug("No blog entries in blog directory: " + blogCategory);
