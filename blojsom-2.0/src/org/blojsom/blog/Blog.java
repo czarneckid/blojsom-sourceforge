@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.9 2003-11-11 11:48:02 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.10 2003-11-20 03:03:06 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -77,7 +77,7 @@ public class Blog implements BlojsomConstants {
     private String _blogEntryMetaDataExtension;
     private String _blogFileEncoding;
 
-    private HashMap _blogProperties;
+    private Map _blogProperties;
 
     private Map _authorization = null;
 
