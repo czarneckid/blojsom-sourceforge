@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.33 2005-03-10 15:43:18 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.34 2005-03-11 03:30:35 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -344,6 +344,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             }
         }
 
+        // Load the blog information
         BlogUser blogUser = null;
         try {
             blogUser = _blojsomConfiguration.loadBlog(user);
@@ -362,6 +363,11 @@ public class BlojsomServlet extends BlojsomBaseServlet {
         }
 
         // If the blog ID isn't in the known list of blog IDs, add it
+        if (!_blojsomConfiguration.checkBlogIDExists(blogUser.getId())) {
+            _blojsomConfiguration.addBlogID(blogUser.getId());
+        }
+
+        // If blog ID is not in the list of known blog IDs, add it so that plugins and other components know it exists
         if (!_blojsomConfiguration.checkBlogIDExists(blogUser.getId())) {
             _blojsomConfiguration.addBlogID(blogUser.getId());
         }
