@@ -117,13 +117,13 @@ Search:&nbsp;&nbsp;<input size="15" type="text" name="query" value=""/>&nbsp;
   #foreach( $flavorgroup in $REFERER_HISTORY.keySet())
      #set ($group = $REFERER_HISTORY.get($flavorgroup))
      #if ($group.isHitCounter())
-         <p class="weblogtitle2">$flavorgroup hits:&nbsp;<a href="$BLOJSOM_BLOG.getBlogURL()?&amp;page=referers" title="Referer History">$group.getRefererCount()</a></p><p/>
+         <p class="weblogtitle2">$flavorgroup hits:&nbsp;<a href="$BLOJSOM_BLOG.getBlogURL()?&amp;page=referers" title="Referer History">$group.getReferralCount()</a></p><p/>
      #else
-         <p class="weblogtitle2">$flavorgroup referers today&nbsp;<span class="refererhistory">(<a href="$BLOJSOM_BLOG.getBlogURL()?&amp;page=referers" title="Referer History">$group.getRefererCount() overall</a>)</span></p>
+         <p class="weblogtitle2">$flavorgroup referers today&nbsp;<span class="refererhistory">(<a href="$BLOJSOM_BLOG.getBlogURL()?&amp;page=referers" title="Referer History">$group.getReferralCount() overall</a>)</span></p>
          <p class="weblogdateline">
          #foreach( $refererurl in $group.keySet())
              #if ( $group.get($refererurl).isToday() )
-               <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getRefererCount())<br/>
+               <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getReferralCount())<br/>
              #end
          #end
          </p>

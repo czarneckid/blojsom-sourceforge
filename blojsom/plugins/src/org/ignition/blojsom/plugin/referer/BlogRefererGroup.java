@@ -34,23 +34,24 @@
  */
 package org.ignition.blojsom.plugin.referer;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * BlogRefererGroup
+ * <p />
+ * This plugin manages either a flavor based hitcounter or a group of referers
  *
  * @author Mark Lussier
- * @version $Id: BlogRefererGroup.java,v 1.4 2003-03-31 03:22:52 czarneckid Exp $
+ * @version $Id: BlogRefererGroup.java,v 1.5 2003-04-01 01:54:19 intabulas Exp $
  */
 public class BlogRefererGroup {
 
     private Map _groups;
     private int _grouptotal = 0;
     private boolean _hitcount = false;
-    private boolean _today = false;
     private Date _lasthit;
 
     /**
@@ -74,7 +75,7 @@ public class BlogRefererGroup {
         if (_groups.containsKey(url)) {
             BlogReferer br = (BlogReferer) _groups.get(url);
             br.increment();
-            br.setLastReferal(date);
+            br.setLastReferral(date);
         } else {
             _groups.put(url, new BlogReferer(flavor, url, date, 1));
         }
@@ -105,7 +106,6 @@ public class BlogRefererGroup {
         if (date.compareTo(_lasthit) > 0) {
             _lasthit = date;
         }
-        _today = determineToday();
         _grouptotal += count;
 
     }
@@ -121,7 +121,7 @@ public class BlogRefererGroup {
     public void addReferer(String flavor, String url, Date date, int total) {
         if (_groups.containsKey(url)) {
             BlogReferer br = (BlogReferer) _groups.get(url);
-            br.setLastReferal(date);
+            br.setLastReferral(date);
             br.setCount(total);
         } else {
             _groups.put(url, new BlogReferer(flavor, url, date, total));
@@ -164,7 +164,7 @@ public class BlogRefererGroup {
      *
      * @return Total referer count
      */
-    public int getRefererCount() {
+    public int getReferralCount() {
         return _grouptotal;
     }
 
@@ -177,21 +177,13 @@ public class BlogRefererGroup {
         return _hitcount;
     }
 
-    /**
-     * Check to see if the date of the last hit was today
-     *
-     * @return <code>true</code> if the last hit was today, <code>false</code> otherwise
-     */
-    private boolean determineToday() {
-        return (RefererLogPlugin.getRefererDate(new Date()).equals(RefererLogPlugin.getRefererDate(_lasthit)));
-    }
 
     /**
-     * Get the date of the last hit
+     * Get the date of the last referel for a hitcounter
      *
      * @return Last hit date
      */
-    public Date getLastHit() {
+    public Date getLastReferralDate() {
         return _lasthit;
     }
 
