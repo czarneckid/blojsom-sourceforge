@@ -66,7 +66,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.20 2004-11-24 15:31:23 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.21 2004-11-28 16:32:56 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
@@ -253,9 +253,9 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                 Properties props = new Properties();
                 props.put(SESSION_NAME, hostname);
                 if (BlojsomUtils.checkNullOrBlank(username) || BlojsomUtils.checkNullOrBlank(password)) {
-                    _popSession = Session.getDefaultInstance(props, null);
+                    _popSession = Session.getInstance(props, null);
                 } else {
-                    _popSession = Session.getDefaultInstance(props, new SimpleAuthenticator(username, password));
+                    _popSession = Session.getInstance(props, new SimpleAuthenticator(username, password));
                 }
             }
         }
