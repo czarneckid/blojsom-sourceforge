@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
  * Comment Support Methods.
  *
  * @author Mark Lussier
- * @version $Id: CommentUtils.java,v 1.1 2003-04-15 01:48:12 intabulas Exp $
+ * @version $Id: CommentUtils.java,v 1.2 2003-04-15 01:54:04 intabulas Exp $
  */
 public class CommentUtils {
 
@@ -84,7 +84,6 @@ public class CommentUtils {
         return emailcomment.toString();
 
     }
-
 
 
 }

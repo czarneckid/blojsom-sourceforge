@@ -55,7 +55,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.7 2003-04-15 01:54:02 intabulas Exp $
+ * @version $Id: EmailUtils.java,v 1.8 2003-04-15 01:56:37 intabulas Exp $
  */
 public class EmailUtils {
 
@@ -147,7 +147,6 @@ public class EmailUtils {
 
         return result;
     }
-
 
     /**
      * Send an Email Message

@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.26 2003-04-13 18:07:19 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.27 2003-04-15 01:54:04 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -323,23 +323,11 @@ public class CommentPlugin implements BlojsomPlugin {
     private synchronized void sendCommentEmail(String title, String category, String permalink, String author,
                                                String authorEmail, String authorURL, String userComment, Map context) {
 
-        StringBuffer _emailcomment = new StringBuffer();
-        _emailcomment.append("Comment on: ").append(_blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
-        _emailcomment.append("?permalink=").append(permalink).append("&page=comments").append("\n");
 
-        if (author != null && !author.equals("")) {
-            _emailcomment.append("Comment by: ").append(author).append("\n");
-        }
-        if (authorEmail != null && !authorEmail.equals("")) {
-            _emailcomment.append("            ").append(authorEmail).append("\n");
-        }
-        if (authorURL != null && !authorURL.equals("")) {
-            _emailcomment.append("            ").append(authorURL).append("\n");
-        }
+        String url = _blogUrlPrefix + BlojsomUtils.removeInitialSlash(category);
+        String emailComment = CommentUtils.constructCommentEmail(permalink, author, authorEmail, authorURL, userComment, url);
 
-        _emailcomment.append("\n==[ Comment ]==========================================================").append("\n\n");
-        _emailcomment.append(userComment);
-        EmailUtils.notifyBlogAuthor("[blojsom] Comment on: " + title, _emailcomment.toString(), context);
+        EmailUtils.notifyBlogAuthor("[blojsom] Comment on: " + title, emailComment, context);
     }
 
 

@@ -41,12 +41,8 @@ import org.ignition.blojsom.plugin.BlojsomPlugin;
 import org.ignition.blojsom.plugin.BlojsomPluginException;
 import org.ignition.blojsom.util.BlojsomConstants;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +53,7 @@ import java.util.*;
  * Send Email (SMTP) Plugin
  *
  * @author Mark Lussier
- * @version $Id: SendEmailPlugin.java,v 1.5 2003-04-14 00:27:13 intabulas Exp $
+ * @version $Id: SendEmailPlugin.java,v 1.6 2003-04-15 01:54:02 intabulas Exp $
  */
 public class SendEmailPlugin implements BlojsomPlugin {
 
@@ -142,27 +138,9 @@ public class SendEmailPlugin implements BlojsomPlugin {
      */
     private void sendMailMessage(EmailMessage emailmessage) {
         try {
-            MimeMessage message = new MimeMessage(_mailsession);
-            InternetAddress _msgto;
-            InternetAddress _msgfrom;
-
-            /* Create the From Address */
-            _msgfrom = EmailUtils.constructSenderAddress(emailmessage.getFrom(), "blojsom", _defaultrecipientemail);
-            /* Create the To Address */
-            _msgto = EmailUtils.constructRecipientAddress(emailmessage.getTo(), _defaultrecipientname, _defaultrecipientemail);
-
-            message.setFrom(_msgfrom);
-            message.addRecipient(Message.RecipientType.TO, _msgto);
-            message.setSubject(emailmessage.getSubject());
-            message.setText(emailmessage.getMessage());
-
-            _logger.info("Sending Email to  " + _msgto.getAddress());
-
-            /* Send the email. BLOCKING CALL!! */
-            Transport.send(message);
+            InternetAddress defaultAddress = new InternetAddress(_defaultrecipientemail, _defaultrecipientname);
+            EmailUtils.sendMailMessage(_mailsession, emailmessage, defaultAddress);
         } catch (UnsupportedEncodingException e) {
-            _logger.error(e);
-        } catch (MessagingException e) {
             _logger.error(e);
         }
     }
