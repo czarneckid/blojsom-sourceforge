@@ -1,0 +1,17 @@
+
+		<title>$BLOJSOM_BLOG.getBlogName()</title>
+		<!-- Meta Information -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="MSSmartTagsPreventParsing" content="true"/>
+		<meta name="generator" content="$BLOJSOM_VERSION"/>
+		<!-- Site Feed Autodiscovery-->
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss2"/>
+		<!-- Atom API Posting Autodiscovery -->
+		<link rel="service.post" type="application/atom+xml" title="$BLOJSOM_BLOG.getBlogName()" href="$BLOJSOM_BLOG.getBlogBaseURL()/atomapi/$BLOJSOM_USER"/>
+		<!-- Blogger API Autodiscovery -->
+		<link rel="EditURI" type="application/rsd+xml" title="RSD" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rsd"/>
+		<link rel="shortcut icon" href="$BLOJSOM_SITE_URL/favicon.ico" />
+		<link rel="stylesheet" rev="stylesheet" href="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/ocean.css" type="text/css" media="screen" />
+		<link rel="stylesheet" rev="stylesheet" href="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/ocean-fixed.css" title="fixed" type="text/css" media="screen" />
+		<link rel="stylesheet" rev="stylesheet" href="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/ocean-elastic.css" title="elastic" type="text/css" media="screen" />
+		<script type="text/javascript" src="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/ocean.js"></script>
