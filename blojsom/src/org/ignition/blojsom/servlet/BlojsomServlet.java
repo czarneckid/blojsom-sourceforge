@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.47 2003-03-18 03:23:04 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.48 2003-03-19 03:30:47 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -376,6 +376,21 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             _logger.debug("Calendar-based request for: " + requestedCategory + year + month + day);
         }
 
+        // Determine if the user wants to override the number of displayed entries
+        String entriesParam = httpServletRequest.getParameter(ENTRIES_PARAM);
+        Integer entriesToDisplay = null;
+        if (entriesParam != null || !"".equals(entriesParam)) {
+            try {
+                entriesToDisplay = new Integer(Integer.parseInt(entriesParam));
+                if (entriesToDisplay.intValue() <= 0) {
+                    entriesToDisplay = new Integer(-1);
+                }
+                _logger.debug("Overriding display entries: " + entriesToDisplay.intValue());
+            } catch (NumberFormatException e) {
+                entriesToDisplay = null;
+            }
+        }
+
         // Determine the requested flavor
         String flavor = httpServletRequest.getParameter(FLAVOR_PARAM);
         if (flavor == null) {
@@ -397,10 +412,18 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
                 entries = _blog.getEntriesForDate(category, flavor, year, month, day);
                 // Check for the default category
             } else if (requestedCategory.equals("/")) {
-                entries = _blog.getEntriesAllCategories(flavor);
+                if (entriesToDisplay == null) {
+                    entries = _blog.getEntriesAllCategories(flavor);
+                } else {
+                    entries = _blog.getEntriesAllCategories(flavor, entriesToDisplay.intValue());
+                }
                 // Check for the requested category
             } else {
-                entries = _blog.getEntriesForCategory(category);
+                if (entriesToDisplay == null) {
+                    entries = _blog.getEntriesForCategory(category);
+                } else {
+                    entries = _blog.getEntriesForCategory(category, entriesToDisplay.intValue());
+                }
             }
         }
 
