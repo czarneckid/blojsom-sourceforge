@@ -58,7 +58,7 @@ import java.util.regex.Matcher;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.2 2005-01-31 04:28:13 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.3 2005-02-10 04:30:43 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
@@ -250,7 +250,7 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
         } catch (BlojsomFetcherException e) {
             _logger.error(e);
 
-            throw new XmlRpcException(PINGBACK_TARGET_URI_NON_EXISTENT_CODE, "Targte URI does not exist");
+            throw new XmlRpcException(PINGBACK_TARGET_URI_NON_EXISTENT_CODE, "Target URI does not exist");
         }
 
         // Update notification
