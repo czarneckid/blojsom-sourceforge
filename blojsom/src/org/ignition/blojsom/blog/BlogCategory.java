@@ -47,7 +47,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.13 2003-04-23 02:09:19 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.14 2003-05-16 20:36:54 intabulas Exp $
  */
 public class BlogCategory implements Comparable {
 
@@ -131,7 +131,6 @@ public class BlogCategory implements Comparable {
      */
     public int compareTo(Object o) {
         BlogCategory category = (BlogCategory) o;
-
         return _category.compareTo(category._category);
     }
 

@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.16 2003-05-03 18:01:24 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.17 2003-05-16 20:37:03 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -133,7 +133,9 @@ public class BlogCalendar {
      * @param dom the day of the month
      */
     public void setEntryForDOM(int dom) {
-        _dayswithentry[dom - 1] = Boolean.valueOf(true);
+        if (dom > 0 && dom < _dayswithentry.length) {
+            _dayswithentry[dom - 1] = Boolean.valueOf(true);
+        }
     }
 
     /**
@@ -142,7 +144,9 @@ public class BlogCalendar {
      * @param dom the day of the month
      */
     public void removetEntryForDOM(int dom) {
-        _dayswithentry[dom - 1] = Boolean.valueOf(false);
+        if (dom > 0 && dom < _dayswithentry.length) {
+            _dayswithentry[dom - 1] = Boolean.valueOf(false);
+        }
     }
 
     /**
@@ -152,8 +156,11 @@ public class BlogCalendar {
      * @return a boolean indicating entries exist
      */
     public boolean dayHasEntry(int dom) {
-        Boolean hasEntry = _dayswithentry[dom - 1];
-        return hasEntry.booleanValue();
+        boolean result = false;
+        if (dom > 0 && dom < _dayswithentry.length) {
+            result = _dayswithentry[dom - 1].booleanValue();
+        }
+        return result;
     }
 
     /**

@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  *
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.7 2003-04-04 01:44:21 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.8 2003-05-16 20:37:03 intabulas Exp $
  */
 public class VelocityHelper {
 
@@ -117,8 +117,10 @@ public class VelocityHelper {
      */
     public String getCalendarRow(int row, String clazz) {
         StringBuffer result = new StringBuffer();
-        for (int x = 0; x < 7; x++) {
-            result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
+        if (row > 0 && row <= visualcalendar.length) {
+            for (int x = 0; x < 7; x++) {
+                result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
+            }
         }
         return result.toString();
     }
@@ -144,8 +146,8 @@ public class VelocityHelper {
         _calendar.getCalendar().add(Calendar.MONTH, -1);
         result.append(HREF_PREFIX);
         String prevurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                                                               (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                                                               -1, _calendar.getCalendar().get(Calendar.YEAR));
+                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                -1, _calendar.getCalendar().get(Calendar.YEAR));
         result.append(prevurl);
         result.append("\"> &lt;").append(VTL_SPACER).append(VTL_SPACER);
         result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
@@ -167,8 +169,8 @@ public class VelocityHelper {
                 (_calendar.getCalendar().get(Calendar.YEAR) <= _calendar.getToday().get(Calendar.YEAR))) {
             result.append(HREF_PREFIX);
             String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                                                                   (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                                                                   -1, _calendar.getCalendar().get(Calendar.YEAR));
+                    (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                    -1, _calendar.getCalendar().get(Calendar.YEAR));
 
             result.append(nexturl);
             result.append("\">");
