@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.5 2003-12-23 01:57:00 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.6 2003-12-23 03:31:25 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -151,7 +151,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, httpServletResponse, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user.getBlog())) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
             return entries;
