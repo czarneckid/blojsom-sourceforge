@@ -54,7 +54,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.3 2003-02-26 15:56:45 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.4 2003-02-26 20:10:15 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -204,7 +204,8 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
                 HashMap _metadata = _category.getMetaData();
                 if (_metadata != null && _metadata.containsKey(DESCRIPTION_KEY)) {
                     _description = (String) _metadata.get(DESCRIPTION_KEY);
-
+                } else {
+                    _description = _blogid;
                 }
 
                 _bloglist.put(MEMBER_URL, _category.getCategoryURL());
