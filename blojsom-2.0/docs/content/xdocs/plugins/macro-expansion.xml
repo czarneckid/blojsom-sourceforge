@@ -27,7 +27,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                macro-expansion=org.ignition.blojsom.plugin.macro.MacroExpansionPlugin
+                macro-expansion=org.blojsom.plugin.macro.MacroExpansionPlugin
             </source>
             <p>
 

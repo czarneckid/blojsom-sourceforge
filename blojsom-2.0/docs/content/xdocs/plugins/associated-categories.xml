@@ -23,7 +23,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                associated-categories=org.ignition.blojsom.plugin.meta.AssociatedCategoriesPlugin
+                associated-categories=org.blojsom.plugin.meta.AssociatedCategoriesPlugin
             </source>
 
             <p>
@@ -65,7 +65,7 @@
                         <td>BLOJSOM_PLUGIN_ASSOCIATED_CATEGORIES</td>
                         <td>Output</td>
                         <td>
-                            <code>org.ignition.blojsom.blog.BlogCategory[]</code>
+                            <code>org.blojsom.blog.BlogCategory[]</code>
                         </td>
                         <td>
                             <code>BlogCategory</code> objects will be constructed from the associated categories

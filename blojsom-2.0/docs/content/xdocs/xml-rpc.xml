@@ -64,12 +64,12 @@
                 #
                 # blojsom XML-RPC API Handlers
                 #
-                blogger=org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
-                metaWeblog=org.ignition.blojsom.extension.xmlrpc.handlers.MetaWeblogAPIHandler
+                blogger=org.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
+                metaWeblog=org.blojsom.extension.xmlrpc.handlers.MetaWeblogAPIHandler
             </source>
             <p>You simply register a particular API handler under a given name. In the first case above, the "blogger"
                 API handler is handled by the
-                <code>org.ignition.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler</code>
+                <code>org.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler</code>
                 class.
 
             </p>

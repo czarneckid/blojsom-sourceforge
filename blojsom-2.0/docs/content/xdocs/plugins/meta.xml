@@ -22,7 +22,7 @@
                     <em>plugin.properties</em> file, add the following line:
                 </p>
                 <source>
-                    meta=org.ignition.blojsom.plugin.meta.MetaPlugin
+                    meta=org.blojsom.plugin.meta.MetaPlugin
                 </source>
                 <p>You may then add "meta" to one of the flavor-based plugin chains. For example:
                 </p>

@@ -21,7 +21,7 @@
                     <em>plugin.properties</em> file, add the following line:
                 </p>
                 <source>
-                    emoticons=org.ignition.blojsom.plugin.emoticons.EmoticonsPlugin
+                    emoticons=org.blojsom.plugin.emoticons.EmoticonsPlugin
                 </source>
                 <p>You may then add "emoticons" to one of the flavor-based plugin chains. For example:
                 </p>

@@ -24,7 +24,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                limiter=org.ignition.blojsom.plugin.limiter.EntriesLimiterPlugin
+                limiter=org.blojsom.plugin.limiter.EntriesLimiterPlugin
             </source>
 
             <p>

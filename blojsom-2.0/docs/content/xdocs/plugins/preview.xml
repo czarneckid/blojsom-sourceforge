@@ -22,7 +22,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                preview=org.ignition.blojsom.plugin.limiter.PreviewPlugin
+                preview=org.blojsom.plugin.limiter.PreviewPlugin
             </source>
             <p>
 

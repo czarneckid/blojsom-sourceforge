@@ -8,13 +8,13 @@
 
     <changes>
 
-        <release version="2.0" date="dev">
+        <release version="2.0" date="August 26, 2003">
             <action dev="czarneckid" type="add" context="Core">
                 Added support for multi-user with a single blojsom instance.
             </action>
         </release>
 
-        <release version="1.9.6" date="">
+        <release version="1.9.6" date="Unreleased">
             <action dev="czarneckid" type="add" context="Core">
                 Added <tt>getEscapedBlogName</tt> and <tt>getEscapedBlogDescription</tt> to
                 the <tt>Blog</tt> class.

@@ -82,19 +82,19 @@
                 </tr>
                 <tr>
                     <td>"BLOJSOM_BLOG"</td>
-                    <td>org.ignition.blojsom.blog.Blog</td>
+                    <td>org.blojsom.blog.Blog</td>
                 </tr>
                 <tr>
                     <td>"BLOJSOM_ENTRIES"</td>
-                    <td>org.ignition.blojsom.blog.BlogEntry[]</td>
+                    <td>org.blojsom.blog.BlogEntry[]</td>
                 </tr>
                 <tr>
                     <td>"BLOJSOM_CATEGORIES"</td>
-                    <td>org.ignition.blojsom.blog.BlogCategory[]</td>
+                    <td>org.blojsom.blog.BlogCategory[]</td>
                 </tr>
                 <tr>
                     <td>"BLOJSOM_REQUESTED_CATEGORY"</td>
-                    <td>org.ignition.blojsom.blog.BlogCategory</td>
+                    <td>org.blojsom.blog.BlogCategory</td>
                 </tr>
                 <tr>
                     <td>"BLOJSOM_SITE_URL"</td>
@@ -245,8 +245,8 @@
                 looks like when you download blojsom.
             </p>
             <source>
-                jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
-                vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
+                jsp=org.blojsom.dispatcher.JSPDispatcher
+                vm=org.blojsom.dispatcher.VelocityDispatcher
             </source>
             <p>Each line represents a configuration of
                 <em>template extension</em>=
@@ -259,7 +259,7 @@
                 <em>html</em> flavor is handled by the
                 <em>html.vm</em> template
                 which is dispatched by the
-                <em>org.ignition.blojsom.dispatcher.VelocityDispatcher</em>. Got that?
+                <em>org.blojsom.dispatcher.VelocityDispatcher</em>. Got that?
                 OK, well, let's say you wanted to use the JSP template for the HTML flavor to render your blog.
                 Here's how that configuration would look for the
                 <em>flavor.properties</em> and
@@ -276,8 +276,8 @@
                 <em>dispatcher.properties</em>
             </p>
             <source>
-                jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
-                vm=org.ignition.blojsom.dispatcher.VelocityDispatcher
+                jsp=org.blojsom.dispatcher.JSPDispatcher
+                vm=org.blojsom.dispatcher.VelocityDispatcher
             </source>
             <p>OK. So, one simple change to the
                 <em>flavor.properties</em> file and no change to the

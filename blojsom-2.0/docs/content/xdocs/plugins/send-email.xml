@@ -11,7 +11,7 @@
             <p>
                 The Send Email plugin will take an
                 <code>ArrayList</code> of
-                <code>org.ignition.blojsom.plugin.email.EmailMessage</code>
+                <code>org.blojsom.plugin.email.EmailMessage</code>
                 objects and send them via SMTP.
 
             </p>
@@ -23,7 +23,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                sendemail=org.ignition.blojsom.plugin.email.SendEmailPlugin
+                sendemail=org.blojsom.plugin.email.SendEmailPlugin
             </source>
             <p>
 
@@ -85,7 +85,7 @@
                     <td>Input</td>
                     <td>
                         <code>java.util.List</code> of
-                        <code>org.ignition.blojsom.plugin.email.EmailMessage</code> objects
+                        <code>org.blojsom.plugin.email.EmailMessage</code> objects
                     </td>
                     <td>Contains the list of e-mail
                         messages that should be sent by the plugin</td>

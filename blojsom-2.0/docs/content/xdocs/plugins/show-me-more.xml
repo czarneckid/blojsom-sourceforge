@@ -21,7 +21,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                show-me-more=org.ignition.blojsom.plugin.showmore.ShowMeMorePlugin
+                show-me-more=org.blojsom.plugin.showmore.ShowMeMorePlugin
             </source>
             <p>
 

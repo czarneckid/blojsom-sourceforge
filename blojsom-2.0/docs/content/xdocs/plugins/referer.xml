@@ -24,7 +24,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                referer-log=org.ignition.blojsom.plugin.referer.RefererLogPlugin
+                referer-log=org.blojsom.plugin.referer.RefererLogPlugin
             </source>
             <p>
 
@@ -98,7 +98,7 @@
                     <td>REFERER_HISTORY</td>
                     <td>Output</td>
                     <td>
-                        <code>org.ignition.blojsom.plugin.referer.BlogRefererGroup</code>
+                        <code>org.blojsom.plugin.referer.BlogRefererGroup</code>
                     </td>
                     <td>Manages the referer groups for the various flavors setup in
                         <em>referer.properties</em>

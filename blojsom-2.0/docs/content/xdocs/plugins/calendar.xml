@@ -23,8 +23,8 @@
                 <em>plugin.properties</em> file, add the following two lines:
             </p>
             <source>
-                calendar-filter=org.ignition.blojsom.plugin.calendar.CalendarFilterPlugin
-                calendar-gui=org.ignition.blojsom.plugin.calendar.VelocityCalendarPlugin
+                calendar-filter=org.blojsom.plugin.calendar.CalendarFilterPlugin
+                calendar-gui=org.blojsom.plugin.calendar.VelocityCalendarPlugin
             </source>
 
             <p>
@@ -93,22 +93,22 @@
                         <td>BLOJSOM_CALENDAR</td>
                         <td>Output</td>
                         <td>
-                            <code>org.ignition.blojsom.plugin.calendar.BlogCalendar</code>
+                            <code>org.blojsom.plugin.calendar.BlogCalendar</code>
                         </td>
                         <td>Calendar object to indicate on which days there are blog entries. This object is
                             added by the
-                            <code>org.ignition.blojsom.plugin.calendar.CalendarFilterPlugin</code>
+                            <code>org.blojsom.plugin.calendar.CalendarFilterPlugin</code>
                         </td>
                     </tr>
                     <tr>
                         <td>BLOJSOM_CALENDAR_VTLHELPER</td>
                         <td>Output</td>
                         <td>
-                            <code>org.ignition.blojsom.plugin.calendar.VelocityHelper</code>
+                            <code>org.blojsom.plugin.calendar.VelocityHelper</code>
                         </td>
                         <td>Helper class for creating the visual calendar output for Velocity, but this could
                             also be used for JSPs as well. This object is added by the
-                            <code>org.ignition.blojsom.plugin.calendar.VelocityCalendarPlugin</code>
+                            <code>org.blojsom.plugin.calendar.VelocityCalendarPlugin</code>
                         </td>
                     </tr>
                 </table>

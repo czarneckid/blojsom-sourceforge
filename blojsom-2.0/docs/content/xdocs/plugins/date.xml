@@ -21,7 +21,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                date-format=org.ignition.blojsom.plugin.date.DateFormatPlugin
+                date-format=org.blojsom.plugin.date.DateFormatPlugin
             </source>
             <p>
 

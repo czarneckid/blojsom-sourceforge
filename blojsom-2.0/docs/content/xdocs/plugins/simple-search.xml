@@ -21,7 +21,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                simple-search=org.ignition.blojsom.plugin.search.SimpleSearchPlugin
+                simple-search=org.blojsom.plugin.search.SimpleSearchPlugin
             </source>
             <p>
 

@@ -25,7 +25,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                weblogs-ping=org.ignition.blojsom.plugin.weblogsping.WeblogsPingPlugin
+                weblogs-ping=org.blojsom.plugin.weblogsping.WeblogsPingPlugin
             </source>
             <p>
 

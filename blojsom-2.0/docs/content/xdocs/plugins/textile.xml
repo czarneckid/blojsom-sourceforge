@@ -22,7 +22,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                textile=org.ignition.blojsom.plugin.textile.TextilePlugin
+                textile=org.blojsom.plugin.textile.TextilePlugin
             </source>
             <p>
 

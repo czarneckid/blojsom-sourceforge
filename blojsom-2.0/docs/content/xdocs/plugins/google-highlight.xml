@@ -22,7 +22,7 @@
                 <em>plugin.properties</em> file, add the following line:
             </p>
             <source>
-                google-highlight=org.ignition.blojsom.plugin.highlight.GoogleHighlightPlugin
+                google-highlight=org.blojsom.plugin.highlight.GoogleHighlightPlugin
             </source>
 
             <p>
