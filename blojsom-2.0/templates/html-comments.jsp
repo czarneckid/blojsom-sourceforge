@@ -76,7 +76,7 @@
              xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
         <rdf:Description
              rdf:about="<%= blogEntry.getLink()%>"
-             dc:identifer="<%= blogEntry.getLink()%>"
+             dc:identifier="<%= blogEntry.getLink()%>"
              dc:title="<%=blogEntry.getTitle()%>"
              dc:subject="<%=requestedCategory.getCategoryURL()%>"
              dc:description="<%=blogDescription%>"

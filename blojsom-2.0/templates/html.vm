@@ -69,13 +69,13 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
              xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
         <rdf:Description
              rdf:about="$entry.getLink()"
-             dc:identifer="$entry.getLink()"
+             dc:identifier="$entry.getLink()"
              dc:title="$entry.getTitle()"
              dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
              dc:description="$blogDescription"
              dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
              dc:date="$entry.getISO8601Date()"
-             trackback:ping="$entry.getLink()&amp;tb=y" />
+             trackback:ping="$entry.getLink()&tb=y" />
      </rdf:RDF>
 -->
     #end
