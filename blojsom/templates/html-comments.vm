@@ -72,7 +72,7 @@ Available categories:
             </tr>
             <p />
             <tr>
-                <td>Remember me?</td> <td><input type="checkbox" name="remember"/></td>
+                <td>Remember me?</td> <td><input type="checkbox" name="remember" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)CHECKED#end/></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" name="submit" value="Submit Comment"/>
