@@ -47,7 +47,7 @@ import java.util.Map;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.31 2003-05-07 02:28:11 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.32 2003-05-23 01:38:32 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -382,5 +382,16 @@ public abstract class BlogEntry implements BlojsomConstants {
      */
     public void setMetaData(Map metaData) {
         _metaData = metaData;
+    }
+
+    /**
+     * Return a string representation of the entry. The default implementation is to return
+     * the blog entry title.
+     *
+     * @since blojsom 1.9
+     * @return String representation of this entry
+     */
+    public String toString() {
+        return _title;
     }
 }
