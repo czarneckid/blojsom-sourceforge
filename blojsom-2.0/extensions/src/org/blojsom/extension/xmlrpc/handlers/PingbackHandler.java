@@ -58,12 +58,14 @@ import java.util.regex.Matcher;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.1 2005-01-31 02:43:24 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.2 2005-01-31 04:28:13 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
 
     private static final Log _logger = LogFactory.getLog(PingbackHandler.class);
+
+    private static final String TITLE_PATTERN = "<title>(.*)</title>";
 
     protected static final String API_NAME = "pingback";
 
@@ -76,11 +78,9 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
     protected static final int PINGBACK_ACCESS_DENIED_CODE = 49;
     protected static final int PINGBACK_UPSTREAM_SERVER_ERROR_CODE = 50;
 
-    private static final String TITLE_PATTERN = "<title>(.*)</title>";
-
     // Pingback meta-data
     protected static final String PINGBACK_METADATA_IP_ADDRESS = "PINGBACK_IP_ADDRESS";
-
+    
     /**
      * Construct a new Pingback handler
      */
