@@ -113,7 +113,7 @@ public class BlogEntry {
      * @param title Title for the blog entry
      */
     public void setTitle(String title) {
-        this._title = title;
+        _title = title;
     }
 
     /**
@@ -149,7 +149,7 @@ public class BlogEntry {
      * @param link Permalink for the blog entry
      */
     public void setLink(String link) {
-        this._link = link;
+        _link = link;
     }
 
     /**
@@ -167,7 +167,7 @@ public class BlogEntry {
      * @param source File for the blog entry
      */
     public void setSource(File source) {
-        this._source = source;
+        _source = source;
     }
 
     /**
@@ -195,7 +195,7 @@ public class BlogEntry {
      * @param description Description for the blog entry
      */
     public void setDescription(String description) {
-        this._description = description;
+        _description = description;
     }
 
     /**
@@ -289,7 +289,7 @@ public class BlogEntry {
      * @param category Category for the blog entry
      */
     public void setCategory(String category) {
-        this._category = category;
+        _category = category;
     }
 
     /**
@@ -303,7 +303,7 @@ public class BlogEntry {
         }
 
         BlogEntry entry = (BlogEntry) o;
-        if (this.getLink().equals(entry.getLink())) {
+        if (_link.equals(entry.getLink())) {
             return true;
         }
         return false;
