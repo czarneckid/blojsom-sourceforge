@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<feed xmlns="http://example.com/newformat#"
-    xmlns:ent="http://www.purl.org/NET/ENT/1.0/"
-    version="1.0">
+<feed xmlns="http://purl.org/echo/" version="1.0"
+    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" xml:base="http://example.com">
 
     <title>$BLOJSOM_BLOG.getBlogName()</title>
     <subtitle>$BLOJSOM_BLOG.getBlogDescription()</subtitle>
     <link>$BLOJSOM_BLOG.getBlogURL()</link>
 
+    <author>
+        <name>$BLOJSOM_BLOG.getBlogOwner()</name>
+        <url>$BLOJSOM_BLOG.getBlogURL()</url>
+        <email>$BLOJSOM_BLOG.getBlogOwnerEmail()</email>
+    </author>
+
     <modified>$BLOJSOM_DATE_ISO8601</modified>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
-    <entry>
+    <entry id="$entry.getCategory()$entry.getPermalink()">
         <title>$entry.getTitle().replaceAll("<.*?>","")</title>
 
         <author>
@@ -21,17 +26,14 @@
         </author>
 
         <link>$entry.getLink()</link>
-        <id>$entry.getLink()</id>
 
         <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
-        <issued>$entry.getISO8601Date()</issued>
+        <issued>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</issued>
         <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
 
-        <content type="text/html" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" mode="escaped">
-            <![CDATA[ $entry.getDescription() ]]>
+        <content type="text/html" mode="cdata">
+            <body><![CDATA[ $entry.getDescription() ]]></body>
         </content>
-
-        <ent:topic id="introductory">$entry.getCategory()</ent:topic>
     </entry>
     #end
 </feed>
