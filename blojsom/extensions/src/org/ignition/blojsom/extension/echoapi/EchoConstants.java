@@ -38,9 +38,8 @@ package org.ignition.blojsom.extension.echoapi;
  * EchoConstants
  *
  * @author Mark Lussier
- * @version $Id: EchoConstants.java,v 1.2 2003-07-14 17:30:48 intabulas Exp $
+ * @version $Id: EchoConstants.java,v 1.3 2003-07-14 17:49:34 intabulas Exp $
  */
-
 public interface EchoConstants {
 
     /**
