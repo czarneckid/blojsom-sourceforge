@@ -58,7 +58,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.37 2003-07-04 21:00:47 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.38 2003-07-20 22:08:21 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -71,6 +71,11 @@ public class CommentPlugin extends IPBanningPlugin {
      * Initialization parameter for e-mail prefix
      */
     private static final String COMMENT_PREFIX_IP = "plugin-comment-email-prefix";
+
+    /**
+     * Initialization parameter for the duration of the "remember me" cookies
+     */
+    private static final String COMMENT_COOKIE_EXPIRATION_DURATION_IP = "plugin-comment-expiration-duration";
 
     /**
      * Request parameter for the "comment"
@@ -167,6 +172,7 @@ public class CommentPlugin extends IPBanningPlugin {
     private String _blogUrlPrefix;
     private String _blogFileEncoding;
     private String _emailPrefix;
+    private int _cookieExpiration;
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -187,6 +193,12 @@ public class CommentPlugin extends IPBanningPlugin {
         _emailPrefix = blog.getBlogProperty(COMMENT_PREFIX_IP);
         if (_emailPrefix == null) {
             _emailPrefix = DEFAULT_COMMENT_PREFIX;
+        }
+        String cookieExpiration = blog.getBlogProperty(COMMENT_COOKIE_EXPIRATION_DURATION_IP);
+        if (cookieExpiration == null || "".equals(cookieExpiration)) {
+            _cookieExpiration = COOKIE_EXPIRATION_AGE;
+        } else {
+            _cookieExpiration = Integer.parseInt(cookieExpiration);
         }
     }
 
@@ -224,7 +236,7 @@ public class CommentPlugin extends IPBanningPlugin {
     private void addCommentCookie(HttpServletResponse httpServletResponse, String cookieKey,
                                   String cookieValue) {
         Cookie cookie = new Cookie(cookieKey, cookieValue);
-        cookie.setMaxAge(COOKIE_EXPIRATION_AGE);
+        cookie.setMaxAge(_cookieExpiration);
         httpServletResponse.addCookie(cookie);
     }
 
