@@ -60,7 +60,7 @@ import java.util.*;
  * 
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.22 2004-03-13 17:15:36 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.23 2004-03-15 01:02:58 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -245,8 +245,9 @@ public class BlojsomServlet extends BlojsomBaseServlet {
     }
 
     /**
+     * Instantiate the resource manager
      *
-     * @throws ServletException
+     * @throws ServletException If there is an error instantiating the resource manager class
      */
     protected void configureResourceManager() throws ServletException {
         String resourceManagerClass = _blojsomConfiguration.getResourceManager();
