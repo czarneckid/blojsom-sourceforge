@@ -17,9 +17,39 @@
 ml">changelog</a> | <a href="javadoc/index.html">javadocs</a> | <a href="http://sourceforge.net/proj
 ects/blojsom/">sourceforge project page</a></p>
 
-<p>
 <p class="weblogtitle">trackback support</p>
 <p />
+As of blojsom 1.6, trackback support has been added to blojsom. blojsom implements the
+<a href="http://www.movabletype.org/docs/mttrackback.html">Movable Type Trackback
+Specification</a>.
+<p />
+As indicated in the <a href="installation.html">installation</a> documentation, the
+<i>blog-trackbacks-directory</i> parameter indicates the directory where blog trackbacks
+will be written to under the blog category directories.  This directory is automatically
+added to the list of directories that get filtered by blojsom.
+<p />
+The blog entry listing templates have been modified to show the number of trackbacks for
+a particular blog entry alongside the number of comments. Clicking on the number of
+trackbacks will bring the user to a page that lists the trackbacks for that particular
+blog entry. There is also a link that you may cut and paste into your blogging tool so that
+you can send a trackback ping to that particular blog entry. The following table lists the
+URL parameters that must be supplied for a trackback.
+<p />
+<table border="1">
+    <th>URL parameter</th> <th>Description</th>
+    <tr align="center">
+        <td>title</td> <td align="left">The title of the entry.</td>
+    </tr>
+    <tr align="center">
+        <td>excerpt</td> <td align="left">An excerpt of the entry. blojsom adheres to the Movable Type implementation, in that if this string is longer than 255 characters, it will be cropped to 252 characters, and ... will be added to the end.</td>
+    </tr>
+    <tr align="center">
+        <td>url</td> <td align="left">The permalink for the entry. Like any permalink, this should point as closely as possible to the actual entry on the HTML page, as it will be used when linking to the entry in question.</td>
+    </tr>
+    <tr align="center">
+        <td>blog_name</td> <td align="left">The name of the blog in which the entry is posted.</td>
+    </tr>
+</table>
 
 <p />
 <a href="http://sourceforge.net/projects/blojsom/"><img src="powered-by-blojsom.gif" border="0" /></

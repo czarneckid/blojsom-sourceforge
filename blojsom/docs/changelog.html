@@ -28,7 +28,7 @@ templates.<br />
 - Added <tt>destroy()</tt> method to the <tt>BlojsomPlugin</tt> interface. This will allow
 developers to perform any finalization or cleanup activities of the plugin. Note that
 this method differs from the <tt>cleanup()</tt> method in that it is only called when
-BlojsomServlet is taken out of service by the servlet container. The <tt>cleanup</tt>
+<tt>BlojsomServlet</tt> is taken out of service by the servlet container. The <tt>cleanup</tt>
 method is called each plugin request after the plugin's <tt>process</tt> method is called.<br />
 - <font color="red">NOTE:</font> "BLOJSOM_*" is a reserved namespace for the context<br />
 - Added "BLOJSOM_DATE_ISO8601" to the context<br />
@@ -44,7 +44,7 @@ built and bundled as <i>/WEB-INF/lib/blojsom-templates.jar</i> since that way wa
 editing and customizing the templates by end users<br />
 - Added <tt>setComments</tt> method to <tt>BlogEntry</tt> class so that plugins can
 manipulate blog entry comments<br />
-- Trackback support added. See the <a href="trackbacks.html">trackbacks</a> document for more
+- Trackback support added. See the <a href="trackbacks.html">trackbacks</a> documentation for more
 information on Trackback support in blojsom<br />
 - <font color="red">NOTE:</font> You will need to add one parameter, <i>blog-trackbacks-directory</i>
  to your <i>blojsom.properties</i> file if you are upgrading from a
@@ -52,7 +52,10 @@ previous version of blojsom. For example, you would add the following line to yo
 <pre>
 blog-trackbacks-directory=.trackbacks
 </pre>
-- Added "entries" URL parameter to override the number of entries displayed on a page. <i>entries=&lt;-1 or integer greater than 0&gt;</i><br />
+- Added "entries" URL parameter to override the number of entries displayed on a page.
+<i>entries=&lt;-1 or integer greater than 0&gt;</i>. This parameter is listed with the
+other URL parameters accepted by blojsom in the <a href="installation.html">installation</a>
+documentation<br />
 - Refactored comment handling to the Comment Plugin<br />
 
 <p />
