@@ -284,19 +284,13 @@
                     </tr>
                 </table>
                 <p>
-                    6. Edit the <em>/WEB-INF/velocity.properties</em> file and configure the
-                    <em>file.resource.loader.path</em> property. This property should be set to the
-                    directory where you run blojsom from. This is also the directory where you unpackaed
-                    the blojsom WAR file.
-                </p>
-                <p>
-                    7. Start your application server. On startup, blojsom will log messages to the console to
+                    6. Start your application server. On startup, blojsom will log messages to the console to
                     indicate what it is doing. Configuring blojsom's log capability is described on
                     the
                     <link href="custom.html">customization</link> page.
                 </p>
                 <p>
-                    8. Start your browser and open the URL to your blog. Example:
+                    7. Start your browser and open the URL to your blog. Example:
                     <em>http://localhost:8080/blojsom/blog/</em>.
                     The default user's blog should show up in your browser. If you have created other users, you
                     can browse their blogs by including the appropriate user id at the end of this blog URL.

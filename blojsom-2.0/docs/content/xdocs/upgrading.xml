@@ -9,6 +9,16 @@
         <section>
             <title>Upgrading</title>
             <section>
+                <title>Upgrading from blojsom 2.01 to blojsom 2.02</title>
+                <section>
+                    <title>Properties file changes</title>
+                    <p>
+                        1. You may remove the <code>blojsom-installation-directory</code> parameter from
+                        <code>/WEB-INF/blojsom.properties</code>.
+                    </p>
+                </section>
+            </section>
+            <section>
                 <title>Upgrading from blojsom 2.0 to blojsom 2.01</title>
                 <section>
                     <title>Properties file changes</title>
