@@ -40,6 +40,7 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.blog.Blog;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -49,16 +50,18 @@ import javax.servlet.ServletConfig;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 
 /**
  * EditBlogAuthorizationPlugin
- * 
+ *
  * @author czarnecki
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.14 2005-01-23 19:22:35 czarneckid Exp $
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.13 2005-01-05 02:31:20 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -141,7 +144,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             String blogUserEmail = BlojsomUtils.getRequestValue(BLOG_USER_EMAIL, httpServletRequest);
 
             if (!BlojsomUtils.checkNullOrBlank(blogUserID) && !BlojsomUtils.checkNullOrBlank(blogUserPassword)
-                && !BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
+                    && !BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
                 if (blogUserPassword.equals(blogUserPasswordCheck)) {
                     if (BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
                         blogUserEmail = "";
@@ -211,7 +214,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
      * Write out the authorization configuration information for a particular user
      *
      * @param authorizationMap Authorization usernames/passwords
-     * @param user User id
+     * @param user             User id
      * @throws IOException If there is an error writing the authorization file
      */
     private void writeAuthorizationConfiguration(Map authorizationMap, String user) throws IOException {
