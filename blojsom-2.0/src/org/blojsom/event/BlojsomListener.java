@@ -39,7 +39,7 @@ package org.blojsom.event;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomListener.java,v 1.3 2005-01-05 02:32:57 czarneckid Exp $
+ * @version $Id: BlojsomListener.java,v 1.4 2005-03-05 18:08:32 czarneckid Exp $
  */
 public interface BlojsomListener {
 
@@ -49,4 +49,12 @@ public interface BlojsomListener {
      * @param event {@link BlojsomEvent} to be handled
      */
     public void handleEvent(BlojsomEvent event);
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event);
 }

@@ -39,7 +39,7 @@ package org.blojsom.event;
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEventBroadcaster.java,v 1.3 2005-01-05 02:32:56 czarneckid Exp $
+ * @version $Id: BlojsomEventBroadcaster.java,v 1.4 2005-03-05 18:09:03 czarneckid Exp $
  */
 public interface BlojsomEventBroadcaster {
 
@@ -72,4 +72,12 @@ public interface BlojsomEventBroadcaster {
      * @param event {@link org.blojsom.event.BlojsomEvent} to be broadcast to all listeners
      */
     public void broadcastEvent(BlojsomEvent event);
+
+    /**
+     * Process an event with all listeners
+     *
+     * @param event {@link BlojsomEvent} to be processed by all listeners
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event);
 }

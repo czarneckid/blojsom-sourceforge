@@ -46,9 +46,12 @@ import java.util.*;
  * No defined order is set for how each event will receive an event, so you should not assume any order
  * in listeners being called. No steps are taken to ensure a event does not receive an event if it is
  * removed at the same time an event is being broadcast.
+ * <p></p>
+ * The addition of the {@link #processEvent(BlojsomEvent)} method adds the capability for components to have an
+ * event processed after the call instead of asynchronously as with the {@link #broadcastEvent(BlojsomEvent)} method. 
  *
  * @author David Czarnecki
- * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.4 2005-01-06 03:32:10 czarneckid Exp $
+ * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.5 2005-03-05 18:09:03 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
@@ -87,7 +90,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
             _listeners.add(handler);
             _listenerToHandler.put(listener.getClass().getName(), handler);
             _logger.debug("Added event: " + listener.getClass().getName() + " with process all events filter");
-        } 
+        }
     }
 
     /**
@@ -134,6 +137,22 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
     }
 
     /**
+     * Process an event with all listeners
+     *
+     * @param event {@link BlojsomEvent} to be processed by all listeners
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
+        Iterator handlerIterator = _listeners.iterator();
+        while (handlerIterator.hasNext()) {
+            EventHandler eventHandler = (EventHandler) handlerIterator.next();
+            if (eventHandler._filter.processEvent(event)) {
+                eventHandler._listener.processEvent(event);
+            }
+        }
+    }
+
+    /**
      * Event handler helper class.
      */
     protected class EventHandler {
@@ -145,7 +164,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
          * Create a new event handler with event and filter instances.
          *
          * @param listener {@link BlojsomListener}
-         * @param filter {@link BlojsomFilter}
+         * @param filter   {@link BlojsomFilter}
          */
         protected EventHandler(BlojsomListener listener, BlojsomFilter filter) {
             _listener = listener;
