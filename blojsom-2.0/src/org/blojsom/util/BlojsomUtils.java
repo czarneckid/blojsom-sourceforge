@@ -56,7 +56,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.54 2005-01-14 18:15:31 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.55 2005-01-23 19:19:01 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1152,6 +1152,38 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Convert a {@link BlojsomProperties} object to a {@link Map}. If the properties object is <code>null</code>
+     * an emtpy {@link Map} is returned.
+     *
+     * @param properties {@link BlojsomProperties}
+     * @return {@link Map} containing keys and values from the properties
+     * @since blojsom 2.23
+     */
+    public static Map blojsomPropertiesToMap(Properties properties) {
+        if (properties == null) {
+            return new HashMap();
+        } else {
+            Iterator keyIterator = properties.keySet().iterator();
+            Object key;
+            Object value;
+            HashMap convertedProperties = new HashMap();
+            while (keyIterator.hasNext()) {
+                key = (String) keyIterator.next();
+                value = properties.get(key);
+                if (value instanceof List) {
+                    convertedProperties.put(key, value);
+                } else {
+                    ArrayList values = new ArrayList();
+                    values.add(value.toString());
+                    convertedProperties.put(key, values);
+                }
+            }
+
+            return convertedProperties;
+        }
+    }
+
+    /**
      * Turn an array of strings into a single string separated by a given delimeter. If the incoming array is null, this
      * method returns the <code>null</code> string.
      *
@@ -1216,6 +1248,32 @@ public class BlojsomUtils implements BlojsomConstants {
                 } else if (key != null && value == null) {
                     convertedProperties.put(key, "");
                 }
+            }
+
+            return convertedProperties;
+        }
+    }
+
+    /**
+     * Convert a {@link Map} to a {@link BlojsomProperties}. If the map is <code>null</code> an empty
+     * {@link BlojsomProperties} object is returned.
+     *
+     * @param map {@link Map}
+     * @return {@link BlojsomProperties} object containing keys and values from the map
+     * @since blojsom 2.23
+     */
+    public static Properties mapToBlojsomProperties(Map map) {
+        if (map == null) {
+            return new BlojsomProperties();
+        } else {
+            Iterator keyIterator = map.keySet().iterator();
+            Object key;
+            Object value;
+            Properties convertedProperties = new BlojsomProperties(true);
+            while (keyIterator.hasNext()) {
+                key = keyIterator.next();
+                value = map.get(key);
+                convertedProperties.put(key, value);
             }
 
             return convertedProperties;
