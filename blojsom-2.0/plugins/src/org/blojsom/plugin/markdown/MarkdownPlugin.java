@@ -57,7 +57,7 @@ import java.util.Map;
  * <a href="http://daringfireball.net/projects/markdown/">John Gruber's Markdown site</a>.
  *
  * @author David Czarnecki
- * @version $Id: MarkdownPlugin.java,v 1.1 2004-03-20 16:56:01 czarneckid Exp $
+ * @version $Id: MarkdownPlugin.java,v 1.2 2004-03-20 18:09:20 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MarkdownPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -118,7 +118,7 @@ public class MarkdownPlugin implements BlojsomPlugin, BlojsomConstants {
                     String input;
                     StringBuffer collectedDescription = new StringBuffer();
                     while ((input = br.readLine()) != null) {
-                        collectedDescription.append(input);
+                        collectedDescription.append(input).append(BlojsomConstants.LINE_SEPARATOR);
                     }
                     entry.setDescription(collectedDescription.toString());
                     br.close();
