@@ -105,6 +105,11 @@ public interface BlojsomConstants {
     public static final String DAY_PARAM = "day";
 
     /**
+     * Request parameter for the "query"
+     */
+    public static final String QUERY_PARAM = "query";
+
+    /**
      * Value indicating all subdirectories under the blog home should be searched
      */
     public static final int INFINITE_BLOG_DEPTH = -1;
