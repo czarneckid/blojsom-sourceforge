@@ -21,11 +21,15 @@
 #if($REFERER_HISTORY)
   #foreach( $flavorgroup in $REFERER_HISTORY.keySet())
      #set ($group = $REFERER_HISTORY.get($flavorgroup))
-     <p class="weblogtitle">$flavorgroup referers&nbsp;<span class="refererhistory">($group.getRefererCount() total)</span></p><p class="weblogdateline">
-     #foreach( $refererurl in $group.keySet())
-         <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getRefererCount())<br/>
+     #if ($group.isHitCounter())
+         <p class="weblogtitle2">$flavorgroup hits:&nbsp;$group.getRefererCount()</p>
+     #else
+       <p class="weblogtitle">$flavorgroup referers&nbsp;<span class="refererhistory">($group.getRefererCount() total)</span></p><p class="weblogdateline">
+       #foreach( $refererurl in $group.keySet())
+           <a href="$refererurl">$refererurl</a>&nbsp;($group.get($refererurl).getRefererCount())<br/>
+       #end
+       </p>
      #end
-     </p>
   #end
 #end
 <p/>
