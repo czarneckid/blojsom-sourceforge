@@ -46,7 +46,7 @@ import java.io.IOException;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.5 2003-03-13 02:49:41 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.6 2003-03-18 03:21:03 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
@@ -92,8 +92,8 @@ public class JSPDispatcher implements GenericDispatcher {
         }
 
         String flavorTemplateForPage = null;
-        if (httpServletRequest.getParameter(PAGE_PARAM) != null) {
-            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
+        if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest));
             _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 
