@@ -25,11 +25,11 @@
             </action>
 
             <action dev="czarneckid" type="add" context="Plugin">
-                Added meta plugin.
+                Added <link href="plugins/meta.html">meta plugin</link>.
             </action>
 
             <action dev="czarneckid" type="add" context="Plugin">
-                Added associated categories plugin.
+                Added <link href="plugins/associated-categories.html">associated categories plugin</link>.
             </action>
         </release>
 
