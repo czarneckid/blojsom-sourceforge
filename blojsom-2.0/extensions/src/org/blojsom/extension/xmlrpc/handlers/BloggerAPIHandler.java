@@ -53,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.16 2004-11-10 03:55:43 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.17 2004-11-10 21:40:39 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -319,7 +319,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             File blogCategory = getBlogCategoryDirectory(blogid);
             if (blogCategory.exists() && blogCategory.isDirectory()) {
                 String title = findTitleInContent(content);
-                String filename = getBlogEntryFilename(title, content);
+                String filename = BlojsomUtils.getBlogEntryFilename(title, content);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
 
                 try {

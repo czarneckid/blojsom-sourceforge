@@ -56,7 +56,7 @@ import java.util.*;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.23 2004-11-10 03:55:43 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.24 2004-11-10 21:40:39 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -359,7 +359,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
                 String title = (String) postcontent.get(MEMBER_TITLE);
                 String description = (String) postcontent.get(MEMBER_DESCRIPTION);
-                String filename = getBlogEntryFilename(title, description);
+                String filename = BlojsomUtils.getBlogEntryFilename(title, description);
                 String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
 
                 try {

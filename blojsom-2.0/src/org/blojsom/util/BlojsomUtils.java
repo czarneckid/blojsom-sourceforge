@@ -54,7 +54,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.37 2004-11-03 17:03:04 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.38 2004-11-10 21:39:55 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1585,12 +1585,50 @@ public class BlojsomUtils implements BlojsomConstants {
      * @since blojsom 2.20
      */
     public static void resolveDynamicBaseAndBlogURL(HttpServletRequest httpServletRequest, Blog blog, String blogID) {
-        if (BlojsomUtils.checkNullOrBlank(blog.getBlogBaseURL())) {
-            blog.setBlogBaseURL(BlojsomUtils.constructBaseURL(httpServletRequest));
+        if (checkNullOrBlank(blog.getBlogBaseURL())) {
+            blog.setBlogBaseURL(constructBaseURL(httpServletRequest));
         }
 
-        if (BlojsomUtils.checkNullOrBlank(blog.getBlogURL())) {
-            blog.setBlogURL(BlojsomUtils.constructBlogURL(httpServletRequest, blogID));
+        if (checkNullOrBlank(blog.getBlogURL())) {
+            blog.setBlogURL(constructBlogURL(httpServletRequest, blogID));
         }
+    }
+
+    /**
+     * Return a digested string of some content
+     *
+     * @param content Content from which to generate a hashed digest
+     * @return {@link BlojsomUtils#digestString(String)}
+     * @since blojsom 2.21
+     */
+    public static String getHashableContent(String content) {
+        String hashable = content;
+
+        if (content.length() > MAX_HASHABLE_LENGTH) {
+            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+        }
+
+        return digestString(hashable).toUpperCase();
+    }
+
+    /**
+     * Return a filename appropriate for the blog entry content
+     *
+     * @param title Blog entry title
+     * @param content Blog entry content
+     * @return Filename for the new blog entry
+     * @since blojsom 2.21
+     */
+    public static String getBlogEntryFilename(String title, String content) {
+        String filename;
+
+        if (!checkNullOrBlank(title)) {
+            filename = title.replaceAll("\\s", "_");
+            filename = filename.replaceAll("\\p{Punct}", "_");
+        } else {
+            filename = getHashableContent(content);
+        }
+
+        return filename;
     }
 }

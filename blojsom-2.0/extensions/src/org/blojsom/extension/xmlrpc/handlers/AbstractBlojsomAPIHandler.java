@@ -53,7 +53,7 @@ import java.io.File;
  * Abstract blojsom API handler
  *
  * @author Mark Lussier
- * @version $Id: AbstractBlojsomAPIHandler.java,v 1.10 2004-11-10 03:55:43 czarneckid Exp $
+ * @version $Id: AbstractBlojsomAPIHandler.java,v 1.11 2004-11-10 21:40:39 czarneckid Exp $
  */
 public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomMetaDataConstants, BlojsomXMLRPCConstants {
 
@@ -133,47 +133,6 @@ public abstract class AbstractBlojsomAPIHandler implements BlojsomConstants, Blo
      */
     public void setServletConfig(ServletConfig servletConfig) {
         _servletConfig = servletConfig;
-    }
-
-    /**
-     * Return a digested string of some content
-     *
-     * @param content Content from which to generate a hashed digest
-     * @return {@link BlojsomUtils#digestString(String)}
-     * @since blojsom 2.21
-     */
-    protected String getHashableContent(String content) {
-        String hashable = content;
-
-        if (content.length() > MAX_HASHABLE_LENGTH) {
-            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-        }
-
-        return BlojsomUtils.digestString(hashable).toUpperCase();
-    }
-
-    /**
-     * Return a filename appropriate for the blog entry content
-     *
-     * @param title Blog entry title
-     * @param content Blog entry content
-     * @return Filename for the new blog entry
-     */
-    protected String getBlogEntryFilename(String title, String content) {
-        String filename;
-
-        if (!BlojsomUtils.checkNullOrBlank(title)) {
-            filename = title.replaceAll("\\s", "_");
-            filename = filename.replaceAll("\\p{Punct}", "_");
-
-            if (BlojsomUtils.checkNullOrBlank(filename)) {
-                filename = getHashableContent(content);
-            }
-        } else {
-            filename = getHashableContent(content);
-        }
-
-        return filename;
     }
 
     /**

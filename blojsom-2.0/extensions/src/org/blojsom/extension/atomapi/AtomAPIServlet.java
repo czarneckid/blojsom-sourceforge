@@ -74,7 +74,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.51 2004-10-29 02:01:22 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.52 2004-11-10 21:41:20 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -592,10 +592,16 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 try {
                     Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream(), new XPPBuilder());
 
-                    String filename = getBlogEntryFilename(atomEntry.getContent(0).getBody(), blogEntryExtension);
+                    String filename = BlojsomUtils.getBlogEntryFilename(atomEntry.getTitle().getBody(), atomEntry.getContent(0).getBody());
                     String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
 
-                    File sourceFile = new File(outputfile);
+                    File sourceFile = new File(outputfile + blogEntryExtension);
+                    int fileTag = 1;
+                    while (sourceFile.exists()) {
+                        sourceFile = new File(outputfile + "-" + fileTag + blogEntryExtension);
+                        fileTag++;
+                    }
+
                     BlogEntry entry = _fetcher.newBlogEntry();
                     Map attributeMap = new HashMap();
                     Map blogEntryMetaData = new HashMap();
@@ -848,7 +854,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         // Check to see if we need to dynamically determine blog-base-url and blog-url?
         BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, user);
-        
+
         blogEntryExtension = blog.getBlogProperty(BLOG_ATOMAPI_ENTRY_EXTENSION_IP);
         if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
             blogEntryExtension = DEFAULT_BLOG_ATOMAPI_ENTRY_EXTENSION;
@@ -967,25 +973,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         } else {
             return new File(blog.getBlogHome() + "/");
         }
-    }
-
-
-    /**
-     * Return a filename appropriate for the blog entry content
-     *
-     * @param content Blog entry content
-     * @return Filename for the new blog entry
-     */
-    protected String getBlogEntryFilename(String content, String extension) {
-        String hashable = content;
-
-        if (content.length() > MAX_HASHABLE_LENGTH) {
-            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-        }
-
-        String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
-        String filename = baseFilename + extension;
-        return filename;
     }
 }
 
