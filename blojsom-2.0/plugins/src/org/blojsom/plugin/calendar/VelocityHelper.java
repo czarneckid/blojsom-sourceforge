@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.6 2004-01-13 02:10:04 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.7 2004-11-08 04:01:46 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -78,6 +78,16 @@ public class VelocityHelper {
      */
     public void setCalendar(BlogCalendar calendar) {
         _calendar = calendar;
+    }
+
+    /**
+     * Retrieve the {@link BlogCalendar} object used to construct this object
+     *
+     * @return {@link BlogCalendar}
+     * @since blojsom 2.21
+     */
+    public BlogCalendar getBlogCalendar() {
+        return _calendar;
     }
 
     /**
