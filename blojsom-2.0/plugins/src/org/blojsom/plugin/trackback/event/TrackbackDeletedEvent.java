@@ -34,44 +34,29 @@
  */
 package org.blojsom.plugin.trackback.event;
 
-import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.Trackback;
-import org.blojsom.plugin.admin.event.BlogEntryEvent;
+import org.blojsom.blog.BlogUser;
 
 import java.util.Date;
 
 /**
- * Trackback Event indicates an event dealing with a {@link Trackback}.
+ * Trackback Deleted Event indicates an event where a {@link Trackback} has been deleted from the system.
  *
  * @author David Czarnecki
- * @version $Id: TrackbackEvent.java,v 1.2 2005-01-30 19:28:27 czarneckid Exp $
+ * @version $Id: TrackbackDeletedEvent.java,v 1.1 2005-01-30 19:28:27 czarneckid Exp $
  * @since blojsom 2.23
  */
-public class TrackbackEvent extends BlogEntryEvent {
-
-    protected Trackback _trackback;
+public class TrackbackDeletedEvent extends TrackbackEvent {
 
     /**
-     * Create a new event indicating something happened with a {@link Trackback} in the system.
+     * Create a new event indicating a {@link Trackback} has been deleted from the system.
      *
-     * @param source    Source of the event
+     * @param source Source of the event
      * @param timestamp Event timestamp
      * @param trackback {@link Trackback}
-     * @param blogUser  {@link org.blojsom.blog.BlogUser}
+     * @param blogUser {@link BlogUser}
      */
-    public TrackbackEvent(Object source, Date timestamp, Trackback trackback, BlogUser blogUser) {
-        super(source, timestamp, trackback.getBlogEntry(), blogUser);
-
-        _trackback = trackback;
+    public TrackbackDeletedEvent(Object source, Date timestamp, Trackback trackback, BlogUser blogUser) {
+        super(source, timestamp, trackback, blogUser);
     }
-
-    /**
-     * Retrieve the {@link Trackback} associated with the event
-     *
-     * @return {@link Trackback}
-     */
-    public Trackback getTrackback() {
-        return _trackback;
-    }
-
 }

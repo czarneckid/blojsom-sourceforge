@@ -40,16 +40,16 @@ import org.blojsom.blog.BlogUser;
 import java.util.Date;
 
 /**
- * Trackback Added Event indicates an event where a trackback has been added to a blog entry.
+ * Trackback Added Event indicates an event where a {@link Trackback} has been added to the system.
  *
  * @author David Czarnecki
- * @version $Id: TrackbackAddedEvent.java,v 1.1 2005-01-30 19:04:21 czarneckid Exp $
+ * @version $Id: TrackbackAddedEvent.java,v 1.2 2005-01-30 19:28:27 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class TrackbackAddedEvent extends TrackbackEvent {
 
     /**
-     * Create a new event indicating a trackback has been added to the system.
+     * Create a new event indicating a {@link Trackback} has been added to the system.
      *
      * @param source Source of the event
      * @param timestamp Event timestamp
