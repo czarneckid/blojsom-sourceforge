@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-#adminPageHeader("Update Blog Category")
+#adminPageHeader("#adminResource('update.blog.category.page.header' 'Update Blog Category')")
 
     <div id="sideBar">
-        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> console.
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
     </div>
 
         <!-- Update blog category form -->
         <div id="mainClm">
-            <h2>Update an existing blog category</h2>
+            <h2>#adminResource('update.existing.category.text' 'Update an existing blog category')</h2>
             <table>
                 <form name="update-blog-category" action="." method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="update-blog-category"/>
@@ -16,18 +16,18 @@
                     <input type="hidden" name="plugins" value="edit-blog-categories"/>
                     <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME"/>
                     <tr>
-                        <td>Category name</td>
+                        <td>#adminResource('category.name.text' 'Category name')</td>
                         <td><input type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME" disabled="true"/></td>
                     </tr>
                     <tr>
-                        <td>Category meta-data</td>
+                        <td>#adminResource('category.metadata.text' 'Category meta-data')</td>
                         <td><textarea rows="10" cols="80" name="blog-category-meta-data">$!BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA</textarea></td>
                     </tr>
 
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="submit" value="Update category"/>
-                            <input type="reset" name="reset" value="Reset"/>
+                            <input type="submit" name="submit" value="U#adminResource('update.category.text' 'Update category')"/>
+                            <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                         </td>
                     </tr>
                 </form>
