@@ -64,6 +64,11 @@
                         <td>Indicates the language code for this blog. This parameter is used when generating RSS feeds for your blog</td>
                     </tr>
                     <tr>
+                        <td>blog-country</td>
+                        <td>US</td>
+                        <td>Indicates the country code for this blog</td>
+                    </tr>
+                    <tr>
                         <td>blog-name</td>
                         <td></td>
                         <td>The name of your blog</td>
@@ -153,6 +158,14 @@
                         <td>The directory where blog comments will be written to under the blog category directories. This directory is automatically added to the list of directories that get filtered</td>
                     </tr>
                     <tr>
+                        <td>blog-trackbacks-enabled</td>
+                        <td></td>
+                        <td>Indicates whether or not trackbacks are enabled on this blog. Can be either
+                            <em>true</em> or
+                            <em>false</em>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>blog-trackbacks-directory</td>
                         <td>.trackbacks</td>
                         <td>The directory where blog trackbacks will be written to under the blog category directories. This directory is automatically added to the list of directories that get filtered</td>
@@ -195,8 +208,6 @@
                         </td>
                         <td>File extension used by the XML-RPC extension when writing entries to disk</td>
                     </tr>
-
-
                 </table>
                 <p>
                     4. Start your application server. On startup, blojsom will log messages to the console to
