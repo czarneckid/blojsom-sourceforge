@@ -55,7 +55,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.31 2003-06-21 00:20:35 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.32 2003-06-21 15:00:47 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants, BlojsomXMLRPCConstants {
 
@@ -519,6 +519,69 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
     }
 
     /**
+     * Get a particular post for a blojsom category
+     *
+     * @since blojsom 1.9.3
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @throws XmlRpcException If the user was not authenticated correctly
+     * @return Post to the blog
+     */
+    public Object getPost(String appkey, String blogid, String userid, String password) throws Exception {
+        _logger.debug("getPost() Called ===========[ SUPPORTED ]=====");
+        _logger.debug("     Appkey: " + appkey);
+        _logger.debug("     BlogId: " + blogid);
+        _logger.debug("     UserId: " + userid);
+        _logger.debug("   Password: " + password);
+
+        if (_blog.checkAuthorization(userid, password)) {
+
+            String category;
+            String permalink;
+            String match = "?" + PERMALINK_PARAM + "=";
+
+            int pos = blogid.indexOf(match);
+            if (pos != -1) {
+                category = blogid.substring(0, pos);
+                category = BlojsomUtils.normalize(category);
+                permalink = blogid.substring(pos + match.length());
+
+                Map fetchMap = new HashMap();
+                BlogCategory blogCategory = _fetcher.newBlogCategory();
+                blogCategory.setCategory(category);
+                blogCategory.setCategoryURL(_blog.getBlogURL() + category);
+                fetchMap.put(FETCHER_CATEGORY, blogCategory);
+                fetchMap.put(FETCHER_PERMALINK, permalink);
+                BlogEntry[] _entries = _fetcher.fetchEntries(fetchMap);
+
+                if (_entries != null && _entries.length > 0) {
+                    BlogEntry entry = _entries[0];
+                    Hashtable entrystruct = new Hashtable();
+                    entrystruct.put(MEMBER_POSTID, entry.getId());
+                    entrystruct.put(MEMBER_BLOGID, entry.getCategory());
+                    entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
+                    entrystruct.put(MEMBER_URL, entry.getEscapedLink());
+                    entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
+                    entrystruct.put(MEMBER_DATECREATED, entry.getDate());
+                    entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
+                    entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
+
+                    return entrystruct;
+                } else {
+                    throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+                }
+            } else {
+                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+            }
+        } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
+
+    /**
      * Get a list of recent posts for a blojsom category
      *
      * @param appkey Unique identifier/passcode of the application sending the post
@@ -600,8 +663,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler implements Bloj
         File blogCategory = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
         if (blogCategory.exists() && blogCategory.isDirectory()) {
             return blogCategory;
-        }
-        else{
+        } else {
             return new File(_blog.getBlogHome() + "/");
         }
     }
