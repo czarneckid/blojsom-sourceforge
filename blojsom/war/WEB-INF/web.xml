@@ -85,7 +85,6 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 
-
     <servlet-mapping>
         <servlet-name>blojsom</servlet-name>
         <url-pattern>/blog/*</url-pattern>
