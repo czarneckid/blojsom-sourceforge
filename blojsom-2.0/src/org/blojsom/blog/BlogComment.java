@@ -34,13 +34,15 @@
  */
 package org.blojsom.blog;
 
+import org.blojsom.util.BlojsomUtils;
+
 import java.util.Date;
 
 /**
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.3 2004-01-11 04:04:13 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.4 2004-02-22 17:44:01 intabulas Exp $
  */
 public class BlogComment {
 
@@ -137,6 +139,16 @@ public class BlogComment {
      */
     public Date getCommentDate() {
         return _commentDate;
+    }
+
+    /**
+     * Return an ISO 8601 style date
+     * http://www.w3.org/TR/NOTE-datetime
+     *
+     * @return Date formatted in ISO 8601 format
+     */
+    public String getISO8601Date() {
+        return BlojsomUtils.getISO8601Date(_commentDate);
     }
 
     /**
