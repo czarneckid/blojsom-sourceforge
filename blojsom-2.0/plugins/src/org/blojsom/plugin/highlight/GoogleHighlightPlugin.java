@@ -51,11 +51,11 @@ import java.util.regex.Pattern;
 /**
  * The GoogleHighlightPlugin will highlight words on your blog if the referer came from a Google
  * query.
- *
+ * <p/>
  * Based on work from http://www.textism.com/
  *
  * @author Mark Lussier
- * @version $Id: GoogleHighlightPlugin.java,v 1.3 2004-01-11 04:01:04 czarneckid Exp $
+ * @version $Id: GoogleHighlightPlugin.java,v 1.4 2004-04-05 21:19:25 czarneckid Exp $
  */
 public class GoogleHighlightPlugin implements BlojsomPlugin {
 
@@ -99,7 +99,7 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
@@ -111,11 +111,11 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
      * Extract search tokens from the Google Query String
      *
      * @param referer The Google referer
-     * @return A string array of search words
+     * @return A string array of search words or <code>null</code> if no search query match is found
      */
     private String[] extractQueryTokens(String referer) {
         String[] result = null;
-        Matcher matcher = Pattern.compile(GOOGLE_QUERY).matcher(referer);
+        Matcher matcher = Pattern.compile(GOOGLE_QUERY, Pattern.CASE_INSENSITIVE).matcher(referer);
         if (matcher.find()) {
             String _query = matcher.group(1);
             _query = _query.replaceAll(GOOGLE_CLEANQUOTES, "");
@@ -134,11 +134,11 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -152,23 +152,25 @@ public class GoogleHighlightPlugin implements BlojsomPlugin {
         if (referer != null && referer.matches(EXPRESSSION_GOOGLE)) {
             String[] searchwords = extractQueryTokens(referer);
 
-            Pattern hasTags = Pattern.compile(EXPRESSION_HASTAGS);
+            if (searchwords != null) {
+                Pattern hasTags = Pattern.compile(EXPRESSION_HASTAGS);
 
-            for (int x = 0; x < entries.length; x++) {
-                BlogEntry entry = entries[x];
-                Matcher matcher = hasTags.matcher(entry.getDescription());
-                boolean isHtml = matcher.find();
-                for (int y = 0; y < searchwords.length; y++) {
-                    String word = searchwords[y];
-                    if (!isHtml) {
-                        entry.setDescription(entry.getDescription().replaceAll(START_BOUNDRY + word + END_BOUNDRY,
-                                                                               HIGHLIGHT_PLAINTEXT));
-                    } else {
-                        entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + START_BOUNDRY
-                                                                               + word + END_BOUNDRY,
-                                                                               HIGHLIGHT_HTML));
+                for (int x = 0; x < entries.length; x++) {
+                    BlogEntry entry = entries[x];
+                    Matcher matcher = hasTags.matcher(entry.getDescription());
+                    boolean isHtml = matcher.find();
+                    for (int y = 0; y < searchwords.length; y++) {
+                        String word = searchwords[y];
+                        if (!isHtml) {
+                            entry.setDescription(entry.getDescription().replaceAll(START_BOUNDRY + word + END_BOUNDRY,
+                                    HIGHLIGHT_PLAINTEXT));
+                        } else {
+                            entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + START_BOUNDRY
+                                    + word + END_BOUNDRY,
+                                    HIGHLIGHT_HTML));
+                        }
+
                     }
-
                 }
             }
         }
