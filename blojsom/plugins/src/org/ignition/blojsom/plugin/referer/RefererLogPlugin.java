@@ -60,7 +60,7 @@ import java.util.*;
  * init-param in <i>web.xml</i>. If no file is setup, it will dump it to the log as a backup
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.8 2003-04-01 02:10:34 intabulas Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.9 2003-04-04 01:50:27 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -85,7 +85,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private static final String REFERER_LOG_HEADER = "blojsom referer log";
 
     /**
-     *
+     * Hit counter key
      */
     public static final String HITCOUNTER_KEY  = ".hitcounter";
 
@@ -113,7 +113,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * Logger instance
      */
     private Log _logger = LogFactory.getLog(RefererLogPlugin.class);
-
 
     private Map _referergroups;
     private int _referermaxlength = 40;
@@ -172,7 +171,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
         }
 
         loadRefererLog(_refererlog);
-
     }
 
     /**
@@ -238,7 +236,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      *
      * @param refererlog Fully qualified path to the refer log file
      */
-    protected void loadRefererLog(String refererlog) {
+    private void loadRefererLog(String refererlog) {
 
         File _refererfile = new File(refererlog);
 
@@ -282,10 +280,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
             }
         }
     }
-
-
-    // flavor.lasthit.count=url
-
 
     /**
      * Called when BlojsomServlet is taken out of service
@@ -333,7 +327,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
      * @param rfcdate String in yyyy-MM-dd format
      * @return the Date
      */
-    public static Date getDateFromReferer(String rfcdate) {
+    private static Date getDateFromReferer(String rfcdate) {
         Date result = null;
         SimpleDateFormat sdf = new SimpleDateFormat(REFERER_DATE_FORMAT);
         try {

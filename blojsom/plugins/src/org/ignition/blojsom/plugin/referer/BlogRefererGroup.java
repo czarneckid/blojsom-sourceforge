@@ -45,7 +45,7 @@ import java.util.Set;
  * This plugin manages either a flavor based hitcounter or a group of referers
  *
  * @author Mark Lussier
- * @version $Id: BlogRefererGroup.java,v 1.5 2003-04-01 01:54:19 intabulas Exp $
+ * @version $Id: BlogRefererGroup.java,v 1.6 2003-04-04 01:50:27 czarneckid Exp $
  */
 public class BlogRefererGroup {
 
@@ -81,7 +81,6 @@ public class BlogRefererGroup {
         }
 
         _grouptotal += 1;
-
     }
 
     /**
@@ -107,7 +106,6 @@ public class BlogRefererGroup {
             _lasthit = date;
         }
         _grouptotal += count;
-
     }
 
     /**
@@ -128,7 +126,6 @@ public class BlogRefererGroup {
         }
 
         _grouptotal += total;
-
     }
 
     /**
@@ -186,6 +183,4 @@ public class BlogRefererGroup {
     public Date getLastReferralDate() {
         return _lasthit;
     }
-
-
 }
