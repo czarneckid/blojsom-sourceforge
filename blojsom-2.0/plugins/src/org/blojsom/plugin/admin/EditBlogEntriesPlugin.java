@@ -36,13 +36,14 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xmlrpc.AsyncCallback;
-import org.apache.xmlrpc.XmlRpcClient;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -51,16 +52,22 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.*;
-import java.net.*;
-import java.text.SimpleDateFormat;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.27 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.28 2004-08-30 14:59:39 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -70,8 +77,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     // XML-RPC constants
     public static final String BLOG_XMLRPC_ENTRY_EXTENSION_IP = "blog-xmlrpc-entry-extension";
 
-    private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
-    private static final int MAXIMUM_FILENAME_LENGTH = 32;
+    private static final int MAXIMUM_FILENAME_LENGTH = 64;
 
     /**
      * Default file extension for blog entries written via XML-RPC
@@ -108,7 +114,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
     private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
     private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
-    private static final String BLOG_PING_URLS = "blog-ping-urls";
     private static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
 
     private BlojsomFetcher _fetcher;
@@ -254,7 +259,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
-            String blogPingURLs = BlojsomUtils.getRequestValue(BLOG_PING_URLS, httpServletRequest);
 
             _logger.debug("Blog entry id: " + blogEntryId);
 
@@ -298,15 +302,12 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     StringBuffer entryLink = new StringBuffer();
                     entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entryToUpdate.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entryToUpdate.getPermalink()).append("\">").append(entryToUpdate.getTitle()).append("</a>");
                     addOperationResultMessage(context, "Updated blog entry: " + entryLink.toString());
+                    UpdatedBlogEntryEvent updateEvent = new UpdatedBlogEntryEvent(this, new Date(), entryToUpdate, user);
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(updateEvent);
 
                     // Send trackback pings
                     if (!BlojsomUtils.checkNullOrBlank(blogTrackbackURLs)) {
                         sendTrackbackPings(blog, entryToUpdate, blogTrackbackURLs);
-                    }
-
-                    // Send update pings to the ping URLs
-                    if (!BlojsomUtils.checkNullOrBlank(blogPingURLs)) {
-                        sendBlogPings(blog, blogPingURLs);
                     }
 
                     httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
@@ -349,6 +350,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     String title = entries[0].getTitle();
                     entries[0].delete(user);
                     addOperationResultMessage(context, "Deleted blog entry: " + title);
+                    DeletedBlogEntryEvent deleteEvent = new DeletedBlogEntryEvent(this, new Date(), entries[0], user);
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(deleteEvent);
                 } else {
                     _logger.debug("No entries found in category: " + blogCategoryName);
                 }
@@ -388,7 +391,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
-            String blogPingURLs = BlojsomUtils.getRequestValue(BLOG_PING_URLS, httpServletRequest);
             String proposedBlogFilename = BlojsomUtils.getRequestValue(BLOG_ENTRY_PROPOSED_NAME, httpServletRequest);
 
             BlogCategory category;
@@ -443,7 +445,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
                     proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
                 }
-                
+
                 proposedBlogFilename = BlojsomUtils.normalize(proposedBlogFilename);
                 proposedBlogFilename += blogEntryExtension;
                 filename = proposedBlogFilename;
@@ -464,6 +466,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 entry.setLink(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getCategory()) + "?" + PERMALINK_PARAM + "=" + entry.getPermalink());
                 entryLink.append("<a href=\"").append(entry.getLink()).append("\">").append(entry.getTitle()).append("</a>");
                 addOperationResultMessage(context, "Added blog entry: " + entryLink.toString());
+                AddBlogEntryEvent addEvent = new AddBlogEntryEvent(this, new Date(), entry, user);
+                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(addEvent);
             } catch (BlojsomException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to add blog entry to category: " + blogCategoryName);
@@ -472,11 +476,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             // Send trackback pings
             if (!BlojsomUtils.checkNullOrBlank(blogTrackbackURLs)) {
                 sendTrackbackPings(blog, entry, blogTrackbackURLs);
-            }
-
-            // Send update pings to the ping URLs
-            if (!BlojsomUtils.checkNullOrBlank(blogPingURLs)) {
-                sendBlogPings(blog, blogPingURLs);
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRY_ACTION);
@@ -619,34 +618,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * Send "pings" to a blog service such as weblogs.com
-     *
-     * @param blog Blog information
-     * @param blogPingURLs Ping URLs
-     */
-    private void sendBlogPings(Blog blog, String blogPingURLs) {
-        String[] pingURLs = BlojsomUtils.parseDelimitedList(blogPingURLs, WHITESPACE);
-        EditBlogEntriesPluginAsyncCallback editBlogEntriesPluginAsyncCallback = new EditBlogEntriesPluginAsyncCallback();
-        Vector params = new Vector();
-        params.add(blog.getBlogName());
-        params.add(blog.getBlogURL());
-
-        if (pingURLs != null && pingURLs.length > 0) {
-            for (int i = 0; i < pingURLs.length; i++) {
-                String pingURL = pingURLs[i].trim();
-
-                _logger.debug("Sending ping to: " + pingURL);
-                try {
-                    XmlRpcClient xmlRpcClient = new XmlRpcClient(pingURL);
-                    xmlRpcClient.executeAsync(WEBLOGS_PING_METHOD, params, editBlogEntriesPluginAsyncCallback);
-                } catch (MalformedURLException e) {
-                    _logger.error(e);
-                }
-            }
-        }
-    }
-
-    /**
      * Return a filename appropriate for the blog entry content
      *
      * @param content            Blog entry content
@@ -663,39 +634,5 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
         String filename = baseFilename + blogEntryExtension;
         return filename;
-    }
-
-    /**
-     * Asynchronous callback handler for the weblogs.com ping
-     */
-    private class EditBlogEntriesPluginAsyncCallback implements AsyncCallback {
-
-        /**
-         * Default constructor
-         */
-        public EditBlogEntriesPluginAsyncCallback() {
-        }
-
-        /**
-         * Call went ok, handle result.
-         *
-         * @param o   Return object
-         * @param url URL
-         * @param s   String
-         */
-        public void handleResult(Object o, URL url, String s) {
-            _logger.debug(o.toString());
-        }
-
-        /**
-         * Something went wrong, handle error.
-         *
-         * @param e   Exception containing error from XML-RPC call
-         * @param url URL
-         * @param s   String
-         */
-        public void handleError(Exception e, URL url, String s) {
-            _logger.error(e);
-        }
     }
 }
