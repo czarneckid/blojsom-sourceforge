@@ -41,7 +41,10 @@ import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -52,7 +55,7 @@ import java.util.Properties;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.2 2004-12-08 19:45:16 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.3 2005-01-04 17:55:45 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogPluginUtils {
@@ -247,5 +250,42 @@ public class MoblogPluginUtils {
         }
 
         return mailbox;
+    }
+
+    /**
+     * Save a file to disk
+     *
+     * @param filename Base filename
+     * @param extension File extension
+     * @param input Input from which to read and write a file
+     * @return # of bytes written to disk
+     * @throws IOException If there is an error writing the file
+     */
+    public static int saveFile(String filename, String extension, InputStream input) throws IOException {
+        int count = 0;
+        if (filename == null) {
+            filename = File.createTempFile("xx", ".out").getName();
+        }
+
+        // Do not overwrite existing file
+        File file = new File(filename + extension);
+        for (int i = 0; file.exists(); i++) {
+            file = new File(filename + i + extension);
+        }
+        FileOutputStream fos = new FileOutputStream(file);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+        BufferedInputStream bis = new BufferedInputStream(input);
+        int aByte;
+        while ((aByte = bis.read()) != -1) {
+            bos.write(aByte);
+            count++;
+        }
+
+        bos.flush();
+        bos.close();
+        bis.close();
+
+        return count;
     }
 }

@@ -71,7 +71,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.22 2004-12-08 19:44:49 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.23 2005-01-04 17:55:44 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
@@ -106,7 +106,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
     /**
      * Default store
      */
-    private static final String POP3_STORE = "pop3";
+    private static final String DEFAULT_MESSAGE_STORE = "pop3";
 
     /**
      * Default poll time (10 minutes)
@@ -122,6 +122,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
      * Moblog configuration parameter for mailbox polling time (5 minutes)
      */
     public static final String PLUGIN_MOBLOG_POLL_TIME = "plugin-moblog-poll-time";
+
+    /**
+     * Moblog configuration parameter for message store provider
+     */
+    public static final String PLUGIN_MOBLOG_STORE_PROVIDER = "plugin-moblog-store-provider";
 
     /**
      * Default moblog authorization properties file which lists valid e-mail addresses who can moblog entries
@@ -185,11 +190,12 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
 
     private int _pollTime;
 
-    private Session _popSession;
+    private Session _storeSession;
     private boolean _finished = false;
     private MailboxChecker _checker;
     private ServletConfig _servletConfig;
     private BlojsomConfiguration _blojsomConfiguration;
+    private String _storeProvider;
 
     private BlojsomFetcher _fetcher;
 
@@ -240,6 +246,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
             }
         }
 
+        _storeProvider = servletConfig.getInitParameter(PLUGIN_MOBLOG_STORE_PROVIDER);
+        if (BlojsomUtils.checkNullOrBlank(_storeProvider)) {
+            _storeProvider = DEFAULT_MESSAGE_STORE;
+        }
+
         _servletConfig = servletConfig;
         _blojsomConfiguration = blojsomConfiguration;
         _checker = new MailboxChecker();
@@ -250,7 +261,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
             if (hostname.startsWith("java:comp/env")) {
                 try {
                     Context context = new InitialContext();
-                    _popSession = (Session) context.lookup(hostname);
+                    _storeSession = (Session) context.lookup(hostname);
                 } catch (NamingException e) {
                     _logger.error(e);
                     throw new BlojsomPluginException(e);
@@ -262,9 +273,9 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                 Properties props = new Properties();
                 props.put(SESSION_NAME, hostname);
                 if (BlojsomUtils.checkNullOrBlank(username) || BlojsomUtils.checkNullOrBlank(password)) {
-                    _popSession = Session.getInstance(props, null);
+                    _storeSession = Session.getInstance(props, null);
                 } else {
-                    _popSession = Session.getInstance(props, new SimpleAuthenticator(username, password));
+                    _storeSession = Session.getInstance(props, new SimpleAuthenticator(username, password));
                 }
             }
         }
@@ -340,7 +351,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
             Store store = null;
             String subject = null;
             try {
-                store = _popSession.getStore(POP3_STORE);
+                store = _storeSession.getStore(_storeProvider);
                 store.connect(mailbox.getHostName(), mailbox.getUserId(), mailbox.getPassword());
 
                 // -- Try to get hold of the default folder --
@@ -475,10 +486,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
 
                                         if (imageMimeTypes.containsKey(type)) {
                                             _logger.debug("Creating image of type: " + type);
-                                            InputStream is = bp.getInputStream();
-                                            byte[] imageFile = new byte[is.available()];
-                                            is.read(imageFile, 0, is.available());
-                                            is.close();
                                             String outputFilename =
                                                     BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
                                             String extension = BlojsomUtils.getFileExtension(bp.getFileName());
@@ -488,10 +495,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
 
                                             _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
                                                     outputFilename + "." + extension);
-                                            FileOutputStream fos = new
-                                                    FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
-                                            fos.write(imageFile);
-                                            fos.close();
+                                            MoblogPluginUtils.saveFile(mailbox.getOutputDirectory() + File.separator + outputFilename, "." + extension, bp.getInputStream());
                                             String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
                                             entry.append("<p /><img src=\"").append(baseurl).
                                                     append(mailbox.getUrlPrefix()).
@@ -500,10 +504,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                                     append("\" />");
                                         } else if (attachmentMimeTypes.containsKey(type)) {
                                             _logger.debug("Creating attachment of type: " + type);
-                                            InputStream is = bp.getInputStream();
-                                            byte[] attachmentFile = new byte[is.available()];
-                                            is.read(attachmentFile, 0, is.available());
-                                            is.close();
                                             String outputFilename =
                                                     BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
                                             String extension = BlojsomUtils.getFileExtension(bp.getFileName());
@@ -513,10 +513,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
 
                                             _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
                                                     outputFilename + "." + extension);
-                                            FileOutputStream fos = new
-                                                    FileOutputStream(new File(mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension));
-                                            fos.write(attachmentFile);
-                                            fos.close();
+                                            MoblogPluginUtils.saveFile(mailbox.getOutputDirectory() + File.separator + outputFilename, "." + extension, bp.getInputStream());
                                             String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
                                             entry.append("<p /><a href=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\">").append(bp.getFileName()).append("</a>");
                                         } else if (textMimeTypes.containsKey(type)) {
