@@ -54,7 +54,7 @@ import java.util.Map;
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.12 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.13 2004-07-30 03:12:22 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -167,7 +167,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 br.close();
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE, blogTemplate);
-                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE, template.toString());
+                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE, BlojsomUtils.escapeString(template.toString()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
             } catch (UnsupportedEncodingException e) {
                 _logger.error(e);
