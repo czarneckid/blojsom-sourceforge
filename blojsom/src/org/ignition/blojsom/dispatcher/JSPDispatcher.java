@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import java.util.Map;
 import java.util.Iterator;
 import java.io.IOException;
@@ -45,11 +46,12 @@ import java.io.IOException;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.4 2003-03-05 04:08:46 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.5 2003-03-13 02:49:41 czarneckid Exp $
  */
 public class JSPDispatcher implements GenericDispatcher {
 
     private Log _logger = LogFactory.getLog(JSPDispatcher.class);
+    private ServletContext _context;
 
     /**
      * Create a new JSPDispatcher
@@ -64,6 +66,7 @@ public class JSPDispatcher implements GenericDispatcher {
      */
     public void init(ServletConfig servletConfig) {
         _logger.debug("Initialized JSP dispatcher");
+        _context = servletConfig.getServletContext();
     }
 
     /**
@@ -88,9 +91,10 @@ public class JSPDispatcher implements GenericDispatcher {
             flavorTemplate = "/" + flavorTemplate;
         }
 
+        String flavorTemplateForPage = null;
         if (httpServletRequest.getParameter(PAGE_PARAM) != null) {
-            flavorTemplate = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
-            _logger.debug("Retrieved template for page: " + flavorTemplate);
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, httpServletRequest.getParameter(PAGE_PARAM));
+            _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 
         // Populate the request with context attributes from the blog
@@ -101,6 +105,15 @@ public class JSPDispatcher implements GenericDispatcher {
         }
 
         // Dispatch to the proper JSP
+        if (flavorTemplateForPage != null) {
+            if (_context.getResource(flavorTemplateForPage) != null) {
+                httpServletRequest.getRequestDispatcher(flavorTemplateForPage).forward(httpServletRequest, httpServletResponse);
+                return;
+            } else {
+                _logger.debug("No resource found for flavor template: " + flavorTemplateForPage);
+            }
+        }
+
         httpServletRequest.getRequestDispatcher(flavorTemplate).forward(httpServletRequest, httpServletResponse);
     }
 }
