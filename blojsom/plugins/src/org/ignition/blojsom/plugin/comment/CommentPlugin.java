@@ -51,12 +51,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.List;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.40 2003-08-04 15:06:35 intabulas Exp $
+ * @version $Id: CommentPlugin.java,v 1.41 2003-08-09 17:00:10 intabulas Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -359,7 +360,7 @@ public class CommentPlugin extends IPBanningPlugin {
                 httpServletRequest.getSession().setAttribute(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
                 if (_comment != null) {
-                    ArrayList blogComments = entries[0].getComments();
+                    List blogComments = entries[0].getComments();
                     if (blogComments == null) {
                         blogComments = new ArrayList(1);
                     }

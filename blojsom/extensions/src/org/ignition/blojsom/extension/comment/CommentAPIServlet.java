@@ -77,7 +77,7 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.7 2003-05-15 00:47:54 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.8 2003-08-09 16:55:16 intabulas Exp $
  */
 public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
 
@@ -241,7 +241,7 @@ public class CommentAPIServlet extends HttpServlet implements BlojsomConstants {
                     commentEmail = emailaddress.getAddress();
                     commentAuthor = emailaddress.getPersonal();
                 } catch (AddressException e) {
-                    // eat the exception since it's expected
+                    _logger.error(e);
                 }
             } else {
                 commentAuthor = "";

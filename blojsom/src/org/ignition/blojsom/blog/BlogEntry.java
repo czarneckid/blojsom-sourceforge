@@ -44,12 +44,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.List;
 
 /**
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.41 2003-08-09 16:53:01 intabulas Exp $
+ * @version $Id: BlogEntry.java,v 1.42 2003-08-09 17:00:01 intabulas Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants {
 
@@ -61,8 +62,8 @@ public abstract class BlogEntry implements BlojsomConstants {
     protected String _category;
     protected Date _entryDate;
     protected long _lastModified;
-    protected ArrayList _comments;
-    protected ArrayList _trackbacks;
+    protected List _comments;
+    protected List _trackbacks;
     protected BlogCategory _blogCategory;
     protected Map _metaData;
 
@@ -282,19 +283,19 @@ public abstract class BlogEntry implements BlojsomConstants {
     /**
      * Get the comments
      *
-     * @return ArrayList of comments
+     * @return List of comments
      */
-    public ArrayList getComments() {
+    public List getComments() {
         return _comments;
     }
 
     /**
-     * Set the comments for this blog entry. The comments must be an <code>ArrayList</code>
+     * Set the comments for this blog entry. The comments must be an <code>List</code>
      * of {@link BlogComment}. This method will not writeback or change the comments
      *
      * @param comments Comments for this entry
      */
-    public void setComments(ArrayList comments) {
+    public void setComments(List comments) {
         _comments = comments;
     }
 
@@ -327,19 +328,19 @@ public abstract class BlogEntry implements BlojsomConstants {
     /**
      * Get the trackbacks
      *
-     * @return ArrayList of trackbacks
+     * @return List of trackbacks
      */
-    public ArrayList getTrackbacks() {
+    public List getTrackbacks() {
         return _trackbacks;
     }
 
     /**
-     * Set the trackbacks for this blog entry. The trackbacks must be an <code>ArrayList</code>
+     * Set the trackbacks for this blog entry. The trackbacks must be an <code>List</code>
      * of {@link Trackback}. This method will not writeback or change the trackbacks
      *
      * @param trackbacks Trackbacks for this entry
      */
-    public void setTrackbacks(ArrayList trackbacks) {
+    public void setTrackbacks(List trackbacks) {
         _trackbacks = trackbacks;
     }
 

@@ -39,105 +39,105 @@ package org.ignition.blojsom.extension.atomapi;
  *
  * @author Mark Lussier
  * @since blojsom 1.9.5
- * @version $Id: AtomConstants.java,v 1.2 2003-07-20 20:51:02 czarneckid Exp $
+ * @version $Id: AtomConstants.java,v 1.3 2003-08-09 16:55:24 intabulas Exp $
  */
 public interface AtomConstants {
 
     /**
      * Author Element Tag Name
      */
-    public static final String ELEMENT_AUTHOR = "author";
+    static final String ELEMENT_AUTHOR = "author";
 
     /**
      * Name Element Tag Name
      */
-    public static final String ELEMENT_NAME = "name";
+    static final String ELEMENT_NAME = "name";
 
     /**
      * Homepage  Element Tag Name
      */
-    public static final String ELEMENT_HOMEPAGE = "homepage";
+    static final String ELEMENT_HOMEPAGE = "homepage";
 
     /**
      * WebLog Element Tag Name
      */
-    public static final String ELEMENT_WEBLOG = "weblog";
+    static final String ELEMENT_WEBLOG = "weblog";
 
     /**
      * Title Element Tag Name
      */
-    public static final String ELEMENT_TITLE = "title";
+    static final String ELEMENT_TITLE = "title";
 
     /**
      * SubTitle Element Tag Name
      */
-    public static final String ELEMENT_SUBTITLE = "subtitle";
+    static final String ELEMENT_SUBTITLE = "subtitle";
 
     /**
      * Summary Element Tag Name
      */
-    public static final String ELEMENT_SUMMARY = "summary";
+    static final String ELEMENT_SUMMARY = "summary";
 
     /**
      * Issued Element Tag Name
      */
-    public static final String ELEMENT_ISSUED = "issued";
+     static final String ELEMENT_ISSUED = "issued";
 
     /**
      * Created Element Tag Name
      */
-    public static final String ELEMENT_CREATED = "created";
+    static final String ELEMENT_CREATED = "created";
 
     /**
      * Modified Element Tag Name
      */
-    public static final String ELEMENT_MODIFIED = "modified";
+    static final String ELEMENT_MODIFIED = "modified";
 
     /**
      * Link Element Tag Name
      */
-    public static final String ELEMENT_LINK = "link";
+    static final String ELEMENT_LINK = "link";
 
     /**
      * Id Element Tag Name
      */
-    public static final String ELEMENT_ID = "id";
+    static final String ELEMENT_ID = "id";
 
     /**
      * Content Element Tag Name
      */
-    public static final String ELEMENT_CONTENT = "content";
+    static final String ELEMENT_CONTENT = "content";
 
     /**
      * Atom Date Format
      */
-    public static final String ATOM_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    static final String ATOM_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
      * Header Value prefix for Basic Relm Auth.. NOTE: THE TRAILING SLASH IS INTENDED!
      */
-    public static final String BASE64_AUTH_PREFIX = "Basic ";
+    static final String BASE64_AUTH_PREFIX = "Basic ";
 
     /**
      * Authentication Relm
      */
-    public static final String AUTHENTICATION_RELM = "basic realm=\"blojsom\"";
+    static final String AUTHENTICATION_RELM = "basic realm=\"blojsom\"";
 
 
     /**
      * Resonse Header for Authentication Challenge
      */
-    public static final String HEADER_AUTHCHALLENGE = "WWW-Authenticate";
+    static final String HEADER_AUTHCHALLENGE = "WWW-Authenticate";
 
     /**
      * Resonse Header for Path
      */
-    public static final String HEADER_LOCATION = "Location";
+    static final String HEADER_LOCATION = "Location";
 
     /**
      * Inbound Request Header with Authentication Credentials
      */
-    public static final String HEADER_AUTHORIZATION = "Authorization";
+    static final String HEADER_AUTHORIZATION = "Authorization";
 
 
 }

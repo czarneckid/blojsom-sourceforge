@@ -38,14 +38,14 @@ package org.ignition.blojsom.extension.xmlrpc;
  * BlojsomXMLRPCConstants
  *
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCConstants.java,v 1.1 2003-05-22 03:06:56 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCConstants.java,v 1.2 2003-08-09 16:55:07 intabulas Exp $
  */
 public interface BlojsomXMLRPCConstants {
 
     /**
      * Default file extension for blog entries written via XML-RPC
      */
-    public static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
+    static final String DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION = ".txt";
 
     static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";

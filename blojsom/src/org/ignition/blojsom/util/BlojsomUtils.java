@@ -51,7 +51,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.61 2003-08-09 16:54:34 intabulas Exp $
+ * @version $Id: BlojsomUtils.java,v 1.62 2003-08-09 17:03:53 intabulas Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -769,7 +769,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param length Length to convery
      * @return A Hex String representing the byte array
      */
-    public static String toHexString(byte[] buf, int offset, int length) {
+    private static String toHexString(byte[] buf, int offset, int length) {
         byte[] buf1 = new byte[length << 1];
         for (int i = 0; i < length; i++) {
             toHexValue(buf1, i << 1, 2, buf[i + offset]);

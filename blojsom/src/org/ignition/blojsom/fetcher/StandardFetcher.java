@@ -45,17 +45,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * StandardFetcher
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: StandardFetcher.java,v 1.27 2003-08-04 15:37:03 intabulas Exp $
+ * @version $Id: StandardFetcher.java,v 1.28 2003-08-09 17:01:14 intabulas Exp $
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
@@ -295,7 +292,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         if (blogCategories == null) {
             return new BlogEntry[0];
         } else {
-            ArrayList blogEntries = new ArrayList();
+            List blogEntries = new ArrayList();
             for (int i = 0; i < blogCategories.length; i++) {
                 BlogCategory blogCategory = blogCategories[i];
                 BlogEntry[] entriesForCategory = getEntriesForCategory(blogCategory, -1);
@@ -451,7 +448,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @param blogDirectory Directory in which the current iteration is running
      * @param categoryList Dynamic list of categories that gets added to as it explores directories
      */
-    protected void recursiveCategoryBuilder(int blogDepth, int blogDirectoryDepth, String blogDirectory, ArrayList categoryList) {
+    protected void recursiveCategoryBuilder(int blogDepth, int blogDirectoryDepth, String blogDirectory, List categoryList) {
         blogDepth++;
         if (blogDirectoryDepth != INFINITE_BLOG_DEPTH) {
             if (blogDepth == blogDirectoryDepth) {
@@ -497,7 +494,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * @return List of BlogCategory objects
      */
     protected BlogCategory[] getBlogCategories(int blogDirectoryDepth) {
-        ArrayList categoryList = new ArrayList();
+        List categoryList = new ArrayList();
         recursiveCategoryBuilder(-1, blogDirectoryDepth, _blog.getBlogHome(), categoryList);
         return (BlogCategory[]) (categoryList.toArray(new BlogCategory[categoryList.size()]));
     }
@@ -520,8 +517,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
         StringTokenizer slashTokenizer = new StringTokenizer(currentCategory.getCategory(), "/");
         String previousCategoryName = "/";
-        ArrayList categoryList = new ArrayList();
-        ArrayList sanitizedCategoryList = new ArrayList();
+        List categoryList = new ArrayList();
+        List sanitizedCategoryList = new ArrayList();
         BlogCategory category;
         FileBackedBlogCategory fileBackedCategory;
 

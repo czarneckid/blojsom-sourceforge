@@ -48,7 +48,7 @@ import java.util.Properties;
  * BlogCategory
  *
  * @author David Czarnecki
- * @version $Id: BlogCategory.java,v 1.18 2003-08-09 16:53:22 intabulas Exp $
+ * @version $Id: BlogCategory.java,v 1.19 2003-08-09 17:03:45 intabulas Exp $
  */
 public abstract class BlogCategory implements Comparable {
 
@@ -72,7 +72,7 @@ public abstract class BlogCategory implements Comparable {
      * @param category Category name
      * @param categoryURL Category URL
      */
-    public BlogCategory(String category, String categoryURL) {
+    protected BlogCategory(String category, String categoryURL) {
         _category = category;
         _categoryURL = categoryURL;
     }
