@@ -43,15 +43,15 @@
                         <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
                         <td><input type="text" size="50" name="blog-entry-title" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTitle()"/></td>
                     </tr>
+                    <tr>
+                        <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
+                        <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getDescription()</textarea></td>
+                    </tr>
                     <tr><td></td><td>
                         <div id="quicktags">
                         Quicktags: <script src="$BLOJSOM_BLOG.getBlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
                         <script language="JavaScript" type="text/javascript">edToolbar();</script>
                         </div></td>
-                    </tr>
-                    <tr>
-                        <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
-                        <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getDescription()</textarea></td>
                     </tr>
                     <script type="text/javascript" language="JavaScript">
                         <!--
