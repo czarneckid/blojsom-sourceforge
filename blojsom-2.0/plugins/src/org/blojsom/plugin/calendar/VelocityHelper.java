@@ -42,7 +42,7 @@ import java.util.Calendar;
  * VelocityHelper is a class used to help render a visual calendar using the VTL.
  * 
  * @author Mark Lussier
- * @version $Id: VelocityHelper.java,v 1.7 2004-11-08 04:01:46 czarneckid Exp $
+ * @version $Id: VelocityHelper.java,v 1.8 2004-11-11 19:26:18 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -94,7 +94,7 @@ public class VelocityHelper {
      * Builds the visual calendar model
      */
     public void buildCalendar() {
-        int fdow = _calendar.getFirstDayOfMonth() - 1;
+        int fdow = _calendar.getFirstDayOfMonth() - _calendar.getCalendar().getFirstDayOfWeek();
         int ldom = _calendar.getDaysInMonth();
         int dowoffset = 0;
         for (int x = 0; x < 6; x++) {
