@@ -49,12 +49,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Date;
 import java.util.Map;
+import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.9 2004-01-18 18:05:13 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.10 2004-02-06 02:28:45 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -67,6 +69,16 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * Initialization parameter for e-mail prefix
      */
     private static final String TRACKBACK_PREFIX_IP = "plugin-trackback-email-prefix";
+
+    /**
+     * Initialization parameter for the throttling of trackbacks from IP addresses
+     */
+    private static final String TRACKBACK_THROTTLE_MINUTES_IP = "plugin-trackback-throttle";
+
+    /**
+     * Default throttle value for trackbacks from a particular IP address
+     */
+    private static final int TRACKBACK_THROTTLE_DEFAULT_MINUTES = 5;
 
     /**
      * Request parameter to indicate a trackback "tb"
@@ -121,6 +133,8 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      */
     private static final String TRACKBACK_FAILURE_PAGE = "/trackback-failure";
 
+    private Map _ipAddressTrackbackTimes;
+
     private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
 
     /**
@@ -132,21 +146,24 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
+
+        _ipAddressTrackbackTimes = new HashMap(10);
     }
 
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -216,7 +233,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
 
         if (category.startsWith("/" + user.getId() + "/")) {
             category = BlojsomUtils.getCategoryFromPath(category);
-        }        
+        }
 
         String url = httpServletRequest.getParameter(TRACKBACK_URL_PARAM);
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
@@ -232,7 +249,41 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
                 context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
                 context.put(BLOJSOM_TRACKBACK_MESSAGE, "No url parameter for trackback. url must be specified.");
                 httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_FAILURE_PAGE);
+
                 return entries;
+            }
+
+            // Check for trackback throttling
+            String commentThrottleValue = blog.getBlogProperty(TRACKBACK_THROTTLE_MINUTES_IP);
+            if (!BlojsomUtils.checkNullOrBlank(commentThrottleValue)) {
+                int commentThrottleMinutes;
+
+                try {
+                    commentThrottleMinutes = Integer.parseInt(commentThrottleValue);
+                } catch (NumberFormatException e) {
+                    commentThrottleMinutes = TRACKBACK_THROTTLE_DEFAULT_MINUTES;
+                }
+                _logger.debug("Comment throttling enabled at: " + commentThrottleMinutes + " minutes");
+
+                remoteIPAddress = httpServletRequest.getRemoteAddr();
+                if (_ipAddressTrackbackTimes.containsKey(remoteIPAddress)) {
+                    Calendar currentTime = Calendar.getInstance();
+                    Calendar timeOfLastComment = (Calendar) _ipAddressTrackbackTimes.get(remoteIPAddress);
+                    long timeDifference = currentTime.getTimeInMillis() - timeOfLastComment.getTimeInMillis();
+
+                    long differenceInMinutes = timeDifference / (60 * 1000);
+                    if (differenceInMinutes < commentThrottleMinutes) {
+                        _logger.debug("Comment throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + commentThrottleMinutes + " minutes");
+
+                        return entries;
+                    } else {
+                        _logger.debug("Comment throttle enabled. Resetting date of last comment to current time");
+                        _ipAddressTrackbackTimes.put(remoteIPAddress, currentTime);
+                    }
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    _ipAddressTrackbackTimes.put(remoteIPAddress, calendar);
+                }
             }
 
             url = url.trim();
@@ -288,17 +339,17 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     /**
      * Add a trackback to the permalink entry
      *
-     * @param category Category where the permalink exists
+     * @param category  Category where the permalink exists
      * @param permalink Permalink
-     * @param title Trackback title
-     * @param excerpt Excerpt for the trackback (not more than 255 characters in length)
-     * @param url URL for the trackback
-     * @param blogName Name of the blog making the trackback
+     * @param title     Trackback title
+     * @param excerpt   Excerpt for the trackback (not more than 255 characters in length)
+     * @param url       URL for the trackback
+     * @param blogName  Name of the blog making the trackback
      */
     private Integer addTrackback(Map context, String category, String permalink, String title,
-                                              String excerpt, String url, String blogName,
-                                              String[] blogFileExtensions, String blogHome,
-                                              String blogTrackbackDirectory, String blogFileEncoding) {
+                                 String excerpt, String url, String blogName,
+                                 String[] blogFileExtensions, String blogHome,
+                                 String blogTrackbackDirectory, String blogFileEncoding) {
         Trackback trackback = new Trackback();
         excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
         trackback.setTitle(title);
@@ -365,17 +416,17 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * Send Trackback Email to Blog Author
      *
      * @param entryTitle Blog Entry title for this Trackback
-     * @param title title of trackback entry
-     * @param category catagory for trackbacked entry
-     * @param permalink permalink for trackbacked entry
-     * @param url URL of site tracking back
-     * @param excerpt excerpt of trackback post
-     * @param blogName Title of trackbacking blog
-     * @param context Context
+     * @param title      title of trackback entry
+     * @param category   catagory for trackbacked entry
+     * @param permalink  permalink for trackbacked entry
+     * @param url        URL of site tracking back
+     * @param excerpt    excerpt of trackback post
+     * @param blogName   Title of trackbacking blog
+     * @param context    Context
      */
     private void sendTrackbackEmail(String entryTitle, String title, String category, String permalink, String url,
-                                                 String excerpt, String blogName, Map context,
-                                                 String blogUrlPrefix, String emailPrefix) {
+                                    String excerpt, String blogName, Map context,
+                                    String blogUrlPrefix, String emailPrefix) {
 
         StringBuffer _trackback = new StringBuffer();
         _trackback.append("Trackback on: ").append(blogUrlPrefix).append(BlojsomUtils.removeInitialSlash(category));
