@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.9 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.10 2004-07-31 20:33:58 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -125,9 +125,11 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
             _blogHomeBaseDirectory = configurationProperties.getProperty(BLOG_HOME_BASE_DIRECTORY_IP);
             if (BlojsomUtils.checkNullOrBlank(_blogHomeBaseDirectory)) {
-                throw new BlojsomPluginException("No blog base home directory specified.");
+                _blogHomeBaseDirectory = _blojsomConfiguration.getGlobalBlogHome();
+                if (BlojsomUtils.checkNullOrBlank(_blogHomeBaseDirectory)) {
+                    throw new BlojsomPluginException("No blog base home directory specified.");
+                }
             }
-            _blogHomeBaseDirectory = BlojsomUtils.checkStartingAndEndingSlash(_blogHomeBaseDirectory);
 
             String administratorProperty = configurationProperties.getProperty(ADMINISTRATORS_IP);
             String[] administrators = BlojsomUtils.parseCommaList(administratorProperty);
@@ -207,11 +209,13 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
 
             if (BlojsomUtils.checkNullOrBlank(blogUserID)) { // Check that we got a blog user ID
+                addOperationResultMessage(context, "No blog ID specified for adding a blog");
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                 return entries;
             } else if (blogUsers.containsKey(blogUserID)) { // Check that the user does not already exist
                 _logger.debug("User: " + blogUserID + " already exists");
+                addOperationResultMessage(context, "Blog ID: " + blogUserID + " already exists");
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                 return entries;
@@ -224,6 +228,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogUserDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID);
                 if (blogUserDirectory.exists()) { // Make sure that the blog user ID does not conflict with a directory underneath the installation directory
                     _logger.debug("User directory already exists for blog user: " + blogUserID);
+                    addOperationResultMessage(context, "User directory already exists for blog ID: " + blogUserID);
                     httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                     return entries;
@@ -236,6 +241,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                     // Check for the blog and blog base URLs
                     if (BlojsomUtils.checkNullOrBlank(blogURL) || BlojsomUtils.checkNullOrBlank(blogBaseURL)) {
                         _logger.debug("No blog URL or base URL supplied");
+                        addOperationResultMessage(context, "No blog URL or base URL supplied");
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                         return entries;
@@ -251,24 +257,39 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                     // Check to see that the password and password check are equal
                     if (!blogUserPassword.equals(blogUserPasswordCheck)) {
                         _logger.debug("User password does not equal password check");
+                        addOperationResultMessage(context, "User password does not equal user password check");
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                         return entries;
                     } else { // And if they do, copy the bootstrap directory and initialize the user
-                        File bootstrapDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + _bootstrapDirectory);
-                        File newUserDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID);
+                        String bootstrap = _blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + _bootstrapDirectory + "/";
+                        _logger.debug("Bootstrap directory: " + bootstrap);
+                        File bootstrapDirectory = new File(bootstrap);
+                        String userDirectory = _blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + "/";
+                        _logger.debug("User directory: " + userDirectory);
+                        File newUserDirectory = new File(userDirectory);
 
                         _logger.debug("Copying bootstrap directory: " + bootstrapDirectory.toString() + " to target user directory: " + newUserDirectory.toString());
                         try {
                             BlojsomUtils.copyDirectory(bootstrapDirectory, newUserDirectory);
                         } catch (IOException e) {
+                            addOperationResultMessage(context, "Unable to copy bootstrap directory. Check log files for error");
                             _logger.error(e);
+
+                            return entries;
                         }
 
                         try {
                             // Configure blog
                             Properties blogProperties = BlojsomUtils.loadProperties(_servletConfig, _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + '/' + BLOG_DEFAULT_PROPERTIES);
                             blogProperties.put(BLOG_HOME_IP, _blogHomeBaseDirectory + blogUserID);
+                            File blogHomeDirectory = new File(_blogHomeBaseDirectory + blogUserID);
+                            if (!blogHomeDirectory.mkdirs()) {
+                                _logger.error("Unable to create blog home directory: " + blogHomeDirectory.toString());
+                                addOperationResultMessage(context, "Unable to create blog home directory for blog ID: " + blogUserID);
+
+                                return entries;
+                            }
                             blogProperties.put(BLOG_BASE_URL_IP, blogBaseURL);
                             blogProperties.put(BLOG_URL_IP, blogURL);
 
@@ -344,6 +365,8 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                         _blojsomConfiguration.getBlogUsers().put(blogUserID, blogUser);
                         writeBlojsomConfiguration();
                         _logger.debug("Wrote new blojsom configuration after adding new user: " + blogUserID);
+
+                        addOperationResultMessage(context, "Added new blog: " + blogUserID);
                     }
                 }
             }
@@ -364,11 +387,13 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         }
 
         Properties configurationProperties = new BlojsomProperties();
+
         configurationProperties.put(BLOJSOM_USERS_IP, users.toString());
         configurationProperties.put(BLOJSOM_FETCHER_IP, _blojsomConfiguration.getFetcherClass());
         configurationProperties.put(BLOJSOM_DEFAULT_USER_IP, _blojsomConfiguration.getDefaultUser());
         configurationProperties.put(BLOJSOM_INSTALLATION_DIRECTORY_IP, _blojsomConfiguration.getInstallationDirectory());
         configurationProperties.put(BLOJSOM_CONFIGURATION_BASE_DIRECTORY_IP, _blojsomConfiguration.getBaseConfigurationDirectory());
+        configurationProperties.put(BLOJSOM_BLOG_HOME_IP, _blojsomConfiguration.getGlobalBlogHome());        
 
         try {
             FileOutputStream fos = new FileOutputStream(blojsomConfigurationFile);
