@@ -76,7 +76,7 @@ import java.util.Properties;
  * be found at http://backend.userland.com/rss
  *
  * @author Mark Lussier
- * @version $Id: CommentAPIServlet.java,v 1.2 2003-08-13 02:06:41 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.3 2003-11-29 16:19:21 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -318,7 +318,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      * @param userComment The comment
      * @param blog Users blog
      */
-    private synchronized void sendCommentEmail(String title, String category, String permalink, String author,
+    private void sendCommentEmail(String title, String category, String permalink, String author,
                                                String authorEmail, String authorURL, String userComment, Blog blog) {
 
         String url = blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category);

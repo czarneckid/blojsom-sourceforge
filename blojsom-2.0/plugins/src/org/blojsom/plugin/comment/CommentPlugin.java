@@ -57,7 +57,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.4 2003-10-15 01:22:08 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.5 2003-11-29 16:20:12 czarneckid Exp $
  */
 public class CommentPlugin extends IPBanningPlugin {
 
@@ -386,7 +386,7 @@ public class CommentPlugin extends IPBanningPlugin {
      * @param userComment Comment
      * @param context Context
      */
-    private synchronized void sendCommentEmail(String title, String category, String permalink, String author,
+    private void sendCommentEmail(String title, String category, String permalink, String author,
                                                String authorEmail, String authorURL, String userComment, Map context,
                                                String blogURLPrefix, String emailPrefix) {
         String url = blogURLPrefix + BlojsomUtils.removeInitialSlash(category);
@@ -407,7 +407,7 @@ public class CommentPlugin extends IPBanningPlugin {
      * @param userComment Comment
      * @return BlogComment Entry
      */
-    private synchronized BlogComment addBlogComment(String category, String permalink, String author,
+    private BlogComment addBlogComment(String category, String permalink, String author,
                                                     String authorEmail, String authorURL, String userComment,
                                                     boolean blogCommentsEnabled, String[] blogFileExtensions,
                                                     String blogHome, String blogCommentsDirectory,

@@ -55,7 +55,7 @@ import java.util.Map;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.1 2003-08-09 20:36:23 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.2 2003-11-29 16:20:11 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -154,7 +154,7 @@ public class EmailUtils {
      * @param emailmessage EmailMessage Instance
      * @param defaultaddress InternetAddress Instance of Recipient/Sender
      */
-    public static synchronized void sendMailMessage(Session mailsession, EmailMessage emailmessage, InternetAddress defaultaddress) {
+    public static void sendMailMessage(Session mailsession, EmailMessage emailmessage, InternetAddress defaultaddress) {
         try {
             MimeMessage message = new MimeMessage(mailsession);
             InternetAddress _msgto;

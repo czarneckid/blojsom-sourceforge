@@ -54,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.5 2003-09-19 03:10:38 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.6 2003-11-29 16:20:11 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -294,7 +294,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * @param url URL for the trackback
      * @param blogName Name of the blog making the trackback
      */
-    private synchronized Integer addTrackback(Map context, String category, String permalink, String title,
+    private Integer addTrackback(Map context, String category, String permalink, String title,
                                               String excerpt, String url, String blogName,
                                               String[] blogFileExtensions, String blogHome,
                                               String blogTrackbackDirectory, String blogFileEncoding) {
@@ -372,7 +372,7 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
      * @param blogName Title of trackbacking blog
      * @param context Context
      */
-    private synchronized void sendTrackbackEmail(String entryTitle, String title, String category, String permalink, String url,
+    private void sendTrackbackEmail(String entryTitle, String title, String category, String permalink, String url,
                                                  String excerpt, String blogName, Map context,
                                                  String blogUrlPrefix, String emailPrefix) {
 
