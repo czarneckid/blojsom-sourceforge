@@ -55,7 +55,7 @@ import java.util.Properties;
  * EmoticonsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EmoticonsPlugin.java,v 1.5 2004-08-10 01:21:21 czarneckid Exp $
+ * @version $Id: EmoticonsPlugin.java,v 1.6 2004-09-23 15:17:24 czarneckid Exp $
  */
 public class EmoticonsPlugin implements BlojsomPlugin {
 
@@ -113,6 +113,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
     private static final String IMG_CLOSE = "\"";
     private static final String IMG_ALT_START = " alt=\"";
     private static final String IMG_ALT_END = "\" />";
+    private static final String EMOTICONS_CLASS = " class=\"emoticons\" ";
 
     private Log _logger = LogFactory.getLog(EmoticonsPlugin.class);
 
@@ -238,6 +239,7 @@ public class EmoticonsPlugin implements BlojsomPlugin {
             imageReference.append(url);
             imageReference.append(emoticonImage);
             imageReference.append(IMG_CLOSE);
+            imageReference.append(EMOTICONS_CLASS);
             imageReference.append(IMG_ALT_START);
             imageReference.append(emoticonImage);
             imageReference.append(IMG_ALT_END);
