@@ -17,6 +17,10 @@
                 Added <tt>supportsTrackbacks</tt> method to <tt>BlogEntry</tt>.
             </action>
 
+            <action dev="czarneckid" type="update" context="Core">
+                Preserved timestamp metadata on loading blog entries even if the original file timestamp has changed.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugins">
                 Removed <tt>synchronized</tt> methods from Comment and Trackback plugins.
             </action>
