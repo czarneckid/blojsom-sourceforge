@@ -52,26 +52,26 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.3 2003-09-10 18:23:35 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.4 2003-09-10 19:15:27 intabulas Exp $
  */
 public class AtomUtils {
 
     public static String generateNextNonce() {
         //@todo create algorithm format
-        return BlojsomUtils.digestString( "Blah", "SHA");
+        return BlojsomUtils.digestString("Blah", "SHA");
 
     }
 
 
     public static Entry fromBlogEntry(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
-        result.setTitle(BlojsomUtils.escapeString(blogentry.getTitle()));
-        result.setSummary(BlojsomUtils.escapeString(blogentry.getTitle()));
+        result.setTitle(blogentry.getEscapedTitle());
+        result.setSummary(blogentry.getEscapedTitle());
         result.setCreated(blogentry.getDate());
         result.setIssued(blogentry.getDate());
         result.setModified(new Date(blogentry.getLastModified()));
-        result.setId(blogentry.getLink());
-        result.setLink(blogentry.getLink());
+        result.setId(blogentry.getEscapedLink());
+        result.setLink(blogentry.getEscapedLink());
         Author author = new AuthorImpl();
         author.setName(blog.getBlogOwner());
         author.setEmail(blog.getBlogOwnerEmail());
@@ -88,12 +88,11 @@ public class AtomUtils {
 
     public static Entry fromBlogEntrySearch(Blog blog, BlogUser user, BlogEntry blogentry) {
         Entry result = new EntryImpl();
-        result.setTitle(blogentry.getTitle());
+        result.setTitle(blogentry.getEscapedTitle());
         result.setId(blog.getBlogBaseURL() + "/atomapi/" + user.getId() + "/?permalink=" + blogentry.getPermalink());
         return result;
 
     }
-
 
 
 }
