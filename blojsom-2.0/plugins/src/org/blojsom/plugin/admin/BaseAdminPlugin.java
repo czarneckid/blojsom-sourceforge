@@ -36,15 +36,14 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.*;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
+import org.blojsom.authorization.AuthorizationProvider;
+import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +56,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.9 2004-02-17 04:28:02 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.10 2004-06-03 01:22:53 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants {
 
@@ -81,6 +80,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected static final String PAGE_ACTION = "page";
 
     protected BlojsomConfiguration _blojsomConfiguration;
+    protected AuthorizationProvider _authorizationProvider;
 
     /**
      * Default constructor.
@@ -97,6 +97,20 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         _blojsomConfiguration = blojsomConfiguration;
+
+        try {
+            Class authorizationProviderClass = Class.forName(_blojsomConfiguration.getAuthorizationProvider());
+            _authorizationProvider = (AuthorizationProvider) authorizationProviderClass.newInstance();
+            _authorizationProvider.init(servletConfig, blojsomConfiguration);
+        } catch (ClassNotFoundException e) {
+            throw new BlojsomPluginException(e);
+        } catch (InstantiationException e) {
+            throw new BlojsomPluginException(e);
+        } catch (IllegalAccessException e) {
+            throw new BlojsomPluginException(e);
+        } catch (BlojsomConfigurationException e) {
+            throw new BlojsomPluginException(e);
+        }
     }
 
     /**
@@ -105,10 +119,11 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      * @param httpServletRequest Request
      * @param httpServletResponse Response
      * @param context Context
-     * @param blog Blog information
+     * @param blogUser User information
      * @return <code>true</code> if the user is authenticated, <code>false</code> otherwise
      */
-    protected boolean authenticateUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, Blog blog) {
+    protected boolean authenticateUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, BlogUser blogUser) {
+        Blog blog = blogUser.getBlog();
         BlojsomUtils.setNoCacheControlHeaders(httpServletResponse);
         HttpSession httpSession = httpServletRequest.getSession();
 
@@ -129,12 +144,14 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
             }
 
             // Check the username and password against the blog authorization
-            if (blog.checkAuthorization(username, password)) {
+            try {
+                _authorizationProvider.loadAuthenticationCredentials(blogUser);
+                _authorizationProvider.authorize(blogUser, null, username, password);
                 httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
                 httpSession.setAttribute(blog.getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
                 _logger.debug("Passed authentication for username: " + username);
                 return true;
-            } else {
+            } catch (BlojsomException e) {
                 _logger.debug("Failed authentication for username: " + username);
                 addOperationResultMessage(context, "Failed authentication for username: " + username);
                 return false;
@@ -166,7 +183,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user.getBlog())) {
+        if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
         } else {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
