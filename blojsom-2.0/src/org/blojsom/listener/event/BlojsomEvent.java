@@ -34,12 +34,43 @@
  */
 package org.blojsom.listener.event;
 
+import java.util.Date;
+
 /**
  * BlojsomEvent
  *
  * @author David Czarnecki
  * @since blojsom 2.18
- * @version $Id: BlojsomEvent.java,v 1.1 2004-08-26 01:57:45 czarneckid Exp $
+ * @version $Id: BlojsomEvent.java,v 1.2 2004-08-30 04:25:30 czarneckid Exp $
  */
-public interface BlojsomEvent {
+public class BlojsomEvent {
+
+    protected Object _source;
+    protected Date _timestamp;
+
+    /**
+     *
+     * @param source
+     * @param timestamp
+     */
+    public BlojsomEvent(Object source, Date timestamp) {
+        _source = source;
+        _timestamp = timestamp;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Object getSource() {
+        return _source;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Date getTimestamp() {
+        return _timestamp;
+    }
 }
