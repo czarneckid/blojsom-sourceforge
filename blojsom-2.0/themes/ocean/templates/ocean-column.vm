@@ -50,23 +50,10 @@
 								</div>
 
 								<div id="links">
-
 									<div>
 										<h5>About:</h5>
 										<p><a href="mailto:$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())" title="Click here to contact the author of this blog" class="rounded"><span>$BLOJSOM_BLOG.getBlogOwner()</span></a></p>
 									</div>
-
-                                                          #if ($BLOJSOM_WEATHER_INFORMATION)
-                                                                        <div>
-                                                                                <h5>Weather:</h5>
-<p><span>$BLOJSOM_WEATHER_INFORMATION.getLocation()</span></p>
-<p>Temperature: &nbsp;<span>$BLOJSOM_WEATHER_INFORMATION.getFahrenheit() / $BLOJSOM_WEATHER_INFORMATION.getCelcius()</span></p>
-<p>Visibility: &nbsp;<span>$BLOJSOM_WEATHER_INFORMATION.getVisibility()</span></p>
-<p>Wind: &nbsp;<span>$BLOJSOM_WEATHER_INFORMATION.getWind()</span></p>
-<p><a href="$BLOJSOM_WEATHER_INFORMATION.getHistoryUrl()" class="rounded" title="Detailed Weather History"><span>Detailed Weather History</span></a></p>
-
-                                                                         </div>
-                                                                        #end
 
 									<div>
 										<h5>Categories:</h5>
@@ -100,6 +87,7 @@
 										</ul>
 									</div>
 									#end
+
 									<div>
 										<h5>Syndication:</h5>
 										<p><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf" title="Click here to view the XML feed of this blog" class="rounded"><span>XML</span></a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2" title="Click here to view the RSS feed of this blog" class="rounded"><span>RSS</span></a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom" title="Click here to view the Atom feed of this blog" class="rounded"><span>ATOM</span></a></p>
@@ -110,5 +98,4 @@
 									</div>
 
 								</div>
-
 

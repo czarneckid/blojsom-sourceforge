@@ -28,7 +28,7 @@
 											#end
 
 											<div class="comment">
-												<div class="info">Left by <span class="author">#if($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0)<a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthor()</a>#else$entryComment.getAuthor()#end</span> at $entryComment.getDateAsFormat("EEE, d MMM h:mm a")</div>
+												<div class="info">Left by <span class="author">#if($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0)<a href="$entryComment.getAuthorURL()">$entryComment.getAuthor()</a>#else$entryComment.getAuthor()#end</span> at $entryComment.getDateAsFormat("EEE, d MMM h:mm a")</div>
 												<p class="post">$entryComment.getComment()</p>
 											</div>
 											#set( $totalComments = $totalComments + 1)

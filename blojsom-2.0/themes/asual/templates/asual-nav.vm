@@ -1,5 +1,0 @@
-
-					<h2><a href="#BlogURL()">Blog</a>#if($BLOJSOM_REQUESTED_CATEGORY.toString() != "/")<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()">$BLOJSOM_REQUESTED_CATEGORY.toString()</a>#end</h2>
-					<div id="nav">#NavigationLinks('Main')</div>
-
-					<div id="clear"></div>

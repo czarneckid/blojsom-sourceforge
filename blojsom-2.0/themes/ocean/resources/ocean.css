@@ -26,7 +26,7 @@ a:hover {
 	text-align: left;
 }
 #header{
-	height: 62px;
+	height: 5em;
 }
 #name {
 	float: left; 
@@ -68,10 +68,6 @@ a:hover {
 }
 #searchimage {
 	vertical-align: middle;
-}
-.searchhighlight {
-    background-color:#FFFF00;
-    color: #000000;
 }
 #switcher {
 	width: 12em;
@@ -193,7 +189,7 @@ a:hover {
 	overflow: hidden;
 }
 #column {
-	font-size: 90%;
+	font-size: 92%;
 	width: 18em; 
 	float: right;
 	background: url(ocean-bodycenter.jpg);
@@ -326,7 +322,7 @@ div.entry h3 {
 }
 div.entry h4 {
 	font-size: 130%;
-	font-weight: bold;
+	font-weight: normal;
 	padding-bottom: .2em;
 	border-bottom: 1px solid #285090;
 }
