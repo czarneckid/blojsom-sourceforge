@@ -8,13 +8,14 @@ import java.io.FileFilter;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 
 /**
  * BlojsomUtils
  *
  * @author David Czarnecki
  */
-public class BlojsomUtils {
+public class BlojsomUtils implements BlojsomConstants {
 
     private BlojsomUtils() {
     }
@@ -55,6 +56,17 @@ public class BlojsomUtils {
                 return true;
             }
         };
+    }
+
+    /**
+     * Return a date in RFC 822 style
+     *
+     * @param date Date
+     * @return Date formatted as RFC 822
+     */
+    public static String getRFC822Date(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(RFC_822_DATE_FORMAT);
+        return sdf.format(date);
     }
 
     /**
