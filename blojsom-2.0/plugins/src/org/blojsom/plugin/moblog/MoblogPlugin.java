@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.16 2004-07-28 05:18:13 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.17 2004-08-31 13:16:02 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
@@ -229,6 +229,7 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants {
         _servletConfig = servletConfig;
         _blojsomConfiguration = blojsomConfiguration;
         _checker = new MailboxChecker();
+        _checker.setDaemon(true);
         _popSession = Session.getDefaultInstance(System.getProperties(), null);
         _checker.start();
 

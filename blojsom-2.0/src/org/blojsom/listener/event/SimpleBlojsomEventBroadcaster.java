@@ -51,7 +51,7 @@ import java.util.*;
  * removed at the same time an event is being broadcast.
  *
  * @author David Czarnecki
- * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.3 2004-08-30 14:53:02 czarneckid Exp $
+ * @version $Id: SimpleBlojsomEventBroadcaster.java,v 1.4 2004-08-31 13:16:02 czarneckid Exp $
  * @since blojsom 2.18
  */
 public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
@@ -127,6 +127,7 @@ public class SimpleBlojsomEventBroadcaster implements BlojsomEventBroadcaster {
      */
     public void broadcastEvent(BlojsomEvent event) {
         Thread eventBroadcaster = new Thread(new AsynchronousEventBroadcaster(event));
+        eventBroadcaster.setDaemon(true);
         eventBroadcaster.start();
     }
 

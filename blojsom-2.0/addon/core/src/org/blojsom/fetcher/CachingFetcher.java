@@ -52,7 +52,7 @@ import java.util.Properties;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.11 2004-07-30 03:38:06 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.12 2004-08-31 13:15:50 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -191,6 +191,7 @@ public class CachingFetcher extends StandardFetcher {
                     } else {
                         _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
                         Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth));
+                        allCategoriesFetcherThread.setDaemon(true);
                         allCategoriesFetcherThread.start();
 
                         _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
@@ -250,6 +251,7 @@ public class CachingFetcher extends StandardFetcher {
                     } else {
                         _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
                         Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth));
+                        allCategoriesFetcherThread.setDaemon(true);
                         allCategoriesFetcherThread.start();
 
                         _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
@@ -271,6 +273,7 @@ public class CachingFetcher extends StandardFetcher {
                     } else {
                         _cache.cancelUpdate(user.getId() + CATEGORY_KEY + category.getCategory());
                         Thread singleCategoryFetcherThread = new Thread(new SingleCategoryFetcherThread(user, category));
+                        singleCategoryFetcherThread.setDaemon(true);
                         singleCategoryFetcherThread.start();
 
                         _logger.debug("Returning from single category fetcher thread for key: " + user.getId() + CATEGORY_KEY + category.getCategory());
