@@ -36,6 +36,7 @@ package org.blojsom.extension.atomapi;
 
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
+import org.blojsom.util.BlojsomUtils;
 import org.intabulas.sandler.elements.Author;
 import org.intabulas.sandler.elements.Content;
 import org.intabulas.sandler.elements.Entry;
@@ -50,9 +51,15 @@ import java.util.Date;
  *
  * @author Mark Lussier
  * @since blojsom 2.0
- * @version $Id: AtomUtils.java,v 1.1 2003-09-07 17:54:02 intabulas Exp $
+ * @version $Id: AtomUtils.java,v 1.2 2003-09-08 16:24:21 intabulas Exp $
  */
 public class AtomUtils {
+
+    public static String generateNextNonce() {
+        //@todo create algorithm format
+        return BlojsomUtils.digestString( "Blah", "SHA");
+
+    }
 
 
     public static Entry fromBlogEntry(Blog blog, BlogEntry blogentry) {
