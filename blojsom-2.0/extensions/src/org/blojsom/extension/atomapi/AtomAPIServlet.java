@@ -78,7 +78,7 @@ import java.util.Map;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.34 2004-05-11 00:33:11 intabulas Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.35 2004-05-11 04:50:48 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -327,9 +327,9 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
         try {
             result = Sandler.marshallFeed(feed);
         } catch (MarshallException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            _logger.error(e);
         } catch (SerializationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            _logger.error(e);
         }
 
         return result;
