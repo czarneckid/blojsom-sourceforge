@@ -8,6 +8,13 @@
 
     <changes>
 
+        <release version="2.05" date="In CVS">
+            <action dev="intabulas" type="add" context="Core">
+                Added "Pumpkin" theme based on <link href="http://www.cocoadevcentral.com">Cocoa Dev Central</link>
+            </action>
+        </release>
+        
+        
         <release version="2.04" date="November 11, 2003">
             <action dev="czarneckid" type="update" context="Core">
                 Blog entry timestamp is preserved when saving an entry if the blog-entry-metadata-timestamp meta-data
