@@ -496,4 +496,50 @@ public class Blog implements BlojsomConstants {
         recursiveCategoryBuilder(-1, _blogHome, categoryList);
         return (BlogCategory[]) (categoryList.toArray(new BlogCategory[categoryList.size()]));
     }
+
+    /**
+     * Return a list of categories up the category hierarchy from the current category. If
+     * the "/" category is requested, <code>null</code> is returned. Up the hierarchy, only
+     * the parent categories are returned. Down the hierarchy from the current category, all
+     * children are returned while obeying the <code>blog-directory-depth</code> parameter.
+     * @param currentCategory Current category in the blog category hierarchy
+     *
+     * @return List of blog categories or <code>null</code> if "/" category is requested or there
+     * are no sub-categories
+     */
+    public BlogCategory[] getBlogCategoryHierarchy(BlogCategory currentCategory) {
+        if (currentCategory.getCategory().equals("/")) {
+            return null;
+        }
+
+        StringTokenizer slashTokenizer = new StringTokenizer(currentCategory.getCategory(), "/");
+        String previousCategoryName = "/";
+        ArrayList categoryList = new ArrayList();
+        ArrayList sanitizedCategoryList = new ArrayList();
+        BlogCategory category;
+
+        while (slashTokenizer.hasMoreTokens()) {
+            previousCategoryName += slashTokenizer.nextToken() + "/";
+            if (!previousCategoryName.equals(currentCategory.getCategory())) {
+                category = new BlogCategory(previousCategoryName, _blogURL + BlojsomUtils.removeInitialSlash(previousCategoryName));
+                categoryList.add(category);
+            }
+        }
+
+        recursiveCategoryBuilder(-1, _blogHome + BlojsomUtils.removeInitialSlash(currentCategory.getCategory()), categoryList);
+        for (int i = 0; i < categoryList.size(); i++) {
+            category = (BlogCategory) categoryList.get(i);
+            if (!category.getCategory().equals(currentCategory.getCategory())) {
+                _logger.debug(category.getCategory());
+                sanitizedCategoryList.add(category);
+            }
+        }
+        sanitizedCategoryList.add(0, new BlogCategory("/", _blogURL));
+
+        if (sanitizedCategoryList.size() > 0) {
+            return (BlogCategory[]) sanitizedCategoryList.toArray(new BlogCategory[sanitizedCategoryList.size()]);
+        } else {
+            return null;
+        }
+    }
 }
