@@ -7,11 +7,11 @@
     </developers>
 
     <changes>
-        <release version="2.09" date="Available from CVS">
+        <release version="2.09" date="January 20, 2004">
             <action dev="czarneckid" type="update" context="Core">
                 Modified setting of link to correctly encode '/'.
             </action>
-            
+
             <action dev="czarneckid" type="update" context="Extension">
                 Updated MetaWeblog API handler to add other elements for the getPost() and getRecentPosts()
                 methods. blojsom should now work properly with clients such as
