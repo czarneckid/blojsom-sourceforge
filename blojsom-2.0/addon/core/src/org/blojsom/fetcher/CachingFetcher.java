@@ -37,6 +37,8 @@ package org.blojsom.fetcher;
 import org.blojsom.blog.*;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.BlojsomException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -51,10 +53,12 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.4 2004-01-11 03:56:30 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.5 2004-01-28 05:15:59 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
+
+    private Log _logger = LogFactory.getLog(CachingFetcher.class);
 
     /** Default refresh period for refreshing the cache (5 minutes) */
     private static final int DEFAULT_CACHE_REFRESH = 300;
