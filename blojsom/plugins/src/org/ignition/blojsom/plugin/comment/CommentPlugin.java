@@ -61,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.22 2003-03-30 23:30:40 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.23 2003-03-31 03:49:38 czarneckid Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -116,28 +116,24 @@ public class CommentPlugin implements BlojsomPlugin {
     private static final int COOKIE_EXPIRATION_AGE = 604800;
 
     /**
-     *
      * Key under which the indicator this plugin is "live" will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_ENABLED = "BLOJSOM_COMMENT_PLUGIN_ENABLED";
 
     /**
-     *
      * Key under which the author from the "remember me" cookie will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_AUTHOR = "BLOJSOM_COMMENT_PLUGIN_AUTHOR";
 
     /**
-     *
      * Key under which the author's e-mail from the "remember me" cookie will be placed
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL = "BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL";
 
     /**
-     *
      * Key under which the author's URL from the "remember me" cookie will be placed
      * (example: on the request for the JSPDispatcher)
      */
