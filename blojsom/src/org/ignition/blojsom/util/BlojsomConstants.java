@@ -40,7 +40,7 @@ package org.ignition.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.58 2003-05-15 00:44:53 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.59 2003-05-15 03:44:58 intabulas Exp $
  */
 public interface BlojsomConstants {
 
@@ -265,4 +265,5 @@ public interface BlojsomConstants {
     static final String BLOG_FETCHER_IP = "blog-fetcher";
     static final String BLOG_ENTRY_META_DATA_EXTENSION_IP = "blog-entry-meta-data-extension";
     static final String BLOG_FILE_ENCODING_IP = "blog-file-encoding";
+    static final String BLOG_BLACKLIST_FILE_IP = "blog-blacklist-file";
 }

@@ -52,12 +52,13 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Generic Referer Plugin
  *
  * @author Mark Lussier
- * @version $Id: RefererLogPlugin.java,v 1.15 2003-04-27 02:26:26 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.16 2003-05-15 03:44:58 intabulas Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -91,7 +92,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
     /**
      * Hit counter key
      */
-    private static final String HITCOUNTER_KEY  = ".hitcounter";
+    private static final String HITCOUNTER_KEY = ".hitcounter";
 
     /**
      * Format used to store last refer date for a given url
@@ -101,6 +102,16 @@ public class RefererLogPlugin implements BlojsomPlugin {
     private static final int FIELD_FLAVOR = 0;
     private static final int FIELD_DATE = 1;
     private static final int FIELD_COUNT = 2;
+
+    /**
+     * Line Comment
+     */
+    private static final String COMMENTED_LINE = "#";
+
+    /**
+     * Contains compiled blacklist filter patterns
+     */
+    private List _blacklistPatterns;
 
     /**
      * Fully qualified filename to write referers to
@@ -134,6 +145,59 @@ public class RefererLogPlugin implements BlojsomPlugin {
 
 
     /**
+     * Process the blojsom blacklist file to be able to filter referer's
+     *
+     * @param blacklistFile The blacklist file
+     */
+    private void populateBlacklistPatterns(File blacklistFile) {
+        _blacklistPatterns = new ArrayList(5);
+        if (blacklistFile.exists()) {
+
+            try {
+                _logger.info("Processing blacklist filter [" + blacklistFile.getAbsolutePath() + "]");
+                BufferedReader br = new BufferedReader(new FileReader(blacklistFile));
+                String regexp = null;
+                while (((regexp = br.readLine()) != null)) {
+                    if (!regexp.startsWith(COMMENTED_LINE) && !"".equals(regexp)) {
+                        _blacklistPatterns.add(Pattern.compile(regexp));
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                _logger.error(e);
+            }
+
+
+        }
+
+    }
+
+    /**
+     * Checks to see if a referer is blacklisted or not
+     *
+     * @param referer The referer to check
+     * @return A boolean indicating if this referer is blacklisted
+     */
+    private boolean isBlacklisted(String referer) {
+
+        boolean result = false;
+        int count = _blacklistPatterns.size();
+        if (referer != null && count > 0) {
+            for (int x = 0; x < count; x++) {
+                //@todo should this be a matches() ?
+                result = ((Pattern) _blacklistPatterns.get(x)).matcher(referer).find();
+                if (result) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+
+    }
+
+
+    /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
@@ -147,6 +211,14 @@ public class RefererLogPlugin implements BlojsomPlugin {
         _blogurlfilter = blog.getBlogURL();
 
         _hitcountflavors = new ArrayList(5);
+
+
+        String blacklistFilename = (String) blog.getBlogProperties().get(BlojsomConstants.BLOG_BLACKLIST_FILE_IP);
+
+        if (blacklistFilename != null && !"".equals(blacklistFilename)) {
+            populateBlacklistPatterns(new File(blacklistFilename));
+        }
+
 
         String refererConfiguration = servletConfig.getInitParameter(REFERER_CONFIG_IP);
         if (refererConfiguration == null || "".equals(refererConfiguration)) {
@@ -199,33 +271,37 @@ public class RefererLogPlugin implements BlojsomPlugin {
         String referer = httpServletRequest.getHeader(HEADER_REFERER);
         String flavor = httpServletRequest.getParameter(BlojsomConstants.FLAVOR_PARAM);
 
-        if (flavor == null) {
-            flavor = BlojsomConstants.DEFAULT_FLAVOR_HTML;
-        }
+        if (!isBlacklisted(referer)) {
 
-        if (_hitcountflavors.contains(flavor)) {
-            _logger.debug("[HitCounter] flavor=" + flavor + " - referer=" + referer);
-
-            BlogRefererGroup group;
-            if (_referergroups.containsKey(flavor)) {
-                group = (BlogRefererGroup) _referergroups.get(flavor);
-            } else {
-                group = new BlogRefererGroup(true);
+            if (flavor == null) {
+                flavor = BlojsomConstants.DEFAULT_FLAVOR_HTML;
             }
-            group.addHitCount(new Date(), 1);
-            _referergroups.put(flavor, group);
 
-        } else if ((referer != null) && (!referer.startsWith(_blogurlfilter))) {
-            _logger.debug("[Referer] flavor=" + flavor + " - referer=" + referer);
+            if (_hitcountflavors.contains(flavor)) {
+                _logger.debug("[HitCounter] flavor=" + flavor + " - referer=" + referer);
 
-            BlogRefererGroup group;
-            if (_referergroups.containsKey(flavor)) {
-                group = (BlogRefererGroup) _referergroups.get(flavor);
-            } else {
-                group = new BlogRefererGroup(_hitcountflavors.contains(flavor));
+                BlogRefererGroup group;
+                if (_referergroups.containsKey(flavor)) {
+                    group = (BlogRefererGroup) _referergroups.get(flavor);
+                } else {
+                    group = new BlogRefererGroup(true);
+                }
+                group.addHitCount(new Date(), 1);
+                _referergroups.put(flavor, group);
+
+            } else if ((referer != null) && (!referer.startsWith(_blogurlfilter))) {
+                _logger.debug("[Referer] flavor=" + flavor + " - referer=" + referer);
+
+                BlogRefererGroup group;
+                if (_referergroups.containsKey(flavor)) {
+                    group = (BlogRefererGroup) _referergroups.get(flavor);
+                } else {
+                    group = new BlogRefererGroup(_hitcountflavors.contains(flavor));
+                }
+                group.addReferer(flavor, referer, new Date());
+                _referergroups.put(flavor, group);
+
             }
-            group.addReferer(flavor, referer, new Date());
-            _referergroups.put(flavor, group);
 
         }
 
@@ -267,11 +343,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     String[] _details = BlojsomUtils.parseDelimitedList(_key, ".");
 
                     String _flavor = _details[FIELD_FLAVOR];
-                    String _url = (String)_refererproperties.get( _key);
-
-                    _logger.info("Loading [" + _url + "] " + "Flavor [" + _flavor + "] " + "Date ["
-                                  + _details[FIELD_DATE] + "] " + "Count [" + _details[FIELD_COUNT] + "]");
-
+                    String _url = (String) _refererproperties.get(_key);
                     BlogRefererGroup _group;
                     if (_referergroups.containsKey(_flavor)) {
                         _group = (BlogRefererGroup) _referergroups.get(_flavor);
@@ -300,7 +372,6 @@ public class RefererLogPlugin implements BlojsomPlugin {
      */
     public void destroy() throws BlojsomPluginException {
         // Writer referer cache out to disk
-        _logger.info("Writing referer list to " + _refererlog);
 
         Properties _refererproperties = new Properties();
 
@@ -317,8 +388,8 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     String flavorkey = (String) _flavoriterator.next();
                     BlogReferer referer = (BlogReferer) group.get(flavorkey);
 
-                    _refererproperties.put(groupflavor +"." + getRefererDate(referer.getLastReferral()) + "." + referer.getCount(),
-                                           referer.getUrl());
+                    _refererproperties.put(groupflavor + "." + getRefererDate(referer.getLastReferral()) + "." + referer.getCount(),
+                            referer.getUrl());
                 }
             }
         }

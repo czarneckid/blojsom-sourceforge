@@ -1,0 +1,42 @@
+##
+# blojsom blacklist filter list
+# =============================
+#
+# each line is a seperate regular expression that can be used by various parts of
+# blojsom (plugins, extensions, etc) to filter any kind of content
+##
+
+##
+# Bad Kitty, No Kitty
+##
+^http:\\/\\/?127*
+^http:\\/\\/.*extremetracking.*
+^http:\\/\\/wizard.yellowbrick.oz*
+^http:\\/\\/www?\\.?cgifactory.*
+^http:\\/\\/www?\\.?syndic8.*
+^http:\\/\\/.*technorati.*
+^http:\\/\\/.*openproxies.*
+^http:\\/\\/.*salesdex.com.*
+^http:\\/\\/.*fallendomains.*
+^http:\\/\\/root:*
+^http:\\/\\/.*phplabs.*
+^http:\\/\\/.*ranchero.*
+^http:\\/\\/.*disobey.*
+
+##
+# These, while java site, mainly aggregate links or newsgroups
+##
+^http:\\/\\/.*javablogs.*
+^http:\\/\\/.*javacrawl.*
+^http:\\/\\/.*javahispano.*
+
+##
+# WebMail Links (Hotmail, Yahoo Email)
+##
+^http:\\/\\/?216.33.240.250*
+^http:\\/\\/.*mail.yahoo.*
+
+##
+# Some Porn filters
+##
+^[Xx][Xx][Xx]
