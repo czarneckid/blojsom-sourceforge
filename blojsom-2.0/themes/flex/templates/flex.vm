@@ -12,7 +12,10 @@
   </style>
 
   <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
+  <!-- Site Feed Autodiscovery-->
+  <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss2"/>
+  <link rel="alternate" type="application/atom+xml" title="Atom" href="$BLOJSOM_BLOG.getBlogURL()?flavor=atom"/>
+
 </head>
 
 <body onload="window.defaultStatus='$BLOJSOM_BLOG.getBlogName(): $BLOJSOM_BLOG.getBlogDescription()';">
