@@ -64,7 +64,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.29 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.30 2005-01-23 23:35:07 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
@@ -77,6 +77,9 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_JVM_LANGUAGES = "BLOJSOM_JVM_LANGUAGES";
     private static final String BLOJSOM_JVM_COUNTRIES = "BLOJSOM_JVM_COUNTRIES";
     private static final String BLOJSOM_JVM_TIMEZONES = "BLOJSOM_JVM_TIMEZONES";
+
+    // Permissions
+    private static final String EDIT_BLOG_PROPERTIES_PERMISSION = "edit_blog_properties";
 
     /**
      * Default constructor.
@@ -98,6 +101,14 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, EDIT_BLOG_PROPERTIES_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit blog properties");
 
             return entries;
         }

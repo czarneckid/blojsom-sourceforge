@@ -58,7 +58,7 @@ import java.util.Properties;
  * EditBlogFlavorsPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.12 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.13 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -85,6 +85,9 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     private static final String FLAVOR_MIME_TYPE = "flavor-mime-type";
     private static final String FLAVOR_CHARACTER_SET = "flavor-character-set";
     private static final String BLOG_TEMPLATE = "blog-template";
+
+    // Permissions
+    private static final String EDIT_BLOG_FLAVORS_PERMISSION = "edit_blog_flavors";
 
     private String _flavorConfiguration;
 
@@ -128,6 +131,14 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
         // Put the available flavors in the context for the edit flavors template
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS, user.getFlavors());
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, EDIT_BLOG_FLAVORS_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit blog flavors");
+
+            return entries;
+        }
 
         // Put the available templates in the context for the edit flavors template
         File templatesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +

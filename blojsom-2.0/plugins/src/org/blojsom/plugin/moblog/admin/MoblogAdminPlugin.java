@@ -55,7 +55,7 @@ import java.io.*;
  * Moblog Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MoblogAdminPlugin.java,v 1.3 2005-01-05 02:32:14 czarneckid Exp $
+ * @version $Id: MoblogAdminPlugin.java,v 1.4 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogAdminPlugin extends WebAdminPlugin {
@@ -81,6 +81,8 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
     private static final String UPDATE_MOBLOG_SETTINGS_ACTIONS = "update-moblog-settings";
     private static final String ADD_AUTHORIZED_ADDRESS_ACTION = "add-authorized-address";
     private static final String DELETE_AUTHORIZED_ADDRESS_ACTION = "delete-authorized-address";
+
+    private static final String MOBLOG_ADMIN_PERMISSION = "moblog_admin";
 
     private static final String BLOJSOM_PLUGIN_MOBLOG_MAILBOX = "BLOJSOM_PLUGIN_MOBLOG_MAILBOX";
 
@@ -123,6 +125,14 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
         String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, MOBLOG_ADMIN_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit moblog settings");
+
+            return entries;
+        }
 
         if (ADMIN_LOGIN_PAGE.equals(page)) {
             return entries;

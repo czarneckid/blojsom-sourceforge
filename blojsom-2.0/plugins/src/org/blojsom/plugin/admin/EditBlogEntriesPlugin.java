@@ -71,7 +71,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.41 2005-01-11 02:50:36 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.42 2005-01-23 23:35:06 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -122,6 +122,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     protected static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
     protected static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
     protected static final String PING_BLOG_URLS = "ping-blog-urls";
+
+    // Permissions
+    private static final String EDIT_BLOG_ENTRIES_PERMISSION = "edit_blog_entries";
 
     protected BlojsomFetcher _fetcher;
 
@@ -177,6 +180,14 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, EDIT_BLOG_ENTRIES_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit blog entries");
 
             return entries;
         }
@@ -421,7 +432,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setDescription(blogEntryDescription);
 
             Map entryMetaData = new HashMap();
-            String username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
+            username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
             entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, username);
 
             String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);

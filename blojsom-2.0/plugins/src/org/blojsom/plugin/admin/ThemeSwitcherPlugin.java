@@ -58,7 +58,7 @@ import java.util.Properties;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.5 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.6 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -80,6 +80,9 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
     // Form items
     private static final String THEME = "theme";
     private static final String FLAVOR = "flavor-name";
+
+    // Permissions
+    private static final String SWITCH_THEME_PERMISSION = "switch_theme";
 
     private static final String DEFAULT_THEMES_DIRECTORY = "/themes/";
     private static final String THEMES_DIRECTORY_IP = "themes-directory";
@@ -190,6 +193,14 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
         String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, SWITCH_THEME_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to switch themes");
+
+            return entries;
+        }
 
         if (ADMIN_LOGIN_PAGE.equals(page)) {
             return entries;

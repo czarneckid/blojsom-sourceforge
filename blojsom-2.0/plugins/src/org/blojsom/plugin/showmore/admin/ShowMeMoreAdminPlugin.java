@@ -56,7 +56,7 @@ import java.util.Map;
  * Show Me More administration plugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreAdminPlugin.java,v 1.2 2005-01-05 02:32:30 czarneckid Exp $
+ * @version $Id: ShowMeMoreAdminPlugin.java,v 1.3 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
@@ -73,6 +73,9 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
 
     // Context attributes
     private static final String SHOWMEMORE_CONFIGURATION = "SHOWMEMORE_CONFIGURATION";
+
+    // Permissions
+    private static final String SHOWMEMORE_ADMIN_PERMISSION = "showmemore_admin";
 
     /**
      * Default constructor
@@ -130,6 +133,14 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
         String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, SHOWMEMORE_ADMIN_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit show-me-more settings");
+
+            return entries;
+        }
 
         if (ADMIN_LOGIN_PAGE.equals(page)) {
             return entries;

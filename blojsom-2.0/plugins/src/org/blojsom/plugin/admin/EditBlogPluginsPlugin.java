@@ -59,7 +59,7 @@ import java.io.FileOutputStream;
  *
  * @since blojsom 2.06
  * @author czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.8 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.9 2005-01-23 23:35:07 czarneckid Exp $
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
@@ -74,6 +74,9 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
     // Actions
     private static final String MODIFY_PLUGIN_CHAINS = "modify-plugin-chains";
+
+    // Permissions
+    private static final String EDIT_BLOG_PLUGINS_PERMISSION = "edit_blog_plugins";
 
     private String _pluginConfiguration;
     private Map _plugins;
@@ -131,6 +134,14 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, EDIT_BLOG_PLUGINS_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit blog plugins");
 
             return entries;
         }

@@ -55,7 +55,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.17 2005-01-05 02:31:20 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.18 2005-01-23 23:35:06 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -82,6 +82,8 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_CATEGORY_DESCRIPTION = "blog-category-description";
     private static final String BLOG_CATEGORY_META_DATA = "blog-category-meta-data";
     private static final String BLOG_CATEGORY_PARENT = "blog-category-parent";
+
+    private static final String EDIT_BLOG_CATEGORIES_PERMISSION = "edit_blog_categories";
 
     private BlojsomFetcher _fetcher;
 
@@ -149,6 +151,14 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES, allCategories);
         } catch (BlojsomFetcherException e) {
             _logger.error(e);
+        }
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, EDIT_BLOG_CATEGORIES_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit blog categories");
+
+            return entries;
         }
 
         if (BlojsomUtils.checkNullOrBlank(action)) {

@@ -60,7 +60,7 @@ import java.io.File;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.4 2005-01-05 02:31:18 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.5 2005-01-23 23:35:06 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -78,6 +78,9 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
 
     // Form items
     protected static final String SELECTION_PARAM = "selection";
+
+    // Permissions
+    protected static final String USE_BOOKMARKLET_PERMISSION = "use_bookmarklet";
 
     /**
      * Default constructor
@@ -101,6 +104,14 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         String selection = BlojsomUtils.getRequestValue(SELECTION_PARAM, httpServletRequest);
         context.put(BOOKMARKLET_PLUGIN_SELECTION, selection);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, USE_BOOKMARKLET_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to use the bookmarklet");
+
+            return entries;
+        }
 
         if (BlojsomUtils.checkNullOrBlank(action)) {
             _logger.debug("User did not request action");
@@ -145,7 +156,7 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                 entry.setDescription(blogEntryDescription);
 
                 Map entryMetaData = new HashMap();
-                String username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
+                username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
                 entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, username);
 
                 String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);

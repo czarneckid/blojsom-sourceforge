@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.20 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.21 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -88,6 +88,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
     // Form items
     private static final String FILE_TO_DELETE = "file-to-delete";
+
+    // Permissions
+    private static final String FILE_UPLOAD_PERMISSION = "file_upload";
 
     private String _temporaryDirectory;
     private long _maximumUploadSize;
@@ -184,6 +187,14 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, FILE_UPLOAD_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to upload files");
 
             return entries;
         }

@@ -58,7 +58,7 @@ import java.util.Properties;
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.4 2005-01-05 02:32:08 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.5 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -77,6 +77,9 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
     // Actions
     private static final String ADD_MACRO_ACTION = "add-macro";
     private static final String DELETE_SELECTED_MACROS_ACTION = "delete-selected-macros";
+
+    // Permissions
+    private static final String MACRO_EXPANSION_ADMIN_PERMISSION = "macro_expansion_admin";
 
     /**
      * Default constructor
@@ -117,6 +120,14 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
         String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, MACRO_EXPANSION_ADMIN_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit macros");
+
+            return entries;
+        }
 
         if (ADMIN_LOGIN_PAGE.equals(page)) {
             return entries;

@@ -55,12 +55,15 @@ import java.io.IOException;
  * Reload Blog Properties plugin.
  *
  * @author David Czarnecki
- * @version $Id: ReloadBlogPropertiesPlugin.java,v 1.2 2005-01-05 02:31:21 czarneckid Exp $
+ * @version $Id: ReloadBlogPropertiesPlugin.java,v 1.3 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
 
     private Log _logger = LogFactory.getLog(ReloadBlogPropertiesPlugin.class);
+
+    // Permissions
+    private static final String RELOAD_PROPERTIES_PERMISSION = "reload_properties";
 
     /**
      * Default constructor.
@@ -100,6 +103,14 @@ public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, RELOAD_PROPERTIES_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to reload blog properties");
+
+            return entries;
+        }
 
         String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
 

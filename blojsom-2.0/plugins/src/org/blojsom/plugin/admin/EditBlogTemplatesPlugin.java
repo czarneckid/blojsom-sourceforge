@@ -55,7 +55,7 @@ import java.util.Arrays;
  * EditBlogTemplatesPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.15 2005-01-14 18:34:50 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.16 2005-01-23 23:35:07 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -78,6 +78,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     // Form elements
     private static final String BLOG_TEMPLATE = "blog-template";
     private static final String BLOG_TEMPLATE_DATA = "blog-template-data";
+
+    // Permissions
+    private static final String EDIT_BLOG_TEMPLATES_PERMISSION = "edit_blog_templates";
 
     /**
      * Default constructor.
@@ -111,6 +114,14 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+
+            return entries;
+        }
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, EDIT_BLOG_TEMPLATES_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit blog templates");
 
             return entries;
         }
