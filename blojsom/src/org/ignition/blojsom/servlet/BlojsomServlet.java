@@ -55,7 +55,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.34 2003-03-02 19:08:19 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.35 2003-03-05 04:09:42 czarneckid Exp $
  */
 public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
 
@@ -315,6 +315,7 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         // Determine if a permalink has been requested
         String permalink = httpServletRequest.getParameter(PERMALINK_PARAM);
         if (permalink != null) {
+            permalink = BlojsomUtils.getFilenameForPermalink(permalink);
             _logger.debug("Permalink request for: " + permalink);
         }
 
@@ -400,10 +401,10 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
             }
         }
 
-        String _blogdate;
+        String _blogdate = null;
         // If we have entries, construct a last modified on the most recent
         // Additional  set the blog date
-        if (entries != null && entries.length > 0) {
+        if ((entries != null) && (entries.length > 0)) {
             httpServletResponse.addDateHeader(HTTP_LASTMODIFIED, entries[0].getLastModified());
             _blogdate = entries[0].getISO8601Date();
         } else {
