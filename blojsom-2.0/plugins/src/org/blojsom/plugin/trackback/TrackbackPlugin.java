@@ -54,7 +54,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.4 2003-08-25 03:52:54 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.5 2003-09-19 03:10:38 czarneckid Exp $
  */
 public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants {
 
@@ -76,22 +76,22 @@ public class TrackbackPlugin extends IPBanningPlugin implements BlojsomConstants
     /**
      * Request parameter for the trackback "title"
      */
-    private static final String TRACKBACK_TITLE_PARAM = "title";
+    public static final String TRACKBACK_TITLE_PARAM = "title";
 
     /**
      * Request parameter for the trackback "excerpt"
      */
-    private static final String TRACKBACK_EXCERPT_PARAM = "excerpt";
+    public static final String TRACKBACK_EXCERPT_PARAM = "excerpt";
 
     /**
      * Request parameter for the trackback "url"
      */
-    private static final String TRACKBACK_URL_PARAM = "url";
+    public static final String TRACKBACK_URL_PARAM = "url";
 
     /**
      * Request parameter for the trackback "blog_name"
      */
-    private static final String TRACKBACK_BLOG_NAME_PARAM = "blog_name";
+    public static final String TRACKBACK_BLOG_NAME_PARAM = "blog_name";
 
     /**
      * Key under which the indicator this plugin is "live" will be placed
