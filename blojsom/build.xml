@@ -47,6 +47,7 @@
         <tstamp/>
         <mkdir dir="${compile.dir}"/>
         <mkdir dir="${build.dir}"/>
+        <mkdir dir="${distro.dir}"/>
         <copy todir="${build.dir}">
             <fileset dir="${properties.dir}">
                 <include name="**/*.properties"/>
@@ -85,8 +86,7 @@
     <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
-    <target name="war" depends="clean,compile">
-        <mkdir dir="${distro.dir}"/>
+    <target name="war" depends="clean,prepare,compile">
         <jar jarfile="${war.file}" basedir="${war.dir}"/>
     </target>
 
