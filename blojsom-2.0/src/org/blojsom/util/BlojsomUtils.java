@@ -53,7 +53,7 @@ import java.nio.channels.FileChannel;
  * BlojsomUtils
  * 
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.18 2004-01-20 03:45:38 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.19 2004-02-16 23:48:37 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -63,7 +63,9 @@ public class BlojsomUtils implements BlojsomConstants {
     private BlojsomUtils() {
     }
 
-    /** Filter only directories */
+    /**
+     * Filter only directories
+     */
     private static final FileFilter DIRECTORY_FILTER = new FileFilter() {
 
         /**
@@ -79,7 +81,9 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     };
 
-    /** Filter only files */
+    /**
+     * Filter only files
+     */
     private static final FileFilter FILE_FILTER = new FileFilter() {
 
         /**
@@ -120,7 +124,7 @@ public class BlojsomUtils implements BlojsomConstants {
     };
 
     /**
-     * UTC format
+     * UTC format                                             Ä
      * SimpleDateFormats are not threadsafe, but we should not need more than one per
      * thread.
      */
@@ -450,7 +454,7 @@ public class BlojsomUtils implements BlojsomConstants {
         if (filename == null) {
             return null;
         }
-        
+
         int dotIndex = filename.lastIndexOf(".");
         if (dotIndex == -1) {
             return null;
@@ -473,6 +477,37 @@ public class BlojsomUtils implements BlojsomConstants {
         } else {
             return filename.substring(0, dotIndex);
         }
+    }
+
+    /**
+     * Returns the base file name from the supplied file path. On the surface,
+     * this would appear to be a trivial task. Apparently, however, some Linux
+     * JDKs do not implement <code>File.getName()</code> correctly for Windows
+     * paths, so we attempt to take care of that here.
+     *
+     * @param filenameWithPath The full path to the file.
+     * @return The base file name, from the end of the path.
+     * @since blojsom 2.12
+     */
+    public static String getFilenameFromPath(String filenameWithPath) {
+        // First, ask the JDK for the base file name.
+        String fileName = new File(filenameWithPath).getName();
+
+        // Now check for a Windows file name parsed incorrectly.
+        int colonIndex = fileName.indexOf(":");
+        if (colonIndex == -1) {
+            // Check for a Windows SMB file path.
+            colonIndex = fileName.indexOf("\\\\");
+        }
+        int backslashIndex = fileName.lastIndexOf("\\");
+
+        if (colonIndex > -1 && backslashIndex > -1) {
+            // Consider this filename to be a full Windows path, and parse it
+            // accordingly to retrieve just the base file name.
+            fileName = fileName.substring(backslashIndex + 1);
+        }
+
+        return fileName;
     }
 
     /**
@@ -648,9 +683,9 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return an input string URL encoded for a URL link where '/' show as '/'
      *
-     * @since blojsom 2.09
      * @param input Input string
      * @return URL encoded string or <code>null</code> if either the input was null or there is a encoding exception
+     * @since blojsom 2.09
      */
     public static final String urlEncodeForLink(String input) {
         if (input == null) {
@@ -763,7 +798,9 @@ public class BlojsomUtils implements BlojsomConstants {
         }
     };
 
-    /** Return a comparator to sort by name */
+    /**
+     * Return a comparator to sort by name
+     */
     public static final Comparator FILE_NAME_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
@@ -1163,9 +1200,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * Turn an array of strings into a Map where the keys and values are the input strings. If the incoming array is null, this
      * method returns an empty map.
      *
-     * @since blojsom 2.06
      * @param array Array of strings
      * @return Map Map containing all the strings from the original array or an empty map if the incoming array is null.
+     * @since blojsom 2.06
      */
     public static Map arrayOfStringsToMap(String[] array) {
         if (array == null) {
@@ -1183,9 +1220,9 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Add a '/' at the beginning and end of the input string if necessary.
      *
-     * @since blojsom 2.06
      * @param input Input string
      * @return String with a '/' at the beginning and end of the original string, <code>null</code> if the input was <code>null</code>
+     * @since blojsom 2.06
      */
     public static String checkStartingAndEndingSlash(String input) {
         if (input == null) {
@@ -1206,9 +1243,9 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Checks to see if the string is null or blank (after trimming)
      *
-     * @since blojsom 2.06
      * @param input Input string
      * @return <code>true</code> if the string is null or blank (after trimming), <code>false</code> otherwise
+     * @since blojsom 2.06
      */
     public static boolean checkNullOrBlank(String input) {
         if (input == null || "".equals(input.trim())) {
@@ -1221,8 +1258,8 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Set various cache control HTTP headers so that the browser does not try and cache the page
      *
-     * @since blojsom 2.06
      * @param httpServletResponse Response
+     * @since blojsom 2.06
      */
     public static void setNoCacheControlHeaders(HttpServletResponse httpServletResponse) {
         httpServletResponse.setHeader(PRAGMA_HTTP_HEADER, NO_CACHE_HTTP_HEADER_VALUE);
@@ -1235,7 +1272,7 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param map Map to check for given key
      * @param key Key to check for in map
-     * @return Returns <code>true</code> if and only if the map and key are not null and the map contains the key. 
+     * @return Returns <code>true</code> if and only if the map and key are not null and the map contains the key.
      */
     public static boolean checkMapForKey(Map map, String key) {
         if (map == null) {
