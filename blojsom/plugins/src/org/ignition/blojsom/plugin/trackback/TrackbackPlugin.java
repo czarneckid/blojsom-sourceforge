@@ -56,7 +56,7 @@ import java.util.Map;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.21 2003-05-12 01:43:06 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.22 2003-05-15 00:47:18 czarneckid Exp $
  */
 public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -114,6 +114,7 @@ public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
     private String _blogTrackbackDirectory;
     private Boolean _blogEmailEnabled;
     private String _blogUrlPrefix;
+    private String _blogFileEncoding;
 
     /**
      * Default constructor
@@ -134,6 +135,7 @@ public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
         _blogTrackbackDirectory = blog.getBlogTrackbackDirectory();
         _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogUrlPrefix = blog.getBlogURL();
+        _blogFileEncoding = blog.getBlogFileEncoding();
     }
 
     /**
@@ -274,7 +276,7 @@ public class TrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
         File trackbackEntry = new File(trackbackFilename);
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), UTF8));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), _blogFileEncoding));
             bw.write(trackback.getTitle());
             bw.newLine();
             bw.write(trackback.getExcerpt());
