@@ -62,7 +62,7 @@ import java.text.ParseException;
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.17 2004-02-10 15:51:15 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.18 2004-02-17 02:49:10 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -259,7 +259,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryToUpdate.setDescription(blogEntryDescription);
                     entryToUpdate.save(user);
                     _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
-                    addOperationResultMessage(context, "Updated blog entry: " + blogEntryId);
+                    StringBuffer entryLink = new StringBuffer();
+                    entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entryToUpdate.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entryToUpdate.getPermalink()).append("\">").append(entryToUpdate.getTitle()).append("</a>");
+                    addOperationResultMessage(context, "Updated blog entry: " + entryLink.toString());
                 } else {
                     _logger.debug("No entries found in category: " + blogCategoryName);
                 }
