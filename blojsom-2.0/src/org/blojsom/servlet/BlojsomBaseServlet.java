@@ -54,7 +54,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.0
- * @version $Id: BlojsomBaseServlet.java,v 1.12 2005-01-05 02:33:00 czarneckid Exp $
+ * @version $Id: BlojsomBaseServlet.java,v 1.13 2005-03-10 04:54:50 czarneckid Exp $
  */
 public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants {
 
@@ -63,6 +63,19 @@ public class BlojsomBaseServlet extends HttpServlet implements BlojsomConstants 
     protected String _baseConfigurationDirectory;
     protected BlojsomFetcher _fetcher;
     protected BlojsomConfiguration _blojsomConfiguration;
+    protected ServletConfig _servletConfig;
+
+    /**
+     * Servlet initialization
+     *
+     * @param servletConfig {@link ServletConfig}
+     * @throws ServletException If there is an error during initialization
+     */
+    public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+
+        _servletConfig = servletConfig;
+    }
 
     /**
      * Configure the {@link BlojsomFetcher} that will be used to fetch categories and
