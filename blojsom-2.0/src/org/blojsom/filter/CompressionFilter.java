@@ -34,117 +34,72 @@
  */
 package org.blojsom.filter;
 
+import org.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.zip.GZIPOutputStream;
 
 /**
- *  Filter that compresses output with gzip
- *  (assuming that browser supports gzip).
- *  <P />
- *  Taken from More Servlets and JavaServer Pages
- *  from Prentice Hall and Sun Microsystems Press,
- *  http://www.moreservlets.com/.
- *  &copy; 2002 Marty Hall; may be freely used or adapted.
+ * CompressionFilter
+ * <p/>
+ * Copyright 2003 Jayson Falkner (jayson@jspinsider.com)
+ * This code is from "Servlets and JavaServer pages; the J2EE Web Tier",
+ * http://www.jspbook.com. You may freely use the code both commercially
+ * and non-commercially. If you like the code, please pick up a copy of
+ * the book and help support the authors, development of more free code,
+ * and the JSP/Servlet/J2EE community.
+ *
+ * @since blojsom 2.10
+ * @version $Id: CompressionFilter.java,v 1.7 2004-01-26 22:40:08 czarneckid Exp $
  */
 public class CompressionFilter implements Filter, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(CompressionFilter.class);
-    private FilterConfig config;
 
     /**
-     *  If browser does not support gzip, invoke resource
-     *  normally. If browser <I>does</I> support gzip,
-     *  set the Content-Encoding response header and
-     *  invoke resource with a wrapped response that
-     *  collects all the output. Extract the output
-     *  and write it into a gzipped byte array. Finally,
-     *  write that array to the client's output stream.
+     * Initialize the CompressionFilter
+     *
+     * @param filterConfig FilterConfig object
+     * @throws ServletException If there is an error initializing the filter
      */
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain chain)
-            throws ServletException, IOException {
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+    /**
+     * Filter a request looking for the "accept-encoding" HTTP header and if available,
+     * send compressed content.
+     *
+     * @param req Request
+     * @param res Response
+     * @param chain Filter chain
+     * @throws IOException If there is an error writing the response
+     * @throws ServletException If there is an error processing the request
+     */
+    public void doFilter(ServletRequest req, ServletResponse res,
+                         FilterChain chain) throws IOException, ServletException {
+        if (req instanceof HttpServletRequest) {
+            HttpServletRequest request = (HttpServletRequest) req;
+            HttpServletResponse response = (HttpServletResponse) res;
+            String ae = request.getHeader("accept-encoding");
+            if (ae != null && ae.indexOf("gzip") != -1) {
+                _logger.debug("GZIP supported, compressing.");
+                GZIPResponseWrapper wrappedResponse =  new GZIPResponseWrapper(response);
+                chain.doFilter(req, wrappedResponse);
+                wrappedResponse.finishResponse();
+                return;
+            }
 
-        if (!isGzipSupported(req)) {
-            // Invoke resource normally.
             chain.doFilter(req, res);
-        } else {
-            // Tell browser we are sending it gzipped data.
-            res.setHeader("Content-Encoding", "gzip");
-      
-            // Invoke resource, accumulating output in the wrapper.
-            CharArrayWrapper responseWrapper = new CharArrayWrapper(res);
-            chain.doFilter(req, responseWrapper);
-      
-            // Get character array representing output.
-            char[] responseChars = responseWrapper.toCharArray();
-
-            // Make a writer that compresses data and puts
-            // it into a byte array.
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            GZIPOutputStream zipOut = new GZIPOutputStream(byteStream);
-            OutputStreamWriter tempOut = new OutputStreamWriter(zipOut, UTF8);
-      
-            // Compress original output and put it into byte array.
-            tempOut.write(responseChars);
-      
-            // Gzip streams must be explicitly closed.
-            tempOut.close();
-
-            // Update the Content-Length header.
-            res.setContentLength(byteStream.size());
-
-            // Send compressed result to client.
-            OutputStream realOut = responseWrapper.getOutputStream();
-            byteStream.writeTo(realOut);
         }
     }
 
     /**
-     * Store the FilterConfig object in case subclasses
-     *  want it.
-     */
-    public void init(FilterConfig config) throws ServletException {
-        this.config = config;
-        _logger.debug("Initialized compression filter");
-    }
-
-    /**
-     * Return the <code>FilterConfig</code> object
-     *
-     * @return <code>FilterConfig</code> object
-     */
-    protected FilterConfig getFilterConfig() {
-        return (config);
-    }
-
-    /**
-     * Called when this filter is taken out of service
+     * Called when the filter is taken out of service
      */
     public void destroy() {
-    }
-
-    /**
-     * Check to see whether or not GZIP compression is supported
-     *
-     * @param req Servlet request
-     * @return <code>true</code> if the client supports GZIP compression, <code>false</code> otherwise
-     */
-    private boolean isGzipSupported(HttpServletRequest req) {
-        String browserEncodings = req.getHeader("Accept-Encoding");
-        return ((browserEncodings != null) && (browserEncodings.indexOf("gzip") != -1));
     }
 }
