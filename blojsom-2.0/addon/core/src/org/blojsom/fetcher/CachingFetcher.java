@@ -53,7 +53,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * CachingFetcher
  * 
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.6 2004-03-09 03:19:02 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.7 2004-03-10 01:50:11 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher {
@@ -172,8 +172,9 @@ public class CachingFetcher extends StandardFetcher {
                         _cache.putInCache(user.getId() + FLAVOR_KEY + flavor, entries);
                     } else {
                         _cache.cancelUpdate(user.getId() + FLAVOR_KEY + flavor);
-                        AllCategoriesFetcherThread allCategoriesFetcherThread = new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth);
-                        allCategoriesFetcherThread.run();
+                        Thread allCategoriesFetcherThread = new Thread(new AllCategoriesFetcherThread(user, flavor, blogDirectoryDepth));
+                        allCategoriesFetcherThread.start();
+
                         _logger.debug("Returning from all categories fetcher thread for key: " + user.getId() + FLAVOR_KEY + flavor);
                     }
 
@@ -192,8 +193,9 @@ public class CachingFetcher extends StandardFetcher {
                         _cache.putInCache(user.getId() + CATEGORY_KEY + category.getCategory(), entries);
                     } else {
                         _cache.cancelUpdate(user.getId() + CATEGORY_KEY + category.getCategory());
-                        SingleCategoryFetcherThread singleCategoryFetcherThread = new SingleCategoryFetcherThread(user, category);
-                        singleCategoryFetcherThread.run();
+                        Thread singleCategoryFetcherThread = new Thread(new SingleCategoryFetcherThread(user, category));
+                        singleCategoryFetcherThread.start();
+
                         _logger.debug("Returning from single category fetcher thread for key: " + user.getId() + CATEGORY_KEY + category.getCategory());
                     }
 
