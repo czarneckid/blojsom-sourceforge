@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
- * @version $Id: PermalinkFilter.java,v 1.4 2004-10-07 17:55:38 czarneckid Exp $
+ * @version $Id: PermalinkFilter.java,v 1.5 2004-10-07 22:04:06 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class PermalinkFilter implements Filter {
@@ -134,11 +134,12 @@ public class PermalinkFilter implements Filter {
             extraParameters.put("month", new String[]{month});
             extraParameters.put("day", new String[]{day});
             extraParameters.put("permalink", new String[]{permalink});
-            int yearIndex = pathInfo.lastIndexOf(year);
+            String yearSubstring = year + "/";
+            int yearIndex = pathInfo.lastIndexOf(yearSubstring);
             String pathinfo = pathInfo.substring(0, yearIndex);
-            yearIndex = uri.lastIndexOf(year);
+            yearIndex = uri.lastIndexOf(yearSubstring);
             String URI = uri.substring(0, yearIndex);
-            yearIndex = url.lastIndexOf(year);
+            yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
             _logger.debug("Handling YYYY/MM/DD/permalink request: " + pathinfo);
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
@@ -150,11 +151,12 @@ public class PermalinkFilter implements Filter {
             extraParameters.put("year", new String[]{year});
             extraParameters.put("month", new String[]{month});
             extraParameters.put("day", new String[]{day});
-            int yearIndex = pathInfo.lastIndexOf(year);
+            String yearSubstring = year + "/";
+            int yearIndex = pathInfo.lastIndexOf(yearSubstring);
             String pathinfo = pathInfo.substring(0, yearIndex);
-            yearIndex = uri.lastIndexOf(year);
+            yearIndex = uri.lastIndexOf(yearSubstring);
             String URI = uri.substring(0, yearIndex);
-            yearIndex = url.lastIndexOf(year);
+            yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY/MM/DD/ request: " + pathinfo);
@@ -164,11 +166,12 @@ public class PermalinkFilter implements Filter {
             extraParameters = new HashMap();
             extraParameters.put("year", new String[]{year});
             extraParameters.put("month", new String[]{month});
-            int yearIndex = pathInfo.lastIndexOf(year);
+            String yearSubstring = year + "/";
+            int yearIndex = pathInfo.lastIndexOf(yearSubstring);
             String pathinfo = pathInfo.substring(0, yearIndex);
-            yearIndex = uri.lastIndexOf(year);
+            yearIndex = uri.lastIndexOf(yearSubstring);
             String URI = uri.substring(0, yearIndex);
-            yearIndex = url.lastIndexOf(year);
+            yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY/MM request: " + pathinfo);
@@ -176,11 +179,12 @@ public class PermalinkFilter implements Filter {
             String year = yMatcher.group(1);
             extraParameters = new HashMap();
             extraParameters.put("year", new String[]{year});
-            int yearIndex = pathInfo.lastIndexOf(year);
+            String yearSubstring = year + "/";
+            int yearIndex = pathInfo.lastIndexOf(yearSubstring);
             String pathinfo = pathInfo.substring(0, yearIndex);
-            yearIndex = uri.lastIndexOf(year);
+            yearIndex = uri.lastIndexOf(yearSubstring);
             String URI = uri.substring(0, yearIndex);
-            yearIndex = url.lastIndexOf(year);
+            yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY request: " + pathinfo);
