@@ -54,6 +54,10 @@
                         <td><input type="text" size="60" name="moblog-secret-word" value="$!BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getSecretWord()"/></td>
                     </tr>
                     <tr>
+                        <td>#adminResource('mailbox.ignore.expression.text' 'Ignore text regular expression')</td>
+                        <td><input type="text" size="60" name="moblog-ignore-expression" value="$!BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getIgnoreExpression()"/></td>
+                    </tr>
+                    <tr>
                         <td>#adminResource('mailbox.text.types.text' 'Accepted text MIME types')</td>
                         <td><input type="text" size="60" name="moblog-text-mime-types" value="$BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getTextMimeTypesAsStringList()"/></td>
                     </tr>

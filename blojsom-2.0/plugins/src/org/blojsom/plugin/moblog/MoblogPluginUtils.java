@@ -52,7 +52,7 @@ import java.util.Properties;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.1 2004-06-14 00:27:16 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.2 2004-12-08 19:45:16 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogPluginUtils {
@@ -230,6 +230,14 @@ public class MoblogPluginUtils {
 
                     // Configure authorized email addresses for moblog posting
                     mailbox.setAuthorizedAddresses(configureAuthorizedAddresses(servletConfig, blojsomConfiguration, user, authFile));
+
+                    // Configure ignore regular expression
+                    String ignoreExpression = moblogProperties.getProperty(MoblogPlugin.PLUGIN_MOBLOG_IGNORE_EXPRESSION);
+                    if (BlojsomUtils.checkNullOrBlank(ignoreExpression)) {
+                        mailbox.setIgnoreExpression(null);
+                    } else {
+                        mailbox.setIgnoreExpression(ignoreExpression);
+                    }
                 }
             } catch (IOException e) {
                 _logger.error(e);

@@ -55,7 +55,7 @@ import java.io.*;
  * Moblog Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MoblogAdminPlugin.java,v 1.1 2004-06-16 04:20:31 czarneckid Exp $
+ * @version $Id: MoblogAdminPlugin.java,v 1.2 2004-12-08 19:45:41 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogAdminPlugin extends WebAdminPlugin {
@@ -75,6 +75,7 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
     private static final String MOBLOG_ATTACHMENT_MIME_TYPES = "moblog-attachment-mime-types";
     private static final String MOBLOG_TEXT_MIME_TYPES = "moblog-text-mime-types";
     private static final String MOBLOG_AUTHORIZED_ADDRESS = "moblog-authorized-address";
+    private static final String MOBLOG_IGNORE_EXPRESSION = "moblog-ignore-expression";
 
     // Actions
     private static final String UPDATE_MOBLOG_SETTINGS_ACTIONS = "update-moblog-settings";
@@ -170,6 +171,8 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
                 }
                 String secretWord = BlojsomUtils.getRequestValue(MOBLOG_SECRET_WORD, httpServletRequest);
                 mailbox.setSecretWord(secretWord);
+                String ignoreExpression = BlojsomUtils.getRequestValue(MOBLOG_IGNORE_EXPRESSION, httpServletRequest);
+                mailbox.setIgnoreExpression(ignoreExpression);
 
                 try {
                     writeMoblogConfiguration(user.getId(), moblogConfigurationFile, mailbox);
@@ -284,6 +287,10 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
         bw.write(MoblogPlugin.PLUGIN_MOBLOG_SECRET_WORD);
         bw.write("=");
         bw.write(BlojsomUtils.nullToBlank(mailbox.getSecretWord()));
+        bw.write(BlojsomUtils.LINE_SEPARATOR);        
+        bw.write(MoblogPlugin.PLUGIN_MOBLOG_IGNORE_EXPRESSION);
+        bw.write("=");
+        bw.write(BlojsomUtils.nullToBlank(mailbox.getIgnoreExpression()));
         bw.write(BlojsomUtils.LINE_SEPARATOR);
         bw.close();
     }

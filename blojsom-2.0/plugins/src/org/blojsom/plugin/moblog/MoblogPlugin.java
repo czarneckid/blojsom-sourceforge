@@ -37,13 +37,16 @@ package org.blojsom.plugin.moblog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
-import org.blojsom.blog.*;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.email.SimpleAuthenticator;
 import org.blojsom.plugin.email.EmailConstants;
+import org.blojsom.plugin.email.SimpleAuthenticator;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -51,22 +54,24 @@ import org.blojsom.util.BlojsomUtils;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMultipart;
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.ConnectException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Moblog Plugin
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.21 2004-11-28 16:32:56 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.22 2004-12-08 19:44:49 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConstants {
@@ -173,6 +178,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
      */
     public static final String PLUGIN_MOBLOG_TEXT_MIME_TYPES = "moblog-text-mime-types";
 
+    /**
+     * Configuration property for regular expression to ignore a certain portion of text
+     */
+    public static final String PLUGIN_MOBLOG_IGNORE_EXPRESSION = "moblog-ignore-expression";
+
     private int _pollTime;
 
     private Session _popSession;
@@ -182,7 +192,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
     private BlojsomConfiguration _blojsomConfiguration;
 
     private BlojsomFetcher _fetcher;
-
 
     /**
      * Initialize this plugin. This method only called when the plugin is
@@ -372,6 +381,11 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                         StringBuffer entry = new StringBuffer();
                         StringBuffer description = new StringBuffer();
                         Part messagePart = email;
+                        Pattern pattern = null;
+                        if (mailbox.getIgnoreExpression() != null) {
+                            pattern = Pattern.compile(mailbox.getIgnoreExpression(), Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.DOTALL);
+                        }
+
                         if (subject == null) {
                             subject = "";
                         } else {
@@ -439,7 +453,14 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                                         }
 
                                                         reader.close();
-                                                        entry.append(description);
+                                                        if (pattern != null) {
+                                                            Matcher matcher = pattern.matcher(description);
+                                                            if (!matcher.find() && !matcher.matches()) {
+                                                                entry.append(description);
+                                                            }
+                                                        } else {
+                                                            entry.append(description);
+                                                        }
                                                     } else {
                                                         _logger.debug("Skipping non-HTML part of multipart/alternative block");
                                                     }
@@ -514,7 +535,14 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                                 }
 
                                                 reader.close();
-                                                entry.append(description);
+                                                if (pattern != null) {
+                                                    Matcher matcher = pattern.matcher(description);
+                                                    if (!matcher.find() && !matcher.matches()) {
+                                                        entry.append(description);
+                                                    }
+                                                } else {
+                                                    entry.append(description);
+                                                }
                                             }
                                         } else {
                                             _logger.info("Unknown mimetype for multipart: " + type);
@@ -544,7 +572,14 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                 }
 
                                 reader.close();
-                                entry.append(description);
+                                if (pattern != null) {
+                                    Matcher matcher = pattern.matcher(description);
+                                    if (!matcher.find() && !matcher.matches()) {
+                                        entry.append(description);
+                                    }
+                                } else {
+                                    entry.append(description);
+                                }
                             } else {
                                 _logger.info("Unknown mimetype: " + mimeType);
                             }
@@ -572,7 +607,6 @@ public class MoblogPlugin implements BlojsomPlugin, BlojsomConstants, EmailConst
                                 }
                             }
                         }
-
 
                         BlogUser blogUser = mailbox.getBlogUser();
                         String categoryName = categoryInSubject ? categoryFromSubject : mailbox.getCategoryName();

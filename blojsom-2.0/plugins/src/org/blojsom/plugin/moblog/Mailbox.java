@@ -47,7 +47,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.9 2004-06-16 01:50:12 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.10 2004-12-08 19:42:55 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class Mailbox {
@@ -69,6 +69,7 @@ public class Mailbox {
     private Map _attachmentMimeTypes;
     private Map _textMimeTypes;
     private Map _authorizedAddresses;
+    private String _ignoreExpression;
 
     /**
      * Default constructor.
@@ -395,5 +396,25 @@ public class Mailbox {
      */
     public void setAuthorizedAddresses(Map authorizedAddresses) {
         _authorizedAddresses = authorizedAddresses;
+    }
+
+    /**
+     * Retrieve the regular expression for ignoring bits of text
+     *
+     * @return Regular expression for ignoring bits of text
+     * @since blojsom 2.22
+     */
+    public String getIgnoreExpression() {
+        return _ignoreExpression;
+    }
+
+    /**
+     * Set the regular expression for ignoring bits of text
+     *
+     * @param ignoreExpression Regular expression for ignoring bits of text
+     * @since blojsom 2.22
+     */
+    public void setIgnoreExpression(String ignoreExpression) {
+        _ignoreExpression = ignoreExpression;
     }
 }
