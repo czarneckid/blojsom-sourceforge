@@ -22,6 +22,11 @@
     </filter-mapping>
 
     <filter-mapping>
+        <filter-name>PermalinkFilter</filter-name>
+        <servlet-name>blojsomxmlrpc</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
         <filter-name>CompressionFilter</filter-name>
         <servlet-name>blojsom</servlet-name>
     </filter-mapping>
