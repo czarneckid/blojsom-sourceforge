@@ -61,7 +61,7 @@ import java.util.Map;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.23 2003-03-31 03:49:38 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.24 2003-04-10 14:21:12 intabulas Exp $
  */
 public class CommentPlugin implements BlojsomPlugin {
 
@@ -288,11 +288,14 @@ public class CommentPlugin implements BlojsomPlugin {
                     }
                     blogComments.add(_comment);
                     entries[0].setComments(blogComments);
+
+                    if (_blogEmailEnabled.booleanValue()) {
+                        sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
+                    }
+
+
                 }
 
-                if (_blogEmailEnabled.booleanValue()) {
-                    sendCommentEmail(title, category, permalink, author, authorEmail, authorURL, commentText, context);
-                }
 
                 // If we're asked to remember the person, then add the appropriate cookies
                 if ((remember != null) && (!"".equals(remember))) {
