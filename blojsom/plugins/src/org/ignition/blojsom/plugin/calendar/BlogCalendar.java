@@ -43,7 +43,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.17 2003-05-16 20:37:03 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.18 2003-08-04 15:08:56 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -54,9 +54,9 @@ public class BlogCalendar {
     private Boolean[] _dayswithentry;
     private String[] _shortdownames;
     private String _blogURL;
-    private int currentmonth;
-    private int currentyear;
-    private int currentday;
+    private int _currentmonth;
+    private int _currentyear;
+    private int _currentday;
     private String _requestedDateKey;
 
 
@@ -85,9 +85,9 @@ public class BlogCalendar {
         _symbols = new DateFormatSymbols(_locale);
         _blogURL = blogurl;
 
-        currentmonth = calendar.get(Calendar.MONTH);
-        currentyear = calendar.get(Calendar.YEAR);
-        currentday = calendar.get(Calendar.DAY_OF_MONTH);
+        _currentmonth = calendar.get(Calendar.MONTH);
+        _currentyear = calendar.get(Calendar.YEAR);
+        _currentday = calendar.get(Calendar.DAY_OF_MONTH);
 
         _dayswithentry = new Boolean[_calendar.getActualMaximum(Calendar.DAY_OF_MONTH)];
         Arrays.fill(_dayswithentry, Boolean.FALSE);
@@ -281,7 +281,7 @@ public class BlogCalendar {
      * @return current month as an int (as defined by Calendar)
      */
     public int getCurrentMonth() {
-        return currentmonth;
+        return _currentmonth;
     }
 
     /**
@@ -290,7 +290,7 @@ public class BlogCalendar {
      * @param currentmonth current month as an int (as defined by Calendar)
      */
     public void setCurrentMonth(int currentmonth) {
-        this.currentmonth = currentmonth;
+        _currentmonth = currentmonth;
         _calendar.set(Calendar.MONTH, currentmonth);
     }
 
@@ -300,7 +300,7 @@ public class BlogCalendar {
      * @return current year as an int (as defined by Calendar)
      */
     public int getCurrentYear() {
-        return currentyear;
+        return _currentyear;
 
     }
 
@@ -310,7 +310,7 @@ public class BlogCalendar {
      * @param currentyear current year as an int (as defined by Calendar)
      */
     public void setCurrentYear(int currentyear) {
-        this.currentyear = currentyear;
+        _currentyear = currentyear;
         _calendar.set(Calendar.YEAR, currentyear);
     }
 
@@ -320,7 +320,7 @@ public class BlogCalendar {
      * @return current day as an int (as defined by Calendar)
      */
     public int getCurrentDay() {
-        return currentday;
+        return _currentday;
     }
 
     /**
@@ -329,7 +329,7 @@ public class BlogCalendar {
      * @param currentday current day as an int (as defined by Calendar)
      */
     public void setCurrentDay(int currentday) {
-        this.currentday = currentday;
+        _currentday = currentday;
         _calendar.set(Calendar.DAY_OF_MONTH, currentday);
     }
 
