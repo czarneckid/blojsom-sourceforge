@@ -42,7 +42,9 @@ import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.BlojsomException;
+import org.blojsom.extension.xmlrpc.BlojsomXMLRPCConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -52,13 +54,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
+import java.io.File;
 
 /**
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
  * @since blojsom 2.05
- * @version $Id: EditBlogEntriesPlugin.java,v 1.2 2003-11-21 01:53:08 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.3 2003-11-21 03:34:48 czarneckid Exp $
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
@@ -68,6 +72,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_ENTRIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entries";
     private static final String EDIT_BLOG_ENTRIES_LIST_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entries-list";
     private static final String EDIT_BLOG_ENTRY_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entry";
+    private static final String ADD_BLOG_ENTRY_PAGE = "/org/blojsom/plugin/admin/templates/admin-add-blog-entry";
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
@@ -79,6 +84,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_ENTRY_ACTION = "edit-blog-entry";
     private static final String UPDATE_BLOG_ENTRY_ACTION = "update-blog-entry";
     private static final String DELETE_BLOG_ENTRY_ACTION = "delete-blog-entry";
+    private static final String NEW_BLOG_ENTRY_ACTION = "new-blog-entry";
+    private static final String ADD_BLOG_ENTRY_ACTION = "add-blog-entry";
 
     // Form elements
     private static final String BLOG_CATEGORY_NAME = "blog-category-name";
@@ -276,8 +283,80 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 _logger.error(e);
                 entries = new BlogEntry[0];
             }
+        } else if (NEW_BLOG_ENTRY_ACTION.equals(action)) {
+            _logger.debug("User requested new blog entry action");
+
+            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+
+            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY, blogCategoryName);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADD_BLOG_ENTRY_PAGE);
+        } else if (ADD_BLOG_ENTRY_ACTION.equals(action)) {
+            _logger.debug("User requested add blog entry action");
+
+            String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
+            blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
+            if (!blogCategoryName.endsWith("/")) {
+                blogCategoryName += "/";
+            }
+            String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
+            String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
+
+            BlogCategory category;
+            category = _fetcher.newBlogCategory();
+            category.setCategory(blogCategoryName);
+            category.setCategoryURL(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(blogCategoryName));
+
+            BlogEntry entry;
+            entry = _fetcher.newBlogEntry();
+            entry.setTitle(blogEntryTitle);
+            entry.setCategory(blogCategoryName);
+            entry.setDescription(blogEntryDescription);
+
+            Map entryMetaData = new HashMap();
+            entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, user.getId());
+            entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+            entry.setMetaData(entryMetaData);
+
+            String blogEntryExtension = user.getBlog().getBlogProperty(BlojsomXMLRPCConstants.BLOG_XMLRPC_ENTRY_EXTENSION_IP);
+            if (blogEntryExtension == null || "".equals(blogEntryExtension)) {
+                blogEntryExtension = BlojsomXMLRPCConstants.DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
+            }
+
+            String filename = getBlogEntryFilename(blogEntryDescription, blogEntryExtension);
+            File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename);
+            _logger.debug("New blog entry file: " + blogFilename.toString());
+
+            Map attributeMap = new HashMap();
+            attributeMap.put(BlojsomMetaDataConstants.SOURCE_ATTRIBUTE, blogFilename);
+            entry.setAttributes(attributeMap);
+
+            try {
+                entry.save(user.getBlog());
+            } catch (BlojsomException e) {
+                _logger.error(e);
+            }
         }
 
         return entries;
+    }
+
+    /**
+     * Return a filename appropriate for the blog entry content
+     *
+     * @param content Blog entry content
+     * @param blogEntryExtension Extension to be used for the blog entry filename
+     * @return Filename for the new blog entry
+     */
+    protected String getBlogEntryFilename(String content, String blogEntryExtension) {
+        String hashable = content;
+
+        if (content.length() > MAX_HASHABLE_LENGTH) {
+            hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
+        }
+
+        String baseFilename = BlojsomUtils.digestString(hashable).toUpperCase();
+        String filename = baseFilename + blogEntryExtension;
+        return filename;
     }
 }
