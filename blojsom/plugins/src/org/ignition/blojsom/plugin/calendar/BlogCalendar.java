@@ -46,7 +46,7 @@ import java.util.*;
  * BlogCalendar
  *
  * @author Mark Lussier
- * @version $Id: BlogCalendar.java,v 1.5 2003-03-27 05:48:27 intabulas Exp $
+ * @version $Id: BlogCalendar.java,v 1.6 2003-03-27 15:27:25 intabulas Exp $
  */
 public class BlogCalendar {
 
@@ -62,9 +62,6 @@ public class BlogCalendar {
     private String _blogURL;
     private int currentmonth;
     private int currentyear;
-
-    // [Row][Col]
-    private String[][] visualcalendar = new String[6][7];
 
     /**
      *
@@ -160,82 +157,24 @@ public class BlogCalendar {
     }
 
 
-    // == Render Helper
-
-    public void buildCalendar() {
-        int fdow = getFirstDayOfMonth() - 1;
-        int ldom = getDaysInMonth();
-        int dowoffset = 0;
-        for (int x = 0; x < 6; x++) {
-            for (int y = 0; y < 7; y++) {
-                if ((x == 0 && y < fdow) || (dowoffset >= ldom)) {
-                    visualcalendar[x][y] = "&nbsp;";
-                } else {
-                    dowoffset += 1;
-                    if (!dayHasEntry(dowoffset)) {
-                        visualcalendar[x][y] = new Integer(dowoffset).toString();
-                    } else {
-                        StringBuffer _url = new StringBuffer("<a href=\"");
-                        _url.append(BlojsomUtils.getCalendarNavigationUrl(_blogURL, currentmonth, dowoffset, currentyear));
-                        _url.append("\">").append(dowoffset).append("</a>");
-                        visualcalendar[x][y] = _url.toString();
-                    }
-                }
-            }
-        }
-
+    public int getCurrentMonth() {
+        return currentmonth;
     }
 
-
-    public String getVisualCalendarRow(int row, String clazz) {
-        StringBuffer result = new StringBuffer();
-        for (int x = 0; x < 7; x++) {
-            result.append("<td class=\"").append(clazz).append("\">").append(visualcalendar[row - 1][x]).append("</td>");
-        }
-        return result.toString();
+    public int getCurrentYear() {
+        return currentyear;
     }
 
-
-    public String getVisualToday() {
-        StringBuffer result = new StringBuffer();
-        result.append("<a href=\"").append(_blogURL).append("\">Today</a>");
-        return result.toString();
+    public String getCalendarUrl() {
+        return _blogURL;
     }
 
-    public String getVisualPreviousMonth() {
-        StringBuffer result = new StringBuffer();
-        _calendar.add(Calendar.MONTH, -1);
-        result.append("<a href=\"");
-        result.append(BlojsomUtils.getCalendarNavigationUrl(_blogURL,
-                (_calendar.get(Calendar.MONTH) + 1),
-                -1, _calendar.get(Calendar.YEAR)));
-        result.append("\"> <&nbsp;&nbsp;");
-        result.append(getShortMonthName(_calendar.get(Calendar.MONTH)));
-        result.append("</a>");
-        _calendar.add(Calendar.MONTH, 1);
-        return result.toString();
+    public Calendar getCalendar() {
+        return _calendar;
     }
 
-    public String getVisualNextMonth() {
-        StringBuffer result = new StringBuffer();
-        _calendar.add(Calendar.MONTH, 1);
-
-        if ((_calendar.get(Calendar.MONTH) < (_today.get(Calendar.MONTH)+1)) &&
-                (_calendar.get(Calendar.YEAR) <= _today.get(Calendar.YEAR))) {
-            result.append("<a href=\"");
-            result.append(BlojsomUtils.getCalendarNavigationUrl(_blogURL,
-                    (_calendar.get(Calendar.MONTH) + 1),
-                    -1, _calendar.get(Calendar.YEAR)));
-            result.append("\">");
-            result.append(getShortMonthName(_calendar.get(Calendar.MONTH)));
-            result.append("&nbsp;&nbsp;> </a>");
-            _calendar.add(Calendar.MONTH, -1);
-        } else {
-            result.append(getShortMonthName(_calendar.get(Calendar.MONTH))).append("&nbsp;&nbsp;>" );
-        }
-        return result.toString();
+    public Calendar getToday() {
+        return _today;
     }
-
-
 }
 

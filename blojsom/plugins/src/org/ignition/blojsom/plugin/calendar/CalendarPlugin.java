@@ -52,7 +52,7 @@ import java.util.*;
  * CalendarPlugin
  *
  * @author Mark Lussier
- * @version $Id: CalendarPlugin.java,v 1.10 2003-03-27 05:47:16 intabulas Exp $
+ * @version $Id: CalendarPlugin.java,v 1.11 2003-03-27 15:27:24 intabulas Exp $
  */
 public class CalendarPlugin implements BlojsomPlugin {
 
@@ -150,8 +150,10 @@ public class CalendarPlugin implements BlojsomPlugin {
             }
         }
 
-        _blogCalendar.buildCalendar();
+        VelocityHelper _vtlhelper = new VelocityHelper(_blogCalendar);
+        _vtlhelper.buildCalendar();
         context.put(BlojsomConstants.BLOJSOM_CALENDAR, _blogCalendar);
+        context.put(BlojsomConstants.BLOJSOM_CALENDAR_VTLHELPER, _vtlhelper);
         return entries;
     }
 
