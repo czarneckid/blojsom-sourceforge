@@ -49,7 +49,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.43 2003-04-02 01:16:55 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.44 2003-04-06 19:00:02 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -439,51 +439,6 @@ public class Blog implements BlojsomConstants {
                 entryArray[i] = blogEntry;
             }
             return entryArray;
-        }
-    }
-
-    /**
-     * Retrieve all of the entries for a requested category that fall under a given date. A partial
-     * date may be given such that if only a year is given, it would retrieve all entries under the
-     * given category for that year. If a year and a month are give, it would retrieve all entries
-     * under the given category for that year and month. If a year, month, and day are given, it would
-     * retrieve all entries under the given category for that year, month, and day.
-     *
-     * @param requestedCategory Requested category
-     * @param flavor Flavor
-     * @param year Year to retrieve entries for
-     * @param month Month to retrieve entries for in 2-digit format (01-12)
-     * @param day Day to retrieve entries for in 2-digit format (01-31)
-     * @return Blog entry array containing the list of blog entries for the given category, year, month, and day,
-     * or <code>BlogEntry[0]</code> if there are no entries
-     */
-    public BlogEntry[] getEntriesForDate(BlogCategory requestedCategory, String flavor, String year, String month, String day) {
-        BlogEntry[] blogEntries = null;
-        ArrayList updatedEntryList = new ArrayList();
-        String requestedDateKey = year + month + day;
-
-        if ((requestedCategory == null) || ("/".equals(requestedCategory.getCategory()))) {
-            blogEntries = getEntriesAllCategories(flavor);
-        } else {
-            blogEntries = getEntriesForCategory(requestedCategory, -1);
-        }
-
-        if (blogEntries == null) {
-            return new BlogEntry[0];
-        }
-
-        for (int i = 0; i < blogEntries.length; i++) {
-            BlogEntry blogEntry = blogEntries[i];
-            String blogDateKey = BlojsomUtils.getDateKey(blogEntry.getDate());
-            if (blogDateKey.startsWith(requestedDateKey)) {
-                updatedEntryList.add(blogEntry);
-            }
-        }
-
-        if (updatedEntryList.size() == 0) {
-            return new BlogEntry[0];
-        } else {
-            return (BlogEntry[]) updatedEntryList.toArray(new BlogEntry[updatedEntryList.size()]);
         }
     }
 
