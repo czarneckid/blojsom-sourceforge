@@ -38,9 +38,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.Base64;
 import org.ignition.blojsom.blog.Blog;
-import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.blog.BlogCategory;
 import org.ignition.blojsom.blog.BlogEntry;
+import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.fetcher.BlojsomFetcher;
 import org.ignition.blojsom.fetcher.BlojsomFetcherException;
 import org.ignition.blojsom.util.BlojsomConstants;
@@ -55,7 +55,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * EchoAPIServlet
@@ -64,9 +67,9 @@ import java.util.*;
  * <a href="http://bitworking.org/rfc/draft-gregorio-03.html">http://bitworking.org/rfc/draft-gregorio-03.html</a>
  *
  * @author Mark Lussier
- * @version $Id: EchoAPIServlet.java,v 1.3 2003-07-14 17:49:34 intabulas Exp $
+ * @version $Id: EchoAPIServlet.java,v 1.4 2003-07-14 21:49:44 intabulas Exp $
  */
-public class EchoAPIServlet extends HttpServlet implements BlojsomConstants {
+public class EchoAPIServlet extends HttpServlet implements BlojsomConstants, EchoConstants {
 
     private static final String FETCHER_PERMALINK = "FETCHER_PERMALINK";
     private static final String FETCHER_FLAVOR = "FETCHER_FLAVOR";

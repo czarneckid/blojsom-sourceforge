@@ -59,7 +59,7 @@ import java.io.ByteArrayOutputStream;
  * EchoEntry
  *
  * @author Mark Lussier
- * @version $Id: EchoEntry.java,v 1.2 2003-07-14 17:30:48 intabulas Exp $
+ * @version $Id: EchoEntry.java,v 1.3 2003-07-14 21:49:44 intabulas Exp $
  */
 public class EchoEntry implements EchoConstants, BlojsomConstants {
 
@@ -149,8 +149,8 @@ public class EchoEntry implements EchoConstants, BlojsomConstants {
         theentry.appendChild(createAuthorElement(blog));
 
         theentry.appendChild(createTextElement(ELEMENT_ISSUED, entry.getISO8601Date()));
-        theentry.appendChild(createTextElement(ELEMENT_CREATED, entry.getDateAsFormat(BLOJSOM_ECHO_DATE)));
-        theentry.appendChild(createTextElement(ELEMENT_MODIFIED, entry.getDateAsFormat(BLOJSOM_ECHO_DATE)));
+        theentry.appendChild(createTextElement(ELEMENT_CREATED, entry.getDateAsFormat(ECHO_DATE_FORMAT)));
+        theentry.appendChild(createTextElement(ELEMENT_MODIFIED, entry.getDateAsFormat(ECHO_DATE_FORMAT)));
 
         theentry.appendChild(createTextElement(ELEMENT_LINK, entry.getLink()));
         theentry.appendChild(createTextElement(ELEMENT_ID, entry.getLink()));
