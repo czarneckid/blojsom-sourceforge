@@ -146,6 +146,9 @@ public class BlojsomUtils {
      * @return URL to the blog up to the servlet path
      */
     public static String getBlogSiteURL(String blogURL, String servletPath) {
+        if (servletPath == null || "".equals(servletPath)) {
+            return blogURL;
+        }
         int servletPathIndex = blogURL.indexOf(servletPath, 6);
         if (servletPathIndex == -1) {
             return blogURL;
