@@ -53,7 +53,7 @@ import java.util.*;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.12 2004-07-25 01:59:43 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.13 2004-07-27 03:29:24 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -126,6 +126,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
      * Blogger API "lastname" key
      */
     private static final String MEMBER_LASTNAME = "lastname";
+
+    private static final String TITLE_TAG_START = "<title>";
+    private static final String TITLE_TAG_END = "</title>";
 
     public static final String API_PREFIX = "blogger";
 
@@ -263,6 +266,27 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     }
 
     /**
+     * Find a title in a content string delimited by &lt;title&gt;...&lt;/title&gt;
+     *
+     * @param content Content
+     * @return Title found in content or <code>null</code> if the title was not present in &lt;title&gt; tags
+     */
+    private String findTitleInContent(String content) {
+        String titleFromContent = null;
+        int titleTagStartIndex = content.indexOf(TITLE_TAG_START);
+
+        if (titleTagStartIndex != -1) {
+            int titleTagEndIndex = content.indexOf(TITLE_TAG_END);
+
+            if (titleTagEndIndex != -1 && (titleTagEndIndex > titleTagStartIndex)) {
+                titleFromContent = content.substring(titleTagStartIndex + TITLE_TAG_START.length(), titleTagEndIndex);
+            }
+        }
+
+        return titleFromContent;
+    }
+
+    /**
      * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
      *
      * @param appkey Unique identifier/passcode of the application sending the post
@@ -308,6 +332,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
                     entry.setAttributes(attributeMap);
                     entry.setCategory(blogid);
+                    String title = findTitleInContent(content);
+                    if (title != null) {
+                        content = BlojsomUtils.replace(content, TITLE_TAG_START + title + TITLE_TAG_END, "");
+                        entry.setTitle(title);
+                    }
                     entry.setDescription(content);
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
                     blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
@@ -363,6 +392,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             if (pos != -1) {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
+                category = BlojsomUtils.urlDecode(category);
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
@@ -376,7 +406,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                 if (_entries != null && _entries.length > 0) {
                     BlogEntry _entry = _entries[0];
                     try {
-                        _entry.setTitle(null);
+                        String title = findTitleInContent(content);
+                        if (title != null) {
+                            content = BlojsomUtils.replace(content, TITLE_TAG_START + title + TITLE_TAG_END, "");
+                            _entry.setTitle(title);
+                        } else {
+                            _entry.setTitle(null);
+                        }
                         _entry.setDescription(content);
                         _entry.save(_blogUser);
                         result = true;
@@ -426,6 +462,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             if (pos != -1) {
                 category = blogid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
+                category = BlojsomUtils.urlDecode(category);
                 permalink = blogid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
@@ -441,9 +478,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                     Hashtable entrystruct = new Hashtable();
                     entrystruct.put(MEMBER_POSTID, entry.getId());
                     entrystruct.put(MEMBER_BLOGID, entry.getCategory());
-                    entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
+                    entrystruct.put(MEMBER_TITLE, entry.getTitle());
                     entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                    entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
+                    entrystruct.put(MEMBER_CONTENT, entry.getDescription());
                     entrystruct.put(MEMBER_DATECREATED, entry.getDate());
                     entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                     entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
@@ -493,6 +530,7 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             if (pos != -1) {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
+                category = BlojsomUtils.urlDecode(category);
                 permalink = postid.substring(pos + match.length());
 
                 Map fetchMap = new HashMap();
@@ -577,9 +615,9 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
                         Hashtable entrystruct = new Hashtable();
                         entrystruct.put(MEMBER_POSTID, entry.getId());
                         entrystruct.put(MEMBER_BLOGID, entry.getCategory());
-                        entrystruct.put(MEMBER_TITLE, entry.getEscapedTitle());
+                        entrystruct.put(MEMBER_TITLE, entry.getTitle());
                         entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                        entrystruct.put(MEMBER_CONTENT, entry.getTitle() + "\n" + entry.getDescription());
+                        entrystruct.put(MEMBER_CONTENT, entry.getDescription());
                         entrystruct.put(MEMBER_DATECREATED, entry.getDate());
                         entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
                         entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
