@@ -57,7 +57,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.2
- * @version $Id: WeblogsPingPlugin.java,v 1.5 2003-06-20 03:14:48 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.6 2003-08-04 15:03:30 intabulas Exp $
  */
 public class WeblogsPingPlugin implements BlojsomPlugin {
 
@@ -155,7 +155,7 @@ public class WeblogsPingPlugin implements BlojsomPlugin {
         /**
          * Default constructor
          */
-        public WeblogsPingPluginAsyncCallback() {
+        WeblogsPingPluginAsyncCallback() {
         }
 
         /**
