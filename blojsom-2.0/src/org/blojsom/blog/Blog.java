@@ -48,7 +48,7 @@ import java.util.*;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.21 2004-06-17 03:27:40 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.22 2004-07-12 03:48:50 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -233,7 +233,7 @@ public class Blog implements BlojsomConstants {
 
         _blogOwner = blogConfiguration.getProperty(BLOG_OWNER);
         _blogProperties.put(BLOG_OWNER, _blogOwner);
-
+                                                                                                 
         _blogOwnerEmail = blogConfiguration.getProperty(BLOG_OWNER_EMAIL);
         _blogProperties.put(BLOG_OWNER_EMAIL, _blogOwnerEmail);
 
@@ -345,6 +345,8 @@ public class Blog implements BlojsomConstants {
                 updatedPasswordAndEmail.append(parsedPasswordAndEmail[1]);
             }
             _authorization.put(username, updatedPasswordAndEmail.toString());
+        } else {
+            _authorization.put(username, password + ",");
         }
     }
 

@@ -37,6 +37,7 @@ package org.blojsom.plugin.admin;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.Blog;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
 import org.apache.commons.logging.Log;
@@ -57,7 +58,7 @@ import java.io.FileOutputStream;
  * 
  * @author czarnecki
  * @since blojsom 2.06
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.11 2004-06-03 01:23:47 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.12 2004-07-12 03:48:28 czarneckid Exp $
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
@@ -142,11 +143,16 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             if (!BlojsomUtils.checkNullOrBlank(blogUserID) && !BlojsomUtils.checkNullOrBlank(blogUserPassword)
                 && !BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
                 if (blogUserPassword.equals(blogUserPasswordCheck)) {
-                    user.getBlog().setAuthorizedUserPassword(blogUserID, blogUserPassword);
-                    if (!BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
-                        user.getBlog().setAuthorizedUserEmail(blogUserID, blogUserEmail);
+                    if (BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
+                        blogUserEmail = "";
                     }
-                    Map authorizationMap = user.getBlog().getAuthorization();                    
+
+                    Blog blog = user.getBlog();
+                    blog.setAuthorizedUserPassword(blogUserID, blogUserPassword);
+                    blog.setAuthorizedUserEmail(blogUserID, blogUserEmail);
+                    user.setBlog(blog);
+
+                    Map authorizationMap = user.getBlog().getAuthorization();
 
                     if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action)) {
                         _logger.debug("Added user: " + blogUserID + " to authorization map");
@@ -210,6 +216,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
      */
     private void writeAuthorizationConfiguration(Map authorizationMap, String user) throws IOException {
         File authorizationFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + user + "/" + _authorizationConfiguration);
+        _logger.debug("Writing authorization file: " + authorizationFile.toString());
         Properties authorizationProperties = BlojsomUtils.mapToProperties(authorizationMap);
         FileOutputStream fos = new FileOutputStream(authorizationFile);
         authorizationProperties.store(fos, null);
