@@ -50,15 +50,17 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Forgotten password plugin.
  *
  * @author David Czarnecki
  * @since blojsom 2.14
- * @version $Id: ForgottenPasswordPlugin.java,v 1.6 2005-03-05 18:20:57 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.7 2005-03-06 18:26:18 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomConstants {
 
@@ -66,6 +68,8 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
 
     private static final String FORGOTTEN_USERNAME_PARAM = "forgotten-username";
     private static final String FORGOTTEN_PASSWORD_PAGE = "forgotten-password";
+
+    private String _authorizationConfiguration;
 
     /**
      * Default constructor.
@@ -83,6 +87,8 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         super.init(servletConfig, blojsomConfiguration);
+
+        _authorizationConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
     }
 
     /**
@@ -113,16 +119,41 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
             String authorizedUserEmail = blog.getAuthorizedUserEmail(username);
 
             if (!BlojsomUtils.checkNullOrBlank(authorizedUserEmail)) {
-                EmailMessage emailMessage = new EmailMessage(blog.getBlogOwnerEmail(), authorizedUserEmail, "Forgotten password", "Here is your password: " + blog.getAuthorization().get(username));
+                EmailMessage emailMessage = null;
+
+                if (!blog.getUseEncryptedPasswords().booleanValue()) {
+                    emailMessage = new EmailMessage(blog.getBlogOwnerEmail(), authorizedUserEmail, "Forgotten password", "Here is your password: " + blog.getAuthorization().get(username));
+                } else {
+                    // Otherwise we have to create a new password since the password is one-way encrypted with MD5
+                    String currentPassword = (String) blog.getAuthorization().get(username);
+
+                    Random random = new Random(new Date().getTime() + System.currentTimeMillis());
+                    int password = random.nextInt(Integer.MAX_VALUE);
+                    String updatedPassword = new String(Integer.toString(password));
+                    emailMessage = new EmailMessage(blog.getBlogOwnerEmail(), authorizedUserEmail, "Forgotten password", "Here is your password: " + updatedPassword);
+                    updatedPassword = BlojsomUtils.digestString(updatedPassword);
+
+                    try {
+                        blog.setAuthorizedUserPassword(username, updatedPassword);
+                        writeAuthorizationConfiguration(blog.getAuthorization(), user.getId());
+                    } catch (IOException e) {
+                        _logger.error(e);
+                        blog.setAuthorizedUserPassword(username, currentPassword);
+                        addOperationResultMessage(context, "Unable to change password for username: " + username);
+
+                        return entries;
+                    }
+                }
+
                 ArrayList emailMessages = new ArrayList();
                 emailMessages.add(emailMessage);
                 context.put(EmailUtils.BLOJSOM_OUTBOUNDMAIL, emailMessages);
-                _logger.debug("Constructed forgotten password e-mail message to user: " + username);
+                _logger.debug("Constructed forgotten password e-mail message for username: " + username);
                 addOperationResultMessage(context, "Constructed forgotten password e-mail message to username: " + username);
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
             } else {
                 _logger.debug("Authorized e-mail address was blank for user: " + username);
-                addOperationResultMessage(context, "Authorized e-mail address was blank for user: " + username);
+                addOperationResultMessage(context, "Authorized e-mail address was blank for username: " + username);
                 httpServletRequest.setAttribute(PAGE_PARAM, FORGOTTEN_PASSWORD_PAGE);
             }
         } else {
@@ -150,5 +181,21 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Write out the authorization configuration information for a particular user
+     *
+     * @param authorizationMap Authorization usernames/passwords
+     * @param user             User id
+     * @throws java.io.IOException If there is an error writing the authorization file
+     */
+    private void writeAuthorizationConfiguration(Map authorizationMap, String user) throws IOException {
+        File authorizationFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + user + "/" + _authorizationConfiguration);
+        _logger.debug("Writing authorization file: " + authorizationFile.toString());
+        Properties authorizationProperties = BlojsomUtils.mapToProperties(authorizationMap);
+        FileOutputStream fos = new FileOutputStream(authorizationFile);
+        authorizationProperties.store(fos, null);
+        fos.close();
     }
 }
