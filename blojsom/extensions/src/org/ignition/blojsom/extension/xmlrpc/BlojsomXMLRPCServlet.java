@@ -37,6 +37,7 @@ import org.apache.xmlrpc.XmlRpcServer;
 import org.ignition.blojsom.blog.Blog;
 import org.ignition.blojsom.blog.BlojsomConfigurationException;
 import org.ignition.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
+import org.ignition.blojsom.util.BlojsomConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -49,6 +50,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Map;
+import java.util.HashMap;
 
 
 /**
@@ -57,9 +60,9 @@ import java.util.Properties;
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
  *
  * @author Mark Lussier
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2003-02-27 16:20:36 intabulas Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.3 2003-03-01 19:29:09 intabulas Exp $
  */
-public class BlojsomXMLRPCServlet extends HttpServlet {
+public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
     private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
     private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
     private static final String BLOG_XMLRPC_CONFIGURATION_IP  = "blog-xmlrpc-configuration";
@@ -113,6 +116,34 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
 
     }
 
+    /**
+     * Configure the authorization table blog (user id's and and passwords)
+     *
+     * @param servletConfig Servlet configuration information
+     */
+    private void configureAuthorization(ServletConfig servletConfig) {
+        Map _authorization = new HashMap();
+
+        String authConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
+        Properties authProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(authConfiguration);
+        try {
+            authProperties.load(is);
+            Iterator authIterator = authProperties.keySet().iterator();
+            while (authIterator.hasNext()) {
+                String userid = (String) authIterator.next();
+                String password = authProperties.getProperty(userid);
+                _authorization.put(userid, password);
+            }
+
+            if (!_blog.setAuthorization(_authorization)) {
+                _logger.error("Authorization table could not be assigned");
+            }
+
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+    }
 
 
     public void init(ServletConfig servletConfig) throws ServletException {
@@ -129,6 +160,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
 
 
         processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
+        configureAuthorization(servletConfig);
 
         _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
 

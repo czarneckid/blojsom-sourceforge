@@ -255,9 +255,9 @@ public class BlojsomServlet extends HttpServlet implements BlojsomConstants {
         super.init(servletConfig);
 
         configureBlog(servletConfig);
+        configureAuthorization(servletConfig);
         configureFlavors(servletConfig);
         configureDispatchers(servletConfig);
-        configureAuthorization(servletConfig);
         configurePlugins(servletConfig);
 
         _logger.info("blojsom home: " + _blog.getBlogHome());

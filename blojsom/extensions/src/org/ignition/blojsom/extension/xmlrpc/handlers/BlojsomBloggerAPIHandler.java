@@ -53,7 +53,7 @@ import java.util.Vector;
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BlojsomBloggerAPIHandler.java,v 1.2 2003-02-27 16:20:34 intabulas Exp $
+ * @version $Id: BlojsomBloggerAPIHandler.java,v 1.3 2003-03-01 19:29:09 intabulas Exp $
  */
 public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implements BlojsomConstants {
 
@@ -208,6 +208,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
 
             return result;
         } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
     }
@@ -265,6 +266,8 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             return result;
 
         } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
+
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
 
@@ -324,6 +327,7 @@ public class BlojsomBloggerAPIHandler extends AbstractBlojsomAPIHandler implemen
             return result;
 
         } else {
+            _logger.error("Failed to authenticate user [" + userid + "] with password [" + password + "]");
             throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
 

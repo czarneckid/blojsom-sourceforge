@@ -43,7 +43,7 @@ import java.util.HashMap;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.1 2003-02-26 21:49:42 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.2 2003-03-01 19:29:09 intabulas Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -91,7 +91,8 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
 
-            entry.setTitle(entry.getTitle().replaceAll(URL_REGEX, HREF_EXPRESSION));
+            //@todo Decided if we relally want to exand the title
+            //entry.setTitle(entry.getTitle().replaceAll(URL_REGEX, HREF_EXPRESSION));
             entry.setDescription(entry.getDescription().replaceAll(URL_REGEX, HREF_EXPRESSION));
         }
 

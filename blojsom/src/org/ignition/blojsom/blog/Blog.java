@@ -220,8 +220,10 @@ public class Blog implements BlojsomConstants {
     public boolean checkAuthorization(String username, String password) {
         boolean result = false;
 
-        if (_authorization != null && _authorization.containsKey(username)) {
-            result = password.equals((String) _authorization.get(username));
+        if (_authorization != null) {
+            if (_authorization.containsKey(username)) {
+                result = password.equals((String) _authorization.get(username));
+            }
         }
 
         return result;

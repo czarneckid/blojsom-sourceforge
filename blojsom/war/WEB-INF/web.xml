@@ -56,6 +56,10 @@
             <param-name>blog-xmlrpc-configuration</param-name>
             <param-value>/WEB-INF/blojsom-xmlrpc.properties</param-value>
         </init-param>
+        <init-param>
+            <param-name>blog-authorization</param-name>
+            <param-value>/WEB-INF/authorization.properties</param-value>
+        </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
 
