@@ -32,11 +32,11 @@
                     <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
                     <tr>
                         <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
-                        <td><input type="text" size="50" name="blog-entry-title" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTitle()"/></td>
+                        <td><input type="text" size="50" name="blog-entry-title" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedTitle()"/></td>
                     </tr>
                     <tr>
                         <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
-                        <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getDescription()</textarea></td>
+                        <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
                     </tr>
                     <tr><td></td><td>
                         <div id="quicktags">
