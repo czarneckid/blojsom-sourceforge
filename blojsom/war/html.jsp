@@ -30,7 +30,7 @@
 	<title><%= blogInformation.getBlogName() %></title>
 	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
     <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogSiteURL %>/rss.jsp" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogInformation.getBlogURL() %>?flavor=rss" />
     </head>
 
     <body>
@@ -68,7 +68,8 @@
 %>
 
     <p />
-    <a href="http://blojsom.sf.net"><img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" /></a>
+    <a href="http://blojsom.sf.net"><img src="<%= blogSiteURL %>/powered-by-blojsom.gif" border="0" /></a>&nbsp;&nbsp;
+    <a href="<%= blogInformation.getBlogURL() %>?flavor=rss"><img src="<%= blogSiteURL %>/xml.gif" border="0" /></a>
 
 
     </body>
