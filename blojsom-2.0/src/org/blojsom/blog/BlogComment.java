@@ -42,7 +42,7 @@ import java.util.Date;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.4 2004-02-22 17:44:01 intabulas Exp $
+ * @version $Id: BlogComment.java,v 1.5 2004-02-22 17:44:37 intabulas Exp $
  */
 public class BlogComment {
 
@@ -149,6 +149,15 @@ public class BlogComment {
      */
     public String getISO8601Date() {
         return BlojsomUtils.getISO8601Date(_commentDate);
+    }
+
+    /**
+     * Return an RFC 822 style date
+     *
+     * @return Date formatted in RFC 822 format
+     */
+    public String getRFC822Date() {
+        return BlojsomUtils.getRFC822Date(_commentDate);
     }
 
     /**
