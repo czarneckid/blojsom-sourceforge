@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -20,7 +21,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 1.9.1
- * @version $Id: DateFormatPlugin.java,v 1.2 2003-06-11 03:58:08 czarneckid Exp $
+ * @version $Id: DateFormatPlugin.java,v 1.3 2003-07-03 02:24:48 czarneckid Exp $
  */
 public class DateFormatPlugin implements BlojsomPlugin {
 
@@ -38,6 +39,7 @@ public class DateFormatPlugin implements BlojsomPlugin {
     private TimeZone _blogTimeZone;
     private String _blogDateFormatPattern;
 
+    private Locale _blogLocale;
     private DateFormat _blogDateFormat;
 
     /**
@@ -66,7 +68,8 @@ public class DateFormatPlugin implements BlojsomPlugin {
         }
 
         // Get a DateFormat for the specified TimeZone
-        _blogDateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+        _blogLocale = new Locale(blog.getBlogLanguage());
+        _blogDateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, _blogLocale);
         _blogDateFormat.setTimeZone(_blogTimeZone);
         if (_blogDateFormatPattern != null) {
             try {
