@@ -222,3 +222,12 @@ $entry.getDateAsFormat($format)
 #macro(Obfuscate $text)
 $BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)
 #end
+
+#macro(MathCommentQuestion)
+$!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2
+#end
+
+#macro(MathCommentFormItem)
+<p class="label">Answer $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2 =</p>
+<p class="input"><input type="text" name="mathAnswerCheck" value="" class="fixed" /></p>
+#end
