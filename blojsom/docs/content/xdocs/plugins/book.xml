@@ -18,8 +18,8 @@ site.xml. -->
 
   <menu label="Plugins">
     <menu-item label="Overview" href="site:plugins/index"/>
-    <menu-item label="Calendar" href="calendar.html"/>
-    <menu-item label="Date Format" href="date.html"/>
+    <menu-item label="calendar" href="calendar.html"/>
+    <menu-item label="date format" href="date.html"/>
     <menu-item label="emoticons" href="emoticons.html"/>
     <menu-item label="entries limiter" href="entries-limiter.html"/>
     <menu-item label="google highlight" href="google-highlight.html"/>
