@@ -15,6 +15,9 @@
             <description>$entry.getEscapedDescription()</description>
             <guid isPermaLink="true">$entry.getLink()</guid>
 			<pubDate>$entry.getRFC822Date()</pubDate>
+			<wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+                 $BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()
+            </wfw:comment>
         </item>
         #end
     </channel>
