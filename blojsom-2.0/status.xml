@@ -22,6 +22,10 @@
                 Added Edit Blog Users plugin to allow a defined set of "administrators" to add and delete users.
             </action>
 
+            <action dev="czarneckid" type="add" context="Plugin">
+                Added Edit Blog Authorization plugin to allow you to add new authors to your blog.
+            </action>
+
             <action dev="czarneckid" type="update" context="Plugin">
                 Updated weblogs ping plugin to look for <tt>meta-no-ping-weblogs=true</tt> meta-data in a blog entry
                 to signal it should not ping weblogs.com, weblo.gs, and Technorati. Also updated the plugin to
