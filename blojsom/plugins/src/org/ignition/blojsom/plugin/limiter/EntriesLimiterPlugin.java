@@ -51,7 +51,7 @@ import java.util.Map;
  * EntriesLimiterPlugin
  *
  * @author David Czarnecki
- * @version $Id: EntriesLimiterPlugin.java,v 1.3 2003-04-04 02:53:40 czarneckid Exp $
+ * @version $Id: EntriesLimiterPlugin.java,v 1.4 2003-04-04 15:27:32 intabulas Exp $
  */
 public class EntriesLimiterPlugin implements BlojsomPlugin {
 
@@ -113,12 +113,17 @@ public class EntriesLimiterPlugin implements BlojsomPlugin {
         if (blogDisplayEntries.intValue() == -1) {
             return entries;
         } else {
-            BlogEntry[] filteredEntries = new BlogEntry[blogDisplayEntries.intValue()];
-            for (int i = 0; i < blogDisplayEntries.intValue(); i++) {
-                filteredEntries[i] = entries[i];
+            if (entries.length <= blogDisplayEntries.intValue()) {
+                return entries;
+            } else {
+                BlogEntry[] filteredEntries = new BlogEntry[blogDisplayEntries.intValue()];
+                for (int i = 0; i < blogDisplayEntries.intValue(); i++) {
+                    filteredEntries[i] = entries[i];
+                }
+                return filteredEntries;
             }
 
-            return filteredEntries;
+
         }
     }
 
