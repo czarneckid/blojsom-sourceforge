@@ -15,6 +15,7 @@
     <property name="src.dir" value="${basedir}/src"/>
     <property name="plugins.src.dir" value="${basedir}/plugins/src"/>
     <property name="extensions.src.dir" value="${basedir}/extensions/src"/>
+    <property name="testing.src.dir" value="${basedir}/testing/src"/>
     <property name="war.dir" value="${basedir}/war"/>
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
     <property name="webinf.lib.dir" value="${webinf.dir}/lib"/>
@@ -157,6 +158,14 @@
             optimize="${optimize}">
             <classpath refid="build.classpath"/>
         </javac>
+        <javac srcdir="${testing.src.dir}"
+            destdir="${compile.dir}"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+            <classpath refid="build.classpath"/>
+        </javac>
+
     </target>
 
 
