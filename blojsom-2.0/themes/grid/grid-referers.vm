@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>$BLOJSOM_BLOG.getBlogName()</title>
-<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-atom.css" />
+<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-grid.css" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
 </head>
 

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>$BLOJSOM_BLOG.getBlogName()</title>
-<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-atom.css" />
+<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-grid.css" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rss" />
 <link rel="EditURL" type="application/rsd+xml" title="RSD" href="$BLOJSOM_BLOG.getBlogURL()?flavor=rsd" />
@@ -74,7 +74,7 @@ Search:&nbsp;&nbsp;<input size="14" type="text" name="query" value=""/>&nbsp;
              xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
         <rdf:Description
              rdf:about="$entry.getLink()"
-             dc:identifer="$entry.getLink()"
+             dc:identifier="$entry.getLink()"
              dc:title="$entry.getTitle()"
              dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
              dc:description="$blogDescription"
