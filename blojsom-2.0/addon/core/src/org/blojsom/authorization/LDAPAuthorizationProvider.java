@@ -3,7 +3,6 @@
  * All rights reserved.
  *
  * Portions Copyright (c) 2003-2005 by Mark Lussier
- * Portions Copyright (c) 2004-2005 by Christopher Bailey
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -75,7 +74,7 @@ import java.util.Map;
  * http://www.mozilla.org/directory/.
  *
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.5 2005-03-19 04:54:03 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.6 2005-04-07 16:46:17 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider implements BlojsomConstants {
