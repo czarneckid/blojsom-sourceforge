@@ -53,7 +53,7 @@ import java.util.ArrayList;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.6 2005-01-05 02:32:52 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.7 2005-04-12 17:58:15 intabulas Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -296,8 +296,11 @@ public class FileBackedBlogCategory extends BlogCategory {
         }
 
         BlogCategory blogCategory = new FileBackedBlogCategory();
+        blogCategory.setParentCategory(this);        
         blogCategory.setCategory(categoryKey);
         blogCategory.setCategoryURL(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(categoryKey));
+
+
         try {
             blogCategory.load(blogUser);
         } catch (BlojsomException e) {
