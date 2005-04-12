@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2003-2005 , David A. Czarnecki
+ * Copyright (c) 2003-2004 , David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2005  by Mark Lussier
+ * Portions Copyright (c) 2003-2004  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,6 +37,7 @@ package org.blojsom.dispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
+import org.blojsom.filter.PermalinkFilter;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.util.BlojsomUtils;
@@ -54,7 +55,7 @@ import java.util.Map;
  * JSPDispatcher
  *
  * @author David Czarnecki
- * @version $Id: JSPDispatcher.java,v 1.13 2005-01-11 18:43:02 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.14 2005-04-12 00:58:32 czarneckid Exp $
  */
 public class JSPDispatcher implements BlojsomDispatcher {
 
@@ -116,10 +117,8 @@ public class JSPDispatcher implements BlojsomDispatcher {
         }
 
         String flavorTemplateForPage = null;
-        String pageParameter = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest, true);
-
-        if (pageParameter != null) {
-            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, pageParameter);
+        if (BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest) != null) {
+            flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest));
             _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
         }
 
@@ -128,6 +127,11 @@ public class JSPDispatcher implements BlojsomDispatcher {
         while (contextIterator.hasNext()) {
             String contextKey = (String) contextIterator.next();
             httpServletRequest.setAttribute(contextKey, context.get(contextKey));
+        }
+
+        if (httpServletRequest instanceof PermalinkFilter.PermalinkRequest) {
+            PermalinkFilter.PermalinkRequest permalinkRequest = (PermalinkFilter.PermalinkRequest) httpServletRequest;
+            permalinkRequest.setPathInfo(null);
         }
 
         // Try and look for the original flavor template with page for the individual user

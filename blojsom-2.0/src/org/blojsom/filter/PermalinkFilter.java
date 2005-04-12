@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
- * @version $Id: PermalinkFilter.java,v 1.7 2005-01-05 02:33:00 czarneckid Exp $
+ * @version $Id: PermalinkFilter.java,v 1.8 2005-04-12 00:58:35 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class PermalinkFilter implements Filter {
@@ -211,7 +211,7 @@ public class PermalinkFilter implements Filter {
     /**
      * Permalink request
      */
-    private class PermalinkRequest extends HttpServletRequestWrapper {
+    public class PermalinkRequest extends HttpServletRequestWrapper {
 
         private Map params;
         private String uri;
@@ -306,6 +306,16 @@ public class PermalinkFilter implements Filter {
          */
         public String[] getParameterValues(String name) {
             return (String[]) params.get(name);
+        }
+
+        /**
+         * Set the path information for the request
+         *
+         * @param pathInfo New path information
+         * @since blojsom 2.25
+         */
+        public void setPathInfo(String pathInfo) {
+            this.pathInfo = pathInfo;
         }
     }
 }
