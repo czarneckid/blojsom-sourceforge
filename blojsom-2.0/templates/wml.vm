@@ -10,7 +10,7 @@
     <br/>
     <a href="http://blojsom.sf.net/">Powered by Blojsom</a></p>
 
-<p align="center"><b>Latest blog enterys</b></p>
+<p align="center"><b>Latest blog entries</b></p>
 
 #set ($counter = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
