@@ -56,7 +56,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.36 2005-03-16 03:20:30 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.37 2005-04-15 17:06:26 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -444,6 +444,8 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
                 // For persisting the Last-Modified time
                 context.put(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
+                trackback.setBlogEntry(entries[0]);
+
                 // Merge the template e-mail
                 Map emailTemplateContext = new HashMap();
                 emailTemplateContext.put(BLOJSOM_BLOG, blog);
@@ -469,7 +471,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
                 if (trackbacks == null) {
                     trackbacks = new ArrayList();
                 }
-                trackback.setBlogEntry(entries[0]);
+
                 trackbacks.add(trackback);
                 entries[0].setTrackbacks(trackbacks);
 

@@ -73,7 +73,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.46 2005-04-02 18:47:51 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.47 2005-04-15 17:05:30 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -530,7 +530,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
             if (blogCommentIDs != null && blogCommentIDs.length > 0) {
-                File commentsDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogCommentsDirectory()
+                File commentsDirectory = new File(blog.getBlogHome() + blogCategoryName + File.separatorChar + blog.getBlogCommentsDirectory()
                         + File.separatorChar + blogEntryId + File.separatorChar);
                 File blogCommentToDelete;
                 for (int i = 0; i < blogCommentIDs.length; i++) {
@@ -584,7 +584,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
             if (blogCommentIDs != null && blogCommentIDs.length > 0) {
-                File commentsDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogCommentsDirectory()
+                File commentsDirectory = new File(blog.getBlogHome() + blogCategoryName + File.separatorChar + blog.getBlogCommentsDirectory()
                         + File.separatorChar + blogEntryId + File.separatorChar);
                 File blogCommentMetaData;
                 for (int i = 0; i < blogCommentIDs.length; i++) {
@@ -646,7 +646,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String[] blogTrackbackIDs = httpServletRequest.getParameterValues(BLOG_TRACKBACK_ID);
             if (blogTrackbackIDs != null && blogTrackbackIDs.length > 0) {
-                File trackbacksDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogTrackbackDirectory()
+                File trackbacksDirectory = new File(blog.getBlogHome() + blogCategoryName + File.separatorChar + blog.getBlogTrackbackDirectory()
                         + File.separatorChar + blogEntryId + File.separatorChar);
                 File blogTrackbackToDelete;
                 for (int i = 0; i < blogTrackbackIDs.length; i++) {
@@ -700,7 +700,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             String[] blogTrackbackIDs = httpServletRequest.getParameterValues(BLOG_TRACKBACK_ID);
             if (blogTrackbackIDs != null && blogTrackbackIDs.length > 0) {
-                File trackbacksDirectory = new File(blog.getBlogHome() + blogCategoryName + blog.getBlogTrackbackDirectory()
+                File trackbacksDirectory = new File(blog.getBlogHome() + blogCategoryName + File.separatorChar + blog.getBlogTrackbackDirectory()
                         + File.separatorChar + blogEntryId + File.separatorChar);
                 File blogTrackbackMetaData;
                 for (int i = 0; i < blogTrackbackIDs.length; i++) {
