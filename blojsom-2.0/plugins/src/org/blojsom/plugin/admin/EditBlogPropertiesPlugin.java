@@ -60,15 +60,20 @@ import java.util.*;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.33 2005-04-19 03:40:40 czarneckid Exp $
  * @since blojsom 2.04
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.32 2005-01-31 03:08:25 czarneckid Exp $
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
     private static Log _logger = LogFactory.getLog(EditBlogPropertiesPlugin.class);
 
     private static final String EDIT_BLOG_PROPERTIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-properties";
+
+    // Actions
     private static final String EDIT_BLOG_PROPERTIES_ACTION = "edit-blog-properties";
+    private static final String CHECK_BLOG_PROPERTY_ACTION = "check-blog-property";
+    private static final String SET_BLOG_PROPERTY_ACTION = "set-blog-property";
+
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PROPERTIES_CATEGORY_MAP";
     private static final String BLOJSOM_INSTALLED_LOCALES = "BLOJSOM_INSTALLED_LOCALES";
     private static final String BLOJSOM_JVM_LANGUAGES = "BLOJSOM_JVM_LANGUAGES";
@@ -77,6 +82,11 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
     // Permissions
     private static final String EDIT_BLOG_PROPERTIES_PERMISSION = "edit_blog_properties";
+
+    // Form items
+    private static final String INDIVIDUAL_BLOG_PROPERTY = "individual-blog-property";
+    private static final String INDIVIDUAL_BLOG_PROPERTY_VALUE = "individual-blog-property-value";
+
 
     /**
      * Default constructor.
@@ -87,11 +97,11 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link org.blojsom.blog.BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
@@ -254,6 +264,56 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             } catch (IOException e) {
                 _logger.error(e);
                 addOperationResultMessage(context, "Unable to save blog properties");
+            }
+
+            // Request that we go back to the edit blog properties page
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
+        } else if (SET_BLOG_PROPERTY_ACTION.equals(action)) {
+            _logger.debug("User requested set blog property action");
+
+            String blogProperty = BlojsomUtils.getRequestValue(INDIVIDUAL_BLOG_PROPERTY, httpServletRequest);
+            if (!BlojsomUtils.checkNullOrBlank(blogProperty)) {
+                String blogPropertyValue = BlojsomUtils.getRequestValue(INDIVIDUAL_BLOG_PROPERTY_VALUE, httpServletRequest);
+                if (blogPropertyValue == null) {
+                    blogPropertyValue = "";
+                }
+
+                blog.setBlogProperty(blogProperty, blogPropertyValue);
+
+                user.setBlog(blog);
+
+                // Write out new blog properties
+                Properties blogProperties = BlojsomUtils.mapToProperties(blog.getBlogProperties(), UTF8);
+                File propertiesFile = new File(_blojsomConfiguration.getInstallationDirectory()
+                        + BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getBaseConfigurationDirectory()) +
+                        "/" + user.getId() + "/" + BlojsomConstants.BLOG_DEFAULT_PROPERTIES);
+
+                _logger.debug("Writing blog properties to: " + propertiesFile.toString());
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(propertiesFile);
+                    blogProperties.store(fos, null);
+                    fos.close();
+                    addOperationResultMessage(context, "Updated blog properties");
+                } catch (IOException e) {
+                    _logger.error(e);
+                    addOperationResultMessage(context, "Unable to save blog properties");
+                }
+            }
+
+            // Request that we go back to the edit blog properties page
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
+        } else if (CHECK_BLOG_PROPERTY_ACTION.equals(action)) {
+            _logger.debug("User requested check blog property action");
+
+            String blogProperty = BlojsomUtils.getRequestValue(INDIVIDUAL_BLOG_PROPERTY, httpServletRequest);
+
+            if (!BlojsomUtils.checkNullOrBlank(blogProperty)) {
+                if (blog.getBlogProperty(blogProperty) != null) {
+                    addOperationResultMessage(context, "Blog property: " + blogProperty + " set to: " + blog.getBlogProperty(blogProperty));
+                } else {
+                    addOperationResultMessage(context, "Blog property: " + blogProperty + " not found");
+                }
             }
 
             // Request that we go back to the edit blog properties page

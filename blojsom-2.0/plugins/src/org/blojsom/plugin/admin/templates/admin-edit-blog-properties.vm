@@ -230,6 +230,57 @@
                         </form>
                     </table>
                  </div>
+
+                <div class="mainClm">
+                    <h3>#adminResource('set.individual.property.text' 'Set individual blog property')</h3>
+                    <table>
+                        <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
+
+                            <input type="hidden" name="action" value="set-blog-property"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-properties"/>
+
+                            <!-- Individual blog property -->
+                            <tr>
+                                <td>#adminResource('blog.property.text' 'Blog property')</td> <td><input name="individual-blog-property" type="text" size="50" value=""/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.property.value.text' 'Blog property value')</td> <td><input name="individual-blog-property-value" type="text" size="50" value=""/></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('set.individual.property.text' 'Set individual blog property')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                 </div>
+
+                 <div class="mainClm">
+                    <h3>#adminResource('check.individual.property.text' 'Check individual blog property')</h3>
+                    <table>
+                        <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
+
+                            <input type="hidden" name="action" value="check-blog-property"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-properties"/>
+
+                            <!-- Individual blog property -->
+                            <tr>
+                                <td>#adminResource('blog.property.text' 'Blog property')</td> <td><input name="individual-blog-property" type="text" size="50" value=""/></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('check.individual.property.text' 'Check individual blog property')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                 </div>
             </div>
         </div>
     </div>
