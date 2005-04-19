@@ -140,6 +140,22 @@
 
 #macro(CategoryName $blogCategory)#if ($blogCategory.getName()) $blogCategory.getName() #else $blogCategory.getCategory()#end#end
 
+#macro(SanitizedCategory $category)
+#set($categoryLength = $category.length())
+#set($lengthMinusOne = $categoryLength - 1)
+#if ($categoryLength > 1)
+#if ($category.startsWith("/") && $category.endsWith("/"))
+    #set($sanitizedCategory = $category.substring(1, $lengthMinusOne))
+#elseif ($category.startsWith("/"))
+    #set($sanitizedCategory = $category.substring(1))
+#else
+    #set($sanitizedCategory = $category.substring(0, $lengthMinusOne))
+#end
+#else
+    #set($sanitizedCategory = "")
+#end
+#end
+
 ###############################################
 ## Template Snippet Macros
 ###############################################
