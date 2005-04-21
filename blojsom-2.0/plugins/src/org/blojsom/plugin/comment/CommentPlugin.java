@@ -41,6 +41,7 @@ import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.comment.event.CommentAddedEvent;
+import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomConstants;
@@ -59,7 +60,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.31 2005-03-16 03:20:29 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.32 2005-04-21 01:43:16 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -503,6 +504,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                         commentMetaData.put(key, value);
                     }
                 }
+
+                _configuration.getEventBroadcaster().processEvent(new CommentResponseSubmissionEvent(this, new Date(), user, author, authorEmail, authorURL, commentText, commentMetaData));                
 
                 // Check to see if the comment should be destroyed (not saved) automatically
                 if (!commentMetaData.containsKey(BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY)) {
