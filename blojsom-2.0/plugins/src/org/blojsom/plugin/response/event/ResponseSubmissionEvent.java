@@ -37,6 +37,8 @@ package org.blojsom.plugin.response.event;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.event.BlojsomEvent;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
@@ -45,21 +47,39 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: ResponseSubmissionEvent.java,v 1.1 2005-04-21 01:43:01 czarneckid Exp $
+ * @version $Id: ResponseSubmissionEvent.java,v 1.2 2005-04-21 03:42:09 czarneckid Exp $
  */
 public class ResponseSubmissionEvent extends BlojsomEvent {
 
-    private String _submitter;
-    private String _submitterItem1;
-    private String _submitterItem2;
-    private String _content;
-    private Map _metaData;
-    private BlogUser _blog;
+    protected HttpServletRequest _httpServletRequest;
+    protected HttpServletResponse _httpServletResponse;
+    protected String _submitter;
+    protected String _submitterItem1;
+    protected String _submitterItem2;
+    protected String _content;
+    protected Map _metaData;
+    protected BlogUser _blog;
 
-    public ResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
+    /**
+     * Create a new instance of the response submission event
+     *
+     * @param source Source of event
+     * @param timestamp Time of event
+     * @param blog {@link BlogUser}
+     * @param httpServletRequest {@link HttpServletRequest}
+     * @param httpServletResponse {@link HttpServletResponse}
+     * @param submitter Submitter
+     * @param submitterItem1 Submitter data item 1
+     * @param submitterItem2 Submitter data item 2
+     * @param content Content to be evaluated
+     * @param metaData Meta-data
+     */
+    public ResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
         super(source, timestamp);
 
         _blog = blog;
+        _httpServletRequest = httpServletRequest;
+        _httpServletResponse = httpServletResponse;
         _submitter = submitter;
         _submitterItem1 = submitterItem1;
         _submitterItem2 = submitterItem2;
@@ -67,27 +87,75 @@ public class ResponseSubmissionEvent extends BlojsomEvent {
         _metaData = metaData;
     }
 
+    /**
+     * Retrieve the submitter
+     *
+     * @return Submitter
+     */
     public String getSubmitter() {
         return _submitter;
     }
 
+    /**
+     * Retrieve the submitter item #1
+     *
+     * @return Submitter item #1
+     */
     public String getSubmitterItem1() {
         return _submitterItem1;
     }
 
+    /**
+     * Retrieve the submitter item #2
+     *
+     * @return Submitter item #2
+     */
     public String getSubmitterItem2() {
         return _submitterItem2;
     }
 
+    /**
+     * Retrieve the submission content
+     *
+     * @return Submission content
+     */
     public String getContent() {
         return _content;
     }
 
+    /**
+     * Retrieve the meta-data associated with the submission
+     *
+     * @return Meta-data associated with the submission
+     */
     public Map getMetaData() {
         return _metaData;
     }
 
+    /**
+     * Retrieve the {@link BlogUser}
+     *
+     * @return {@link BlogUser}
+     */
     public BlogUser getBlog() {
         return _blog;
+    }
+
+    /**
+     * Retrieve the {@link HttpServletRequest}
+     *
+     * @return {@link HttpServletRequest}
+     */
+    public HttpServletRequest getHttpServletRequest() {
+        return _httpServletRequest;
+    }
+
+    /**
+     * Retrieve the {@link HttpServletResponse}
+     *
+     * @return {@link HttpServletResponse}
+     */
+    public HttpServletResponse getHttpServletResponse() {
+        return _httpServletResponse;
     }
 }

@@ -37,6 +37,8 @@ package org.blojsom.plugin.trackback.event;
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 import org.blojsom.blog.BlogUser;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
@@ -44,24 +46,26 @@ import java.util.Map;
  * Trackback response submission event
  *
  * @author David Czarnecki
+ * @version $Id: TrackbackResponseSubmissionEvent.java,v 1.2 2005-04-21 03:42:09 czarneckid Exp $
  * @since blojsom 2.25
- * @version $Id: TrackbackResponseSubmissionEvent.java,v 1.1 2005-04-21 01:43:01 czarneckid Exp $
  */
 public class TrackbackResponseSubmissionEvent extends ResponseSubmissionEvent {
 
     /**
      * Create a new instance of the trackback response submission event
      *
-     * @param source Source of event
-     * @param timestamp Time of event
-     * @param blog {@link BlogUser}
-     * @param submitter Submitter (blogName)
-     * @param submitterItem1 Submitter data item 1 (title)
-     * @param submitterItem2 Submitter data item 2 (UTL)
-     * @param content Trackback excerpt
-     * @param metaData Trackback meta-data
+     * @param source              Source of event
+     * @param timestamp           Time of event
+     * @param blog                {@link BlogUser}
+     * @param httpServletRequest  {@link HttpServletRequest}
+     * @param httpServletResponse {@link HttpServletResponse}
+     * @param submitter           Submitter (blogName)
+     * @param submitterItem1      Submitter data item 1 (title)
+     * @param submitterItem2      Submitter data item 2 (UTL)
+     * @param content             Trackback excerpt
+     * @param metaData            Trackback meta-data
      */
-    public TrackbackResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
-        super(source, timestamp, blog, submitter, submitterItem1, submitterItem2, content, metaData);
+    public TrackbackResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
+        super(source, timestamp, blog, httpServletRequest, httpServletResponse, submitter, submitterItem1, submitterItem2, content, metaData);
     }
 }

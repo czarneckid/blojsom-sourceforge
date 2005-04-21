@@ -34,9 +34,11 @@
  */
 package org.blojsom.plugin.comment.event;
 
-import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
@@ -45,7 +47,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: CommentResponseSubmissionEvent.java,v 1.1 2005-04-21 01:43:01 czarneckid Exp $
+ * @version $Id: CommentResponseSubmissionEvent.java,v 1.2 2005-04-21 03:42:09 czarneckid Exp $
  */
 public class CommentResponseSubmissionEvent extends ResponseSubmissionEvent {
 
@@ -55,13 +57,15 @@ public class CommentResponseSubmissionEvent extends ResponseSubmissionEvent {
      * @param source Source of event
      * @param timestamp Time of event
      * @param blog {@link BlogUser}
+     * @param httpServletRequest {@link HttpServletRequest}
+     * @param httpServletResponse {@link HttpServletResponse}
      * @param submitter Submitter (author)
      * @param submitterItem1 Submitter data item 1 (authorEmail)
      * @param submitterItem2 Submitter data item 2 (authorURL)
      * @param content Comment text
      * @param metaData Comment meta-data
      */
-    public CommentResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
-        super(source, timestamp, blog, submitter, submitterItem1, submitterItem2, content, metaData);
+    public CommentResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
+        super(source, timestamp, blog, httpServletRequest, httpServletResponse, submitter, submitterItem1, submitterItem2, content, metaData);
     }
 }
