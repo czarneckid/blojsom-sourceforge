@@ -41,6 +41,7 @@ import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.trackback.event.TrackbackAddedEvent;
+import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
@@ -56,7 +57,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.37 2005-04-15 17:06:26 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.38 2005-04-21 01:43:30 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -434,6 +435,9 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
 
             Trackback trackback = new Trackback();
             Integer code = new Integer(1);
+
+            _blojsomConfiguration.getEventBroadcaster().processEvent(new TrackbackResponseSubmissionEvent(this, new Date(), user, blogName, title, url, excerpt, trackbackMetaData));                
+
 
             // Check to see if the trackback should be destroyed (not saved) automatically
             if (!trackbackMetaData.containsKey(BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY)) {
