@@ -43,31 +43,30 @@ import org.blojsom.event.BlojsomEvent;
 import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
-import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
-import org.blojsom.plugin.trackback.TrackbackPlugin;
-import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
+import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
+import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
+import org.blojsom.plugin.trackback.TrackbackPlugin;
+import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
+import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomProperties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.Map;
 
 /**
  * Spam phrase moderation plugin
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: SpamPhraseModerationPlugin.java,v 1.1 2005-04-22 01:15:14 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationPlugin.java,v 1.2 2005-04-22 14:16:10 czarneckid Exp $
  */
 public class SpamPhraseModerationPlugin implements BlojsomPlugin, BlojsomListener {
 
@@ -165,14 +164,18 @@ public class SpamPhraseModerationPlugin implements BlojsomPlugin, BlojsomListene
                 File blacklistFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + "/" +
                         responseSubmissionEvent.getBlog().getId() + "/" + _spamPhraseBlacklist);
                 if (blacklistFile.exists()) {
-                    BlojsomProperties blojsomProperties = new BlojsomProperties();
                     try {
                         FileInputStream fis = new FileInputStream(blacklistFile);
-                        blojsomProperties.load(fis);
-                        fis.close();
-
-                        Iterator phraseIterator = blojsomProperties.keySet().iterator();
+                        BufferedReader br = new BufferedReader(new InputStreamReader(fis,  BlojsomConstants.UTF8));
+                        ArrayList spamPhrases = new ArrayList(25);
                         String phrase;
+
+                        while ((phrase = br.readLine()) != null) {
+                            spamPhrases.add(phrase);
+                        }
+
+                        br.close();
+
                         boolean deletePhraseSpam = DEFAULT_DELETE_PHRASESPAM;
                         Map metaData = responseSubmissionEvent.getMetaData();
 
@@ -181,6 +184,7 @@ public class SpamPhraseModerationPlugin implements BlojsomPlugin, BlojsomListene
                             deletePhraseSpam = Boolean.valueOf(deletePhraseSpamValue).booleanValue();
                         }
 
+                        Iterator phraseIterator = spamPhrases.iterator();
                         boolean phraseSpamFound = false;
                         while (phraseIterator.hasNext()) {
                             phrase = (String) phraseIterator.next();
