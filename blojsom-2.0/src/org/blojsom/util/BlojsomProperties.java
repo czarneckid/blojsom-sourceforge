@@ -3,7 +3,6 @@
  * All rights reserved.
  *
  * Portions Copyright (c) 2003-2005  by Mark Lussier
- * BlojsomProperties by Jorg Prante
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,12 +45,12 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jorg Prante
- * @version $Id: BlojsomProperties.java,v 1.10 2005-01-05 02:33:03 czarneckid Exp $
+ * @version $Id: BlojsomProperties.java,v 1.11 2005-04-22 22:28:30 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class BlojsomProperties extends Properties implements BlojsomConstants {
 
-    private String encoding;
+    private String encoding = UTF8;
 
     private static final String strictKeyValueSeparators = "=:";
 
@@ -69,7 +68,6 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
      */
     public BlojsomProperties() {
         super();
-        this.encoding = UTF8;
     }
 
     /**
@@ -97,7 +95,6 @@ public class BlojsomProperties extends Properties implements BlojsomConstants {
      */
     public BlojsomProperties(Properties defaults) {
         super(defaults);
-        this.encoding = UTF8;
     }
 
     /**

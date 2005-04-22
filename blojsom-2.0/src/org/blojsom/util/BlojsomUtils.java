@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.66 2005-03-21 17:53:34 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.67 2005-04-22 22:29:28 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1316,7 +1316,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @since blojsom 2.04
      */
     public static Properties mapToProperties(Map map) {
-        return mapToProperties(map, null);
+        return mapToProperties(map, UTF8);
     }
 
     /**
