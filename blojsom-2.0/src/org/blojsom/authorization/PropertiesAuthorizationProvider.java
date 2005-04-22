@@ -55,7 +55,7 @@ import java.util.List;
  * PropertiesAuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: PropertiesAuthorizationProvider.java,v 1.8 2005-03-19 04:54:03 czarneckid Exp $
+ * @version $Id: PropertiesAuthorizationProvider.java,v 1.9 2005-04-22 22:29:59 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class PropertiesAuthorizationProvider implements AuthorizationProvider, BlojsomConstants {
@@ -101,7 +101,7 @@ public class PropertiesAuthorizationProvider implements AuthorizationProvider, B
 
         Properties authorizationProperties;
         InputStream is = _servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + blogUser.getId() + '/' + authorizationConfiguration);
-        authorizationProperties = new Properties();
+        authorizationProperties = new BlojsomProperties();
         try {
             authorizationProperties.load(is);
             is.close();
