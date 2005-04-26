@@ -282,3 +282,15 @@
 
 #macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
 
+###############################################
+## Administrative Macros
+###############################################
+
+#macro(EditEntry $entry)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=edit-blog-entry&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()">Edit Entry</a>#end#end
+
+#macro(DeleteEntry $entry)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-entry&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()">Delete Entry</a>#end#end
+
+#macro(DeleteComment $entry $blogComment)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-comments&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()&blog-comment-id=$blogComment.getId()">Delete Comment</a>#end#end
+
+#macro(DeleteTrackback $entry $trackback)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-trackbacks&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()&blog-trackback-id=$trackback.getId()">Delete Trackback</a>#end#end
+
