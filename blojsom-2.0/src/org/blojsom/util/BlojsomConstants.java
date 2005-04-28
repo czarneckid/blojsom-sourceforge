@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.67 2005-04-06 14:48:31 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.68 2005-04-28 15:03:38 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -413,6 +413,7 @@ public interface BlojsomConstants {
     public static final String USE_ENCRYPTED_PASSWORDS = "use-encrypted-passwords";
     public static final String DIGEST_ALGORITHM = "digest-algorithm";
     public static final String RECURSIVE_CATEGORIES = "recursive-categories";
+    public static final String PREFERRED_SYNDICATION_FLAVOR = "preferred-syndication-flavor";
 
     // Other generic properties
     public static final String ADMINISTRATORS_IP = "administrators";
