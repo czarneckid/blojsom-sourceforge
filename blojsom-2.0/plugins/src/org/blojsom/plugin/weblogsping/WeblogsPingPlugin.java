@@ -36,8 +36,8 @@ package org.blojsom.plugin.weblogsping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xmlrpc.AsyncCallback;
 import org.apache.xmlrpc.XmlRpcClient;
+import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
@@ -55,9 +55,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -65,24 +62,19 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.17 2005-03-05 18:18:52 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.18 2005-04-28 15:02:22 czarneckid Exp $
  * @since blojsom 1.9.2
  */
 public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(WeblogsPingPlugin.class);
 
-    private static final String WEBLOGS_PING_URL = "http://rpc.weblogs.com/RPC2";
-    private static final String WEBLO_GS_PING_URL = "http://ping.blo.gs/";
-    private static final String TECHNORATI_PING_URL = "http://rpc.technorati.com/rpc/ping";
     private static final String WEBLOGS_PING_METHOD = "weblogUpdates.ping";
+    private static final String WEBLOGS_EXTENDED_PING_METHOD = "weblogUpdates.extendedPing";
+    private static final String DEFAULT_PREFERRED_SYNDICATION_FLAVOR = "rss2";
 
     public static final String BLOG_PING_URLS_IP = "blog-ping-urls";
     public static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
-
-    private WeblogsPingPluginAsyncCallback _callbackHandler;
-
-    private Map _userLastPingMap;
 
     /**
      * Default constructor
@@ -98,15 +90,6 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        _callbackHandler = new WeblogsPingPluginAsyncCallback();
-        _userLastPingMap = new HashMap(5);
-        String user;
-        String[] users = blojsomConfiguration.getBlojsomUsers();
-        for (int i = 0; i < users.length; i++) {
-            user = blojsomConfiguration.getBlojsomUsers()[i];
-            _userLastPingMap.put(user, new Date());
-        }
-
         blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
@@ -126,71 +109,6 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
                                BlogUser user,
                                Map context,
                                BlogEntry[] entries) throws BlojsomPluginException {
-        Blog blog = user.getBlog();
-
-        // If there are no entries return
-        if (entries.length <= 0) {
-            return entries;
-        } else {
-            // If we have not seen the user before (because they were added dynamically), then add their last ping date to the map
-            if (!_userLastPingMap.containsKey(user.getId())) {
-                _userLastPingMap.put(user.getId(), new Date());
-
-                return entries;
-            }
-
-            // Check the latest entry's metadata to see if we should not do the ping to weblogs.com and weblo.gs.
-            Map metaData = entries[0].getMetaData();
-            if (metaData != null && metaData.containsKey(NO_PING_WEBLOGS_METADATA)) {
-                return entries;
-            }
-
-            // Pull the latest entry, check its date to see if its newer than the lastPingDate, and
-            // if so, ping weblogs.com
-            BlogEntry entry = entries[0];
-            Date lastPingDate = (Date) _userLastPingMap.get(user.getId());
-            if (lastPingDate.before(entry.getDate())) {
-                lastPingDate = entry.getDate();
-                _userLastPingMap.put(user.getId(), lastPingDate);
-
-                try {
-                    Vector params = new Vector();
-                    params.add(blog.getBlogName());
-                    params.add(blog.getBlogURL());
-
-                    String pingURLsIP = blog.getBlogProperty(BLOG_PING_URLS_IP);
-                    // Check to see if no ping URLs are provided
-                    if (BlojsomUtils.checkNullOrBlank(pingURLsIP)) {
-                        // Ping weblogs.com
-                        XmlRpcClient weblogsComclient = new XmlRpcClient(WEBLOGS_PING_URL);
-                        weblogsComclient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
-
-                        // Ping weblo.gs
-                        XmlRpcClient weblogsClient = new XmlRpcClient(WEBLO_GS_PING_URL);
-                        weblogsClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
-
-                        // Ping technorati
-                        XmlRpcClient technoratiClient = new XmlRpcClient(TECHNORATI_PING_URL);
-                        technoratiClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
-                    } else {
-                        // If they are provided, loop through that list of URLs to ping
-                        String[] pingURLs = BlojsomUtils.parseDelimitedList(pingURLsIP, WHITESPACE);
-                        if (pingURLs != null && pingURLs.length > 0) {
-                            for (int i = 0; i < pingURLs.length; i++) {
-                                String pingURL = pingURLs[i];
-                                XmlRpcClient weblogsPingClient = new XmlRpcClient(pingURL);
-                                weblogsPingClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    _logger.error(e);
-                }
-            } else {
-                _logger.debug("Latest entry date occurs before latest ping date.");
-            }
-        }
-
         return entries;
     }
 
@@ -203,25 +121,53 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
         if (event instanceof BlogEntryEvent) {
             BlogEntryEvent entryEvent = (BlogEntryEvent) event;
             Blog blog = entryEvent.getBlogUser().getBlog();
+            String syndicationURL = blog.getBlogURL();
 
             // Check for meta-data indicating a ping should not be sent
             Map metaData = entryEvent.getBlogEntry().getMetaData();
-            if (metaData != null && metaData.containsKey(NO_PING_WEBLOGS_METADATA)) {
+            if (BlojsomUtils.checkMapForKey(metaData, NO_PING_WEBLOGS_METADATA)) {
                 return;
             }
+
+            // Check to see if there is a particular flavor the user wants to send with the extended ping
+            String preferredSyndicationFlavor = blog.getBlogProperty(PREFERRED_SYNDICATION_FLAVOR);
+            if (BlojsomUtils.checkNullOrBlank(preferredSyndicationFlavor)) {
+                preferredSyndicationFlavor = DEFAULT_PREFERRED_SYNDICATION_FLAVOR;
+            }
+            syndicationURL = syndicationURL + "?flavor=" + preferredSyndicationFlavor;
 
             // If they are provided, loop through that list of URLs to ping
             String pingURLsIP = blog.getBlogProperty(BLOG_PING_URLS_IP);
             String[] pingURLs = BlojsomUtils.parseDelimitedList(pingURLsIP, WHITESPACE);
             if (pingURLs != null && pingURLs.length > 0) {
                 Vector params = new Vector();
+                Vector extendedParams = new Vector();
                 params.add(blog.getBlogName());
+                extendedParams.add(blog.getBlogName());
                 params.add(blog.getBlogURL());
+                extendedParams.add(blog.getBlogURL());
+                extendedParams.add(blog.getBlogURL());
+                extendedParams.add(syndicationURL);
+
                 for (int i = 0; i < pingURLs.length; i++) {
                     String pingURL = pingURLs[i];
                     try {
                         XmlRpcClient weblogsPingClient = new XmlRpcClient(pingURL);
-                        weblogsPingClient.executeAsync(WEBLOGS_PING_METHOD, params, _callbackHandler);
+                        // Try sending an extended weblogs ping first followed by the normal weblogs ping if failed
+                        try {
+                            weblogsPingClient.execute(WEBLOGS_EXTENDED_PING_METHOD, extendedParams);
+                        } catch (XmlRpcException e) {
+                            _logger.error(e);
+                            try {
+                                weblogsPingClient.execute(WEBLOGS_PING_METHOD, params);
+                            } catch (XmlRpcException e1) {
+                                _logger.error(e1);
+                            } catch (IOException e1) {
+                                _logger.error(e1);
+                            }
+                        } catch (IOException e) {
+                            _logger.error(e);
+                        }
                     } catch (MalformedURLException e) {
                         _logger.error(e);
                     }
@@ -255,39 +201,5 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-    }
-
-    /**
-     * Asynchronous callback handler for the weblogs.com ping
-     */
-    private class WeblogsPingPluginAsyncCallback implements AsyncCallback {
-
-        /**
-         * Default constructor
-         */
-        public WeblogsPingPluginAsyncCallback() {
-        }
-
-        /**
-         * Call went ok, handle result.
-         *
-         * @param o   Return object
-         * @param url URL
-         * @param s   String
-         */
-        public void handleResult(Object o, URL url, String s) {
-            _logger.debug(o.toString());
-        }
-
-        /**
-         * Something went wrong, handle error.
-         *
-         * @param e   Exception containing error from XML-RPC call
-         * @param url URL
-         * @param s   String
-         */
-        public void handleError(Exception e, URL url, String s) {
-            _logger.error(e);
-        }
     }
 }
