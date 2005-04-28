@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.67 2005-04-22 22:29:28 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.68 2005-04-28 01:08:35 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -778,11 +778,16 @@ public class BlojsomUtils implements BlojsomConstants {
                 break;
             }
         }
+
         if (!matchesExtension) {
             return null;
         }
 
         int indexOfSlash = permalink.lastIndexOf("/");
+        if (indexOfSlash == -1) {
+            indexOfSlash = permalink.lastIndexOf("\\");
+        }
+
         if (indexOfSlash == -1) {
             return permalink;
         } else {
