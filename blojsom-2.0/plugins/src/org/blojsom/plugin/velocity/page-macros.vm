@@ -282,6 +282,17 @@
 
 #macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
 
+#macro(TechnoratiTags $entry)
+#if ($entry.getMetaData().get("TECHNORATI_TAG_LINKS"))
+#set($technoratiTags = $entry.getMetaData().get("TECHNORATI_TAG_LINKS"))
+<!-- technorati tags start --><p style="text-align:right;font-size:10px;">Technorati Tags:
+#foreach($technoratiTag in $technoratiTags)
+$technoratiTag
+#end
+</p><!-- technorati tags end -->
+#end
+#end
+
 ###############################################
 ## Administrative Macros
 ###############################################
