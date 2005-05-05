@@ -41,6 +41,17 @@
         <div id="main">
                 #showErrorMessage()
 
+                <p>
+                    <form name="edit-blog-entry" action="." method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="action" value="edit-blog-entry"/>
+                        <input type="hidden" name="flavor" value="admin"/>
+                        <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                        <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                        <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                        <input type="submit" name="submit" value="#adminResource('reload.blog.entry.text' 'Reload blog entry')"/>
+                    </form>
+                </p>
+
                 <!-- Edit blog entries form -->
                 <div class="mainClm">
                     <h3>#adminResource('edit.blog.entry.header' 'Edit Blog Entry')</h3>
@@ -160,7 +171,7 @@
                             #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
                                 #foreach ($blogComment in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
                                 #set ($commentModerated = $!blogComment.getMetaData().get("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED").equals("true"))
-                                #if (!$commentModerated)
+                                #if ($commentModerated == '' || !$commentModerated)
                                 <tr>
                                     <td><input type="checkbox" name="blog-comment-id" value="$blogComment.getId()"/>&nbsp;
                                     Comment by: <a href="mailto:$blogComment.getAuthorEmail()">$blogComment.getAuthor()</a> -
@@ -169,6 +180,7 @@
                                         $blogComment.getComment()<br /></td>
                                 </tr>
                                 #end
+                                #set ($commentModerated = '')
                                 #end
                             #end
                             <tr>
@@ -227,7 +239,7 @@
                             #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
                                 #foreach ($blogTrackback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
                                 #set ($trackbackModerated = $!blogTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("true"))
-                                #if (!$trackbackModerated)
+                                #if ($trackbackModerated == '' || !$trackbackModerated)
                                 <tr>
                                     <td><input type="checkbox" name="blog-trackback-id" value="$blogTrackback.getId()"/>&nbsp;
                                     Trackback from: <a href="$blogTrackback.getUrl()">#if ($blogTrackback.getBlogName())$blogTrackback.getBlogName()#else$blogTrackback.getUrl()#end</a>
@@ -236,6 +248,7 @@
                                     #if ($blogTrackback.getExcerpt()) $blogTrackback.getExcerpt() #end<br /></td>
                                 </tr>
                                 #end
+                                #set ($trackbackModerated = '')
                                 #end
                             #end
                             <tr>
@@ -249,7 +262,7 @@
                     </table>
                 </div>
         </div>
-    </div>   
+    </div>
 </body>
 
 #AdministrationFooter()
