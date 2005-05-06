@@ -8,8 +8,8 @@ Trackback title: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getTitle()
 ==[ Trackback Administration ]===================================================
 
 Administration login: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin">Login</a>
-   Approve trackback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&action=approve-blog-trackbacks&plugins=edit-blog-entries&blog-category-name=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getCategory()&blog-entry-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getPermalink()&blog-trackback-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getId()">Approve trackback</a>
-    Delete trackback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&action=delete-blog-trackbacks&plugins=edit-blog-entries&blog-category-name=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getCategory()&blog-entry-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getPermalink()&blog-trackback-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getId()">Delete trackback</a>
+   Approve trackback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&action=approve-blog-trackbacks&plugins=edit-blog-entries&blog-category-name=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getEncodedCategory()&blog-entry-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getPermalink()&blog-trackback-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getId()">Approve trackback</a>
+    Delete trackback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&action=delete-blog-trackbacks&plugins=edit-blog-entries&blog-category-name=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getEncodedCategory()&blog-entry-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogEntry().getPermalink()&blog-trackback-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getId()">Delete trackback</a>
 
 ==[ Trackback ]==========================================================
 
