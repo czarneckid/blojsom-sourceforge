@@ -34,41 +34,42 @@
  */
 package org.blojsom.plugin.technorati;
 
-import org.blojsom.event.BlojsomListener;
-import org.blojsom.event.BlojsomEvent;
-import org.blojsom.plugin.BlojsomPlugin;
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.util.BlojsomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
+import org.blojsom.plugin.velocity.StandaloneVelocityPlugin;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.ArrayList;
-import java.text.MessageFormat;
+import java.util.HashMap;
 
 /**
  * Technorati tags plugin
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: TechnoratiTagsPlugin.java,v 1.1 2005-05-04 02:31:01 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.2 2005-05-06 18:52:26 czarneckid Exp $
  */
-public class TechnoratiTagsPlugin implements BlojsomPlugin, BlojsomListener {
+public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements BlojsomListener {
 
     private Log _logger = LogFactory.getLog(TechnoratiTagsPlugin.class);
 
     private static final String TECHNORATI_TAGS_TEMPLATE = "org/blojsom/plugin/technorati/templates/admin-technorati-tags.vm";
+    private static final String TECHNORATI_TAG_LINK_TEMPLATE = "org/blojsom/plugin/technorati/templates/technorati-tag-link.vm";
     private static final String TECHNORATI_TAGS = "TECHNORATI_TAGS";
     private static final String METADATA_TECHNORATI_TAGS = "technorati-tags";
-    private static final String TECHNORATI_TAG_LINK = "<a href=\"http://www.technorati.com/tag/{0}\" rel=\"tag\">{0}</a>";
     private static final String TECHNORATI_TAG_LINKS = "TECHNORATI_TAG_LINKS";
 
     /**
@@ -86,6 +87,8 @@ public class TechnoratiTagsPlugin implements BlojsomPlugin, BlojsomListener {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
+
         blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
@@ -110,10 +113,11 @@ public class TechnoratiTagsPlugin implements BlojsomPlugin, BlojsomListener {
                 String[] tags = BlojsomUtils.parseCommaList((String) entryMetaData.get(METADATA_TECHNORATI_TAGS));
                 if (tags != null && tags.length > 0) {
                     ArrayList tagLinks = new ArrayList(tags.length);
-
+                    String tagLinkTemplate = mergeTemplate(TECHNORATI_TAG_LINK_TEMPLATE, user, new HashMap());
                     for (int j = 0; j < tags.length; j++) {
                         String tag = tags[j];
-                        tagLinks.add(MessageFormat.format(TECHNORATI_TAG_LINK, new String[]{tag}));
+
+                        tagLinks.add(MessageFormat.format(tagLinkTemplate, new String[]{tag}));
                     }
 
                     entryMetaData.put(TECHNORATI_TAG_LINKS, tagLinks.toArray(new String[tagLinks.size()]));
@@ -174,7 +178,10 @@ public class TechnoratiTagsPlugin implements BlojsomPlugin, BlojsomListener {
 
             context.put(TECHNORATI_TAGS, technoratiTags);
 
-            processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
+            if (processBlogEntryEvent.getBlogEntry() != null) {
+                processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
+            }
+
             processBlogEntryEvent.getContext().put(TECHNORATI_TAGS, technoratiTags);
             _logger.debug("Added/updated tags: " + technoratiTags);
         }
