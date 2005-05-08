@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.68 2005-04-28 01:08:35 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.69 2005-05-08 21:27:43 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -2031,6 +2031,29 @@ public class BlojsomUtils implements BlojsomConstants {
             }
 
             return value;
+        }
+    }
+
+    /**
+     * Remove <code>null</code> values from a given list
+     *
+     * @param input List
+     * @return List with <code>null</code> values removed
+     * @since blojsom 2.25
+     */
+    public static List removeNullValues(List input) {
+        if (input == null) {
+            return new ArrayList();
+        } else {
+            ArrayList sanitizedList = new ArrayList(input.size());
+
+            for (int i = 0; i < input.size(); i++) {
+                if (input.get(i) != null) {
+                    sanitizedList.add(input.get(i));
+                }
+            }
+
+            return sanitizedList;
         }
     }
 }
