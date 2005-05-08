@@ -34,30 +34,30 @@
  */
 package org.blojsom.plugin.moderation.admin;
 
-import org.blojsom.plugin.admin.WebAdminPlugin;
-import org.blojsom.plugin.BlojsomPluginException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.util.BlojsomUtils;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.WebAdminPlugin;
 import org.blojsom.util.BlojsomConstants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomUtils;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletConfig;
-import java.util.Map;
-import java.util.List;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.3 2005-05-08 15:25:15 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.4 2005-05-08 21:26:47 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
@@ -160,7 +160,6 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
             String spamPhrase = BlojsomUtils.getRequestValue(SPAM_PHRASE, httpServletRequest);
 
             if (ADD_SPAM_PHRASE_ACTION.equals(action)) {
-
                 if (!spamPhrases.contains(spamPhrase)) {
                     spamPhrases.add(spamPhrase);
                     writeSpamPhrases(user, spamPhrases);
@@ -175,8 +174,8 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
                         spamPhrases.set(Integer.parseInt(spamPhrasesToDelete[i]), null);
                     }
 
+                    spamPhrases = BlojsomUtils.removeNullValues(spamPhrases);
                     writeSpamPhrases(user, spamPhrases);
-                    spamPhrases = cleanSpamPhrases(spamPhrases);
                     addOperationResultMessage(context, "Deleted " + spamPhrasesToDelete.length + " spam phrases");
                 } else {
                     addOperationResultMessage(context, "No spam phrases selected for deletion");
@@ -187,24 +186,6 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
         }
 
         return entries;
-    }
-
-    /**
-     * Clean up the null spam phrases
-     *
-     * @param spamPhrases List of spam phrases
-     * @return New lists containing phrases with null values removed
-     */
-    protected List cleanSpamPhrases(List spamPhrases) {
-        ArrayList cleanedSpamPhrases = new ArrayList(spamPhrases.size());
-
-        for (int i = 0; i < spamPhrases.size(); i++) {
-            if (spamPhrases.get(i) != null) {
-                cleanedSpamPhrases.add(spamPhrases.get(i));
-            }
-        }
-
-        return cleanedSpamPhrases;
     }
 
     /**
@@ -254,10 +235,8 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
             Iterator phrasesIterator = spamPhrases.iterator();
             while (phrasesIterator.hasNext()) {
                 String phrase = (String) phrasesIterator.next();
-                if (phrase != null) {
-                    bw.write(phrase);
-                    bw.newLine();
-                }
+                bw.write(phrase);
+                bw.newLine();
             }
 
             bw.close();
