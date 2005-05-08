@@ -49,7 +49,7 @@
                         <form name="add-spam-phrase" action="." method="post" accept-charset="UTF-8">
                             <input type="hidden" name="action" value="add-spam-phrase"/>
                             <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="spam-phrase-moderation-admin"/>
+                            <input type="hidden" name="plugins" value="spamphrase-moderation-admin"/>
                             <tr>
                                 <td>#adminResource('spam.phrase.text' 'Spam phrase')</td>
                                 <td><input type="text" size="25" name="spam-phrase"/></td>
@@ -73,12 +73,16 @@
                         <form name="delete-spam-phrase" action="." method="post" accept-charset="UTF-8">
                             <input type="hidden" name="action" value="delete-spam-phrase"/>
                             <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="spam-phrase-moderation-admin"/>
+                            <input type="hidden" name="plugins" value="spamphrase-moderation-admin"/>
                             <tr>
                                 <td>#adminResource('spam.phrase.text' 'Spam phrase')</td>
                                 <td>
+                                    #set ($counter = 0)
                                     <select name="spam-phrase" multiple>
-
+                                        #foreach ($spamPhrase in $BLOJSOM_PLUGIN_SPAM_PHRASES)
+                                        <option value="$counter">$spamPhrase</option>
+                                        #set($counter = $counter + 1)
+                                        #end
                                     </select>
                                 </td>
                             </tr>
@@ -98,11 +102,9 @@
             <!-- Current spam phrase moderation settings -->
             <div id="sidebar">
                 <h4>#adminResource('current.spam.phrase.moderation.settings.text' 'Current spam phrase moderation settings')</h4>
-                #*
-                #foreach ($plugin in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS.keySet())
-                   <a href="#">$plugin&nbsp;</a><br/>
+                #foreach ($spamPhrase in $BLOJSOM_PLUGIN_SPAM_PHRASES)
+                   <a href="#">$spamPhrase&nbsp;</a><br/>
                 #end
-                *#
             </div>
         </div>
     </div>

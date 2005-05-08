@@ -35,22 +35,54 @@
 package org.blojsom.plugin.moderation.admin;
 
 import org.blojsom.plugin.admin.WebAdminPlugin;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletConfig;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.io.*;
 
 /**
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.3 2005-05-08 15:25:15 czarneckid Exp $
  * @since blojsom 2.25
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.2 2005-05-07 19:25:05 czarneckid Exp $
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
 
     private Log _logger = LogFactory.getLog(SpamPhraseModerationAdminPlugin.class);
 
+    private static final String SPAM_PHRASE_BLACKLIST_IP = "spam-phrase-blacklist";
+    private static final String DEFAULT_SPAM_PHRASE_BLACKLIST_FILE = "spam-phrase-blacklist.properties";
+    private String _spamPhraseBlacklist = DEFAULT_SPAM_PHRASE_BLACKLIST_FILE;
+
+    // Context
+    private static final String BLOJSOM_PLUGIN_SPAM_PHRASES = "BLOJSOM_PLUGIN_SPAM_PHRASES";
+
     // Pages
     private static final String EDIT_SPAM_PHRASE_MODERATION_SETTINGS_PAGE = "/org/blojsom/plugin/moderation/admin/templates/admin-edit-spam-phrase-moderation-settings";
+
+    // Form itmes
+    private static final String SPAM_PHRASE = "spam-phrase";
+
+    // Actions
+    private static final String ADD_SPAM_PHRASE_ACTION = "add-spam-phrase";
+    private static final String DELETE_SPAM_PHRASE_ACTION = "delete-spam-phrase";
+
+    // Permissions
+    private static final String SPAM_PHRASE_MODERATION_PERMISSION = "spam_phrase_moderation";
 
     /**
      * Create a new instance of the spam phrase moderation administration plugin
@@ -74,5 +106,163 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
      */
     public String getInitialPage() {
         return EDIT_SPAM_PHRASE_MODERATION_SETTINGS_PAGE;
+    }
+
+    /**
+     * Initialize this plugin. This method only called when the plugin is instantiated.
+     *
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
+     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error initializing the plugin
+     */
+    public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
+
+        String spamPhraseBlacklist = servletConfig.getInitParameter(SPAM_PHRASE_BLACKLIST_IP);
+        if (!BlojsomUtils.checkNullOrBlank(spamPhraseBlacklist)) {
+            _spamPhraseBlacklist = spamPhraseBlacklist;
+        }
+
+        _logger.debug("Initialized spam phrase blacklist administration plugin");
+    }
+
+    /**
+     * Process the blog entries
+     *
+     * @param httpServletRequest  Request
+     * @param httpServletResponse Response
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
+     * @return Modified set of blog entries
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error processing the blog entries
+     */
+    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        entries = super.process(httpServletRequest, httpServletResponse, user, context, entries);
+
+        String page = BlojsomUtils.getRequestValue(PAGE_PARAM, httpServletRequest);
+
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
+        if (!checkPermission(user, null, username, SPAM_PHRASE_MODERATION_PERMISSION)) {
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            addOperationResultMessage(context, "You are not allowed to edit spam phrase moderation settings");
+
+            return entries;
+        }
+
+        if (ADMIN_LOGIN_PAGE.equals(page)) {
+            return entries;
+        } else {
+            String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
+            List spamPhrases = loadSpamPhrases(user);
+            String spamPhrase = BlojsomUtils.getRequestValue(SPAM_PHRASE, httpServletRequest);
+
+            if (ADD_SPAM_PHRASE_ACTION.equals(action)) {
+
+                if (!spamPhrases.contains(spamPhrase)) {
+                    spamPhrases.add(spamPhrase);
+                    writeSpamPhrases(user, spamPhrases);
+                    addOperationResultMessage(context, "Added spam phrase: " + spamPhrase);
+                } else {
+                    addOperationResultMessage(context, "Spam phrase " + spamPhrase + " has already been added");
+                }
+            } else if (DELETE_SPAM_PHRASE_ACTION.equals(action)) {
+                String[] spamPhrasesToDelete = httpServletRequest.getParameterValues(SPAM_PHRASE);
+                if (spamPhrasesToDelete != null && spamPhrasesToDelete.length > 0) {
+                    for (int i = 0; i < spamPhrasesToDelete.length; i++) {
+                        spamPhrases.set(Integer.parseInt(spamPhrasesToDelete[i]), null);
+                    }
+
+                    writeSpamPhrases(user, spamPhrases);
+                    spamPhrases = cleanSpamPhrases(spamPhrases);
+                    addOperationResultMessage(context, "Deleted " + spamPhrasesToDelete.length + " spam phrases");
+                } else {
+                    addOperationResultMessage(context, "No spam phrases selected for deletion");
+                }
+            }
+
+            context.put(BLOJSOM_PLUGIN_SPAM_PHRASES, spamPhrases);
+        }
+
+        return entries;
+    }
+
+    /**
+     * Clean up the null spam phrases
+     *
+     * @param spamPhrases List of spam phrases
+     * @return New lists containing phrases with null values removed
+     */
+    protected List cleanSpamPhrases(List spamPhrases) {
+        ArrayList cleanedSpamPhrases = new ArrayList(spamPhrases.size());
+
+        for (int i = 0; i < spamPhrases.size(); i++) {
+            if (spamPhrases.get(i) != null) {
+                cleanedSpamPhrases.add(spamPhrases.get(i));
+            }
+        }
+
+        return cleanedSpamPhrases;
+    }
+
+    /**
+     * Load the list of spam phrases from the blog's configuration directory
+     *
+     * @param blogUser {@link BlogUser}
+     * @return List of spam phrases
+     */
+    protected List loadSpamPhrases(BlogUser blogUser) {
+        File blacklistFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + "/" +
+                blogUser.getId() + "/" + _spamPhraseBlacklist);
+        ArrayList spamPhrases = new ArrayList(25);
+
+        if (blacklistFile.exists()) {
+            try {
+                FileInputStream fis = new FileInputStream(blacklistFile);
+                BufferedReader br = new BufferedReader(new InputStreamReader(fis, BlojsomConstants.UTF8));
+                String phrase;
+
+                while ((phrase = br.readLine()) != null) {
+                    spamPhrases.add(phrase);
+                }
+
+                br.close();
+            } catch (IOException e) {
+                _logger.error(e);
+            }
+        }
+
+        return spamPhrases;
+    }
+
+    /**
+     * Write out the spam phrases to the blog's configuration directory
+     *
+     * @param blogUser    {@link BlogUser}
+     * @param spamPhrases List of spam phrases
+     */
+    protected void writeSpamPhrases(BlogUser blogUser, List spamPhrases) {
+        File blacklistFile = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + "/" +
+                blogUser.getId() + "/" + _spamPhraseBlacklist);
+
+        try {
+            FileOutputStream fos = new FileOutputStream(blacklistFile);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos, BlojsomConstants.UTF8));
+
+            Iterator phrasesIterator = spamPhrases.iterator();
+            while (phrasesIterator.hasNext()) {
+                String phrase = (String) phrasesIterator.next();
+                if (phrase != null) {
+                    bw.write(phrase);
+                    bw.newLine();
+                }
+            }
+
+            bw.close();
+        } catch (IOException e) {
+            _logger.error(e);
+        }
     }
 }
