@@ -134,6 +134,13 @@
     #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getPermalink()")
 #end
 
+#macro(FriendlyPermalink $entry)
+    #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
+    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
+    #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
+#end
+
+
 ###############################################
 ## Comment/Trackback Macros
 ###############################################
