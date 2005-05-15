@@ -10,7 +10,7 @@
 		#foreach ($entry in $BLOJSOM_ENTRIES)
         	#set ($categoryForEntry = $entry.getBlogCategory().getCategory())
 			#if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
-			#set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
+            #friendlyPermalink($entry)
 			<dd><a href="$entryLink">$entry.getTitle()</a></dd>
 		#end
 	</dl>

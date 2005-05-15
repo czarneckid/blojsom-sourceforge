@@ -33,7 +33,7 @@
 						<!-- TRACKBACK -->
 						<h3>Trackbacks for this entry</h3>
 
-                        <p><a href="$entryLink?tb=y">Trackback</a></p>
+                        <p><a href="$permalink?tb=y">Trackback</a></p>
 
     					#foreach ($entryTrackback in $entry.getTrackbacks())
 							

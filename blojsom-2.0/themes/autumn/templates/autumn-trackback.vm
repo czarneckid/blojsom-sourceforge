@@ -15,7 +15,7 @@
 						#set( $totalEntries = 0)
 						#foreach ($entry in $BLOJSOM_ENTRIES)
 							#parse( "autumn-entry.vm" )
-							<h3><a href="$entryLink?tb=y" title="Trackback">Trackback</a></h3>
+							<h3><a href="$permalink?tb=y" title="Trackback">Trackback</a></h3>
 							<div>
 								#foreach ($entryTrackback in $entry.getTrackbacks())
 									<div class="trackback">

@@ -1,9 +1,10 @@
 						#set ($categoryForEntry = $entry.getBlogCategory().getCategory())
 						#if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
-						#set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
+						#friendlyPermalink($entry)
+                        #set($permalink = $entryLink)
 						
 						<h2>
-							<a href="$entryLink" title="Permalink to $entry.getTitle()">$entry.getTitle()</a>
+							<a href="$permalink" title="Permalink to $entry.getTitle()">$entry.getTitle()</a>
 							<span class="category">
 							[<a href="$entry.getBlogCategory().getCategoryURL()" title="Retrieve all entries for this category">
 								#if ($entry.getBlogCategory().getName())
@@ -22,10 +23,10 @@
 							<span class="words">Words ($!entry.getMetaData().get("blojsom-plugin-word-count")) | </span>
 							<span class="comment">
 							#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
-								<a href="$entryLink?page=comments" title="C'mon, you know you want to">$entry.getNumComments() Comments</a> |
+								<a href="$permalink?page=comments" title="C'mon, you know you want to">$entry.getNumComments() Comments</a> |
 							#end</span>
 							<span class="trackback">
 							#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))
-								<a href="$entryLink()?page=trackback" title="Credit to the source">$entry.getNumTrackbacks() Trackbacks</a>
+								<a href="$permalink()?page=trackback" title="Credit to the source">$entry.getNumTrackbacks() Trackbacks</a>
 							#end</span>
 						</p>
