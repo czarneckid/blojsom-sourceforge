@@ -59,7 +59,7 @@ public class MissingResources {
                 while (keyIterator.hasNext()) {
                     String key = (String) keyIterator.next();
                     if (!localizationProperties.containsKey(key)) {
-                        System.out.println(key);
+                        System.out.println(key + "=" + baseProperties.getProperty(key));
                     }
                 }
             }
