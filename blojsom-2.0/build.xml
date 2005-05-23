@@ -346,7 +346,7 @@
     <!--
          1. Add the following to /WEB-INF/default/authorization.properties:
             default=123default456
-         2. Remove the blog-home property from /WEB-INF/default/blog.properties
+         2. Remove the blog-home, blog-url, and blog-base-url properties from /WEB-INF/default/blog.properties
          3. Remove the following line from /WEB-INF/plugin-admin-edit-users.properties:
             blog-home-base-directory=/change/me/please/
          4. Change the blojsom-blog-home parameter in /WEB-INF/blojsom.properties to:
