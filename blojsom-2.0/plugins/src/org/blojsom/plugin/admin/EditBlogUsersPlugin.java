@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  * 
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.21 2005-03-10 05:02:40 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.22 2005-05-24 13:30:07 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -457,6 +457,8 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
         configurationProperties.put(BLOJSOM_RESOURCE_MANAGER_IP, _blojsomConfiguration.getResourceManager());
         configurationProperties.put(BLOJSOM_RESOURCE_MANAGER_BUNDLES_IP, "org.blojsom.plugin.admin.resources.messages");
         configurationProperties.put(BLOJSOM_BROADCASTER_IP, _blojsomConfiguration.getEventBroadcaster().getClass().getName());
+        configurationProperties.put(BLOJSOM_AUTHORIZATION_PROVIDER_IP, _blojsomConfiguration.getAuthorizationProvider());
+        configurationProperties.put(BLOJSOM_INSTALLED_LOCALES_IP, BlojsomUtils.arrayOfStringsToString(_blojsomConfiguration.getInstalledLocalesAsStrings()));
 
         try {
             FileOutputStream fos = new FileOutputStream(blojsomConfigurationFile);
