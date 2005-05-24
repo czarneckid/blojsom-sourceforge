@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.22 2005-03-05 18:16:16 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.23 2005-05-24 02:08:36 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -263,8 +263,12 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                                 _logger.error(e);
                                 addOperationResultMessage(context, "Unknown error in file upload: " + e.getMessage());
                             }
+
+                            String resourceURL = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
+                                    user.getId() + "/" + item.getName();
+
                             _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
-                            addOperationResultMessage(context, "Successfully upload resource file: " + item.getName());
+                            addOperationResultMessage(context, "Successfully upload resource file: " + item.getName() + ". <p></p>Here is a link to <a href=\"" + resourceURL + "\">" + item.getName() + "</a>. Right-click and copy the link to the resource to use in a blog entry.");
                         } else {
                             if (!isAcceptedFileExtension) {
                                 _logger.error("Upload file does not have an accepted extension: " + extension);
