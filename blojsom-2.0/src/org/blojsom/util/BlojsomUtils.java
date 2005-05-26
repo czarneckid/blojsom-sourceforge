@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.69 2005-05-08 21:27:43 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.70 2005-05-26 13:50:35 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -892,23 +892,23 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static final Comparator FILE_TIME_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
-            File f1;
-            File f2;
+            long f1;
+            long f2;
 
             if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
-                f1 = ((FileBackedBlogEntry) o1).getSource();
-                f2 = ((FileBackedBlogEntry) o2).getSource();
+                f1 = ((FileBackedBlogEntry) o1).getLastModified();
+                f2 = ((FileBackedBlogEntry) o2).getLastModified();
             } else {
-                f1 = (File) o1;
-                f2 = (File) o2;
+                f1 = ((File) o1).lastModified();
+                f2 = ((File) o2).lastModified();
             }
 
-            if (f1.lastModified() > f2.lastModified()) {
+            if (f1 > f2) {
                 return -1;
-            } else if (f1.lastModified() < f2.lastModified()) {
+            } else if (f1 < f2) {
                 return 1;
             } else {
-                return f1.getName().compareTo(f2.getName());
+                return ((File)o1).getName().compareTo(((File)o2).getName());
             }
         }
     };
@@ -920,23 +920,23 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static final Comparator FILE_TIME_ASCENDING_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
-            File f1;
-            File f2;
+            long f1;
+            long f2;
 
             if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
-                f1 = ((FileBackedBlogEntry) o1).getSource();
-                f2 = ((FileBackedBlogEntry) o2).getSource();
+                f1 = ((FileBackedBlogEntry) o1).getLastModified();
+                f2 = ((FileBackedBlogEntry) o2).getLastModified();
             } else {
-                f1 = (File) o1;
-                f2 = (File) o2;
+                f1 = ((File) o1).lastModified();
+                f2 = ((File) o2).lastModified();
             }
 
-            if (f1.lastModified() > f2.lastModified()) {
+            if (f1 > f2) {
                 return 1;
-            } else if (f1.lastModified() < f2.lastModified()) {
+            } else if (f1 < f2) {
                 return -1;
             } else {
-                return f1.getName().compareTo(f2.getName());
+                return ((File)o1).getName().compareTo(((File)o2).getName());
             }
         }
     };
