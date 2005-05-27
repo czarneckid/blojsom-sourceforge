@@ -39,27 +39,28 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.event.BlojsomListener;
-import org.blojsom.event.BlojsomEvent;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.HashMap;
+import java.text.MessageFormat;
 
 /**
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.6 2005-03-05 18:22:11 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.7 2005-05-27 15:12:53 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
@@ -70,13 +71,21 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
 
     private static final String RSS_ENCLOSURE_TEMPLATE = "org/blojsom/plugin/common/templates/admin-rss-enclosure-attachment.vm";
     private static final String RSS_ENCLOSURE_ATTACHMENT = "RSS_ENCLOSURE_ATTACHMENT";
+    private static final String RSS_ENCLOSURE_URL_ITEM = "RSS_ENCLOSURE_URL_ITEM";
+    private static final String RSS_ENCLOSURE_LENGTH_ITEM = "RSS_ENCLOSURE_LENGTH_ITEM";
+    private static final String RSS_ENCLOSURE_TYPE_ITEM = "RSS_ENCLOSURE_TYPE_ITEM";
+    private static final String RSS_ENCLOSURE_LINK_TEMPLATE = "<enclosure url=\"{0}\" length=\"{1}\" type=\"{2}\" />";
+
+    protected static final String MIME_TYPE_XMPEGURL = "audio/x-mpegurl m3u";
+    protected static final String MIME_TYPE_XMPEG = "audio/x-mpeg mp1 mp2 mp3 mpa mpega";
 
     public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
     public static final String METADATA_RSS_ENCLOSURE = "rss-enclosure";
     public static final String METADATA_ESS_ENCLOSURE_OBJECT = "rss-enclosure-object";
 
-    protected static final String MIME_TYPE_XMPEGURL = "audio/x-mpegurl m3u";
-    protected static final String MIME_TYPE_XMPEG = "audio/x-mpeg mp1 mp2 mp3 mpa mpega";
+    public static final String RSS_ENCLOSURE_URL = "rss-enclosure-url";
+    public static final String RSS_ENCLOSURE_LENGTH = "rss-enclosure-length";
+    public static final String RSS_ENCLOSURE_TYPE = "rss-enclosure-type";
 
     /**
      * Default constructor
@@ -131,42 +140,62 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
                                BlogEntry[] entries) throws BlojsomPluginException {
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            if (BlojsomUtils.checkMapForKey(entry.getMetaData(),
-                    METADATA_RSS_ENCLOSURE)) {
-                String enclosureName = BlojsomUtils.getFilenameFromPath((String)
-                        entry.getMetaData().get(METADATA_RSS_ENCLOSURE));
-                File enclosure = new
-                        File(_blojsomConfiguration.getInstallationDirectory()
-                        + _blojsomConfiguration.getResourceDirectory() +
-                        user.getId() + "/" + enclosureName);
-                if (enclosure.exists()) {
-                    _logger.debug("Adding enclosure to entry for file: " + enclosureName);
+            if (BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_URL) &&
+                    BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_LENGTH) &&
+                    BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_TYPE)) {
+                String rssEnclosureURL = (String) entry.getMetaData().get(RSS_ENCLOSURE_URL);
+                long rssEnclosureLength = -1;
+                try {
+                    rssEnclosureLength = Long.parseLong((String) entry.getMetaData().get(RSS_ENCLOSURE_LENGTH));
+                } catch (NumberFormatException e) {
+                    _logger.error(e);
+                }
+                String rssEnclosureType = (String) entry.getMetaData().get(RSS_ENCLOSURE_TYPE);
 
-                    MimetypesFileTypeMap mimetypesFileTypeMap = new
-                            MimetypesFileTypeMap();
-                    addAdditionalMimeTypes(mimetypesFileTypeMap);
-                    String type =
-                            mimetypesFileTypeMap.getContentType(enclosure);
+                String rssEnclosure = MessageFormat.format(RSS_ENCLOSURE_LINK_TEMPLATE, new Object[] {rssEnclosureURL, new Long(rssEnclosureLength).toString(), rssEnclosureType});
+                RSSEnclosure rssEnclosureObject = new RSSEnclosure(rssEnclosureURL, rssEnclosureLength, rssEnclosureType);
 
-                    StringBuffer enclosureElement = new StringBuffer();
-                    String url = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
-                            user.getId() + "/" + enclosure.getName();
-                    enclosureElement.append("<enclosure url=\"");
-                    enclosureElement.append(url);
-                    enclosureElement.append("\" length=\"");
-                    enclosureElement.append(enclosure.length());
-                    enclosureElement.append("\" type=\"");
-                    if (BlojsomUtils.checkNullOrBlank(type)) {
-                        type = DEFAULT_MIME_TYPE;
+                entry.getMetaData().put(METADATA_RSS_ENCLOSURE, rssEnclosure);
+                entry.getMetaData().put(METADATA_ESS_ENCLOSURE_OBJECT, rssEnclosureObject);
+                _logger.debug("Added explicit enclosure: " + rssEnclosure);
+            } else {
+                if (BlojsomUtils.checkMapForKey(entry.getMetaData(),
+                        METADATA_RSS_ENCLOSURE)) {
+                    String enclosureName = BlojsomUtils.getFilenameFromPath((String)
+                            entry.getMetaData().get(METADATA_RSS_ENCLOSURE));
+                    File enclosure = new
+                            File(_blojsomConfiguration.getInstallationDirectory()
+                            + _blojsomConfiguration.getResourceDirectory() +
+                            user.getId() + "/" + enclosureName);
+                    if (enclosure.exists()) {
+                        _logger.debug("Adding enclosure to entry for file: " + enclosureName);
+
+                        MimetypesFileTypeMap mimetypesFileTypeMap = new
+                                MimetypesFileTypeMap();
+                        addAdditionalMimeTypes(mimetypesFileTypeMap);
+                        String type =
+                                mimetypesFileTypeMap.getContentType(enclosure);
+
+                        StringBuffer enclosureElement = new StringBuffer();
+                        String url = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
+                                user.getId() + "/" + enclosure.getName();
+                        enclosureElement.append("<enclosure url=\"");
+                        enclosureElement.append(url);
+                        enclosureElement.append("\" length=\"");
+                        enclosureElement.append(enclosure.length());
+                        enclosureElement.append("\" type=\"");
+                        if (BlojsomUtils.checkNullOrBlank(type)) {
+                            type = DEFAULT_MIME_TYPE;
+                        }
+                        enclosureElement.append(type);
+                        enclosureElement.append("\" />");
+
+                        RSSEnclosure rssEnclosure = new RSSEnclosure(url, enclosure.length(), type);
+                        entry.getMetaData().put(METADATA_RSS_ENCLOSURE,
+                                enclosureElement.toString());
+                        entry.getMetaData().put(METADATA_ESS_ENCLOSURE_OBJECT, rssEnclosure);
+                        _logger.debug("Added enclosure: " + enclosureElement.toString());
                     }
-                    enclosureElement.append(type);
-                    enclosureElement.append("\" />");
-
-                    RSSEnclosure rssEnclosure = new RSSEnclosure(url, enclosure.length(), type);
-                    entry.getMetaData().put(METADATA_RSS_ENCLOSURE,
-                            enclosureElement.toString());
-                    entry.getMetaData().put(METADATA_ESS_ENCLOSURE_OBJECT, rssEnclosure);
-                    _logger.debug("Added enclosure: " + enclosureElement.toString());
                 }
             }
         }
@@ -241,15 +270,49 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
             // Preserve the current rss enclosure if none submitted
             if (processBlogEntryEvent.getBlogEntry() != null) {
                 String currentEnclosure = (String) processBlogEntryEvent.getBlogEntry().getMetaData().get(METADATA_RSS_ENCLOSURE);
+                String currentEnclosureURL = (String) processBlogEntryEvent.getBlogEntry().getMetaData().get(RSS_ENCLOSURE_URL);
+                String currentEnclosureLength = (String) processBlogEntryEvent.getBlogEntry().getMetaData().get(RSS_ENCLOSURE_LENGTH);
+                String currentEnclosureType = (String) processBlogEntryEvent.getBlogEntry().getMetaData().get(RSS_ENCLOSURE_TYPE);
+
                 _logger.debug("Current enclosure: " + currentEnclosure);
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_ATTACHMENT, currentEnclosure);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, currentEnclosureURL);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_LENGTH_ITEM, currentEnclosureLength);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_TYPE_ITEM, currentEnclosureType);
             }
 
             String rssEnclosure = BlojsomUtils.getRequestValue(METADATA_RSS_ENCLOSURE, processBlogEntryEvent.getHttpServletRequest());
-            if (!BlojsomUtils.checkNullOrBlank(rssEnclosure) && processBlogEntryEvent.getBlogEntry() != null) {
-                processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_RSS_ENCLOSURE, rssEnclosure);
-                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_ATTACHMENT, rssEnclosure);
-                _logger.debug("Added/updated RSS enclosure: " + BlojsomUtils.getFilenameFromPath(rssEnclosure));
+            String rssEnclosureURL = BlojsomUtils.getRequestValue(RSS_ENCLOSURE_URL, processBlogEntryEvent.getHttpServletRequest());
+            String rssEnclosureLength = BlojsomUtils.getRequestValue(RSS_ENCLOSURE_LENGTH, processBlogEntryEvent.getHttpServletRequest());
+            String rssEnclosureType = BlojsomUtils.getRequestValue(RSS_ENCLOSURE_TYPE, processBlogEntryEvent.getHttpServletRequest());
+
+            if (!BlojsomUtils.checkNullOrBlank(rssEnclosureURL) && !BlojsomUtils.checkNullOrBlank(rssEnclosureLength)
+                    && !BlojsomUtils.checkNullOrBlank(rssEnclosureType) && processBlogEntryEvent.getBlogEntry() != null) {
+                processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_URL, rssEnclosureURL);
+                processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_LENGTH, rssEnclosureLength);
+                processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_TYPE, rssEnclosureType);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, rssEnclosureURL);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_LENGTH_ITEM, rssEnclosureLength);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_TYPE_ITEM, rssEnclosureType);
+
+                _logger.debug("Added/updated RSS enclosure (explict): " + rssEnclosureURL);
+            } else {
+                processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_URL);
+                processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_TYPE);
+                processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_LENGTH);
+                processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_URL_ITEM);
+                processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_TYPE_ITEM);
+                processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_LENGTH_ITEM);
+
+                if (!BlojsomUtils.checkNullOrBlank(rssEnclosure) && processBlogEntryEvent.getBlogEntry() != null) {
+                    processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_RSS_ENCLOSURE, rssEnclosure);
+                    processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_ATTACHMENT, rssEnclosure);
+
+                    _logger.debug("Added/updated RSS enclosure: " + BlojsomUtils.getFilenameFromPath(rssEnclosure));
+                } else {
+                    processBlogEntryEvent.getBlogEntry().getMetaData().remove(METADATA_RSS_ENCLOSURE);
+                    processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_ATTACHMENT);
+                }
             }
 
             resourceFilesMap = new TreeMap(resourceFilesMap);
