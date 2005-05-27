@@ -52,12 +52,15 @@ import java.util.HashMap;
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.4 2005-01-06 17:10:16 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.5 2005-05-27 17:04:51 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
 
     private Log _logger = LogFactory.getLog(MathCommentAuthenticationPlugin.class);
+
+    private static final String MATH_COMMENT_AUTHENTICATION_OPERATIONS_IP = "math-comment-authentication-operations";
+    private static final String MATH_COMMENT_AUTHENTICATION_BOUND_IP = "math-comment-authentication-bound";
 
     public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_ANSWER = "BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_ANSWER";
     public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 = "BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1";
@@ -67,6 +70,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
     public static final String BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE = "BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE";
 
     private static final int AVAILABLE_OPERATIONS = 3;
+    private static final int BOUND_DEFAULT = 10;
 
     /**
      * Math comment authenticator plugin
@@ -125,9 +129,35 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                 }
             }
 
-            int operation = (int) (Math.random() * AVAILABLE_OPERATIONS);
-            int value1 = (int) (Math.random() * 50.0);
-            int value2 = (int) (Math.random() * 50.0);
+            int bound = BOUND_DEFAULT;
+            int availableOperations = AVAILABLE_OPERATIONS;
+            String boundProperty = blog.getBlogProperty(MATH_COMMENT_AUTHENTICATION_BOUND_IP);
+            String availableOperationsProperty = blog.getBlogProperty(MATH_COMMENT_AUTHENTICATION_OPERATIONS_IP);
+
+            if (!BlojsomUtils.checkNullOrBlank(boundProperty)) {
+                try {
+                    bound = Integer.parseInt(boundProperty);
+                } catch (NumberFormatException e) {
+                    _logger.error(e);
+                }
+            }
+
+            if (!BlojsomUtils.checkNullOrBlank(availableOperationsProperty)) {
+                try {
+                    availableOperations = Integer.parseInt(availableOperationsProperty);
+                    if (availableOperations < 1 || availableOperations > AVAILABLE_OPERATIONS) {
+                        availableOperations = AVAILABLE_OPERATIONS;
+                    } else {
+                        availableOperations -= 1;
+                    }
+                } catch (NumberFormatException e) {
+                    _logger.error(e);
+                }
+            }
+
+            int operation = (int) (Math.random() * availableOperations);
+            int value1 = (int) (Math.random() * bound);
+            int value2 = (int) (Math.random() * bound);
             int answer;
 
             answer = getAnswerForOperation(value1, value2, operation);
