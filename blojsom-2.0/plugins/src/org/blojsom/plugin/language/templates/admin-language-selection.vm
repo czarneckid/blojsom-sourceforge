@@ -1,3 +1,4 @@
+                    <th colspan="2">#adminResource('language.section.text' 'Language')</th>
                     <tr>
                         <td>#adminResource('language.section.text' 'Language')</td>
                         <td><select name="language"><option value="">#adminResource('language.selection.text' '-- Select a language --')</option>
