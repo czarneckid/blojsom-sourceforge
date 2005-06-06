@@ -55,9 +55,9 @@ import java.util.*;
 
 /**
  * EditBlogUsersPlugin
- * 
+ *
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.22 2005-05-24 13:30:07 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.23 2005-06-06 01:23:11 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -84,6 +84,10 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
     private static final String BLOG_USER_PASSWORD = "blog-user-password";
     private static final String BLOG_USER_PASSWORD_CHECK = "blog-user-password-check";
 
+    // Permissions
+    private static final String ADD_BLOG_PERMISSION = "add_blog";
+    private static final String DELETE_BLOG_PERMISSION = "delete_blog";
+
     private String _bootstrapDirectory;
     private String _blogHomeBaseDirectory;
     private String _flavorConfiguration;
@@ -101,7 +105,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     * 
+     *
      * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws org.blojsom.plugin.BlojsomPluginException
@@ -151,7 +155,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
     /**
      * Process the blog entries
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param user                {@link org.blojsom.blog.BlogUser} instance
@@ -168,13 +172,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             return entries;
         }
 
-        // Check to see the requesting user is an administrator
-        if (!_administrators.containsKey(user.getId())) {
-            _logger.debug("User: " + user.getId() + " is not a valid administrator");
-
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            return entries;
-        }
+        String username = getUsernameFromSession(httpServletRequest, user.getBlog());
 
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP, Collections.unmodifiableMap(BlojsomUtils.listToMap(BlojsomUtils.arrayToList(_blojsomConfiguration.getBlojsomUsers()))));
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
@@ -187,6 +185,14 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
         } else if (DELETE_BLOG_USER_ACTION.equals(action)) {
             _logger.debug("User requested delete blog user action");
+
+            // Check user is allowed to delete blogs
+            if (!checkPermission(user, null, username, DELETE_BLOG_PERMISSION)) {
+                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+                addOperationResultMessage(context, "You are not allowed to delete blogs from the system");
+
+                return entries;
+            }
 
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogUserID)) {
@@ -231,6 +237,14 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (ADD_BLOG_USER_ACTION.equals(action)) {
             _logger.debug("User requested add blog user action");
+
+            // Check user is allowed to add blogs
+            if (!checkPermission(user, null, username, ADD_BLOG_PERMISSION)) {
+                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+                addOperationResultMessage(context, "You are not allowed to add blogs to the system");
+
+                return entries;
+            }
 
             Map blogUsers = _blojsomConfiguration.getBlogIDs();
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
@@ -402,7 +416,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
                         // Add the resources directory
                         File blogResourcesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
-                            _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
+                                _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
                         File bootstrapResourcesDirectory = new File(bootstrapDirectory, _blojsomConfiguration.getResourceDirectory());
                         if (!blogResourcesDirectory.mkdirs()) {
                             _logger.error("Unable to create blog resource directory: " + blogResourcesDirectory.toString());
