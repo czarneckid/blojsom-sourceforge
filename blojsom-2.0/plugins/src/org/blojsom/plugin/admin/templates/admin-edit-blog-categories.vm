@@ -113,6 +113,19 @@
                     </table>
                 </div>
 
+                <script LANGUAGE="JavaScript">
+                <!--
+                function confirmDelete()
+                {
+                var shouldDelete = confirm("Are you sure you wish to delete this category? All sub-categories and entries will be deleted.  This operation cannot be undone!");
+                if (shouldDelete)
+                    return true;
+                else
+                    return false;
+                }
+                // -->
+                </script>
+
                 <!-- Delete blog category form -->
                 <div class="mainClm">
                     <h3>#adminResource('delete.existing.category.text' 'Delete an existing blog category')</h3>
@@ -134,7 +147,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.category.text' 'Delete category')"/>
+                                    <input type="submit" name="submit" value="#adminResource('delete.category.text' 'Delete category')" onClick="return confirmDelete()"/>
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>
