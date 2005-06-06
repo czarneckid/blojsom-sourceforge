@@ -60,7 +60,7 @@ import java.text.MessageFormat;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.7 2005-05-27 15:12:53 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.8 2005-06-06 02:03:43 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
@@ -152,7 +152,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
                 }
                 String rssEnclosureType = (String) entry.getMetaData().get(RSS_ENCLOSURE_TYPE);
 
-                String rssEnclosure = MessageFormat.format(RSS_ENCLOSURE_LINK_TEMPLATE, new Object[] {rssEnclosureURL, new Long(rssEnclosureLength).toString(), rssEnclosureType});
+                String rssEnclosure = MessageFormat.format(RSS_ENCLOSURE_LINK_TEMPLATE, new Object[]{rssEnclosureURL, new Long(rssEnclosureLength).toString(), rssEnclosureType});
                 RSSEnclosure rssEnclosureObject = new RSSEnclosure(rssEnclosureURL, rssEnclosureLength, rssEnclosureType);
 
                 entry.getMetaData().put(METADATA_RSS_ENCLOSURE, rssEnclosure);
@@ -297,9 +297,11 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
 
                 _logger.debug("Added/updated RSS enclosure (explict): " + rssEnclosureURL);
             } else {
-                processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_URL);
-                processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_TYPE);
-                processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_LENGTH);
+                if (processBlogEntryEvent.getBlogEntry() != null) {
+                    processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_URL);
+                    processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_TYPE);
+                    processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_LENGTH);
+                }
                 processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_URL_ITEM);
                 processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_TYPE_ITEM);
                 processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_LENGTH_ITEM);
@@ -310,7 +312,9 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
 
                     _logger.debug("Added/updated RSS enclosure: " + BlojsomUtils.getFilenameFromPath(rssEnclosure));
                 } else {
-                    processBlogEntryEvent.getBlogEntry().getMetaData().remove(METADATA_RSS_ENCLOSURE);
+                    if (processBlogEntryEvent.getBlogEntry() != null) {
+                        processBlogEntryEvent.getBlogEntry().getMetaData().remove(METADATA_RSS_ENCLOSURE);
+                    }
                     processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_ATTACHMENT);
                 }
             }
