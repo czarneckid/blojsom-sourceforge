@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.69 2005-05-24 02:07:16 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.70 2005-06-07 02:46:53 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -301,6 +301,11 @@ public interface BlojsomConstants {
      * ISO 8601 [W3CDTF] date format (used in rdf flavor)
      */
     public static final String ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssz";
+
+    /**
+     * Short ISO 8601 style date format
+     */
+    public static final String SHORT_ISO_8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
      * UTC style date format
