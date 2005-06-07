@@ -35,9 +35,9 @@
 package org.blojsom.util;
 
 import org.blojsom.BlojsomException;
+import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
-import org.blojsom.blog.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -49,15 +49,15 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.text.Collator;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.70 2005-05-26 13:50:35 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.71 2005-06-07 13:29:30 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -374,14 +374,14 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String[] parseLastComma(String value) {
         if (checkNullOrBlank(value)) {
-            return new String[] {value};
+            return new String[]{value};
         }
 
         int lastCommaIndex = value.lastIndexOf(",");
         if (lastCommaIndex == -1) {
-            return new String[] {value};
+            return new String[]{value};
         } else {
-            return new String[] {value.substring(0, lastCommaIndex), value.substring(lastCommaIndex + 1)};
+            return new String[]{value.substring(0, lastCommaIndex), value.substring(lastCommaIndex + 1)};
         }
     }
 
@@ -908,7 +908,17 @@ public class BlojsomUtils implements BlojsomConstants {
             } else if (f1 < f2) {
                 return 1;
             } else {
-                return ((File)o1).getName().compareTo(((File)o2).getName());
+                if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
+                    f1 = ((FileBackedBlogEntry) o1).getLastModified();
+                    f2 = ((FileBackedBlogEntry) o2).getLastModified();
+
+                    return ((FileBackedBlogEntry) o1).getSource().getName().compareTo(((FileBackedBlogEntry) o2).getSource().getName());
+                } else {
+                    f1 = ((File) o1).lastModified();
+                    f2 = ((File) o2).lastModified();
+
+                    return ((File) o1).getName().compareTo(((File) o2).getName());
+                }
             }
         }
     };
@@ -936,7 +946,17 @@ public class BlojsomUtils implements BlojsomConstants {
             } else if (f1 < f2) {
                 return -1;
             } else {
-                return ((File)o1).getName().compareTo(((File)o2).getName());
+                if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
+                    f1 = ((FileBackedBlogEntry) o1).getLastModified();
+                    f2 = ((FileBackedBlogEntry) o2).getLastModified();
+
+                    return ((FileBackedBlogEntry) o1).getSource().getName().compareTo(((FileBackedBlogEntry) o2).getSource().getName());
+                } else {
+                    f1 = ((File) o1).lastModified();
+                    f2 = ((File) o2).lastModified();
+
+                    return ((File) o1).getName().compareTo(((File) o2).getName());
+                }
             }
         }
     };
@@ -2009,7 +2029,7 @@ public class BlojsomUtils implements BlojsomConstants {
             return text;
         }
 
-        return text.replaceAll("\\<.*?\\>","");
+        return text.replaceAll("\\<.*?\\>", "");
     }
 
     /**
@@ -2024,7 +2044,7 @@ public class BlojsomUtils implements BlojsomConstants {
             return new ArrayList();
         } else {
             ArrayList value = new ArrayList(input.length);
-            
+
             for (int i = 0; i < input.length; i++) {
                 String s = input[i];
                 value.add(s);
