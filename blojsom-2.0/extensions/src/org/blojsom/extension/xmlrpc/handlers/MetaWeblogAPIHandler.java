@@ -54,6 +54,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -61,7 +62,7 @@ import java.text.SimpleDateFormat;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.30 2005-05-20 02:36:32 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.31 2005-06-07 02:48:13 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -848,22 +849,28 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
             return Long.toString(new Date().getTime());
         } else {
             String timezoneID = blog.getBlogProperty("blog-timezone-id");
-            TimeZone timezone;
+            String timezoneOffset = blog.getBlogProperty("blog-timezone-offset");
 
             if (BlojsomUtils.checkNullOrBlank(timezoneID)) {
-                timezone = TimeZone.getDefault();
-            } else {
-                timezone = TimeZone.getTimeZone(timezoneID);
+                timezoneID = TimeZone.getDefault().getID();
             }
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
-            simpleDateFormat.setTimeZone(timezone);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SHORT_ISO_8601_DATE_FORMAT);
+            if (!BlojsomUtils.checkNullOrBlank(timezoneOffset)) {
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timezoneOffset));
+            }
 
-            long convertedDateTime = dateCreated.getTime();
+            Date convertedDate = dateCreated;
+            String convertedDateISO8601;
+            convertedDateISO8601 = simpleDateFormat.format(convertedDate);
+
             try {
-                convertedDateTime = Long.parseLong(simpleDateFormat.format(dateCreated));
-            } catch (NumberFormatException e) {
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timezoneID));
+                convertedDate = simpleDateFormat.parse(convertedDateISO8601);
+            } catch (ParseException e) {
             }
+
+            long convertedDateTime = convertedDate.getTime();
 
             return Long.toString(convertedDateTime);
         }
