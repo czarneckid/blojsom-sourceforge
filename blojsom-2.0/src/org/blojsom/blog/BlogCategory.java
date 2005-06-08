@@ -48,7 +48,7 @@ import java.io.Serializable;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlogCategory.java,v 1.11 2005-04-12 17:58:15 intabulas Exp $
+ * @version $Id: BlogCategory.java,v 1.12 2005-06-08 17:37:08 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable, Serializable {
 
@@ -351,6 +351,17 @@ public abstract class BlogCategory implements Comparable, Serializable {
      * @since blojsom 2.22
      */
     public List getSubcategories() {
+        return _subcategories;
+    }
+
+    /**
+     * Retrieve a list of sub-categories under the current category up to a certain depth
+     *
+     * @param depth Depth of sub-categories to retrieve, use -1 for all sub-categories
+     * @return @link List} of sub-categories as {@link BlogCategory} objects
+     * @since blojsom 2.26
+     */
+    public List getSubcategories(int depth) {
         return _subcategories;
     }
 

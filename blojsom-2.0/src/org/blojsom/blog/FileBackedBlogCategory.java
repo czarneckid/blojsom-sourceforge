@@ -53,7 +53,7 @@ import java.util.ArrayList;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.7 2005-04-12 17:58:15 intabulas Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.8 2005-06-08 17:37:08 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -330,6 +330,26 @@ public class FileBackedBlogCategory extends BlogCategory {
     public List getSubcategories() {
         _subcategories = new ArrayList();
         recursiveCategoryBuilder(_blogUser, -1, -1, _blogUser.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(_category), _subcategories);
+
+        return _subcategories;
+    }
+
+    /**
+     * Retrieve a list of sub-categories under the current category up to a certain depth
+     *
+     * @param depth Depth of sub-categories to retrieve, use -1 for all sub-categories
+     * @return @link List} of sub-categories as {@link BlogCategory} objects
+     * @since blojsom 2.26
+     */
+    public List getSubcategories(int depth) {
+        _subcategories = new ArrayList();
+        if (depth <= -1) {
+            depth = -1;
+        } else {
+            depth += 1;
+        }
+
+        recursiveCategoryBuilder(_blogUser, -1, depth, _blogUser.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(_category), _subcategories);
 
         return _subcategories;
     }
