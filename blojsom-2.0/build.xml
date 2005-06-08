@@ -39,6 +39,8 @@
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
     <property name="default.user" value="default"/>
     <property name="bootstrap.user" value="bootstrap"/>
+    <property name="source.version" value="1.4"/>
+    <property name="target.version" value="1.4"/>
 
     <!-- Add-on properties -->
     <property name="addon.lib.dir" value="${basedir}/addon-lib"/>
@@ -161,7 +163,9 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${core.jar}" basedir="${compile.dir}"/>
@@ -173,7 +177,9 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${plugins.jar}" basedir="${compile.dir}"/>
@@ -189,7 +195,9 @@
             debug="${debug}"
             deprecation="${deprecation}"
             excludes="**/Test*"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${extensions.jar}" basedir="${compile.dir}"/>
@@ -226,21 +234,27 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <javac srcdir="${plugins.src.dir}"
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <javac srcdir="${extensions.src.dir}"
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <!--
@@ -248,7 +262,9 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         -->
@@ -256,14 +272,18 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <javac srcdir="${addon.plugins.src.dir}"
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
     </target>
@@ -279,7 +299,9 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${addon.core.jar}" basedir="${compile.dir}"/>
@@ -292,7 +314,9 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <copy todir="${compile.dir}">
@@ -309,7 +333,9 @@
             destdir="${compile.dir}"
             debug="${debug}"
             deprecation="${deprecation}"
-            optimize="${optimize}">
+            optimize="${optimize}"
+            source="${source.version}"
+            target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${addon.extensions.jar}" basedir="${compile.dir}"/>
