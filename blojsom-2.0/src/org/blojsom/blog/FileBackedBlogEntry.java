@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.26 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.27 2005-06-10 13:55:26 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -650,4 +650,15 @@ public class FileBackedBlogEntry extends BlogEntry {
             metaFile.delete();
         }
     }
+
+    /**
+     * Set any attributes of the blog entry using data from the map.
+     *
+     * @param attributeMap Attributes
+     */
+    public void setAttributes(Map attributeMap) {
+        if (attributeMap.containsKey(SOURCE_ATTRIBUTE)) {
+            _source = (File) attributeMap.get(SOURCE_ATTRIBUTE);
+        }
+    }    
 }
