@@ -72,7 +72,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.29 2005-04-06 01:21:24 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.30 2005-06-10 02:16:23 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConstants {
@@ -403,7 +403,6 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                         Message email = msgs[msgNum];
                         subject = email.getSubject();
 
-                        StringBuffer entry = new StringBuffer();
                         StringBuffer description = new StringBuffer();
                         Part messagePart = email;
                         Pattern pattern = null;
@@ -515,14 +514,8 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                                             _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
                                                     outputFilename + "." + extension);
                                             MoblogPluginUtils.saveFile(mailbox.getOutputDirectory() + File.separator + outputFilename, "." + extension, bp.getInputStream());
+
                                             String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
-                                            /*
-                                            entry.append("<p /><img src=\"").append(baseurl).
-                                                    append(mailbox.getUrlPrefix()).
-                                                    append(outputFilename + "." + extension).
-                                                    append("\" border=\"0\" alt=\"").append(outputFilename).
-                                                    append("\" />");
-                                                    */
                                             Map moblogImageInformation = new HashMap();
                                             moblogImageInformation.put(MOBLOG_IMAGE, new String(outputFilename + "." + extension));
                                             moblogImageInformation.put(MOBLOG_IMAGE_URL, new String(baseurl + mailbox.getUrlPrefix() + outputFilename + "." + extension));
@@ -539,8 +532,8 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                                             _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator +
                                                     outputFilename + "." + extension);
                                             MoblogPluginUtils.saveFile(mailbox.getOutputDirectory() + File.separator + outputFilename, "." + extension, bp.getInputStream());
+
                                             String baseurl = mailbox.getBlogUser().getBlog().getBlogBaseURL();
-                                            //entry.append("<p /><a href=\"").append(baseurl).append(mailbox.getUrlPrefix()).append(outputFilename + "." + extension).append("\">").append(bp.getFileName()).append("</a>");
                                             Map moblogAttachmentInformation = new HashMap();
                                             moblogAttachmentInformation.put(MOBLOG_ATTACHMENT, bp.getFileName());
                                             moblogAttachmentInformation.put(MOBLOG_ATTACHMENT_URL, new String(baseurl + mailbox.getUrlPrefix() + outputFilename + "." + extension));
@@ -564,11 +557,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                                                 if (pattern != null) {
                                                     Matcher matcher = pattern.matcher(description);
                                                     if (!matcher.find() && !matcher.matches()) {
-                                                        //entry.append(description);
                                                         moblogContext.put(MOBLOG_BODY_TEXT, description.toString());
                                                     }
                                                 } else {
-                                                    //entry.append(description);
                                                     moblogContext.put(MOBLOG_BODY_TEXT, description.toString());
                                                 }
                                             }
@@ -603,11 +594,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                                 if (pattern != null) {
                                     Matcher matcher = pattern.matcher(description);
                                     if (!matcher.find() && !matcher.matches()) {
-                                        //entry.append(description);
                                         moblogContext.put(MOBLOG_BODY_TEXT, description.toString());
                                     }
                                 } else {
-                                    //entry.append(description);
                                     moblogContext.put(MOBLOG_BODY_TEXT, description.toString());
                                 }
                             } else {
@@ -643,31 +632,16 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                         File blogCategory = getBlogCategoryDirectory(blogUser.getBlog(), categoryName);
 
                         if (blogCategory.exists() && blogCategory.isDirectory()) {
-                            String extension = DEFAULT_ENTRY_EXTENSION;
-
                             moblogContext.put(MOBLOG_SUBJECT, subject);
                             moblogContext.put(MOBLOG_IMAGES, moblogImages);
                             moblogContext.put(MOBLOG_ATTACHMENTS, moblogAttachments);
                             String moblogText = mergeTemplate(MOBLOG_ENTRY_TEMPLATE, blogUser, moblogContext);
 
-                            String filename = BlojsomUtils.getBlogEntryFilename(subject, moblogText);
-                            String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
-
                             try {
-                                File sourceFile = new File(outputfile + extension);
-                                int fileTag = 1;
-                                while (sourceFile.exists()) {
-                                    sourceFile = new File(outputfile + "-" + fileTag + extension);
-                                    fileTag++;
-                                }
-
                                 BlogEntry blogEntry;
                                 blogEntry = _fetcher.newBlogEntry();
 
-                                Map attributeMap = new HashMap();
                                 Map blogEntryMetaData = new HashMap();
-                                attributeMap.put(BlojsomMetaDataConstants.SOURCE_ATTRIBUTE, sourceFile);
-                                blogEntry.setAttributes(attributeMap);
 
                                 blogEntry.setTitle(subject);
                                 blogEntry.setCategory(categoryName);
@@ -675,6 +649,7 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
                                 blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                                 blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR_EXT, from);
                                 blogEntry.setMetaData(blogEntryMetaData);
+
                                 blogEntry.save(mailbox.getBlogUser());
                                 blogEntry.load(mailbox.getBlogUser());
 

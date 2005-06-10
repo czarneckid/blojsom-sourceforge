@@ -40,9 +40,9 @@ package org.blojsom.blog;
  *
  * @author David Czarnecki
  * @since blojsom 2.23
- * @version $Id: Pingback.java,v 1.1 2005-01-31 02:43:25 czarneckid Exp $
+ * @version $Id: Pingback.java,v 1.2 2005-06-10 02:16:24 czarneckid Exp $
  */
-public class Pingback extends Trackback {
+public abstract class Pingback extends Trackback {
 
     /**
      * Default constructor

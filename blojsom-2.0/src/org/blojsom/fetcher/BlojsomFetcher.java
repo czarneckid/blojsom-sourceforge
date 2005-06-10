@@ -34,10 +34,7 @@
  */
 package org.blojsom.fetcher;
 
-import org.blojsom.blog.BlogCategory;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +46,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 1.8
- * @version $Id: BlojsomFetcher.java,v 1.5 2005-01-05 02:32:58 czarneckid Exp $
+ * @version $Id: BlojsomFetcher.java,v 1.6 2005-06-10 02:16:24 czarneckid Exp $
  */
 public interface BlojsomFetcher {
 
@@ -74,6 +71,30 @@ public interface BlojsomFetcher {
      * @return Blog entry instance
      */
     public BlogEntry newBlogEntry();
+
+    /**
+     * Return a new {@link BlogComment} instance
+     *
+     * @return {@link BlogComment}
+     * @since blojsom 2.26
+     */
+    public BlogComment newBlogComment();
+
+    /**
+     * Return a new {@link Trackback} instance
+     *
+     * @return {@link Trackback}
+     * @since blojsom 2.26
+     */
+    public Trackback newTrackback();
+
+    /**
+     * Return a new {@link Pingback} instance
+     *
+     * @return {@link Pingback}
+     * @since blojsom 2.26
+     */
+    public Pingback newPingback();
 
     /**
      * Return a new blog category instance

@@ -42,6 +42,7 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.BlojsomException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.18 2005-01-23 23:35:06 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.19 2005-06-10 02:16:23 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -172,13 +173,18 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             String blogCategoryName = BlojsomUtils.getRequestValue(BLOG_CATEGORY_NAME, httpServletRequest);
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
 
-            File existingBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
-            if (!BlojsomUtils.deleteDirectory(existingBlogCategory)) {
-                _logger.debug("Unable to delete blog category: " + existingBlogCategory.toString());
-                addOperationResultMessage(context, "Unable to delete blog category: " + blogCategoryName);
-            } else {
-                _logger.debug("Deleted blog category: " + existingBlogCategory.toString());
+            BlogCategory blogCategoryToDelete = _fetcher.newBlogCategory();
+            blogCategoryToDelete.setCategory(blogCategoryName);
+            try {
+                blogCategoryToDelete.delete(user);
+
+                 _logger.debug("Deleted blog category: " + blogCategoryName);
                 addOperationResultMessage(context, "Deleted blog category: " + blogCategoryName);
+            } catch (BlojsomException e) {
+                _logger.error(e);
+
+                _logger.error("Unable to delete blog category: " + blogCategoryName);
+                addOperationResultMessage(context, "Unable to delete blog category: " + blogCategoryName);
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
@@ -187,38 +193,27 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             blogCategoryName = BlojsomUtils.normalize(blogCategoryName);
             _logger.debug("Editing blog category: " + blogCategoryName);
 
-            File existingBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
-            _logger.debug("Retrieving blog properties from category directory: " + existingBlogCategory.toString());
-            String[] propertiesExtensions = blog.getBlogPropertiesExtensions();
-            File[] propertiesFiles = existingBlogCategory.listFiles(BlojsomUtils.getExtensionsFilter(propertiesExtensions));
+            BlogCategory blogCategoryToEdit = _fetcher.newBlogCategory();
+            blogCategoryToEdit.setCategory(blogCategoryName);
+            try {
+                blogCategoryToEdit.load(user);
 
-            if (propertiesFiles != null && propertiesFiles.length > 0) {
+                // Try and load the category description if available
+                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION, blogCategoryToEdit.getMetaData().get(NAME_KEY));
+
                 StringBuffer categoryPropertiesString = new StringBuffer();
-                for (int i = 0; i < propertiesFiles.length; i++) {
-                    File propertiesFile = propertiesFiles[i];
-                    _logger.debug("Loading blog properties from file: " + propertiesFile.toString());
-                    BlojsomProperties categoryProperties = new BlojsomProperties();
-                    try {
-                        FileInputStream fis = new FileInputStream(propertiesFile);
-                        categoryProperties.load(fis);
-                        fis.close();
-
-                        // Try and load the category description if available
-                        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_DESCRIPTION, categoryProperties.get(NAME_KEY));
-
-                        Iterator keyIterator = categoryProperties.keySet().iterator();
-                        Object key;
-                        while (keyIterator.hasNext()) {
-                            key = keyIterator.next();
-                            categoryPropertiesString.append(key.toString()).append("=").append(categoryProperties.get(key)).append("\r\n");
-                        }
-                    } catch (IOException e) {
-                        addOperationResultMessage(context, "Unable to load blog category: " + blogCategoryName);
-                        _logger.error(e);
-                    }
+                Iterator keyIterator = blogCategoryToEdit.getMetaData().keySet().iterator();
+                Object key;
+                while (keyIterator.hasNext()) {
+                    key = keyIterator.next();
+                    categoryPropertiesString.append(key.toString()).append("=").append(blogCategoryToEdit.getMetaData().get(key)).append("\r\n");
                 }
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA, categoryPropertiesString.toString());
+            } catch (BlojsomException e) {
+                _logger.error(e);
+
+                addOperationResultMessage(context, "Unable to load blog category: " + blogCategoryName);
             }
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME, blogCategoryName);
@@ -270,50 +265,39 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                     }
                 }
             } catch (IOException e) {
-                addOperationResultMessage(context, "Unable to read category metadata from input");
                 _logger.error(e);
+
+                addOperationResultMessage(context, "Unable to read category metadata from input");
             }
 
+            BlogCategory blogCategory = _fetcher.newBlogCategory();
 
-            File newBlogCategory;
             if (BlojsomUtils.checkNullOrBlank(blogCategoryParent)) {
-                newBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
+                blogCategory.setCategory(BlojsomUtils.removeInitialSlash(blogCategoryName));
             } else {
-                newBlogCategory = new File(blog.getBlogHome() + "/" + BlojsomUtils.removeInitialSlash(blogCategoryParent) + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
-            }
-            
-            if (!isUpdatingCategory) {
-                if (!newBlogCategory.mkdirs()) {
-                    _logger.error("Unable to add new blog category: " + blogCategoryName);
-                    addOperationResultMessage(context, "Unable to add new blog category: " + blogCategoryName);
-                    httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
-
-                    return entries;
-                } else {
-                    _logger.debug("Created blog directory: " + newBlogCategory.toString());
-                }
+                blogCategory.setCategory(BlojsomUtils.removeInitialSlash(blogCategoryParent) + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
             }
 
             if (!BlojsomUtils.checkNullOrBlank(blogCategoryDescription)) {
                 categoryMetaData.put(NAME_KEY, blogCategoryDescription);
             }
 
-            File newBlogProperties = new File(newBlogCategory.getAbsolutePath() + "/blojsom.properties");
-            try {
-                FileOutputStream fos = new FileOutputStream(newBlogProperties);
-                categoryMetaData.store(fos, null);
-                fos.close();
-                _logger.debug("Wrote blog properties to: " + newBlogProperties.toString());
-            } catch (IOException e) {
-                _logger.error(e);
-            }
+            blogCategory.setMetaData(categoryMetaData);
 
-            if (!isUpdatingCategory) {
-                _logger.debug("Successfully added new blog category: " + blogCategoryName);
-                addOperationResultMessage(context, "Successfully added new blog category: " + blogCategoryName);
-            } else {
-                _logger.debug("Successfully updated blog category: " + blogCategoryName);
-                addOperationResultMessage(context, "Successfully updated blog category: " + blogCategoryName);
+            try {
+                blogCategory.save(user);
+
+                if (!isUpdatingCategory) {
+                    _logger.debug("Successfully added new blog category: " + blogCategoryName);
+                    addOperationResultMessage(context, "Successfully added new blog category: " + blogCategoryName);
+                } else {
+                    _logger.debug("Successfully updated blog category: " + blogCategoryName);
+                    addOperationResultMessage(context, "Successfully updated blog category: " + blogCategoryName);
+                }
+            } catch (BlojsomException e) {
+                _logger.error(e);
+
+                addOperationResultMessage(context, "Unable to add/update blog category: " + blogCategoryName);
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);

@@ -36,6 +36,7 @@ package org.blojsom.plugin.comment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
@@ -53,14 +54,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.*;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.33 2005-04-21 03:41:38 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.34 2005-06-10 02:16:23 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -283,19 +283,11 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
         Boolean _blogCommentsEnabled;
         Boolean _blogEmailEnabled;
-        String[] _blogFileExtensions;
-        String _blogHome;
-        String _blogCommentsDirectory;
-        String _blogFileEncoding;
         String _emailPrefix;
         int _cookieExpiration;
 
-        _blogFileExtensions = blog.getBlogFileExtensions();
-        _blogHome = blog.getBlogHome();
         _blogCommentsEnabled = blog.getBlogCommentsEnabled();
         _blogEmailEnabled = blog.getBlogEmailEnabled();
-        _blogCommentsDirectory = blog.getBlogCommentsDirectory();
-        _blogFileEncoding = blog.getBlogFileEncoding();
         _emailPrefix = blog.getBlogProperty(COMMENT_PREFIX_IP);
         if (_emailPrefix == null) {
             _emailPrefix = DEFAULT_COMMENT_PREFIX;
@@ -509,9 +501,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 // Check to see if the comment should be destroyed (not saved) automatically
                 if (!commentMetaData.containsKey(BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY)) {
-                    BlogComment _comment = addBlogComment(category, permalink, author, authorEmail, authorURL,
-                            commentText, _blogCommentsEnabled.booleanValue(), _blogFileExtensions, _blogHome,
-                            _blogCommentsDirectory, _blogFileEncoding, commentMetaData);
+                    BlogComment _comment = addBlogComment(author, authorEmail, authorURL,
+                            commentText, _blogCommentsEnabled.booleanValue(), commentMetaData, user, entries[0]);
 
                     // For persisting the Last-Modified time
                     context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
@@ -522,7 +513,6 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                             blogComments = new ArrayList(1);
                         }
 
-                        _comment.setBlogEntry(entries[0]);
                         blogComments.add(_comment);
                         entries[0].setComments(blogComments);
 
@@ -567,11 +557,11 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
      * Send the comment e-mail to the blog author
      *
      * @param emailPrefix E-mail prefix
-     * @param title Entry title
-     * @param comment Comment text
-     * @param context Context
-     * @param author Author of entry
-     * @param blog {@link Blog} information
+     * @param title       Entry title
+     * @param comment     Comment text
+     * @param context     Context
+     * @param author      Author of entry
+     * @param blog        {@link Blog} information
      */
     public void sendCommentEmail(String emailPrefix, String title, String comment, Map context, String author, Blog blog) {
         String recipientEmail = blog.getAuthorizedUserEmail(author);
@@ -583,96 +573,38 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
     /**
      * Add a comment to a particular blog entry
      *
-     * @param category    Blog entry category
-     * @param permalink   Blog entry permalink
      * @param author      Comment author
      * @param authorEmail Comment author e-mail
      * @param authorURL   Comment author URL
      * @param userComment Comment
      * @return BlogComment Entry
      */
-    private BlogComment addBlogComment(String category, String permalink, String author,
+    private BlogComment addBlogComment(String author,
                                        String authorEmail, String authorURL, String userComment,
-                                       boolean blogCommentsEnabled, String[] blogFileExtensions,
-                                       String blogHome, String blogCommentsDirectory,
-                                       String blogFileEncoding, Map commentMetaData) {
+                                       boolean blogCommentsEnabled, Map commentMetaData, BlogUser blogUser, BlogEntry blogEntry) {
         BlogComment comment = null;
+
         if (blogCommentsEnabled) {
 
             //Escape out any HTML in the post;
             userComment = BlojsomUtils.escapeMetaAndLink(userComment);
 
-            comment = new BlogComment();
-            comment.setAuthor(author);
-            comment.setAuthorEmail(authorEmail);
-            comment.setAuthorURL(authorURL);
-            comment.setComment(userComment);
-            comment.setCommentDate(new Date());
-            comment.setMetaData(commentMetaData);
+            try {
+                comment = _fetcher.newBlogComment();
+                comment.setBlogEntry(blogEntry);
+                comment.setAuthor(author);
+                comment.setAuthorEmail(authorEmail);
+                comment.setAuthorURL(authorURL);
+                comment.setComment(userComment);
+                comment.setCommentDate(new Date());
+                comment.setMetaData(commentMetaData);
+                comment.save(blogUser);
+            } catch (BlojsomException e) {
+                _logger.error(e);
 
-            StringBuffer commentDirectory = new StringBuffer();
-            String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blogFileExtensions);
-            permalinkFilename = BlojsomUtils.urlDecode(permalinkFilename);
-            if (permalinkFilename == null) {
-                _logger.debug("Invalid permalink comment for: " + permalink);
-                return null;
-            }
-            commentDirectory.append(blogHome);
-            commentDirectory.append(BlojsomUtils.removeInitialSlash(category));
-            File blogEntry = new File(commentDirectory.toString() + File.separator + permalinkFilename);
-            if (!blogEntry.exists()) {
-                _logger.error("Trying to create comment for invalid blog entry: " + permalink);
-                return null;
-            }
-            commentDirectory.append(blogCommentsDirectory);
-            commentDirectory.append(File.separator);
-            commentDirectory.append(permalinkFilename);
-            commentDirectory.append(File.separator);
-
-            String commentHashable = author + userComment;
-            String hashedComment = BlojsomUtils.digestString(commentHashable).toUpperCase();
-            String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
-
-            comment.setId(hashedComment + BlojsomConstants.COMMENT_EXTENSION);
-
-            File commentDir = new File(commentDirectory.toString());
-            if (!commentDir.exists()) {
-                if (!commentDir.mkdirs()) {
-                    _logger.error("Could not create directory for comments: " + commentDirectory);
-                    return null;
-                }
+                comment = null;
             }
 
-            File commentEntry = new File(commentFilename);
-
-            if (!commentEntry.exists()) {
-                try {
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), blogFileEncoding));
-                    bw.write(BlojsomUtils.nullToBlank(comment.getAuthor()).trim());
-                    bw.newLine();
-                    bw.write(BlojsomUtils.nullToBlank(comment.getAuthorEmail()).trim());
-                    bw.newLine();
-                    bw.write(BlojsomUtils.nullToBlank(comment.getAuthorURL()).trim());
-                    bw.newLine();
-                    bw.write(BlojsomUtils.nullToBlank(comment.getComment()).trim());
-                    bw.newLine();
-                    bw.close();
-                    _logger.debug("Added blog comment: " + commentFilename);
-
-                    Properties commentMetaDataProperties = BlojsomUtils.mapToProperties(commentMetaData, UTF8);
-                    String commentMetaDataFilename = BlojsomUtils.getFilename(commentEntry.toString()) + DEFAULT_METADATA_EXTENSION;
-                    FileOutputStream fos = new FileOutputStream(new File(commentMetaDataFilename));
-                    commentMetaDataProperties.store(fos, null);
-                    fos.close();
-                    _logger.debug("Wrote comment meta-data: " + commentMetaDataFilename);
-                } catch (IOException e) {
-                    _logger.error(e);
-                    return null;
-                }
-            } else {
-                _logger.error("Duplicate comment submission detected, ignoring subsequent submission");
-                return null;
-            }
         }
 
         return comment;

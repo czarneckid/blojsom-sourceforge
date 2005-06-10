@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.26 2005-04-06 14:48:04 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.27 2005-06-10 02:16:24 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -111,6 +111,36 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     }
 
     /**
+     * Return a new {@link org.blojsom.blog.BlogComment} instance
+     *
+     * @return {@link org.blojsom.blog.BlogComment}
+     * @since blojsom 2.26
+     */
+    public BlogComment newBlogComment() {
+        return new FileBackedBlogComment();
+    }
+
+    /**
+     * Return a new {@link org.blojsom.blog.Trackback} instance
+     *
+     * @return {@link org.blojsom.blog.Trackback}
+     * @since blojsom 2.26
+     */
+    public Trackback newTrackback() {
+        return new FileBackedTrackback();
+    }
+
+    /**
+     * Return a new {@link org.blojsom.blog.Pingback} instance
+     *
+     * @return {@link org.blojsom.blog.Pingback}
+     * @since blojsom 2.26
+     */
+    public Pingback newPingback() {
+        return new FileBackedPingback();
+    }
+
+    /**
      * Retrieve a permalink entry from the entries for a given category
      *
      * @param blogUser          Blog information
@@ -134,11 +164,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
-            BlogEntry blogEntry = newBlogEntry();
+            FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
 
-            Map entryAttributes = new HashMap();
-            entryAttributes.put(FileBackedBlogEntry.SOURCE_ATTRIBUTE, blogFile);
-            blogEntry.setAttributes(entryAttributes);
+            blogEntry.setSource(blogFile);
             blogEntry.setCategory(category);
             
             try {
@@ -177,7 +205,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
-            BlogEntry blogEntry;
+            FileBackedBlogEntry blogEntry;
             int entryCounter;
 
             if (maxBlogEntries == -1) {
@@ -190,11 +218,9 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
-                blogEntry = newBlogEntry();
+                blogEntry = new FileBackedBlogEntry();
 
-                Map entryAttributes = new HashMap();
-                entryAttributes.put(FileBackedBlogEntry.SOURCE_ATTRIBUTE, entry);
-                blogEntry.setAttributes(entryAttributes);
+                blogEntry.setSource(entry);
                 blogEntry.setCategory(category);
 
                 try {

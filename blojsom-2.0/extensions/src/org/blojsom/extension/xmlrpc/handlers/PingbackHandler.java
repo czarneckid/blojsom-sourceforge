@@ -43,22 +43,23 @@ import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Pingback handler provides support for the <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a>
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.3 2005-02-10 04:30:43 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.4 2005-06-10 02:16:23 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
@@ -234,7 +235,9 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
                 pingbackMetaData.put(PINGBACK_METADATA_IP_ADDRESS, _httpServletRequest.getRemoteAddr());
 
                 // Record pingback
-                Pingback pingback = new Pingback();
+                Pingback pingback = _fetcher.newPingback();
+                pingback.setBlogEntry(blogEntry);
+
                 Integer status = addPingback(new HashMap(), blogCategory.getCategory(), permalink, blogEntry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI),
                         sourceURI, getTitleFromSource(sourcePage.toString()), _blog.getBlogFileExtensions(), _blog.getBlogHome(),
                         _blog.getBlogPingbacksDirectory(), UTF8, pingbackMetaData, pingback, pingbackID);
@@ -282,6 +285,7 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
                                   String blogPingbackDirectory, String blogFileEncoding, Map pingbackMetaData,
                                   Pingback pingback, String id) throws XmlRpcException {
         excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
+
         pingback.setTitle(title);
         pingback.setExcerpt(excerpt);
         pingback.setUrl(url);
@@ -290,72 +294,12 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
         pingback.setMetaData(pingbackMetaData);
         pingback.setId(id);
 
-        StringBuffer pingbackDirectory = new StringBuffer();
-        String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blogFileExtensions);
-        permalinkFilename = BlojsomUtils.urlDecode(permalinkFilename);
-        if (permalinkFilename == null) {
-            _logger.debug("Invalid permalink pingback for: " + permalink);
-
-            throw new XmlRpcException(PINGBACK_TARGET_URI_NON_EXISTENT_CODE, "Target URI does not exist");
-        }
-
-        pingbackDirectory.append(blogHome);
-        pingbackDirectory.append(BlojsomUtils.removeInitialSlash(category));
-        File blogEntry = new File(pingbackDirectory.toString() + File.separator + permalinkFilename);
-        _logger.debug("Directory: " + blogEntry.toString());
-        if (!blogEntry.exists()) {
-            _logger.error("Trying to create pingback for invalid blog entry: " + permalink);
-
-            throw new XmlRpcException(PINGBACK_TARGET_URI_NON_EXISTENT_CODE, "Target URI does not exist");
-        }
-
-        pingbackDirectory.append(blogPingbackDirectory);
-        pingbackDirectory.append(File.separator);
-        pingbackDirectory.append(permalinkFilename);
-        pingbackDirectory.append(File.separator);
-        String pingbackFilename = pingbackDirectory.toString() + id + PINGBACK_EXTENSION;
-
-        File pingbackDir = new File(pingbackDirectory.toString());
-        if (!pingbackDir.exists()) {
-            if (!pingbackDir.mkdirs()) {
-                _logger.error("Could not create directory for pingbacks: " + pingbackDirectory);
-
-                throw new XmlRpcException(PINGBACK_ACCESS_DENIED_CODE, "Access denied");
-            }
-        }
-
-        File pingbackEntry = new File(pingbackFilename);
-        if (pingbackEntry.exists()) {
-            _logger.debug("Pingback already registered");
-
-            throw new XmlRpcException(PINGBACK_ALREADY_REGISTERED_CODE, "Pingback already registered");
-        }
-
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pingbackEntry), blogFileEncoding));
-            bw.write(BlojsomUtils.nullToBlank(pingback.getTitle()).trim());
-            bw.newLine();
-            bw.write(BlojsomUtils.nullToBlank(pingback.getUrl()).trim());
-            bw.newLine();
-            bw.write(BlojsomUtils.nullToBlank(pingback.getBlogName()).trim());
-            bw.newLine();
-            bw.write(BlojsomUtils.nullToBlank(pingback.getExcerpt()).trim());
-            bw.newLine();
-            bw.close();
-
-            _logger.debug("Added pingback: " + pingbackFilename);
-
-            Properties pingbackMetaDataProperties = BlojsomUtils.mapToProperties(pingbackMetaData, UTF8);
-            String pingbackMetaDataFilename = BlojsomUtils.getFilename(pingbackEntry.toString()) + DEFAULT_METADATA_EXTENSION;
-            FileOutputStream fos = new FileOutputStream(new File(pingbackMetaDataFilename));
-            pingbackMetaDataProperties.store(fos, null);
-            fos.close();
-
-            _logger.debug("Wrote pingback meta-data: " + pingbackMetaDataFilename);
-        } catch (IOException e) {
-            _logger.error(e);
-
-            throw new XmlRpcException(PINGBACK_GENERIC_FAULT_CODE, "Unknown exception occurred");
+            pingback.save(_blogUser);
+        } catch (BlojsomException e) {
+            if (e.getCause() instanceof XmlRpcException) {
+                throw (XmlRpcException) e.getCause();
+            }
         }
 
         return new Integer(0);

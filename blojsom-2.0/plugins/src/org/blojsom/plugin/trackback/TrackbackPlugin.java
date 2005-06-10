@@ -36,28 +36,28 @@ package org.blojsom.plugin.trackback;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.trackback.event.TrackbackAddedEvent;
-import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
+import org.blojsom.plugin.trackback.event.TrackbackAddedEvent;
+import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.*;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.39 2005-04-21 03:42:09 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.40 2005-06-10 02:16:24 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -231,20 +231,12 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             return entries;
         }
 
-        String[] _blogFileExtensions;
-        String _blogHome;
-        String _blogTrackbackDirectory;
         Boolean _blogEmailEnabled;
         Boolean _blogTrackbacksEnabled;
-        String _blogFileEncoding;
         String _emailPrefix;
 
-        _blogFileExtensions = blog.getBlogFileExtensions();
-        _blogHome = blog.getBlogHome();
-        _blogTrackbackDirectory = blog.getBlogTrackbackDirectory();
         _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogTrackbacksEnabled = blog.getBlogTrackbacksEnabled();
-        _blogFileEncoding = blog.getBlogFileEncoding();
         _emailPrefix = blog.getBlogProperty(TRACKBACK_PREFIX_IP);
         if (_emailPrefix == null) {
             _emailPrefix = DEFAULT_TRACKBACK_PREFIX;
@@ -433,22 +425,20 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
                 }
             }
 
-            Trackback trackback = new Trackback();
+            Trackback trackback = _fetcher.newTrackback();
+            trackback.setBlogEntry(entries[0]);
+
             Integer code = new Integer(1);
 
             _blojsomConfiguration.getEventBroadcaster().processEvent(new TrackbackResponseSubmissionEvent(this, new Date(), user, httpServletRequest, httpServletResponse, blogName, title, url, excerpt, trackbackMetaData));                
 
-
             // Check to see if the trackback should be destroyed (not saved) automatically
             if (!trackbackMetaData.containsKey(BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY)) {
-                code = addTrackback(context, category, permalink, title, excerpt, url, blogName,
-                        _blogFileExtensions, _blogHome, _blogTrackbackDirectory,
-                        _blogFileEncoding, trackbackMetaData, trackback);
+                code = addTrackback(title, excerpt, url, blogName,
+                        trackbackMetaData, trackback, user, context);
 
                 // For persisting the Last-Modified time
                 context.put(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
-
-                trackback.setBlogEntry(entries[0]);
 
                 // Merge the template e-mail
                 Map emailTemplateContext = new HashMap();
@@ -491,17 +481,14 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     /**
      * Add a trackback to the permalink entry
      *
-     * @param category  Category where the permalink exists
-     * @param permalink Permalink
      * @param title     Trackback title
      * @param excerpt   Excerpt for the trackback (not more than 255 characters in length)
      * @param url       URL for the trackback
      * @param blogName  Name of the blog making the trackback
      */
-    private Integer addTrackback(Map context, String category, String permalink, String title,
+    private Integer addTrackback(String title,
                                  String excerpt, String url, String blogName,
-                                 String[] blogFileExtensions, String blogHome,
-                                 String blogTrackbackDirectory, String blogFileEncoding, Map trackbackMetaData, Trackback trackback) {
+                                 Map trackbackMetaData, Trackback trackback, BlogUser blogUser, Map context) {
         excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
         trackback.setTitle(title);
         trackback.setExcerpt(excerpt);
@@ -510,61 +497,10 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
         trackback.setTrackbackDateLong(new Date().getTime());
         trackback.setMetaData(trackbackMetaData);
 
-        StringBuffer trackbackDirectory = new StringBuffer();
-        String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blogFileExtensions);
-        permalinkFilename = BlojsomUtils.urlDecode(permalinkFilename);
-        if (permalinkFilename == null) {
-            _logger.debug("Invalid permalink trackback for: " + permalink);
-            context.put(BLOJSOM_TRACKBACK_MESSAGE, "Invalid permalink trackback for: " + permalink);
-            return new Integer(1);
-        }
-
-        trackbackDirectory.append(blogHome);
-        trackbackDirectory.append(BlojsomUtils.removeInitialSlash(category));
-        File blogEntry = new File(trackbackDirectory.toString() + File.separator + permalinkFilename);
-        if (!blogEntry.exists()) {
-            _logger.error("Trying to create trackback for invalid blog entry: " + permalink);
-            context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trying to create trackback for invalid permalink: " + category + permalinkFilename);
-            return new Integer(1);
-        }
-        trackbackDirectory.append(blogTrackbackDirectory);
-        trackbackDirectory.append(File.separator);
-        trackbackDirectory.append(permalinkFilename);
-        trackbackDirectory.append(File.separator);
-        String trackbackFilename = trackbackDirectory.toString() + trackback.getTrackbackDateLong() + TRACKBACK_EXTENSION;
-        trackback.setId(trackback.getTrackbackDateLong() + TRACKBACK_EXTENSION);
-        File trackbackDir = new File(trackbackDirectory.toString());
-        if (!trackbackDir.exists()) {
-            if (!trackbackDir.mkdirs()) {
-                _logger.error("Could not create directory for trackbacks: " + trackbackDirectory);
-                context.put(BLOJSOM_TRACKBACK_MESSAGE, "Could not create directory for trackbacks");
-                return new Integer(1);
-            }
-        }
-
-        File trackbackEntry = new File(trackbackFilename);
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trackbackEntry), blogFileEncoding));
-            bw.write(BlojsomUtils.nullToBlank(trackback.getTitle()).trim());
-            bw.newLine();
-            bw.write(BlojsomUtils.nullToBlank(trackback.getExcerpt()).trim());
-            bw.newLine();
-            bw.write(BlojsomUtils.nullToBlank(trackback.getUrl()).trim());
-            bw.newLine();
-            bw.write(BlojsomUtils.nullToBlank(trackback.getBlogName()).trim());
-            bw.newLine();
-            bw.close();
-            _logger.debug("Added trackback: " + trackbackFilename);
-
-            Properties trackbackMetaDataProperties = BlojsomUtils.mapToProperties(trackbackMetaData, UTF8);
-            String trackbackMetaDataFilename = BlojsomUtils.getFilename(trackbackEntry.toString()) + DEFAULT_METADATA_EXTENSION;
-            FileOutputStream fos = new FileOutputStream(new File(trackbackMetaDataFilename));
-            trackbackMetaDataProperties.store(fos, null);
-            fos.close();
-            _logger.debug("Wrote trackback meta-data: " + trackbackMetaDataFilename);
-        } catch (IOException e) {
-            _logger.error(e);
-            context.put(BLOJSOM_TRACKBACK_MESSAGE, "I/O error on trackback write.");
+            trackback.save(blogUser);
+        } catch (BlojsomException e) {
+            context.put(BLOJSOM_TRACKBACK_MESSAGE, e.getMessage());
             return new Integer(1);
         }
 

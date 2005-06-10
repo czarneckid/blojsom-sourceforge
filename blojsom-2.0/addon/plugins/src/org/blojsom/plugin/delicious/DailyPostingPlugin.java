@@ -52,7 +52,6 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -60,7 +59,7 @@ import java.util.*;
  * Plugin to post links from your <a href="http://del.icio.us">del.icio.us</a> account to your blog.
  *
  * @author David Czarnecki
- * @version $Id: DailyPostingPlugin.java,v 1.3 2005-05-25 02:52:22 czarneckid Exp $
+ * @version $Id: DailyPostingPlugin.java,v 1.4 2005-06-10 02:15:59 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class DailyPostingPlugin extends StandaloneVelocityPlugin {
@@ -285,15 +284,10 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                                             String nowAsString = DeliciousUtils.getDeliciousDate(now);
                                             postingCategory = BlojsomUtils.normalize(postingCategory);
 
-                                            File sourceFile = new File(blog.getBlogHome() + postingCategory + File.separator + "delicious-links-" + nowAsString + DEFAULT_ENTRY_EXTENSION);
                                             BlogEntry blogEntry;
                                             blogEntry = _fetcher.newBlogEntry();
 
-                                            Map attributeMap = new HashMap();
                                             Map blogEntryMetaData = new HashMap();
-
-                                            attributeMap.put(BlojsomMetaDataConstants.SOURCE_ATTRIBUTE, sourceFile);
-                                            blogEntry.setAttributes(attributeMap);
 
                                             String title = MessageFormat.format(postTitle, new Object[]{nowAsString, deliciousUsername});
                                             blogEntry.setTitle(title);
@@ -301,6 +295,7 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                                             blogEntry.setDescription(renderedLinkTemplate);
                                             blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                                             blogEntry.setMetaData(blogEntryMetaData);
+
                                             blogEntry.save(blogUser);
                                             blogEntry.load(blogUser);
 

@@ -36,10 +36,9 @@ package org.blojsom.extension.comment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.BlogComment;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfigurationException;
+import org.blojsom.BlojsomException;
+import org.blojsom.blog.*;
+import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.comment.CommentUtils;
 import org.blojsom.plugin.comment.event.CommentAddedEvent;
 import org.blojsom.plugin.email.EmailMessage;
@@ -66,7 +65,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -79,7 +80,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.13 2005-01-30 19:27:59 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.14 2005-06-10 02:16:23 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -311,65 +312,35 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                 _logger.debug("   Comment: \n" + commentText);
 
                 // Create a new blog comment
-                BlogComment comment = new BlogComment();
-                comment.setAuthor(commentAuthor);
-                comment.setAuthorEmail(commentEmail);
-                comment.setAuthorURL(commentLink);
-                comment.setComment(commentText);
-                comment.setCommentDate(new Date());
+                BlogComment comment = _fetcher.newBlogComment();
+                try {
+                    BlogEntry blogEntry = BlojsomUtils.fetchEntry(_fetcher, blogUser, requestedCategory, permalink);
 
-                // Construct the comment filename
-                String permalinkFilename = BlojsomUtils.getFilenameForPermalink(permalink, blog.getBlogFileExtensions());
-                StringBuffer commentDirectory = new StringBuffer(blog.getBlogHome());
-                commentDirectory.append(BlojsomUtils.removeInitialSlash(requestedCategory));
-                commentDirectory.append(blog.getBlogCommentsDirectory());
-                commentDirectory.append(File.separator);
-                commentDirectory.append(permalinkFilename);
-                commentDirectory.append(File.separator);
-                String hashedComment = BlojsomUtils.digestString(commentText).toUpperCase();
-                String commentFilename = commentDirectory.toString() + hashedComment + BlojsomConstants.COMMENT_EXTENSION;
-                File commentDir = new File(commentDirectory.toString());
+                    comment.setAuthor(commentAuthor);
+                    comment.setAuthorEmail(commentEmail);
+                    comment.setAuthorURL(commentLink);
+                    comment.setComment(commentText);
+                    comment.setCommentDate(new Date());
+                    comment.setBlogEntry(blogEntry);
 
-                // Ensure it exists
-                if (!commentDir.exists()) {
-                    if (!commentDir.mkdirs()) {
-                        _logger.error("Could not create directory for comments: " + commentDirectory);
-                        httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not create directory for comments");
-                    }
+                    comment.save(blogUser);
+
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), comment, blogUser));
+
+                    // Send a Comment Email
+                    sendCommentEmail(commentTitle, requestedCategory, permalink, commentAuthor, commentEmail,
+                            commentLink, commentText, blog);
+
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                } catch (BlojsomFetcherException e) {
+                    _logger.error(e);
+
+                    httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find blog entry: " + requestedCategory + permalink);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
+
+                    httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
                 }
-
-                // Create a comment entry
-                File commentEntry = new File(commentFilename);
-                if (!commentEntry.exists()) {
-                    try {
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(commentEntry), blog.getBlogFileEncoding()));
-                        bw.write(comment.getAuthor());
-                        bw.newLine();
-                        bw.write(comment.getAuthorEmail());
-                        bw.newLine();
-                        bw.write(comment.getAuthorURL());
-                        bw.newLine();
-                        bw.write(comment.getComment());
-                        bw.newLine();
-                        bw.close();
-                        _logger.debug("Added blog comment: " + commentFilename);
-
-                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), comment, blogUser));
-
-
-                        // Send a Comment Email
-                        sendCommentEmail(commentTitle, requestedCategory, permalink, commentAuthor, commentEmail,
-                                commentLink, commentText, blog);
-                    } catch (IOException e) {
-                        _logger.error(e);
-                        httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-                    }
-                } else {
-                    _logger.error("Duplicate comment submission detected, ignoring subsequent submission");
-                    httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Duplicate comment submission detected, ignoring subsequent submission");
-                }
-
-                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "No comment text available");
             }

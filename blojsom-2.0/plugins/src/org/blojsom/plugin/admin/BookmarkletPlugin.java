@@ -34,33 +34,32 @@
  */
 package org.blojsom.plugin.admin;
 
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.blojsom.BlojsomException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.BlogCategory;
+import org.blojsom.blog.BlogEntry;
+import org.blojsom.blog.BlogUser;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
-import org.blojsom.BlojsomException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.6 2005-02-17 02:25:46 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.7 2005-06-10 02:16:23 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -188,36 +187,6 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                 }
 
                 entry.setMetaData(entryMetaData);
-
-                String blogEntryExtension = user.getBlog().getBlogProperty(BLOG_XMLRPC_ENTRY_EXTENSION_IP);
-                if (BlojsomUtils.checkNullOrBlank(blogEntryExtension)) {
-                    blogEntryExtension = DEFAULT_BLOG_XMLRPC_ENTRY_EXTENSION;
-                }
-
-                String filename;
-                if (BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
-                    filename = BlojsomUtils.getBlogEntryFilename(blogEntryTitle, blogEntryDescription);
-                } else {
-                    if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
-                        proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
-                    }
-
-                    proposedBlogFilename = BlojsomUtils.normalize(proposedBlogFilename);
-                    filename = proposedBlogFilename;
-                    _logger.debug("Using proposed blog entry filename: " + filename);
-                }
-
-                File blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename + blogEntryExtension);
-                int fileTag = 1;
-                while (blogFilename.exists()) {
-                    blogFilename = new File(user.getBlog().getBlogHome() + BlojsomUtils.removeInitialSlash(blogCategoryName) + filename + "-" + fileTag + blogEntryExtension);
-                    fileTag++;
-                }
-                _logger.debug("New blog entry file: " + blogFilename.toString());
-
-                Map attributeMap = new HashMap();
-                attributeMap.put(BlojsomMetaDataConstants.SOURCE_ATTRIBUTE, blogFilename);
-                entry.setAttributes(attributeMap);
 
                 try {
                     entry.save(user);

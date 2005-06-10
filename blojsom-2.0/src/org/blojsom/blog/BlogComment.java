@@ -35,6 +35,7 @@
 package org.blojsom.blog;
 
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.BlojsomException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,9 +47,9 @@ import java.io.Serializable;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.12 2005-01-30 18:47:50 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.13 2005-06-10 02:16:24 czarneckid Exp $
  */
-public class BlogComment implements Serializable{
+public abstract class BlogComment implements Serializable {
 
     protected String _author;
     protected String _authorEmail;
@@ -289,4 +290,28 @@ public class BlogComment implements Serializable{
     public void setBlogEntry(BlogEntry blogEntry) {
         _blogEntry = blogEntry;
     }
+
+    /**
+     * Load the blog comment
+     *
+     * @param blogUser {@link BlogUser}
+     * @since blojsom 2.26
+     */
+    public abstract void load(BlogUser blogUser) throws BlojsomException;
+
+    /**
+     * Save the blog comment
+     *
+     * @param blogUser {@link BlogUser}
+     * @since blojsom 2.26
+     */
+    public abstract void save(BlogUser blogUser) throws BlojsomException;
+
+    /**
+     * Delete the blog comment
+     *
+     * @param blogUser {@link BlogUser}
+     * @since blojsom 2.26
+     */
+    public abstract void delete(BlogUser blogUser) throws BlojsomException;
 }

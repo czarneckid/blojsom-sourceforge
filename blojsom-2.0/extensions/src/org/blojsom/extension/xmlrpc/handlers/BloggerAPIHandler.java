@@ -38,25 +38,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
-import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
-import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
-import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.fetcher.BlojsomFetcher;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.util.BlojsomUtils;
 
-import java.io.File;
 import java.util.*;
 
 /**
  * Blojsom XML-RPC Handler for the Blogger v1.0 API
- *
+ * <p/>
  * Blogger API spec can be found at http://plant.blogger.com/api/index.html
  *
  * @author Mark Lussier
- * @version $Id: BloggerAPIHandler.java,v 1.22 2005-01-27 01:25:31 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.23 2005-06-10 02:16:23 czarneckid Exp $
  */
 public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -158,8 +157,8 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
      * Attach a Blog instance to the API Handler so that it can interact with the blog
      *
      * @param blogUser an instance of BlogUser
-     * @see org.blojsom.blog.BlogUser
      * @throws BlojsomException If there is an error setting the blog instance or properties for the handler
+     * @see org.blojsom.blog.BlogUser
      */
     public void setBlogUser(BlogUser blogUser) throws BlojsomException {
         _blogUser = blogUser;
@@ -173,11 +172,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Authenticates a user and returns basic user info (name, email, userid, etc.).
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @throws XmlRpcException
      * @return
+     * @throws XmlRpcException
      */
     public Object getUserInfo(String appkey, String userid, String password) throws Exception {
         _logger.debug("getUserInfo() Called =====[ SUPPORTED ]=======");
@@ -217,11 +216,11 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Returns information on all the blogs a given user is a member of
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
      * @return Blog category list
+     * @throws XmlRpcException If there are no categories or the user was not authenticated correctly
      */
     public Object getUsersBlogs(String appkey, String userid, String password) throws Exception {
         _logger.debug("getUsersBlogs() Called ===[ SUPPORTED ]=======");
@@ -297,14 +296,14 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param blogid   Unique identifier of the blog the post will be added to
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @param content Contents of the post
-     * @param publish If true, the blog will be published immediately after the post is made
-     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
+     * @param content  Contents of the post
+     * @param publish  If true, the blog will be published immediately after the post is made
      * @return Post ID of the added entry
+     * @throws XmlRpcException If the user was not authenticated correctly or if there was an I/O exception
      */
     public String newPost(String appkey, String blogid, String userid, String password, String content, boolean publish) throws Exception {
         _logger.debug("newPost() Called ===========[ SUPPORTED ]=====");
@@ -323,49 +322,33 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
             String result = null;
+            String title = findTitleInContent(content);
 
-            // Quick verify that the category is valid
-            File blogCategory = getBlogCategoryDirectory(blogid);
-            if (blogCategory.exists() && blogCategory.isDirectory()) {
-                String title = findTitleInContent(content);
-                String filename = BlojsomUtils.getBlogEntryFilename(title, content);
-                String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
+            try {
+                BlogEntry entry = _fetcher.newBlogEntry();
+                Map blogEntryMetaData = new HashMap();
 
-                try {
-                    File sourceFile = new File(outputfile + _blogEntryExtension);
-                    int fileTag = 1;
-                    while (sourceFile.exists()) {
-                        sourceFile = new File(outputfile + "-" + fileTag + _blogEntryExtension);
-                        fileTag++;
-                    }
-                    String postid = blogid + "?" + PERMALINK_PARAM + "=" + BlojsomUtils.urlEncode(sourceFile.getName());
-                    BlogEntry entry = _fetcher.newBlogEntry();
-                    Map attributeMap = new HashMap();
-                    Map blogEntryMetaData = new HashMap();
-
-                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
-                    entry.setAttributes(attributeMap);
-                    entry.setCategory(blogid);
-                    if (title != null) {
-                        content = BlojsomUtils.replace(content, TITLE_TAG_START + title + TITLE_TAG_END, "");
-                        entry.setTitle(title);
-                    }
-                    entry.setDescription(content);
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
-                    entry.setMetaData(blogEntryMetaData);
-                    entry.save(_blogUser);
-                    
-                    entry.load(_blogUser);
-
-                    result = postid;
-
-                    // Send out an add blog entry event
-                    _configuration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, _blogUser));
-                } catch (BlojsomException e) {
-                    _logger.error(e);
-                    throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
+                entry.setCategory(blogid);
+                if (title != null) {
+                    content = BlojsomUtils.replace(content, TITLE_TAG_START + title + TITLE_TAG_END, "");
+                    entry.setTitle(title);
                 }
+                entry.setDescription(content);
+                blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
+                blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                entry.setMetaData(blogEntryMetaData);
+
+                entry.save(_blogUser);
+                entry.load(_blogUser);
+
+                String postid = blogid + "?" + PERMALINK_PARAM + "=" + entry.getPermalink();
+                result = postid;
+
+                // Send out an add blog entry event
+                _configuration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, _blogUser));
+            } catch (BlojsomException e) {
+                _logger.error(e);
+                throw new XmlRpcException(UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_MSG);
             }
 
             return result;
@@ -378,15 +361,15 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Edits a given post. Optionally, will publish the blog after making the edit
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param postid Unique identifier of the post to be changed
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param postid   Unique identifier of the post to be changed
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @param content Contents of the post
-     * @param publish If true, the blog will be published immediately after the post is made
-     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
-     * or if the entry permalink ID is invalid
+     * @param content  Contents of the post
+     * @param publish  If true, the blog will be published immediately after the post is made
      * @return <code>true</code> if the entry was edited, <code>false</code> otherwise
+     * @throws XmlRpcException If the user was not authenticated correctly, if there was an I/O exception,
+     *                         or if the entry permalink ID is invalid
      */
     public boolean editPost(String appkey, String postid, String userid, String password, String content, boolean publish) throws Exception {
         _logger.debug("editPost() Called ========[ SUPPORTED ]=====");
@@ -460,13 +443,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Get a particular post for a blojsom category
      *
-     * @since blojsom 1.9.3
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param blogid   Unique identifier of the blog the post will be added to
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @throws XmlRpcException If the user was not authenticated correctly
      * @return Post to the blog
+     * @throws XmlRpcException If the user was not authenticated correctly
+     * @since blojsom 1.9.3
      */
     public Object getPost(String appkey, String blogid, String userid, String password) throws Exception {
         _logger.debug("getPost() Called ===========[ SUPPORTED ]=====");
@@ -527,13 +510,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Delete a Post
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param postid Unique identifier of the post to be changed
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param postid   Unique identifier of the post to be changed
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @param publish Ignored
-     * @throws XmlRpcException
+     * @param publish  Ignored
      * @return <code>true</code> if the entry was delete, <code>false</code> otherwise
+     * @throws XmlRpcException
      */
     public boolean deletePost(String appkey, String postid, String userid, String password, boolean publish) throws Exception {
         _logger.debug("deletePost() Called =====[ SUPPORTED ]=====");
@@ -594,13 +577,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Get a list of recent posts for a blojsom category
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param appkey   Unique identifier/passcode of the application sending the post
+     * @param blogid   Unique identifier of the blog the post will be added to
+     * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
      * @param numposts Number of Posts to Retrieve
-     * @throws XmlRpcException If the user was not authenticated correctly
      * @return Recent posts to the blog
+     * @throws XmlRpcException If the user was not authenticated correctly
      */
     public Object getRecentPosts(String appkey, String blogid, String userid, String password, int numposts) throws Exception {
         _logger.debug("getRecentPosts() Called ===========[ SUPPORTED ]=====");
@@ -618,42 +601,39 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
             _authorizationProvider.authorize(_blogUser, null, userid, password);
             checkXMLRPCPermission(userid, BLOGGER_API_PERMISSION);
 
-            // Quick verify that the categories are valid
-            File blogCategoryFile = new File(_blog.getBlogHome() + BlojsomUtils.removeInitialSlash(blogid));
-            if (blogCategoryFile.exists() && blogCategoryFile.isDirectory()) {
+            String requestedCategory = BlojsomUtils.removeInitialSlash(blogid);
+            requestedCategory = BlojsomUtils.normalize(requestedCategory);
+            
+            BlogCategory blogCategory = _fetcher.newBlogCategory();
+            blogCategory.setCategory(blogid);
+            blogCategory.setCategoryURL(_blog.getBlogURL() + requestedCategory);
 
-                String requestedCategory = BlojsomUtils.removeInitialSlash(blogid);
-                BlogCategory blogCategory = _fetcher.newBlogCategory();
-                blogCategory.setCategory(blogid);
-                blogCategory.setCategoryURL(_blog.getBlogURL() + requestedCategory);
+            BlogEntry[] entries;
+            Map fetchMap = new HashMap();
 
-                BlogEntry[] entries;
-                Map fetchMap = new HashMap();
+            if (BlojsomUtils.checkNullOrBlank(requestedCategory)) {
+                fetchMap.put(BlojsomFetcher.FETCHER_FLAVOR, DEFAULT_FLAVOR_HTML);
+                fetchMap.put(BlojsomFetcher.FETCHER_NUM_POSTS_INTEGER, new Integer(numposts));
+                entries = _fetcher.fetchEntries(fetchMap, _blogUser);
+            } else {
+                fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
+                fetchMap.put(BlojsomFetcher.FETCHER_NUM_POSTS_INTEGER, new Integer(numposts));
+                entries = _fetcher.fetchEntries(fetchMap, _blogUser);
+            }
 
-                if (BlojsomUtils.checkNullOrBlank(requestedCategory)) {
-                    fetchMap.put(BlojsomFetcher.FETCHER_FLAVOR, DEFAULT_FLAVOR_HTML);
-                    fetchMap.put(BlojsomFetcher.FETCHER_NUM_POSTS_INTEGER, new Integer(numposts));
-                    entries = _fetcher.fetchEntries(fetchMap, _blogUser);
-                } else {
-                    fetchMap.put(BlojsomFetcher.FETCHER_CATEGORY, blogCategory);
-                    fetchMap.put(BlojsomFetcher.FETCHER_NUM_POSTS_INTEGER, new Integer(numposts));
-                    entries = _fetcher.fetchEntries(fetchMap, _blogUser);
-                }
-
-                if (entries != null && entries.length > 0) {
-                    for (int x = 0; x < entries.length; x++) {
-                        BlogEntry entry = entries[x];
-                        Hashtable entrystruct = new Hashtable();
-                        entrystruct.put(MEMBER_POSTID, entry.getId());
-                        entrystruct.put(MEMBER_BLOGID, entry.getCategory());
-                        entrystruct.put(MEMBER_TITLE, entry.getTitle());
-                        entrystruct.put(MEMBER_URL, entry.getEscapedLink());
-                        entrystruct.put(MEMBER_CONTENT, entry.getTitle() + LINE_SEPARATOR + entry.getDescription());
-                        entrystruct.put(MEMBER_DATECREATED, entry.getDate());
-                        entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
-                        entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
-                        recentPosts.add(entrystruct);
-                    }
+            if (entries != null && entries.length > 0) {
+                for (int x = 0; x < entries.length; x++) {
+                    BlogEntry entry = entries[x];
+                    Hashtable entrystruct = new Hashtable();
+                    entrystruct.put(MEMBER_POSTID, entry.getId());
+                    entrystruct.put(MEMBER_BLOGID, entry.getCategory());
+                    entrystruct.put(MEMBER_TITLE, entry.getTitle());
+                    entrystruct.put(MEMBER_URL, entry.getEscapedLink());
+                    entrystruct.put(MEMBER_CONTENT, entry.getTitle() + LINE_SEPARATOR + entry.getDescription());
+                    entrystruct.put(MEMBER_DATECREATED, entry.getDate());
+                    entrystruct.put(MEMBER_AUTHORNAME, _blog.getBlogOwner());
+                    entrystruct.put(MEMBER_AUTHOREMAIL, _blog.getBlogOwnerEmail());
+                    recentPosts.add(entrystruct);
                 }
             }
 
@@ -667,14 +647,14 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Edits the main or archive index template of a given blog (NOT IMPLEMENTED)
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a Blogger user who has permission to post to the blog
-     * @param password Password for said username
-     * @param template The text for the new template (usually mostly HTML). Must contain opening and closing <Blogger> tags, since they're needed to publish
+     * @param appkey       Unique identifier/passcode of the application sending the post
+     * @param blogid       Unique identifier of the blog the post will be added to
+     * @param userid       Login for a Blogger user who has permission to post to the blog
+     * @param password     Password for said username
+     * @param template     The text for the new template (usually mostly HTML). Must contain opening and closing <Blogger> tags, since they're needed to publish
      * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
-     * @throws XmlRpcException
      * @return
+     * @throws XmlRpcException
      */
     public boolean setTemplate(String appkey, String blogid, String userid, String password, String template, String templateType) throws Exception {
         _logger.debug("setTemplate() Called =====[ UNSUPPORTED ]=====");
@@ -691,13 +671,13 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
     /**
      * Returns the main or archive index template of a given blog (NOT IMPLEMENTED)
      *
-     * @param appkey Unique identifier/passcode of the application sending the post
-     * @param blogid Unique identifier of the blog the post will be added to
-     * @param userid Login for a Blogger user who has permission to post to the blog
-     * @param password Password for said username
+     * @param appkey       Unique identifier/passcode of the application sending the post
+     * @param blogid       Unique identifier of the blog the post will be added to
+     * @param userid       Login for a Blogger user who has permission to post to the blog
+     * @param password     Password for said username
      * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
-     * @throws XmlRpcException
      * @return
+     * @throws XmlRpcException
      */
     public String getTemplate(String appkey, String blogid, String userid, String password, String templateType) throws Exception {
         _logger.debug("getTemplate() Called =====[ UNSUPPORTED ]=====");
@@ -708,5 +688,5 @@ public class BloggerAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-    }    
+    }
 }

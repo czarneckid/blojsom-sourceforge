@@ -34,6 +34,8 @@
  */
 package org.blojsom.blog;
 
+import org.blojsom.BlojsomException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,9 +46,9 @@ import java.io.Serializable;
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.9 2005-01-30 18:47:50 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.10 2005-06-10 02:16:24 czarneckid Exp $
  */
-public class Trackback implements Serializable {
+public abstract class Trackback implements Serializable {
 
     protected String _title;
     protected String _excerpt;
@@ -265,4 +267,28 @@ public class Trackback implements Serializable {
     public void setBlogEntry(BlogEntry blogEntry) {
         _blogEntry = blogEntry;
     }
+
+/**
+     * Load the trackback
+     *
+     * @param blogUser {@link BlogUser}
+     * @since blojsom 2.26
+     */
+    public abstract void load(BlogUser blogUser) throws BlojsomException;
+
+    /**
+     * Save the trackback
+     *
+     * @param blogUser {@link BlogUser}
+     * @since blojsom 2.26
+     */
+    public abstract void save(BlogUser blogUser) throws BlojsomException;
+
+    /**
+     * Delete the trackback
+     *
+     * @param blogUser {@link BlogUser}
+     * @since blojsom 2.26
+     */
+    public abstract void delete(BlogUser blogUser) throws BlojsomException;
 }

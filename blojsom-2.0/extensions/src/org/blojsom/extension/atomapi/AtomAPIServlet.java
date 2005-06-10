@@ -37,13 +37,13 @@ package org.blojsom.extension.atomapi;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
-import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
-import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
-import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.servlet.BlojsomBaseServlet;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.58 2005-01-28 00:52:17 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.59 2005-06-10 02:16:23 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -144,7 +144,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
      * the proper template and content type
      *
      * @param servletConfig Servlet configuration information
-     * @param blogUser {@link BlogUser} information
+     * @param blogUser      {@link BlogUser} information
      * @since blojsom 2.22
      */
     protected void configureFlavorsForUser(ServletConfig servletConfig, BlogUser blogUser) throws ServletException {
@@ -201,7 +201,7 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             if (is == null) {
                 return null;
             }
-            
+
             userProperties.load(is);
             is.close();
             Blog userBlog = null;
@@ -663,80 +663,62 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
 
         if (isAuthorized(blogUser, httpServletRequest)) {
 
-            // Quick verify that the category is valid
-            File blogCategory = getBlogCategoryDirectory(blog, category);
-            if (blogCategory.exists() && blogCategory.isDirectory()) {
+            try {
+                Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream(), new XPPBuilder());
+                BlogEntry entry = _fetcher.newBlogEntry();
+                Map blogEntryMetaData = new HashMap();
 
-                try {
-                    Entry atomEntry = Sandler.unmarshallEntry(httpServletRequest.getInputStream(), new XPPBuilder());
+                entry.setCategory(category);
+                entry.setDescription(atomEntry.getContent(0).getBody());
+                entry.setDate(atomEntry.getCreated());
+                entry.setTitle(atomEntry.getTitle().getBody());
 
-                    String filename = BlojsomUtils.getBlogEntryFilename(atomEntry.getTitle().getBody(), atomEntry.getContent(0).getBody());
-                    String outputfile = blogCategory.getAbsolutePath() + File.separator + filename;
-
-                    File sourceFile = new File(outputfile + blogEntryExtension);
-                    int fileTag = 1;
-                    while (sourceFile.exists()) {
-                        sourceFile = new File(outputfile + "-" + fileTag + blogEntryExtension);
-                        fileTag++;
-                    }
-
-                    BlogEntry entry = _fetcher.newBlogEntry();
-                    Map attributeMap = new HashMap();
-                    Map blogEntryMetaData = new HashMap();
-                    attributeMap.put(SOURCE_ATTRIBUTE, sourceFile);
-                    entry.setAttributes(attributeMap);
-                    entry.setCategory(category);
-                    entry.setDescription(atomEntry.getContent(0).getBody());
-                    entry.setDate(atomEntry.getCreated());
-                    entry.setTitle(atomEntry.getTitle().getBody());
-
-                    if (atomEntry.getAuthor() != null) {
-                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
-                    } else {
-                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, blog.getBlogOwner());
-                    }
-
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
-                    entry.setMetaData(blogEntryMetaData);
-
-                    // Insert an escaped Link into the Blog Entry
-                    entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
-
-                    entry.save(blogUser);
-                    entry.load(blogUser);
-
-                    // Send out an add blog entry event
-                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, blogUser));
-
-                    httpServletResponse.setContentType(CONTENTTYPE_ATOM);
-                    httpServletResponse.setStatus(201);
-
-                    atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
-
-                    // Extract the service.edit link to send for the Location: header
-                    Collection links = atomEntry.getLinks();
-                    Iterator linksIterator = links.iterator();
-                    while (linksIterator.hasNext()) {
-                        Link link = (Link) linksIterator.next();
-                        if (AtomConstants.Rel.SERVICE_EDIT.equals(link.getRelationship())) {
-                            httpServletResponse.setHeader(HEADER_LOCATION, link.getEscapedHref());
-                            break;
-                        }
-                    }
-
-                    OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
-                    osw.write(Sandler.marshallEntry(atomEntry, true));
-                    osw.flush();
-                } catch (SerializationException e) {
-                    _logger.error(e.getLocalizedMessage(), e);
-                    httpServletResponse.setStatus(404);
-                } catch (MarshallException e) {
-                    _logger.error(e.getLocalizedMessage(), e);
-                    httpServletResponse.setStatus(404);
-                } catch (BlojsomException e) {
-                    _logger.error(e);
-                    httpServletResponse.setStatus(404);
+                if (atomEntry.getAuthor() != null) {
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, atomEntry.getAuthor().getName());
+                } else {
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, blog.getBlogOwner());
                 }
+
+                blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                entry.setMetaData(blogEntryMetaData);
+
+                // Insert an escaped Link into the Blog Entry
+                entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
+
+                entry.save(blogUser);
+                entry.load(blogUser);
+
+                // Send out an add blog entry event
+                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, blogUser));
+
+                httpServletResponse.setContentType(CONTENTTYPE_ATOM);
+                httpServletResponse.setStatus(201);
+
+                atomEntry = AtomUtils.fromBlogEntry(blog, blogUser, entry, httpServletRequest.getServletPath());
+
+                // Extract the service.edit link to send for the Location: header
+                Collection links = atomEntry.getLinks();
+                Iterator linksIterator = links.iterator();
+                while (linksIterator.hasNext()) {
+                    Link link = (Link) linksIterator.next();
+                    if (AtomConstants.Rel.SERVICE_EDIT.equals(link.getRelationship())) {
+                        httpServletResponse.setHeader(HEADER_LOCATION, link.getEscapedHref());
+                        break;
+                    }
+                }
+
+                OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), UTF8);
+                osw.write(Sandler.marshallEntry(atomEntry, true));
+                osw.flush();
+            } catch (SerializationException e) {
+                _logger.error(e.getLocalizedMessage(), e);
+                httpServletResponse.setStatus(404);
+            } catch (MarshallException e) {
+                _logger.error(e.getLocalizedMessage(), e);
+                httpServletResponse.setStatus(404);
+            } catch (BlojsomException e) {
+                _logger.error(e);
+                httpServletResponse.setStatus(404);
             }
         } else {
             sendAuthenticationRequired(httpServletResponse, blogUser);
@@ -1041,24 +1023,6 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
             _fetcher.destroy();
         } catch (BlojsomFetcherException e) {
             _logger.error(e);
-        }
-    }
-
-
-    /**
-     * Get the blog category. If the category exists, return the
-     * appropriate directory, otherwise return the "root" of this blog.
-     *
-     * @param categoryName Category name
-     * @return A directory into which a blog entry can be placed
-     * @since blojsom 1.9
-     */
-    protected File getBlogCategoryDirectory(Blog blog, String categoryName) {
-        File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(categoryName));
-        if (blogCategory.exists() && blogCategory.isDirectory()) {
-            return blogCategory;
-        } else {
-            return new File(blog.getBlogHome() + "/");
         }
     }
 }
