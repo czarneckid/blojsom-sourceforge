@@ -50,7 +50,7 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +59,17 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
+ * ThemeUploadPlugin
  *
+ * @author David Czarnecki
+ * @since blojsom 2.26
+ * @version $Id: ThemeUploadPlugin.java,v 1.2 2005-06-14 14:22:30 czarneckid Exp $
  */
 public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
 
-    private static final String THEME_UPLOAD_TEMPLATE = "org/blojsom/plugin/admin/templates/admin-theme-upload.vm";
     private Log _logger = LogFactory.getLog(ThemeUploadPlugin.class);
+
+    private static final String THEME_UPLOAD_TEMPLATE = "org/blojsom/plugin/admin/templates/admin-theme-upload.vm";
 
     private String _resourcesDirectory;
     private String _templatesDirectory;
@@ -72,8 +77,10 @@ public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
     private String _baseConfigurationDirectory;
     private String _themesDirectory = "/themes";
 
+    protected static final String BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT = "BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT";
+
     /**
-     *
+     * Create a new instance of the theme upload plugin
      */
     public ThemeUploadPlugin() {
     }
@@ -87,9 +94,8 @@ public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        _resourcesDirectory = BlojsomUtils.removeInitialSlash(blojsomConfiguration.getResourceDirectory());
-        _templatesDirectory = BlojsomUtils.removeInitialSlash(blojsomConfiguration.getTemplatesDirectory());
-
+        _resourcesDirectory = blojsomConfiguration.getResourceDirectory();
+        _templatesDirectory = blojsomConfiguration.getTemplatesDirectory();
         _installationDirectory = blojsomConfiguration.getInstallationDirectory();
         _baseConfigurationDirectory = blojsomConfiguration.getBaseConfigurationDirectory();
 
@@ -129,7 +135,6 @@ public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-
     }
 
     /**
@@ -138,7 +143,16 @@ public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
      * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
      */
     public void handleEvent(BlojsomEvent event) {
+    }
 
+    /**
+     * Adds a message to the context under the <code>BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT</code> key
+     *
+     * @param context Context
+     * @param message Message to add
+     */
+    protected void addOperationResultMessage(Map context, String message) {
+        context.put(BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT, message);
     }
 
     /**
@@ -176,7 +190,7 @@ public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
                     if (!item.isFormField()) {
                         String itemNameWithoutPath = BlojsomUtils.getFilenameFromPath(item.getName());
 
-                        if (itemNameWithoutPath.endsWith(".zip")) {
+                        if (itemNameWithoutPath.toLowerCase().endsWith(".zip")) {
                             _logger.debug("Found file item: " + itemNameWithoutPath + " of type: " + item.getContentType());
 
                             try {
@@ -188,49 +202,74 @@ public class ThemeUploadPlugin implements BlojsomPlugin, BlojsomListener {
                                     if (zipEntry.isDirectory()) {
                                         continue;
                                     } else {
-                                        String zipItemName = zipEntry.getName();
-                                        if (zipItemName.startsWith(_resourcesDirectory)) {
-                                            _logger.debug(createThemeOutputFilename(themeName, zipItemName, true, requestEvent.getBlogUser().getId()));
-                                        } else if (zipItemName.startsWith(_templatesDirectory)) {
-                                            _logger.debug(createThemeOutputFilename(themeName, zipItemName, false, requestEvent.getBlogUser().getId()));
+                                        String zipItemName = "/" + zipEntry.getName();
+                                        if (zipItemName.startsWith(_resourcesDirectory) || zipItemName.startsWith(_templatesDirectory)) {
+                                            String themeOutputFilename = createThemeOutputFilename(themeName, zipItemName);
+                                            writeThemeFile(themeOutputFilename, zipInputStream);
                                         } else {
                                             _logger.debug("Ignoring non-resources or templates file: " + zipEntry.getName());
                                         }
                                     }
                                 }
+
+                                zipInputStream.close();
+
+                                addOperationResultMessage(requestEvent.getContext(), "Successfully uploaded theme: " + themeName);
                             } catch (IOException e) {
                                 _logger.error(e);
+
+                                addOperationResultMessage(requestEvent.getContext(), "Unknown error uploading theme");
                             }
                         } else {
-                            _logger.debug("Theme .ZIP file not a recognized with a .zip extension");
+                            _logger.debug("Theme archive file not a recognized .zip extension");
+
+                            addOperationResultMessage(requestEvent.getContext(), "Theme archive file not a recognized .zip extension");
                         }
                     }
                 }
             } catch (FileUploadException e) {
-                _logger.error(e);
             }
-
-
         }
     }
 
     /**
+     * Write a theme file
      *
-     * @param theme
-     * @param file
-     * @param resource
-     * @param blogID
-     * @return
+     * @param themeFilename Theme filename
+     * @param themeFileInputStream Theme filename input stream
+     * @throws IOException If there is an error writing the theme file
      */
-    protected String createThemeOutputFilename(String theme, String file, boolean resource, String blogID) {
+    protected void writeThemeFile(String themeFilename, InputStream themeFileInputStream) throws IOException {
+        File themeFile = new File(themeFilename);
+        File themeFilePath = themeFile.getParentFile();
+        if (!themeFilePath.exists()) {
+            _logger.debug("Trying to create theme file path: " + themeFilePath);
+            if (!themeFilePath.mkdirs()) {
+                throw new IOException("Could not create paths to upload theme file");
+            }
+        }
+
+        OutputStream out = new FileOutputStream(themeFilename);
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = themeFileInputStream.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
+        }
+
+        out.close();
+    }
+
+    /**
+     * Create an appropriate filename for a theme file
+     *
+     * @param theme Theme name
+     * @param file Theme filename
+     * @return File appropriate for a theme file
+     */
+    protected String createThemeOutputFilename(String theme, String file) {
         String outputFilename;
 
-        outputFilename = _installationDirectory;
-        if (resource) {
-            outputFilename += _resourcesDirectory + "/" + blogID + "/" + file;
-        } else {
-            outputFilename += _baseConfigurationDirectory + "/" + _themesDirectory + "/" + theme + "/" + file;
-        }
+        outputFilename = _installationDirectory + _baseConfigurationDirectory + _themesDirectory + "/" + theme + file;
 
         return outputFilename;
     }
