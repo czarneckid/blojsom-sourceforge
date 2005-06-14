@@ -60,7 +60,7 @@ import java.util.*;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.33 2005-04-19 03:40:40 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.34 2005-06-14 17:41:22 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -114,7 +114,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_PROPERTIES_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit blog properties");
 
             return entries;

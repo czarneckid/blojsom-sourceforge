@@ -55,7 +55,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.16 2005-04-02 16:43:58 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.17 2005-06-14 17:41:22 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -160,7 +160,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_FLAVORS_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit blog flavors");
 
             return entries;

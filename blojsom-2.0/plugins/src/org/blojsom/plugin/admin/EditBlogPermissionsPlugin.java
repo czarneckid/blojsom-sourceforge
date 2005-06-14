@@ -56,7 +56,7 @@ import java.io.FileOutputStream;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.4 2005-01-30 18:01:05 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.5 2005-06-14 17:41:22 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -180,7 +180,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_PERMISSIONS_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit blog permissions");
 
             return entries;

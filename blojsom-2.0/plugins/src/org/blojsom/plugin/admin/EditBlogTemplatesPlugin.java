@@ -53,7 +53,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.19 2005-01-25 20:55:49 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.20 2005-06-14 17:41:22 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -199,7 +199,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_TEMPLATES_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit blog templates");
 
             return entries;

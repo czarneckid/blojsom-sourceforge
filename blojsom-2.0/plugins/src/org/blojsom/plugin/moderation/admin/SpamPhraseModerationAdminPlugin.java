@@ -57,7 +57,7 @@ import java.util.Map;
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.4 2005-05-08 21:26:47 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.5 2005-06-14 17:41:40 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
@@ -146,7 +146,7 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, SPAM_PHRASE_MODERATION_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit spam phrase moderation settings");
 
             return entries;

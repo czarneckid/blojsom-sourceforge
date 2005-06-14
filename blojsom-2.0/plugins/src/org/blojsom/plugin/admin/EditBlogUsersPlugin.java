@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.23 2005-06-06 01:23:11 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.24 2005-06-14 17:41:22 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -188,7 +188,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
             // Check user is allowed to delete blogs
             if (!checkPermission(user, null, username, DELETE_BLOG_PERMISSION)) {
-                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
                 addOperationResultMessage(context, "You are not allowed to delete blogs from the system");
 
                 return entries;
@@ -240,7 +240,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
 
             // Check user is allowed to add blogs
             if (!checkPermission(user, null, username, ADD_BLOG_PERMISSION)) {
-                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+                httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
                 addOperationResultMessage(context, "You are not allowed to add blogs to the system");
 
                 return entries;

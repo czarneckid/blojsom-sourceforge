@@ -56,7 +56,7 @@ import java.util.Map;
  * Show Me More administration plugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreAdminPlugin.java,v 1.3 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: ShowMeMoreAdminPlugin.java,v 1.4 2005-06-14 17:41:40 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
@@ -136,7 +136,7 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, SHOWMEMORE_ADMIN_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit show-me-more settings");
 
             return entries;

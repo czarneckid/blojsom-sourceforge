@@ -56,7 +56,7 @@ import java.util.*;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.9 2005-06-14 14:20:28 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.10 2005-06-14 17:41:22 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -197,7 +197,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, SWITCH_THEME_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to switch themes");
 
             return entries;

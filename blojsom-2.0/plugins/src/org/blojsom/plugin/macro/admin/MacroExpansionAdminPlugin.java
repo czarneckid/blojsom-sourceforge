@@ -58,7 +58,7 @@ import java.util.TreeMap;
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.6 2005-01-30 18:13:49 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.7 2005-06-14 17:41:40 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -123,7 +123,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, MACRO_EXPANSION_ADMIN_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit macros");
 
             return entries;

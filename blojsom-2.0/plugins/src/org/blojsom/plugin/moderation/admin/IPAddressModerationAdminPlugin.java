@@ -54,7 +54,7 @@ import java.io.*;
  * IP address moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: IPAddressModerationAdminPlugin.java,v 1.3 2005-05-08 21:28:04 czarneckid Exp $
+ * @version $Id: IPAddressModerationAdminPlugin.java,v 1.4 2005-06-14 17:41:40 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
@@ -154,7 +154,7 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, IP_MODERATION_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit IP address moderation settings");
 
             return entries;

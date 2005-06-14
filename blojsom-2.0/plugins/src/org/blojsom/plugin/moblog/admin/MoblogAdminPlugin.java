@@ -55,7 +55,7 @@ import java.io.*;
  * Moblog Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MoblogAdminPlugin.java,v 1.4 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: MoblogAdminPlugin.java,v 1.5 2005-06-14 17:41:40 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogAdminPlugin extends WebAdminPlugin {
@@ -128,7 +128,7 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, MOBLOG_ADMIN_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit moblog settings");
 
             return entries;
