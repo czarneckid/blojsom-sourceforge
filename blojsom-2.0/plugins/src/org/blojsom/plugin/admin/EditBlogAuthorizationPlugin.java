@@ -58,7 +58,7 @@ import java.util.TreeMap;
  * EditBlogAuthorizationPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.19 2005-06-14 17:23:57 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.20 2005-06-14 17:26:19 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -205,6 +205,13 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
+                if ((!username.equals(blogUserID)) && !checkPermission(user, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION)) {
+                    httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
+                    addOperationResultMessage(context, "You are not allowed to edit other user's authorization information");
+
+                    return entries;
+                }
+
                 Map authorizationMap = user.getBlog().getAuthorization();
                 authorizationMap.remove(blogUserID);
                 user.getBlog().setAuthorization(authorizationMap);
