@@ -42,7 +42,7 @@
             <div id="contents">
                 #showErrorMessage()
 
-               <!-- Switch theme -->
+                <!-- Switch theme -->
                 <div class="mainClm">
                     <h3>#adminResource('switch.theme.text' 'Switch theme')</h3>
                     <table>
@@ -92,6 +92,8 @@
                         </form>
                     </table>
                 </div>
+
+                #DisplayTemplateAdditions()                
             </div>
         </div>
     </div>

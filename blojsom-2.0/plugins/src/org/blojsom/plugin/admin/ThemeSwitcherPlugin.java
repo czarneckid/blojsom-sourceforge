@@ -40,6 +40,7 @@ import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.ProcessRequestEvent;
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
 
@@ -55,7 +56,7 @@ import java.util.*;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.7 2005-01-30 18:13:46 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.8 2005-06-14 12:29:37 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -213,7 +214,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
             String currentHtmlFlavor = (String) user.getFlavorToTemplate().get("html");
             currentHtmlFlavor = currentHtmlFlavor.substring(0, currentHtmlFlavor.indexOf('.'));
             context.put(CURRENT_HTML_THEME, currentHtmlFlavor);
-            
+
             if (SWITCH_THEME_ACTION.equals(action)) {
                 String theme = BlojsomUtils.getRequestValue(THEME, httpServletRequest);
                 String flavor = BlojsomUtils.getRequestValue(FLAVOR, httpServletRequest);
@@ -289,6 +290,8 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 context.put(CURRENT_HTML_THEME, currentHtmlFlavor);
 
                 addOperationResultMessage(context, "Theme switched to: " + theme + " for flavor: " + flavor);
+            } else {
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessRequestEvent(this, new Date(), user, httpServletRequest, httpServletResponse, context));                
             }
         }
 
