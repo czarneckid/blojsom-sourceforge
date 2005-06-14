@@ -43,7 +43,11 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * ProcessRequestEvent
  *
+ * @author David Czarnecki
+ * @since blojsom 2.26
+ * @version $Id: ProcessRequestEvent.java,v 1.2 2005-06-14 14:21:29 czarneckid Exp $
  */
 public class ProcessRequestEvent extends BlojsomEvent {
 
@@ -55,13 +59,14 @@ public class ProcessRequestEvent extends BlojsomEvent {
     protected BlogUser _blogUser;
 
     /**
+     * Create a new instance of the process event request
      *
-     * @param source
-     * @param timestamp
-     * @param blogUser
-     * @param httpServletRequest
-     * @param httpServletResponse
-     * @param context
+     * @param source Event source
+     * @param timestamp Timestamp of event
+     * @param blogUser {@link BlogUser} information
+     * @param httpServletRequest Servlet request
+     * @param httpServletResponse Servlet response
+     * @param context Context
      */
     public ProcessRequestEvent(Object source, Date timestamp, BlogUser blogUser,
                                HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
