@@ -58,7 +58,7 @@ import java.util.TreeMap;
  * EditBlogAuthorizationPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.18 2005-03-20 16:13:25 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.19 2005-06-14 17:23:57 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -84,6 +84,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
     // Permissions
     private static final String EDIT_BLOG_AUTHORIZATION_PERMISSION = "edit_blog_authorization";
+    private static final String EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION = "edit_other_users_authorization";
 
     private String _authorizationConfiguration;
 
@@ -128,7 +129,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_AUTHORIZATION_PERMISSION)) {
-            httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
+            httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
             addOperationResultMessage(context, "You are not allowed to edit blog authorizations");
 
             return entries;
@@ -157,6 +158,13 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                 if (blogUserPassword.equals(blogUserPasswordCheck)) {
                     if (BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
                         blogUserEmail = "";
+                    }
+
+                    if ((!username.equals(blogUserID)) && !checkPermission(user, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION)) {
+                        httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
+                        addOperationResultMessage(context, "You are not allowed to edit other user's authorization information");
+
+                        return entries;
                     }
 
                     if (user.getBlog().getUseEncryptedPasswords().booleanValue()) {
