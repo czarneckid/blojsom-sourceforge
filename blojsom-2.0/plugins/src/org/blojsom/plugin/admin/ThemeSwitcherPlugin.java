@@ -56,7 +56,7 @@ import java.util.*;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.8 2005-06-14 12:29:37 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.9 2005-06-14 14:20:28 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -290,8 +290,11 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 context.put(CURRENT_HTML_THEME, currentHtmlFlavor);
 
                 addOperationResultMessage(context, "Theme switched to: " + theme + " for flavor: " + flavor);
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessRequestEvent(this, new Date(), user, httpServletRequest, httpServletResponse, context));
             } else {
-                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessRequestEvent(this, new Date(), user, httpServletRequest, httpServletResponse, context));                
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessRequestEvent(this, new Date(), user, httpServletRequest, httpServletResponse, context));
+
+                context.put(THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES, getAvailableThemes());
             }
         }
 
