@@ -55,12 +55,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.text.MessageFormat;
+import java.net.URL;
+import java.net.HttpURLConnection;
 
 /**
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.8 2005-06-06 02:03:43 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.9 2005-06-14 01:00:18 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
@@ -286,9 +288,14 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
             String rssEnclosureLength = BlojsomUtils.getRequestValue(RSS_ENCLOSURE_LENGTH, processBlogEntryEvent.getHttpServletRequest());
             String rssEnclosureType = BlojsomUtils.getRequestValue(RSS_ENCLOSURE_TYPE, processBlogEntryEvent.getHttpServletRequest());
 
-            if (!BlojsomUtils.checkNullOrBlank(rssEnclosureURL) && !BlojsomUtils.checkNullOrBlank(rssEnclosureLength)
-                    && !BlojsomUtils.checkNullOrBlank(rssEnclosureType) && processBlogEntryEvent.getBlogEntry() != null) {
+            if (!BlojsomUtils.checkNullOrBlank(rssEnclosureURL) && (processBlogEntryEvent.getBlogEntry() != null)) {
                 processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_URL, rssEnclosureURL);
+                if (BlojsomUtils.checkNullOrBlank(rssEnclosureLength) && BlojsomUtils.checkNullOrBlank(rssEnclosureType)) {
+                    String[] enclosureProperties = discoverEnclosureProperties(rssEnclosureURL);
+                    rssEnclosureLength = enclosureProperties[0];
+                    rssEnclosureType = enclosureProperties[1];
+                }
+
                 processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_LENGTH, rssEnclosureLength);
                 processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_TYPE, rssEnclosureType);
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, rssEnclosureURL);
@@ -302,6 +309,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
                     processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_TYPE);
                     processBlogEntryEvent.getBlogEntry().getMetaData().remove(RSS_ENCLOSURE_LENGTH);
                 }
+
                 processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_URL_ITEM);
                 processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_TYPE_ITEM);
                 processBlogEntryEvent.getContext().remove(RSS_ENCLOSURE_LENGTH_ITEM);
@@ -322,6 +330,36 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
             resourceFilesMap = new TreeMap(resourceFilesMap);
             processBlogEntryEvent.getContext().put("PLUGIN_RSS_ENCLOSURE_FILES", resourceFilesMap);
         }
+    }
+
+    /**
+     * Discover the content length and content type for an enclosure URL
+     *
+     * @param rssEnclosureURL URL for enclosure
+     * @return String array containing the enclosure's content length and content type
+     */
+    protected String[] discoverEnclosureProperties(String rssEnclosureURL) {
+        String[] enclosureProperties = new String[]{"", ""};
+
+        try {
+            if (!rssEnclosureURL.toLowerCase().startsWith("http://")) {
+                _logger.debug("RSS enclosure URL not an HTTP-accessible resource");
+            } else {
+                URL enclosure = new URL(rssEnclosureURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) enclosure.openConnection();
+                httpURLConnection.setRequestMethod("HEAD");
+                httpURLConnection.connect();
+
+                enclosureProperties[0] = Integer.toString(httpURLConnection.getContentLength());
+                enclosureProperties[1] = httpURLConnection.getContentType();
+
+                httpURLConnection.disconnect();
+            }
+        } catch (Exception e) {
+            _logger.error("Error retrieving enclosure properties", e);
+        }
+
+        return enclosureProperties;
     }
 
     /**
