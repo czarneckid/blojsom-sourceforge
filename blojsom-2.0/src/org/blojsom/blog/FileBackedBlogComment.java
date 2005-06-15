@@ -49,14 +49,14 @@ import java.util.Date;
  * FileBackedBlogComment
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogComment.java,v 1.1 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: FileBackedBlogComment.java,v 1.2 2005-06-15 20:04:36 czarneckid Exp $
  * @since blojsom 2.26
  */
 public class FileBackedBlogComment extends BlogComment {
 
-    private Log _logger = LogFactory.getLog(FileBackedBlogComment.class);
+    private transient Log _logger = LogFactory.getLog(FileBackedBlogComment.class);
 
-    protected File _source;
+    protected transient File _source;
 
     /**
      * Default constructor

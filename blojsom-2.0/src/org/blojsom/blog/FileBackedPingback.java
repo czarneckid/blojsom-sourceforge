@@ -50,11 +50,11 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.26
- * @version $Id: FileBackedPingback.java,v 1.1 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: FileBackedPingback.java,v 1.2 2005-06-15 20:04:36 czarneckid Exp $
  */
 public class FileBackedPingback extends Pingback {
 
-    private Log _logger = LogFactory.getLog(FileBackedPingback.class);
+    private transient Log _logger = LogFactory.getLog(FileBackedPingback.class);
 
     protected static final int PINGBACK_GENERIC_FAULT_CODE = 0;
     protected static final int PINGBACK_SOURCE_URI_NON_EXISTENT_CODE = 16;
@@ -65,7 +65,7 @@ public class FileBackedPingback extends Pingback {
     protected static final int PINGBACK_ACCESS_DENIED_CODE = 49;
     protected static final int PINGBACK_UPSTREAM_SERVER_ERROR_CODE = 50;
 
-    protected File _source;
+    protected transient File _source;
 
     /**
      * Default constructor

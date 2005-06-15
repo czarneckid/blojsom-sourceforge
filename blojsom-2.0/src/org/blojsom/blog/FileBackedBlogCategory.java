@@ -53,13 +53,13 @@ import java.util.ArrayList;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.8 2005-06-08 17:37:08 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.9 2005-06-15 20:04:36 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
-    private Log _logger = LogFactory.getLog(FileBackedBlogCategory.class);
+    private transient Log _logger = LogFactory.getLog(FileBackedBlogCategory.class);
 
-    protected BlogUser _blogUser;
+    protected transient BlogUser _blogUser;
 
     /**
      * Create a new FileBackedBlogCategory.

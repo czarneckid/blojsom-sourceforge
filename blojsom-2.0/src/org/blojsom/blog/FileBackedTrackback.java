@@ -48,14 +48,14 @@ import java.util.Properties;
  * FileBackedTrackback
  *
  * @author David Czarnecki
- * @version $Id: FileBackedTrackback.java,v 1.1 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: FileBackedTrackback.java,v 1.2 2005-06-15 20:04:36 czarneckid Exp $
  * @since blojsom 2.26
  */
 public class FileBackedTrackback extends Trackback {
 
-    private Log _logger = LogFactory.getLog(FileBackedTrackback.class);
+    private transient Log _logger = LogFactory.getLog(FileBackedTrackback.class);
 
-    protected File _source;
+    protected transient File _source;
 
     /**
      * Default constructor
