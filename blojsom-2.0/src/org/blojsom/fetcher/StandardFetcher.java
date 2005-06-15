@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.27 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.28 2005-06-15 20:06:28 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -164,11 +164,13 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             BlogEntry[] entryArray = new BlogEntry[1];
-            FileBackedBlogEntry blogEntry = new FileBackedBlogEntry();
+            BlogEntry blogEntry = newBlogEntry();
 
-            blogEntry.setSource(blogFile);
+            if (blogEntry instanceof FileBackedBlogEntry) {
+                ((FileBackedBlogEntry) blogEntry).setSource(blogFile);
+            }
             blogEntry.setCategory(category);
-            
+
             try {
                 blogEntry.load(blogUser);
             } catch (BlojsomException e) {
@@ -205,7 +207,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             return new BlogEntry[0];
         } else {
             Arrays.sort(entries, BlojsomUtils.FILE_TIME_COMPARATOR);
-            FileBackedBlogEntry blogEntry;
+            BlogEntry blogEntry;
             int entryCounter;
 
             if (maxBlogEntries == -1) {
@@ -218,9 +220,11 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
 
             for (int i = 0; i < entryCounter; i++) {
                 File entry = entries[i];
-                blogEntry = new FileBackedBlogEntry();
+                blogEntry = newBlogEntry();
 
-                blogEntry.setSource(entry);
+                if (blogEntry instanceof FileBackedBlogEntry) {
+                    ((FileBackedBlogEntry) blogEntry).setSource(entry);
+                }
                 blogEntry.setCategory(category);
 
                 try {
@@ -576,7 +580,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     /**
      * Return a list of categories for the blog that are appropriate in a hyperlink
      *
-     * @param blogUser {@link BlogUser}
+     * @param blogUser           {@link BlogUser}
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return List of BlogCategory objects
      */
@@ -592,7 +596,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      * the parent categories are returned. Down the hierarchy from the current category, all
      * children are returned while obeying the <code>blog-directory-depth</code> parameter.
      *
-     * @param blogUser {@link BlogUser}
+     * @param blogUser           {@link BlogUser}
      * @param currentCategory    Current category in the blog category hierarchy
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
      * @return List of blog categories or <code>null</code> if "/" category is requested or there
