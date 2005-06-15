@@ -57,7 +57,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.40 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.41 2005-06-15 19:50:23 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -460,14 +460,11 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             if (code.intValue() == 0) {
                 httpServletRequest.setAttribute(PAGE_PARAM, TRACKBACK_SUCCESS_PAGE);
 
-                // Add the trackback to the list of trackbacks for the entry
-                List trackbacks = entries[0].getTrackbacks();
-                if (trackbacks == null) {
-                    trackbacks = new ArrayList();
+                try {
+                    entries[0].load(user);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
                 }
-
-                trackbacks.add(trackback);
-                entries[0].setTrackbacks(trackbacks);
 
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new TrackbackAddedEvent(this, new Date(), trackback, user));
             } else {
