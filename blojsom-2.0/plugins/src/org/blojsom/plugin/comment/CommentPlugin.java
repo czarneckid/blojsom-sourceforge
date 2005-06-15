@@ -60,7 +60,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.34 2005-06-10 02:16:23 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.35 2005-06-15 19:49:52 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -508,13 +508,11 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                     context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
                     if (_comment != null) {
-                        List blogComments = entries[0].getComments();
-                        if (blogComments == null) {
-                            blogComments = new ArrayList(1);
-                        }
-
-                        blogComments.add(_comment);
-                        entries[0].setComments(blogComments);
+                        try {
+                            entries[0].load(user);
+                        } catch (BlojsomException e) {
+                            _logger.error(e);
+                        }                        
 
                         _configuration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), _comment, user));
 
