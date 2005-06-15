@@ -75,7 +75,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.49 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.50 2005-06-15 19:48:05 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -424,6 +424,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setTitle(blogEntryTitle);
             entry.setCategory(blogCategoryName);
             entry.setDescription(blogEntryDescription);
+            entry.setBlogCategory(category);
 
             Map entryMetaData = new HashMap();
             username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);

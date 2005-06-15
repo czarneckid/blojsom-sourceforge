@@ -59,7 +59,7 @@ import java.util.Map;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.7 2005-06-10 02:16:23 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.8 2005-06-15 19:49:22 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -154,6 +154,7 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                 entry.setTitle(blogEntryTitle);
                 entry.setCategory(blogCategoryName);
                 entry.setDescription(blogEntryDescription);
+                entry.setBlogCategory(category);
 
                 Map entryMetaData = new HashMap();
                 username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
