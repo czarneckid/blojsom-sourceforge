@@ -57,7 +57,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 2.24
- * @version $Id: LanguageSelectionPlugin.java,v 1.1 2005-03-08 04:31:44 czarneckid Exp $
+ * @version $Id: LanguageSelectionPlugin.java,v 1.2 2005-06-23 18:56:45 czarneckid Exp $
  */
 public class LanguageSelectionPlugin implements BlojsomPlugin, BlojsomListener {
 
@@ -164,6 +164,11 @@ public class LanguageSelectionPlugin implements BlojsomPlugin, BlojsomListener {
                 processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_LANGUAGE, language);
                 processBlogEntryEvent.getContext().put(BLOJSOM_PLUGIN_CURRENT_LANGUAGE_SELECTION, language);
                 _logger.debug("Added/updated language: " + language);
+            } else {
+                if (processBlogEntryEvent.getBlogEntry() != null) {
+                    processBlogEntryEvent.getBlogEntry().getMetaData().remove(METADATA_LANGUAGE);
+                }
+                processBlogEntryEvent.getContext().remove(BLOJSOM_PLUGIN_CURRENT_LANGUAGE_SELECTION);
             }
         }
     }
