@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.28 2005-06-15 20:04:36 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.29 2005-06-23 19:03:08 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -511,7 +511,6 @@ public class FileBackedBlogEntry extends BlogEntry {
                 setLink(blog.getBlogURL() + BlojsomUtils.urlEncodeForLink(_category.substring(0, _category.length() - 1)) + "/?" + PERMALINK_PARAM + '=' + BlojsomUtils.urlEncode(_source.getName()));
             }
 
-            blogCategoryForEntry.setBlogEntry(this);
             _blogCategory = blogCategoryForEntry;
         }
     }

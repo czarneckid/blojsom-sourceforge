@@ -48,7 +48,7 @@ import java.io.Serializable;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlogCategory.java,v 1.12 2005-06-08 17:37:08 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.13 2005-06-23 19:03:08 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable, Serializable {
 
@@ -395,25 +395,5 @@ public abstract class BlogCategory implements Comparable, Serializable {
      */
     public void setParentCategory(BlogCategory cateogory) {
         _parentCategory = cateogory;
-    }
-
-    /**
-     * Retrieve the {@link BlogEntry} associated with this category
-     *
-     * @return {@link BlogEntry}
-     * @since blojsom 2.23
-     */
-    public BlogEntry getBlogEntry() {
-        return _blogEntry;
-    }
-
-    /**
-     * Set the {@link BlogEntry} associated with this category
-     *
-     * @param blogEntry {@link BlogEntry}
-     * @since blojsom 2.23
-     */
-    public void setBlogEntry(BlogEntry blogEntry) {
-        _blogEntry = blogEntry;
     }
 }
