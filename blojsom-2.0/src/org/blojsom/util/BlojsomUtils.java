@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.72 2005-06-23 19:00:00 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.73 2005-06-23 22:08:42 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -2063,5 +2063,28 @@ public class BlojsomUtils implements BlojsomConstants {
 
             return sanitizedList;
         }
+    }
+
+    /**
+     * Add preceeding and trailing slashes to an input string. If input is <code>null</code> a "/" is returned.
+     *
+     * @param input Input
+     * @return Input with preceeding and trailing slashes added
+     * @since blojsom 2.26
+     */
+    public static String addSlashes(String input) {
+        if (input == null) {
+            return "/";
+        }
+
+        if (!input.startsWith("/")) {
+            input = "/" + input;
+        }
+
+        if (!input.endsWith("/")) {
+            input += "/";
+        }
+
+        return input;
     }
 }
