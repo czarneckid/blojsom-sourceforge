@@ -65,7 +65,7 @@ import java.util.Map;
  * Syndication feed importer plugin
  *
  * @author David Czarnecki
- * @version $Id: SyndicationFeedImportPlugin.java,v 1.2 2005-06-16 20:06:38 czarneckid Exp $
+ * @version $Id: SyndicationFeedImportPlugin.java,v 1.3 2005-06-23 21:53:31 czarneckid Exp $
  * @since blojsom 2.26
  */
 public class SyndicationFeedImportPlugin extends WebAdminPlugin {
