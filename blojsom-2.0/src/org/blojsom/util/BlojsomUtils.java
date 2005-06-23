@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.71 2005-06-07 13:29:30 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.72 2005-06-23 19:00:00 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -895,9 +895,9 @@ public class BlojsomUtils implements BlojsomConstants {
             long f1;
             long f2;
 
-            if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
-                f1 = ((FileBackedBlogEntry) o1).getLastModified();
-                f2 = ((FileBackedBlogEntry) o2).getLastModified();
+            if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
+                f1 = ((BlogEntry) o1).getLastModified();
+                f2 = ((BlogEntry) o2).getLastModified();
             } else {
                 f1 = ((File) o1).lastModified();
                 f2 = ((File) o2).lastModified();
@@ -908,15 +908,9 @@ public class BlojsomUtils implements BlojsomConstants {
             } else if (f1 < f2) {
                 return 1;
             } else {
-                if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
-                    f1 = ((FileBackedBlogEntry) o1).getLastModified();
-                    f2 = ((FileBackedBlogEntry) o2).getLastModified();
-
-                    return ((FileBackedBlogEntry) o1).getSource().getName().compareTo(((FileBackedBlogEntry) o2).getSource().getName());
+                if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
+                    return ((BlogEntry) o1).getTitle().compareTo(((BlogEntry) o2).getTitle());
                 } else {
-                    f1 = ((File) o1).lastModified();
-                    f2 = ((File) o2).lastModified();
-
                     return ((File) o1).getName().compareTo(((File) o2).getName());
                 }
             }
@@ -933,9 +927,9 @@ public class BlojsomUtils implements BlojsomConstants {
             long f1;
             long f2;
 
-            if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
-                f1 = ((FileBackedBlogEntry) o1).getLastModified();
-                f2 = ((FileBackedBlogEntry) o2).getLastModified();
+            if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
+                f1 = ((BlogEntry) o1).getLastModified();
+                f2 = ((BlogEntry) o2).getLastModified();
             } else {
                 f1 = ((File) o1).lastModified();
                 f2 = ((File) o2).lastModified();
@@ -946,15 +940,9 @@ public class BlojsomUtils implements BlojsomConstants {
             } else if (f1 < f2) {
                 return -1;
             } else {
-                if ((o1 instanceof FileBackedBlogEntry) && (o2 instanceof FileBackedBlogEntry)) {
-                    f1 = ((FileBackedBlogEntry) o1).getLastModified();
-                    f2 = ((FileBackedBlogEntry) o2).getLastModified();
-
-                    return ((FileBackedBlogEntry) o1).getSource().getName().compareTo(((FileBackedBlogEntry) o2).getSource().getName());
+                if ((o1 instanceof BlogEntry) && (o2 instanceof BlogEntry)) {
+                    return ((BlogEntry) o1).getTitle().compareTo(((BlogEntry) o2).getTitle());
                 } else {
-                    f1 = ((File) o1).lastModified();
-                    f2 = ((File) o2).lastModified();
-
                     return ((File) o1).getName().compareTo(((File) o2).getName());
                 }
             }
