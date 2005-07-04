@@ -60,7 +60,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: TechnoratiTagsPlugin.java,v 1.2 2005-05-06 18:52:26 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.3 2005-07-04 23:27:07 czarneckid Exp $
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements BlojsomListener {
 
@@ -110,12 +110,12 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Bl
             Map entryMetaData = entry.getMetaData();
 
             if (BlojsomUtils.checkMapForKey(entryMetaData, METADATA_TECHNORATI_TAGS)) {
-                String[] tags = BlojsomUtils.parseCommaList((String) entryMetaData.get(METADATA_TECHNORATI_TAGS));
+                String[] tags = BlojsomUtils.parseOnlyCommaList((String) entryMetaData.get(METADATA_TECHNORATI_TAGS));
                 if (tags != null && tags.length > 0) {
                     ArrayList tagLinks = new ArrayList(tags.length);
                     String tagLinkTemplate = mergeTemplate(TECHNORATI_TAG_LINK_TEMPLATE, user, new HashMap());
                     for (int j = 0; j < tags.length; j++) {
-                        String tag = tags[j];
+                        String tag = tags[j].trim();
 
                         tagLinks.add(MessageFormat.format(tagLinkTemplate, new String[]{tag}));
                     }
