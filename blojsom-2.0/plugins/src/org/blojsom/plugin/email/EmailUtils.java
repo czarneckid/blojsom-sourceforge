@@ -42,9 +42,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,7 @@ import java.util.Date;
  * plugin to get at
  *
  * @author Mark Lussier
- * @version $Id: EmailUtils.java,v 1.8 2005-03-16 03:20:29 czarneckid Exp $
+ * @version $Id: EmailUtils.java,v 1.9 2005-07-06 18:19:55 czarneckid Exp $
  */
 public class EmailUtils {
 
@@ -166,6 +164,14 @@ public class EmailUtils {
     public static void sendMailMessage(Session mailsession, EmailMessage emailmessage, InternetAddress defaultaddress) {
         try {
             MimeMessage message = new MimeMessage(mailsession);
+            MimeMultipart mimeMultipart = new MimeMultipart("alternative");
+            MimeBodyPart textPart = new MimeBodyPart();
+            textPart.setContent(emailmessage.getMessage(), "text/plain");
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            htmlPart.setContent(emailmessage.getMessage(), "text/html");
+            mimeMultipart.addBodyPart(textPart);
+            mimeMultipart.addBodyPart(htmlPart);
+
             InternetAddress _msgto;
             InternetAddress _msgfrom;
 
@@ -183,14 +189,13 @@ public class EmailUtils {
 
             message.addRecipient(Message.RecipientType.TO, _msgto);
             message.setSubject(emailmessage.getSubject());
-            message.setText(emailmessage.getMessage());
+            message.setContent(mimeMultipart);
             message.setSentDate(new Date());
 
             _logger.info("Sending e-mail message to: " + _msgto.getAddress());
 
             /* Send the email. BLOCKING CALL!! */
             Transport.send(message);
-
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
         } catch (MessagingException e) {
