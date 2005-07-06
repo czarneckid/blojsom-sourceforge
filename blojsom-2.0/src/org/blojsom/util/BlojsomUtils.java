@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.73 2005-06-23 22:08:42 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.74 2005-07-06 14:30:28 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -672,6 +672,19 @@ public class BlojsomUtils implements BlojsomConstants {
         } else {
             return input.substring(0, input.length() - 1);
         }
+    }
+
+    /**
+     * Remove the "/" from the beginning and end of a string
+     *
+     * @param input Input string
+     * @return Input string with beginning and ending "/" removed or <code>null</code> if the input was null
+     * @since blojsom 2.26
+     */
+    public static final String removeSlashes(String input) {
+        input = removeInitialSlash(input);
+        input = removeTrailingSlash(input);
+        return input;
     }
 
     /**
