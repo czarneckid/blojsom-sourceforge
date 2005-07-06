@@ -40,7 +40,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.71 2005-06-10 00:48:48 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.72 2005-07-06 18:17:38 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -342,6 +342,8 @@ public interface BlojsomConstants {
      * Default authorization provider
      */
     public static final String DEFAULT_AUTHORIZATION_PROVIDER = "org.blojsom.authorization.PropertiesAuthorizationProvider";
+
+    public static final String REDIRECT_TO_PARAM = "redirect_to";
 
     /**
      * Various HTTP caching headers
