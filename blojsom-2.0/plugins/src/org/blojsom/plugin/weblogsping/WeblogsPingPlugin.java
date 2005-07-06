@@ -44,9 +44,13 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.event.BlojsomEvent;
 import org.blojsom.event.BlojsomListener;
+import org.blojsom.event.BlojsomFilter;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.admin.event.BlogEntryEvent;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
@@ -62,7 +66,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.18 2005-04-28 15:02:22 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.19 2005-07-06 18:29:08 czarneckid Exp $
  * @since blojsom 1.9.2
  */
 public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, BlojsomConstants {
@@ -90,7 +94,18 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
      * @throws BlojsomPluginException If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        blojsomConfiguration.getEventBroadcaster().addListener(this);
+        BlojsomFilter pingEventFilter = new BlojsomFilter() {
+            public boolean processEvent(BlojsomEvent event) {
+                if (event instanceof AddBlogEntryEvent || event instanceof DeletedBlogEntryEvent
+                || event instanceof UpdatedBlogEntryEvent) {
+                    return true;
+                }
+
+                return false;
+            }
+        };
+
+        blojsomConfiguration.getEventBroadcaster().addListener(this, pingEventFilter);
     }
 
     /**
@@ -172,9 +187,11 @@ public class WeblogsPingPlugin implements BlojsomListener, BlojsomPlugin, Blojso
                         _logger.error(e);
                     }
                 }
-            }
 
-            _logger.debug("Pinged notification URLs based on add/update blog entry event");
+                _logger.debug("Pinged notification URLs based on blog entry event");                
+            } else {
+                _logger.debug("No ping notification URLs specified");
+            }
         }
     }
 
