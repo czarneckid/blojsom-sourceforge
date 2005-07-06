@@ -51,13 +51,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.io.IOException;
 
 /**
  * BaseAdminPlugin
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.19 2005-03-18 04:52:27 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.20 2005-07-06 18:19:18 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -152,12 +153,25 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         Blog blog = blogUser.getBlog();
         BlojsomUtils.setNoCacheControlHeaders(httpServletResponse);
         HttpSession httpSession = httpServletRequest.getSession();
+        boolean logout = false;
 
         // Check first to see if someone has requested to logout
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (action != null && LOGOUT_ACTION.equals(action)) {
             httpSession.removeAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY);
             httpSession.removeAttribute(BLOJSOM_USER_AUTHENTICATED);
+            httpSession.removeAttribute(REDIRECT_TO_PARAM);
+            logout = true;
+        }
+
+        StringBuffer redirectURL = new StringBuffer();
+        redirectURL.append(httpServletRequest.getRequestURI());
+        if (!redirectURL.toString().endsWith("/")) {
+            redirectURL.append("/");
+        }
+        if (httpServletRequest.getParameterMap().size() > 0) {
+            redirectURL.append("?");
+            redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest));
         }
 
         // Otherwise, check for the authenticated key and if not authenticated, look for a "username" and "password" parameter
@@ -167,6 +181,11 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
 
             if (username == null || password == null || "".equals(username) || "".equals(password)) {
                 _logger.debug("No username/password provided or username/password was empty");
+                _logger.debug("Setting redirect_to attribute to: " + redirectURL.toString());
+                if (!logout) {
+                    httpServletRequest.getSession().setAttribute(REDIRECT_TO_PARAM, redirectURL.toString());
+                }
+
                 return false;
             }
 
@@ -179,10 +198,16 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 httpSession.setAttribute(BLOJSOM_ADMIN_PLUGIN_USERNAME, username);
                 httpSession.setAttribute(BLOJSOM_USER_AUTHENTICATED, Boolean.TRUE);
                 _logger.debug("Passed authentication for username: " + username);
+
                 return true;
             } catch (BlojsomException e) {
                 _logger.debug("Failed authentication for username: " + username);
                 addOperationResultMessage(context, "Failed authentication for username: " + username);
+                _logger.debug("Setting redirect_to attribute to: " + redirectURL.toString());
+                if (!logout) {
+                    httpServletRequest.getSession().setAttribute(REDIRECT_TO_PARAM, redirectURL.toString());
+                }
+
                 return false;
             }
         } else {
@@ -253,6 +278,17 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 httpServletRequest.setAttribute(PAGE_PARAM, page);
             } else {
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            }
+
+            if (httpServletRequest.getSession().getAttribute(REDIRECT_TO_PARAM) != null) {
+                String redirectURL = (String) httpServletRequest.getSession().getAttribute(REDIRECT_TO_PARAM);
+
+                try {
+                    httpServletRequest.getSession().removeAttribute(REDIRECT_TO_PARAM);
+                    httpServletResponse.sendRedirect(redirectURL);
+                } catch (IOException e) {
+                    _logger.error(e);
+                }
             }
         }
 
