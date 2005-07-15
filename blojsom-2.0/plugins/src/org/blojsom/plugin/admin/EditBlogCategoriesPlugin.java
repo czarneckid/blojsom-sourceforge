@@ -56,7 +56,7 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.20 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.21 2005-07-15 03:00:02 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -275,7 +275,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             if (BlojsomUtils.checkNullOrBlank(blogCategoryParent)) {
                 blogCategory.setCategory(BlojsomUtils.removeInitialSlash(blogCategoryName));
             } else {
-                blogCategory.setCategory(BlojsomUtils.removeInitialSlash(blogCategoryParent) + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
+                blogCategory.setCategory(BlojsomUtils.removeSlashes(blogCategoryParent) + "/" + BlojsomUtils.removeInitialSlash(blogCategoryName));
             }
 
             if (!BlojsomUtils.checkNullOrBlank(blogCategoryDescription)) {
