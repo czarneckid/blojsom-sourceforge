@@ -47,9 +47,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,17 +55,16 @@ import java.util.regex.Pattern;
  * Footnote Expansion Plugin
  *
  * @author Mark Lussier
- * @version $Id: FootnotePlugin.java,v 1.3 2005-07-21 02:05:33 czarneckid Exp $
+ * @author David Czarnecki
+ * @version $Id: FootnotePlugin.java,v 1.4 2005-07-27 02:26:10 czarneckid Exp $
  */
 public class FootnotePlugin implements BlojsomPlugin {
 
-    private static final String REGEX_FOOTNOTE = "meta-footnote-(\\d+)(=)([^\\s]*)";
-    private static final String FOOTNOTE_INDEX_FORMAT = "[{0}]";
-    private static final String FOOTNOTE_LINKAGE_FORMAT = "[{0}] <a href=\"{1}\">{1}</a>";
+    private static final String FOOTNOTE_METADATA = "footnote";
+    private static final String REGEX_FOOTNOTE = "\\[(\\d+)\\]";
+    private static final String FOOTNOTE_LINKAGE_FORMAT = "[{0}] {1}";
 
     private Log _logger = LogFactory.getLog(FootnotePlugin.class);
-
-    private List _footnoteList = new ArrayList(10);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -93,55 +90,53 @@ public class FootnotePlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-
         Pattern footnotePattern = Pattern.compile(REGEX_FOOTNOTE);
+
         for (int i = 0; i < entries.length; i++) {
-
-            _footnoteList.clear();
-
             BlogEntry entry = entries[i];
             String content = entry.getDescription();
             Matcher matcher = footnotePattern.matcher(content);
-            while (matcher.find()) {
+            StringBuffer modifiedContent = new StringBuffer();
+            Map footnotes = new TreeMap();
 
-                int index = -1;
-                String hyperlink = null;
-                String token = null;
+            while (matcher.find()) {
+                int footnoteIndex = -1;
 
                 try {
-                    index = Integer.parseInt(matcher.group(1));
-                    hyperlink = matcher.group(3);
-                    token = matcher.group(0);
-
-                    if (!_footnoteList.contains(hyperlink)) {
-                        _footnoteList.add(hyperlink);
+                    footnoteIndex = Integer.parseInt(matcher.group(1));
+                    if (BlojsomUtils.checkMapForKey(entry.getMetaData(), FOOTNOTE_METADATA + "-" + footnoteIndex)) {
+                        footnotes.put(Integer.toString(footnoteIndex), entry.getMetaData().get(FOOTNOTE_METADATA + "-" + footnoteIndex));
                     }
 
-                    BlojsomUtils.replace(content, token, MessageFormat.format(FOOTNOTE_INDEX_FORMAT,
-                            new Object[]{new Integer(index)}));
-
-
+                    matcher.appendReplacement(modifiedContent, "<sup id=\"footnoteref-" + footnoteIndex + "\"><a href=\"#footnote-" + footnoteIndex + "\">" + footnoteIndex + "</a></sup>");
                 } catch (NumberFormatException e) {
-                    _logger.error("Footnote Index in Post is not a valid Integer [" + matcher.group(1) + "]");
-                }
-
-
-                if (_footnoteList.size() > 0) {
-                    content += "<br/><br/>";
-                    for (int x = 0; x < _footnoteList.size(); x++) {
-                        content += MessageFormat.format(FOOTNOTE_LINKAGE_FORMAT, new Object[]{new Integer(x + 1), _footnoteList.get(x)});
-                        content += "<br/>";
-                    }
-
+                    _logger.error("Footnote index in post is not a valid integer [" + matcher.group(1) + "]");
                 }
             }
 
-            entry.setDescription(content);
+            matcher.appendTail(modifiedContent);
 
+            if (!footnotes.isEmpty()) {
+                modifiedContent.append("<br/><br/>");
+                modifiedContent.append("<div class=\"footnote\">");
+                modifiedContent.append("<hr/>");
+                modifiedContent.append("<ol>");
+                Iterator footnotesIterator = footnotes.keySet().iterator();
+                while (footnotesIterator.hasNext()) {
+                    String footnoteIndex = (String) footnotesIterator.next();
+                    modifiedContent.append("<li id=\"footnote-" + footnoteIndex + "\"><p>");
+                    modifiedContent.append(MessageFormat.format(FOOTNOTE_LINKAGE_FORMAT, new Object[] {footnoteIndex, entry.getMetaData().get(FOOTNOTE_METADATA + "-" + footnoteIndex)}));
+                    modifiedContent.append("<a href=\"#footnoteref-" + footnoteIndex + "\" class=\"footnoteBackLink\" title=\"Jump back to footnote " + footnoteIndex + " in the text.\">");
+                    modifiedContent.append("&#8617;</a></p></li>");
+                }
+                modifiedContent.append("</ol>");
+                modifiedContent.append("</div>");
+            }
+
+            entry.setDescription(modifiedContent.toString());
         }
 
         return entries;
-
     }
 
     /**
