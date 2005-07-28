@@ -56,13 +56,14 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: FootnotePlugin.java,v 1.4 2005-07-27 02:26:10 czarneckid Exp $
+ * @version $Id: FootnotePlugin.java,v 1.5 2005-07-28 04:32:49 czarneckid Exp $
  */
 public class FootnotePlugin implements BlojsomPlugin {
 
     private static final String FOOTNOTE_METADATA = "footnote";
     private static final String REGEX_FOOTNOTE = "\\[(\\d+)\\]";
     private static final String FOOTNOTE_LINKAGE_FORMAT = "[{0}] {1}";
+    private static final String FOOTNOTES_PROCESSED_METADATA = "footnotes-processed";
 
     private Log _logger = LogFactory.getLog(FootnotePlugin.class);
 
@@ -116,7 +117,7 @@ public class FootnotePlugin implements BlojsomPlugin {
 
             matcher.appendTail(modifiedContent);
 
-            if (!footnotes.isEmpty()) {
+            if (!footnotes.isEmpty() && !BlojsomUtils.checkMapForKey(entry.getMetaData(), FOOTNOTES_PROCESSED_METADATA)) {
                 modifiedContent.append("<br/><br/>");
                 modifiedContent.append("<div class=\"footnote\">");
                 modifiedContent.append("<hr/>");
@@ -131,6 +132,8 @@ public class FootnotePlugin implements BlojsomPlugin {
                 }
                 modifiedContent.append("</ol>");
                 modifiedContent.append("</div>");
+
+                entry.getMetaData().put(FOOTNOTES_PROCESSED_METADATA, "true");
             }
 
             entry.setDescription(modifiedContent.toString());
