@@ -2,8 +2,6 @@
  * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2005 by Mark Lussier
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -34,49 +32,43 @@
  */
 package org.blojsom.plugin.technorati;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.blojsom.plugin.BlojsomPlugin;
+import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfiguration;
-import org.blojsom.event.BlojsomEvent;
-import org.blojsom.event.BlojsomListener;
-import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
-import org.blojsom.plugin.velocity.StandaloneVelocityPlugin;
 import org.blojsom.util.BlojsomUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
- * Technorati tags plugin
+ * Tag Cloud plugin
  *
  * @author David Czarnecki
- * @since blojsom 2.25
- * @version $Id: TechnoratiTagsPlugin.java,v 1.4 2005-08-04 04:05:20 czarneckid Exp $
+ * @since blojsom 2.26
+ * @version $Id: TagCloudPlugin.java,v 1.1 2005-08-04 04:05:20 czarneckid Exp $
  */
-public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements BlojsomListener {
+public class TagCloudPlugin implements BlojsomPlugin {
 
-    private Log _logger = LogFactory.getLog(TechnoratiTagsPlugin.class);
+    private Log _logger = LogFactory.getLog(TagCloudPlugin.class);
 
-    private static final String TECHNORATI_TAGS_TEMPLATE = "org/blojsom/plugin/technorati/templates/admin-technorati-tags.vm";
-    private static final String TECHNORATI_TAG_LINK_TEMPLATE = "org/blojsom/plugin/technorati/templates/technorati-tag-link.vm";
-    private static final String TECHNORATI_TAGS = "TECHNORATI_TAGS";
-    private static final String TECHNORATI_TAG_LINKS = "TECHNORATI_TAG_LINKS";
-
-    public static final String METADATA_TECHNORATI_TAGS = "technorati-tags";
+    private static final String TAG_QUERY_PARAM = "tq";
+    private static final String BLOJSOM_PLUGIN_TAG_CLOUD_MAP = "BLOJSOM_PLUGIN_TAG_CLOUD_MAP";
+    private static final int MIN_FONTSIZE = 1;
+    private static final int MAX_FONTSIZE = 10;
 
     /**
-     * Create a new instance of the Technorati tag plugin
+     * Create a new instance of the tag cloud plugin
      */
-    public TechnoratiTagsPlugin() {
+    public TagCloudPlugin() {
     }
 
     /**
@@ -88,9 +80,6 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Bl
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-        super.init(servletConfig, blojsomConfiguration);
-
-        blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
     /**
@@ -106,27 +95,78 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Bl
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+        TreeMap tagMap = new TreeMap();
+        String tagQuery = BlojsomUtils.getRequestValue(TAG_QUERY_PARAM, httpServletRequest);
+        ArrayList entriesMatchingTagQuery = new ArrayList(10);
+        Integer maxTagCount = new Integer(1);
+
         for (int i = 0; i < entries.length; i++) {
             BlogEntry entry = entries[i];
-            Map entryMetaData = entry.getMetaData();
 
-            if (BlojsomUtils.checkMapForKey(entryMetaData, METADATA_TECHNORATI_TAGS)) {
-                String[] tags = BlojsomUtils.parseOnlyCommaList((String) entryMetaData.get(METADATA_TECHNORATI_TAGS));
+            if (BlojsomUtils.checkMapForKey(entry.getMetaData(), TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS)) {
+                String[] tags = BlojsomUtils.parseOnlyCommaList((String) entry.getMetaData().get(TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS));
+                String tag;
                 if (tags != null && tags.length > 0) {
-                    ArrayList tagLinks = new ArrayList(tags.length);
-                    String tagLinkTemplate = mergeTemplate(TECHNORATI_TAG_LINK_TEMPLATE, user, new HashMap());
                     for (int j = 0; j < tags.length; j++) {
-                        String tag = tags[j].trim();
+                        tag = tags[j].trim();
+                        if (!BlojsomUtils.checkNullOrBlank(tagQuery)) {
+                            if (tagQuery.equals(tag)) {
+                                entriesMatchingTagQuery.add(entries[i]);
+                            }
+                        }
 
-                        tagLinks.add(MessageFormat.format(tagLinkTemplate, new String[]{tag}));
+                        if (tagMap.containsKey(tag)) {
+                            Integer tagCount = (Integer) tagMap.get(tag);
+                            tagCount = new Integer(tagCount.intValue() + 1);
+                            if (tagCount.intValue() > maxTagCount.intValue()) {
+                                maxTagCount = new Integer(tagCount.intValue());
+                            }
+
+                            tagMap.put(tag, tagCount);
+                        } else {
+                            tagMap.put(tag, new Integer(1));
+                        }
                     }
-
-                    entryMetaData.put(TECHNORATI_TAG_LINKS, tagLinks.toArray(new String[tagLinks.size()]));
                 }
             }
         }
 
+        Iterator tagKeyIterator = tagMap.keySet().iterator();
+        while (tagKeyIterator.hasNext()) {
+            String tag = (String) tagKeyIterator.next();
+            Integer tagCount = (Integer) tagMap.get(tag);
+            int tagRank = rankTagPerEntries(tagCount.intValue(), 1, maxTagCount.intValue());
+
+            _logger.debug("Tag rank for " + tag + " tag: " + tagRank);
+            tagMap.put(tag, new Integer(tagRank));
+        }
+
+        context.put(BLOJSOM_PLUGIN_TAG_CLOUD_MAP, tagMap);
+
+        if (!BlojsomUtils.checkNullOrBlank(tagQuery) && entriesMatchingTagQuery.size() > 0) {
+            return (BlogEntry[]) entriesMatchingTagQuery.toArray(new BlogEntry[entriesMatchingTagQuery.size()]);
+        }
+
         return entries;
+    }
+
+    /**
+     * Calculate a scaled ranking for a given tag count and number of entries
+     *
+     * @param tagCount Total count for a given tag
+     * @param minTagCount Minimum number of tags
+     * @param maxTagCount Maximum number of tags
+     * @return Ranked distribution between 1 and TAG_DISTRIBUTION_MAX
+     */
+    private int rankTagPerEntries(int tagCount, int minTagCount, int maxTagCount) {
+        if (minTagCount == maxTagCount) {
+            return MAX_FONTSIZE;
+        }
+
+        double scaledCount = (double) (tagCount - minTagCount) / (maxTagCount - minTagCount);
+        double scaledSize = (double) scaledCount * (MAX_FONTSIZE - MIN_FONTSIZE) + MIN_FONTSIZE;
+
+        return (int) Math.ceil(scaledSize);
     }
 
     /**
@@ -145,46 +185,5 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Bl
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-    }
-
-    /**
-     * Handle an event broadcast from another component
-     *
-     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
-     */
-    public void handleEvent(BlojsomEvent event) {
-    }
-
-    /**
-     * Process an event from another component
-     *
-     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
-     * @since blojsom 2.24
-     */
-    public void processEvent(BlojsomEvent event) {
-        if (event instanceof ProcessBlogEntryEvent) {
-            _logger.debug("Handling process blog entry event");
-            ProcessBlogEntryEvent processBlogEntryEvent = (ProcessBlogEntryEvent) event;
-
-            String technoratiTags = BlojsomUtils.getRequestValue(METADATA_TECHNORATI_TAGS, processBlogEntryEvent.getHttpServletRequest());
-            Map context = processBlogEntryEvent.getContext();
-
-            Map templateAdditions = (Map) processBlogEntryEvent.getContext().get("BLOJSOM_TEMPLATE_ADDITIONS");
-            if (templateAdditions == null) {
-                templateAdditions = new TreeMap();
-            }
-
-            templateAdditions.put(getClass().getName(), "#parse('" + TECHNORATI_TAGS_TEMPLATE + "')");
-            processBlogEntryEvent.getContext().put("BLOJSOM_TEMPLATE_ADDITIONS", templateAdditions);
-
-            context.put(TECHNORATI_TAGS, technoratiTags);
-
-            if (processBlogEntryEvent.getBlogEntry() != null) {
-                processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
-            }
-
-            processBlogEntryEvent.getContext().put(TECHNORATI_TAGS, technoratiTags);
-            _logger.debug("Added/updated tags: " + technoratiTags);
-        }
     }
 }
