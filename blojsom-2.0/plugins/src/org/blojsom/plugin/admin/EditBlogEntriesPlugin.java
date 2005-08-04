@@ -46,9 +46,13 @@ import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
 import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
 import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
+import org.blojsom.plugin.comment.event.CommentDeletedEvent;
+import org.blojsom.plugin.comment.event.CommentApprovedEvent;
 import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
+import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
+import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -75,7 +79,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.50 2005-06-15 19:48:05 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.51 2005-08-04 03:06:14 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -524,6 +528,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                                 if (blogComment.getId().equals(blogCommentID)) {
                                     try {
                                         blogComment.delete(user);
+
+                                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CommentDeletedEvent(this, new Date(), blogComment, user));
                                     } catch (BlojsomException e) {
                                         _logger.error(e);
                                     }
@@ -586,6 +592,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                                     blogCommentMetaData.put(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, "true");
                                     try {
                                         blogComment.save(user);
+
+                                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CommentApprovedEvent(this, new Date(), blogComment, user));
                                     } catch (BlojsomException e) {
                                         _logger.error(e);
                                     }
@@ -645,6 +653,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                                 if (trackback.getId().equals(blogTrackbackID)) {
                                     try {
                                         trackback.delete(user);
+
+                                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new TrackbackDeletedEvent(this, new Date(), trackback, user));
                                     } catch (BlojsomException e) {
                                         _logger.error(e);
                                     }
@@ -708,6 +718,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                                     blogTrackbackMetaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, "true");
                                     try {
                                         trackback.save(user);
+
+                                        _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new TrackbackApprovedEvent(this, new Date(), trackback, user));
                                     } catch (BlojsomException e) {
                                         _logger.error(e);
                                     }
