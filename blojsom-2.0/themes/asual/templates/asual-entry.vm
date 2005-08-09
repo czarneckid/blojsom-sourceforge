@@ -10,7 +10,7 @@
 
 								<div class="post">
 									$entry.getDescription()
-
+                                    #TechnoratiTags($entry)
 								</div>
 								<div class="info">
 									#if($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))Posted by <span class="author">$entry.getMetaData().get("blog-entry-author")</span> at $entry.getDateAsFormat("h:mm a") in <a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#if($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end</a>#end
