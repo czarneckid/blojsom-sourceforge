@@ -64,7 +64,7 @@ import java.util.Properties;
  * VelocityDispatcher
  *
  * @author David Czarnecki
- * @version $Id: VelocityDispatcher.java,v 1.21 2005-03-16 20:01:10 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.22 2005-08-17 14:17:49 czarneckid Exp $
  */
 public class VelocityDispatcher implements BlojsomDispatcher {
 
@@ -157,6 +157,21 @@ public class VelocityDispatcher implements BlojsomDispatcher {
     }
 
     /**
+     * Remove references from the Velocity context
+     *
+     * @param velocityContext {@link VelocityContext}
+     * @since blojsom 2.27
+     */
+    protected void destroyVelocityContext(VelocityContext velocityContext) {
+        // Make sure no objects are referenced in the context after they're finished
+        Object[] contextKeys = velocityContext.getKeys();
+        for (int i = 0; i < contextKeys.length; i++) {
+            Object contextKey = contextKeys[i];
+            velocityContext.remove(contextKey);
+        }
+    }
+
+    /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
      * any required information for use by the dispatcher. The dispatcher is also
      * provided with the template for the requested flavor along with the content type for the
@@ -190,6 +205,7 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             updatedVelocityProperties = null;
         } catch (Exception e) {
             _logger.error(e);
+
             return;
         }
 
@@ -212,6 +228,8 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             if (!velocityEngine.templateExists(flavorTemplateForPage)) {
                 _logger.error("Could not find flavor page template for user: " + flavorTemplateForPage);
                 responseWriter.flush();
+                destroyVelocityContext(velocityContext);
+                velocityContext = null;
                 velocityEngine = null;
 
                 return;
@@ -221,6 +239,8 @@ public class VelocityDispatcher implements BlojsomDispatcher {
                 } catch (Exception e) {
                     _logger.error(e);
                     responseWriter.flush();
+                    destroyVelocityContext(velocityContext);
+                    velocityContext = null;
                     velocityEngine = null;
 
                     return;
@@ -233,6 +253,8 @@ public class VelocityDispatcher implements BlojsomDispatcher {
             if (!velocityEngine.templateExists(flavorTemplate)) {
                 _logger.error("Could not find flavor template for user: " + flavorTemplate);
                 responseWriter.flush();
+                destroyVelocityContext(velocityContext);
+                velocityContext = null;
                 velocityEngine = null;
 
                 return;
@@ -242,6 +264,8 @@ public class VelocityDispatcher implements BlojsomDispatcher {
                 } catch (Exception e) {
                     _logger.error(e);
                     responseWriter.flush();
+                    destroyVelocityContext(velocityContext);
+                    velocityContext = null;
                     velocityEngine = null;
 
                     return;
@@ -252,6 +276,8 @@ public class VelocityDispatcher implements BlojsomDispatcher {
         }
 
         responseWriter.flush();
+        destroyVelocityContext(velocityContext);
+        velocityContext = null;
         velocityEngine = null;
     }
 
