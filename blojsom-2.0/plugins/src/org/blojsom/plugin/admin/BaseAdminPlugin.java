@@ -51,6 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.Locale;
 import java.io.IOException;
 
 /**
@@ -58,7 +59,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.20 2005-07-06 18:19:18 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.21 2005-08-22 20:49:43 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -73,6 +74,10 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected static final String ACTION_PARAM = "action";
     protected static final String BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT = "BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT";
     protected static final String BLOJSOM_USER_AUTHENTICATED = "BLOJSOM_USER_AUTHENTICATED";
+    protected static final String BLOJSOM_ADMIN_MESSAGES_RESOURCE = "org.blojsom.plugin.admin.resources.messages";
+
+    // Localization constants
+    protected static final String LOGIN_ERROR_TEXT_KEY = "login.error.text";
 
     // Pages
     protected static final String ADMIN_ADMINISTRATION_PAGE = "/org/blojsom/plugin/admin/templates/admin";
@@ -202,7 +207,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 return true;
             } catch (BlojsomException e) {
                 _logger.debug("Failed authentication for username: " + username);
-                addOperationResultMessage(context, "Failed authentication for username: " + username);
+                addOperationResultMessage(context, formatAdminResource(LOGIN_ERROR_TEXT_KEY, LOGIN_ERROR_TEXT_KEY, blog.getBlogAdministrationLocale(), new Object[] {username}));
                 _logger.debug("Setting redirect_to attribute to: " + redirectURL.toString());
                 if (!logout) {
                     httpServletRequest.getSession().setAttribute(REDIRECT_TO_PARAM, redirectURL.toString());
@@ -223,9 +228,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      * @return Authorized username for this session or <code>null</code> if no user is currently authorized 
      */
     protected String getUsernameFromSession(HttpServletRequest httpServletRequest, Blog blog) {
-        String username = (String) httpServletRequest.getSession().getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
-
-        return username;
+        return (String) httpServletRequest.getSession().getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
     }
 
     /**
@@ -256,6 +259,40 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      */
     protected void addOperationResultMessage(Map context, String message) {
         context.put(BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT, message);
+    }
+
+    /**
+     * Retrieve a resource from the administration resource bundle
+     *
+     * @param resourceID ID of resource to retrieve
+     * @param fallbackText Text to use as fallback if resource ID is not found
+     * @param locale {@link Locale} to use when retrieving resource
+     * @return Text from administration resource bundle given by <code>resourceID</code> or <code>fallbackText</code> if the resource ID is not found
+     * @since blojsom 2.27
+     */
+    protected String getAdminResource(String resourceID, String fallbackText, Locale locale) {
+        return _resourceManager.getString(resourceID, BLOJSOM_ADMIN_MESSAGES_RESOURCE, fallbackText, locale);
+    }
+
+    /**
+     * Retrieve a resource from the administration resource bundle and pass it through the {@link ResourceManager#format(String, Object[])} method
+     *
+     * @param resourceID ID of resource to retrieve
+     * @param fallbackText Text to use as fallback if resource ID is not found
+     * @param locale {@link Locale} to use when retrieving resource
+     * @param arguments Arguments for {@link ResourceManager#format(String, Object[])}
+     * @return Text from administration resource bundle given by <code>resourceID</code> formatted appropriately or <code>fallbackText</code> if the resource ID could not be formatted
+     * @since blojsom 2.27
+     */
+    protected String formatAdminResource(String resourceID, String fallbackText, Locale locale, Object[] arguments) {
+        String resourceText = getAdminResource(resourceID, fallbackText, locale);
+
+        String formattedText = _resourceManager.format(resourceText, arguments);
+        if (formattedText == null) {
+            formattedText = fallbackText;
+        }
+
+        return formattedText;
     }
 
     /**
