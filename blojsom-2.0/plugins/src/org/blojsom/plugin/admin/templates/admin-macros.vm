@@ -91,6 +91,8 @@
 
 #macro( adminResource $resourceID $fallback )$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale())#end
 
+#macro(LocalizedText $bundle $resourceID $fallback)$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, $bundle, $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale())#end
+
 #macro(friendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
