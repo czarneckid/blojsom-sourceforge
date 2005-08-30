@@ -37,6 +37,7 @@ package org.blojsom.plugin.weather.beans;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.DOMException;
 
 import java.text.MessageFormat;
 
@@ -44,7 +45,7 @@ import java.text.MessageFormat;
  * NWSInformation
  *
  * @author Mark Lussier
- * @version $Id: NWSInformation.java,v 1.4 2005-02-09 18:59:17 czarneckid Exp $
+ * @version $Id: NWSInformation.java,v 1.5 2005-08-30 03:12:05 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class NWSInformation implements WeatherInformation {
@@ -66,7 +67,7 @@ public class NWSInformation implements WeatherInformation {
     public static final String TAG_WIND_MPH = "wind_mph";
     public static final String TAG_WIND_GUST_MPH = "wind_gust_mph";
     public static final String TAG_STATION = "station_id";
-    public static final String TAG_VISIBILITY = "visibility";
+    public static final String TAG_VISIBILITY = "visibility_mi";
     public static final String TAG_HISTORY = "two_day_history_url";
 
     private String _temperatureF = "-0 F";
@@ -113,13 +114,17 @@ public class NWSInformation implements WeatherInformation {
      */
     private String getValueOfTag(String tag) {
         String result = null;
-        NodeList nodeList = _document.getElementsByTagName(tag);
-        if (nodeList != null) {
-            Node tempNode = nodeList.item(0);
-            Node value = tempNode.getFirstChild();
-            if (value != null) {
-                result = value.getNodeValue();
+        try {
+            NodeList nodeList = _document.getElementsByTagName(tag);
+            if (nodeList != null) {
+                Node tempNode = nodeList.item(0);
+                Node value = tempNode.getFirstChild();
+                if (value != null) {
+                    result = value.getNodeValue();
+                }
             }
+        } catch (DOMException e) {
+            result = null;
         }
 
         return result;
