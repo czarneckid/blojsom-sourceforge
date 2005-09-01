@@ -56,12 +56,18 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.24 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.25 2005-09-01 20:56:13 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(FileUploadPlugin.class);
+
+    // Localization constants
+    private static final String FAILED_PERMISSION_KEY = "file.upload.failed.permission.text";
+    private static final String FAILED_RESOURCE_KEY = "file.upload.failed.resource.text";
+    private static final String UNKNOWN_ERROR_KEY = "file.upload.unknown.error.text";
+    private static final String SUCCESSFUL_UPLOAD_KEY = "successful.upload.text";
 
     private static final String PLUGIN_ADMIN_UPLOAD_IP = "plugin-admin-upload";
     private static final String TEMPORARY_DIRECTORY_IP = "temporary-directory";
@@ -194,7 +200,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, FILE_UPLOAD_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to upload files");
+            addOperationResultMessage(context, getAdminResource(FAILED_PERMISSION_KEY, FAILED_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -250,7 +256,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                             if (!resourceDirectory.exists()) {
                                 if (!resourceDirectory.mkdirs()) {
                                     _logger.error("Unable to create resource directory for user: " + resourceDirectory.toString());
-                                    addOperationResultMessage(context, "Unable to create resource directory");
+                                    addOperationResultMessage(context, getAdminResource(FAILED_RESOURCE_KEY, FAILED_RESOURCE_KEY, user.getBlog().getBlogAdministrationLocale()));
                                     return entries;
                                 }
                             }
@@ -261,14 +267,14 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                                 item.write(resourceFile);
                             } catch (Exception e) {
                                 _logger.error(e);
-                                addOperationResultMessage(context, "Unknown error in file upload: " + e.getMessage());
+                                addOperationResultMessage(context, formatAdminResource(UNKNOWN_ERROR_KEY, UNKNOWN_ERROR_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {e.getMessage()}));
                             }
 
                             String resourceURL = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
                                     user.getId() + "/" + item.getName();
 
                             _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
-                            addOperationResultMessage(context, "Successfully upload resource file: " + item.getName() + ". <p></p>Here is a link to <a href=\"" + resourceURL + "\">" + item.getName() + "</a>. Right-click and copy the link to the resource to use in a blog entry.");
+                            addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_UPLOAD_KEY, SUCCESSFUL_UPLOAD_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {item.getName(), resourceURL, item.getName()}));
                         } else {
                             if (!isAcceptedFileExtension) {
                                 _logger.error("Upload file does not have an accepted extension: " + extension);
@@ -282,7 +288,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                 }
             } catch (FileUploadException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unknown error in file upload: " + e.getMessage());
+                addOperationResultMessage(context, formatAdminResource(UNKNOWN_ERROR_KEY, UNKNOWN_ERROR_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {e.getMessage()}));
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);

@@ -59,12 +59,18 @@ import java.util.Map;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.8 2005-06-15 19:49:22 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.9 2005-09-01 20:56:13 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
 
     private Log _logger = LogFactory.getLog(BookmarkletPlugin.class);
+
+    // Localization constants
+    private static final String UNABLE_TO_AUTHENTICATE_KEY = "unable.to.authenticate.text";
+    private static final String FAILED_PERMISSION_KEY = "failed.bookmarklet.permission.text";
+    private static final String ADDED_BLOG_ENTRY_KEY = "added.blog.entry.text";
+    private static final String FAILED_BLOG_ENTRY_KEY = "failed.blog.entry.text";
 
     // Pages
     protected static final String BOOKMARKLET_PAGE = "/org/blojsom/plugin/admin/templates/admin-bookmarklet-entry";
@@ -114,14 +120,14 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
         } else if (BOOKMARKLET_BLOG_ENTRY_ACTION.equals(action)) {
             if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, BOOKMARKLET_PAGE);
-                addOperationResultMessage(context, "Unable to authenticate user");
+                addOperationResultMessage(context, getAdminResource(UNABLE_TO_AUTHENTICATE_KEY, UNABLE_TO_AUTHENTICATE_KEY, user.getBlog().getBlogAdministrationLocale()));
             } else {
                 _logger.debug("User requested bookmarklet add blog entry action");
 
                 String username = getUsernameFromSession(httpServletRequest, user.getBlog());
                 if (!checkPermission(user, null, username, USE_BOOKMARKLET_PERMISSION)) {
                     httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
-                    addOperationResultMessage(context, "You are not allowed to use the bookmarklet");
+                    addOperationResultMessage(context, getAdminResource(FAILED_PERMISSION_KEY, FAILED_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                     return entries;
                 }
@@ -195,12 +201,12 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                     StringBuffer entryLink = new StringBuffer();
                     entry.setLink(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getCategory()) + "?" + PERMALINK_PARAM + "=" + entry.getPermalink());
                     entryLink.append("<a href=\"").append(entry.getLink()).append("\">").append(entry.getTitle()).append("</a>");
-                    addOperationResultMessage(context, "Added blog entry: " + entryLink.toString());
+                    addOperationResultMessage(context, formatAdminResource(ADDED_BLOG_ENTRY_KEY, ADDED_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[] {entryLink.toString()}));
                     AddBlogEntryEvent addEvent = new AddBlogEntryEvent(this, new Date(), entry, user);
                     _blojsomConfiguration.getEventBroadcaster().broadcastEvent(addEvent);
                 } catch (BlojsomException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to add blog entry to category: " + blogCategoryName);
+                    addOperationResultMessage(context, formatAdminResource(FAILED_BLOG_ENTRY_KEY, FAILED_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
                 }
 
                 // Send trackback pings
