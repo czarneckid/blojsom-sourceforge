@@ -56,12 +56,20 @@ import java.util.*;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.10 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.11 2005-09-02 17:26:47 czarneckid Exp $
  * @since blojsom 2.19
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
 
     private Log _logger = LogFactory.getLog(ThemeSwitcherPlugin.class);
+
+    // Localization constants
+    private static final String FAILED_PERMISSION_KEY = "failed.theme.switch.permission.text";
+    private static final String NONE_SELECTED_KEY = "no.theme.flavor.selected.text";
+    private static final String ADMIN_FLAVOR_PROTECTED_KEY = "admin.flavor.protected.text";
+    private static final String FAILED_THEME_TEMPLATE_COPY_KEY = "failed.theme.template.copy.text";
+    private static final String FAILED_FLAVOR_WRITE_KEY = "failed.flavor.write.text";
+    private static final String THEME_SWITCHED_KEY = "theme.switched.text";
 
     // Pages
     private static final String THEME_SWITCHER_SETTINGS_PAGE = "/org/blojsom/plugin/admin/templates/admin-theme-switcher-settings";
@@ -198,7 +206,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, SWITCH_THEME_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to switch themes");
+            addOperationResultMessage(context, getAdminResource(FAILED_PERMISSION_KEY, FAILED_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -220,12 +228,12 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 String flavor = BlojsomUtils.getRequestValue(FLAVOR, httpServletRequest);
 
                 if (BlojsomUtils.checkNullOrBlank(theme) || BlojsomUtils.checkNullOrBlank(flavor)) {
-                    addOperationResultMessage(context, "No theme or flavor selected");
+                    addOperationResultMessage(context, getAdminResource(NONE_SELECTED_KEY, NONE_SELECTED_KEY, user.getBlog().getBlogAdministrationLocale()));
                     return entries;
                 }
 
                 if ("admin".equalsIgnoreCase(flavor)) {
-                    addOperationResultMessage(context, "Theme cannot be changed for admin flavor");
+                    addOperationResultMessage(context, getAdminResource(ADMIN_FLAVOR_PROTECTED_KEY, ADMIN_FLAVOR_PROTECTED_KEY, user.getBlog().getBlogAdministrationLocale()));
                     return entries;
                 }
 
@@ -258,7 +266,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                     BlojsomUtils.copyDirectory(copyFromTemplatesDirectory, copyToTemplatesDirectory);
                 } catch (IOException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to copy theme templates to user's template directory");
+                    addOperationResultMessage(context, getAdminResource(FAILED_THEME_TEMPLATE_COPY_KEY, FAILED_THEME_TEMPLATE_COPY_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
 
                 File copyFromResourcesDirectory = new File(_blojsomConfiguration.getInstallationDirectory() +
@@ -271,7 +279,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                     BlojsomUtils.copyDirectory(copyFromResourcesDirectory, copyToResourcesDirectory);
                 } catch (IOException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to copy theme resources to user's resource directory");
+                    addOperationResultMessage(context, getAdminResource(FAILED_THEME_TEMPLATE_COPY_KEY, FAILED_THEME_TEMPLATE_COPY_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
 
                 Map flavorTemplatesForUser = user.getFlavorToTemplate();
@@ -280,7 +288,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                     writeFlavorConfiguration(user);
                 } catch (IOException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to write flavor configuration for user");
+                    addOperationResultMessage(context, getAdminResource(FAILED_FLAVOR_WRITE_KEY, FAILED_FLAVOR_WRITE_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                     return entries;
                 }
@@ -289,7 +297,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 currentHtmlFlavor = currentHtmlFlavor.substring(0, currentHtmlFlavor.indexOf('.'));
                 context.put(CURRENT_HTML_THEME, currentHtmlFlavor);
 
-                addOperationResultMessage(context, "Theme switched to: " + theme + " for flavor: " + flavor);
+                addOperationResultMessage(context, formatAdminResource(THEME_SWITCHED_KEY, THEME_SWITCHED_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {theme, flavor}));
                 _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessRequestEvent(this, new Date(), user, httpServletRequest, httpServletResponse, context));
             } else {
                 _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessRequestEvent(this, new Date(), user, httpServletRequest, httpServletResponse, context));
