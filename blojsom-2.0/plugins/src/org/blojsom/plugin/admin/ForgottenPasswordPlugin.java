@@ -60,11 +60,18 @@ import java.io.FileOutputStream;
  *
  * @author David Czarnecki
  * @since blojsom 2.14
- * @version $Id: ForgottenPasswordPlugin.java,v 1.8 2005-03-19 04:54:03 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.9 2005-09-02 16:56:17 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomConstants {
 
     private Log _logger = LogFactory.getLog(ForgottenPasswordPlugin.class);
+
+    // Localization constants
+    private static final String AUTHORIZATION_CREDENTIAL_FAILURE_KEY = "authorization.credential.failure.text";
+    private static final String FAILED_PASSWORD_CHANGE_KEY = "failed.password.change.text";
+    private static final String CONSTRUCTED_PASSWORD_EMAIL_KEY = "constructed.password.email.text";
+    private static final String AUTHORIZED_EMAIL_BLANK_KEY = "authorized.email.blank.text";
+    private static final String USERNAME_BLANK_KEY = "username.blank.text";
 
     private static final String FORGOTTEN_USERNAME_PARAM = "forgotten-username";
     private static final String FORGOTTEN_PASSWORD_PAGE = "forgotten-password";
@@ -107,7 +114,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
         try {
             _authorizationProvider.loadAuthenticationCredentials(user);
         } catch (BlojsomException e) {
-            addOperationResultMessage(context, "Error loading authorization credentials for user: " + user.getId());
+            addOperationResultMessage(context, formatAdminResource(AUTHORIZATION_CREDENTIAL_FAILURE_KEY, AUTHORIZATION_CREDENTIAL_FAILURE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {user.getId()}));
             _logger.error(e);
 
             return entries;
@@ -139,7 +146,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
                     } catch (IOException e) {
                         _logger.error(e);
                         blog.setAuthorizedUserPassword(username, currentPassword);
-                        addOperationResultMessage(context, "Unable to change password for username: " + username);
+                        addOperationResultMessage(context, formatAdminResource(FAILED_PASSWORD_CHANGE_KEY, FAILED_PASSWORD_CHANGE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {username}));
 
                         return entries;
                     }
@@ -149,15 +156,15 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin implements BlojsomC
                 emailMessages.add(emailMessage);
                 context.put(EmailUtils.BLOJSOM_OUTBOUNDMAIL, emailMessages);
                 _logger.debug("Constructed forgotten password e-mail message for username: " + username);
-                addOperationResultMessage(context, "Constructed forgotten password e-mail message to username: " + username);
+                addOperationResultMessage(context, formatAdminResource(CONSTRUCTED_PASSWORD_EMAIL_KEY, CONSTRUCTED_PASSWORD_EMAIL_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {username}));
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
             } else {
                 _logger.debug("Authorized e-mail address was blank for user: " + username);
-                addOperationResultMessage(context, "Authorized e-mail address was blank for username: " + username);
+                addOperationResultMessage(context, formatAdminResource(AUTHORIZED_EMAIL_BLANK_KEY, AUTHORIZED_EMAIL_BLANK_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {username}));
                 httpServletRequest.setAttribute(PAGE_PARAM, FORGOTTEN_PASSWORD_PAGE);
             }
         } else {
-            addOperationResultMessage(context, "No username provided");
+            addOperationResultMessage(context, getAdminResource(USERNAME_BLANK_KEY, USERNAME_BLANK_KEY, user.getBlog().getBlogAdministrationLocale()));
             httpServletRequest.setAttribute(PAGE_PARAM, FORGOTTEN_PASSWORD_PAGE);
         }
 
