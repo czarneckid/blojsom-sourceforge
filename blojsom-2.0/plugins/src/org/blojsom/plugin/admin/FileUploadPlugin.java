@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.25 2005-09-01 20:56:13 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.26 2005-09-02 18:30:39 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -68,6 +68,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String FAILED_RESOURCE_KEY = "file.upload.failed.resource.text";
     private static final String UNKNOWN_ERROR_KEY = "file.upload.unknown.error.text";
     private static final String SUCCESSFUL_UPLOAD_KEY = "successful.upload.text";
+    private static final String INVALID_EXTENSION_KEY = "invalid.upload.extension.text";
+    private static final String INVALID_TYPE_KEY = "invalid.upload.type.text";
+    private static final String DELETED_FILES_KEY = "deleted.files.text";
 
     private static final String PLUGIN_ADMIN_UPLOAD_IP = "plugin-admin-upload";
     private static final String TEMPORARY_DIRECTORY_IP = "temporary-directory";
@@ -278,10 +281,10 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                         } else {
                             if (!isAcceptedFileExtension) {
                                 _logger.error("Upload file does not have an accepted extension: " + extension);
-                                addOperationResultMessage(context, "Upload file does not have an accepted extension: " + extension);
+                                addOperationResultMessage(context, formatAdminResource(INVALID_EXTENSION_KEY, INVALID_EXTENSION_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {extension}));
                             } else {
                                 _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
-                                addOperationResultMessage(context, "Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
+                                addOperationResultMessage(context, formatAdminResource(INVALID_TYPE_KEY, INVALID_TYPE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {item.getContentType()}));
                             }
                         }
                     }
@@ -294,6 +297,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
         } else if (DELETE_UPLOAD_FILES.equals(action)) {
             String[] filesToDelete = httpServletRequest.getParameterValues(FILE_TO_DELETE);
+            int actualFilesDeleted = 0;
             if (filesToDelete != null && filesToDelete.length > 0) {
                 File deletedFile;
                 for (int i = 0; i < filesToDelete.length; i++) {
@@ -301,10 +305,12 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                     deletedFile = new File(resourceDirectory, fileToDelete);
                     if (!deletedFile.delete()) {
                         _logger.debug("Unable to delete resource file: " + deletedFile.toString());
+                    } else {
+                        actualFilesDeleted += 1;
                     }
                 }
 
-                addOperationResultMessage(context, "Deleted " + filesToDelete.length + " file(s) from resources directory");
+                addOperationResultMessage(context, formatAdminResource(DELETED_FILES_KEY, DELETED_FILES_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(actualFilesDeleted)}));
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, FILE_UPLOAD_PAGE);
