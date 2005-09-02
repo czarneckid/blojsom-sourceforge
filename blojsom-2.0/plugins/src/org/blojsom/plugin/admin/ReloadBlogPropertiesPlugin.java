@@ -55,12 +55,16 @@ import java.io.IOException;
  * Reload Blog Properties plugin.
  *
  * @author David Czarnecki
- * @version $Id: ReloadBlogPropertiesPlugin.java,v 1.3 2005-01-23 23:35:07 czarneckid Exp $
+ * @version $Id: ReloadBlogPropertiesPlugin.java,v 1.4 2005-09-02 17:03:01 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
 
     private Log _logger = LogFactory.getLog(ReloadBlogPropertiesPlugin.class);
+
+    // Localization constants
+    private static final String RELOADED_PROPERTIES_KEY = "reloaded.properties.text";
+    private static final String FAILED_PROPERTIES_LOAD_KEY = "failed.properties.load.text";
 
     // Permissions
     private static final String RELOAD_PROPERTIES_PERMISSION = "reload_properties";
@@ -124,14 +128,14 @@ public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
                 is.close();
                 Blog blog = new Blog(blogProperties);
                 user.setBlog(blog);
-                addOperationResultMessage(context, "Reloaded blog properties for user: " + user.getId());
+                addOperationResultMessage(context, formatAdminResource(RELOADED_PROPERTIES_KEY, RELOADED_PROPERTIES_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {user.getId()}));
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
             } catch (IOException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to load blog properties for user: " + user.getId());
+                addOperationResultMessage(context, formatAdminResource(FAILED_PROPERTIES_LOAD_KEY, FAILED_PROPERTIES_LOAD_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {user.getId()}));
             } catch (BlojsomConfigurationException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to load blog properties for user: " + user.getId());
+                addOperationResultMessage(context, formatAdminResource(FAILED_PROPERTIES_LOAD_KEY, FAILED_PROPERTIES_LOAD_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {user.getId()}));
             }
         }
 
