@@ -56,11 +56,22 @@ import java.util.Map;
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.21 2005-07-15 03:00:02 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.22 2005-09-02 19:57:09 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
     private static Log _logger = LogFactory.getLog(EditBlogCategoriesPlugin.class);
+
+    // Localization constants
+    private static final String FAILED_PERMISSION_KEY = "failed.permission.text";
+    private static final String DELETED_CATEGORY_KEY = "deleted.category.text";
+    private static final String FAILED_DELETED_CATEGORY_KEY = "failed.deleted.category.text";
+    private static final String FAILED_LOAD_CATEGORY_KEY = "failed.load.category.text";
+    private static final String NO_CATEGORY_SPECIFIED_KEY = "no.category.specified.text";
+    private static final String FAILED_CATEGORY_METADATA_READ_KEY = "failed.category.metadata.read.text";
+    private static final String CATEGORY_ADD_SUCCESS_KEY = "category.add.success.text";
+    private static final String CATEGORY_UPDATE_SUCCESS_KEY = "category.update.success.text";
+    private static final String CATEGORY_CHANGE_FAILED_KEY = "category.change.failed.text";
 
     // Pages
     private static final String EDIT_BLOG_CATEGORIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-categories";
@@ -157,7 +168,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_CATEGORIES_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog categories");
+            addOperationResultMessage(context, getAdminResource(FAILED_PERMISSION_KEY, FAILED_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -179,12 +190,12 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 blogCategoryToDelete.delete(user);
 
                  _logger.debug("Deleted blog category: " + blogCategoryName);
-                addOperationResultMessage(context, "Deleted blog category: " + blogCategoryName);
+                addOperationResultMessage(context, formatAdminResource(DELETED_CATEGORY_KEY, DELETED_CATEGORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
             } catch (BlojsomException e) {
                 _logger.error(e);
 
                 _logger.error("Unable to delete blog category: " + blogCategoryName);
-                addOperationResultMessage(context, "Unable to delete blog category: " + blogCategoryName);
+                addOperationResultMessage(context, formatAdminResource(FAILED_DELETED_CATEGORY_KEY, FAILED_DELETED_CATEGORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
@@ -213,7 +224,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             } catch (BlojsomException e) {
                 _logger.error(e);
 
-                addOperationResultMessage(context, "Unable to load blog category: " + blogCategoryName);
+                addOperationResultMessage(context, formatAdminResource(FAILED_LOAD_CATEGORY_KEY, FAILED_LOAD_CATEGORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
             }
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_NAME, blogCategoryName);
@@ -225,7 +236,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             // Check for blank or null category
             if (BlojsomUtils.checkNullOrBlank(blogCategoryName)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
-                addOperationResultMessage(context, "No blog category specified");
+                addOperationResultMessage(context, getAdminResource(NO_CATEGORY_SPECIFIED_KEY, NO_CATEGORY_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                 return entries;
             }
@@ -267,7 +278,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             } catch (IOException e) {
                 _logger.error(e);
 
-                addOperationResultMessage(context, "Unable to read category metadata from input");
+                addOperationResultMessage(context, getAdminResource(FAILED_CATEGORY_METADATA_READ_KEY, FAILED_CATEGORY_METADATA_READ_KEY, user.getBlog().getBlogAdministrationLocale()));
             }
 
             BlogCategory blogCategory = _fetcher.newBlogCategory();
@@ -289,15 +300,15 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
                 if (!isUpdatingCategory) {
                     _logger.debug("Successfully added new blog category: " + blogCategoryName);
-                    addOperationResultMessage(context, "Successfully added new blog category: " + blogCategoryName);
+                    addOperationResultMessage(context, formatAdminResource(CATEGORY_ADD_SUCCESS_KEY, CATEGORY_ADD_SUCCESS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
                 } else {
                     _logger.debug("Successfully updated blog category: " + blogCategoryName);
-                    addOperationResultMessage(context, "Successfully updated blog category: " + blogCategoryName);
+                    addOperationResultMessage(context, formatAdminResource(CATEGORY_UPDATE_SUCCESS_KEY, CATEGORY_UPDATE_SUCCESS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
                 }
             } catch (BlojsomException e) {
                 _logger.error(e);
 
-                addOperationResultMessage(context, "Unable to add/update blog category: " + blogCategoryName);
+                addOperationResultMessage(context, formatAdminResource(CATEGORY_CHANGE_FAILED_KEY, CATEGORY_CHANGE_FAILED_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
