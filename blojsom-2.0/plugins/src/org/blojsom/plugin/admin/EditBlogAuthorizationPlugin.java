@@ -58,12 +58,23 @@ import java.util.TreeMap;
  * EditBlogAuthorizationPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.21 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.22 2005-09-02 19:39:02 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(EditBlogAuthorizationPlugin.class);
+
+    // Localization constants
+    private static final String FAILED_AUTHORIZATION_PERMISSION_KEY = "failed.authorization.permission.text";
+    private static final String FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY = "failed.other.authorization.permission.text";
+    private static final String SUCCESSFUL_AUTHORIZATION_UPDATE_KEY = "successful.authorization.update.key";
+    private static final String SUCCESSFUL_AUTHORIZATION_DELETE_KEY = "successful.authorization.delete.key";
+    private static final String UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY = "unsuccessful.authorization.update.key";
+    private static final String UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY = "unsuccessful.authorization.delete.key";
+    private static final String PASSWORD_CHECK_FAILED_KEY = "password.check.failed.text";
+    private static final String MISSING_PARAMETERS_KEY = "missing.parameters.text";
+    private static final String MISSING_BLOG_ID_KEY = "no.blog.id.delete.text";
 
     // Pages
     private static final String EDIT_BLOG_AUTHORIZATION_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-authorization";
@@ -130,7 +141,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_AUTHORIZATION_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog authorizations");
+            addOperationResultMessage(context, getAdminResource(FAILED_AUTHORIZATION_PERMISSION_KEY, FAILED_AUTHORIZATION_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -162,7 +173,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                     if ((!username.equals(blogUserID)) && !checkPermission(user, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION)) {
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
-                        addOperationResultMessage(context, "You are not allowed to edit other user's authorization information");
+                        addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                         return entries;
                     }
@@ -186,18 +197,18 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                     try {
                         writeAuthorizationConfiguration(authorizationMap, user.getId());
-                        addOperationResultMessage(context, "Successfully updated authorization configuration adding user: " + blogUserID);
+                        addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                         _logger.debug("Wrote new authorization configuration for user: " + user.getId());
                     } catch (IOException e) {
-                        addOperationResultMessage(context, "Unable to update authorization configuration adding user: " + blogUserID);
+                        addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                         _logger.error(e);
                     }
                 } else {
-                    addOperationResultMessage(context, "Password and password check not equal");
+                    addOperationResultMessage(context, getAdminResource(PASSWORD_CHECK_FAILED_KEY, PASSWORD_CHECK_FAILED_KEY, user.getBlog().getBlogAdministrationLocale()));
                     _logger.debug("Password and password check not equal for add/modify authorization action");
                 }
             } else {
-                addOperationResultMessage(context, "Missing parameters from the request to complete action");
+                addOperationResultMessage(context, getAdminResource(MISSING_PARAMETERS_KEY, MISSING_PARAMETERS_KEY, user.getBlog().getBlogAdministrationLocale()));
                 _logger.debug("Missing parameters from the request to complete add/modify authorization action");
             }
         } else if (DELETE_BLOG_AUTHORIZATION_ACTION.equals(action)) {
@@ -207,7 +218,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
                 if ((!username.equals(blogUserID)) && !checkPermission(user, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION)) {
                     httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
-                    addOperationResultMessage(context, "You are not allowed to edit other user's authorization information");
+                    addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                     return entries;
                 }
@@ -219,15 +230,16 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                 try {
                     writeAuthorizationConfiguration(authorizationMap, user.getId());
-                    addOperationResultMessage(context, "Successfully updated authorization configuration deleting user: " + blogUserID);
+                    addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_DELETE_KEY, SUCCESSFUL_AUTHORIZATION_DELETE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
+
                     _logger.debug("Wrote new authorization configuration for user: " + user.getId());
                 } catch (IOException e) {
                     // @todo In the event we have an error writing the configuration, do we want to restore the user? We would need to save their information first.
-                    addOperationResultMessage(context, "Unable to update authorization configuration deleting user: " + blogUserID);
+                    addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                     _logger.error(e);
                 }
             } else {
-                addOperationResultMessage(context, "No blog user id to delete from authorization");
+                addOperationResultMessage(context, getAdminResource(MISSING_BLOG_ID_KEY, MISSING_BLOG_ID_KEY, user.getBlog().getBlogAdministrationLocale()));
                 _logger.debug("No blog user id to delete from authorization");
             }
         }
