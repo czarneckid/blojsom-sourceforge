@@ -47,7 +47,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: ResponseSubmissionEvent.java,v 1.2 2005-04-21 03:42:09 czarneckid Exp $
+ * @version $Id: ResponseSubmissionEvent.java,v 1.3 2005-09-09 15:31:38 czarneckid Exp $
  */
 public class ResponseSubmissionEvent extends BlojsomEvent {
 
@@ -157,5 +157,41 @@ public class ResponseSubmissionEvent extends BlojsomEvent {
      */
     public HttpServletResponse getHttpServletResponse() {
         return _httpServletResponse;
+    }
+
+    /**
+     * Set the submitter content
+     *
+     * @param submitter Submitter
+     */
+    public void setSubmitter(String submitter) {
+        _submitter = submitter;
+    }
+
+    /**
+     * Set the submitter item #1
+     *
+     * @param submitterItem1 Submitter item #1
+     */
+    public void setSubmitterItem1(String submitterItem1) {
+        _submitterItem1 = submitterItem1;
+    }
+
+    /**
+     * Set the submitter item #2
+     *
+     * @param submitterItem2 Submitter item #2
+     */
+    public void setSubmitterItem2(String submitterItem2) {
+        _submitterItem2 = submitterItem2;
+    }
+
+    /**
+     * Set the content
+     *
+     * @param content Content
+     */
+    public void setContent(String content) {
+        _content = content;
     }
 }
