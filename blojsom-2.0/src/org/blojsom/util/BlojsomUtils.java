@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.75 2005-07-06 18:48:34 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.76 2005-09-09 15:30:08 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -486,6 +486,26 @@ public class BlojsomUtils implements BlojsomConstants {
         unescaped = replace(unescaped, ">", "&gt;");
         unescaped = replace(unescaped, "\"", "&quot;");
         unescaped = replace(unescaped, "'", "&#39;");
+
+        return unescaped;
+    }
+
+    /**
+     * Return an escaped string where &amp;, &lt;, &gt; are converted to their HTML equivalents
+     *
+     * @param input Unescaped string
+     * @return Escaped string containing HTML equivalents for &amp;, &lt;, &gt;
+     * @since blojsom 2.27
+     */
+    public static String escapeStringSimple(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        String unescaped = replace(input, "&", "&amp;");
+        unescaped = replace(unescaped, "<", "&lt;");
+        unescaped = replace(unescaped, ">", "&gt;");
+
         return unescaped;
     }
 
