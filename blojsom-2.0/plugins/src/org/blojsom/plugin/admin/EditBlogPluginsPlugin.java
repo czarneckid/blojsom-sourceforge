@@ -56,7 +56,7 @@ import java.io.FileOutputStream;
  *
  * @since blojsom 2.06
  * @author czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.11 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.12 2005-09-13 15:20:48 czarneckid Exp $
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
 
@@ -68,6 +68,11 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS = "BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS";
+
+    // Localization constants
+    private static final String FAILED_EDIT_PLUGINS_PERMISSION_KEY  = "failed.edit.plugins.permission.text";
+    private static final String SUCCESSFULLY_UPDATED_PLUGINS_KEY = "successfully.updated.plugins.text";
+    private static final String FAILED_UPDATE_PLUGINS_KEY = "failed.updated.plugins.text";
 
     // Actions
     private static final String MODIFY_PLUGIN_CHAINS = "modify-plugin-chains";
@@ -140,7 +145,7 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_PLUGINS_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog plugins");
+            addOperationResultMessage(context, getAdminResource(FAILED_EDIT_PLUGINS_PERMISSION_KEY, FAILED_EDIT_PLUGINS_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -208,10 +213,10 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
             // Write out the updated plugin configuration file
             try {
                 writePluginsConfiguration(user.getId(), pluginChainForWriting);
-                addOperationResultMessage(context, "Successfully updated plugin configuration");
+                addOperationResultMessage(context, getAdminResource(SUCCESSFULLY_UPDATED_PLUGINS_KEY, SUCCESSFULLY_UPDATED_PLUGINS_KEY, user.getBlog().getBlogAdministrationLocale()));
             } catch (IOException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to update plugin configuration");
+                addOperationResultMessage(context, getAdminResource(FAILED_UPDATE_PLUGINS_KEY, FAILED_UPDATE_PLUGINS_KEY, user.getBlog().getBlogAdministrationLocale()));
             }
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP, new TreeMap(pluginChainForContext));
