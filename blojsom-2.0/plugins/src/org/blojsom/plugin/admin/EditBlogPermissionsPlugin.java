@@ -56,7 +56,7 @@ import java.io.FileOutputStream;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.5 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.6 2005-09-13 14:59:31 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -69,6 +69,15 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_MAP";
+
+    // Localization constants
+    private static final String FAILED_PERMISSIONS_READ_KEY = "failed.read.permissions.text";
+    private static final String FAILED_EDIT_PERMISSIONS_KEY = "failed.edit.permissions.text";
+    private static final String PERMISSIONS_SAVED_KEY = "permissions.saved.text";
+    private static final String ERROR_SAVING_PERMISSIONS_KEY = "error.saving.permissions.text";
+    private static final String NO_PERMISSION_SPECIFIED_KEY = "no.permission.specified.text";
+    private static final String NO_BLOG_USER_ID_PERMISSION_SPECIFIED_KEY = "no.blog.user.id.specified.permission.text";
+    private static final String PERMISSION_DELETED_KEY = "permission.deleted.text";
 
     // Actions
     private static final String ADD_BLOG_PERMISSION_ACTION = "add-blog-permission";
@@ -143,17 +152,17 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
      * Read the permissions file for a given blog
      *
      * @param context Context for messages
-     * @param blogID Blog ID
+     * @param blog {@link BlogUser}
      * @return Permissions for the given blog
      */
-    private Map readPermissionsForBlog(Map context, String blogID) {
+    private Map readPermissionsForBlog(Map context, BlogUser blog) {
         Map permissions = new TreeMap();
         try {
-            Properties permissionsProperties = readPermissionsConfiguration(blogID);
+            Properties permissionsProperties = readPermissionsConfiguration(blog.getId());
             permissions = new TreeMap(BlojsomUtils.blojsomPropertiesToMap(permissionsProperties));
         } catch (IOException e) {
             _logger.error(e);
-            addOperationResultMessage(context, "Unable to read permissions for blog: " + blogID);
+            addOperationResultMessage(context, formatAdminResource(FAILED_PERMISSIONS_READ_KEY, FAILED_PERMISSIONS_READ_KEY, blog.getBlog().getBlogAdministrationLocale(), new Object[] {blog.getId()}));
         }
 
         return permissions;
@@ -181,12 +190,12 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_PERMISSIONS_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog permissions");
+            addOperationResultMessage(context, getAdminResource(FAILED_EDIT_PERMISSIONS_KEY, FAILED_EDIT_PERMISSIONS_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
 
-        Map permissions = readPermissionsForBlog(context, user.getId());
+        Map permissions = readPermissionsForBlog(context, user);
 
         // Sanitize permissions if a user has been deleted
         Map authorizedUsers = user.getBlog().getAuthorization();
@@ -232,17 +241,17 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
 
                     try {
                         writePermissionsConfiguration(user.getId(), updatedPermissions);
-                        permissions = readPermissionsForBlog(context, user.getId());
-                        addOperationResultMessage(context, "Permissions saved");
+                        permissions = readPermissionsForBlog(context, user);
+                        addOperationResultMessage(context, getAdminResource(PERMISSIONS_SAVED_KEY, PERMISSIONS_SAVED_KEY, user.getBlog().getBlogAdministrationLocale()));
                     } catch (IOException e) {
                         _logger.error(e);
-                        addOperationResultMessage(context, "Error saving permissions");
+                        addOperationResultMessage(context, getAdminResource(ERROR_SAVING_PERMISSIONS_KEY, ERROR_SAVING_PERMISSIONS_KEY, user.getBlog().getBlogAdministrationLocale()));
                     }
                 } else {
-                    addOperationResultMessage(context, "No permission given to add");
+                    addOperationResultMessage(context, getAdminResource(NO_PERMISSION_SPECIFIED_KEY, NO_PERMISSION_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             } else {
-                addOperationResultMessage(context, "No blog user id specified");
+                addOperationResultMessage(context, getAdminResource(NO_BLOG_USER_ID_PERMISSION_SPECIFIED_KEY, NO_BLOG_USER_ID_PERMISSION_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
                 _logger.debug("No blog user id specified");
             }
         } else if (DELETE_BLOG_PERMISSION_ACTION.equals(action)) {
@@ -262,18 +271,18 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
 
                     try {
                         writePermissionsConfiguration(user.getId(), updatedPermissions);
-                        permissions = readPermissionsForBlog(context, user.getId());
-                        addOperationResultMessage(context, "Permission deleted");
+                        permissions = readPermissionsForBlog(context, user);
+                        addOperationResultMessage(context, getAdminResource(PERMISSION_DELETED_KEY, PERMISSION_DELETED_KEY, user.getBlog().getBlogAdministrationLocale()));
                     } catch (IOException e) {
                         _logger.error(e);
-                        addOperationResultMessage(context, "Error saving permissions");
+                        addOperationResultMessage(context, getAdminResource(ERROR_SAVING_PERMISSIONS_KEY, ERROR_SAVING_PERMISSIONS_KEY, user.getBlog().getBlogAdministrationLocale()));
                     }
                 } else {
-                    addOperationResultMessage(context, "No permission given to delete");
+                    addOperationResultMessage(context, getAdminResource(NO_PERMISSION_SPECIFIED_KEY, NO_PERMISSION_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             } else {
-                addOperationResultMessage(context, "No blog user id to delete from authorization");
-                _logger.debug("No blog user id to delete from authorization");
+                addOperationResultMessage(context, getAdminResource(NO_BLOG_USER_ID_PERMISSION_SPECIFIED_KEY, NO_BLOG_USER_ID_PERMISSION_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
+                _logger.debug("No blog user ID to delete from permissions");
             }
         }
 
