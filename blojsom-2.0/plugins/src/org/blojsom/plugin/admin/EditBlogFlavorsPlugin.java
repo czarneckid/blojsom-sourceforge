@@ -55,7 +55,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.17 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.18 2005-09-13 14:44:50 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -74,6 +74,16 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS";
+
+    // Localization constants
+    private static final String FAILED_EDIT_FLAVOR_PERMISSION_KEY = "failed.edit.flavor.permission.text";
+    private static final String NO_FLAVOR_SPECIFIED_KEY = "no.flavor.specified.text";
+    private static final String NO_BLOG_TEMPLATE_SPECIFIED_KEY = "no.blog.template.specified.text";
+    private static final String SUCCESSFULLY_ADDED_FLAVOR_KEY = "successfully.added.flavor.text";
+    private static final String FAILED_UPDATE_FLAVOR_KEY = "failed.update.flavor.text";
+    private static final String FAILED_DELETE_DEFAULT_FLAVOR_KEY = "failed.delete.default.flavor.text";
+    private static final String FAILED_DELETE_PROTECTED_FLAVOR_KEY = "failed.delete.protected.flavor.text";
+    private static final String SUCCESSFULLY_DELETED_FLAVOR_KEY = "successfully.deleted.flavor.text";
 
     // Actions
     private static final String ADD_BLOG_FLAVOR_ACTION = "add-blog-flavor";
@@ -161,7 +171,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_FLAVORS_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog flavors");
+            addOperationResultMessage(context, getAdminResource(FAILED_EDIT_FLAVOR_PERMISSION_KEY, FAILED_EDIT_FLAVOR_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -192,7 +202,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             String flavorName = BlojsomUtils.getRequestValue(FLAVOR_NAME, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
-                addOperationResultMessage(context, "No flavor name specified");
+                addOperationResultMessage(context, getAdminResource(NO_FLAVOR_SPECIFIED_KEY, NO_FLAVOR_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
@@ -201,7 +211,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
                 _logger.debug("No blog template specified");
-                addOperationResultMessage(context, "No blog template specified");
+                addOperationResultMessage(context, getAdminResource(NO_BLOG_TEMPLATE_SPECIFIED_KEY, NO_BLOG_TEMPLATE_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
@@ -230,12 +240,12 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
             try {
                 writeFlavorConfiguration(user);
-                addOperationResultMessage(context, "Successfully added flavor: " + flavorName + " using template: " + blogTemplate + " with content type: " + flavorMimeType + ";" + flavorCharacterSet);
+                addOperationResultMessage(context, formatAdminResource(SUCCESSFULLY_ADDED_FLAVOR_KEY, SUCCESSFULLY_ADDED_FLAVOR_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {flavorName, blogTemplate, flavorMimeType, flavorCharacterSet}));
                 _logger.debug("Successfully wrote flavor configuration file for user: " + user.getId());
 
                 addFlavorInformationToContext(user, context);
             } catch (IOException e) {
-                addOperationResultMessage(context, "Unable to update flavor configuration");
+                addOperationResultMessage(context, getAdminResource(FAILED_UPDATE_FLAVOR_KEY, FAILED_UPDATE_FLAVOR_KEY, user.getBlog().getBlogAdministrationLocale()));
                 _logger.error(e);
             }
 
@@ -246,7 +256,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             String flavorName = BlojsomUtils.getRequestValue(FLAVOR_NAME, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
-                addOperationResultMessage(context, "No flavor name specified");
+                addOperationResultMessage(context, getAdminResource(NO_FLAVOR_SPECIFIED_KEY, NO_FLAVOR_SPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
@@ -254,7 +264,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
             if (flavorName.equalsIgnoreCase(user.getBlog().getBlogDefaultFlavor())) {
                 _logger.debug("Cannot delete the default flavor");
-                addOperationResultMessage(context, "Cannot delete the default flavor");
+                addOperationResultMessage(context, getAdminResource(FAILED_DELETE_DEFAULT_FLAVOR_KEY, FAILED_DELETE_DEFAULT_FLAVOR_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
@@ -262,7 +272,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
             if (protectedFlavors.indexOf(flavorName) != -1) {
                 _logger.debug("Cannot delete protected flavor: " + flavorName);
-                addOperationResultMessage(context, "Cannot delete protected flavor: " + flavorName);
+                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_PROTECTED_FLAVOR_KEY, FAILED_DELETE_PROTECTED_FLAVOR_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {flavorName}));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
  
                 return entries;
@@ -277,11 +287,11 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             try {
                 writeFlavorConfiguration(user);
                 _logger.debug("Successfully wrote flavor configuration file for user: " + user.getId());
-                addOperationResultMessage(context, "Successfully deleted flavor: " + flavorName);
+                addOperationResultMessage(context, formatAdminResource(SUCCESSFULLY_DELETED_FLAVOR_KEY, SUCCESSFULLY_DELETED_FLAVOR_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {flavorName}));
 
                 addFlavorInformationToContext(user, context);
             } catch (IOException e) {
-                addOperationResultMessage(context, "Unable to update flavor configuration deleting flavor");
+                addOperationResultMessage(context, getAdminResource(FAILED_UPDATE_FLAVOR_KEY, FAILED_UPDATE_FLAVOR_KEY, user.getBlog().getBlogAdministrationLocale()));
                 _logger.error(e);
             }
 
