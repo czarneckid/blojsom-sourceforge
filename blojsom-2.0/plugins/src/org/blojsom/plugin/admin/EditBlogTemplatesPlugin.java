@@ -53,7 +53,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.20 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.21 2005-09-13 20:57:08 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -72,6 +72,23 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES = "BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES";
+
+    // Localization constants
+    private static final String FAILED_EDIT_TEMPLATES_PERMISSION_KEY = "failed.edit.templates.permission.text";
+    private static final String INVALID_TEMPLATE_PATH_KEY = "invalid.template.path.text";
+    private static final String UNABLE_TO_LOAD_TEMPLATE_KEY = "unable.to.load.template.text";
+    private static final String UNABLE_TO_DELETE_TEMPLATE_KEY = "unable.to.delete.template.text";
+    private static final String UPDATED_TEMPLATE_KEY = "updated.template.text";
+    private static final String NO_TEMPLATE_NAME_KEY = "no.template.name.text";
+    private static final String INVALID_TEMPLATE_EXTENSION_KEY = "invalid.template.extension.text";
+    private static final String TEMPLATE_DIRECTORY_NONEXISTENT_KEY = "template.directory.nonexistent.text";
+    private static final String TEMPLATE_DIRECTORY_NOTSPECIFIED_KEY = "template.directory.notspecified.text";
+    private static final String UNABLE_TO_ADD_TEMPLATE_DIRECTORY_KEY = "unable.to.add.template.directory.text";
+    private static final String ADDED_TEMPLATE_DIRECTORY_KEY = "added.template.directory.text";
+    private static final String CANNOT_REMOVE_TOP_TEMPLATE_DIRECTORY_KEY = "cannot.remove.top.template.directory.text";
+    private static final String UNABLE_TO_DELETE_TEMPLATE_DIRECTORY_KEY = "unable.to.delete.template.directory.text";
+    private static final String REMOVED_TEMPLATE_DIRECTORY_KEY = "removed.template.directory.text";
+    private static final String DELETED_TEMPLATE_KEY = "deleted.template.text";
 
     // Actions
     private static final String ADD_BLOG_TEMPLATE_ACTION = "add-blog-template";
@@ -200,7 +217,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_TEMPLATES_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog templates");
+            addOperationResultMessage(context, getAdminResource(FAILED_EDIT_TEMPLATES_PERMISSION_KEY, FAILED_EDIT_TEMPLATES_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -234,7 +251,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
             blogTemplate = sanitizeFilename(blogTemplate);
             if (blogTemplate == null) {
-                addOperationResultMessage(context, "Invalid path specified");
+                addOperationResultMessage(context, getAdminResource(INVALID_TEMPLATE_PATH_KEY, INVALID_TEMPLATE_PATH_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
 
                 return entries;
@@ -262,11 +279,11 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
             } catch (UnsupportedEncodingException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to load blog template: " + blogTemplate);
+                addOperationResultMessage(context, formatAdminResource(UNABLE_TO_LOAD_TEMPLATE_KEY, UNABLE_TO_LOAD_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
             } catch (IOException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to load blog template: " + blogTemplate);
+                addOperationResultMessage(context, formatAdminResource(UNABLE_TO_LOAD_TEMPLATE_KEY, UNABLE_TO_LOAD_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
             }
         } else if (UPDATE_BLOG_TEMPLATE_ACTION.equals(action)) {
@@ -281,7 +298,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
             blogTemplate = sanitizeFilename(blogTemplate);
             if (blogTemplate == null) {
-                addOperationResultMessage(context, "Invalid path specified");
+                addOperationResultMessage(context, getAdminResource(INVALID_TEMPLATE_PATH_KEY, INVALID_TEMPLATE_PATH_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
 
                 return entries;
@@ -300,13 +317,13 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 bw.close();
             } catch (UnsupportedEncodingException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to update blog template: " + blogTemplate);
+                addOperationResultMessage(context, formatAdminResource(UNABLE_TO_DELETE_TEMPLATE_KEY, UNABLE_TO_DELETE_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
             } catch (IOException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to update blog template: " + blogTemplate);
+                addOperationResultMessage(context, formatAdminResource(UNABLE_TO_DELETE_TEMPLATE_KEY, UNABLE_TO_DELETE_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
             }
 
-            addOperationResultMessage(context, "Updated blog template: " + blogTemplate);
+            addOperationResultMessage(context, formatAdminResource(UPDATED_TEMPLATE_KEY, UPDATED_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILE, blogTemplate);
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE, BlojsomUtils.escapeString(blogTemplateData));
@@ -318,7 +335,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             String blogTemplateDirectory = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DIRECTORY, httpServletRequest);
 
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
-                addOperationResultMessage(context, "No template name specified");
+                addOperationResultMessage(context, getAdminResource(NO_TEMPLATE_NAME_KEY, NO_TEMPLATE_NAME_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
 
                 return entries;
@@ -328,7 +345,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             String templateExtension = BlojsomUtils.getFileExtension(templateName);
 
             if (!_acceptedTemplateExtensions.containsKey(templateExtension)) {
-                addOperationResultMessage(context, "Invalid template extension: " + templateExtension);
+                addOperationResultMessage(context, formatAdminResource(INVALID_TEMPLATE_EXTENSION_KEY, INVALID_TEMPLATE_EXTENSION_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {templateExtension}));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATES_PAGE);
 
                 return entries;
@@ -341,7 +358,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
                     httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_TEMPLATE_PAGE);
                 } else {
-                    addOperationResultMessage(context, "Specified template directory does not exist");
+                    addOperationResultMessage(context, getAdminResource(TEMPLATE_DIRECTORY_NONEXISTENT_KEY, TEMPLATE_DIRECTORY_NONEXISTENT_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             }
         } else if (ADD_TEMPLATE_DIRECTORY_ACTION.equals(action)) {
@@ -350,7 +367,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             String templateDirectoryToAdd = BlojsomUtils.getRequestValue(TEMPLATE_DIRECTORY_TO_ADD, httpServletRequest);
             String blogTemplateDirectory = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DIRECTORY, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(templateDirectoryToAdd)) {
-                addOperationResultMessage(context, "New template directory not specified");
+                addOperationResultMessage(context, getAdminResource(TEMPLATE_DIRECTORY_NOTSPECIFIED_KEY, TEMPLATE_DIRECTORY_NOTSPECIFIED_KEY, user.getBlog().getBlogAdministrationLocale()));
             } else {
                 blogTemplateDirectory = BlojsomUtils.normalize(blogTemplateDirectory);
                 templateDirectoryToAdd = BlojsomUtils.normalize(templateDirectoryToAdd);
@@ -359,9 +376,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 _logger.debug("Adding blog template directory: " + newTemplateDirectory.toString());
 
                 if (!newTemplateDirectory.mkdir()) {
-                    addOperationResultMessage(context, "Unable to add new template directory: " + templateDirectoryToAdd);
+                    addOperationResultMessage(context, formatAdminResource(UNABLE_TO_ADD_TEMPLATE_DIRECTORY_KEY, UNABLE_TO_ADD_TEMPLATE_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {templateDirectoryToAdd}));
                 } else {
-                    addOperationResultMessage(context, "Added template directory: " + templateDirectoryToAdd);
+                    addOperationResultMessage(context, formatAdminResource(ADDED_TEMPLATE_DIRECTORY_KEY, ADDED_TEMPLATE_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {templateDirectoryToAdd}));
 
                     putTemplateDirectoriesInContext(templatesDirectory, context);
                 }
@@ -373,7 +390,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
             String blogTemplateDirectory = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DIRECTORY, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogTemplateDirectory)) {
-                addOperationResultMessage(context, "You cannot remove root the top-level template directory");
+                addOperationResultMessage(context, getAdminResource(CANNOT_REMOVE_TOP_TEMPLATE_DIRECTORY_KEY, CANNOT_REMOVE_TOP_TEMPLATE_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale()));
             } else {
                 blogTemplateDirectory = BlojsomUtils.normalize(blogTemplateDirectory);
                 _logger.debug("Sanitized template directory: " + blogTemplateDirectory);
@@ -381,9 +398,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 _logger.debug("Removing blog template directory: " + templateDirectoryToDelete);
 
                 if (!BlojsomUtils.deleteDirectory(templateDirectoryToDelete, true)) {
-                    addOperationResultMessage(context, "Unable to remove template directory: " + blogTemplateDirectory);
+                    addOperationResultMessage(context, formatAdminResource(UNABLE_TO_DELETE_TEMPLATE_DIRECTORY_KEY, UNABLE_TO_DELETE_TEMPLATE_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplateDirectory}));
                 } else {
-                    addOperationResultMessage(context, "Removed template directory: " + blogTemplateDirectory);
+                    addOperationResultMessage(context, formatAdminResource(REMOVED_TEMPLATE_DIRECTORY_KEY, REMOVED_TEMPLATE_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplateDirectory}));
 
                     putTemplateDirectoriesInContext(templatesDirectory, context);
                 }
@@ -395,7 +412,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
             String blogTemplate = BlojsomUtils.getRequestValue(BLOG_TEMPLATE, httpServletRequest);
             if (BlojsomUtils.checkNullOrBlank(blogTemplate)) {
-                addOperationResultMessage(context, "Template to delete not specified");
+                addOperationResultMessage(context, getAdminResource(NO_TEMPLATE_NAME_KEY, NO_TEMPLATE_NAME_KEY, user.getBlog().getBlogAdministrationLocale()));
             }
 
             blogTemplate = sanitizeFilename(blogTemplate);
@@ -403,9 +420,9 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             _logger.debug("Deleting blog template: " + templateToDelete.toString());
 
             if (!templateToDelete.delete()) {
-                addOperationResultMessage(context, "Unable to delete template: " + blogTemplate);
+                addOperationResultMessage(context, formatAdminResource(UNABLE_TO_DELETE_TEMPLATE_KEY, UNABLE_TO_DELETE_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
             } else {
-                addOperationResultMessage(context, "Deleted blog template: " + blogTemplate);
+                addOperationResultMessage(context, formatAdminResource(DELETED_TEMPLATE_KEY, DELETED_TEMPLATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogTemplate}));
 
                 putTemplatesInContext(templatesDirectory, context);
             }
