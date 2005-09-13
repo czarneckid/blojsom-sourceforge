@@ -60,7 +60,7 @@ import java.util.*;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.34 2005-06-14 17:41:22 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.35 2005-09-13 15:32:02 czarneckid Exp $
  * @since blojsom 2.04
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -68,6 +68,13 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     private static Log _logger = LogFactory.getLog(EditBlogPropertiesPlugin.class);
 
     private static final String EDIT_BLOG_PROPERTIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-properties";
+
+    // Localization constants
+    private static final String FAILED_EDIT_PROPERTIES_PERMISSION_KEY = "failed.edit.properties.permission.text";
+    private static final String UPDATED_BLOG_PROPERTIES_KEY = "updated.blog.properties.text";
+    private static final String FAILED_SAVE_BLOG_PROPERTIES_KEY = "failed.save.blog.properties.text";
+    private static final String BLOG_PROPERTY_HAS_VALUE_KEY = "blog.property.has.value.text";
+    private static final String BLOG_PROPERTY_NOT_FOUND_KEY = "blog.property.not.found.text";
 
     // Actions
     private static final String EDIT_BLOG_PROPERTIES_ACTION = "edit-blog-properties";
@@ -115,7 +122,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_PROPERTIES_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog properties");
+            addOperationResultMessage(context, getAdminResource(FAILED_EDIT_PROPERTIES_PERMISSION_KEY, FAILED_EDIT_PROPERTIES_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -260,10 +267,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
                 FileOutputStream fos = new FileOutputStream(propertiesFile);
                 blogProperties.store(fos, null);
                 fos.close();
-                addOperationResultMessage(context, "Updated blog properties");
+                addOperationResultMessage(context, getAdminResource(UPDATED_BLOG_PROPERTIES_KEY, UPDATED_BLOG_PROPERTIES_KEY, user.getBlog().getBlogAdministrationLocale()));
             } catch (IOException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to save blog properties");
+                addOperationResultMessage(context, getAdminResource(FAILED_SAVE_BLOG_PROPERTIES_KEY, FAILED_SAVE_BLOG_PROPERTIES_KEY, user.getBlog().getBlogAdministrationLocale()));
             }
 
             // Request that we go back to the edit blog properties page
@@ -294,10 +301,10 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
                     FileOutputStream fos = new FileOutputStream(propertiesFile);
                     blogProperties.store(fos, null);
                     fos.close();
-                    addOperationResultMessage(context, "Updated blog properties");
+                    addOperationResultMessage(context, getAdminResource(UPDATED_BLOG_PROPERTIES_KEY, UPDATED_BLOG_PROPERTIES_KEY, user.getBlog().getBlogAdministrationLocale()));
                 } catch (IOException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to save blog properties");
+                    addOperationResultMessage(context, getAdminResource(FAILED_SAVE_BLOG_PROPERTIES_KEY, FAILED_SAVE_BLOG_PROPERTIES_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             }
 
@@ -310,9 +317,9 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
 
             if (!BlojsomUtils.checkNullOrBlank(blogProperty)) {
                 if (blog.getBlogProperty(blogProperty) != null) {
-                    addOperationResultMessage(context, "Blog property: " + blogProperty + " set to: " + blog.getBlogProperty(blogProperty));
+                    addOperationResultMessage(context, formatAdminResource(BLOG_PROPERTY_HAS_VALUE_KEY, BLOG_PROPERTY_HAS_VALUE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogProperty, blog.getBlogProperty(blogProperty)}));
                 } else {
-                    addOperationResultMessage(context, "Blog property: " + blogProperty + " not found");
+                    addOperationResultMessage(context, formatAdminResource(BLOG_PROPERTY_NOT_FOUND_KEY, BLOG_PROPERTY_NOT_FOUND_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogProperty}));
                 }
             }
 
