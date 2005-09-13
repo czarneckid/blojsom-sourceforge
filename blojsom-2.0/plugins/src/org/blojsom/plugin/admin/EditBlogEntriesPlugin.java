@@ -79,7 +79,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.51 2005-08-04 03:06:14 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.52 2005-09-13 14:25:02 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -106,6 +106,19 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
     protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY";
     protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY";
+
+    // Localization constants
+    private static final String FAILED_PERMISSION_EDIT_KEY = "failed.permission.edit.text";
+    private static final String FAILED_RETRIEVE_BLOG_ENTRY_KEY = "failed.retrieve.entry.text";
+    private static final String FAILED_DELETE_BLOG_ENTRY_KEY = "failed.delete.entry.text";
+    private static final String FAILED_ADD_BLOG_ENTRY_KEY = "failed.add.entry.text";
+    private static final String UPDATED_BLOG_ENTRY_KEY = "updated.blog.entry.text";
+    private static final String DELETED_BLOG_ENTRY_KEY = "deleted.blog.entry.text";
+    private static final String ADDED_BLOG_ENTRY_KEY = "added.blog.entry.text";
+    private static final String DELETED_COMMENTS_KEY = "deleted.comments.text";
+    private static final String APPROVED_COMMENTS_KEY = "approved.comments.text";
+    private static final String DELETED_TRACKBACKS_KEY = "deleted.trackbacks.text";
+    private static final String APPROVED_TRACKBACKS_KEY = "approved.trackbacks.text";
 
     // Actions
     private static final String EDIT_BLOG_ENTRIES_ACTION = "edit-blog-entries";
@@ -195,7 +208,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, EDIT_BLOG_ENTRIES_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit blog entries");
+            addOperationResultMessage(context, getAdminResource(FAILED_PERMISSION_EDIT_KEY, FAILED_PERMISSION_EDIT_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -254,7 +267,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                         user, httpServletRequest, httpServletResponse, context));
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to retrieve blog entry: " + blogEntryId);
+                addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogEntryId}));
                 entries = new BlogEntry[0];
             }
 
@@ -337,7 +350,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
                 StringBuffer entryLink = new StringBuffer();
                 entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entryToUpdate.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entryToUpdate.getPermalink()).append("\">").append(entryToUpdate.getTitle()).append("</a>");
-                addOperationResultMessage(context, "Updated blog entry: " + entryLink.toString());
+                addOperationResultMessage(context, formatAdminResource(UPDATED_BLOG_ENTRY_KEY, UPDATED_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {entryLink.toString()}));
                 UpdatedBlogEntryEvent updateEvent = new UpdatedBlogEntryEvent(this, new Date(), entryToUpdate, user);
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(updateEvent);
 
@@ -351,12 +364,12 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY, blogCategoryName);
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to retrieve blog entry: " + blogEntryId);
+                addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogEntryId}));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
                 entries = new BlogEntry[0];
             } catch (BlojsomException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to retrieve blog entry: " + blogEntryId);
+                addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogEntryId}));
                 entries = new BlogEntry[0];
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
             }
@@ -372,16 +385,16 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 BlogEntry entryToDelete = BlojsomUtils.fetchEntry(_fetcher, user, blogCategoryName, blogEntryId);
                 String title = entryToDelete.getTitle();
                 entryToDelete.delete(user);
-                addOperationResultMessage(context, "Deleted blog entry: " + title);
+                addOperationResultMessage(context, formatAdminResource(DELETED_BLOG_ENTRY_KEY, DELETED_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {title}));
                 DeletedBlogEntryEvent deleteEvent = new DeletedBlogEntryEvent(this, new Date(), entryToDelete, user);
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(deleteEvent);
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to delete blog entry: " + blogEntryId);
+                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_BLOG_ENTRY_KEY, FAILED_DELETE_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogEntryId}));
                 entries = new BlogEntry[0];
             } catch (BlojsomException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to delete blog entry: " + blogEntryId);
+                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_BLOG_ENTRY_KEY, FAILED_DELETE_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogEntryId}));
                 entries = new BlogEntry[0];
             }
 
@@ -475,12 +488,12 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 StringBuffer entryLink = new StringBuffer();
                 entry.setLink(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getCategory()) + "?" + PERMALINK_PARAM + "=" + entry.getPermalink());
                 entryLink.append("<a href=\"").append(entry.getLink()).append("\">").append(entry.getTitle()).append("</a>");
-                addOperationResultMessage(context, "Added blog entry: " + entryLink.toString());
+                addOperationResultMessage(context, formatAdminResource(ADDED_BLOG_ENTRY_KEY, ADDED_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {entryLink.toString()}));
                 AddBlogEntryEvent addEvent = new AddBlogEntryEvent(this, new Date(), entry, user);
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(addEvent);
             } catch (BlojsomException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to add blog entry to category: " + blogCategoryName);
+                addOperationResultMessage(context, formatAdminResource(FAILED_ADD_BLOG_ENTRY_KEY, FAILED_ADD_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
             }
 
             // Send trackback pings
@@ -537,7 +550,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                             }
                         }
 
-                        addOperationResultMessage(context, "Deleted " + blogCommentIDs.length + " comments");
+                        addOperationResultMessage(context, formatAdminResource(DELETED_COMMENTS_KEY, DELETED_COMMENTS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(blogCommentIDs.length)}));
 
                         entries = _fetcher.fetchEntries(fetchMap, user);
                         entryToUpdate = entries[0];
@@ -601,7 +614,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                             }
                         }
 
-                        addOperationResultMessage(context, "Approved " + blogCommentIDs.length + " comments");
+                        addOperationResultMessage(context, formatAdminResource(APPROVED_COMMENTS_KEY, APPROVED_COMMENTS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(blogCommentIDs.length)}));
 
                         entries = _fetcher.fetchEntries(fetchMap, user);
                         entryToUpdate = entries[0];
@@ -662,7 +675,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                             }
                         }
 
-                        addOperationResultMessage(context, "Deleted " + blogTrackbackIDs.length + " trackbacks");
+                        addOperationResultMessage(context, formatAdminResource(DELETED_TRACKBACKS_KEY, DELETED_TRACKBACKS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(blogTrackbackIDs.length)}));
 
                         entries = _fetcher.fetchEntries(fetchMap, user);
                         entryToUpdate = entries[0];
@@ -727,8 +740,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                             }
                         }
 
-                        addOperationResultMessage(context, "Approved " + blogTrackbackIDs.length + " trackbacks");
-
+                        addOperationResultMessage(context, formatAdminResource(APPROVED_TRACKBACKS_KEY, APPROVED_TRACKBACKS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(blogTrackbackIDs.length)}));
+                        
                         entries = _fetcher.fetchEntries(fetchMap, user);
                         entryToUpdate = entries[0];
                     }
