@@ -57,7 +57,7 @@ import java.util.Map;
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.5 2005-06-14 17:41:40 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.6 2005-09-14 17:51:28 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
@@ -67,6 +67,13 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
     private static final String SPAM_PHRASE_BLACKLIST_IP = "spam-phrase-blacklist";
     private static final String DEFAULT_SPAM_PHRASE_BLACKLIST_FILE = "spam-phrase-blacklist.properties";
     private String _spamPhraseBlacklist = DEFAULT_SPAM_PHRASE_BLACKLIST_FILE;
+
+    // Localization constants
+    private static final String FAILED_SPAM_PHRASE_PERMISSION_KEY = "failed.spam.phrase.permission.text";
+    private static final String ADDED_SPAM_PHRASE_KEY = "added.spam.phrase.text";
+    private static final String SPAM_PHRASE_ALREADY_ADDED_KEY = "spam.phrase.already.added.text";
+    private static final String DELETED_SPAM_PHRASE_KEY = "deleted.spam.phrase.text";
+    private static final String NO_SPAM_PHRASES_TO_DELETE_KEY = "no.spam.phrases.to.delete.text";
 
     // Context
     private static final String BLOJSOM_PLUGIN_SPAM_PHRASES = "BLOJSOM_PLUGIN_SPAM_PHRASES";
@@ -147,7 +154,7 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, SPAM_PHRASE_MODERATION_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit spam phrase moderation settings");
+            addOperationResultMessage(context, getAdminResource(FAILED_SPAM_PHRASE_PERMISSION_KEY, FAILED_SPAM_PHRASE_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -163,9 +170,9 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
                 if (!spamPhrases.contains(spamPhrase)) {
                     spamPhrases.add(spamPhrase);
                     writeSpamPhrases(user, spamPhrases);
-                    addOperationResultMessage(context, "Added spam phrase: " + spamPhrase);
+                    addOperationResultMessage(context, formatAdminResource(ADDED_SPAM_PHRASE_KEY, ADDED_SPAM_PHRASE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {spamPhrase}));
                 } else {
-                    addOperationResultMessage(context, "Spam phrase " + spamPhrase + " has already been added");
+                    addOperationResultMessage(context, formatAdminResource(SPAM_PHRASE_ALREADY_ADDED_KEY, SPAM_PHRASE_ALREADY_ADDED_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {spamPhrase}));
                 }
             } else if (DELETE_SPAM_PHRASE_ACTION.equals(action)) {
                 String[] spamPhrasesToDelete = httpServletRequest.getParameterValues(SPAM_PHRASE);
@@ -176,9 +183,9 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
 
                     spamPhrases = BlojsomUtils.removeNullValues(spamPhrases);
                     writeSpamPhrases(user, spamPhrases);
-                    addOperationResultMessage(context, "Deleted " + spamPhrasesToDelete.length + " spam phrases");
+                    addOperationResultMessage(context, formatAdminResource(DELETED_SPAM_PHRASE_KEY, DELETED_SPAM_PHRASE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(spamPhrasesToDelete.length)}));
                 } else {
-                    addOperationResultMessage(context, "No spam phrases selected for deletion");
+                    addOperationResultMessage(context, getAdminResource(NO_SPAM_PHRASES_TO_DELETE_KEY, NO_SPAM_PHRASES_TO_DELETE_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             }
 
