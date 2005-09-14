@@ -56,7 +56,7 @@ import java.util.Map;
  * Show Me More administration plugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreAdminPlugin.java,v 1.4 2005-06-14 17:41:40 czarneckid Exp $
+ * @version $Id: ShowMeMoreAdminPlugin.java,v 1.5 2005-09-14 17:30:28 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
@@ -64,6 +64,11 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
     private Log _logger = LogFactory.getLog(ShowMeMoreAdminPlugin.class);
 
     private String _showMeMoreConfigurationFile;
+
+    // Localization constants
+    private static final String FAILED_SHOWMEMORE_PERMISSION_KEY = "failed.showmemore.permission.text";
+    private static final String FAILED_SHOWMEMORE_CONFIGURATION_SAVE_KEY = "failed.showmemore.configuration.save.text";
+    private static final String SAVED_SHOWMEMORE_CONFIGURATION_KEY = "saved.showmemore.configuration.text";
 
     // Pages
     private static final String EDIT_SHOWMEMORE_SETTINGS_PAGE = "/org/blojsom/plugin/showmore/admin/templates/admin-edit-showmemore-settings";
@@ -137,7 +142,7 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, SHOWMEMORE_ADMIN_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit show-me-more settings");
+            addOperationResultMessage(context, getAdminResource(FAILED_SHOWMEMORE_PERMISSION_KEY, FAILED_SHOWMEMORE_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -155,6 +160,7 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
                     entryLengthCutoff = Integer.parseInt(cutoffLength);
                 } catch (NumberFormatException e) {
                 }
+
                 String entryTextCutoff = BlojsomUtils.getRequestValue(ShowMeMorePlugin.ENTRY_TEXT_CUTOFF, httpServletRequest);
                 String showMoreText = BlojsomUtils.getRequestValue(ShowMeMorePlugin.SHOW_ME_MORE_TEXT, httpServletRequest);
                 String textCutoffStart = BlojsomUtils.getRequestValue(ShowMeMorePlugin.ENTRY_TEXT_CUTOFF_START, httpServletRequest);
@@ -163,9 +169,11 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
 
                 try {
                     ShowMeMoreUtilities.saveConfiguration(user.getId(), _showMeMoreConfigurationFile, _blojsomConfiguration, showMeMoreConfiguration);
+
+                    addOperationResultMessage(context, getAdminResource(SAVED_SHOWMEMORE_CONFIGURATION_KEY, SAVED_SHOWMEMORE_CONFIGURATION_KEY, user.getBlog().getBlogAdministrationLocale()));
                 } catch (IOException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to save Show Me More plugin settings");
+                    addOperationResultMessage(context, getAdminResource(FAILED_SHOWMEMORE_CONFIGURATION_SAVE_KEY, FAILED_SHOWMEMORE_CONFIGURATION_SAVE_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             }
 
@@ -174,6 +182,7 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
             } catch (IOException e) {
                 _logger.error(e);
             }
+
             context.put(SHOWMEMORE_CONFIGURATION, showMeMoreConfiguration);
         }
 
