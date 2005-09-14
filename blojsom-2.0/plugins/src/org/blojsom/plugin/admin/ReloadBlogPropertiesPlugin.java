@@ -55,7 +55,7 @@ import java.io.IOException;
  * Reload Blog Properties plugin.
  *
  * @author David Czarnecki
- * @version $Id: ReloadBlogPropertiesPlugin.java,v 1.4 2005-09-02 17:03:01 czarneckid Exp $
+ * @version $Id: ReloadBlogPropertiesPlugin.java,v 1.5 2005-09-14 14:48:48 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
@@ -63,6 +63,7 @@ public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
     private Log _logger = LogFactory.getLog(ReloadBlogPropertiesPlugin.class);
 
     // Localization constants
+    private static final String FAILED_PROPERTIES_LOAD_PERMISSION_KEY = "failed.properties.load.permission.text";
     private static final String RELOADED_PROPERTIES_KEY = "reloaded.properties.text";
     private static final String FAILED_PROPERTIES_LOAD_KEY = "failed.properties.load.text";
 
@@ -111,7 +112,7 @@ public class ReloadBlogPropertiesPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, RELOAD_PROPERTIES_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
-            addOperationResultMessage(context, "You are not allowed to reload blog properties");
+            addOperationResultMessage(context, getAdminResource(FAILED_PROPERTIES_LOAD_PERMISSION_KEY, FAILED_PROPERTIES_LOAD_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
