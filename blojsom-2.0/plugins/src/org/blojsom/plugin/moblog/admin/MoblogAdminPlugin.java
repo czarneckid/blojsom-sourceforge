@@ -55,7 +55,7 @@ import java.io.*;
  * Moblog Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MoblogAdminPlugin.java,v 1.5 2005-06-14 17:41:40 czarneckid Exp $
+ * @version $Id: MoblogAdminPlugin.java,v 1.6 2005-09-14 15:13:13 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MoblogAdminPlugin extends WebAdminPlugin {
@@ -63,6 +63,16 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
     private Log _logger = LogFactory.getLog(MoblogAdminPlugin.class);
 
     private static final String EDIT_MOBLOG_SETTINGS_PAGE = "/org/blojsom/plugin/moblog/admin/templates/admin-edit-moblog-settings";
+
+    // Localization constants
+    private static final String FAILED_MOBLOG_PERMISSIONS_KEY = "failed.moblog.permissions.text";
+    private static final String UPDATED_MOBLOG_CONFIGURATION_KEY = "updated.moblog.configuration.text";
+    private static final String FAILED_WRITE_MOBLOG_CONFIGURATION_KEY = "failed.write.moblog.configuration.text";
+    private static final String ADDED_AUTHORIZED_EMAIL_KEY = "added.authorized.email.text";
+    private static final String FAILED_ADD_EMAIL_KEY = "failed.add.email.text";
+    private static final String NO_EMAIL_ADDRESS_KEY = "no.email.address.text";
+    private static final String REMOVED_AUTHORIZED_EMAIL_KEY = "removed.authorized.email.text";
+    private static final String FAILED_DELETE_EMAIL_KEY = "failed.delete.email.text";
 
     // Form itmes
     private static final String MOBLOG_ENABLED = "moblog-enabled";
@@ -129,7 +139,7 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, MOBLOG_ADMIN_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit moblog settings");
+            addOperationResultMessage(context, getAdminResource(FAILED_MOBLOG_PERMISSIONS_KEY, FAILED_MOBLOG_PERMISSIONS_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -186,10 +196,10 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
 
                 try {
                     writeMoblogConfiguration(user.getId(), moblogConfigurationFile, mailbox);
-                    addOperationResultMessage(context, "Updated moblog configuration");
+                    addOperationResultMessage(context, getAdminResource(UPDATED_MOBLOG_CONFIGURATION_KEY, UPDATED_MOBLOG_CONFIGURATION_KEY, user.getBlog().getBlogAdministrationLocale()));
                 } catch (IOException e) {
                     _logger.error(e);
-                    addOperationResultMessage(context, "Unable to write moblog configuration");
+                    addOperationResultMessage(context, getAdminResource(FAILED_WRITE_MOBLOG_CONFIGURATION_KEY, FAILED_WRITE_MOBLOG_CONFIGURATION_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             } else if (ADD_AUTHORIZED_ADDRESS_ACTION.equals(action)) {
                 String addressToAdd = BlojsomUtils.getRequestValue(MOBLOG_AUTHORIZED_ADDRESS, httpServletRequest);
@@ -199,13 +209,13 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
 
                     try {
                         writeAuthorizedEmailAddresssConfiguration(user.getId(), MoblogPlugin.DEFAULT_MOBLOG_AUTHORIZATION_FILE, authorizedEmailAddresses);
-                        addOperationResultMessage(context, "Added e-mail address to moblog authorized addresses: " + addressToAdd);
+                        addOperationResultMessage(context, formatAdminResource(ADDED_AUTHORIZED_EMAIL_KEY, ADDED_AUTHORIZED_EMAIL_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {addressToAdd}));
                     } catch (IOException e) {
                         _logger.error(e);
-                        addOperationResultMessage(context, "Unable to add e-mail address");
+                        addOperationResultMessage(context, getAdminResource(FAILED_ADD_EMAIL_KEY, FAILED_ADD_EMAIL_KEY, user.getBlog().getBlogAdministrationLocale()));
                     }
                 } else {
-                    addOperationResultMessage(context, "No e-mail address to add");
+                    addOperationResultMessage(context, getAdminResource(NO_EMAIL_ADDRESS_KEY, NO_EMAIL_ADDRESS_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             } else if (DELETE_AUTHORIZED_ADDRESS_ACTION.equals(action)) {
                 String addressToDelete = BlojsomUtils.getRequestValue(MOBLOG_AUTHORIZED_ADDRESS, httpServletRequest);
@@ -215,13 +225,13 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
 
                     try {
                         writeAuthorizedEmailAddresssConfiguration(user.getId(), MoblogPlugin.DEFAULT_MOBLOG_AUTHORIZATION_FILE, authorizedEmailAddresses);
-                        addOperationResultMessage(context, "Removed e-mail address from moblog authorized addresses: " + addressToDelete);
+                        addOperationResultMessage(context, formatAdminResource(REMOVED_AUTHORIZED_EMAIL_KEY, REMOVED_AUTHORIZED_EMAIL_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {addressToDelete}));
                     } catch (IOException e) {
                         _logger.error(e);
-                        addOperationResultMessage(context, "Unable to delete e-mail address");
+                        addOperationResultMessage(context, getAdminResource(FAILED_DELETE_EMAIL_KEY, FAILED_DELETE_EMAIL_KEY, user.getBlog().getBlogAdministrationLocale()));
                     }
                 } else {
-                    addOperationResultMessage(context, "No e-mail address to delete");
+                    addOperationResultMessage(context, getAdminResource(NO_EMAIL_ADDRESS_KEY, NO_EMAIL_ADDRESS_KEY, user.getBlog().getBlogAdministrationLocale()));
                 }
             }
 
