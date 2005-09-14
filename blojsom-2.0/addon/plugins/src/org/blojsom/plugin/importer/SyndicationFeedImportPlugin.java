@@ -65,12 +65,17 @@ import java.util.Map;
  * Syndication feed importer plugin
  *
  * @author David Czarnecki
- * @version $Id: SyndicationFeedImportPlugin.java,v 1.5 2005-06-23 21:57:55 czarneckid Exp $
+ * @version $Id: SyndicationFeedImportPlugin.java,v 1.6 2005-09-14 18:18:25 czarneckid Exp $
  * @since blojsom 2.26
  */
 public class SyndicationFeedImportPlugin extends WebAdminPlugin {
 
     private Log _logger = LogFactory.getLog(SyndicationFeedImportPlugin.class);
+
+    // Localization constants
+    private static final String FAILED_FEED_IMPORT_PERMISSION_KEY = "failed.feed.import.permission.text";
+    private static final String FAILED_FEED_IMPORT_ERROR_KEY = "failed.feed.import.error.text";
+    private static final String FAILED_FEED_IMPORT_IO_KEY = "failed.feed.import.io.text";
 
     // Pages
     private static final String FEED_IMPORTER_PAGE = "/org/blojsom/plugin/importer/admin/templates/feed-import-settings";
@@ -165,7 +170,7 @@ public class SyndicationFeedImportPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, IMPORT_SYNDICATION_FEED_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to import syndication feeds");
+            addOperationResultMessage(context, getAdminResource(FAILED_FEED_IMPORT_PERMISSION_KEY, FAILED_FEED_IMPORT_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -216,7 +221,7 @@ public class SyndicationFeedImportPlugin extends WebAdminPlugin {
                                 blogCategory.save(user);
                             } catch (BlojsomException e) {
                                 _logger.error(e);
-                                statusMessage.append(e.getMessage() + "<br />");
+                                statusMessage.append(e.getMessage()).append("<br />");
                             }
 
                             BlogEntry blogEntry;
@@ -236,7 +241,7 @@ public class SyndicationFeedImportPlugin extends WebAdminPlugin {
                                 blogEntry.save(user);
                             } catch (BlojsomException e) {
                                 _logger.error(e);
-                                statusMessage.append(e.getMessage() + "<br />");
+                                statusMessage.append(e.getMessage()).append("<br />");
                             }
                         }
 
@@ -252,11 +257,11 @@ public class SyndicationFeedImportPlugin extends WebAdminPlugin {
                 } catch (FeedException e) {
                     _logger.error(e);
 
-                    addOperationResultMessage(context, "Error in feed: " + e.getMessage());
+                    addOperationResultMessage(context, formatAdminResource(FAILED_FEED_IMPORT_ERROR_KEY, FAILED_FEED_IMPORT_ERROR_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {e.getMessage()}));
                 } catch (IOException e) {
                     _logger.error(e);
 
-                    addOperationResultMessage(context, "Error in I/O: " + e.getMessage());
+                    addOperationResultMessage(context, formatAdminResource(FAILED_FEED_IMPORT_IO_KEY, FAILED_FEED_IMPORT_IO_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {e.getMessage()}));
                 }
             }
         }

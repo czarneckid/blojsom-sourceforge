@@ -64,13 +64,17 @@ import java.util.zip.ZipOutputStream;
  * Export Blog plugin
  *
  * @author David Czarnecki
- * @version $Id: ExportBlogPlugin.java,v 1.2 2005-01-05 02:30:58 czarneckid Exp $
+ * @version $Id: ExportBlogPlugin.java,v 1.3 2005-09-14 18:18:25 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class ExportBlogPlugin extends WebAdminPlugin {
 
     private Log _logger = LogFactory.getLog(ExportBlogPlugin.class);
     private BlojsomFetcher _fetcher;
+
+    // Localization constants
+    private static final String FAILED_LOADING_ENTRIES_KEY = "failed.loading.entries.for.blog.text";
+    private static final String FAILED_XML_ARCHIVE_CREATE_KEY = "failed.xml.archive.create.text";
 
     /**
      * Default constructor
@@ -218,10 +222,10 @@ public class ExportBlogPlugin extends WebAdminPlugin {
                 zipOutputStream.close();
             } catch (BlojsomFetcherException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to retrieve entries for user: " + user.getId());
+                addOperationResultMessage(context, formatAdminResource(FAILED_LOADING_ENTRIES_KEY, FAILED_LOADING_ENTRIES_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {user.getId()}));
             } catch (IOException e) {
                 _logger.error(e);
-                addOperationResultMessage(context, "Unable to create XML archive of entries for user: " + user.getId());
+                addOperationResultMessage(context, formatAdminResource(FAILED_XML_ARCHIVE_CREATE_KEY, FAILED_XML_ARCHIVE_CREATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {user.getId()}));
             }
         }
 
