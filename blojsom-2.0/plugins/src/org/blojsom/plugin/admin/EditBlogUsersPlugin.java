@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.25 2005-09-11 23:21:15 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.26 2005-09-14 14:29:32 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -72,6 +72,23 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
     private static final String BOOTSTRAP_DIRECTORY_IP = "bootstrap-directory";
     private static final String DEFAULT_BOOTSTRAP_DIRECTORY = "/bootstrap";
     private static final String BLOG_HOME_BASE_DIRECTORY_IP = "blog-home-base-directory";
+
+    // Localization constants
+    private static final String FAILED_DELETE_BLOGS_PERMISSION_KEY = "failed.delete.blogs.permission.text";
+    private static final String FAILED_REMOVE_BLOG_CONFIGURATION_KEY = "failed.remove.blog.configuration.text";
+    private static final String FAILED_REMOVE_BLOG_DIRECTORY_KEY = "failed.remove.blog.directory.text";
+    private static final String FAILED_REMOVE_BLOG_RESOURCES_DIRECTORY_KEY = "failed.remove.blog.resources.text";
+    private static final String DELETED_BLOG_KEY = "deleted.blog.text";
+
+    private static final String FAILED_ADD_BLOGS_PERMISSION_KEY = "failed.add.blogs.permission.text";
+    private static final String MISSING_WEBLOG_ID_KEY = "missing.weblog.id.text";
+    private static final String WEBLOG_ID_EXISTS_KEY = "weblog.id.exists.text";
+    private static final String WEBLOG_DIRECTORY_EXISTS_KEY = "weblog.directory.exists.text";
+    private static final String MISSING_WEBLOG_URLS_KEY = "missing.weblog.urls.text";
+    private static final String PASSWORDS_NOT_MATCHED_KEY = "passwords.not.matched.text";
+    private static final String FAILED_BOOTSTRAP_DIRECTORY_COPY_KEY = "failed.bootstrap.directory.copy.text";
+    private static final String FAILED_BLOG_DIRECTORY_CREATE_KEY = "failed.blog.directory.create.text=";
+    private static final String ADDED_NEW_WEBLOG_KEY = "added.new.blog.text";
 
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_USERS_MAP";
 
@@ -189,7 +206,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             // Check user is allowed to delete blogs
             if (!checkPermission(user, null, username, DELETE_BLOG_PERMISSION) && !_administrators.containsKey(user.getId())) {
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-                addOperationResultMessage(context, "You are not allowed to delete blogs from the system");
+                addOperationResultMessage(context, getAdminResource(FAILED_DELETE_BLOGS_PERMISSION_KEY, FAILED_DELETE_BLOGS_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                 return entries;
             }
@@ -207,7 +224,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogConfigurationDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogConfigurationDirectory)) {
                     _logger.error("Unable to remove blog configuration directory: " + blogConfigurationDirectory.toString());
-                    addOperationResultMessage(context, "Unable to remove blog configuration for user: " + blogUserID);
+                    addOperationResultMessage(context, formatAdminResource(FAILED_REMOVE_BLOG_CONFIGURATION_KEY, FAILED_REMOVE_BLOG_CONFIGURATION_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                 } else {
                     _logger.debug("Removed blog configuration directory: " + blogConfigurationDirectory.toString());
                 }
@@ -215,7 +232,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogDirectory = new File(_blogHomeBaseDirectory + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogDirectory)) {
                     _logger.error("Unable to remove blog directory for user: " + blogDirectory.toString());
-                    addOperationResultMessage(context, "Unable to remove blog directory for user: " + blogUserID);
+                    addOperationResultMessage(context, formatAdminResource(FAILED_REMOVE_BLOG_DIRECTORY_KEY, FAILED_REMOVE_BLOG_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                 } else {
                     _logger.debug("Removed blog directory: " + blogDirectory.toString());
                 }
@@ -224,14 +241,14 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                         _blojsomConfiguration.getResourceDirectory() + blogUserID + "/");
                 if (!BlojsomUtils.deleteDirectory(blogResourcesDirectory)) {
                     _logger.error("Unable to remove blog resource directory: " + blogResourcesDirectory.toString());
-                    addOperationResultMessage(context, "Unable to remove resources directory for user: " + blogUserID);
+                    addOperationResultMessage(context, formatAdminResource(FAILED_REMOVE_BLOG_RESOURCES_DIRECTORY_KEY, FAILED_REMOVE_BLOG_RESOURCES_DIRECTORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                 } else {
                     _logger.debug("Removed blog resource directory: " + blogResourcesDirectory.toString());
                 }
 
                 writeBlojsomConfiguration();
                 _logger.debug("Wrote new blojsom configuration after deleting user: " + blogUserID);
-                addOperationResultMessage(context, "Deleted user: " + blogUserID);
+                addOperationResultMessage(context, formatAdminResource(DELETED_BLOG_KEY, DELETED_BLOG_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
             }
 
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
@@ -241,7 +258,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             // Check user is allowed to add blogs
             if (!checkPermission(user, null, username, ADD_BLOG_PERMISSION) && !_administrators.containsKey(user.getId())) {
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-                addOperationResultMessage(context, "You are not allowed to add blogs to the system");
+                addOperationResultMessage(context, getAdminResource(FAILED_ADD_BLOGS_PERMISSION_KEY, FAILED_ADD_BLOGS_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
                 return entries;
             }
@@ -250,13 +267,13 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
 
             if (BlojsomUtils.checkNullOrBlank(blogUserID)) { // Check that we got a blog user ID
-                addOperationResultMessage(context, "No blog ID specified for adding a blog");
+                addOperationResultMessage(context, getAdminResource(MISSING_WEBLOG_ID_KEY, MISSING_WEBLOG_ID_KEY, user.getBlog().getBlogAdministrationLocale()));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                 return entries;
             } else if (blogUsers.containsKey(blogUserID)) { // Check that the user does not already exist
                 _logger.debug("User: " + blogUserID + " already exists");
-                addOperationResultMessage(context, "Blog ID: " + blogUserID + " already exists");
+                addOperationResultMessage(context, formatAdminResource(WEBLOG_ID_EXISTS_KEY, WEBLOG_ID_EXISTS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                 return entries;
@@ -269,7 +286,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                 File blogUserDirectory = new File(_blojsomConfiguration.getInstallationDirectory() + _blojsomConfiguration.getBaseConfigurationDirectory() + blogUserID);
                 if (blogUserDirectory.exists()) { // Make sure that the blog user ID does not conflict with a directory underneath the installation directory
                     _logger.debug("User directory already exists for blog user: " + blogUserID);
-                    addOperationResultMessage(context, "User directory already exists for blog ID: " + blogUserID);
+                    addOperationResultMessage(context, formatAdminResource(WEBLOG_DIRECTORY_EXISTS_KEY, WEBLOG_DIRECTORY_EXISTS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                     httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                     return entries;
@@ -282,7 +299,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                     // Check for the blog and blog base URLs
                     if (BlojsomUtils.checkNullOrBlank(blogURL) || BlojsomUtils.checkNullOrBlank(blogBaseURL)) {
                         _logger.debug("No blog URL or base URL supplied");
-                        addOperationResultMessage(context, "No blog URL or base URL supplied");
+                        addOperationResultMessage(context, getAdminResource(MISSING_WEBLOG_URLS_KEY, MISSING_WEBLOG_URLS_KEY, user.getBlog().getBlogAdministrationLocale()));
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                         return entries;
@@ -298,7 +315,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                     // Check to see that the password and password check are equal
                     if (!blogUserPassword.equals(blogUserPasswordCheck)) {
                         _logger.debug("User password does not equal password check");
-                        addOperationResultMessage(context, "User password does not equal user password check");
+                        addOperationResultMessage(context, getAdminResource(PASSWORDS_NOT_MATCHED_KEY, PASSWORDS_NOT_MATCHED_KEY, user.getBlog().getBlogAdministrationLocale()));
                         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                         return entries;
@@ -314,7 +331,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                         try {
                             BlojsomUtils.copyDirectory(bootstrapDirectory, newUserDirectory);
                         } catch (IOException e) {
-                            addOperationResultMessage(context, "Unable to copy bootstrap directory. Check log files for error");
+                            addOperationResultMessage(context, getAdminResource(FAILED_BOOTSTRAP_DIRECTORY_COPY_KEY, FAILED_BOOTSTRAP_DIRECTORY_COPY_KEY, user.getBlog().getBlogAdministrationLocale()));
                             httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                             _logger.error(e);
 
@@ -328,7 +345,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                             File blogHomeDirectory = new File(_blogHomeBaseDirectory + blogUserID);
                             if (!blogHomeDirectory.mkdirs()) {
                                 _logger.error("Unable to create blog home directory: " + blogHomeDirectory.toString());
-                                addOperationResultMessage(context, "Unable to create blog home directory for blog ID: " + blogUserID);
+                                addOperationResultMessage(context, formatAdminResource(FAILED_BLOG_DIRECTORY_CREATE_KEY, FAILED_BLOG_DIRECTORY_CREATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                                 httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                                 return entries;
@@ -444,7 +461,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
                         writeBlojsomConfiguration();
                         _logger.debug("Wrote new blojsom configuration after adding new user: " + blogUserID);
 
-                        addOperationResultMessage(context, "Added new blog: " + blogUserID);
+                        addOperationResultMessage(context, formatAdminResource(ADDED_NEW_WEBLOG_KEY, ADDED_NEW_WEBLOG_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                     }
                 }
             }
