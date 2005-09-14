@@ -58,7 +58,7 @@ import java.util.TreeMap;
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.7 2005-06-14 17:41:40 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.8 2005-09-14 14:59:51 czarneckid Exp $
  * @since blojsom 2.16
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -68,6 +68,15 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
     private static final String EDIT_MACRO_EXPANSION_SETTINGS_PAGE = "/org/blojsom/plugin/macro/admin/templates/admin-edit-macro-expansion-settings";
 
     private static final String BLOJSOM_PLUGIN_EDIT_MACRO_EXPANSION_MACROS = "BLOJSOM_PLUGIN_EDIT_MACRO_EXPANSION_MACROS";
+
+    // Localization constants
+    private static final String FAILED_MACRO_ADMIN_PERMISSION_KEY = "failed.macro.admin.permission.text";
+    private static final String MISSING_MACRO_CONFIGURATION_FILE_KEY = "missing.macro.configuration.file.text";
+    private static final String DELETED_MACROS_KEY = "deleted.macros.text";
+    private static final String NO_MACROS_SELECTED_TO_DELETE_KEY = "no.macros.selected.to.delete.text";
+    private static final String MISSING_MACRO_PARAMETERS_KEY = "missing.macro.parameters.text";
+    private static final String ADDED_MACRO_KEY = "added.macro.text";
+    private static final String MACRO_EXISTS_KEY = "macro.exists.text";
 
     // Form items
     private static final String MACRO_SHORT_NAME = "macro-short-name";
@@ -124,7 +133,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
         String username = getUsernameFromSession(httpServletRequest, user.getBlog());
         if (!checkPermission(user, null, username, MACRO_EXPANSION_ADMIN_PERMISSION)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-            addOperationResultMessage(context, "You are not allowed to edit macros");
+            addOperationResultMessage(context, getAdminResource(FAILED_MACRO_ADMIN_PERMISSION_KEY, FAILED_MACRO_ADMIN_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
             return entries;
         }
@@ -137,7 +146,7 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
             String macroConfiguration = _servletConfig.getInitParameter(MacroExpansionPlugin.BLOG_MACRO_CONFIGURATION_IP);
             if (BlojsomUtils.checkNullOrBlank(macroConfiguration)) {
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
-                addOperationResultMessage(context, "No configuration file for macro expansion plugin specified in " + MacroExpansionPlugin.BLOG_MACRO_CONFIGURATION_IP + " configuration parameter");
+                addOperationResultMessage(context, formatAdminResource(MISSING_MACRO_CONFIGURATION_FILE_KEY, MISSING_MACRO_CONFIGURATION_FILE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {MacroExpansionPlugin.BLOG_MACRO_CONFIGURATION_IP}));
 
                 return entries;
             } else {
@@ -156,16 +165,17 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                         } catch (IOException e) {
                             _logger.error(e);
                         }
-                        addOperationResultMessage(context, "Deleted " + macrosToDelete.length + " macros");
+
+                        addOperationResultMessage(context, formatAdminResource(DELETED_MACROS_KEY, DELETED_MACROS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {new Integer(macrosToDelete.length)}));
                     } else {
-                        addOperationResultMessage(context, "No macros selected for deletion");
+                        addOperationResultMessage(context, getAdminResource(NO_MACROS_SELECTED_TO_DELETE_KEY, NO_MACROS_SELECTED_TO_DELETE_KEY, user.getBlog().getBlogAdministrationLocale()));
                     }
                 } else if (ADD_MACRO_ACTION.equals(action)) {
                     String macroShortName = BlojsomUtils.getRequestValue(MACRO_SHORT_NAME, httpServletRequest);
                     String macroExpansion = BlojsomUtils.getRequestValue(MACRO_EXPANSION, httpServletRequest);
 
                     if (BlojsomUtils.checkNullOrBlank(macroShortName) || BlojsomUtils.checkNullOrBlank(macroExpansion)) {
-                        addOperationResultMessage(context, "No macro short name or macro expansion provided");
+                        addOperationResultMessage(context, getAdminResource(MISSING_MACRO_PARAMETERS_KEY, MISSING_MACRO_PARAMETERS_KEY, user.getBlog().getBlogAdministrationLocale()));
                     } else {
                         if (!macros.containsKey(macroShortName)) {
                             macros.put(macroShortName, macroExpansion);
@@ -175,9 +185,10 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                             } catch (IOException e) {
                                 _logger.error(e);
                             }
-                            addOperationResultMessage(context, "Added macro: " + macroShortName);
+
+                            addOperationResultMessage(context, formatAdminResource(ADDED_MACRO_KEY, ADDED_MACRO_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {macroShortName}));
                         } else {
-                            addOperationResultMessage(context, "Macro short name: " + macroShortName + " already exists");
+                            addOperationResultMessage(context, formatAdminResource(MACRO_EXISTS_KEY, MACRO_EXISTS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {macroShortName}));
                         }
                     }
                 }
