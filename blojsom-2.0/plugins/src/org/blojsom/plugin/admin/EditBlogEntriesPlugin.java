@@ -79,7 +79,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.52 2005-09-13 14:25:02 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.53 2005-09-17 15:35:24 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -119,6 +119,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String APPROVED_COMMENTS_KEY = "approved.comments.text";
     private static final String DELETED_TRACKBACKS_KEY = "deleted.trackbacks.text";
     private static final String APPROVED_TRACKBACKS_KEY = "approved.trackbacks.text";
+    private static final String BLANK_ENTRY_KEY = "blank.entry.text";
 
     // Actions
     private static final String EDIT_BLOG_ENTRIES_ACTION = "edit-blog-entries";
@@ -421,6 +422,17 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
             String blogEntryTitle = BlojsomUtils.getRequestValue(BLOG_ENTRY_TITLE, httpServletRequest);
+
+            if (BlojsomUtils.checkNullOrBlank(blogEntryTitle) && BlojsomUtils.checkNullOrBlank(blogEntryDescription)) {
+                httpServletRequest.setAttribute(PAGE_PARAM, ADD_BLOG_ENTRY_PAGE);
+                _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), null,
+                        user, httpServletRequest, httpServletResponse, context));
+
+                addOperationResultMessage(context, getAdminResource(BLANK_ENTRY_KEY, BLANK_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale()));
+
+                return entries;
+            }
+
             if (BlojsomUtils.checkNullOrBlank(blogEntryTitle)) {
                 blogEntryDescription = BlojsomUtils.LINE_SEPARATOR + blogEntryDescription;
             }

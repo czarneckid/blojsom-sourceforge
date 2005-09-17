@@ -59,7 +59,7 @@ import java.util.Map;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.9 2005-09-01 20:56:13 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.10 2005-09-17 15:35:24 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -69,7 +69,7 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
     // Localization constants
     private static final String UNABLE_TO_AUTHENTICATE_KEY = "unable.to.authenticate.text";
     private static final String FAILED_PERMISSION_KEY = "failed.bookmarklet.permission.text";
-    private static final String ADDED_BLOG_ENTRY_KEY = "added.blog.entry.text";
+    private static final String ADDED_BLOG_ENTRY_KEY = "added.blog.entry.bookmarklet.text";
     private static final String FAILED_BLOG_ENTRY_KEY = "failed.blog.entry.text";
 
     // Pages
