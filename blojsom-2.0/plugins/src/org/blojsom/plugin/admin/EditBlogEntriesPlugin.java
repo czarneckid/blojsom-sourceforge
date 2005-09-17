@@ -79,7 +79,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.53 2005-09-17 15:35:24 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.54 2005-09-17 16:20:00 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -335,7 +335,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     try {
                         Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
                         _logger.debug("Publishing blog entry at: " + publishDateTime.toString());
-                        entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(publishDateTime.getTime()).toString());
+                        entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(publishDateTime.getTime()));
                     } catch (ParseException e) {
                         _logger.error(e);
                     }
@@ -348,10 +348,13 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 entryToUpdate.save(user);
                 entryToUpdate.load(user);
+
                 _logger.debug("Updated blog entry: " + entryToUpdate.getLink());
+
                 StringBuffer entryLink = new StringBuffer();
                 entryLink.append("<a href=\"").append(user.getBlog().getBlogURL()).append(BlojsomUtils.removeInitialSlash(entryToUpdate.getCategory())).append("?").append(PERMALINK_PARAM).append("=").append(entryToUpdate.getPermalink()).append("\">").append(entryToUpdate.getTitle()).append("</a>");
                 addOperationResultMessage(context, formatAdminResource(UPDATED_BLOG_ENTRY_KEY, UPDATED_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {entryLink.toString()}));
+
                 UpdatedBlogEntryEvent updateEvent = new UpdatedBlogEntryEvent(this, new Date(), entryToUpdate, user);
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(updateEvent);
 
@@ -465,13 +468,13 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 try {
                     Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
                     _logger.debug("Publishing blog entry at: " + publishDateTime.toString());
-                    entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(publishDateTime.getTime()).toString());
+                    entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(publishDateTime.getTime()));
                 } catch (ParseException e) {
                     _logger.error(e);
-                    entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                    entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(new Date().getTime()));
                 }
             } else {
-                entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(new Date().getTime()));
             }
 
             if (!BlojsomUtils.checkNullOrBlank(allowComments)) {
@@ -497,10 +500,12 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 entry.save(user);
                 entry.load(user);
+
                 StringBuffer entryLink = new StringBuffer();
                 entry.setLink(user.getBlog().getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getCategory()) + "?" + PERMALINK_PARAM + "=" + entry.getPermalink());
                 entryLink.append("<a href=\"").append(entry.getLink()).append("\">").append(entry.getTitle()).append("</a>");
                 addOperationResultMessage(context, formatAdminResource(ADDED_BLOG_ENTRY_KEY, ADDED_BLOG_ENTRY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {entryLink.toString()}));
+                
                 AddBlogEntryEvent addEvent = new AddBlogEntryEvent(this, new Date(), entry, user);
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(addEvent);
             } catch (BlojsomException e) {
