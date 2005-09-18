@@ -48,7 +48,7 @@ import java.util.Properties;
  * FileBackedTrackback
  *
  * @author David Czarnecki
- * @version $Id: FileBackedTrackback.java,v 1.2 2005-06-15 20:04:36 czarneckid Exp $
+ * @version $Id: FileBackedTrackback.java,v 1.3 2005-09-18 20:57:50 czarneckid Exp $
  * @since blojsom 2.26
  */
 public class FileBackedTrackback extends Trackback {
@@ -178,6 +178,8 @@ public class FileBackedTrackback extends Trackback {
 
         Blog blog = blogUser.getBlog();
         long originalTimestamp = -1;
+        originalTimestamp = _trackbackDateLong;
+        
         File trackbackEntry;
 
         if (_source == null) {
@@ -217,7 +219,7 @@ public class FileBackedTrackback extends Trackback {
             trackbackEntry = new File(trackbackFilename);
         } else {
             trackbackEntry = _source;
-            originalTimestamp = _source.lastModified();
+            originalTimestamp = _trackbackDateLong;
         }
 
         try {
