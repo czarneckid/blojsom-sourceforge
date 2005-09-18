@@ -46,7 +46,7 @@ import java.io.Serializable;
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.10 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.11 2005-09-18 20:56:08 czarneckid Exp $
  */
 public abstract class Trackback implements Serializable {
 
@@ -63,6 +63,7 @@ public abstract class Trackback implements Serializable {
      * Default constructor
      */
     public Trackback() {
+        _trackbackDateLong = -1;
     }
 
     /**
@@ -78,6 +79,7 @@ public abstract class Trackback implements Serializable {
         _excerpt = excerpt;
         _url = url;
         _blogName = blogName;
+        _trackbackDateLong = -1;
     }
 
     /**

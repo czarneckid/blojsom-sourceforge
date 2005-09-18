@@ -40,7 +40,7 @@ package org.blojsom.blog;
  *
  * @author David Czarnecki
  * @since blojsom 2.23
- * @version $Id: Pingback.java,v 1.2 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: Pingback.java,v 1.3 2005-09-18 20:56:43 czarneckid Exp $
  */
 public abstract class Pingback extends Trackback {
 
@@ -48,6 +48,7 @@ public abstract class Pingback extends Trackback {
      * Default constructor
      */
     public Pingback() {
+        super();
     }
 
     /**
