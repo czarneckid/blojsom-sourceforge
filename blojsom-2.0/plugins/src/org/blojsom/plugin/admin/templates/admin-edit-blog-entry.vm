@@ -46,7 +46,7 @@
                         <input type="hidden" name="action" value="edit-blog-entry"/>
                         <input type="hidden" name="flavor" value="admin"/>
                         <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                        <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                        <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getCategory()"/>
                         <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
                         <input type="submit" name="submit" value="#adminResource('reload.blog.entry.text' 'Reload blog entry')"/>
                     </form>
@@ -88,6 +88,16 @@
                                 </td>
                             </tr>
                             <tr></tr>
+                            <tr>
+                                <td>#adminResource('category.text' 'Category')</td>
+                                <td>
+                                    <select name="updated-blog-category-name">
+                                    #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+                                        <option value="$blogCategory.getCategory()" #if ($blogCategory.getCategory().equals($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY)) selected #end>#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>#adminResource('blog.entry.trackbackURLs.text' 'Blog trackback URLs')</td>
                                 <td><textarea rows="3" cols="70" name="blog-trackback-urls"></textarea></td>
