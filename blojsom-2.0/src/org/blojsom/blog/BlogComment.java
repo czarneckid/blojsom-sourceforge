@@ -47,7 +47,7 @@ import java.io.Serializable;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.13 2005-06-10 02:16:24 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.14 2005-09-18 20:55:46 czarneckid Exp $
  */
 public abstract class BlogComment implements Serializable {
 
@@ -65,6 +65,7 @@ public abstract class BlogComment implements Serializable {
      * Default constructor
      */
     public BlogComment() {
+        _commentDateLong = -1;
     }
 
     /**
