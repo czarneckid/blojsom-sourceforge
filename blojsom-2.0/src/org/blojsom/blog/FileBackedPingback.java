@@ -50,7 +50,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.26
- * @version $Id: FileBackedPingback.java,v 1.2 2005-06-15 20:04:36 czarneckid Exp $
+ * @version $Id: FileBackedPingback.java,v 1.3 2005-09-18 20:58:18 czarneckid Exp $
  */
 public class FileBackedPingback extends Pingback {
 
@@ -185,6 +185,8 @@ public class FileBackedPingback extends Pingback {
         }
 
         Blog blog = blogUser.getBlog();
+        long originalTimestamp = -1;
+        originalTimestamp = _trackbackDateLong;
 
         StringBuffer pingbackDirectory = new StringBuffer();
         String permalinkFilename = _blogEntry.getPermalink();
@@ -250,6 +252,12 @@ public class FileBackedPingback extends Pingback {
             _logger.debug("Wrote pingback meta-data: " + pingbackMetaDataFilename);
 
             _source = pingbackEntry;
+
+            if (originalTimestamp != -1) {
+                _source.setLastModified(originalTimestamp);
+                File pingbackMetaData = new File(pingbackMetaDataFilename);
+                pingbackMetaData.setLastModified(originalTimestamp);
+            }
         } catch (IOException e) {
             _logger.error(e);
 
