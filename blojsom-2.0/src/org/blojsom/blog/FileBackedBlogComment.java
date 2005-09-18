@@ -49,7 +49,7 @@ import java.util.Date;
  * FileBackedBlogComment
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogComment.java,v 1.2 2005-06-15 20:04:36 czarneckid Exp $
+ * @version $Id: FileBackedBlogComment.java,v 1.3 2005-09-18 20:57:26 czarneckid Exp $
  * @since blojsom 2.26
  */
 public class FileBackedBlogComment extends BlogComment {
@@ -161,6 +161,8 @@ public class FileBackedBlogComment extends BlogComment {
 
         Blog blog = blogUser.getBlog();
         long originalTimestamp = -1;
+        originalTimestamp = _commentDateLong;
+
         File commentEntry;
         
         if (_source == null) {
@@ -205,7 +207,7 @@ public class FileBackedBlogComment extends BlogComment {
             commentEntry = new File(commentFilename);
         } else {
             commentEntry = _source;
-            originalTimestamp = _source.lastModified();
+            originalTimestamp = _commentDateLong;
         }
 
         try {
