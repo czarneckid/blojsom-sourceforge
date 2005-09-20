@@ -77,7 +77,7 @@ import java.util.*;
  * Implementation of J.C. Gregorio's <a href="http://bitworking.org/projects/atom/draft-gregorio-09.html">Atom API</a>.
  *
  * @author Mark Lussier
- * @version $Id: AtomAPIServlet.java,v 1.59 2005-06-10 02:16:23 czarneckid Exp $
+ * @version $Id: AtomAPIServlet.java,v 1.60 2005-09-20 01:44:22 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstants, BlojsomMetaDataConstants, AtomAPIConstants {
@@ -682,11 +682,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                 blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
                 entry.setMetaData(blogEntryMetaData);
 
-                // Insert an escaped Link into the Blog Entry
-                entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
-
                 entry.save(blogUser);
                 entry.load(blogUser);
+
+                // Insert an escaped Link into the Blog Entry
+                entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
 
                 // Send out an add blog entry event
                 _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddBlogEntryEvent(this, new Date(), entry, blogUser));
@@ -955,11 +955,11 @@ public class AtomAPIServlet extends BlojsomBaseServlet implements BlojsomConstan
                                 }
                                 entry.setMetaData(blogEntryMetaData);
 
-                                // Insert an escaped Link into the Blog Entry
-                                entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
-
                                 entry.save(blogUser);
                                 entry.load(blogUser);
+
+                                // Insert an escaped Link into the Blog Entry
+                                entry.setLink(blog.getBlogURL() + BlojsomUtils.removeInitialSlash(entry.getId()));
 
                                 httpServletResponse.setContentType(CONTENTTYPE_ATOM);
                                 httpServletResponse.setStatus(201);
