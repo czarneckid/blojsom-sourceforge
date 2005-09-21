@@ -66,6 +66,10 @@
                                 <td>#adminResource('authorized.user.email.text' 'Authorized user email address')</td>
                                 <td><input type="text" size="25" name="blog-user-email"/></td>
                             </tr>
+                            <tr>
+                                <td>#adminResource('blog.permissions.text' 'Permissions for authorized user (comma separated)')</td>
+                                <td><input type="text" size="50" name="blog-permissions"/></td>
+                            </tr>
                             <tr />
                             <tr>
                                 <td>&nbsp;</td>

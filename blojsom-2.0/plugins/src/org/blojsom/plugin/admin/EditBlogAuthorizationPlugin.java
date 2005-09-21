@@ -41,6 +41,8 @@ import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.DeleteAuthorizationEvent;
+import org.blojsom.plugin.admin.event.AddAuthorizationEvent;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
@@ -49,16 +51,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * EditBlogAuthorizationPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.22 2005-09-02 19:39:02 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.23 2005-09-21 20:23:28 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -198,7 +197,10 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     try {
                         writeAuthorizationConfiguration(authorizationMap, user.getId());
                         addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
+
                         _logger.debug("Wrote new authorization configuration for user: " + user.getId());
+
+                        _blojsomConfiguration.getEventBroadcaster().processEvent(new AddAuthorizationEvent(this, new Date(), httpServletRequest, httpServletResponse, user, context, blogUserID));
                     } catch (IOException e) {
                         addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
                         _logger.error(e);
@@ -233,6 +235,8 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_DELETE_KEY, SUCCESSFUL_AUTHORIZATION_DELETE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));
 
                     _logger.debug("Wrote new authorization configuration for user: " + user.getId());
+
+                    _blojsomConfiguration.getEventBroadcaster().processEvent(new DeleteAuthorizationEvent(this, new Date(), httpServletRequest, httpServletResponse, user, context, blogUserID));
                 } catch (IOException e) {
                     // @todo In the event we have an error writing the configuration, do we want to restore the user? We would need to save their information first.
                     addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogUserID}));

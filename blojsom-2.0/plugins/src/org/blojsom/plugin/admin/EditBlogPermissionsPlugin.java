@@ -36,30 +36,35 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPluginException;
-import org.blojsom.util.BlojsomUtils;
+import org.blojsom.plugin.admin.event.AddAuthorizationEvent;
+import org.blojsom.plugin.admin.event.AuthorizationEvent;
+import org.blojsom.plugin.admin.event.DeleteAuthorizationEvent;
 import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.6 2005-09-13 14:59:31 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.7 2005-09-21 20:23:28 czarneckid Exp $
  * @since blojsom 2.23
  */
-public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
+public class EditBlogPermissionsPlugin extends BaseAdminPlugin implements BlojsomListener {
 
     private Log _logger = LogFactory.getLog(EditBlogPermissionsPlugin.class);
 
@@ -86,6 +91,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     // Form elements
     private static final String BLOG_USER_ID = "blog-user-id";
     private static final String BLOG_PERMISSION = "blog-permission";
+    private static final String BLOG_PERMISSIONS = "blog-permissions";
 
     // Permissions
     private static final String EDIT_BLOG_PERMISSIONS_PERMISSION = "edit_blog_permissions";
@@ -114,6 +120,8 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
             _logger.error("No permissions configuration file specified. Using default: " + DEFAULT_PERMISSIONS_CONFIGURATION_FILE);
             _permissionConfiguration = DEFAULT_PERMISSIONS_CONFIGURATION_FILE;
         }
+
+        _blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
     /**
@@ -136,7 +144,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     /**
      * Write the permissions configuration file for a given blog
      *
-     * @param blogID Blog ID
+     * @param blogID      Blog ID
      * @param permissions Permissions
      * @throws IOException If there is an error writing the permissions configuration file
      */
@@ -152,7 +160,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
      * Read the permissions file for a given blog
      *
      * @param context Context for messages
-     * @param blog {@link BlogUser}
+     * @param blog    {@link BlogUser}
      * @return Permissions for the given blog
      */
     private Map readPermissionsForBlog(Map context, BlogUser blog) {
@@ -162,7 +170,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
             permissions = new TreeMap(BlojsomUtils.blojsomPropertiesToMap(permissionsProperties));
         } catch (IOException e) {
             _logger.error(e);
-            addOperationResultMessage(context, formatAdminResource(FAILED_PERMISSIONS_READ_KEY, FAILED_PERMISSIONS_READ_KEY, blog.getBlog().getBlogAdministrationLocale(), new Object[] {blog.getId()}));
+            addOperationResultMessage(context, formatAdminResource(FAILED_PERMISSIONS_READ_KEY, FAILED_PERMISSIONS_READ_KEY, blog.getBlog().getBlogAdministrationLocale(), new Object[]{blog.getId()}));
         }
 
         return permissions;
@@ -286,11 +294,89 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
             }
         }
 
-
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP, Collections.unmodifiableMap(new TreeMap(user.getBlog().getAuthorization())));
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_MAP, Collections.unmodifiableMap(permissions));
         httpServletRequest.setAttribute(PAGE_PARAM, EDIT_BLOG_PERMISSIONS_PAGE);
 
         return entries;
+    }
+
+    /**
+     * Handle an event broadcast from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void handleEvent(BlojsomEvent event) {
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     * @since blojsom 2.24
+     */
+    public void processEvent(BlojsomEvent event) {
+        if (event instanceof AuthorizationEvent
+                && "org.blojsom.plugin.admin.EditBlogAuthorizationPlugin".equals(event.getSource().getClass().getName())) {
+
+            if (event instanceof AddAuthorizationEvent) {
+                AddAuthorizationEvent addEvent = (AddAuthorizationEvent) event;
+                Map permissionsForBlog = readPermissionsForBlog(addEvent.getContext(), addEvent.getBlogUser());
+                Properties updatedPermissions = BlojsomUtils.mapToBlojsomProperties(permissionsForBlog);
+                String permissions = BlojsomUtils.getRequestValue(BLOG_PERMISSIONS, addEvent.getHttpServletRequest());
+                String[] parsedPermissions = BlojsomUtils.parseCommaList(permissions);
+
+                if (!BlojsomUtils.checkNullOrBlank(permissions)) {
+                    if (updatedPermissions.containsKey(addEvent.getBlogUserID())) {
+                        List permissionList = (List) updatedPermissions.get(addEvent.getBlogUserID());
+                        for (int i = 0; i < parsedPermissions.length; i++) {
+                            String parsedPermission = parsedPermissions[i];
+                            if (!permissionList.contains(parsedPermission)) {
+                                permissionList.add(parsedPermission);
+                            }
+                        }
+                    } else {
+                        List permissionList = new ArrayList();
+                        for (int i = 0; i < parsedPermissions.length; i++) {
+                            String parsedPermission = parsedPermissions[i];
+                            permissionList.add(parsedPermission);
+                        }
+
+                        updatedPermissions.put(addEvent.getBlogUserID(), permissionList);
+                        try {
+                            writePermissionsConfiguration(addEvent.getBlogUser().getId(), updatedPermissions);
+
+                            _logger.debug("Added permissions for " + addEvent.getBlogUserID() + " based on add authorization event");
+                        } catch (IOException e) {
+                            _logger.error(e);
+                            addOperationResultMessage(addEvent.getContext(), getAdminResource(ERROR_SAVING_PERMISSIONS_KEY, ERROR_SAVING_PERMISSIONS_KEY, addEvent.getBlogUser().getBlog().getBlogAdministrationLocale()));
+                        }
+                    }
+                } else {
+                    _logger.debug("No permissions to act on for add authorization event");
+                }
+            } else if (event instanceof DeleteAuthorizationEvent) {
+                DeleteAuthorizationEvent deleteEvent = (DeleteAuthorizationEvent) event;
+                Map permissionsForBlog = readPermissionsForBlog(deleteEvent.getContext(), deleteEvent.getBlogUser());
+                Properties updatedPermissions = BlojsomUtils.mapToBlojsomProperties(permissionsForBlog);
+
+                if (updatedPermissions.containsKey(deleteEvent.getBlogUserID())) {
+                    updatedPermissions.remove(deleteEvent.getBlogUserID());
+
+                    try {
+                        writePermissionsConfiguration(deleteEvent.getBlogUser().getId(), updatedPermissions);
+
+                        _logger.debug("Deleted permissions for " + deleteEvent.getBlogUserID() + " based on delete authorization event");
+                    } catch (IOException e) {
+                        _logger.error(e);
+                        addOperationResultMessage(deleteEvent.getContext(), getAdminResource(ERROR_SAVING_PERMISSIONS_KEY, ERROR_SAVING_PERMISSIONS_KEY, deleteEvent.getBlogUser().getBlog().getBlogAdministrationLocale()));
+                    }
+                } else {
+                    _logger.debug("No permissions to act on for delete authorization event");
+                }
+            }
+
+            event.setEventHandled(true);
+        }
     }
 }
