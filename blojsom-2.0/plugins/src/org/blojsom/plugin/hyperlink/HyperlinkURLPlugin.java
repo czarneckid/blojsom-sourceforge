@@ -49,7 +49,7 @@ import java.util.Map;
  * Hyperlink HREFing Plugin
  *
  * @author Mark Lussier
- * @version $Id: HyperlinkURLPlugin.java,v 1.4 2005-01-05 02:31:55 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.5 2005-09-23 14:41:58 czarneckid Exp $
  */
 public class HyperlinkURLPlugin implements BlojsomPlugin {
 
@@ -67,7 +67,7 @@ public class HyperlinkURLPlugin implements BlojsomPlugin {
     /**
      * The resulting replace string for formatting the href
      */
-    private static final String HREF_EXPRESSION = " <a href=\"$2\" target=\"_blank\">$2</a>";
+    private static final String HREF_EXPRESSION = " <a href=\"$2\">$2</a>";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
