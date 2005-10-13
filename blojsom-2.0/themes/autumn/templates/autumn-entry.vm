@@ -1,6 +1,6 @@
 ## Autumn Theme by Cliffano Subagio - http://mbledug.com
 #friendlyPermalink($entry)
-#set($permalink = $permalink)
+#set($permalink = $entryLink) 
 <div class="entry">
 
 	<h3><a href="$permalink" title="$entry.getTitle()">$entry.getTitle()</a></h3>
