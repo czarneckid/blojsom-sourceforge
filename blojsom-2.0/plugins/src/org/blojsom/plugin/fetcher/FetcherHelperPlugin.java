@@ -231,9 +231,9 @@ public class FetcherHelperPlugin implements BlojsomPlugin {
          *
          * @param categoryName Category name
          * @param permalink Permalink name of entry.
-         * @return Permalink entry
+         * @return Permalink entry or <code>null</code> if no entry is found matching the criteria
          */
-        public BlogEntry[] fetchPermalink(String categoryName, String permalink) {
+        public BlogEntry fetchPermalink(String categoryName, String permalink) {
             BlogEntry[] entries = new BlogEntry[0];
 
             try {
@@ -264,7 +264,11 @@ public class FetcherHelperPlugin implements BlojsomPlugin {
                 _logger.error(e);
             }
 
-            return entries;
+            if (entries != null && entries.length > 0) {
+                return entries[0];
+            }
+
+            return null;
         }
     }
 }
