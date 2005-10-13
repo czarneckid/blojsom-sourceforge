@@ -6,10 +6,12 @@
 
 <web-app>
 
+    <!--
     <filter>
         <filter-name>CompressionFilter</filter-name>
         <filter-class>org.blojsom.filter.CompressionFilter</filter-class>
     </filter>
+    -->
 
     <filter>
         <filter-name>PermalinkFilter</filter-name>
@@ -26,10 +28,12 @@
         <servlet-name>blojsomxmlrpc</servlet-name>
     </filter-mapping>
 
+    <!--
     <filter-mapping>
         <filter-name>CompressionFilter</filter-name>
         <servlet-name>blojsom</servlet-name>
     </filter-mapping>
+    -->
 
     <!-- blojsom servlet initialization -->
     <servlet>
