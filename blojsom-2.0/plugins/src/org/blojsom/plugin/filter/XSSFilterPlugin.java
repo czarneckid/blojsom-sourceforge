@@ -30,7 +30,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.plugin.comment;
+package org.blojsom.plugin.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,24 +53,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * CommentXSSFilterPlugin
+ * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentXSSFilterPlugin.java,v 1.2 2005-09-09 17:34:41 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.1 2005-10-13 14:43:45 czarneckid Exp $
  * @since blojsom 2.27
  */
-public class CommentXSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
+public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
 
-    private Log _logger = LogFactory.getLog(CommentXSSFilterPlugin.class);
+    private Log _logger = LogFactory.getLog(XSSFilterPlugin.class);
 
     // Default set of balanced and unbalanced tags
     private static final String [] DEFAULT_ALLOWED_BALANCED_TAGS = {"b", "i", "blockquote", "pre", "ul", "li", "ol"};
     private static final String [] DEFAULT_ALLOWED_UNBALANCED_TAGS = {"br"};
 
     // Initialization parameters
-    private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS_IP = "plugin-comment-xss-filter-allowed-balanaced-tags";
-    private static final String XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP = "plugin-comment-xss-filter-allowed-unbalanaced-tags";
-    private static final String XSS_FILTER_ALLOW_LINKS_IP = "plugin-comment-xss-filter-allow-links";
+    private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS_IP = "plugin-xss-filter-allowed-balanaced-tags";
+    private static final String XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP = "plugin-xss-filter-allowed-unbalanaced-tags";
+    private static final String XSS_FILTER_ALLOW_LINKS_IP = "plugin-xss-filter-allow-links";
 
     // Context variables
     private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS = "XSS_FILTER_ALLOWED_BALANCED_TAGS";
@@ -88,7 +88,7 @@ public class CommentXSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         blojsomConfiguration.getEventBroadcaster().addListener(this);
 
-        _logger.debug("Initialized Comment XSS Filter plugin");
+        _logger.debug("Initialized XSS Filter plugin");
     }
 
     /**
