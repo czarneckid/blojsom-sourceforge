@@ -57,7 +57,7 @@ import java.util.*;
  * EditBlogUsersPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogUsersPlugin.java,v 1.26 2005-09-14 14:29:32 czarneckid Exp $
+ * @version $Id: EditBlogUsersPlugin.java,v 1.27 2005-10-15 01:57:26 czarneckid Exp $
  * @since blojsom 2.06
  */
 public class EditBlogUsersPlugin extends BaseAdminPlugin {
@@ -204,7 +204,7 @@ public class EditBlogUsersPlugin extends BaseAdminPlugin {
             _logger.debug("User requested delete blog user action");
 
             // Check user is allowed to delete blogs
-            if (!checkPermission(user, null, username, DELETE_BLOG_PERMISSION) && !_administrators.containsKey(user.getId())) {
+            if (!checkPermission(user, null, username, DELETE_BLOG_PERMISSION) || !_administrators.containsKey(user.getId())) {
                 httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
                 addOperationResultMessage(context, getAdminResource(FAILED_DELETE_BLOGS_PERMISSION_KEY, FAILED_DELETE_BLOGS_PERMISSION_KEY, user.getBlog().getBlogAdministrationLocale()));
 
