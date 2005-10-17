@@ -47,7 +47,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.31 2005-09-17 16:19:46 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.32 2005-10-17 02:08:41 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -534,7 +534,11 @@ public class FileBackedBlogEntry extends BlogEntry {
             loadBlogCategory(blogUser);
             if (blog.getBlogCommentsEnabled().booleanValue()) {
                 loadComments(blogUser);
+            }
+            if (blog.getBlogTrackbacksEnabled().booleanValue()) {
                 loadTrackbacks(blogUser);
+            }
+            if (blog.getBlogPingbacksEnabled().booleanValue()) {
                 loadPingbacks(blogUser);
             }
             loadMetaData(blog);
