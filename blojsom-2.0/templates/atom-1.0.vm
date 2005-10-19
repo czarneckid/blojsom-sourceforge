@@ -28,7 +28,7 @@
             <email>$BLOJSOM_BLOG.getAuthorizedUserEmail($entry.getMetaData().get('blog-entry-author'))</email>
         </author>
         <content type="html" xml:lang="#BlogLanguage()" xml:base="#BlogURL()">
-            $entry.getDescription()
+            $entry.getEscapedDescription()
         </content>
     </entry>
     #end
