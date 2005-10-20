@@ -85,7 +85,7 @@
              dc:identifier="<%= blogEntry.getLink()%>"
              dc:title="<%=blogEntry.getTitle()%>"
              dc:subject="<%=requestedCategory.getCategoryURL()%>"
-             dc:description="<%=blogDescription%>"
+             dc:description="<%=blogDescription.replaceAll("-{2,}+","")%>"
              dc:creator="<%= blogInformation.getBlogOwner() %>"
              dc:date="<%= blogEntry.getISO8601Date()%>"
              trackback:ping="<%= blogEntry.getLink()%>&tb=y" />

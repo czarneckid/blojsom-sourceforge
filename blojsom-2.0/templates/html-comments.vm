@@ -114,7 +114,7 @@ Available categories:
              dc:identifier="$entry.getLink()"
              dc:title="$entry.getTitle()"
              dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
-             dc:description="$blogDescription"
+             dc:description="$blogDescription.replaceAll("-{2,}+","")"
              dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
              dc:date="$entry.getISO8601Date()"
              trackback:ping="$entry.getLink()&amp;tb=y" />
