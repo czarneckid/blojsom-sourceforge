@@ -18,14 +18,9 @@
 								#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))<span>Trackbacks [<a href="$permalink?page=trackback">$entry.getNumTrackbacks()</a>]</span>#end
 
 							</p>
-							<!-- Trackback Auto Discovery -->
 							#set( $totalEntries = $totalEntries + 1)
 							#if ($BLOJSOM_PERMALINK)
-								#set( $blogDescription = $entry.getEscapedDescription() )
-								#if ($blogDescription.length() > 255 )
-									#set( $ellipses = "..." )
-									#set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
-								#end
+								#TrackbackAutoDiscovery($entry false)
 							#end
 
 						</div>
