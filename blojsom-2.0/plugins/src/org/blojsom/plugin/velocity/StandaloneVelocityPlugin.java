@@ -56,13 +56,14 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: StandaloneVelocityPlugin.java,v 1.1 2005-04-06 01:21:59 czarneckid Exp $
+ * @version $Id: StandaloneVelocityPlugin.java,v 1.2 2005-10-27 17:34:20 czarneckid Exp $
  */
 public abstract class StandaloneVelocityPlugin implements BlojsomPlugin, BlojsomConstants {
 
     protected Log _logger = LogFactory.getLog(StandaloneVelocityPlugin.class);
 
     private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
+    private static final String DEFAULT_VELOCITY_PROPERTIES = "/WEB-INF/velocity.properties";
 
     protected String _installationDirectory;
     protected String _baseConfigurationDirectory;
@@ -85,6 +86,10 @@ public abstract class StandaloneVelocityPlugin implements BlojsomPlugin, Blojsom
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
         String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
+        if (BlojsomUtils.checkNullOrBlank(velocityConfiguration)) {
+            velocityConfiguration = DEFAULT_VELOCITY_PROPERTIES;
+        }
+        
         _velocityProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(velocityConfiguration);
 

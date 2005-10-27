@@ -53,13 +53,14 @@ import java.util.Properties;
  * VelocityPlugin
  *
  * @author David Czarnecki
- * @version $Id: VelocityPlugin.java,v 1.3 2005-03-05 18:19:55 czarneckid Exp $
+ * @version $Id: VelocityPlugin.java,v 1.4 2005-10-27 17:34:02 czarneckid Exp $
  */
 public abstract class VelocityPlugin extends IPBanningPlugin {
 
     protected Log _logger = LogFactory.getLog(VelocityPlugin.class);
 
     private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
+    private static final String DEFAULT_VELOCITY_PROPERTIES = "/WEB-INF/velocity.properties";    
 
     protected String _installationDirectory;
     protected String _baseConfigurationDirectory;
@@ -84,6 +85,10 @@ public abstract class VelocityPlugin extends IPBanningPlugin {
         _logger.debug("Using templates directory: " + _templatesDirectory);
 
         String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
+        if (BlojsomUtils.checkNullOrBlank(velocityConfiguration)) {
+            velocityConfiguration = DEFAULT_VELOCITY_PROPERTIES;
+        }
+
         _velocityProperties = new Properties();
         InputStream is = servletConfig.getServletContext().getResourceAsStream(velocityConfiguration);
 
