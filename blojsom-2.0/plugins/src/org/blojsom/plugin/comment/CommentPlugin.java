@@ -60,7 +60,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.36 2005-09-09 15:32:41 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.37 2005-10-27 17:34:54 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -69,12 +69,12 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
     /**
      * Template for comment e-mails
      */
-    private static final String COMMENT_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/comment/comment-plugin-email-template.vm";
+    public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/comment/comment-plugin-email-template.vm";
 
     /**
      * Default prefix for comment e-mail notification
      */
-    private static final String DEFAULT_COMMENT_PREFIX = "[blojsom] Comment on: ";
+    public static final String DEFAULT_COMMENT_PREFIX = "[blojsom] Comment on: ";
 
     /**
      * Initialization parameter for e-mail prefix
