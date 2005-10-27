@@ -36,10 +36,12 @@ package org.blojsom.extension.comment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcherException;
-import org.blojsom.plugin.comment.CommentUtils;
+import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.plugin.comment.event.CommentAddedEvent;
 import org.blojsom.plugin.email.EmailMessage;
 import org.blojsom.plugin.email.EmailUtils;
@@ -67,8 +69,11 @@ import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -80,7 +85,7 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.14 2005-06-10 02:16:23 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.15 2005-10-27 17:37:39 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -104,9 +109,13 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      */
     private static final String COMMENTAPI_AUTHOR = "author";
 
+    private final static String BLOG_VELOCITY_PROPERTIES_IP = "velocity-properties";
+    private static final String DEFAULT_VELOCITY_PROPERTIES = "/WEB-INF/velocity.properties";
+
     private Log _logger = LogFactory.getLog(CommentAPIServlet.class);
     private Session _mailsession = null;
     private ServletConfig _servletConfig;
+    private Properties _velocityProperties;
 
     /**
      * Default constructor
@@ -131,6 +140,21 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
             _mailsession = Session.getInstance(_props);
         }
 
+        String velocityConfiguration = servletConfig.getInitParameter(BLOG_VELOCITY_PROPERTIES_IP);
+        if (BlojsomUtils.checkNullOrBlank(velocityConfiguration)) {
+            velocityConfiguration = DEFAULT_VELOCITY_PROPERTIES;
+        }
+
+        _velocityProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(velocityConfiguration);
+
+        try {
+            _velocityProperties.load(is);
+            is.close();
+        } catch (Exception e) {
+            _logger.error(e);
+        }
+
         configureBlojsom(servletConfig);
     }
 
@@ -141,7 +165,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      * @return {@link BlogUser} configured for the given user ID or <code>null</code> if there is an error loading the user
      * @since blojsom 2.16
      */
-    protected BlogUser loadBlogUser(String userID) {
+    private BlogUser loadBlogUser(String userID) {
         BlogUser blogUser = new BlogUser();
         blogUser.setId(userID);
 
@@ -155,7 +179,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
 
             userProperties.load(is);
             is.close();
-            Blog userBlog = null;
+            Blog userBlog;
 
             userBlog = new Blog(userProperties);
             blogUser.setBlog(userBlog);
@@ -328,8 +352,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                     _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), comment, blogUser));
 
                     // Send a Comment Email
-                    sendCommentEmail(commentTitle, requestedCategory, permalink, commentAuthor, commentEmail,
-                            commentLink, commentText, blog);
+                    sendCommentEmail(blogUser, blogEntry, comment);
 
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                 } catch (BlojsomFetcherException e) {
@@ -350,26 +373,97 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
     }
 
     /**
+     * Return a path appropriate for the Velocity file resource loader
+     *
+     * @param userId User ID
+     * @return blojsom installation directory + base configuration directory + user id + templates directory
+     */
+    private String getVelocityFileLoaderPath(String userId) {
+        StringBuffer fileLoaderPath = new StringBuffer();
+        fileLoaderPath.append(_blojsomConfiguration.getInstallationDirectory());
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
+        fileLoaderPath.append(userId).append("/");
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getTemplatesDirectory()));
+        fileLoaderPath.append(", ");
+        fileLoaderPath.append(_blojsomConfiguration.getInstallationDirectory());
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_baseConfigurationDirectory));
+        fileLoaderPath.append(BlojsomUtils.removeInitialSlash(_blojsomConfiguration.getTemplatesDirectory()));
+
+        return fileLoaderPath.toString();
+    }
+
+    /**
+     * Merge a given template for the user with the appropriate context
+     *
+     * @param template Template
+     * @param user     {@link BlogUser} information
+     * @param context  Context with objects for use in the template
+     * @return Merged template or <code>null</code> if there was an error setting properties, loading the template, or merging
+     *         the template
+     */
+    private String mergeTemplate(String template, BlogUser user, Map context) {
+        // Create the Velocity Engine
+        VelocityEngine velocityEngine = new VelocityEngine();
+
+        try {
+            Properties updatedVelocityProperties = (Properties) _velocityProperties.clone();
+            updatedVelocityProperties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, getVelocityFileLoaderPath(user.getId()));
+            velocityEngine.init(updatedVelocityProperties);
+        } catch (Exception e) {
+            _logger.error(e);
+
+            return null;
+        }
+
+        StringWriter writer = new StringWriter();
+
+        // Setup the VelocityContext
+        VelocityContext velocityContext = new VelocityContext(context);
+
+        if (!velocityEngine.templateExists(template)) {
+            _logger.error("Could not find template for user: " + template);
+
+            return null;
+        } else {
+            try {
+                velocityEngine.mergeTemplate(template, UTF8, velocityContext, writer);
+            } catch (Exception e) {
+                _logger.error(e);
+
+                return null;
+            }
+        }
+
+        _logger.debug("Merged template: " + template);
+
+        return writer.toString();
+    }
+
+    /**
      * Sends the comment as an Email to the Blog Author
      *
-     * @param title       Entry title that this comment is for
-     * @param category    Category for the entry
-     * @param permalink   Permalink to the origional entry
-     * @param author      Name of person commenting
-     * @param authorEmail Email address of the person commenting
-     * @param authorURL   Homepage URL for the person commenting
-     * @param userComment The comment
-     * @param blog        Users blog
+     * @param blogUser    {@link BlogUser} information
+     * @param entry       {@link BlogEntry}
+     * @param comment     {@link BlogComment}
      */
-    private void sendCommentEmail(String title, String category, String permalink, String author,
-                                  String authorEmail, String authorURL, String userComment, Blog blog) {
+    private void sendCommentEmail(BlogUser blogUser, BlogEntry entry, BlogComment comment) {
+        // Merge the template e-mail
+        Map emailTemplateContext = new HashMap();
+        emailTemplateContext.put(BLOJSOM_BLOG, blogUser.getBlog());
+        emailTemplateContext.put(BLOJSOM_USER, blogUser);
+        emailTemplateContext.put(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, comment);
+        emailTemplateContext.put(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entry);
 
-        String url = blog.getBlogURL() + BlojsomUtils.removeInitialSlash(category);
-        String commentMessage = CommentUtils.constructCommentEmail(permalink, author, authorEmail, authorURL, userComment,
-                url);
+        String emailComment = mergeTemplate(CommentPlugin.COMMENT_PLUGIN_EMAIL_TEMPLATE, blogUser, emailTemplateContext);
+
         try {
-            EmailMessage emailMessage = new EmailMessage("[blojsom] Comment on: " + title, commentMessage);
-            InternetAddress defaultRecipient = new InternetAddress(blog.getBlogOwnerEmail(), blog.getBlogOwner());
+            String commentPrefix = blogUser.getBlog().getBlogProperty(CommentPlugin.COMMENT_PREFIX_IP);
+            if (BlojsomUtils.checkNullOrBlank(commentPrefix)) {
+                commentPrefix = CommentPlugin.DEFAULT_COMMENT_PREFIX;
+            }
+
+            EmailMessage emailMessage = new EmailMessage(commentPrefix + entry.getTitle(), emailComment);
+            InternetAddress defaultRecipient = new InternetAddress(blogUser.getBlog().getBlogOwnerEmail(), blogUser.getBlog().getBlogOwner());
             EmailUtils.sendMailMessage(_mailsession, emailMessage, defaultRecipient);
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
