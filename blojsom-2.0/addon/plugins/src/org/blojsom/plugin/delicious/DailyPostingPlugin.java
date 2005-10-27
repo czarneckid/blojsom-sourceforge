@@ -59,7 +59,7 @@ import java.util.*;
  * Plugin to post links from your <a href="http://del.icio.us">del.icio.us</a> account to your blog.
  *
  * @author David Czarnecki
- * @version $Id: DailyPostingPlugin.java,v 1.4 2005-06-10 02:15:59 czarneckid Exp $
+ * @version $Id: DailyPostingPlugin.java,v 1.5 2005-10-27 00:55:30 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class DailyPostingPlugin extends StandaloneVelocityPlugin {
@@ -84,6 +84,7 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
     private static final String DAILY_POSTING_CATEGORY_IP = "daily-posting-category";
     private static final String DAILY_POSTING_HOUR_IP = "daily-posting-hour";
     private static final String DAILY_POSTING_TITLE_IP = "daily-posting-title";
+    private static final String DAILY_POSTING_AUTHOR_IP = "daily-posting-author";
     private static final String DAILY_POSTING_TITLE_DEFAULT = "del.icio.us links for {0}";
 
     private BlojsomFetcher _fetcher;
@@ -234,14 +235,14 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
             try {
                 while (!_finished) {
                     String[] users = _blojsomConfiguration.getBlojsomUsers();
-                    BlogUser blogUser = null;
-                    Blog blog = null;
-                    String user = null;
+                    BlogUser blogUser;
+                    Blog blog;
+                    String user;
 
                     for (int i = 0; i < users.length; i++) {
                         user = users[i];
                         try {
-                            blogUser = (BlogUser) _blojsomConfiguration.loadBlog(user);
+                            blogUser = _blojsomConfiguration.loadBlog(user);
                             blog = blogUser.getBlog();
 
                             String postingCategory = blog.getBlogProperty(DAILY_POSTING_CATEGORY_IP);
@@ -249,6 +250,8 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                             String deliciousPassword = blog.getBlogProperty(DAILY_POSTING_PASSWORD_IP);
                             String postingHour = blog.getBlogProperty(DAILY_POSTING_HOUR_IP);
                             String postTitle = blog.getBlogProperty(DAILY_POSTING_TITLE_IP);
+                            String postingAuthor = blog.getBlogProperty(DAILY_POSTING_AUTHOR_IP);
+
                             if (BlojsomUtils.checkNullOrBlank(postTitle)) {
                                 postTitle = DAILY_POSTING_TITLE_DEFAULT;
                             }
@@ -293,7 +296,12 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                                             blogEntry.setTitle(title);
                                             blogEntry.setCategory(postingCategory);
                                             blogEntry.setDescription(renderedLinkTemplate);
-                                            blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                                            blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(new Date().getTime()));
+
+                                            if (!BlojsomUtils.checkNullOrBlank(postingAuthor) && blog.getAuthorization().containsKey(postingAuthor)) {
+                                                blogEntryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, postingAuthor);
+                                            }
+
                                             blogEntry.setMetaData(blogEntryMetaData);
 
                                             blogEntry.save(blogUser);
