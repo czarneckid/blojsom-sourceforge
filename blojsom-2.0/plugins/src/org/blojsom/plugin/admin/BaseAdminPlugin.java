@@ -52,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Locale;
+import java.util.HashMap;
 import java.io.IOException;
 
 /**
@@ -59,7 +60,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.21 2005-08-22 20:49:43 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.22 2005-10-30 17:59:18 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -92,6 +93,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected BlojsomConfiguration _blojsomConfiguration;
     protected AuthorizationProvider _authorizationProvider;
     protected ResourceManager _resourceManager;
+    protected Map _ignoreParams;
 
     /**
      * Default constructor.
@@ -143,6 +145,12 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
             _logger.error(e);
             throw new BlojsomPluginException(e);
         }
+
+        _ignoreParams = new HashMap();
+        _ignoreParams.put(BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM, BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM);
+        _ignoreParams.put(BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM, BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM);
+        _ignoreParams.put("submit", "submit");
+        _ignoreParams.put("reset", "reset");
     }
 
     /**
@@ -176,7 +184,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         }
         if (httpServletRequest.getParameterMap().size() > 0) {
             redirectURL.append("?");
-            redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest));
+            redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest, _ignoreParams));
         }
 
         // Otherwise, check for the authenticated key and if not authenticated, look for a "username" and "password" parameter
