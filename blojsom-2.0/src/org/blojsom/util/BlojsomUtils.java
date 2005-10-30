@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.76 2005-09-09 15:30:08 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.77 2005-10-30 17:58:37 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -421,13 +421,39 @@ public class BlojsomUtils implements BlojsomConstants {
             String name = (String) paramNames.nextElement();
             String value = request.getParameter(name);
             try {
-                buffer.append(URLEncoder.encode(name, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
+                buffer.append(URLEncoder.encode(name, UTF8)).append("=").append(URLEncoder.encode(value, UTF8));
             } catch (UnsupportedEncodingException e) {
             }
             if (paramNames.hasMoreElements()) {
                 buffer.append("&");
             }
         }
+        return buffer.toString();
+    }
+
+    /**
+     * Convert the request parameters to a string
+     *
+     * @param request Servlet request
+     * @param ignoreParams Parameters to ignore when converting the request
+     * @return Request parameters in the form &amp;name=value
+     * @since blojsom 2.28
+     */
+    public static String convertRequestParams(HttpServletRequest request, Map ignoreParams) {
+        Enumeration paramNames = request.getParameterNames();
+        StringBuffer buffer = new StringBuffer();
+        while (paramNames.hasMoreElements()) {
+            String name = (String) paramNames.nextElement();
+            String value = request.getParameter(name);
+            //noinspection EmptyCatchBlock
+            try {
+                if (!ignoreParams.containsKey(name)) {
+                    buffer.append(URLEncoder.encode(name, UTF8)).append("=").append(URLEncoder.encode(value, UTF8)).append("&");
+                }
+            } catch (UnsupportedEncodingException e) {
+            }            
+        }
+
         return buffer.toString();
     }
 
