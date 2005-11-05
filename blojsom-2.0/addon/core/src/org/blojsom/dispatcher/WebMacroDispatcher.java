@@ -55,7 +55,7 @@ import java.util.Properties;
  * WebMacro dispatcher
  *
  * @author David Czarnecki
- * @version $Id: WebMacroDispatcher.java,v 1.1 2005-11-05 17:57:26 czarneckid Exp $
+ * @version $Id: WebMacroDispatcher.java,v 1.2 2005-11-05 18:01:19 czarneckid Exp $
  * @since blojsom 2.28
  */
 public class WebMacroDispatcher implements BlojsomDispatcher {
