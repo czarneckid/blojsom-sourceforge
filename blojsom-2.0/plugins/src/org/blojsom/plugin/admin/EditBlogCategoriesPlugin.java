@@ -40,6 +40,9 @@ import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.UpdatedBlogCategoryEvent;
+import org.blojsom.plugin.admin.event.AddedBlogCategoryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogCategoryEvent;
 import org.blojsom.util.BlojsomProperties;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.BlojsomException;
@@ -50,13 +53,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * EditBlogCategoriesPlugin
  * 
  * @author czarnecki
  * @since blojsom 2.04
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.22 2005-09-02 19:57:09 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.23 2005-11-09 15:40:15 czarneckid Exp $
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
@@ -191,6 +195,8 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
                  _logger.debug("Deleted blog category: " + blogCategoryName);
                 addOperationResultMessage(context, formatAdminResource(DELETED_CATEGORY_KEY, DELETED_CATEGORY_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
+
+                _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new DeletedBlogCategoryEvent(this, new Date(), blogCategoryToDelete, user));
             } catch (BlojsomException e) {
                 _logger.error(e);
 
@@ -301,9 +307,13 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 if (!isUpdatingCategory) {
                     _logger.debug("Successfully added new blog category: " + blogCategoryName);
                     addOperationResultMessage(context, formatAdminResource(CATEGORY_ADD_SUCCESS_KEY, CATEGORY_ADD_SUCCESS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
+
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new AddedBlogCategoryEvent(this, new Date(), blogCategory, user));
                 } else {
                     _logger.debug("Successfully updated blog category: " + blogCategoryName);
                     addOperationResultMessage(context, formatAdminResource(CATEGORY_UPDATE_SUCCESS_KEY, CATEGORY_UPDATE_SUCCESS_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {blogCategoryName}));
+
+                    _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new UpdatedBlogCategoryEvent(this, new Date(), blogCategory, user));
                 }
             } catch (BlojsomException e) {
                 _logger.error(e);
