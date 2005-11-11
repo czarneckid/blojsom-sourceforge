@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.26 2005-09-02 18:30:39 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.27 2005-11-11 00:21:38 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -71,6 +71,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String INVALID_EXTENSION_KEY = "invalid.upload.extension.text";
     private static final String INVALID_TYPE_KEY = "invalid.upload.type.text";
     private static final String DELETED_FILES_KEY = "deleted.files.text";
+    private static final String UPLOAD_LIMIT_KEY = "upload.limit.exceeded.text";
 
     private static final String PLUGIN_ADMIN_UPLOAD_IP = "plugin-admin-upload";
     private static final String TEMPORARY_DIRECTORY_IP = "temporary-directory";
@@ -84,6 +85,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
     private static final String INVALID_FILE_EXTENSIONS_IP = "invalid-file-extensions";
     private static final String[] DEFAULT_INVALID_FILE_EXTENSIONS = {".jsp", ".jspf", ".jspi", ".jspx", ".php", ".cgi"};
+    private static final String UPLOAD_QUOTA_ENABLED_IP = "upload-quota-enabled";
+    private static final String UPLOAD_QUOTA_LIMIT_IP = "upload-quota-limit";
+    private static final long DEFAULT_UPLOAD_QUOTA_LIMIT = 10485760;
 
     // Pages
     private static final String FILE_UPLOAD_PAGE = "/org/blojsom/plugin/admin/templates/admin-file-upload";
@@ -107,6 +111,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
     private Map _acceptedFileTypes;
     private String _resourcesDirectory;
     private String[] _invalidFileExtensions;
+    private boolean _uploadQuotaEnabled;
+    private long _uploadQuotaLimit;
 
     /**
      * Default constructor.
@@ -176,10 +182,53 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                 _invalidFileExtensions = BlojsomUtils.parseCommaList(invalidFileExtensionsProperty);
             }
             _logger.debug("Using invalid file extensions: " + invalidFileExtensionsProperty);
+
+            _uploadQuotaEnabled = Boolean.valueOf(configurationProperties.getProperty(UPLOAD_QUOTA_ENABLED_IP)).booleanValue();
+            if (_uploadQuotaEnabled) {
+                String uploadQuotaLimit = configurationProperties.getProperty(UPLOAD_QUOTA_LIMIT_IP);
+                if (BlojsomUtils.checkNullOrBlank(uploadQuotaLimit)) {
+                    _uploadQuotaLimit = DEFAULT_UPLOAD_QUOTA_LIMIT;
+                } else {
+                    try {
+                        _uploadQuotaLimit = Long.parseLong(uploadQuotaLimit);
+                    } catch (NumberFormatException e) {
+                        _uploadQuotaLimit = DEFAULT_UPLOAD_QUOTA_LIMIT;
+                    }
+                }
+
+                _logger.debug("Upload limit enabled. Quota is : " + _uploadQuotaLimit + " bytes");
+            }
         } catch (BlojsomException e) {
             _logger.error(e);
             throw new BlojsomPluginException(e);
         }
+    }
+
+    /**
+     * Return the size of a directory by getting the size of all its files and all of its directories files
+     *
+     * @param directory Directory whose size should be retrieved
+     * @return Size of files in a directory or -1 if the original argument was not a directory
+     */
+    protected long getDirectorySize(File directory) {
+        if (!directory.isDirectory()) {
+            return -1;
+        }
+
+        long totalSize = 0;
+
+        File[] files = directory.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+
+            if (file.isDirectory()) {
+                totalSize += getDirectorySize(file);
+            } else {
+                totalSize += file.length();
+            }
+        }
+
+        return totalSize;
     }
 
     /**
@@ -254,6 +303,21 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                             }
                         }
 
+                        if (_uploadQuotaEnabled) {
+                            boolean overQuota = true;
+                            long currentLimit = getDirectorySize(resourceDirectory);
+                            if ((currentLimit != -1) && ((currentLimit + item.getSize() < _uploadQuotaLimit))) {
+                                overQuota = false;
+                            }
+
+                            if (overQuota) {
+                                _logger.error("Upload quota exceeded trying to upload file: " + itemNameWithoutPath);
+                                addOperationResultMessage(context, formatAdminResource(UPLOAD_LIMIT_KEY, UPLOAD_LIMIT_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {itemNameWithoutPath, new Long(_uploadQuotaLimit)}));
+
+                                break;
+                            }
+                        }
+
                         // If so, upload the file to the resources directory
                         if (isAcceptedFileType && isAcceptedFileExtension) {
                             if (!resourceDirectory.exists()) {
@@ -264,8 +328,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                                 }
                             }
 
-                            File resourceFile = new File(_blojsomConfiguration.getInstallationDirectory() +
-                                    _resourcesDirectory + user.getId() + "/" + itemNameWithoutPath);
+                            File resourceFile = new File(resourceDirectory, itemNameWithoutPath);
                             try {
                                 item.write(resourceFile);
                             } catch (Exception e) {
