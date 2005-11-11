@@ -56,7 +56,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.27 2005-11-11 00:21:38 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.28 2005-11-11 00:23:35 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -191,6 +191,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                 } else {
                     try {
                         _uploadQuotaLimit = Long.parseLong(uploadQuotaLimit);
+                        if (_uploadQuotaLimit <= 0) {
+                            _uploadQuotaLimit = DEFAULT_UPLOAD_QUOTA_LIMIT;
+                        }
                     } catch (NumberFormatException e) {
                         _uploadQuotaLimit = DEFAULT_UPLOAD_QUOTA_LIMIT;
                     }
