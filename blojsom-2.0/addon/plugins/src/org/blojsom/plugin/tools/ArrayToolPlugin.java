@@ -2,8 +2,6 @@
  * Copyright (c) 2003-2005, David A. Czarnecki
  * All rights reserved.
  *
- * Portions Copyright (c) 2003-2005 by Mark Lussier
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -41,7 +39,7 @@ import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.tools.generic.ArrayTool;
+import org.apache.velocity.tools.generic.ExtendedListTool;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -52,14 +50,15 @@ import java.util.Map;
  * Array Tool plugin
  *
  * @author Eric Fixler
- * @version $Id: ArrayToolPlugin.java,v 1.1 2005-04-19 02:07:24 czarneckid Exp $
+ * @version $Id: ArrayToolPlugin.java,v 1.2 2005-11-16 21:47:01 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class ArrayToolPlugin implements BlojsomPlugin {
 
     private Log _logger = LogFactory.getLog(ArrayToolPlugin.class);
 
-    private static final String BLOJSOM_PLUGIN_ARRAY_TOOL = "BLOJSOM_PLUGIN_ARRAY_TOOL";
+    private static final String TOOL_CONTEXT_KEY = "BLOJSOM_PLUGIN_ARRAY_TOOL";
+    private static final ExtendedListTool TOOL = new ExtendedListTool();
 
     /**
      * Default constructor.
@@ -92,7 +91,7 @@ public class ArrayToolPlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        context.put(BLOJSOM_PLUGIN_ARRAY_TOOL, new ArrayTool());
+        context.put(TOOL_CONTEXT_KEY, TOOL);
 
         return entries;
     }
