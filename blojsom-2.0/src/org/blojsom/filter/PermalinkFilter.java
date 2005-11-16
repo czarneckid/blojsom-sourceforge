@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
- * @version $Id: PermalinkFilter.java,v 1.9 2005-08-17 14:17:14 czarneckid Exp $
+ * @version $Id: PermalinkFilter.java,v 1.10 2005-11-16 18:53:05 czarneckid Exp $
  * @since blojsom 2.17
  */
 public class PermalinkFilter implements Filter {
@@ -141,7 +141,6 @@ public class PermalinkFilter implements Filter {
             String URI = uri.substring(0, yearIndex);
             yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
-            url = null;
             _logger.debug("Handling YYYY/MM/DD/permalink request: " + pathinfo);
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
         } else if (ymdMatcher.find()) {
@@ -159,7 +158,6 @@ public class PermalinkFilter implements Filter {
             String URI = uri.substring(0, yearIndex);
             yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
-            url = null;
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY/MM/DD/ request: " + pathinfo);
         } else if (ymMatcher.find()) {
@@ -175,7 +173,6 @@ public class PermalinkFilter implements Filter {
             String URI = uri.substring(0, yearIndex);
             yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
-            url = null;
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY/MM request: " + pathinfo);
         } else if (yMatcher.find()) {
@@ -189,22 +186,22 @@ public class PermalinkFilter implements Filter {
             String URI = uri.substring(0, yearIndex);
             yearIndex = url.lastIndexOf(yearSubstring);
             String URL = url.substring(0, yearIndex);
-            url = null;
             hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             _logger.debug("Handling YYYY request: " + pathinfo);
         } else {
             // Check for a /category/permalink.html post
             String permalinkSubstring = "/";
-            int permalinkIndex = pathInfo.lastIndexOf(permalinkSubstring);
-            if (permalinkIndex < pathInfo.length() - 1) {
-                extraParameters = new HashMap();
-                extraParameters.put("permalink", new String[]{pathInfo.substring(permalinkIndex + 1)});
+            int permalinkIndex = pathInfo.substring(1).lastIndexOf(permalinkSubstring);
+            if (permalinkIndex != -1 && permalinkIndex < pathInfo.length() - 1) {
+                extraParameters = new HashMap();              
+                if (request.getParameter("permalink") == null) {
+                    extraParameters.put("permalink", new String[]{pathInfo.substring(permalinkIndex + 1)});
+                }
                 String pathinfo = pathInfo.substring(0, permalinkIndex + 1);
                 permalinkIndex = uri.lastIndexOf(permalinkSubstring);
                 String URI = uri.substring(0, permalinkIndex + 1);
                 permalinkIndex = url.lastIndexOf(permalinkSubstring);
                 String URL = url.substring(0, permalinkIndex + 1);
-                url = null;
                 _logger.debug("Handling permalink request: " + pathinfo);
                 hreq = new PermalinkRequest(hreq, extraParameters, URI, URL, pathinfo);
             }

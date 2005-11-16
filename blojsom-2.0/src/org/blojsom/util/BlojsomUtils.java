@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.77 2005-10-30 17:58:37 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.78 2005-11-16 18:53:06 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1428,7 +1428,7 @@ public class BlojsomUtils implements BlojsomConstants {
         } else {
             int userEnd = pathInfo.indexOf("/", 1);
             if (userEnd == -1) {
-                return null;
+                return pathInfo.substring(1);
             } else {
                 return pathInfo.substring(1, userEnd);
             }
