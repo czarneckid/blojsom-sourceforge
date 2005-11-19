@@ -41,6 +41,7 @@ import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.*;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.permission.PermissionChecker;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -60,7 +61,7 @@ import java.io.IOException;
  *
  * @author David Czarnecki
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.22 2005-10-30 17:59:18 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.23 2005-11-19 15:43:27 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -76,6 +77,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected static final String BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT = "BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT";
     protected static final String BLOJSOM_USER_AUTHENTICATED = "BLOJSOM_USER_AUTHENTICATED";
     protected static final String BLOJSOM_ADMIN_MESSAGES_RESOURCE = "org.blojsom.plugin.admin.resources.messages";
+    protected static final String BLOJSOM_PERMISSION_CHECKER = "BLOJSOM_PERMISSION_CHECKER";
 
     // Localization constants
     protected static final String LOGIN_ERROR_TEXT_KEY = "login.error.text";
@@ -224,7 +226,9 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 return false;
             }
         } else {
-            return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
+            context.put(BLOJSOM_PERMISSION_CHECKER, new PermissionChecker(blogUser, _authorizationProvider, context));
+
+            return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();            
         }
     }
 
