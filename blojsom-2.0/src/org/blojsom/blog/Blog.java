@@ -50,7 +50,7 @@ import java.security.NoSuchAlgorithmException;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.36 2005-03-20 16:06:58 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.37 2005-11-27 18:47:18 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -70,6 +70,7 @@ public class Blog implements BlojsomConstants {
     private int _blogDepth;
     private int _blogDisplayEntries;
     private String[] _blogDefaultCategoryMappings;
+    private String[] _blogDefaultCategoryExclusionMappings;
     private String[] _blogDirectoryFilter;
     private String _blogOwner;
     private String _blogOwnerEmail;
@@ -203,13 +204,26 @@ public class Blog implements BlojsomConstants {
             _blogDefaultCategoryMappings = null;
             _logger.debug("No mapping supplied for the default category '/'");
         } else {
-            _blogDefaultCategoryMappings = BlojsomUtils.parseCommaList(blogDefaultCategoryMapping);
+            _blogDefaultCategoryMappings = BlojsomUtils.parseOnlyCommaList(blogDefaultCategoryMapping, true);
             _logger.debug(_blogDefaultCategoryMappings.length + " directories mapped to the default category '/'");
             if (_blogDefaultCategoryMappings.length == 0) {
                 _blogDefaultCategoryMappings = null;
             }
         }
         _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, blogDefaultCategoryMapping);
+        
+        String blogDefaultCategoryExclusionMapping = blogConfiguration.getProperty(BLOG_DEFAULT_CATEGORY_EXCLUSION_MAPPING_IP);
+        if (BlojsomUtils.checkNullOrBlank(blogDefaultCategoryExclusionMapping)) {
+            _blogDefaultCategoryExclusionMappings = null;
+            _logger.debug("No excluded mapping supplied for the default category '/'");
+        } else {
+            _blogDefaultCategoryExclusionMappings = BlojsomUtils.parseOnlyCommaList(blogDefaultCategoryExclusionMapping, true);
+            _logger.debug(_blogDefaultCategoryExclusionMappings.length + " directories excluded from the default category '/'");
+            if (_blogDefaultCategoryExclusionMappings.length == 0) {
+                _blogDefaultCategoryExclusionMappings = null;
+            }
+        }
+        _blogProperties.put(BLOG_DEFAULT_CATEGORY_EXCLUSION_MAPPING_IP, blogDefaultCategoryExclusionMapping);
 
         _blogCommentsDirectory = blogConfiguration.getProperty(BLOG_COMMENTS_DIRECTORY_IP);
         if ((_blogCommentsDirectory == null) || ("".equals(_blogCommentsDirectory))) {
@@ -565,6 +579,15 @@ public class Blog implements BlojsomConstants {
     }
 
     /**
+     * Return the list of categories that should be excluded from the default category '/'
+     * 
+     * @return List of categories
+     */
+    public String[] getBlogDefaultCategoryExclusionMappings() {
+        return _blogDefaultCategoryExclusionMappings;
+    }    
+    
+    /**
      * Return the list of categories that should be mapped to the default category '/' as a String
      *
      * @since blojsom 2.12
@@ -578,6 +601,20 @@ public class Blog implements BlojsomConstants {
         return BlojsomUtils.arrayOfStringsToString(_blogDefaultCategoryMappings);
     }
 
+    /**
+     * Return the list of categories that should be excluded from the default category '/' as a String
+     *
+     * @since blojsom 2.28
+     * @return List of categories
+     */
+    public String getBlogDefaultCategoryExclusionMappingsAsString() {
+        if (_blogDefaultCategoryExclusionMappings == null) {
+            return "";
+        }
+
+        return BlojsomUtils.arrayOfStringsToString(_blogDefaultCategoryExclusionMappings);
+    }    
+    
     /**
      * Set the Username/Password table used for blog authorization.
      * <p/>
@@ -855,6 +892,16 @@ public class Blog implements BlojsomConstants {
         _blogProperties.put(BLOG_DEFAULT_CATEGORY_MAPPING_IP, blogDefaultCategoryMappings);
     }
 
+    /**
+     * Set the new default blog category exclusion mappings
+     * 
+     * @param blogDefaultCategoryExclusionMappings Blog default category exclusion mappings
+     */
+    public void setBlogDefaultCategoryExclusiondMappings(String[] blogDefaultCategoryExclusionMappings) {
+        _blogDefaultCategoryExclusionMappings = blogDefaultCategoryExclusionMappings;
+        _blogProperties.put(BLOG_DEFAULT_CATEGORY_EXCLUSION_MAPPING_IP, blogDefaultCategoryExclusionMappings);
+    }    
+    
     /**
      * Set the new blog owner name
      * 
