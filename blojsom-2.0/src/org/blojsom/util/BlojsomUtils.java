@@ -57,7 +57,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.78 2005-11-16 18:53:06 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.79 2005-11-27 18:36:10 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -362,7 +362,19 @@ public class BlojsomUtils implements BlojsomConstants {
      * @since blojsom 2.21
      */
     public static String[] parseOnlyCommaList(String commaList) {
-        return parseDelimitedList(commaList, ",");
+        return parseOnlyCommaList(commaList, false);
+    }
+
+    /**
+     * Parse a comma-separated list of values
+     *
+     * @param commaList Comma-separated list
+     * @param trim If the contents of the array should be trimmed
+     * @return Individual strings from the comma-separated list
+     * @since blojsom 2.29
+     */
+    public static String[] parseOnlyCommaList(String commaList, boolean trim) {
+        return parseDelimitedList(commaList, ",", trim);
     }
 
     /**
@@ -378,6 +390,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         int lastCommaIndex = value.lastIndexOf(",");
+        
         if (lastCommaIndex == -1) {
             return new String[]{value};
         } else {
@@ -393,6 +406,19 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseDelimitedList(String delimitedList, String delimiter) {
+        return parseDelimitedList(delimitedList, delimiter, false);
+    }
+
+    /**
+     * Parse a delimited list of values
+     *
+     * @param delimitedList Delimited list
+     * @param delimiter     Field Delimiter
+     * @param trim If the contents of the array should be trimmed
+     * @return Individual strings from the comma-separated list
+     * @since blojsom 2.29
+     */
+    public static String[] parseDelimitedList(String delimitedList, String delimiter, boolean trim) {
         if (delimitedList == null) {
             return null;
         }
@@ -400,11 +426,17 @@ public class BlojsomUtils implements BlojsomConstants {
         StringTokenizer tokenizer = new StringTokenizer(delimitedList, delimiter);
         ArrayList list = new ArrayList();
         while (tokenizer.hasMoreTokens()) {
-            list.add(tokenizer.nextToken());
+            if (trim) {
+                list.add(tokenizer.nextToken().trim());
+            } else {
+                list.add(tokenizer.nextToken());
+            }
         }
+
         if (list.size() == 0) {
             return new String[]{};
         }
+
         return (String[]) list.toArray(new String[list.size()]);
     }
 
