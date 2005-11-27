@@ -40,14 +40,14 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.74 2005-10-17 02:08:57 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.75 2005-11-27 18:42:56 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
     /**
      * blojsom version
      */
-    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.28";
+    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.29";
 
     /**
      * Key under which blog information will be placed
@@ -399,6 +399,7 @@ public interface BlojsomConstants {
     public static final String[] DEFAULT_PROPERTIES_EXTENSIONS = {".properties"};
     public static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     public static final String BLOG_DEFAULT_CATEGORY_MAPPING_IP = "blog-default-category-mapping";
+    public static final String BLOG_DEFAULT_CATEGORY_EXCLUSION_MAPPING_IP = "blog-default-category-exclusion-mapping";
     public static final String BLOG_DIRECTORY_FILTER_IP = "blog-directory-filter";
     public static final String BLOG_AUTHORIZATION_IP = "blog-authorization";
     public static final String BLOG_OWNER = "blog-owner";
