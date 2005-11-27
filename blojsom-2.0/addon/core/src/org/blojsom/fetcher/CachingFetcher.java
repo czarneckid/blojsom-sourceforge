@@ -54,7 +54,7 @@ import java.util.*;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.19 2005-03-22 04:23:30 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.20 2005-11-27 18:47:46 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -263,7 +263,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
 
             if (entries == null) {
                 String[] filter = null;
-                entries = getEntriesAllCategories(blog, filter, -1, blog.getBlog().getBlogDepth());
+                entries = getEntriesAllCategories(blog, filter, null, -1, blog.getBlog().getBlogDepth());
                 _cache.putInCache(blog.getId(), entries);
             } else {
                 _cache.cancelUpdate(blog.getId());
@@ -415,7 +415,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
         public void run() {
             synchronized (_cache) {
                 String[] filter = null;
-                BlogEntry[] entries = getEntriesAllCategories(_user, filter, -1, _blogDirectoryDepth);
+                BlogEntry[] entries = getEntriesAllCategories(_user, filter, null, -1, _blogDirectoryDepth);
                 _cache.flushEntry(_user.getId());
                 _cache.putInCache(_user.getId(), entries);
             }

@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.28 2005-06-15 20:06:28 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.29 2005-11-27 18:47:34 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -258,7 +258,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         String[] categoryMappingsForFlavor = null;
         if (!BlojsomUtils.checkNullOrBlank(categoryMappingForFlavor)) {
             _logger.debug("Using category mappings for flavor: " + flavor);
-            categoryMappingsForFlavor = BlojsomUtils.parseCommaList(categoryMappingForFlavor);
+            categoryMappingsForFlavor = BlojsomUtils.parseOnlyCommaList(categoryMappingForFlavor, true);
         } else if (blog.getBlogDefaultCategoryMappings() != null && blog.getBlogDefaultCategoryMappings().length > 0) {
             _logger.debug("Using default category mapping");
             categoryMappingsForFlavor = blog.getBlogDefaultCategoryMappings();
@@ -266,22 +266,35 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             categoryMappingsForFlavor = null;
         }
 
-        return getEntriesAllCategories(user, categoryMappingsForFlavor, maxBlogEntries, blogDirectoryDepth);
+        String flavorExclusionMappingKey = flavor + '.' + BLOG_DEFAULT_CATEGORY_EXCLUSION_MAPPING_IP;
+        String categoryExclusionMappingForFlavor = (String) blog.getBlogProperty(flavorExclusionMappingKey);
+        String[] categoryExclusionMappingsForFlavor = null;
+        if (!BlojsomUtils.checkNullOrBlank(categoryExclusionMappingForFlavor)) {
+            _logger.debug("Using category exclusion mappings for flavor: " + flavor);
+            
+            categoryExclusionMappingsForFlavor = BlojsomUtils.parseOnlyCommaList(categoryExclusionMappingForFlavor, true);
+        } else if (blog.getBlogDefaultCategoryExclusionMappings() != null && blog.getBlogDefaultCategoryExclusionMappings().length > 0) {
+            _logger.debug("Using default category exclusion mapping");
+            categoryExclusionMappingsForFlavor = blog.getBlogDefaultCategoryExclusionMappings();
+        } 
+        
+        return getEntriesAllCategories(user, categoryMappingsForFlavor, categoryExclusionMappingsForFlavor, maxBlogEntries, blogDirectoryDepth);
     }
 
     /**
      * Retrieve entries for all the categories in the blog. This method will the parameter
      * <code>maxBlogEntries</code> to limit the entries it retrieves from each of the categories.
      * Entries from the categories are sorted based on file time.
-     *
      * @param categoryFilter     If <code>null</code>, a list of all the categories is retrieved, otherwise only
      *                           the categories in the list will be used to search for entries
+     * @param categoryExclusionFilter If not <code>null</null> the categories in the list will be excluded from the entries' search
      * @param maxBlogEntries     Maximum number of blog entries to retrieve from each category
      * @param blogDirectoryDepth Depth to which the fetcher should stop looking for categories
+     *
      * @return Blog entry array containing the list of blog entries for the categories
      *         or <code>BlogEntry[0]</code> if there are no entries
      */
-    protected BlogEntry[] getEntriesAllCategories(BlogUser user, String[] categoryFilter, int maxBlogEntries, int blogDirectoryDepth) {
+    protected BlogEntry[] getEntriesAllCategories(BlogUser user, String[] categoryFilter, String[] categoryExclusionFilter, int maxBlogEntries, int blogDirectoryDepth) {
         BlogCategory[] blogCategories = null;
         Blog blog = user.getBlog();
 
@@ -301,13 +314,24 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                 blogCategories[i] = blogCategory;
             }
         }
-
+        
+        List excludedCategories = new ArrayList();
+        if (null != categoryExclusionFilter)
+            for (int i = 0; i < categoryExclusionFilter.length; i++) 
+            {
+                String category = categoryExclusionFilter[i].replaceFirst("^/*","").replaceFirst("/*$", "");
+                excludedCategories.add(i, category);
+            }
+        
         if (blogCategories == null) {
             return new BlogEntry[0];
         } else {
             ArrayList blogEntries = new ArrayList();
             for (int i = 0; i < blogCategories.length; i++) {
                 BlogCategory blogCategory = blogCategories[i];
+                
+                if (excludedCategories.contains(blogCategory.getCategory().replaceFirst("^/*","").replaceFirst("/*$", "")))
+                    continue;
                 BlogEntry[] entriesForCategory = getEntriesForCategory(user, blogCategory, -1);
                 if (entriesForCategory != null) {
                     Arrays.sort(entriesForCategory, BlojsomUtils.FILE_TIME_COMPARATOR);
@@ -474,7 +498,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
                             subcategoriesForEntries[i + 1] = ((BlogCategory) subcategories.get(i)).getCategory();
                         }
 
-                        return getEntriesAllCategories(user, subcategoriesForEntries, -1, -1);
+                        return getEntriesAllCategories(user, subcategoriesForEntries, null, -1, -1);
                     }
 
                     return getEntriesForCategory(user, category, -1);
