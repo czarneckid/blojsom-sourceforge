@@ -53,7 +53,7 @@ import java.util.ArrayList;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.9 2005-06-15 20:04:36 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.10 2005-11-28 10:54:14 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -98,7 +98,6 @@ public class FileBackedBlogCategory extends BlogCategory {
                     _fis.close();
                 } catch (IOException ex) {
                     _logger.warn("Failed loading properties from: " + categoryPropertyFiles[i].toString());
-                    continue;
                 }
             }
 
@@ -224,7 +223,7 @@ public class FileBackedBlogCategory extends BlogCategory {
     protected int recursiveBlogEntriesCounter(Blog blog, boolean recursive, String rootDirectory) {
         File blogDirectory = new File(rootDirectory);
         File[] directories;
-        int totalEntries = 0;
+        int totalEntries;
 
         if (blog.getBlogDirectoryFilter() == null) {
             directories = blogDirectory.listFiles(BlojsomUtils.getDirectoryFilter());
@@ -242,7 +241,7 @@ public class FileBackedBlogCategory extends BlogCategory {
         if (directories != null && recursive) {
             for (int i = 0; i < directories.length; i++) {
                 File directory = directories[i];
-                return totalEntries + recursiveBlogEntriesCounter(blog, recursive, directory.toString());
+                totalEntries = totalEntries + recursiveBlogEntriesCounter(blog, recursive, directory.toString());
             }
         }
 
@@ -259,9 +258,7 @@ public class FileBackedBlogCategory extends BlogCategory {
      * @since blojsom 2.22
      */
     public int countBlogEntries(Blog blog, boolean recursive) {
-        int totalEntries = recursiveBlogEntriesCounter(blog, recursive, blog.getBlogHome() + _category);
-
-        return totalEntries;
+        return recursiveBlogEntriesCounter(blog, recursive, blog.getBlogHome() + _category);
     }
 
     /**
@@ -311,9 +308,7 @@ public class FileBackedBlogCategory extends BlogCategory {
             categoryList.add(blogCategory);
         }
 
-        if (directories == null) {
-            return;
-        } else {
+        if (directories != null) {
             for (int i = 0; i < directories.length; i++) {
                 File directory = directories[i];
                 recursiveCategoryBuilder(blogUser, blogDepth, blogDirectoryDepth, directory.toString(), categoryList);
