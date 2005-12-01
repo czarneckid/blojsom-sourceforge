@@ -48,7 +48,7 @@ import java.io.Serializable;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlogCategory.java,v 1.13 2005-06-23 19:03:08 czarneckid Exp $
+ * @version $Id: BlogCategory.java,v 1.14 2005-12-01 19:04:14 czarneckid Exp $
  */
 public abstract class BlogCategory implements Comparable, Serializable {
 
@@ -158,6 +158,10 @@ public abstract class BlogCategory implements Comparable, Serializable {
      */
     public int compareTo(Object o) {
         BlogCategory category = (BlogCategory) o;
+        if (_category == null) {
+            return -1;
+        }
+
         return _category.compareTo(category._category);
     }
 
@@ -232,7 +236,7 @@ public abstract class BlogCategory implements Comparable, Serializable {
      * @param data The properties to be associated with the category as meta-data
      */
     public void setMetaData(Properties data) {
-        String s = null;
+        String s;
         Enumeration keys = data.keys();
         if (_metadata == null) {
             _metadata = new HashMap(5);
