@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.29 2005-11-27 18:47:34 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.30 2005-12-01 19:12:13 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -295,7 +295,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      *         or <code>BlogEntry[0]</code> if there are no entries
      */
     protected BlogEntry[] getEntriesAllCategories(BlogUser user, String[] categoryFilter, String[] categoryExclusionFilter, int maxBlogEntries, int blogDirectoryDepth) {
-        BlogCategory[] blogCategories = null;
+        BlogCategory[] blogCategories;
         Blog blog = user.getBlog();
 
         if (categoryFilter == null) {
@@ -366,7 +366,7 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         Blog blog = user.getBlog();
 
         // Determine the user requested category
-        String requestedCategory = httpServletRequest.getPathInfo();
+        String requestedCategory;
         String userFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
         if (userFromPath == null) {
             requestedCategory = httpServletRequest.getPathInfo();
@@ -724,6 +724,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
             categories = getBlogCategoryHierarchy(user, category, blogDirectoryDepth);
         }
 
+        Arrays.sort(categories);
+
         return categories;
     }
 
@@ -756,14 +758,24 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
      */
     public BlogCategory[] fetchCategories(Map fetchParameters, BlogUser user) throws BlojsomFetcherException {
         Blog blog = user.getBlog();
+        BlogCategory[] categories;
         if (fetchParameters == null) {
-            return getBlogCategories(user, INFINITE_BLOG_DEPTH);
+            categories = getBlogCategories(user, INFINITE_BLOG_DEPTH);
+            Arrays.sort(categories);
+
+            return categories;
         } else if (fetchParameters.containsKey(FETCHER_CATEGORY)) {
             BlogCategory category = (BlogCategory) fetchParameters.get(FETCHER_CATEGORY);
             if ("/".equals(category.getCategory())) {
-                return getBlogCategories(user, blog.getBlogDepth());
+                categories = getBlogCategories(user, blog.getBlogDepth());
+                Arrays.sort(categories);
+
+                return categories;
             } else {
-                return getBlogCategoryHierarchy(user, category, blog.getBlogDepth());
+                categories = getBlogCategoryHierarchy(user, category, blog.getBlogDepth());
+                Arrays.sort(categories);
+
+                return categories; 
             }
         }
 
