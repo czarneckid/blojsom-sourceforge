@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
  * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: XSSFilterPlugin.java,v 1.1 2005-10-13 14:43:45 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.2 2005-12-06 12:51:57 czarneckid Exp $
  * @since blojsom 2.27
  */
 public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
@@ -68,8 +68,8 @@ public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
     private static final String [] DEFAULT_ALLOWED_UNBALANCED_TAGS = {"br"};
 
     // Initialization parameters
-    private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS_IP = "plugin-xss-filter-allowed-balanaced-tags";
-    private static final String XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP = "plugin-xss-filter-allowed-unbalanaced-tags";
+    private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS_IP = "plugin-xss-filter-allowed-balanced-tags";
+    private static final String XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP = "plugin-xss-filter-allowed-unbalanced-tags";
     private static final String XSS_FILTER_ALLOW_LINKS_IP = "plugin-xss-filter-allow-links";
 
     // Context variables
