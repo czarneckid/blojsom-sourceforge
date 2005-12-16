@@ -17,10 +17,11 @@
 <%
     Blog blogInformation = (Blog) request.getAttribute(BlojsomConstants.BLOJSOM_BLOG);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
+    String blogID = (String) request.getAttribute(BlojsomConstants.BLOJSOM_USER);
 %>
 
 <title><%=blogInformation.getBlogName()%></title>
-<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
+<link rel="stylesheet" href="<%= blogSiteURL %>/resources/<%= blogID %>/blojsom.css" />
 <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
 
 </head>

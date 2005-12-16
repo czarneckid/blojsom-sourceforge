@@ -24,6 +24,7 @@
     BlogEntry[] entryArray = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
     BlogCategory[] blogCategories = (BlogCategory[]) request.getAttribute(BlojsomConstants.BLOJSOM_CATEGORIES);
     String blogSiteURL = (String) request.getAttribute(BlojsomConstants.BLOJSOM_SITE_URL);
+    String blogID = (String) request.getAttribute(BlojsomConstants.BLOJSOM_USER);
     BlogCategory requestedCategory = (BlogCategory) request.getAttribute(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
     boolean blogCommentsEnabled = true;
     if (request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED) != null) {
@@ -50,7 +51,7 @@
 
     <head>
 	<title><%= blogInformation.getBlogName() %></title>
-	<link rel="stylesheet" href="<%= blogSiteURL %>/blojsom.css" />
+    <link rel="stylesheet" href="<%= blogSiteURL %>/resources/<%= blogID %>/blojsom.css" />
     <link rel="SHORTCUT ICON" href="<%= blogSiteURL %>/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= blogInformation.getBlogURL() %>?flavor=rss" />
     <link rel="EditURL" type="application/rsd+xml" title="RSD" href="<%= blogInformation.getBlogURL() %>?flavor=rsd" />

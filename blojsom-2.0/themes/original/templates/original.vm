@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>$BLOJSOM_BLOG.getBlogName()</title>
-<link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom.css" />
+<link rel="stylesheet" href="#Resource('blojsom.css')" />
 <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
 <!-- Atom API Posting Autodiscovery -->
 <link rel="service.post" type="application/atom+xml" title="$BLOJSOM_BLOG.getBlogName()" href="$BLOJSOM_BLOG.getBlogBaseURL()/atomapi/$BLOJSOM_USER/"/>
