@@ -1,6 +1,6 @@
 /* -------------------------------------- */
-/* Mobile CSS v1                          */
-/* 2005-04-07                             */ 
+/* Mobile CSS v1.1 blog sit               */
+/* 2005-12-03                             */ 
 /* Adam Burt a.burt@rave.ac.uk            */
 /* -------------------------------------- */
 
@@ -19,8 +19,16 @@ a
 color: #3399cc;
 }
 
+b.blog 
+{
+color: #3399cc;
+text-align: center;
+}
+
+
 
 /* text css class starts here */
+
 
 
 b.heading
@@ -33,8 +41,12 @@ small.date
 color: #336699;
 }
 
+p.center
+{
+text-align: center;
+}
 
-p.post-body
+p.post-boody
 {
 border: 1px #336699 solid;
 background: #ffffff;
@@ -47,6 +59,17 @@ margin-left: 2px;
 
 
 /* div tags starts here */
+
+#blog_name
+{
+border: 3px #336699 solid;
+background: #ffffff;
+font-size: medium;
+padding: 12px;
+margin-top: -7px;
+margin-right: 2px;
+margin-left: 2px;
+}
 
 #blog_title_box
 {
@@ -63,3 +86,15 @@ margin-top: 12px;
 margin-right: 2px;
 margin-left: 2px;
 }
+
+#categories_list
+{
+border: 1px #336699 solid;
+background: #ffffff;
+font-size: medium;
+padding: 8px;
+margin-top: 12px;
+margin-right: 2px;
+margin-left: 2px;
+}
+
