@@ -4,13 +4,22 @@
 
 <wml>
     <card title="Welcome">
-    <p><big><b>$BLOJSOM_BLOG.getBlogName()</b><br/>
-    $BLOJSOM_BLOG.getBlogDescription()<br/>
+    <p><big><b>#BlogName()</b><br/>
+    #BlogDescription()<br/>
     ----------------</big><br/>
-    <br/>
-    <a href="http://blojsom.sf.net/">Powered by Blojsom</a></p>
+    
+    <a href="http://blojsom.sf.net/">Powered by Blojsom</a><br/></p>
 
-<p align="center"><b>Latest blog entries</b></p>
+    <p>
+    <input size="8" name="query" /> : 
+    <anchor>
+    <go href="?flavor=$BLOJSOM_REQUESTED_FLAVOR" method="post">
+    <postfield name="query" value="$(query)" />
+    <postfield name="site" value="search"/>
+    </go>Search</anchor>
+    </p>
+
+<p align="center"><b>Latest blog entries <br/>and search results</b></p>
 
 #set ($counter = 0)
 #foreach ($entry in $BLOJSOM_ENTRIES)
@@ -39,4 +48,3 @@
 #set ($totalEntries = $totalEntries + 1)
 #end
 </wml>
-
