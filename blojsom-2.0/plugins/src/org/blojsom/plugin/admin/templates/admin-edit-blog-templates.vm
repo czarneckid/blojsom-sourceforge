@@ -104,6 +104,10 @@
                     </table>
                 </div>
 
+                #set($confirmationText = "#adminResource('delete.template.confirmation.text' '')")
+                #set($specificType = 'Template')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
                 <!-- Delete blog template form -->
                 <div class="mainClm">
                     <h3>#adminResource('delete.blog.template.text' 'Delete blog template')</h3>
@@ -125,7 +129,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.blog.template.text' 'Delete blog template')"/>
+                                    <input type="submit" name="submit" value="#adminResource('delete.blog.template.text' 'Delete blog template')" #OnClickDeletePrompt($specificType) />
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>
@@ -166,6 +170,10 @@
                     </table>
                 </div>
 
+                #set($confirmationText = "#adminResource('delete.template.directory.confirmation.text' '')")
+                #set($specificType = 'TemplateDirectory')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
                 <!-- Delete blog template directory form -->
                 <div class="mainClm">
                     <h3>#adminResource('delete.template.directory.text' 'Delete blog template directory')</h3>
@@ -187,7 +195,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.template.directory.text' 'Delete blog template directory')"/>
+                                    <input type="submit" name="submit" value="#adminResource('delete.template.directory.text' 'Delete blog template directory')" #OnClickDeletePrompt($specificType) />
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>

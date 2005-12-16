@@ -62,6 +62,10 @@
                     </table>
                 </div>
 
+                #set($confirmationText = "#adminResource('delete.files.confirmation.text' '')")
+                #set($specificType = 'Files')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
                 <!-- File upload delete form -->
                 <div class="mainClm">
                     <h3>#adminResource('file.delete.text' 'Delete a file(s)')</h3>
@@ -83,7 +87,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('file.delete.text' 'Delete a file(s)')"/>
+                                    <input type="submit" name="submit" value="#adminResource('file.delete.text' 'Delete a file(s)')" #OnClickDeletePrompt($specificType) />
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>

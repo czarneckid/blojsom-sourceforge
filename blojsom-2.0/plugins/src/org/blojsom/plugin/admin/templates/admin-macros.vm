@@ -104,3 +104,20 @@
 $BLOJSOM_RENDER_TOOL.evaluate($templateAddition)
 #end
 #end
+
+#macro(DeleteConfirmationPrompt $specific $confirmationText)
+    <script LANGUAGE="JavaScript">
+    <!--
+    function confirm${specific}Delete()
+    {
+    var shouldDelete = confirm("$confirmationText");
+    if (shouldDelete)
+        return true;
+    else
+        return false;
+    }
+    -->
+    </script>
+#end
+
+#macro(OnClickDeletePrompt $specific)onClick="return confirm${specific}Delete()"#end

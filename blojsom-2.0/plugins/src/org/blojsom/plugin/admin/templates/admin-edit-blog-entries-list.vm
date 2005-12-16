@@ -72,18 +72,8 @@
                     </table>
                 </div>
 
-                <script LANGUAGE="JavaScript">
-                <!--
-                function confirmDelete()
-                {
-                var shouldDelete = confirm("Are you sure you wish to delete this entry?");
-                if (shouldDelete)
-                    return true;
-                else
-                    return false;
-                }
-                // -->
-                </script>
+                #set($confirmationText = "#adminResource('delete.blog.entry.confirmation.text' '')")
+                #DeleteConfirmationPrompt('' $confirmationText)
 
                 <!-- Delete blog entries form -->
                 <div class="mainClm">
@@ -107,7 +97,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.blog.entry.text' 'Delete blog entry')" onClick="return confirmDelete()"/>
+                                    <input type="submit" name="submit" value="#adminResource('delete.blog.entry.text' 'Delete blog entry')" #OnClickDeletePrompt('') />
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>

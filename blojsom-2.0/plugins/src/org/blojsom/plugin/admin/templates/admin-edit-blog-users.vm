@@ -82,6 +82,10 @@
                     </table>
                 </div>
 
+                #set($confirmationText = "#adminResource('delete.blog.confirmation.text' '')")
+                #set($specificType = 'Blog')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
                 <!-- Delete blog user form -->
                 <div class="mainClm">
                     <h3>#adminResource('delete.blog.user.text' 'Delete blog user')</h3>
@@ -104,7 +108,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.blog.user.text' 'Delete blog user')"/>
+                                    <input type="submit" name="submit" value="#adminResource('delete.blog.user.text' 'Delete blog user')" #OnClickDeletePrompt($specificType) />
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>
