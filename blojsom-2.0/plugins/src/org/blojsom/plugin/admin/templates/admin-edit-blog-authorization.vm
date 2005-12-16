@@ -124,6 +124,10 @@
                     </table>
                 </div>
 
+                #set($confirmationText = "#adminResource('delete.authorized.user.confirmation.text' '')")
+                #set($specificType = 'Authorization')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
                 <!-- Delete blog user authorization form -->
                 <div class="mainClm">
                     <h3>#adminResource('delete.user.text' 'Delete an authorized user from the current blog')</h3>
@@ -146,7 +150,7 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.authorized.user.text' 'Delete authorized user')"/>
+                                    <input type="submit" name="submit" value="#adminResource('delete.authorized.user.text' 'Delete authorized user')" #OnClickDeletePrompt($specificType) />
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>
