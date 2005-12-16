@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: BlojsomServlet.java,v 1.36 2005-11-08 20:43:13 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.37 2005-12-16 21:35:16 czarneckid Exp $
  */
 public class BlojsomServlet extends BlojsomBaseServlet {
 
@@ -131,9 +131,9 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             flavorConfiguration = DEFAULT_FLAVOR_CONFIGURATION_FILE;
         }
 
-        Map flavors = new HashMap();
-        Map flavorToTemplateMap = new HashMap();
-        Map flavorToContentTypeMap = new HashMap();
+        Map flavors = new TreeMap();
+        Map flavorToTemplateMap = new TreeMap();
+        Map flavorToContentTypeMap = new TreeMap();
         String user = blogUser.getId();
 
         Properties flavorProperties = new Properties();
@@ -178,7 +178,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
 
         Iterator pluginIterator;
 
-        _plugins = new HashMap();
+        _plugins = new TreeMap();
         String pluginConfigurationLocation = _baseConfigurationDirectory + pluginConfiguration;
         pluginProperties = new Properties();
         try {
@@ -233,7 +233,7 @@ public class BlojsomServlet extends BlojsomBaseServlet {
             throw new ServletException("No plugin configuration file specified");
         }
 
-        Map pluginChainMap = new HashMap();
+        Map pluginChainMap = new TreeMap();
         String user = blogUser.getId();
 
         InputStream is = servletConfig.getServletContext().getResourceAsStream(_baseConfigurationDirectory + user + '/' + pluginConfiguration);
