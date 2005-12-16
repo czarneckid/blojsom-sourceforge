@@ -26,6 +26,7 @@
     <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
+    <property name="templates.resources.dir" value="${templates.dir}/resources"/>
     <property name="themes.dir" value="${basedir}/themes"/>
     <property name="default.theme.dir" value="${themes.dir}/asual/"/>
     <property name="default.theme.templates.dir" value="${default.theme.dir}/templates/"/>
@@ -123,6 +124,9 @@
             <fileset dir="${default.theme.templates.dir}"/>
         </copy>
         <copy todir="${resources.dir}/${default.user}">
+            <fileset dir="${templates.resources.dir}"/>
+        </copy>
+        <copy todir="${resources.dir}/${default.user}">
             <fileset dir="${default.theme.resources.dir}"/>
         </copy>
 
@@ -130,6 +134,9 @@
         <mkdir dir="${war.dir}/WEB-INF/${bootstrap.user}/resources/"/>
         <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/templates">
             <fileset dir="${default.theme.templates.dir}"/>
+        </copy>
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/resources">
+            <fileset dir="${templates.resources.dir}"/>
         </copy>
         <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/resources">
             <fileset dir="${default.theme.resources.dir}"/>
