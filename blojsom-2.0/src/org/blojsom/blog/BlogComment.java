@@ -1,22 +1,18 @@
 /**
- * Copyright (c) 2003-2005 , David A. Czarnecki
+ * Copyright (c) 2003-2006, David A. Czarnecki
  * All rights reserved.
- *
- * Portions Copyright (c) 2003-2005  by Mark Lussier
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * Redistributions of source code must retain the above copyright notice,
- *      this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
- *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the "David A. Czarnecki" and "blojsom" nor the names of
- * its contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Products derived from this software may not be called "blojsom",
- * nor may "blojsom" appear in their name, without prior written permission of
- * David A. Czarnecki.
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+ *     following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *     following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of "David A. Czarnecki" and "blojsom" nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific prior written permission.
+ * Products derived from this software may not be called "blojsom", nor may "blojsom" appear in their name,
+ *     without prior written permission of David A. Czarnecki.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
  * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
@@ -47,7 +43,7 @@ import java.io.Serializable;
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.14 2005-09-18 20:55:46 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.15 2006-01-04 16:59:53 czarneckid Exp $
  */
 public abstract class BlogComment implements Serializable {
 
