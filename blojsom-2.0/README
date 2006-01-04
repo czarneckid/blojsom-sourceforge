@@ -1,5 +1,9 @@
 CREDITS AND COPYRIGHT NOTICES
 
+blojsom acknowledges the contributions of the following developers.
+
+   * Mark Lussier: various plugins, initial XML-RPC APIs, and Atom API support
+
 blojsom contains a number of third-party software components.
 
    * blojsom includes software developed by the Apache Software Foundation
