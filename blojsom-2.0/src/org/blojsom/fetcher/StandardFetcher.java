@@ -51,7 +51,7 @@ import java.util.*;
  * StandardFetcher
  *
  * @author David Czarnecki
- * @version $Id: StandardFetcher.java,v 1.30 2005-12-01 19:12:13 czarneckid Exp $
+ * @version $Id: StandardFetcher.java,v 1.31 2006-01-04 16:03:44 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
@@ -66,6 +66,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
     protected static final String STANDARD_FETCHER_DEPTH = "STANDARD_FETCHER_DEPTH";
 
     protected String _ignoreFlavors = DEFAULT_IGNORE_FLAVORS;
+
+    protected BlojsomConfiguration _blojsomConfiguration;
 
     /**
      * Default constructor
@@ -87,6 +89,8 @@ public class StandardFetcher implements BlojsomFetcher, BlojsomConstants {
         }
         _logger.debug("Ignoring flavors: " + _ignoreFlavors);
 
+        _blojsomConfiguration = blojsomConfiguration;
+        
         _logger.debug("Initialized standard fetcher");
     }
 
