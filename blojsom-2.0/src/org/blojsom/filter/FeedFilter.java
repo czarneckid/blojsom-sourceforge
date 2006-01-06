@@ -44,15 +44,15 @@ import java.util.regex.Matcher;
 import java.util.*;
 
 /**
- * FlavorFilter
+ * FeedFilter
  *
  * @author David Czarnecki
  * @since blojsom 2.29
- * @version $Id: FlavorFilter.java,v 1.1 2006-01-06 16:07:21 czarneckid Exp $
+ * @version $Id: FeedFilter.java,v 1.1 2006-01-06 19:25:37 czarneckid Exp $
  */
-public class FlavorFilter implements Filter {
+public class FeedFilter implements Filter {
 
-    private static final Log _logger = LogFactory.getLog(FlavorFilter.class);
+    private static final Log _logger = LogFactory.getLog(FeedFilter.class);
 
     private static final String FEED_WITH_TYPE_REGEX = "/feed/(.+)/$";
     private static final Pattern FEED_WITH_TYPE_PATTERN = Pattern.compile(FEED_WITH_TYPE_REGEX, Pattern.UNICODE_CASE);
@@ -69,7 +69,7 @@ public class FlavorFilter implements Filter {
     /**
      * Construct a new instance of the Feed filter
      */
-    public FlavorFilter() {
+    public FeedFilter() {
     }
 
     /**
@@ -155,6 +155,9 @@ public class FlavorFilter implements Filter {
 
             if (matchedPermalink) {
                 pathinfo = pathinfo.substring(0, pathinfo.length() - 1);
+            } else {
+                URI += "/";
+                URL += "/";
             }
 
             _logger.debug("Handling feed type: " + feedType + " with path info: " + pathinfo + " URI: " + URI + " URL: " + URL);
