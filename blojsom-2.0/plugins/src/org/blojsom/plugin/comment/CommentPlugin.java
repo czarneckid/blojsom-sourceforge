@@ -56,7 +56,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.38 2006-01-04 16:53:00 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.39 2006-01-10 17:05:28 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -493,7 +493,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                     }
                 }
 
-                CommentResponseSubmissionEvent commentResponseSubmissionEvent = new CommentResponseSubmissionEvent(this, new Date(), user, httpServletRequest, httpServletResponse, author, authorEmail, authorURL, commentText, commentMetaData);
+                CommentResponseSubmissionEvent commentResponseSubmissionEvent = new CommentResponseSubmissionEvent(this, new Date(), user, httpServletRequest, httpServletResponse, author, authorEmail, authorURL, commentText, entries[0], commentMetaData);
                 _configuration.getEventBroadcaster().processEvent(commentResponseSubmissionEvent);
                 author = commentResponseSubmissionEvent.getSubmitter();
                 authorEmail = commentResponseSubmissionEvent.getSubmitterItem1();

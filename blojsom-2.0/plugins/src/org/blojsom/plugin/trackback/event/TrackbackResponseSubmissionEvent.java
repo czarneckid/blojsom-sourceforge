@@ -32,6 +32,7 @@ package org.blojsom.plugin.trackback.event;
 
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlogEntry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +43,7 @@ import java.util.Map;
  * Trackback response submission event
  *
  * @author David Czarnecki
- * @version $Id: TrackbackResponseSubmissionEvent.java,v 1.3 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: TrackbackResponseSubmissionEvent.java,v 1.4 2006-01-10 17:05:43 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class TrackbackResponseSubmissionEvent extends ResponseSubmissionEvent {
@@ -59,9 +60,10 @@ public class TrackbackResponseSubmissionEvent extends ResponseSubmissionEvent {
      * @param submitterItem1      Submitter data item 1 (title)
      * @param submitterItem2      Submitter data item 2 (UTL)
      * @param content             Trackback excerpt
+     * @param entry               {@link BlogEntry}
      * @param metaData            Trackback meta-data
      */
-    public TrackbackResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
-        super(source, timestamp, blog, httpServletRequest, httpServletResponse, submitter, submitterItem1, submitterItem2, content, metaData);
+    public TrackbackResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, BlogEntry entry, Map metaData) {
+        super(source, timestamp, blog, httpServletRequest, httpServletResponse, submitter, submitterItem1, submitterItem2, content, entry, metaData);
     }
 }

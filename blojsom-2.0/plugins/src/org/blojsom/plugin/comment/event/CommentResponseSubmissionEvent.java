@@ -31,6 +31,7 @@
 package org.blojsom.plugin.comment.event;
 
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlogEntry;
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,26 +43,27 @@ import java.util.Map;
  * Comment response submission event
  *
  * @author David Czarnecki
+ * @version $Id: CommentResponseSubmissionEvent.java,v 1.4 2006-01-10 17:05:42 czarneckid Exp $
  * @since blojsom 2.25
- * @version $Id: CommentResponseSubmissionEvent.java,v 1.3 2006-01-04 16:53:00 czarneckid Exp $
  */
 public class CommentResponseSubmissionEvent extends ResponseSubmissionEvent {
 
     /**
      * Create a new instance of the comment response submission event
      *
-     * @param source Source of event
-     * @param timestamp Time of event
-     * @param blog {@link BlogUser}
-     * @param httpServletRequest {@link HttpServletRequest}
+     * @param source              Source of event
+     * @param timestamp           Time of event
+     * @param blog                {@link BlogUser}
+     * @param httpServletRequest  {@link HttpServletRequest}
      * @param httpServletResponse {@link HttpServletResponse}
-     * @param submitter Submitter (author)
-     * @param submitterItem1 Submitter data item 1 (authorEmail)
-     * @param submitterItem2 Submitter data item 2 (authorURL)
-     * @param content Comment text
-     * @param metaData Comment meta-data
+     * @param submitter           Submitter (author)
+     * @param submitterItem1      Submitter data item 1 (authorEmail)
+     * @param submitterItem2      Submitter data item 2 (authorURL)
+     * @param content             Comment text
+     * @param entry               {@link BlogEntry}
+     * @param metaData            Comment meta-data
      */
-    public CommentResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
-        super(source, timestamp, blog, httpServletRequest, httpServletResponse, submitter, submitterItem1, submitterItem2, content, metaData);
+    public CommentResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, BlogEntry entry, Map metaData) {
+        super(source, timestamp, blog, httpServletRequest, httpServletResponse, submitter, submitterItem1, submitterItem2, content, entry, metaData);
     }
 }

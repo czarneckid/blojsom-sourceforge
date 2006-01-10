@@ -31,6 +31,7 @@
 package org.blojsom.plugin.response.event;
 
 import org.blojsom.blog.BlogUser;
+import org.blojsom.blog.BlogEntry;
 import org.blojsom.event.BlojsomEvent;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +44,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 2.25
- * @version $Id: ResponseSubmissionEvent.java,v 1.4 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: ResponseSubmissionEvent.java,v 1.5 2006-01-10 17:05:42 czarneckid Exp $
  */
 public class ResponseSubmissionEvent extends BlojsomEvent {
 
@@ -55,6 +56,7 @@ public class ResponseSubmissionEvent extends BlojsomEvent {
     protected String _content;
     protected Map _metaData;
     protected BlogUser _blog;
+    protected BlogEntry _entry;
 
     /**
      * Create a new instance of the response submission event
@@ -68,9 +70,10 @@ public class ResponseSubmissionEvent extends BlojsomEvent {
      * @param submitterItem1 Submitter data item 1
      * @param submitterItem2 Submitter data item 2
      * @param content Content to be evaluated
+     * @param entry {@link BlogEntry}
      * @param metaData Meta-data
      */
-    public ResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Map metaData) {
+    public ResponseSubmissionEvent(Object source, Date timestamp, BlogUser blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, BlogEntry entry, Map metaData) {
         super(source, timestamp);
 
         _blog = blog;
@@ -80,6 +83,7 @@ public class ResponseSubmissionEvent extends BlojsomEvent {
         _submitterItem1 = submitterItem1;
         _submitterItem2 = submitterItem2;
         _content = content;
+        _entry = entry;
         _metaData = metaData;
     }
 
@@ -153,6 +157,15 @@ public class ResponseSubmissionEvent extends BlojsomEvent {
      */
     public HttpServletResponse getHttpServletResponse() {
         return _httpServletResponse;
+    }
+
+    /**
+     * Retrieve the {@link BlogEntry}
+     *
+     * @return {@link BlogEntry}
+     */
+    public BlogEntry getBlogEntry() {
+        return _entry;
     }
 
     /**
