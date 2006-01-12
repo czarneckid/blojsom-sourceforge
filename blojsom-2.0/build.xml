@@ -418,6 +418,18 @@
     </target>
 
     <!-- =================================================================== -->
+    <!-- Create the templates bundle                                         -->
+    <!-- =================================================================== -->
+    <target name="create-templates-bundle" description="Create the templates bundle">
+        <tstamp/>
+        <zip zipfile="${distro.dir}/${name}-${version}-templates.zip">
+            <fileset dir="${templates.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <!-- =================================================================== -->
     <!-- Create the themes bundle                                            -->
     <!-- =================================================================== -->
     <target name="create-themes-bundle" description="Create the themes bundle">
@@ -499,8 +511,8 @@
         </zip>
     </target>
 
-    <target name="create-distribution" depends="clean, create-addon-bundle, create-source-distribution, create-themes-bundle"
-        description="Create the add-on bundle, themes package, and source distribution">
+    <target name="create-distribution" depends="clean, create-addon-bundle, create-source-distribution, create-themes-bundle, create-templates-bundle"
+        description="Create the add-on bundle, themes and templates packages, and source distribution">
     </target>
 
 </project>
