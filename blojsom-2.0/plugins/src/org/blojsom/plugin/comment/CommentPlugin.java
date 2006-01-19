@@ -56,7 +56,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.39 2006-01-10 17:05:28 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.40 2006-01-19 17:32:09 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
 
@@ -517,16 +517,16 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                         _configuration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), _comment, user));
 
-                        // Merge the template e-mail
-                        Map emailTemplateContext = new HashMap();
-                        emailTemplateContext.put(BLOJSOM_BLOG, blog);
-                        emailTemplateContext.put(BLOJSOM_USER, user);
-                        emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, _comment);
-                        emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entries[0]);
-
-                        String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
-
                         if (_blogEmailEnabled.booleanValue()) {
+                            // Merge the template e-mail
+                            Map emailTemplateContext = new HashMap();
+                            emailTemplateContext.put(BLOJSOM_BLOG, blog);
+                            emailTemplateContext.put(BLOJSOM_USER, user);
+                            emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, _comment);
+                            emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entries[0]);
+
+                            String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
+
                             sendCommentEmail(_emailPrefix, title, emailComment, context, (String) entries[0].getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR), blog);
                         }
                     }
