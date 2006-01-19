@@ -60,17 +60,21 @@ import net.sf.akismet.Akismet;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.1 2006-01-10 16:38:01 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.2 2006-01-19 17:28:48 czarneckid Exp $
  * @since blojsom 2.29
  */
 public class AkismetModerationPlugin implements BlojsomPlugin, BlojsomListener {
 
     private Log _logger = LogFactory.getLog(AkismetModerationPlugin.class);
 
+    // Initialization parameters
     private static final String AKISMET_PLUGIN_API_KEY_IP = "akismet-plugin-api-key";
     private static final String AKISMET_PLUGIN_DELETE_SPAM_IP = "akismet-plugin-delete-spam";
     private static final String AKISMET_PLUGIN_AUTOMATIC_APPROVAL_IP = "akismet-plugin-automatic-approval";
     private static final boolean DELETE_SPAM_DEFAULT = false;
+
+    // Context variables
+    private static final String AKISMET_PLUGIN_RESPONSE = "AKISMET_PLUGIN_RESPONSE";
 
     /**
      * Construct a new instance of the Akismet moderation plugin
@@ -157,12 +161,14 @@ public class AkismetModerationPlugin implements BlojsomPlugin, BlojsomListener {
 
                 // Check the content from Akismet
                 HttpServletRequest httpServletRequest = responseSubmissionEvent.getHttpServletRequest();
+                Map metaData = responseSubmissionEvent.getMetaData();
+
                 boolean isSpam = akismet.commentCheck(httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                        httpServletRequest.getHeader("Referer"), httpServletRequest.getRequestURL().toString(),
+                        httpServletRequest.getHeader("Referer"), responseSubmissionEvent.getBlogEntry().getLink(),
                         responseType, responseSubmissionEvent.getSubmitter(), responseSubmissionEvent.getSubmitterItem1(),
                         responseSubmissionEvent.getSubmitterItem2(), responseSubmissionEvent.getContent(), null);
 
-                Map metaData = responseSubmissionEvent.getMetaData();
+                metaData.put(AKISMET_PLUGIN_RESPONSE, Boolean.valueOf(isSpam));
 
                 // If Akismet identifies the content as spam, process for moderation or deletion accordingly
                 if (isSpam) {
