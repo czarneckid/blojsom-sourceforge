@@ -40,6 +40,7 @@ import org.blojsom.event.BlojsomEvent;
 import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.admin.event.ProcessBlogEntryEvent;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
 import org.blojsom.util.BlojsomUtils;
 
@@ -54,7 +55,7 @@ import java.util.regex.Pattern;
  * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: XSSFilterPlugin.java,v 1.3 2006-01-04 16:53:00 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.4 2006-01-19 17:34:42 czarneckid Exp $
  * @since blojsom 2.27
  */
 public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
@@ -62,13 +63,14 @@ public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
     private Log _logger = LogFactory.getLog(XSSFilterPlugin.class);
 
     // Default set of balanced and unbalanced tags
-    private static final String [] DEFAULT_ALLOWED_BALANCED_TAGS = {"b", "i", "blockquote", "pre", "ul", "li", "ol"};
-    private static final String [] DEFAULT_ALLOWED_UNBALANCED_TAGS = {"br"};
+    private static final String [] DEFAULT_ALLOWED_BALANCED_TAGS = {"b", "strong", "i", "em", "u", "s", "blockquote", "pre", "ul", "li", "ol"};
+    private static final String [] DEFAULT_ALLOWED_UNBALANCED_TAGS = {"br", "img"};
 
     // Initialization parameters
     private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS_IP = "plugin-xss-filter-allowed-balanced-tags";
     private static final String XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP = "plugin-xss-filter-allowed-unbalanced-tags";
     private static final String XSS_FILTER_ALLOW_LINKS_IP = "plugin-xss-filter-allow-links";
+    private static final String XSS_FILTER_PROCESS_ENTRIES_IP = "plugin-xss-filter-process-entries";
 
     // Context variables
     private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS = "XSS_FILTER_ALLOWED_BALANCED_TAGS";
@@ -163,60 +165,90 @@ public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
      */
     public void processEvent(BlojsomEvent event) {
         if (event instanceof CommentResponseSubmissionEvent) {
+            _logger.debug("Processing comment response submission event");
             CommentResponseSubmissionEvent commentEvent = (CommentResponseSubmissionEvent) event;
 
-            // Get the individual blog's initialization parameters
-            Blog blog = commentEvent.getBlog().getBlog();
-            String allowedBalancedTagsIP = blog.getBlogProperty(XSS_FILTER_ALLOWED_BALANCED_TAGS_IP);
-            String[] allowedBalancedTags = DEFAULT_ALLOWED_BALANCED_TAGS;
-            if (!BlojsomUtils.checkNullOrBlank(allowedBalancedTagsIP)) {
-                allowedBalancedTags = BlojsomUtils.parseCommaList(allowedBalancedTagsIP);
-            }
-
-            String allowedUnbalancedTagsIP = blog.getBlogProperty(XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP);
-            String[] allowedUnbalancedTags = DEFAULT_ALLOWED_UNBALANCED_TAGS;
-            if (!BlojsomUtils.checkNullOrBlank(allowedUnbalancedTagsIP)) {
-                allowedUnbalancedTags = BlojsomUtils.parseCommaList(allowedUnbalancedTagsIP);
-            }
-
-            String allowLinksIP = blog.getBlogProperty(XSS_FILTER_ALLOW_LINKS_IP);
-            boolean allowLinks = true;
-            if (!BlojsomUtils.checkNullOrBlank(allowLinksIP)) {
-                allowLinks = Boolean.valueOf(allowLinksIP).booleanValue();
-            }
-
             String commentText = commentEvent.getContent();
-            commentText = BlojsomUtils.escapeStringSimple(commentText);
+            commentText = processContent(commentText, commentEvent.getBlog().getBlog());
 
-            if (commentText != null) {
-                // Process balanced tags
-                for (int i = 0; i < allowedBalancedTags.length; i++) {
-                    String allowedBalancedTag = allowedBalancedTags[i];
+            // Save the processed comment text
+            commentEvent.setContent(commentText);
+        } else if (event instanceof ProcessBlogEntryEvent) {
+            ProcessBlogEntryEvent entryEvent = (ProcessBlogEntryEvent) event;
+            Blog blog = entryEvent.getBlogUser().getBlog();
 
-                    commentText = replaceBalancedTag(commentText, allowedBalancedTag);
+            // Check to see if we should process entries through the XSS filter
+            if (Boolean.valueOf(blog.getBlogProperty(XSS_FILTER_PROCESS_ENTRIES_IP)).booleanValue()) {
+                _logger.debug("Processing process blog entry event");
+                if (entryEvent.getBlogEntry() != null) {
+                    String entryText = entryEvent.getBlogEntry().getDescription();
+                    entryText = processContent(entryText, entryEvent.getBlogUser().getBlog());
+
+                    // Save the processed entry text
+                    entryEvent.getBlogEntry().setDescription(entryText);
                 }
-
-                // Process unbalanced tags
-                for (int i = 0; i < allowedUnbalancedTags.length; i++) {
-                    String allowedUnbalancedTag = allowedUnbalancedTags[i];
-
-                    commentText = replaceUnbalancedTag(commentText, allowedUnbalancedTag);
-                }
-
-                // Process links
-                if (allowLinks) {
-                    commentText = processLinks(commentText);
-                }
-
-                // Escaped brackets
-                commentText = commentText.replaceAll("&amp;lt;", "&lt;");
-                commentText = commentText.replaceAll("&amp;gt;", "&gt;");
-                commentText = commentText.replaceAll("&amp;#", "&#");
-
-                // Save the comment text
-                commentEvent.setContent(commentText);
             }
         }
+    }
+
+    /**
+     * Internal method to process any string content through the various routines
+     *
+     * @param content Content
+     * @param blog    {@link Blog} information}
+     * @return Processed content
+     */
+    protected String processContent(String content, Blog blog) {
+        // Get the individual blog's initialization parameters
+        String allowedBalancedTagsIP = blog.getBlogProperty(XSS_FILTER_ALLOWED_BALANCED_TAGS_IP);
+        String[] allowedBalancedTags = DEFAULT_ALLOWED_BALANCED_TAGS;
+        if (!BlojsomUtils.checkNullOrBlank(allowedBalancedTagsIP)) {
+            allowedBalancedTags = BlojsomUtils.parseCommaList(allowedBalancedTagsIP);
+        }
+
+        String allowedUnbalancedTagsIP = blog.getBlogProperty(XSS_FILTER_ALLOWED_UNBALANCED_TAGS_IP);
+        String[] allowedUnbalancedTags = DEFAULT_ALLOWED_UNBALANCED_TAGS;
+        if (!BlojsomUtils.checkNullOrBlank(allowedUnbalancedTagsIP)) {
+            allowedUnbalancedTags = BlojsomUtils.parseCommaList(allowedUnbalancedTagsIP);
+        }
+
+        String allowLinksIP = blog.getBlogProperty(XSS_FILTER_ALLOW_LINKS_IP);
+        boolean allowLinks = true;
+        if (!BlojsomUtils.checkNullOrBlank(allowLinksIP)) {
+            allowLinks = Boolean.valueOf(allowLinksIP).booleanValue();
+        }
+
+        content = BlojsomUtils.escapeStringSimple(content);
+
+        if (content != null) {
+            // Process balanced tags
+            for (int i = 0; i < allowedBalancedTags.length; i++) {
+                String allowedBalancedTag = allowedBalancedTags[i];
+
+                content = replaceBalancedTag(content, allowedBalancedTag);
+            }
+
+            // Process unbalanced tags
+            for (int i = 0; i < allowedUnbalancedTags.length; i++) {
+                String allowedUnbalancedTag = allowedUnbalancedTags[i];
+
+                content = replaceUnbalancedTag(content, allowedUnbalancedTag);
+            }
+
+            // Process links
+            if (allowLinks) {
+                content = processLinks(content);
+            }
+
+            content = processImgTags(content);
+
+            // Escaped brackets
+            content = content.replaceAll("&amp;lt;", "&lt;");
+            content = content.replaceAll("&amp;gt;", "&gt;");
+            content = content.replaceAll("&amp;#", "&#");
+        }
+
+        return content;
     }
 
     /**
@@ -279,5 +311,27 @@ public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
         }
 
         return input;
+    }
+
+    /**
+     * Process &lt;img ... /&gt; tags
+     *
+     * @param input Input
+     * @return String where the &lt;img ... /&gt; links have been processed appropriately
+     */
+    private String processImgTags(String input) {
+        Pattern imgPattern = Pattern.compile("(&lt;)(\\s*img\\s?.*?\\s*/*)(&gt;)", Pattern.CASE_INSENSITIVE);
+        Matcher imgMatcher = imgPattern.matcher(input);
+
+        // Replace all occurrences of pattern in input
+        StringBuffer buffer = new StringBuffer();
+        while (imgMatcher.find()) {
+            // Insert replacement
+            imgMatcher.appendReplacement(buffer, "<" + imgMatcher.group(2) + ">");
+        }
+
+        imgMatcher.appendTail(buffer);
+
+        return buffer.toString();
     }
 }
