@@ -50,7 +50,7 @@ import java.util.*;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.21 2006-01-04 16:22:22 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.22 2006-01-25 01:53:42 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -143,7 +143,7 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
             permalink = BlojsomUtils.urlDecode(permalink);
 
             if (permalink == null) {
-                _logger.error("Permalink request for invalid permalink: " + httpServletRequest.getParameter(PERMALINK_PARAM));
+                _logger.debug("Permalink request for invalid permalink: " + httpServletRequest.getParameter(PERMALINK_PARAM));
             } else {
                 _logger.debug("Permalink request for: " + permalink);
             }
