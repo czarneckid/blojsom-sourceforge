@@ -52,7 +52,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.29 2006-01-04 16:52:59 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.30 2006-01-25 18:36:21 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -336,16 +336,16 @@ public class FileUploadPlugin extends BaseAdminPlugin {
                             }
 
                             String resourceURL = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
-                                    user.getId() + "/" + item.getName();
+                                    user.getId() + "/" + itemNameWithoutPath;
 
                             _logger.debug("Successfully uploaded resource file: " + resourceFile.toString());
-                            addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_UPLOAD_KEY, SUCCESSFUL_UPLOAD_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {item.getName(), resourceURL, item.getName()}));
+                            addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_UPLOAD_KEY, SUCCESSFUL_UPLOAD_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {itemNameWithoutPath, resourceURL, itemNameWithoutPath}));
                         } else {
                             if (!isAcceptedFileExtension) {
                                 _logger.error("Upload file does not have an accepted extension: " + extension);
                                 addOperationResultMessage(context, formatAdminResource(INVALID_EXTENSION_KEY, INVALID_EXTENSION_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {extension}));
                             } else {
-                                _logger.error("Upload file is not an accepted type: " + item.getName() + " of type: " + item.getContentType());
+                                _logger.error("Upload file is not an accepted type: " + itemNameWithoutPath + " of type: " + item.getContentType());
                                 addOperationResultMessage(context, formatAdminResource(INVALID_TYPE_KEY, INVALID_TYPE_KEY, user.getBlog().getBlogAdministrationLocale(), new Object[] {item.getContentType()}));
                             }
                         }
