@@ -48,7 +48,7 @@ import java.util.HashMap;
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.6 2006-01-04 16:53:00 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.7 2006-01-25 18:29:46 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
@@ -106,6 +106,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                             passedCheck = true;
                         }
                     } catch (NumberFormatException e) {
+                        _logger.error(e);
                     }
                 }
 
@@ -122,6 +123,8 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
 
                     _logger.info("Failed math comment authentication check.");
                     context.put(BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE, "Failed math comment authentication check.");
+                } else {
+                    context.put(BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE, "Passed math comment authentication check.");
                 }
             }
 
