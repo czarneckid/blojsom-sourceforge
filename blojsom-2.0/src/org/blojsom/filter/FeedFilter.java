@@ -48,7 +48,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 2.29
- * @version $Id: FeedFilter.java,v 1.1 2006-01-06 19:25:37 czarneckid Exp $
+ * @version $Id: FeedFilter.java,v 1.2 2006-01-25 18:19:53 czarneckid Exp $
  */
 public class FeedFilter implements Filter {
 
@@ -186,6 +186,9 @@ public class FeedFilter implements Filter {
 
             if (matchedPermalink) {
                 pathinfo = pathinfo.substring(0, pathinfo.length() - 1);
+            } else {
+                URI += "/";
+                URL += "/";
             }
 
             _logger.debug("Handling default feed type: " + _defaultFeedType + " with path info: " + pathinfo + " URI: " + URI + " URL: " + URL);
