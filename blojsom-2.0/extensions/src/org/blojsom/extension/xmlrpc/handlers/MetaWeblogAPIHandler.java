@@ -34,14 +34,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
-import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
-import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
-import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
 import org.blojsom.blog.BlogCategory;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.Blog;
 import org.blojsom.fetcher.BlojsomFetcher;
+import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
+import org.blojsom.plugin.admin.event.DeletedBlogEntryEvent;
+import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.util.BlojsomUtils;
 
 import java.io.BufferedOutputStream;
@@ -49,8 +48,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 /**
  * Blojsom XML-RPC Handler for the MetaWeblog API
@@ -58,7 +55,7 @@ import java.text.ParseException;
  * MetaWeblog API pec can be found at http://www.xmlrpc.com/metaWeblogApi
  *
  * @author Mark Lussier
- * @version $Id: MetaWeblogAPIHandler.java,v 1.33 2006-01-04 16:24:24 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.34 2006-01-25 02:55:53 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
@@ -240,7 +237,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                         _blogid = BlojsomUtils.removeInitialSlash(_blogid);
                     }
 
-                    String _description = "";
+                    String _description;
                     Map _metadata = _category.getMetaData();
                     if (_metadata != null && _metadata.containsKey(NAME_KEY)) {
                         _description = (String) _metadata.get(NAME_KEY);
@@ -358,7 +355,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
 
             String result = null;
 
-            Hashtable postcontent = struct;
+            Hashtable postcontent;
+            postcontent = struct;
 
             String title = (String) postcontent.get(MEMBER_TITLE);
             String description = (String) postcontent.get(MEMBER_DESCRIPTION);
@@ -376,16 +374,17 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 entry.setDescription(description);
                 blogEntryMetaData.put(BLOG_ENTRY_METADATA_AUTHOR, userid);
                 if (dateCreated == null) {
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, new Long(new Date().getTime()).toString());
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(new Date().getTime()));
                 } else {
-                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, convertDateCreated(dateCreated, _blog));
+                    blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(dateCreated.getTime()));
                 }
                 entry.setMetaData(blogEntryMetaData);
 
                 entry.save(_blogUser);
                 entry.load(_blogUser);
 
-                String postid = blogid + "?" + PERMALINK_PARAM + "=" + entry.getPermalink();
+                String postid;
+                postid = blogid + "?" + PERMALINK_PARAM + "=" + entry.getPermalink();
                 result = postid;
 
                 // Send out an add blog entry event
@@ -443,7 +442,7 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                     category = (String) categories.get(0);
                     permalink = postid;
                 }
-            } else if (pos != -1) {
+            } else {
                 category = postid.substring(0, pos);
                 category = BlojsomUtils.normalize(category);
                 category = BlojsomUtils.urlDecode(category);
@@ -463,7 +462,8 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                 BlogEntry entry = entries[0];
 
                 try {
-                    Hashtable postcontent = struct;
+                    Hashtable postcontent;
+                    postcontent = struct;
 
                     String title = (String) postcontent.get(MEMBER_TITLE);
                     String description = (String) postcontent.get(MEMBER_DESCRIPTION);
@@ -473,17 +473,12 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
                         title = "No Title";
                     }
 
-                    String hashable = description;
-
-                    if (description.length() > MAX_HASHABLE_LENGTH) {
-                        hashable = hashable.substring(0, MAX_HASHABLE_LENGTH);
-                    }
 
                     Map blogEntryMetaData = entry.getMetaData();
                     entry.setTitle(title);
                     entry.setDescription(description);
                     if (dateCreated != null) {
-                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, convertDateCreated(dateCreated, _blog));
+                        blogEntryMetaData.put(BLOG_ENTRY_METADATA_TIMESTAMP, Long.toString(dateCreated.getTime()));
                     }
 
                     entry.save(_blogUser);
@@ -817,44 +812,5 @@ public class MetaWeblogAPIHandler extends AbstractBlojsomAPIHandler {
         _logger.debug("       Type: " + templateType);
 
         throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-    }
-
-    /**
-     * Convert the dateCreated attribute to the local timezone
-     *
-     * @param dateCreated Date indicating the date and time created for the entry
-     * @param blog        {@link Blog} infomation
-     * @return Date converted to a long (as String)
-     */
-    private String convertDateCreated(Date dateCreated, Blog blog) {
-        if (dateCreated == null) {
-            return Long.toString(new Date().getTime());
-        } else {
-            String timezoneID = blog.getBlogProperty("blog-timezone-id");
-            String timezoneOffset = blog.getBlogProperty("blog-timezone-offset");
-
-            if (BlojsomUtils.checkNullOrBlank(timezoneID)) {
-                timezoneID = TimeZone.getDefault().getID();
-            }
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SHORT_ISO_8601_DATE_FORMAT);
-            if (!BlojsomUtils.checkNullOrBlank(timezoneOffset)) {
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timezoneOffset));
-            }
-
-            Date convertedDate = dateCreated;
-            String convertedDateISO8601;
-            convertedDateISO8601 = simpleDateFormat.format(convertedDate);
-
-            try {
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timezoneID));
-                convertedDate = simpleDateFormat.parse(convertedDateISO8601);
-            } catch (ParseException e) {
-            }
-
-            long convertedDateTime = convertedDate.getTime();
-
-            return Long.toString(convertedDateTime);
-        }
     }
 }
