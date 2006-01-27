@@ -32,20 +32,29 @@ package org.blojsom.plugin.comment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.*;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.comment.event.CommentAddedEvent;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
 import org.blojsom.plugin.common.VelocityPlugin;
-import org.blojsom.plugin.email.EmailUtils;
+import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.CookieUtils;
 
+import javax.mail.Session;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -56,9 +65,9 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.40 2006-01-19 17:32:09 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.41 2006-01-27 15:35:28 czarneckid Exp $
  */
-public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
+public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
     private Log _logger = LogFactory.getLog(CommentPlugin.class);
 
@@ -66,6 +75,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
      * Template for comment e-mails
      */
     public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/comment/comment-plugin-email-template.vm";
+    public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE_TEXT = "org/blojsom/plugin/comment/comment-plugin-email-template-text.vm";
+    public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE_HTML = "org/blojsom/plugin/comment/comment-plugin-email-template-html.vm";
 
     /**
      * Default prefix for comment e-mail notification
@@ -208,6 +219,10 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
     private Map _ipAddressCommentTimes;
     private BlojsomFetcher _fetcher;
+    private String _mailServer;
+    private String _mailServerUsername;
+    private String _mailServerPassword;
+    private Session _session;
 
     private BlojsomConfiguration _configuration;
 
@@ -243,6 +258,27 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
             _logger.error(e);
             throw new BlojsomPluginException(e);
         }
+
+        _mailServer = servletConfig.getInitParameter(SMTPSERVER_IP);
+
+        if (_mailServer != null) {
+            if (_mailServer.startsWith("java:comp/env")) {
+                try {
+                    Context context = new InitialContext();
+                    _session = (Session) context.lookup(_mailServer);
+                } catch (NamingException e) {
+                    _logger.error(e);
+                    throw new BlojsomPluginException(e);
+                }
+            } else {
+                _mailServerUsername = servletConfig.getInitParameter(SMTPSERVER_USERNAME_IP);
+                _mailServerPassword = servletConfig.getInitParameter(SMTPSERVER_PASSWORD_IP);
+            }
+        } else {
+            throw new BlojsomPluginException("Missing SMTP servername servlet initialization parameter: " + SMTPSERVER_IP);
+        }
+
+        blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
     /**
@@ -278,16 +314,9 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
         }
 
         Boolean _blogCommentsEnabled;
-        Boolean _blogEmailEnabled;
-        String _emailPrefix;
-        int _cookieExpiration;
-
         _blogCommentsEnabled = blog.getBlogCommentsEnabled();
-        _blogEmailEnabled = blog.getBlogEmailEnabled();
-        _emailPrefix = blog.getBlogProperty(COMMENT_PREFIX_IP);
-        if (_emailPrefix == null) {
-            _emailPrefix = DEFAULT_COMMENT_PREFIX;
-        }
+
+        int _cookieExpiration;
         String cookieExpiration = blog.getBlogProperty(COMMENT_COOKIE_EXPIRATION_DURATION_IP);
         if (BlojsomUtils.checkNullOrBlank(cookieExpiration)) {
             _cookieExpiration = COOKIE_EXPIRATION_AGE;
@@ -352,23 +381,20 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
             Cookie rememberMeCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_REMEMBER_ME);
             if ((rememberMeCookie != null) && ((rememberMe == null) || "".equals(rememberMe))) {
                 rememberMe = rememberMeCookie.getValue();
-                if (rememberMe == null) {
-                    rememberMe = "";
-                } else {
+                if (rememberMe != null) {
                     context.put(BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME, rememberMe);
                 }
             }
         }
 
         // Comment handling
-        if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blogCommentsEnabled.booleanValue()) {
+        if ("y".equalsIgnoreCase(httpServletRequest.getParameter(COMMENT_PARAM)) && _blogCommentsEnabled.booleanValue())
+        {
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
             String category = httpServletRequest.getParameter(BlojsomConstants.CATEGORY_PARAM);
             category = BlojsomUtils.urlDecode(category);
             String remember = httpServletRequest.getParameter(REMEMBER_ME_PARAM);
-
-            String title = entries[0].getTitle();
 
             if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))
                     && (permalink != null && !"".equals(permalink)) && (category != null && !"".equals(category))) {
@@ -513,22 +539,9 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                             entries[0].load(user);
                         } catch (BlojsomException e) {
                             _logger.error(e);
-                        }                        
+                        }
 
                         _configuration.getEventBroadcaster().broadcastEvent(new CommentAddedEvent(this, new Date(), _comment, user));
-
-                        if (_blogEmailEnabled.booleanValue()) {
-                            // Merge the template e-mail
-                            Map emailTemplateContext = new HashMap();
-                            emailTemplateContext.put(BLOJSOM_BLOG, blog);
-                            emailTemplateContext.put(BLOJSOM_USER, user);
-                            emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, _comment);
-                            emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, entries[0]);
-
-                            String emailComment = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
-
-                            sendCommentEmail(_emailPrefix, title, emailComment, context, (String) entries[0].getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR), blog);
-                        }
                     }
                 } else {
                     _logger.info("Comment meta-data contained destroy key. Comment was not saved");
@@ -550,24 +563,6 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
         return entries;
     }
-
-
-    /**
-     * Send the comment e-mail to the blog author
-     *
-     * @param emailPrefix E-mail prefix
-     * @param title       Entry title
-     * @param comment     Comment text
-     * @param context     Context
-     * @param author      Author of entry
-     * @param blog        {@link Blog} information
-     */
-    public void sendCommentEmail(String emailPrefix, String title, String comment, Map context, String author, Blog blog) {
-        String recipientEmail = blog.getAuthorizedUserEmail(author);
-
-        EmailUtils.notifyBlogAuthor(emailPrefix + title, comment, context, recipientEmail);
-    }
-
 
     /**
      * Add a comment to a particular blog entry
@@ -623,5 +618,84 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Setup the comment e-mail
+     *
+     * @param blog  {@link Blog} information
+     * @param email Email message
+     * @throws EmailException If there is an error preparing the e-mail message
+     */
+    protected void setupEmail(Blog blog, BlogEntry entry, Email email) throws EmailException {
+        email.setCharset(UTF8);
+
+        // If we have a mail session for the environment, use that
+        if (_session != null) {
+            email.setMailSession(_session);
+        } else {
+            // Otherwise, if there is a username and password for the mail server, use that
+            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword))
+            {
+                email.setHostName(_mailServer);
+                email.setAuthentication(_mailServerUsername, _mailServerPassword);
+            }
+        }
+
+        email.setFrom(blog.getBlogOwnerEmail(), "Blojsom Comment");
+
+        String author = (String) entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR);
+        String authorEmail = blog.getAuthorizedUserEmail(author);
+
+        email.addTo(authorEmail, author);
+    }
+
+    /**
+     * Handle an event broadcast from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void handleEvent(BlojsomEvent event) {
+        if (event instanceof CommentAddedEvent) {
+            HtmlEmail email = new HtmlEmail();
+            CommentAddedEvent commentAddedEvent = (CommentAddedEvent) event;
+
+            if (commentAddedEvent.getBlogUser().getBlog().getBlogEmailEnabled().booleanValue()) {
+                try {
+                    setupEmail(commentAddedEvent.getBlogUser().getBlog(), commentAddedEvent.getBlogEntry(), email);
+
+                    Map emailTemplateContext = new HashMap();
+                    emailTemplateContext.put(BLOJSOM_BLOG, commentAddedEvent.getBlogUser().getBlog());
+                    emailTemplateContext.put(BLOJSOM_USER, commentAddedEvent.getBlogUser());
+                    emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT, commentAddedEvent.getBlogComment());
+                    emailTemplateContext.put(BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY, commentAddedEvent.getBlogEntry());
+
+                    String htmlText = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE_HTML, commentAddedEvent.getBlogUser(), emailTemplateContext);
+                    String plainText = mergeTemplate(COMMENT_PLUGIN_EMAIL_TEMPLATE_TEXT, commentAddedEvent.getBlogUser(), emailTemplateContext);
+
+                    email.setHtmlMsg(htmlText);
+                    email.setTextMsg(plainText);
+
+                    String emailPrefix = commentAddedEvent.getBlogUser().getBlog().getBlogProperty(COMMENT_PREFIX_IP);
+                    if (BlojsomUtils.checkNullOrBlank(emailPrefix)) {
+                        emailPrefix = DEFAULT_COMMENT_PREFIX;
+                    }
+
+                    email = (HtmlEmail) email.setSubject(emailPrefix + commentAddedEvent.getBlogEntry().getTitle());
+
+                    email.send();
+                } catch (EmailException e) {
+                    _logger.error(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void processEvent(BlojsomEvent event) {
     }
 }

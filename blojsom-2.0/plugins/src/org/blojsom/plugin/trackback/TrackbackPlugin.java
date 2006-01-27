@@ -32,13 +32,19 @@ package org.blojsom.plugin.trackback;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.Email;
 import org.blojsom.BlojsomException;
+import org.blojsom.event.BlojsomListener;
+import org.blojsom.event.BlojsomEvent;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.common.VelocityPlugin;
 import org.blojsom.plugin.email.EmailUtils;
+import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.plugin.trackback.event.TrackbackAddedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
 import org.blojsom.util.BlojsomMetaDataConstants;
@@ -47,27 +53,33 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.mail.Session;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.util.*;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.43 2006-01-10 17:05:43 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.44 2006-01-27 15:35:29 czarneckid Exp $
  */
-public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants {
+public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
     private Log _logger = LogFactory.getLog(TrackbackPlugin.class);
 
     /**
      * Template for comment e-mails
      */
-    private static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/trackback/trackback-plugin-email-template.vm";
+    public static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/trackback/trackback-plugin-email-template.vm";
+    public static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE_TEXT = "org/blojsom/plugin/trackback/trackback-plugin-email-template-text.vm";
+    public static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE_HTML = "org/blojsom/plugin/trackback/trackback-plugin-email-template-html.vm";
 
     /**
      * Default prefix for trackback e-mail notification
      */
-    private static final String DEFAULT_TRACKBACK_PREFIX = "[blojsom] Trackback on: ";
+    public static final String DEFAULT_TRACKBACK_PREFIX = "[blojsom] Trackback on: ";
 
     /**
      * Initialization parameter for e-mail prefix
@@ -164,6 +176,10 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     private Map _ipAddressTrackbackTimes;
     private BlojsomConfiguration _blojsomConfiguration;
     private BlojsomFetcher _fetcher;
+    private String _mailServer;
+    private String _mailServerUsername;
+    private String _mailServerPassword;
+    private Session _session;
 
     /**
      * Default constructor
@@ -202,6 +218,27 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             _logger.error(e);
             throw new BlojsomPluginException(e);
         }
+
+        _mailServer = servletConfig.getInitParameter(SMTPSERVER_IP);
+
+        if (_mailServer != null) {
+            if (_mailServer.startsWith("java:comp/env")) {
+                try {
+                    Context context = new InitialContext();
+                    _session = (Session) context.lookup(_mailServer);
+                } catch (NamingException e) {
+                    _logger.error(e);
+                    throw new BlojsomPluginException(e);
+                }
+            } else {
+                _mailServerUsername = servletConfig.getInitParameter(SMTPSERVER_USERNAME_IP);
+                _mailServerPassword = servletConfig.getInitParameter(SMTPSERVER_PASSWORD_IP);
+            }
+        } else {
+            throw new BlojsomPluginException("Missing SMTP servername servlet initialization parameter: " + SMTPSERVER_IP);
+        }
+
+        blojsomConfiguration.getEventBroadcaster().addListener(this);
     }
 
     /**
@@ -530,5 +567,85 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Setup the comment e-mail
+     *
+     * @param blog  {@link Blog} information
+     * @param email Email message
+     * @throws EmailException If there is an error preparing the e-mail message
+     */
+    protected void setupEmail(Blog blog, BlogEntry entry, Email email) throws EmailException {
+        email.setCharset(UTF8);
+
+        // If we have a mail session for the environment, use that
+        if (_session != null) {
+            email.setMailSession(_session);
+        } else {
+            // Otherwise, if there is a username and password for the mail server, use that
+            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword))
+            {
+                email.setHostName(_mailServer);
+                email.setAuthentication(_mailServerUsername, _mailServerPassword);
+            }
+        }
+
+        email.setFrom(blog.getBlogOwnerEmail(), "Blojsom Trackback");
+
+        String author = (String) entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR);
+        String authorEmail = blog.getAuthorizedUserEmail(author);
+
+        email.addTo(authorEmail, author);
+    }
+
+    /**
+     * Handle an event broadcast from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void handleEvent(BlojsomEvent event) {
+        if (event instanceof TrackbackAddedEvent) {
+            HtmlEmail email = new HtmlEmail();
+
+            TrackbackAddedEvent trackbackAddedEvent = (TrackbackAddedEvent) event;
+
+            if (trackbackAddedEvent.getBlogUser().getBlog().getBlogEmailEnabled().booleanValue()) {
+                try {
+                    setupEmail(trackbackAddedEvent.getBlogUser().getBlog(), trackbackAddedEvent.getBlogEntry(), email);
+
+                    Map emailTemplateContext = new HashMap();
+                    emailTemplateContext.put(BLOJSOM_BLOG, trackbackAddedEvent.getBlogUser().getBlog());
+                    emailTemplateContext.put(BLOJSOM_USER, trackbackAddedEvent.getBlogUser());
+                    emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK, trackbackAddedEvent.getTrackback());
+                    emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY, trackbackAddedEvent.getBlogEntry());
+
+                    String htmlText = mergeTemplate(TRACKBACK_PLUGIN_EMAIL_TEMPLATE_HTML, trackbackAddedEvent.getBlogUser(), emailTemplateContext);
+                    String plainText = mergeTemplate(TRACKBACK_PLUGIN_EMAIL_TEMPLATE_TEXT, trackbackAddedEvent.getBlogUser(), emailTemplateContext);
+
+                    email = email.setHtmlMsg(htmlText);
+                    email = email.setTextMsg(plainText);
+
+                    String emailPrefix = trackbackAddedEvent.getBlogUser().getBlog().getBlogProperty(TRACKBACK_PREFIX_IP);
+                    if (BlojsomUtils.checkNullOrBlank(emailPrefix)) {
+                        emailPrefix = DEFAULT_TRACKBACK_PREFIX;
+                    }
+
+                    email = (HtmlEmail) email.setSubject(emailPrefix + trackbackAddedEvent.getBlogEntry().getTitle());
+
+                    email.send();
+                } catch (EmailException e) {
+                    _logger.error(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Process an event from another component
+     *
+     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     */
+    public void processEvent(BlojsomEvent event) {
     }
 }
