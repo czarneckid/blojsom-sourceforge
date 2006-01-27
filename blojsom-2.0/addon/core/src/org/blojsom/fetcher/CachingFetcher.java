@@ -35,6 +35,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
+import org.blojsom.fetcher.event.CacheUpdatedEvent;
 import org.blojsom.blog.*;
 import org.blojsom.event.BlojsomEvent;
 import org.blojsom.event.BlojsomListener;
@@ -50,7 +51,7 @@ import java.util.*;
  * CachingFetcher
  *
  * @author David Czarnecki
- * @version $Id: CachingFetcher.java,v 1.22 2006-01-25 01:53:42 czarneckid Exp $
+ * @version $Id: CachingFetcher.java,v 1.23 2006-01-27 18:42:23 czarneckid Exp $
  * @since blojsom 2.01
  */
 public class CachingFetcher extends StandardFetcher implements BlojsomListener {
@@ -416,6 +417,8 @@ public class CachingFetcher extends StandardFetcher implements BlojsomListener {
                 _cache.putInCache(_user.getId(), entries);
             }
 
+            _blojsomConfiguration.getEventBroadcaster().broadcastEvent(new CacheUpdatedEvent(this, new Date(), _user));
+            
             return;            
         }
     }
