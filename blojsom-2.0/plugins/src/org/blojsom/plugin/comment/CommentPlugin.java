@@ -65,7 +65,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.41 2006-01-27 15:35:28 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.42 2006-01-31 19:09:16 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -598,7 +598,6 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 comment = null;
             }
-
         }
 
         return comment;
@@ -644,8 +643,21 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
         email.setFrom(blog.getBlogOwnerEmail(), "Blojsom Comment");
 
-        String author = (String) entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR);
-        String authorEmail = blog.getAuthorizedUserEmail(author);
+        String author;
+        if (entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR) != null) {
+            author = (String) entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR);
+        } else {
+            author = blog.getBlogOwner();
+        }
+
+        String authorEmail = blog.getBlogOwnerEmail();
+
+        if (author != null) {
+            authorEmail = blog.getAuthorizedUserEmail(author);
+            if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                authorEmail = blog.getBlogOwnerEmail();
+            }
+        }
 
         email.addTo(authorEmail, author);
     }
