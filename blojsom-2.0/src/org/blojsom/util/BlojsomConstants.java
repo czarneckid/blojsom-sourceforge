@@ -36,14 +36,14 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: BlojsomConstants.java,v 1.76 2006-01-04 16:59:54 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.77 2006-01-31 19:10:02 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
     /**
      * blojsom version
      */
-    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.29";
+    public static final String BLOJSOM_VERSION_NUMBER = "blojsom v2.30";
 
     /**
      * Key under which blog information will be placed
