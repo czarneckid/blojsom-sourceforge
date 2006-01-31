@@ -46,7 +46,7 @@ import java.security.NoSuchAlgorithmException;
  * @author David Czarnecki
  * @author Mark Lussier
  * @author Dan Morrill
- * @version $Id: Blog.java,v 1.38 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.39 2006-01-31 19:10:23 czarneckid Exp $
  */
 public class Blog implements BlojsomConstants {
 
@@ -382,6 +382,10 @@ public class Blog implements BlojsomConstants {
      * @since blojsom 2.14
      */
     public String getAuthorizedUserEmail(String username) {
+        if (username == null) {
+            return getBlogOwnerEmail();
+        }
+
         if (_authorization.containsKey(username)) {
             String[] parsedPasswordAndEmail = BlojsomUtils.parseLastComma((String)_authorization.get(username));
             if (parsedPasswordAndEmail.length < 2) {
