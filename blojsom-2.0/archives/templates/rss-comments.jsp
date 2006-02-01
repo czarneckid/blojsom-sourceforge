@@ -13,7 +13,7 @@
     BlogEntry[] blogEntries = (BlogEntry[]) request.getAttribute(BlojsomConstants.BLOJSOM_ENTRIES);
 %>
 
-<rss version="0.92" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+<rss version="0.92">
   <channel>
     <%
         if (blogEntries != null) {

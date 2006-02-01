@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- name="generator" content="$BLOJSOM_VERSION" -->
-<rss version="0.92" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+<rss version="0.92">
     <channel>
         <title>$BLOJSOM_BLOG.getBlogName()</title>
         <link>$BLOJSOM_BLOG.getBlogURL()</link>
@@ -11,10 +11,6 @@
             <title>$entry.getEscapedTitle()</title>
             <link>$entry.getEscapedLink()</link>
             <description>$entry.getEscapedDescription()</description>
-            #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
-  	          <wfw:comment>$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$BLOJSOM_USER$entry.getId()</wfw:comment>
-              <wfw:commentRss>$entry.getEscapedLink()&amp;page=comments&amp;flavor=rss</wfw:commentRss>
-            #end
         </item>
         #end
     </channel>

@@ -14,7 +14,7 @@
         blogCommentsEnabled = ((Boolean) request.getAttribute(BlojsomConstants.BLOJSOM_COMMENTS_ENABLED)).booleanValue();
     }    
 %>
-<rss version="0.92" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+<rss version="0.92">
   <channel>
     <title><%= blogInformation.getBlogName() %></title>
     <link><%= blogInformation.getBlogURL() %></link>
@@ -29,10 +29,6 @@
     		<title><%= blogEntry.getEscapedTitle() %></title>
     		<link><%= blogEntry.getEscapedLink() %></link>
     		<description><%= blogEntry.getEscapedDescription() %></description>
-            <% if (blogCommentsEnabled && blogEntry.supportsComments() && !BlojsomUtils.checkMapForKey(blogEntry.getMetaData(), "blog-entry-comments-disabled")) { %>
-            <wfw:comment><%= blogInformation.getBlogBaseURL()%>/commentapi/<%= request.getAttribute(BlojsomConstants.BLOJSOM_USER) %><%= blogEntry.getId()%></wfw:comment>
-            <wfw:commentRss><%= blogEntry.getEscapedLink()%>&amp;page=comments&amp;flavor=rss</wfw:commentRss>
-            <% } %>
     	</item>
     <%
             }
