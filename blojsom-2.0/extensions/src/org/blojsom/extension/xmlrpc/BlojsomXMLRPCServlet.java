@@ -61,10 +61,10 @@ import java.util.HashMap;
  * Blojsom XML-RPC Servlet
  * <p/>
  * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
- * 
+ *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.21 2006-01-04 16:24:24 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.22 2006-02-03 00:10:29 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -74,6 +74,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     public static final int XMLRPC_DISABLED = 4000;
     public static final String XMLRPC_DISABLED_MESSAGE = "XML-RPC disabled for the requested blog";
+    public static final String XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE = "XML-RPC server only accepts POST requests.";
 
     /**
      * Construct a new Blojsom XML-RPC servlet instance
@@ -107,7 +108,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
      * the proper template and content type
      *
      * @param servletConfig Servlet configuration information
-     * @param blogUser {@link BlogUser} information
+     * @param blogUser      {@link BlogUser} information
      * @since blojsom 2.22
      */
     protected void configureFlavorsForUser(ServletConfig servletConfig, BlogUser blogUser) throws ServletException {
@@ -150,9 +151,9 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
     /**
      * Configure the XML-RPC API Handlers
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param userID User ID
+     * @param userID              User ID
      * @return {@link XmlRpcServer} configured for the given user or <code>null</code> if the configuration failed
      */
     protected XmlRpcServer configureXMLRPCServer(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String userID) throws ServletException {
@@ -270,7 +271,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     /**
      * Initialize the blojsom XML-RPC servlet
-     * 
+     *
      * @param servletConfig Servlet configuration information
      * @throws ServletException If there is an error initializing the servlet
      */
@@ -289,7 +290,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
 
     /**
      * Service an XML-RPC request by passing the request to the proper handler
-     * 
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @throws ServletException If there is an error processing the request
@@ -303,26 +304,34 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
             _logger.error(e);
         }
 
-        // Determine the appropriate user from the URL
-        String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
-        if (BlojsomUtils.checkNullOrBlank(user) || "/".equals(user)) {
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
-            return;
-        }
+        if (!"post".equalsIgnoreCase(httpServletRequest.getMethod())) {
+            httpServletResponse.setContentType("text/html; charset=UTF-8");
+            httpServletResponse.setContentLength(XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE.length());
+            PrintWriter printWriter = httpServletResponse.getWriter();
+            printWriter.print(XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE);
+            printWriter.flush();
+        } else {
+            // Determine the appropriate user from the URL
+            String user = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+            if (BlojsomUtils.checkNullOrBlank(user) || "/".equals(user)) {
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
+                return;
+            }
 
-        // Make sure that the user exists in the system
-        XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, httpServletResponse, user);
-        if (xmlRpcServer == null) {
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
-            return;
-        }
+            // Make sure that the user exists in the system
+            XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, httpServletResponse, user);
+            if (xmlRpcServer == null) {
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested user not found: " + user);
+                return;
+            }
 
-        byte[] result = xmlRpcServer.execute(httpServletRequest.getInputStream());
-        httpServletResponse.setContentType("text/xml; charset=UTF-8");
-        httpServletResponse.setContentLength(result.length);
-        OutputStream os = httpServletResponse.getOutputStream();
-        os.write(result);
-        os.flush();
+            byte[] result = xmlRpcServer.execute(httpServletRequest.getInputStream());
+            httpServletResponse.setContentType("text/xml; charset=UTF-8");
+            httpServletResponse.setContentLength(result.length);
+            OutputStream os = httpServletResponse.getOutputStream();
+            os.write(result);
+            os.flush();
+        }
     }
 
     /**

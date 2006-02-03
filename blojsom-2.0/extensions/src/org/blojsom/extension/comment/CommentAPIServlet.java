@@ -61,6 +61,7 @@ import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -73,7 +74,7 @@ import java.util.HashMap;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.17 2006-01-31 19:08:33 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.18 2006-02-03 00:10:28 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -96,6 +97,8 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
      * RSS <item/> fragment tag containing the Author
      */
     private static final String COMMENTAPI_AUTHOR = "author";
+
+    public static final String COMMENTAPI_ACCEPTS_ONLY_POSTS_MESSAGE = "Comment API server only accepts POST requests.";
 
     private Log _logger = LogFactory.getLog(CommentAPIServlet.class);
 
@@ -130,6 +133,16 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
             httpServletRequest.setCharacterEncoding(UTF8);
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
+        }
+
+        if (!"post".equalsIgnoreCase(httpServletRequest.getMethod())) {
+            httpServletResponse.setContentType("text/html; charset=UTF-8");
+            httpServletResponse.setContentLength(COMMENTAPI_ACCEPTS_ONLY_POSTS_MESSAGE.length());
+            PrintWriter printWriter = httpServletResponse.getWriter();
+            printWriter.print(COMMENTAPI_ACCEPTS_ONLY_POSTS_MESSAGE);
+            printWriter.flush();
+
+            return;
         }
 
         String commentAuthor = null;
