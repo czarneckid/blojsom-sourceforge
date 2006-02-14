@@ -74,29 +74,36 @@ import java.util.HashMap;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.18 2006-02-03 00:10:28 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.19 2006-02-14 21:51:00 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
     /**
-     * RSS <item/> fragment tag containing the Title
+     * RSS &lt;item/&gt; fragment tag containing the title
      */
     private static final String COMMENTAPI_TITLE = "title";
 
     /**
-     * RSS <item/> fragment tag containing the Link
+     * RSS &lt;item/&gt; fragment tag containing the link
      */
     private static final String COMMENTAPI_LINK = "link";
 
     /**
-     * RSS <item/> fragment tag containing the Description
+     * RSS &lt;item/&gt; fragment tag containing the description
      */
     private static final String COMMENTAPI_DESCRIPTION = "description";
 
     /**
-     * RSS <item/> fragment tag containing the Author
+     * RSS &lt;item/&gt; fragment tag containing the author
      */
     private static final String COMMENTAPI_AUTHOR = "author";
+
+    /**
+     * RSS &lt;dc:creator/&gt; fragment tag containing the author's name
+     */
+    private static final String COMMENTAPI_DC_CREATOR = "dc:creator";
+
+    private static final String COMMENTAPI_TITLE_METADATA = "comment-api-metadata-title";
 
     public static final String COMMENTAPI_ACCEPTS_ONLY_POSTS_MESSAGE = "Comment API server only accepts POST requests.";
 
@@ -150,6 +157,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         String commentLink = null;
         String commentText = null;
         String commentTitle = null;
+        String commentDCCreator = null;
 
         // Determine the appropriate user from the URL
         String user;
@@ -210,14 +218,21 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                                 if (node.getNodeName().equals(COMMENTAPI_LINK) && (node.getFirstChild() != null)) {
                                     commentLink = node.getFirstChild().getNodeValue();
                                 }
+
                                 if (node.getNodeName().equals(COMMENTAPI_TITLE) && (node.getFirstChild() != null)) {
                                     commentTitle = node.getFirstChild().getNodeValue();
                                 }
+
                                 if (node.getNodeName().equals(COMMENTAPI_AUTHOR) && (node.getFirstChild() != null)) {
                                     commentAuthor = node.getFirstChild().getNodeValue();
                                 }
+
                                 if (node.getNodeName().equals(COMMENTAPI_DESCRIPTION) && (node.getFirstChild() != null)) {
                                     commentText = node.getFirstChild().getNodeValue();
+                                }
+
+                                if (node.getNodeName().equals(COMMENTAPI_DC_CREATOR) && (node.getFirstChild() != null)) {
+                                    commentDCCreator = node.getFirstChild().getNodeValue();
                                 }
                             }
                         }
@@ -265,6 +280,11 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
                 commentLink = "";
             }
 
+            // If the dc:creator element is available, assign that to the author name
+            if (commentDCCreator != null) {
+                commentAuthor = commentDCCreator;
+            }
+
             if (commentText != null) {
                 _logger.debug("Comment API ==============================================");
                 _logger.debug(" Blog User: " + user);
@@ -282,6 +302,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
 
                     HashMap commentMetaData = new HashMap();
                     commentMetaData.put(CommentPlugin.BLOJSOM_COMMENT_PLUGIN_METADATA_IP, httpServletRequest.getRemoteAddr());
+                    commentMetaData.put(COMMENTAPI_TITLE_METADATA, commentTitle);
 
                     comment.setAuthor(commentAuthor);
                     comment.setAuthorEmail(commentEmail);
