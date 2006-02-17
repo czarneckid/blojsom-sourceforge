@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: RefererLogPlugin.java,v 1.10 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: RefererLogPlugin.java,v 1.11 2006-02-17 16:53:09 czarneckid Exp $
  */
 public class RefererLogPlugin implements BlojsomPlugin {
 
@@ -374,7 +374,7 @@ public class RefererLogPlugin implements BlojsomPlugin {
                     group.addHitCount(new Date(), 1);
                     refererGroups.put(flavor, group);
 
-                } else if ((referer != null) && (!referer.startsWith(refererLogConfiguration.getBlogUrlFilter()))) {
+                } else if ((referer != null) && (refererLogConfiguration.getBlogUrlFilter() != null) && !referer.startsWith(refererLogConfiguration.getBlogUrlFilter())) {
                     _logger.debug("[Referer] flavor=" + flavor + " - referer=" + referer);
 
                     BlogRefererGroup group;
