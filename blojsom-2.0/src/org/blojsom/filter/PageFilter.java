@@ -137,26 +137,31 @@ public class PageFilter implements Filter {
 
         if (pageMatcher.find()) {
             int pageMatchIndex = pageMatcher.start();
+            String blogIDPathInfo = null;
 
             if (!_useRootBlogCompatability) {
                 int firstSlashAfterBlogID = pathInfo.substring(1).indexOf("/");
+                blogIDPathInfo = pathInfo.substring(0, firstSlashAfterBlogID + 1) + "/";
                 pathInfo = pathInfo.substring(firstSlashAfterBlogID + 1, pageMatchIndex);
             } else {
                 pathInfo = pathInfo.substring(0, pageMatchIndex);
             }
 
-            _logger.debug("Pathinfo: " + pathInfo);
             pageMatchIndex = uri.lastIndexOf(PAGE_PATHINFO);
             String URI = uri.substring(0, pageMatchIndex) + "/";
             pageMatchIndex = url.lastIndexOf(PAGE_PATHINFO);
             String URL = url.substring(0, pageMatchIndex) + "/";
-            _logger.debug("Handling pathinfo: " + pathInfo + " uri: " + URI + " url: " + URL);
 
             extraParameters = new HashMap();
             extraParameters.put("page", new String[]{pathInfo});
             pathInfo = "/";
 
+            if (!_useRootBlogCompatability) {
+                pathInfo = blogIDPathInfo;
+            }
+
             hreq = new PagePermalinkRequst(hreq, extraParameters, URI, URL, pathInfo);
+            _logger.debug("Handling pathinfo: " + pathInfo + " uri: " + URI + " url: " + URL);
         }
 
         chain.doFilter(hreq, response);
