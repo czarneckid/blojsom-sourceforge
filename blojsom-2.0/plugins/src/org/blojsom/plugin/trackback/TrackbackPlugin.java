@@ -63,7 +63,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.44 2006-01-27 15:35:29 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.45 2006-02-17 16:54:23 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -584,10 +584,11 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             email.setMailSession(_session);
         } else {
             // Otherwise, if there is a username and password for the mail server, use that
-            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword))
-            {
+            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword)) {
                 email.setHostName(_mailServer);
                 email.setAuthentication(_mailServerUsername, _mailServerPassword);
+            } else {
+                email.setHostName(_mailServer);
             }
         }
 

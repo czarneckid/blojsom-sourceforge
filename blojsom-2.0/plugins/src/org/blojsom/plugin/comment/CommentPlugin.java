@@ -65,7 +65,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.42 2006-01-31 19:09:16 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.43 2006-02-17 16:54:03 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -634,10 +634,11 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
             email.setMailSession(_session);
         } else {
             // Otherwise, if there is a username and password for the mail server, use that
-            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword))
-            {
+            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword)) {
                 email.setHostName(_mailServer);
                 email.setAuthentication(_mailServerUsername, _mailServerPassword);
+            } else {
+                email.setHostName(_mailServer);
             }
         }
 
