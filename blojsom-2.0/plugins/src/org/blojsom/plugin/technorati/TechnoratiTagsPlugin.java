@@ -55,8 +55,8 @@ import java.util.HashMap;
  * Technorati tags plugin
  *
  * @author David Czarnecki
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.6 2006-02-20 14:50:57 czarneckid Exp $
  * @since blojsom 2.25
- * @version $Id: TechnoratiTagsPlugin.java,v 1.5 2006-01-04 16:53:12 czarneckid Exp $
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements BlojsomListener {
 
@@ -163,6 +163,21 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Bl
             ProcessBlogEntryEvent processBlogEntryEvent = (ProcessBlogEntryEvent) event;
 
             String technoratiTags = BlojsomUtils.getRequestValue(METADATA_TECHNORATI_TAGS, processBlogEntryEvent.getHttpServletRequest());
+            if (processBlogEntryEvent.getBlogEntry() != null) {
+                String savedTechnoratiTags = (String) processBlogEntryEvent.getBlogEntry().getMetaData().get(METADATA_TECHNORATI_TAGS);
+                if (savedTechnoratiTags != null) {
+                    if (technoratiTags == null) {
+                        // Request parameter not available, save old set of tags
+                        technoratiTags = savedTechnoratiTags;
+                        // Request parameter blank, so throw away set of tags
+                    } else if ("".equals(technoratiTags.trim())) {
+                        technoratiTags = "";
+                    }
+                }
+
+                processBlogEntryEvent.getBlogEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
+            }
+
             Map context = processBlogEntryEvent.getContext();
 
             Map templateAdditions = (Map) processBlogEntryEvent.getContext().get("BLOJSOM_TEMPLATE_ADDITIONS");
