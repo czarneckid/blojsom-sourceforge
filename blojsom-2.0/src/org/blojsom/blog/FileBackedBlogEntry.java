@@ -43,7 +43,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.33 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.34 2006-02-20 17:04:46 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -175,7 +175,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @return <code>true</code> if the blog entry is writable, <code>false</code> otherwise
      */
     public boolean supportsComments() {
-        return _source.canWrite();
+        return _source.canWrite() && (!BlojsomUtils.checkMapForKey(_metaData, BLOG_METADATA_COMMENTS_DISABLED));
     }
 
     /**
@@ -185,7 +185,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @since blojsom 2.05
      */
     public boolean supportsTrackbacks() {
-        return _source.canWrite();
+        return _source.canWrite() && (!BlojsomUtils.checkMapForKey(_metaData, BLOG_METADATA_TRACKBACKS_DISABLED));
     }
 
     /**
@@ -213,32 +213,28 @@ public class FileBackedBlogEntry extends BlogEntry {
      * @param blogUser {@link BlogUser} information
      */
     protected void loadComments(BlogUser blogUser) {
-        if (supportsComments()) {
-            String commentsDirectoryPath;
-            if (_source.getParent() == null) {
-                commentsDirectoryPath = File.separator + _commentsDirectory + File.separator + _source.getName();
-            } else {
-                commentsDirectoryPath = _source.getParent() + File.separator + _commentsDirectory + File.separator + _source.getName();
-            }
-            File commentsDirectory = new File(commentsDirectoryPath);
-            File[] comments = commentsDirectory.listFiles(BlojsomUtils.getExtensionFilter(COMMENT_EXTENSION));
-            if ((comments != null) && (comments.length > 0)) {
-                _logger.debug("Adding " + comments.length + " comments to blog entry: " + getPermalink());
-                Arrays.sort(comments, BlojsomUtils.FILE_TIME_ASCENDING_COMPARATOR);
-                _comments = new ArrayList(comments.length);
-                BlogComment blogComment;
-                for (int i = 0; i < comments.length; i++) {
-                    File comment = comments[i];
-                    try {
-                        blogComment = loadComment(comment, blogUser.getBlog().getBlogFileEncoding(), blogUser);
-                        _comments.add(blogComment);
-                    } catch (BlojsomException e) {
-                        _logger.error(e);
-                    }
+        String commentsDirectoryPath;
+        if (_source.getParent() == null) {
+            commentsDirectoryPath = File.separator + _commentsDirectory + File.separator + _source.getName();
+        } else {
+            commentsDirectoryPath = _source.getParent() + File.separator + _commentsDirectory + File.separator + _source.getName();
+        }
+        File commentsDirectory = new File(commentsDirectoryPath);
+        File[] comments = commentsDirectory.listFiles(BlojsomUtils.getExtensionFilter(COMMENT_EXTENSION));
+        if ((comments != null) && (comments.length > 0)) {
+            _logger.debug("Adding " + comments.length + " comments to blog entry: " + getPermalink());
+            Arrays.sort(comments, BlojsomUtils.FILE_TIME_ASCENDING_COMPARATOR);
+            _comments = new ArrayList(comments.length);
+            BlogComment blogComment;
+            for (int i = 0; i < comments.length; i++) {
+                File comment = comments[i];
+                try {
+                    blogComment = loadComment(comment, blogUser.getBlog().getBlogFileEncoding(), blogUser);
+                    _comments.add(blogComment);
+                } catch (BlojsomException e) {
+                    _logger.error(e);
                 }
             }
-        } else {
-            _logger.debug("Blog entry does not support comments");
         }
     }
 
@@ -252,7 +248,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      *
      * @param commentFile      Comment file
      * @param blogFileEncoding Encoding for blog files
-     * @param blogUser {@link BlogUser}
+     * @param blogUser         {@link BlogUser}
      * @return BlogComment Blog comment loaded from disk
      */
     protected BlogComment loadComment(File commentFile, String blogFileEncoding, BlogUser blogUser) throws BlojsomException {
@@ -314,7 +310,7 @@ public class FileBackedBlogEntry extends BlogEntry {
      *
      * @param trackbackFile    Trackback file
      * @param blogFileEncoding Encoding for blog files
-     * @param blogUser {@link BlogUser} information
+     * @param blogUser         {@link BlogUser} information
      * @return Trackback Trackback loaded from disk
      */
     protected Trackback loadTrackback(File trackbackFile, String blogFileEncoding, BlogUser blogUser) throws BlojsomException {
@@ -378,9 +374,9 @@ public class FileBackedBlogEntry extends BlogEntry {
      * blog_name<br/>
      * excerpt<br />
      *
-     * @param pingbackFile    Pingback file
+     * @param pingbackFile     Pingback file
      * @param blogFileEncoding Encoding for blog files
-     * @param blogUser {@link BlogUser}
+     * @param blogUser         {@link BlogUser}
      * @return {@link Pingback} loaded from disk
      * @since blojsom 2.23
      */
@@ -637,7 +633,7 @@ public class FileBackedBlogEntry extends BlogEntry {
                 + File.separatorChar + _source.getName() + File.separatorChar);
         BlojsomUtils.deleteDirectory(_trackbacks);
 
-         // Delete pingbacks
+        // Delete pingbacks
         File _pingbacks = new File(blog.getBlogHome() + _category + blog.getBlogPingbacksDirectory()
                 + File.separatorChar + _source.getName() + File.separatorChar);
         BlojsomUtils.deleteDirectory(_pingbacks);
@@ -659,5 +655,5 @@ public class FileBackedBlogEntry extends BlogEntry {
         if (attributeMap.containsKey(SOURCE_ATTRIBUTE)) {
             _source = (File) attributeMap.get(SOURCE_ATTRIBUTE);
         }
-    }    
+    }
 }
