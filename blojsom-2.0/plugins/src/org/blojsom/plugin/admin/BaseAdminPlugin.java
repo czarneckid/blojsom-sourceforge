@@ -56,8 +56,8 @@ import java.io.IOException;
  * BaseAdminPlugin
  *
  * @author David Czarnecki
+ * @version $Id: BaseAdminPlugin.java,v 1.25 2006-02-21 18:43:25 czarneckid Exp $
  * @since blojsom 2.04
- * @version $Id: BaseAdminPlugin.java,v 1.24 2006-01-04 16:52:59 czarneckid Exp $
  */
 public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, BlojsomMetaDataConstants, PermissionedPlugin {
 
@@ -74,6 +74,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     protected static final String BLOJSOM_USER_AUTHENTICATED = "BLOJSOM_USER_AUTHENTICATED";
     protected static final String BLOJSOM_ADMIN_MESSAGES_RESOURCE = "org.blojsom.plugin.admin.resources.messages";
     protected static final String BLOJSOM_PERMISSION_CHECKER = "BLOJSOM_PERMISSION_CHECKER";
+    protected static final String PLUGIN_ADMIN_INHERIT_APACHE_CREDENTIALS = "plugin-admin-inherit-apache-credentials";
 
     // Localization constants
     protected static final String LOGIN_ERROR_TEXT_KEY = "login.error.text";
@@ -102,9 +103,10 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig Servlet config object for the plugin to retrieve any initialization parameters
+     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
      * @param blojsomConfiguration {@link BlojsomConfiguration} information
-     * @throws org.blojsom.plugin.BlojsomPluginException If there is an error initializing the plugin
+     * @throws org.blojsom.plugin.BlojsomPluginException
+     *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         _blojsomConfiguration = blojsomConfiguration;
@@ -154,10 +156,10 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     /**
      * Authenticate the user if their authentication session variable is not present
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param context Context
-     * @param blogUser User information
+     * @param context             Context
+     * @param blogUser            User information
      * @return <code>true</code> if the user is authenticated, <code>false</code> otherwise
      */
     protected boolean authenticateUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context, BlogUser blogUser) {
@@ -183,6 +185,19 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         if (httpServletRequest.getParameterMap().size() > 0) {
             redirectURL.append("?");
             redirectURL.append(BlojsomUtils.convertRequestParams(httpServletRequest, _ignoreParams));
+        }
+
+        if (Boolean.valueOf(blog.getBlogProperty(PLUGIN_ADMIN_INHERIT_APACHE_CREDENTIALS)).booleanValue() && !BlojsomUtils.checkNullOrBlank(httpServletRequest.getRemoteUser())) {
+            String remoteUsername = httpServletRequest.getRemoteUser();
+            _logger.debug("Retrieved remote_user from server: " + remoteUsername);
+
+            if (blog.getAuthorization() != null && blog.getAuthorization().containsKey(remoteUsername)) {
+                httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
+                httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, remoteUsername);
+                httpSession.setAttribute(BLOJSOM_ADMIN_PLUGIN_USERNAME, remoteUsername);
+                httpSession.setAttribute(BLOJSOM_USER_AUTHENTICATED, Boolean.TRUE);
+                _logger.debug("Passed remote_user authentication for username: " + remoteUsername);
+            }
         }
 
         // Otherwise, check for the authenticated key and if not authenticated, look for a "username" and "password" parameter
@@ -213,7 +228,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
                 return true;
             } catch (BlojsomException e) {
                 _logger.debug("Failed authentication for username: " + username);
-                addOperationResultMessage(context, formatAdminResource(LOGIN_ERROR_TEXT_KEY, LOGIN_ERROR_TEXT_KEY, blog.getBlogAdministrationLocale(), new Object[] {username}));
+                addOperationResultMessage(context, formatAdminResource(LOGIN_ERROR_TEXT_KEY, LOGIN_ERROR_TEXT_KEY, blog.getBlogAdministrationLocale(), new Object[]{username}));
                 _logger.debug("Setting redirect_to attribute to: " + redirectURL.toString());
                 if (!logout) {
                     httpServletRequest.getSession().setAttribute(REDIRECT_TO_PARAM, redirectURL.toString());
@@ -224,7 +239,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
         } else {
             context.put(BLOJSOM_PERMISSION_CHECKER, new PermissionChecker(blogUser, _authorizationProvider, context));
 
-            return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();            
+            return ((Boolean) httpSession.getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY)).booleanValue();
         }
     }
 
@@ -232,10 +247,13 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      * Retrieve the current authorized username for this session
      *
      * @param httpServletRequest Request
-     * @param blog {@link Blog}
-     * @return Authorized username for this session or <code>null</code> if no user is currently authorized 
+     * @param blog               {@link Blog}
+     * @return Authorized username for this session or <code>null</code> if no user is currently authorized
      */
-    protected String getUsernameFromSession(HttpServletRequest httpServletRequest, Blog blog) {
+    protected String getUsernameFromSession
+            (HttpServletRequest
+                    httpServletRequest, Blog
+                    blog) {
         return (String) httpServletRequest.getSession().getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
     }
 
@@ -248,7 +266,12 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      * @param permission        Permission
      * @return <code>true</code> if the username has the required permission, <code>false</code> otherwise
      */
-    public boolean checkPermission(BlogUser blogUser, Map permissionContext, String username, String permission) {
+    public boolean checkPermission
+            (BlogUser
+                    blogUser, Map
+                    permissionContext, String
+                    username, String
+                    permission) {
         try {
             _authorizationProvider.checkPermission(blogUser, permissionContext, username, permission);
         } catch (BlojsomException e) {
@@ -265,34 +288,45 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      * @param context Context
      * @param message Message to add
      */
-    protected void addOperationResultMessage(Map context, String message) {
+    protected void addOperationResultMessage
+            (Map
+                    context, String
+                    message) {
         context.put(BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT, message);
     }
 
     /**
      * Retrieve a resource from the administration resource bundle
      *
-     * @param resourceID ID of resource to retrieve
+     * @param resourceID   ID of resource to retrieve
      * @param fallbackText Text to use as fallback if resource ID is not found
-     * @param locale {@link Locale} to use when retrieving resource
+     * @param locale       {@link Locale} to use when retrieving resource
      * @return Text from administration resource bundle given by <code>resourceID</code> or <code>fallbackText</code> if the resource ID is not found
      * @since blojsom 2.27
      */
-    protected String getAdminResource(String resourceID, String fallbackText, Locale locale) {
+    protected String getAdminResource
+            (String
+                    resourceID, String
+                    fallbackText, Locale
+                    locale) {
         return _resourceManager.getString(resourceID, BLOJSOM_ADMIN_MESSAGES_RESOURCE, fallbackText, locale);
     }
 
     /**
      * Retrieve a resource from the administration resource bundle and pass it through the {@link ResourceManager#format(String, Object[])} method
      *
-     * @param resourceID ID of resource to retrieve
+     * @param resourceID   ID of resource to retrieve
      * @param fallbackText Text to use as fallback if resource ID is not found
-     * @param locale {@link Locale} to use when retrieving resource
-     * @param arguments Arguments for {@link ResourceManager#format(String, Object[])}
+     * @param locale       {@link Locale} to use when retrieving resource
+     * @param arguments    Arguments for {@link ResourceManager#format(String, Object[])}
      * @return Text from administration resource bundle given by <code>resourceID</code> formatted appropriately or <code>fallbackText</code> if the resource ID could not be formatted
      * @since blojsom 2.27
      */
-    protected String formatAdminResource(String resourceID, String fallbackText, Locale locale, Object[] arguments) {
+    protected String formatAdminResource
+            (String
+                    resourceID, String
+                    fallbackText, Locale
+                    locale, Object[] arguments) {
         String resourceText = getAdminResource(resourceID, fallbackText, locale);
 
         String formattedText = _resourceManager.format(resourceText, arguments);
@@ -306,15 +340,20 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
     /**
      * Process the blog entries
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user {@link org.blojsom.blog.BlogUser} instance
-     * @param context Context
-     * @param entries Blog entries retrieved for the particular request
+     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param context             Context
+     * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws BlojsomPluginException If there is an error processing the blog entries
      */
-    public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
+    public BlogEntry[] process
+            (HttpServletRequest
+                    httpServletRequest, HttpServletResponse
+                    httpServletResponse, BlogUser
+                    user, Map
+                    context, BlogEntry[] entries) throws BlojsomPluginException {
         if (!authenticateUser(httpServletRequest, httpServletResponse, context, user)) {
             httpServletRequest.setAttribute(PAGE_PARAM, ADMIN_LOGIN_PAGE);
         } else {
@@ -345,7 +384,8 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      *
      * @throws BlojsomPluginException If there is an error performing cleanup for this plugin
      */
-    public void cleanup() throws BlojsomPluginException {
+    public void cleanup
+            () throws BlojsomPluginException {
     }
 
     /**
@@ -353,6 +393,7 @@ public class BaseAdminPlugin implements BlojsomPlugin, BlojsomConstants, Blojsom
      *
      * @throws BlojsomPluginException If there is an error in finalizing this plugin
      */
-    public void destroy() throws BlojsomPluginException {
+    public void destroy
+            () throws BlojsomPluginException {
     }
 }
