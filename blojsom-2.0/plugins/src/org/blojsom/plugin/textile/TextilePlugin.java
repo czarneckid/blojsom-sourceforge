@@ -52,9 +52,11 @@ import java.util.Map;
  *
  * @author Mark Lussier
  * @since blojsom 1.9
- * @version $Id: TextilePlugin.java,v 1.6 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: TextilePlugin.java,v 1.7 2006-02-22 20:44:51 czarneckid Exp $
  */
 public class TextilePlugin implements BlojsomPlugin {
+
+    private static final String PLUGIN_TEXTILE_PROCESS_ALL_ENTRIES = "plugin-textile-process-all-entries";
 
     /**
      * MetaData Key to identify a Textile post
@@ -105,7 +107,8 @@ public class TextilePlugin implements BlojsomPlugin {
                                BlogEntry[] entries) throws BlojsomPluginException {
         for (int x = 0; x < entries.length; x++) {
             BlogEntry entry = entries[x];
-            if (entry.getPermalink().endsWith(TEXTILE_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_TEXTILE)) {
+            if (entry.getPermalink().endsWith(TEXTILE_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_TEXTILE)
+                    || Boolean.valueOf(user.getBlog().getBlogProperty(PLUGIN_TEXTILE_PROCESS_ALL_ENTRIES)).booleanValue()) {
                 _logger.debug("Textile processing: " + entry.getTitle());
                 entry.setDescription(_textile.process(entry.getDescription()));
             }
