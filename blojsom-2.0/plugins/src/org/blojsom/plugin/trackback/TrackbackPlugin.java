@@ -63,7 +63,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.45 2006-02-17 16:54:23 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.46 2006-02-22 18:51:20 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -598,6 +598,7 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
         String authorEmail = blog.getAuthorizedUserEmail(author);
 
         email.addTo(authorEmail, author);
+        email.setSentDate(new Date());
     }
 
     /**

@@ -65,7 +65,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.43 2006-02-17 16:54:03 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.44 2006-02-22 18:51:19 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -661,6 +661,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
         }
 
         email.addTo(authorEmail, author);
+        email.setSentDate(new Date());
     }
 
     /**
