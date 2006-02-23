@@ -66,7 +66,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.5 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.6 2006-02-23 18:58:14 czarneckid Exp $
  * @since blojsom 2.24
  */
 public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants {
@@ -77,7 +77,8 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
     private static final String X_PINGBACK_HEADER = "X-Pingback";
     private static final String PINGBACK_LINK_REGEX = "<link rel=\"pingback\" href=\"([^\"]+)\" ?/?>";
     private static final String HREF_REGEX = "href\\s*=\\s*\"(.*?)\"";
-    
+
+    public static final String BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY = "BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY";
     public static final String PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS = "send-pingbacks";
 
     private PingbackPluginAsyncCallback _callbackHandler;
@@ -148,9 +149,9 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
 
             String text = blogEntryEvent.getBlogEntry().getDescription();
             if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(blogEntryEvent.getBlogEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS)) {
-                String pingbackURL = null;
+                String pingbackURL;
                 String sourceURI = blogEntryEvent.getBlogEntry().getLink();
-                String targetURI = null;
+                String targetURI;
 
                 Pattern hrefPattern = Pattern.compile(HREF_REGEX, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.DOTALL);
                 Matcher hrefMatcher = hrefPattern.matcher(text);
