@@ -43,7 +43,7 @@ import java.util.Map;
  * Trackback response submission event
  *
  * @author David Czarnecki
- * @version $Id: TrackbackResponseSubmissionEvent.java,v 1.4 2006-01-10 17:05:43 czarneckid Exp $
+ * @version $Id: TrackbackResponseSubmissionEvent.java,v 1.5 2006-02-23 18:33:37 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class TrackbackResponseSubmissionEvent extends ResponseSubmissionEvent {
@@ -58,7 +58,7 @@ public class TrackbackResponseSubmissionEvent extends ResponseSubmissionEvent {
      * @param httpServletResponse {@link HttpServletResponse}
      * @param submitter           Submitter (blogName)
      * @param submitterItem1      Submitter data item 1 (title)
-     * @param submitterItem2      Submitter data item 2 (UTL)
+     * @param submitterItem2      Submitter data item 2 (URL)
      * @param content             Trackback excerpt
      * @param entry               {@link BlogEntry}
      * @param metaData            Trackback meta-data
