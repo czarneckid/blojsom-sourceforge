@@ -38,6 +38,7 @@ import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -47,8 +48,9 @@ import java.util.*;
 /**
  * RecentCommentsPlugin
  *
+ * @author  Dvid Czarnecki
  * @author Mark Lussier
- * @version $Id: RecentCommentsPlugin.java,v 1.2 2006-01-04 16:53:00 czarneckid Exp $
+ * @version $Id: RecentCommentsPlugin.java,v 1.3 2006-02-23 20:17:16 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class RecentCommentsPlugin implements BlojsomPlugin {
@@ -56,20 +58,19 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
     private Log _logger = LogFactory.getLog(RecentCommentsPlugin.class);
 
     /**
-     *
+     * Default number of recent comments to show
      */
-    private static final int DEFAULT_COMMENT_COUNT = 25;
+    private static final int DEFAULT_COMMENT_COUNT = 10;
 
     /**
-     *
+     * Context variable containing recent comments
      */
     private static final String BLOJSOM_RECENT_COMMENTS = "BLOJSOM_RECENT_COMMENTS";
 
     /**
-     *
+     * Recent comments URL parameter
      */
-    private static final String PARAM_COMMEN_COUNT = "count";
-
+    private static final String PARAM_RECENT_COMMENT_COUNT = "rcc";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -80,7 +81,6 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
-
     }
 
     /**
@@ -96,14 +96,15 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-
-        String countParam = httpServletRequest.getParameter(PARAM_COMMEN_COUNT);
+        String countParam = httpServletRequest.getParameter(PARAM_RECENT_COMMENT_COUNT);
         int count = DEFAULT_COMMENT_COUNT;
-        if (countParam != null && !"".equals(countParam)) {
+        if (!BlojsomUtils.checkNullOrBlank(countParam)) {
             try {
                 count = Integer.parseInt(countParam);
+                if (count <= 0) {
+                    count = DEFAULT_COMMENT_COUNT;
+                }
             } catch (NumberFormatException e) {
-                _logger.error("Invalid value for Recent Comments count param, using default");
                 count = DEFAULT_COMMENT_COUNT;
             }
         }
@@ -121,7 +122,7 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
             }
         }
 
-        // Sort and Chop
+        // Sort and chop
         if (commentsList.size() > 0) {
             Collections.sort(commentsList, COMMENT_DATE_COMPARATOR);
             if (commentsList.size() > count) {
@@ -130,9 +131,6 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
 
             context.put(BLOJSOM_RECENT_COMMENTS, commentsList);
         }
-
-
-
 
         return entries;
     }
@@ -145,7 +143,6 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
      *          If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws BlojsomPluginException {
-
     }
 
     /**
@@ -155,10 +152,11 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
-
     }
 
-
+    /**
+     * Compare comment dates
+     */
     public static final Comparator COMMENT_DATE_COMPARATOR = new Comparator() {
         public int compare(Object o1, Object o2) {
             BlogComment f1;
