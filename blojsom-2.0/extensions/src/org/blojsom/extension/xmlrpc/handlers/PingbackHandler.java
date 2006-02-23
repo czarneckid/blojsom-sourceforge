@@ -34,6 +34,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.blojsom.BlojsomException;
+import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
+import org.blojsom.plugin.pingback.event.PingbackAddedEvent;
+import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.blog.*;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.util.BlojsomUtils;
@@ -55,7 +58,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.5 2006-01-04 16:24:24 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.6 2006-02-23 18:59:42 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
@@ -173,7 +176,7 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
         }
 
         // Fetch sourceURI to make sure there is a link to the targetURI
-        StringBuffer sourcePage = new StringBuffer();
+        StringBuffer sourcePage;
         try {
             URL source = new URL(sourceURI);
             HttpURLConnection sourceConnection = (HttpURLConnection) source.openConnection();
@@ -234,12 +237,23 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
                 Pingback pingback = _fetcher.newPingback();
                 pingback.setBlogEntry(blogEntry);
 
-                Integer status = addPingback(new HashMap(), blogCategory.getCategory(), permalink, blogEntry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI),
-                        sourceURI, getTitleFromSource(sourcePage.toString()), _blog.getBlogFileExtensions(), _blog.getBlogHome(),
-                        _blog.getBlogPingbacksDirectory(), UTF8, pingbackMetaData, pingback, pingbackID);
+                _configuration.getEventBroadcaster().processEvent(new PingbackResponseSubmissionEvent(this, new Date(), _blogUser, _httpServletRequest, _httpServletResponse, getTitleFromSource(sourcePage.toString()), getTitleFromSource(sourcePage.toString()), sourceURI, getExcerptFromSource(sourcePage.toString(), targetURI), blogEntry, pingbackMetaData));
 
-                if (status.intValue() != 0) {
-                    throw new XmlRpcException(status.intValue(), "Unknown exception occurred");
+                // Check to see if the trackback should be destroyed (not saved) automatically
+                if (!pingbackMetaData.containsKey(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY)) {
+                    Integer status = addPingback(new HashMap(), blogCategory.getCategory(), permalink, blogEntry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI),
+                            sourceURI, getTitleFromSource(sourcePage.toString()), _blog.getBlogFileExtensions(), _blog.getBlogHome(),
+                            _blog.getBlogPingbacksDirectory(), UTF8, pingbackMetaData, pingback, pingbackID);
+
+                    if (status.intValue() != 0) {
+                        throw new XmlRpcException(status.intValue(), "Unknown exception occurred");
+                    } else {
+                        _configuration.getEventBroadcaster().broadcastEvent(new PingbackAddedEvent(this, new Date(), pingback, _blogUser));
+                    }
+                } else {
+                    _logger.info("Pingback meta-data contained destroy key. Pingback was not saved");
+
+                    throw new XmlRpcException(PINGBACK_ACCESS_DENIED_CODE, "Pingback meta-data contained destroy key. Pingback was not saved.");
                 }
             } else {
                 _logger.debug("Target URI does not support pingbacks");
@@ -311,7 +325,7 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
         Blog blog = user.getBlog();
 
         // Determine the user requested category
-        String requestedCategory = httpServletRequest.getPathInfo();
+        String requestedCategory;
         String userFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
         if (userFromPath == null) {
             requestedCategory = httpServletRequest.getPathInfo();
