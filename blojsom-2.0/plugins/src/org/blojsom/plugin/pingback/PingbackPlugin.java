@@ -32,24 +32,36 @@ package org.blojsom.plugin.pingback;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.apache.xmlrpc.AsyncCallback;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.blojsom.blog.BlogEntry;
 import org.blojsom.blog.BlogUser;
 import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.Blog;
 import org.blojsom.event.BlojsomEvent;
 import org.blojsom.event.BlojsomListener;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
+import org.blojsom.plugin.common.VelocityPlugin;
+import org.blojsom.plugin.pingback.event.PingbackAddedEvent;
+import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.plugin.admin.event.AddBlogEntryEvent;
 import org.blojsom.plugin.admin.event.BlogEntryEvent;
 import org.blojsom.plugin.admin.event.UpdatedBlogEntryEvent;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.mail.Session;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,6 +70,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,12 +80,20 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.7 2006-02-24 00:21:27 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.8 2006-02-24 23:36:48 czarneckid Exp $
  * @since blojsom 2.24
  */
-public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants {
+public class PingbackPlugin extends VelocityPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants, EmailConstants {
 
     private static Log _logger = LogFactory.getLog(PingbackPlugin.class);
+
+    private static final String PINGBACK_PLUGIN_EMAIL_TEMPLATE_HTML = "org/blojsom/plugin/pingback/pingback-plugin-email-template-html.vm";
+    private static final String PINGBACK_PLUGIN_EMAIL_TEMPLATE_TEXT = "org/blojsom/plugin/pingback/pingback-plugin-email-template-text.vm";
+
+    private static final String DEFAULT_PINGBACK_PREFIX = "[blojsom] Pingback on: ";
+    private static final String PINGBACK_PREFIX_IP = "plugin-pingback-email-prefix";
+    private static final String BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY = "BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY";
+    private static final String BLOJSOM_PINGBACK_PLUGIN_PINGBACK = "BLOJSOM_PINGBACK_PLUGIN_PINGBACK";
 
     private static final String PINGBACK_METHOD = "pingback.ping";
     private static final String X_PINGBACK_HEADER = "X-Pingback";
@@ -85,6 +107,11 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
 
     public static final String BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY = "BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY";
     public static final String PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS = "send-pingbacks";
+
+    private String _mailServer;
+    private String _mailServerUsername;
+    private String _mailServerPassword;
+    private Session _session;
 
     private PingbackPluginAsyncCallback _callbackHandler;
 
@@ -104,6 +131,26 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
         _callbackHandler = new PingbackPluginAsyncCallback();
+
+        _mailServer = servletConfig.getInitParameter(SMTPSERVER_IP);
+
+        if (_mailServer != null) {
+            if (_mailServer.startsWith("java:comp/env")) {
+                try {
+                    Context context = new InitialContext();
+                    _session = (Session) context.lookup(_mailServer);
+                } catch (NamingException e) {
+                    _logger.error(e);
+                    throw new BlojsomPluginException(e);
+                }
+            } else {
+                _mailServerUsername = servletConfig.getInitParameter(SMTPSERVER_USERNAME_IP);
+                _mailServerPassword = servletConfig.getInitParameter(SMTPSERVER_PASSWORD_IP);
+            }
+        } else {
+            throw new BlojsomPluginException("Missing SMTP servername servlet initialization parameter: " + SMTPSERVER_IP);
+        }
+
         blojsomConfiguration.getEventBroadcaster().addListener(this);
 
         _logger.debug("Initialized pingback plugin");
@@ -141,6 +188,51 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
      *          If there is an error in finalizing this plugin
      */
     public void destroy() throws BlojsomPluginException {
+    }
+
+    /**
+     * Setup the pingback e-mail
+     *
+     * @param blog  {@link org.blojsom.blog.Blog} information
+     * @param email Email message
+     * @throws org.apache.commons.mail.EmailException If there is an error preparing the e-mail message
+     */
+    protected void setupEmail(Blog blog, BlogEntry entry, Email email) throws EmailException {
+        email.setCharset(UTF8);
+
+        // If we have a mail session for the environment, use that
+        if (_session != null) {
+            email.setMailSession(_session);
+        } else {
+            // Otherwise, if there is a username and password for the mail server, use that
+            if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword)) {
+                email.setHostName(_mailServer);
+                email.setAuthentication(_mailServerUsername, _mailServerPassword);
+            } else {
+                email.setHostName(_mailServer);
+            }
+        }
+
+        email.setFrom(blog.getBlogOwnerEmail(), "Blojsom Pingback");
+
+        String author;
+        if (entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR) != null) {
+            author = (String) entry.getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR);
+        } else {
+            author = blog.getBlogOwner();
+        }
+
+        String authorEmail = blog.getBlogOwnerEmail();
+
+        if (author != null) {
+            authorEmail = blog.getAuthorizedUserEmail(author);
+            if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                authorEmail = blog.getBlogOwnerEmail();
+            }
+        }
+
+        email.addTo(authorEmail, author);
+        email.setSentDate(new Date());
     }
 
     /**
@@ -208,6 +300,38 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
                 }
             } else {
                 _logger.debug("No text in blog entry or " + PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS + " not enabled.");
+            }
+        } else if (event instanceof PingbackAddedEvent) {
+            HtmlEmail email = new HtmlEmail();
+            PingbackAddedEvent pingbackAddedEvent = (PingbackAddedEvent) event;
+
+            if (pingbackAddedEvent.getBlogUser().getBlog().getBlogEmailEnabled().booleanValue()) {
+                try {
+                    setupEmail(pingbackAddedEvent.getBlogUser().getBlog(), pingbackAddedEvent.getBlogEntry(), email);
+
+                    Map emailTemplateContext = new HashMap();
+                    emailTemplateContext.put(BLOJSOM_BLOG, pingbackAddedEvent.getBlogUser().getBlog());
+                    emailTemplateContext.put(BLOJSOM_USER, pingbackAddedEvent.getBlogUser());
+                    emailTemplateContext.put(BLOJSOM_PINGBACK_PLUGIN_PINGBACK, pingbackAddedEvent.getPingback());
+                    emailTemplateContext.put(BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY, pingbackAddedEvent.getBlogEntry());
+
+                    String htmlText = mergeTemplate(PINGBACK_PLUGIN_EMAIL_TEMPLATE_HTML, pingbackAddedEvent.getBlogUser(), emailTemplateContext);
+                    String plainText = mergeTemplate(PINGBACK_PLUGIN_EMAIL_TEMPLATE_TEXT, pingbackAddedEvent.getBlogUser(), emailTemplateContext);
+
+                    email.setHtmlMsg(htmlText);
+                    email.setTextMsg(plainText);
+
+                    String emailPrefix = pingbackAddedEvent.getBlogUser().getBlog().getBlogProperty(PINGBACK_PREFIX_IP);
+                    if (BlojsomUtils.checkNullOrBlank(emailPrefix)) {
+                        emailPrefix = DEFAULT_PINGBACK_PREFIX;
+                    }
+
+                    email = (HtmlEmail) email.setSubject(emailPrefix + pingbackAddedEvent.getBlogEntry().getTitle());
+
+                    email.send();
+                } catch (EmailException e) {
+                    _logger.error(e);
+                }
             }
         }
     }
