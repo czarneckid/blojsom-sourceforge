@@ -66,7 +66,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.6 2006-02-23 18:58:14 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.7 2006-02-24 00:21:27 czarneckid Exp $
  * @since blojsom 2.24
  */
 public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants {
@@ -77,6 +77,11 @@ public class PingbackPlugin implements BlojsomPlugin, BlojsomListener, BlojsomCo
     private static final String X_PINGBACK_HEADER = "X-Pingback";
     private static final String PINGBACK_LINK_REGEX = "<link rel=\"pingback\" href=\"([^\"]+)\" ?/?>";
     private static final String HREF_REGEX = "href\\s*=\\s*\"(.*?)\"";
+
+    /**
+     * IP address meta-data
+     */
+    public static final String BLOJSOM_PINGBACK_PLUGIN_METADATA_IP = "BLOJSOM_PINGBACK_PLUGIN_METADATA_IP";
 
     public static final String BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY = "BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY";
     public static final String PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS = "send-pingbacks";
