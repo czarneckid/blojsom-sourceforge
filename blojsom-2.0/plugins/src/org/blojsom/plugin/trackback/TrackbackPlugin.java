@@ -32,38 +32,37 @@ package org.blojsom.plugin.trackback;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.mail.HtmlEmail;
-import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.blojsom.BlojsomException;
-import org.blojsom.event.BlojsomListener;
-import org.blojsom.event.BlojsomEvent;
 import org.blojsom.blog.*;
+import org.blojsom.event.BlojsomEvent;
+import org.blojsom.event.BlojsomListener;
 import org.blojsom.fetcher.BlojsomFetcher;
 import org.blojsom.fetcher.BlojsomFetcherException;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.plugin.common.VelocityPlugin;
-import org.blojsom.plugin.email.EmailUtils;
 import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.plugin.trackback.event.TrackbackAddedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.util.BlojsomUtils;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.mail.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.46 2006-02-22 18:51:20 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.47 2006-02-24 00:22:13 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -264,16 +263,9 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
             return entries;
         }
 
-        Boolean _blogEmailEnabled;
         Boolean _blogTrackbacksEnabled;
-        String _emailPrefix;
 
-        _blogEmailEnabled = blog.getBlogEmailEnabled();
         _blogTrackbacksEnabled = blog.getBlogTrackbacksEnabled();
-        _emailPrefix = blog.getBlogProperty(TRACKBACK_PREFIX_IP);
-        if (_emailPrefix == null) {
-            _emailPrefix = DEFAULT_TRACKBACK_PREFIX;
-        }
 
         if (entries.length == 0) {
             return entries;
@@ -472,19 +464,6 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
 
                 // For persisting the Last-Modified time
                 context.put(BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
-
-                // Merge the template e-mail
-                Map emailTemplateContext = new HashMap();
-                emailTemplateContext.put(BLOJSOM_BLOG, blog);
-                emailTemplateContext.put(BLOJSOM_USER, user);
-                emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY, entries[0]);
-                emailTemplateContext.put(BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK, trackback);
-
-                String emailTrackback = mergeTemplate(TRACKBACK_PLUGIN_EMAIL_TEMPLATE, user, emailTemplateContext);
-
-                if (_blogEmailEnabled.booleanValue()) {
-                    sendTrackbackEmail(_emailPrefix, entries[0].getTitle(), emailTrackback, context, (String) entries[0].getMetaData().get(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR), blog);
-                }
             } else {
                 _logger.info("Trackback meta-data contained destroy key. Trackback was not saved");
             }
@@ -535,22 +514,6 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
         }
 
         return new Integer(0);
-    }
-
-    /**
-     * Send the trackback e-mail to the blog author
-     *
-     * @param emailPrefix E-mail prefix
-     * @param title       Entry title
-     * @param trackback   Trackback text
-     * @param context     Context
-     * @param author Author of entry
-     * @param blog {@link Blog} information
-     */
-    public void sendTrackbackEmail(String emailPrefix, String title, String trackback, Map context, String author, Blog blog) {
-        String recipientEmail = blog.getAuthorizedUserEmail(author);
-
-        EmailUtils.notifyBlogAuthor(emailPrefix + title, trackback, context, recipientEmail);
     }
 
     /**
