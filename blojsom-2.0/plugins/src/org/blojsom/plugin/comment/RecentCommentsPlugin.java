@@ -32,10 +32,7 @@ package org.blojsom.plugin.comment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.BlogComment;
-import org.blojsom.blog.BlogEntry;
-import org.blojsom.blog.BlogUser;
-import org.blojsom.blog.BlojsomConfiguration;
+import org.blojsom.blog.*;
 import org.blojsom.plugin.BlojsomPlugin;
 import org.blojsom.plugin.BlojsomPluginException;
 import org.blojsom.util.BlojsomUtils;
@@ -50,7 +47,7 @@ import java.util.*;
  *
  * @author  Dvid Czarnecki
  * @author Mark Lussier
- * @version $Id: RecentCommentsPlugin.java,v 1.3 2006-02-23 20:17:16 czarneckid Exp $
+ * @version $Id: RecentCommentsPlugin.java,v 1.4 2006-02-24 00:16:36 czarneckid Exp $
  * @since Blojsom 2.23
  */
 public class RecentCommentsPlugin implements BlojsomPlugin {
@@ -60,7 +57,7 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
     /**
      * Default number of recent comments to show
      */
-    private static final int DEFAULT_COMMENT_COUNT = 10;
+    private static final int DEFAULT_COMMENT_COUNT = 5;
 
     /**
      * Context variable containing recent comments
@@ -68,9 +65,9 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
     private static final String BLOJSOM_RECENT_COMMENTS = "BLOJSOM_RECENT_COMMENTS";
 
     /**
-     * Recent comments URL parameter
+     * Recent comments property
      */
-    private static final String PARAM_RECENT_COMMENT_COUNT = "rcc";
+    private static final String PLUGIN_RECENT_COMMENTS_COUNT = "plugin-recent-comments-count";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -96,11 +93,13 @@ public class RecentCommentsPlugin implements BlojsomPlugin {
      *          If there is an error processing the blog entries
      */
     public BlogEntry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlogUser user, Map context, BlogEntry[] entries) throws BlojsomPluginException {
-        String countParam = httpServletRequest.getParameter(PARAM_RECENT_COMMENT_COUNT);
+        Blog blog = user.getBlog();
+        String recentCommentsCount = blog.getBlogProperty(PLUGIN_RECENT_COMMENTS_COUNT);
+
         int count = DEFAULT_COMMENT_COUNT;
-        if (!BlojsomUtils.checkNullOrBlank(countParam)) {
+        if (!BlojsomUtils.checkNullOrBlank(recentCommentsCount)) {
             try {
-                count = Integer.parseInt(countParam);
+                count = Integer.parseInt(recentCommentsCount);
                 if (count <= 0) {
                     count = DEFAULT_COMMENT_COUNT;
                 }
