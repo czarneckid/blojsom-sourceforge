@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.6 2006-02-23 18:59:42 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.7 2006-02-24 00:20:58 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
@@ -241,6 +241,8 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
 
                 // Check to see if the trackback should be destroyed (not saved) automatically
                 if (!pingbackMetaData.containsKey(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY)) {
+                    pingbackMetaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_METADATA_IP, _httpServletRequest.getRemoteAddr());
+                    
                     Integer status = addPingback(new HashMap(), blogCategory.getCategory(), permalink, blogEntry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI),
                             sourceURI, getTitleFromSource(sourcePage.toString()), _blog.getBlogFileExtensions(), _blog.getBlogHome(),
                             _blog.getBlogPingbacksDirectory(), UTF8, pingbackMetaData, pingback, pingbackID);
