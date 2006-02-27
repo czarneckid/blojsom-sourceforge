@@ -65,7 +65,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.45 2006-02-27 17:02:51 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.46 2006-02-27 17:05:39 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -433,7 +433,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                 }
 
                 author = author.trim();
-                author = BlojsomUtils.stripHTML(author);
+                author = BlojsomUtils.escapeStringSimple(author);
                 author = BlojsomUtils.stripLineTerminators(author, " ");
 
                 commentText = commentText.trim();
@@ -446,7 +446,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 if (authorEmail != null) {
                     authorEmail = authorEmail.trim();
-                    authorEmail = BlojsomUtils.stripHTML(authorEmail);
+                    authorEmail = BlojsomUtils.escapeStringSimple(authorEmail);
                     authorEmail = BlojsomUtils.stripLineTerminators(authorEmail, " ");
                 } else {
                     authorEmail = "";
@@ -454,7 +454,7 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 if (authorURL != null) {
                     authorURL = authorURL.trim();
-                    authorURL = BlojsomUtils.stripHTML(authorURL);
+                    authorURL = BlojsomUtils.escapeStringSimple(authorURL);
                     authorURL = BlojsomUtils.stripLineTerminators(authorURL, " ");
                 } else {
                     authorURL = "";
