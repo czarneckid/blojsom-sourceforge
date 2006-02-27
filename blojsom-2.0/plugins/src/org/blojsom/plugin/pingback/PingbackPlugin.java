@@ -80,7 +80,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.8 2006-02-24 23:36:48 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.9 2006-02-27 16:42:43 czarneckid Exp $
  * @since blojsom 2.24
  */
 public class PingbackPlugin extends VelocityPlugin implements BlojsomPlugin, BlojsomListener, BlojsomConstants, EmailConstants {
@@ -130,6 +130,8 @@ public class PingbackPlugin extends VelocityPlugin implements BlojsomPlugin, Blo
      *          If there is an error initializing the plugin
      */
     public void init(ServletConfig servletConfig, BlojsomConfiguration blojsomConfiguration) throws BlojsomPluginException {
+        super.init(servletConfig, blojsomConfiguration);
+        
         _callbackHandler = new PingbackPluginAsyncCallback();
 
         _mailServer = servletConfig.getInitParameter(SMTPSERVER_IP);
