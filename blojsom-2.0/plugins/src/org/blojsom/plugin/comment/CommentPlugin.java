@@ -65,7 +65,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.44 2006-02-22 18:51:19 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.45 2006-02-27 17:02:51 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -433,6 +433,9 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                 }
 
                 author = author.trim();
+                author = BlojsomUtils.stripHTML(author);
+                author = BlojsomUtils.stripLineTerminators(author, " ");
+
                 commentText = commentText.trim();
 
                 // Check if autoformatting of comment text should be done
@@ -443,12 +446,16 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
 
                 if (authorEmail != null) {
                     authorEmail = authorEmail.trim();
+                    authorEmail = BlojsomUtils.stripHTML(authorEmail);
+                    authorEmail = BlojsomUtils.stripLineTerminators(authorEmail, " ");
                 } else {
                     authorEmail = "";
                 }
 
                 if (authorURL != null) {
                     authorURL = authorURL.trim();
+                    authorURL = BlojsomUtils.stripHTML(authorURL);
+                    authorURL = BlojsomUtils.stripLineTerminators(authorURL, " ");
                 } else {
                     authorURL = "";
                 }
@@ -457,10 +464,8 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
                     category += "/";
                 }
 
-                if ((authorURL != null) && (!"".equals(authorURL))) {
-                    if (!authorURL.toLowerCase().startsWith("http://")) {
-                        authorURL = "http://" + authorURL;
-                    }
+                if (!BlojsomUtils.checkNullOrBlank(authorURL) && !authorURL.toLowerCase().startsWith("http://")) {
+                    authorURL = "http://" + authorURL;
                 }
 
                 // Check to see if comments have been disabled for this blog entry
