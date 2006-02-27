@@ -53,7 +53,7 @@ import java.util.*;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.80 2006-01-04 16:59:54 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.81 2006-02-27 16:47:58 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1696,11 +1696,23 @@ public class BlojsomUtils implements BlojsomConstants {
      * @since blojsom 2.14
      */
     public static String stripLineTerminators(String input) {
+        return stripLineTerminators(input, "");
+    }
+
+    /**
+     * Strip line terminator characters from an input string
+     *
+     * @param input Input string
+     * @param replacement Replacement string
+     * @return Input with line terminator characters stripped or <code>null</code> if the input was <code>null</code>
+     * @since blojsom 2.30
+     */
+    public static String stripLineTerminators(String input, String replacement) {
         if (input == null) {
             return null;
         }
 
-        return input.replaceAll("[\n\r\f]", "");
+        return input.replaceAll("[\n\r\f]", replacement);
     }
 
     /**
