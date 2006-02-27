@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 2.02
- * @version $Id: AutoTrackbackPlugin.java,v 1.14 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.15 2006-02-27 16:11:42 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
 
@@ -70,7 +70,7 @@ public class AutoTrackbackPlugin implements BlojsomPlugin, BlojsomConstants {
     private static final Pattern RDF_INNER_PATTERN = Pattern.compile("(<rdf:Description.*/>)", REGEX_OPTIONS);
     private static final Pattern DC_IDENTIFIER_PATTERN = Pattern.compile("dc:identifier=\"(.*)\"");
     private static final Pattern TRACKBACK_PING_PATTERN = Pattern.compile("trackback:ping=\"(.*)\"");
-    private static final Pattern HREF_PATTERN = Pattern.compile("<\\s*a.*href\\s*=\\s*\"(([^\"]+).*?)\"\\s*>", REGEX_OPTIONS);
+    private static final Pattern HREF_PATTERN = Pattern.compile("<\\s*a.*?href\\s*=\\s*\"(([^\"]+).*?)\"\\s*>", REGEX_OPTIONS);
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
