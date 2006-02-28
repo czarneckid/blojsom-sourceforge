@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.7 2006-02-24 00:20:58 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.8 2006-02-28 16:12:04 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
@@ -78,9 +78,6 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
     protected static final int PINGBACK_ACCESS_DENIED_CODE = 49;
     protected static final int PINGBACK_UPSTREAM_SERVER_ERROR_CODE = 50;
 
-    // Pingback meta-data
-    protected static final String PINGBACK_METADATA_IP_ADDRESS = "PINGBACK_IP_ADDRESS";
-    
     /**
      * Construct a new Pingback handler
      */
@@ -231,7 +228,7 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
             BlogEntry blogEntry = BlojsomUtils.fetchEntry(_fetcher, _blogUser, blogCategory.getCategory(), permalink);
             if (_blog.getBlogPingbacksEnabled().booleanValue() && blogEntry.supportsPingbacks()) {
                 Map pingbackMetaData = new HashMap();
-                pingbackMetaData.put(PINGBACK_METADATA_IP_ADDRESS, _httpServletRequest.getRemoteAddr());
+                pingbackMetaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_METADATA_IP, _httpServletRequest.getRemoteAddr());
 
                 // Record pingback
                 Pingback pingback = _fetcher.newPingback();
@@ -241,8 +238,7 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
 
                 // Check to see if the trackback should be destroyed (not saved) automatically
                 if (!pingbackMetaData.containsKey(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY)) {
-                    pingbackMetaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_METADATA_IP, _httpServletRequest.getRemoteAddr());
-                    
+
                     Integer status = addPingback(new HashMap(), blogCategory.getCategory(), permalink, blogEntry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI),
                             sourceURI, getTitleFromSource(sourcePage.toString()), _blog.getBlogFileExtensions(), _blog.getBlogHome(),
                             _blog.getBlogPingbacksDirectory(), UTF8, pingbackMetaData, pingback, pingbackID);
@@ -296,12 +292,22 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
                                   String[] blogFileExtensions, String blogHome,
                                   String blogPingbackDirectory, String blogFileEncoding, Map pingbackMetaData,
                                   Pingback pingback, String id) throws XmlRpcException {
-        excerpt = BlojsomUtils.escapeMetaAndLink(excerpt);
-
+        title = BlojsomUtils.escapeStringSimple(title);
+        title = BlojsomUtils.stripLineTerminators(title, " ");
         pingback.setTitle(title);
+
+        excerpt = BlojsomUtils.escapeStringSimple(excerpt);
+        excerpt = BlojsomUtils.stripLineTerminators(excerpt, " ");
         pingback.setExcerpt(excerpt);
+
+        url = BlojsomUtils.escapeStringSimple(url);
+        url = BlojsomUtils.stripLineTerminators(url, " ");
         pingback.setUrl(url);
+
+        blogName = BlojsomUtils.escapeStringSimple(blogName);
+        blogName = BlojsomUtils.stripLineTerminators(blogName, " ");
         pingback.setBlogName(blogName);
+
         pingback.setTrackbackDateLong(new Date().getTime());
         pingback.setMetaData(pingbackMetaData);
         pingback.setId(id);
