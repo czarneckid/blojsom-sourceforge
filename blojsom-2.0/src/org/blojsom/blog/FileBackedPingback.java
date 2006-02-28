@@ -46,7 +46,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.26
- * @version $Id: FileBackedPingback.java,v 1.4 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: FileBackedPingback.java,v 1.5 2006-02-28 16:11:08 czarneckid Exp $
  */
 public class FileBackedPingback extends Pingback {
 
@@ -151,7 +151,7 @@ public class FileBackedPingback extends Pingback {
             }
 
             setExcerpt(pingbackExcerpt.toString());
-            setId(_source.getName());
+            setId(BlojsomUtils.getFilename(_source.getName()));
             br.close();
 
             // Load pingback meta-data if available
@@ -181,8 +181,7 @@ public class FileBackedPingback extends Pingback {
         }
 
         Blog blog = blogUser.getBlog();
-        long originalTimestamp = -1;
-        originalTimestamp = _trackbackDateLong;
+        long originalTimestamp = _trackbackDateLong;
 
         StringBuffer pingbackDirectory = new StringBuffer();
         String permalinkFilename = _blogEntry.getPermalink();
@@ -196,7 +195,6 @@ public class FileBackedPingback extends Pingback {
         pingbackDirectory.append(blog.getBlogHome());
         pingbackDirectory.append(BlojsomUtils.removeInitialSlash(_blogEntry.getCategory()));
         File blogEntry = new File(pingbackDirectory.toString() + File.separator + permalinkFilename);
-        _logger.debug("Directory: " + blogEntry.toString());
         if (!blogEntry.exists()) {
             _logger.error("Trying to create pingback for invalid blog entry: " + permalinkFilename);
 
@@ -219,7 +217,7 @@ public class FileBackedPingback extends Pingback {
         }
 
         File pingbackEntry = new File(pingbackFilename);
-        if (pingbackEntry.exists()) {
+        if (_source == null && pingbackEntry.exists()) {
             _logger.debug("Pingback already registered");
 
             throw new BlojsomException("Pingback already registered", new XmlRpcException(PINGBACK_ALREADY_REGISTERED_CODE, "Pingback already registered"));
