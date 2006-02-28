@@ -271,6 +271,74 @@
                         </form>
                     </table>
                 </div>
+
+                <!-- Delete blog pingbacks form -->
+                <div class="mainClm">
+                    <h3>#adminResource('delete.blog.pingbacks.text' 'Delete blog pingbacks')</h3>
+                    <table>
+                        <form name="delete-blog-pingbacks" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="delete-blog-pingbacks"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                            <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
+                                #foreach ($blogPingback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
+                                <tr>
+                                    <td><input type="checkbox" name="blog-pingback-id" value="$blogPingback.getId()"/>&nbsp;
+                                    Pingback from: <a href="$blogPingback.getUrl()">#if ($blogPingback.getBlogName())$blogPingback.getBlogName()#else$blogPingback.getUrl()#end</a>
+                                    Left on: $blogPingback.getTrackbackDate()<br/>
+                                    Title: #if ($blogPingback.getTitle()) $blogPingback.getTitle() #end<br />
+                                    #if ($blogPingback.getExcerpt()) $blogPingback.getExcerpt() #end<br /></td>
+                                </tr>
+                                #end
+                            #end
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('delete.checked.pingbacks.text' 'Delete checked pingbacks')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                <!-- Approve blog pingbacks form -->
+                <div class="mainClm">
+                    <h3>#adminResource('approve.blog.pingbacks.text' 'Approve blog pingbacks')</h3>
+                    <table>
+                        <form name="approve-blog-pingbacks" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="approve-blog-pingbacks"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                            <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPermalink()"/>
+                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
+                                #foreach ($blogPingback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
+                                #set ($pingbackModerated = $!blogPingback.getMetaData().get("BLOJSOM_PINGBACK_APPROVED").equals("true"))
+                                #if ($pingbackModerated == '' || !$pingbackModerated)
+                                <tr>
+                                    <td><input type="checkbox" name="blog-pingback-id" value="$blogPingback.getId()"/>&nbsp;
+                                    Pingback from: <a href="$blogPingback.getUrl()">#if ($blogPingback.getBlogName())$blogPingback.getBlogName()#else$blogPingback.getUrl()#end</a>
+                                    Left on: $blogPingback.getTrackbackDate()<br/>
+                                    Title: #if ($blogPingback.getTitle()) $blogPingback.getTitle() #end<br />
+                                    #if ($blogPingback.getExcerpt()) $blogPingback.getExcerpt() #end<br /></td>
+                                </tr>
+                                #end
+                                #set ($pingbackModerated = '')
+                                #end
+                            #end
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('approve.checked.pingbacks.text' 'Approve checked pingbacks')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
         </div>
     </div>
 </body>
