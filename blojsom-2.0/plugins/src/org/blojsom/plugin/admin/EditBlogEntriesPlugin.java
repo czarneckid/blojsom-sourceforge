@@ -74,7 +74,7 @@ import java.util.*;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.57 2006-02-28 16:13:09 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.58 2006-03-01 15:04:08 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -291,6 +291,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
+            String allowPingbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_PINGBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
             String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
@@ -319,6 +320,12 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryMetaData.put(BLOG_METADATA_TRACKBACKS_DISABLED, "y");
                 } else {
                     entryMetaData.remove(BLOG_METADATA_TRACKBACKS_DISABLED);
+                }
+
+                if (!BlojsomUtils.checkNullOrBlank(allowPingbacks)) {
+                    entryMetaData.put(BLOG_METADATA_PINGBACKS_DISABLED, "y");
+                } else {
+                    entryMetaData.remove(BLOG_METADATA_PINGBACKS_DISABLED);
                 }
 
                 if (BlojsomUtils.checkNullOrBlank(pingBlogURLS)) {
@@ -544,6 +551,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
             String allowComments = BlojsomUtils.getRequestValue(BLOG_METADATA_COMMENTS_DISABLED, httpServletRequest);
             String allowTrackbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
+            String allowPingbacks = BlojsomUtils.getRequestValue(BLOG_METADATA_PINGBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String proposedBlogFilename = BlojsomUtils.getRequestValue(BLOG_ENTRY_PROPOSED_NAME, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
@@ -586,6 +594,10 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             if (!BlojsomUtils.checkNullOrBlank(allowTrackbacks)) {
                 entryMetaData.put(BLOG_METADATA_TRACKBACKS_DISABLED, "y");
+            }
+
+            if (!BlojsomUtils.checkNullOrBlank(allowPingbacks)) {
+                entryMetaData.put(BLOG_METADATA_PINGBACKS_DISABLED, "y");
             }
 
             if (BlojsomUtils.checkNullOrBlank(pingBlogURLS)) {
