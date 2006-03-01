@@ -24,6 +24,9 @@
     <property name="docs.dir" value="${basedir}/docs"/>
     <property name="javadoc.dir" value="${docs.dir}/content/javadoc"/>
     <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
+    <property name="velocidoc.dir" value="${basedir}/velocidoc"/>
+    <property name="velocidoc.zip" value="${distro.dir}/$name-velocidocs.zip"/>
+    <property name="pagemacros.dir" value="${basedir}/plugins/src/org/blojsom/plugin/velocity"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
     <property name="templates.resources.dir" value="${templates.dir}/resources"/>
@@ -150,6 +153,7 @@
         <delete dir="${compile.dir}"/>
         <delete dir="${build.dir}"/>
         <delete dir="${docs.dir}"/>
+        <delete dir="${velocidoc.dir}"/>
         <delete dir="${distro.dir}"/>
         <delete dir="${build.dir}"/>
         <delete>
@@ -463,6 +467,24 @@
             <classpath refid="build.classpath"/>
             <sourcepath refid="source.path"/>
         </javadoc>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Creates the Velocity macro documentation                            -->
+    <!-- =================================================================== -->
+    <target name="velocidoc" description="Creates the Velocity macro documentation">
+        <mkdir dir="${velocidoc.dir}"/>
+        <java fork="true" jar="${lib.dir}/velocidoc-0.2.jar">
+            <arg line="-src ${pagemacros.dir} -dst ${velocidoc.dir}"/>
+        </java>
+    </target>
+
+    <!-- ========================================================================= -->
+    <!-- Creates a ZIP of the Velocity macro documentation for the blojsom website -->
+    <!-- ========================================================================= -->
+    <target name="velocidoc-archive" depends="velocidoc" description="Creates a ZIP of the Velocity macro documentation for the blojsom website">
+        <mkdir dir="${distro.dir}"/>
+        <zip zipfile="${velocidoc.zip}" basedir="${velocidoc.dir}"/>
     </target>
 
     <!-- =================================================================== -->
