@@ -37,13 +37,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 import java.io.Serializable;
 
 /**
  * BlogComment
  *
  * @author David Czarnecki
- * @version $Id: BlogComment.java,v 1.15 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: BlogComment.java,v 1.16 2006-03-02 16:57:18 czarneckid Exp $
  */
 public abstract class BlogComment implements Serializable {
 
@@ -193,6 +194,7 @@ public abstract class BlogComment implements Serializable {
      */
     public void setCommentDate(Date commentDate) {
         _commentDate = commentDate;
+        _commentDateLong = _commentDate.getTime();
     }
 
     /**
@@ -212,6 +214,7 @@ public abstract class BlogComment implements Serializable {
      */
     public void setCommentDateLong(long commentDateLong) {
         _commentDateLong = commentDateLong;
+        _commentDate = new Date(_commentDateLong);
     }
 
     /**
@@ -255,13 +258,30 @@ public abstract class BlogComment implements Serializable {
      * @since blojsom 2.19
      */
     public String getDateAsFormat(String format) {
+        return getDateAsFormat(format, null);
+    }
+
+    /**
+     * Return the comment date formatted with a specified date format
+     *
+     * @param format Date format
+     * @param locale Locale for date formatting
+     * @return <code>null</code> if the entry date or format is null, otherwise returns the entry date formatted to the specified format. If the format is invalid, returns <tt>commentDate.toString()</tt>
+     * @since blojsom 2.30
+     */
+    public String getDateAsFormat(String format, Locale locale) {
         if (_commentDate == null || format == null) {
             return null;
         }
 
-        SimpleDateFormat sdf = null;
+        SimpleDateFormat sdf;
         try {
-            sdf = new SimpleDateFormat(format);
+            if (locale == null) {
+                sdf = new SimpleDateFormat(format);
+            } else {
+                sdf = new SimpleDateFormat(format, locale);
+            }
+
             return sdf.format(_commentDate);
         } catch (IllegalArgumentException e) {
             return _commentDate.toString();

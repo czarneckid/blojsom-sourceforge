@@ -36,13 +36,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 import java.io.Serializable;
 
 /**
  * Trackback
  *
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.12 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.13 2006-03-02 16:59:55 czarneckid Exp $
  */
 public abstract class Trackback implements Serializable {
 
@@ -50,6 +51,7 @@ public abstract class Trackback implements Serializable {
     protected String _excerpt;
     protected String _url;
     protected String _blogName;
+    protected Date _trackbackDate;
     protected long _trackbackDateLong;
     protected String _id;
     protected Map _metaData;
@@ -171,6 +173,7 @@ public abstract class Trackback implements Serializable {
      */
     public void setTrackbackDateLong(long trackbackDateLong) {
         _trackbackDateLong = trackbackDateLong;
+        _trackbackDate = new Date(_trackbackDateLong);
     }
 
     /**
@@ -180,15 +183,6 @@ public abstract class Trackback implements Serializable {
      */
     public long getTrackbackDateLong() {
         return _trackbackDateLong;
-    }
-
-    /**
-     * Get the date of the trackback
-     *
-     * @return Date of the trackback as a <code>java.util.Date</code>
-     */
-    public Date getTrackbackDate() {
-        return new Date(_trackbackDateLong);
     }
 
     /**
@@ -232,17 +226,33 @@ public abstract class Trackback implements Serializable {
      * @since blojsom 2.19
      */
     public String getDateAsFormat(String format) {
-        if (format == null) {
+        return getDateAsFormat(format, null);
+    }
+
+    /**
+     * Return the trackback date formatted with a specified date format
+     *
+     * @param format Date format
+     * @param locale Locale for date formatting
+     * @return <code>null</code> if the entry date or format is null, otherwise returns the entry date formatted to the specified format. If the format is invalid, returns <tt>trackbackDate.toString()</tt>
+     * @since blojsom 2.30
+     */
+    public String getDateAsFormat(String format, Locale locale) {
+        if (_trackbackDate == null || format == null) {
             return null;
         }
 
         SimpleDateFormat sdf = null;
-        Date trackbackDate = new Date(_trackbackDateLong);
         try {
-            sdf = new SimpleDateFormat(format);
-            return sdf.format(trackbackDate);
+            if (locale == null) {
+                sdf = new SimpleDateFormat(format);
+            } else {
+                sdf = new SimpleDateFormat(format, locale);
+            }
+
+            return sdf.format(_trackbackDate);
         } catch (IllegalArgumentException e) {
-            return trackbackDate.toString();
+            return _trackbackDate.toString();
         }
     }
 
@@ -266,7 +276,28 @@ public abstract class Trackback implements Serializable {
         _blogEntry = blogEntry;
     }
 
-/**
+    /**
+     * Retrieve the date this trackback was created
+     *
+     * @return Date trackback was created
+     * @since blojsom 2.30
+     */
+    public Date getTrackbackDate() {
+        return _trackbackDate;
+    }
+
+    /**
+     * Set the trackback date
+     *
+     * @param trackbackDate Trackback date
+     * @since blojsom 2.30
+     */
+    public void setTrackbackDate(Date trackbackDate) {
+        _trackbackDate = trackbackDate;
+        _trackbackDateLong = _trackbackDate.getTime();
+    }
+
+    /**
      * Load the trackback
      *
      * @param blogUser {@link BlogUser}
