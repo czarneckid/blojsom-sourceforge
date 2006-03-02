@@ -30,13 +30,13 @@
  */
 package org.blojsom.blog;
 
-import org.blojsom.BlojsomException;
-import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomProperties;
-import org.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
+import org.blojsom.BlojsomException;
+import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomProperties;
+import org.blojsom.util.BlojsomUtils;
 
 import java.io.*;
 import java.util.Properties;
@@ -46,7 +46,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 2.26
- * @version $Id: FileBackedPingback.java,v 1.5 2006-02-28 16:11:08 czarneckid Exp $
+ * @version $Id: FileBackedPingback.java,v 1.6 2006-03-02 16:58:49 czarneckid Exp $
  */
 public class FileBackedPingback extends Pingback {
 
