@@ -2,34 +2,75 @@
 ## Blog Information Macros
 ###############################################
 
+#**
+ * Display the name of your blog
+ *#
 #macro(BlogName)$BLOJSOM_BLOG.getBlogName()#end
 
+#**
+ * Display the escaped name of your blog
+ *#
 #macro(EscapedBlogName)$BLOJSOM_BLOG.getEscapedBlogName()#end
 
+#**
+ * Display the description of your blog
+ *#
 #macro(BlogDescription)$BLOJSOM_BLOG.getBlogDescription()#end
 
+#**
+ * Display the escaped description of your blog
+ *#
 #macro(EscapedBlogDescription)$BLOJSOM_BLOG.getEscapedBlogDescription()#end
 
+#**
+ * Display the URL of your blog
+ *#
 #macro(BlogURL)$BLOJSOM_BLOG.getBlogURL()#end
 
+#**
+ * Display the administration URL of your blog
+ *#
 #macro(BlogAdminURL)$BLOJSOM_BLOG.getBlogAdminURL()#end
 
+#**
+ * Display the base URL of your blog
+ *#
 #macro(BlogBaseURL)$BLOJSOM_BLOG.getBlogBaseURL()#end
 
+#**
+ * Display the language of your blog
+ *#
 #macro(BlogLanguage)$BLOJSOM_BLOG.getBlogLanguage()#end
 
+#**
+ * Display the country of your blog
+ *#
 #macro(BlogCountry)$BLOJSOM_BLOG.getBlogCountry()#end
 
+#**
+ * Display the owner's name of your blog
+ *#
 #macro(BlogOwner)$BLOJSOM_BLOG.getBlogOwner()#end
 
+#**
+ * Display the owner's e-mail address of your blog
+ *#
 #macro(BlogOwnerEmail)$BLOJSOM_BLOG.getBlogOwnerEmail()#end
 
+#**
+ * Display the default flavor of your blog
+ *#
 #macro(BlogDefaultFlavor)$BLOJSOM_BLOG.getBlogDefaultFlavor()#end
 
 ###############################################
 ##  Entry Macros
 ###############################################
 
+#**
+ * Sets a page variable, $totalCommentsPendingModeration, with the total number of comments pending moderation
+ *
+ * @param entry Blog entry
+ *#
 #macro(TotalCommentsPendingModeration $entry)
 #set($totalCommentsPendingModeration = 0)
 #foreach ($entryComment in $entry.getComments())
@@ -39,6 +80,11 @@
 #end
 #end
 
+#**
+ * Sets a page variable, $totalCommentsApproved, with the total number of comments that have been approved
+ *
+ * @param entry Blog entry
+ *#
 #macro(TotalCommentsApproved $entry)
 #set($totalCommentsApproved = 0)
 #foreach ($entryComment in $entry.getComments())
@@ -48,50 +94,130 @@
 #end
 #end
 
+#**
+ * Sets a page variable, $totalTrackbacksPendingModeration, with the total number of trackbacks pending moderation
+ *
+ * @param entry Blog entry
+ *#
 #macro(TotalTrackbacksPendingModeration $entry)
 #set($totalTrackbacksPendingModeration = 0)
 #foreach ($entryTrackback in $entry.getTrackbacks())
-    #if ($!$entryTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("false"))
+    #if ($!entryTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("false"))
         #set($totalTrackbacksPendingModeration = $totalTrackbacksPendingModeration + 1)
     #end
 #end
 #end
 
+#**
+ * Sets a page variable, $totalTrackbacksApproved, with the total number of trackbacks that have been approved
+ *
+ * @param entry Blog entry
+ *#
 #macro(TotalTrackbacksApproved $entry)
 #set($totalTrackbacksApproved = 0)
 #foreach ($entryTrackback in $entry.getTrackbacks())
-    #if ($!$entryTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("false"))
+    #if ($!entryTrackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED").equals("true"))
         #set($totalTrackbacksApproved = $totalTrackbacksApproved + 1)
     #end
 #end
 #end
 
+#**
+ * Sets a page variable, $totalPingbacksPendingModeration, with the total number of pingbacks pending moderation
+ *
+ * @param entry Blog entry
+ *#
+#macro(TotalPingbacksPendingModeration $entry)
+#set($totalPingbacksPendingModeration = 0)
+#foreach ($entryPingback in $entry.getPingbacks())
+    #if ($!entryPingback.getMetaData().get("BLOJSOM_PINGBACK_APPROVED").equals("false"))
+        #set($totalPingbacksPendingModeration = $totalPingbacksPendingModeration + 1)
+    #end
+#end
+#end
+
+#**
+ * Sets a page variable, $totalPingbacksApproved, with the total number of pingbacks that have been approved
+ *
+ * @param entry Blog entry
+ *#
+#macro(TotalPingbacksApproved $entry)
+#set($totalPingbacksApproved = 0)
+#foreach ($entryPingback in $entry.getPingbacks())
+    #if ($!entryPingback.getMetaData().get("BLOJSOM_PINGBACK_APPROVED").equals("true"))
+        #set($totalPingbacksApproved = $totalPingbacksApproved + 1)
+    #end
+#end
+#end
+
+#**
+ * Displays the author of a blog entry (metadata: blog-entry-author)
+ *
+ * @param entry Blog entry
+ *#
 #macro(Author $entry)#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))$entry.getMetaData().get("blog-entry-author")#end#end
 
+#**
+ * Sets a page variable, $commentsAllowed, to true if comments are allowed on an entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(CommentsAllowed $entry)
-#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))
+#if ($entry.supportsComments())
     #set($commentsAllowed = true)
 #end
 #end
 
+#**
+ * Sets a page variable, $trackbacksAllowed, to true if trackbacks are allowed on an entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(TrackbacksAllowed $entry)
-#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))
+#if ($entry.supportsTrackbacks())
     #set($trackbacksAllowed = true)
 #end
 #end
 
+#**
+ * Sets a page variable, $pingbacksAllowed, to true if pingbacks are allowed on an entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(PingbacksAllowed $entry)
-#if ($BLOJSOM_BLOG.getBlogPingbacksEnabled.booleanValue() && $entry.supportsPingbacks())
+#if ($entry.supportsPingbacks())
     #set($pingbacksAllowed = true)
 #end
 #end
 
+#**
+ * Displayes the days since an entry has been posted (metadata: blojsom-plugin-days-since-posted)
+ *
+ * @param entry Blog entry
+ *#
 #macro(DaysSincePosted $entry)$!entry.getMetaData().get("blojsom-plugin-days-since-posted")#end
 
+#**
+ * Format the date for a blog entry
+ *
+ * @param $entry Blog entry
+ * @param $format Date format
+ *#
 #macro(FormatDate $entry $format)$entry.getDateAsFormat($format)#end
 
+#**
+ * Displays the proper name for a category (if available), otherwise just display the category URL
+ *
+ * @param $entry Blog entry
+ *#
 #macro(EntryCategoryName $entry)#if ($entry.getBlogCategory().getName()) $entry.getBlogCategory().getName() #else $entry.getBlogCategory().getCategory()#end#end
 
+#**
+ * Output the trackback auto-discovery RDF fragment
+ *
+ * @param $entry Blog entry
+ * @param $runFriendlyPermalink If the runFriendlyPermalink macro should be run
+ *#
 #macro(TrackbackAutoDiscovery $entry $runFriendlyPermalink)
 <!-- Trackback Auto Discovery -->
 #if ($runFriendlyPermalink)
@@ -119,6 +245,12 @@
 -->
 #end
 
+#**
+ * Sets a page variable, $xmlrpcLink, with the XML-RPC link for a given entry in $BLOG_BASE_URL/$xmlrpcurl/$BLOJSOM_USER/$category/yyyy/MM/dd/permalink format
+ *
+ * @param $entry Blog entry
+ * @param $xmlrpcurl XML-RPC servlet name, if blank, &quot;xmlrpc&quot; will be used
+ *#
 #macro(XMLRPCLink $entry $xmlrpcurl)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
@@ -128,18 +260,27 @@
     #set ($xmlrpcLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_USER/$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
 
+#**
+ * Sets a page variable, $entryLink, with a friendly permalink in $BLOG_URL/$category/permalink format
+ *
+ * @param $entry Blog entry
+ *#
 #macro(DatelessFriendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getPermalink()")
 #end
 
+#**
+ * Sets a page variable, $entryLink, with a friendly permalink in $BLOG_URL/$category/yyyy/MM/dd/permalink format
+ *
+ * $entry Blog entry
+ *#
 #macro(FriendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
-
 
 ###############################################
 ## Comment/Trackback Macros
@@ -149,8 +290,18 @@
 ## Category Macros
 ###############################################
 
+#**
+ * Output the category name if available
+ *
+ * @param $blogCategory Blog category
+ *#
 #macro(CategoryName $blogCategory)#if ($blogCategory.getName()) $blogCategory.getName() #else $blogCategory.getCategory()#end#end
 
+#**
+ * Output the category name without leading or trailing /'s
+ *
+ * @param $category Blog category
+ *#
 #macro(SanitizedCategory $category)
 #set($categoryLength = $category.length())
 #set($lengthMinusOne = $categoryLength - 1)
@@ -171,6 +322,9 @@
 ## Template Snippet Macros
 ###############################################
 
+#**
+ * Display the blojsom calendar
+ *#
 #macro(Calendar)
 <div id="calendar">
     <table>
@@ -190,6 +344,11 @@
 </div>
 #end
 
+#**
+ * Display the comment form for an entry with comment preview
+ *
+ * @param $entry Blog entry
+ *#
 #macro(CommentFormWithPreview $entry)
 #if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
     <form id="commentform" method="post" action=".">
@@ -226,8 +385,16 @@
 #end
 #end
 
+#**
+ * Display previous / next navigation links
+ *
+ * @param $homeText Text to display to go back to the main blog URL
+ *#
 #macro(NavigationLinks $homeText)#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) <a href="$entryLink">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">$homeText</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end#end#end
 
+#**
+ * Display the search box
+ *#
 #macro(SearchBox)
 <div id="searchbox">
     <form method="post" action="$BLOJSOM_BLOG.getBlogURL()">
@@ -238,8 +405,19 @@
 </div>
 #end
 
+#**
+ * Create a link to a resource item, $BLOG_BASE_URL/resources/$BLOJSOM_USER/$item
+ *
+ * @param $item Resource item
+ *#
 #macro(Resource $item)$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/$item#end
 
+#**
+ * Display a list of links to monthly archives
+ *
+ * @param $startingMonth Starting month for the archives (1..12)
+ * @param $startingYear Starting year for the archives
+ *#
 #macro(MonthlyArchive $startingMonth $startingYear)
 <ul>
     #set ($currentMonth = $BLOJSOM_CALENDAR.getCurrentMonth() + 1)
@@ -268,6 +446,9 @@
 ## Plugin Macros
 ###############################################
 
+#**
+ * Display the weather information made available by the Weather plugin
+ *#
 #macro(DisplayWeatherForecast $weatherInfo)
 <p><span>$weatherInfo.getLocation()</span></p>
 <p>Temperature: &nbsp;<span>$weatherInfo.getFahrenheit() / $weatherInfo.getCelcius()</span></p>
@@ -276,23 +457,49 @@
 <p><a href="$weatherInfo.getHistoryUrl()" class="rounded" title="Detailed Weather History"><span>Detailed Weather History</span></a></p>
 #end
 
+#**
+ * Output the math comment question made available by the Math Comment Authenticator plugin
+ *#
 #macro(MathCommentQuestion)$!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2#end
 
+#**
+ * Output the math comment question as a form item to add to your comment page
+ *#
 #macro(MathCommentFormItem)
 <p class="label">Answer $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2 =</p>
 <p class="input"><input type="text" name="mathAnswerCheck" value="" class="fixed" /></p>
 #end
 
+#**
+ * Outputs a page variable, $entryLink, which takes information from the Internal Aggregator plugin and displays a friendly permalink
+ *
+ * @param $entry Blog entry
+ *#
 #macro(MultiBlogFriendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getCategory())
     #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #set ($entryLink = "$entry.getMetaData().get('BLOJSOM_PLUGIN_INTERNAL_AGGREGATOR_BLOG_URL')$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPermalink()")
 #end
 
+#**
+ * Run a piece of text through the obfuscate method from the Obfuscation plugin
+ *
+ * @param $text Text
+ *#
 #macro(Obfuscate $text)$!BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($text)#end
 
+#**
+ * Output the RSS enclosure item for an entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(RSSEnclosure $entry)$!entry.getMetaData().get("rss-enclosure")#end
 
+#**
+ * Output the Technorati tag links for a blog entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(TechnoratiTags $entry)
 #if ($entry.getMetaData().get("TECHNORATI_TAG_LINKS"))
 #set($technoratiTags = $entry.getMetaData().get("TECHNORATI_TAG_LINKS"))
@@ -308,11 +515,40 @@ $technoratiTag
 ## Administrative Macros
 ###############################################
 
+#**
+ * Create a link to edit an entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(EditEntry $entry)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=edit-blog-entry&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()">Edit Entry</a>#end#end
 
+#**
+ * Create a link to delete an entry
+ *
+ * @param $entry Blog entry
+ *#
 #macro(DeleteEntry $entry)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-entry&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()">Delete Entry</a>#end#end
 
+#**
+ * Create a link to delete the given comment
+ *
+ * @param $entry Blog entry
+ * @param $blogComment Comment
+ *#
 #macro(DeleteComment $entry $blogComment)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-comments&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()&blog-comment-id=$blogComment.getId()">Delete Comment</a>#end#end
 
+#**
+ * Create a link to delete the given trackback
+ *
+ * @param $entry Blog entry
+ * @param $trackback Trackback
+ *#
 #macro(DeleteTrackback $entry $trackback)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-trackbacks&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()&blog-trackback-id=$trackback.getId()">Delete Trackback</a>#end#end
 
+#**
+ * Create a link to delete the given pingback
+ *
+ * @param $entry Blog entry
+ * @param $trackback Pingback
+ *#
+#macro(DeletePingback $entry $pingback)#if ($BLOJSOM_USER_AUTHENTICATED)<a href="#BlogAdminURL()?action=delete-blog-pingbacks&flavor=admin&plugins=edit-blog-entries&blog-category-name=$entry.getCategory()&blog-entry-id=$entry.getPermalink()&blog-pingback-id=$pingback.getId()">Delete Pingback</a>#end#end
