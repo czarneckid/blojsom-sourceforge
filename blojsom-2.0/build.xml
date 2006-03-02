@@ -26,7 +26,7 @@
     <property name="javadoc.zip" value="${distro.dir}/${name}-javadocs.zip"/>
     <property name="velocidoc.dir" value="${basedir}/velocidoc"/>
     <property name="ant.lib.dir" value="${basedir}/ant-lib"/>
-    <property name="velocidoc.zip" value="${distro.dir}/$name-velocidocs.zip"/>
+    <property name="velocidoc.zip" value="${distro.dir}/${name}-velocidocs.zip"/>
     <property name="pagemacros.dir" value="${basedir}/plugins/src/org/blojsom/plugin/velocity"/>
     <property name="properties.dir" value="${basedir}/properties"/>
     <property name="templates.dir" value="${basedir}/templates"/>
