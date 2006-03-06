@@ -55,6 +55,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Map;
 import java.util.HashMap;
+import java.net.HttpURLConnection;
 
 
 /**
@@ -64,7 +65,7 @@ import java.util.HashMap;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.22 2006-02-03 00:10:29 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.23 2006-03-06 20:12:51 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomXMLRPCConstants {
 
@@ -307,6 +308,7 @@ public class BlojsomXMLRPCServlet extends BlojsomBaseServlet implements BlojsomX
         if (!"post".equalsIgnoreCase(httpServletRequest.getMethod())) {
             httpServletResponse.setContentType("text/html; charset=UTF-8");
             httpServletResponse.setContentLength(XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE.length());
+            httpServletResponse.setStatus(HttpURLConnection.HTTP_BAD_METHOD);
             PrintWriter printWriter = httpServletResponse.getWriter();
             printWriter.print(XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE);
             printWriter.flush();

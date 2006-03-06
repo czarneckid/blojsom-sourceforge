@@ -64,6 +64,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.net.HttpURLConnection;
 
 /**
  * blojsom Comment API Implementation
@@ -74,7 +75,7 @@ import java.util.HashMap;
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentAPIServlet.java,v 1.19 2006-02-14 21:51:00 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.20 2006-03-06 20:12:46 czarneckid Exp $
  */
 public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomConstants {
 
@@ -145,6 +146,7 @@ public class CommentAPIServlet extends BlojsomBaseServlet implements BlojsomCons
         if (!"post".equalsIgnoreCase(httpServletRequest.getMethod())) {
             httpServletResponse.setContentType("text/html; charset=UTF-8");
             httpServletResponse.setContentLength(COMMENTAPI_ACCEPTS_ONLY_POSTS_MESSAGE.length());
+            httpServletResponse.setStatus(HttpURLConnection.HTTP_BAD_METHOD);
             PrintWriter printWriter = httpServletResponse.getWriter();
             printWriter.print(COMMENTAPI_ACCEPTS_ONLY_POSTS_MESSAGE);
             printWriter.flush();
