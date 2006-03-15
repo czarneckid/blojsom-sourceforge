@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.8 2006-02-28 16:12:04 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.9 2006-03-15 02:28:10 czarneckid Exp $
  * @since blojsom 2.23
  */
 public class PingbackHandler extends AbstractBlojsomAPIHandler {
@@ -151,6 +151,11 @@ public class PingbackHandler extends AbstractBlojsomAPIHandler {
 
             excerpt = source.substring(startOfExcerpt, endOfExcerpt);
             excerpt = BlojsomUtils.stripHTML(excerpt);
+            int firstSpace = excerpt.indexOf(' ') + 1;
+            int lastSpace = excerpt.lastIndexOf(' ');
+            if (-1 == lastSpace || lastSpace < firstSpace)
+                lastSpace = excerpt.length();
+            excerpt = excerpt.substring(firstSpace, lastSpace);
         }
 
         return excerpt;
