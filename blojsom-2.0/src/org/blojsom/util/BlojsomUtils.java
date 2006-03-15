@@ -48,12 +48,14 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.81 2006-02-27 16:47:58 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.82 2006-03-15 02:27:32 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -2105,6 +2107,9 @@ public class BlojsomUtils implements BlojsomConstants {
         return fetchedEntry;
     }
 
+    private static final int REGEX_OPTIONS = Pattern.DOTALL | Pattern.MULTILINE | Pattern.CASE_INSENSITIVE;
+    private static final Pattern STRIP_HTML_PATTERN = Pattern.compile("(<.*?>)|(^.*?>)|(<.*?$)", REGEX_OPTIONS);
+    
     /**
      * Strip all HTML from a given piece of text
      *
@@ -2116,8 +2121,8 @@ public class BlojsomUtils implements BlojsomConstants {
         if (checkNullOrBlank(text)) {
             return text;
         }
-
-        return text.replaceAll("\\<.*?\\>", "");
+        Matcher m = STRIP_HTML_PATTERN.matcher(text);
+        return m.replaceAll("");
     }
 
     /**
