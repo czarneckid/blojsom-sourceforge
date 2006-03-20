@@ -1,0 +1,32 @@
+<html>
+    <head></head>
+
+    <body>
+        <p>
+            <strong>Trackback Details</strong>
+            <br />
+            <br />
+            Trackback on: <a href="#BlogURL()$BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getCategory()?permalink=$BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getTitle()&amp;page=trackback">$!BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getTitle()</a>
+            <br />
+            Trackback from: <a href="$!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getUrl()">$!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogName()</a><br />
+            Trackback title: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getTitle()<br />
+            Left on: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getTrackbackDate()<br />
+            IP Address: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getIp()<br />
+            Status: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getStatus()
+            <br />
+        </p>
+        <p>
+            <strong>Trackback Administration</strong>
+            <br />
+            <br />
+            <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&amp;action=approve-blog-trackbacks&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getEntry().getId()&amp;blog-trackback-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getId()">Approve</a> trackback <br />
+            <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&amp;action=delete-blog-trackbacks&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getEntry().getId()&amp;blog-trackback-id=$BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getId()">Delete</a> trackback <br />
+        </p>
+        <p>
+            <strong>Trackback</strong>
+            <br />
+            <br />
+            $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getExcerpt()
+        </p>
+    </body>
+</html>

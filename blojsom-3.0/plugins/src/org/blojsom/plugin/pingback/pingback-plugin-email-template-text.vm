@@ -1,0 +1,19 @@
+==[ Pingback Details ]==========================================================
+
+Pingback on: <a href="#BlogURL()$BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getCategory()?permalink=$BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getTitle()">$!BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getTitle()</a>
+
+  Pingback from: <a href="$!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getUrl()">$!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getBlogName()</a>
+ Pingback title: $!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getTitle()
+        Left on: $!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getTrackbackDate()
+     IP Address: $!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getIp()
+         Status: $!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getStatus()
+
+==[ Pingback Administration ]===================================================
+
+Administration login: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin">Login</a>
+   Approve pingback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&amp;action=approve-blog-pingbacks&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()&amp;blog-pingback-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getId()">Approve pingback</a>
+    Delete pingback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&amp;action=delete-blog-pingbacks&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()&amp;blog-pingback-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getId()">Delete pingback</a>
+
+==[ Pingback ]==================================================================
+
+$!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getExcerpt()

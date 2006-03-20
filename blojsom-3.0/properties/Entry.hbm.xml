@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="org.blojsom.blog.database.DatabaseEntry" table="Entry">
+        <id name="id">
+            <column name="entry_id" sql-type="integer" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+
+        <property name="blogId">
+            <column name="blog_id" sql-type="string" not-null="true"/>
+        </property>
+
+        <property name="title"/>
+
+        <property name="description"/>
+
+        <property name="date">
+            <column name="entry_date" sql-type="datetime" not-null="true"/>
+        </property>
+
+        <property name="modifiedDate">
+            <column name="modified_date" sql-type="datetime" not-null="true"/>
+        </property>
+
+        <property name="blogCategoryId">
+            <column name="blog_category_id"/>
+        </property>
+
+        <many-to-one name="blogCategory" column="blog_category_id" class="org.blojsom.blog.database.DatabaseCategory" lazy="false" insert="false" update="false"/>
+
+        <map name="metaData" table="entrymetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+            <key column="entry_id" not-null="true"/>
+            <map-key column="metadata_key" type="string"/>
+            <element column="metadata_value" type="string"/>
+        </map>
+
+        <bag name="comments" table="comment" lazy="false" cascade="all">
+            <key column="entry_id"/>
+            <one-to-many class="org.blojsom.blog.database.DatabaseComment"/>
+        </bag>
+
+        <bag name="trackbacks" table="trackback" lazy="false" cascade="all">
+            <key column="entry_id"/>
+            <one-to-many class="org.blojsom.blog.database.DatabaseTrackback"/>
+        </bag>
+
+        <bag name="pingbacks" table="pingback" lazy="false" cascade="all">
+            <key column="entry_id"/>
+            <one-to-many class="org.blojsom.blog.database.DatabasePingback"/>
+        </bag>
+
+        <property name="allowComments">
+            <column name="allow_comments" sql-type="integer"/>
+        </property>
+
+        <property name="allowTrackbacks">
+            <column name="allow_trackbacks" sql-type="integer"/>
+        </property>
+
+        <property name="allowPingbacks">
+            <column name="allow_pingbacks" sql-type="integer"/>
+        </property>
+
+        <property name="status"/>
+
+        <property name="author"/>
+
+        <property name="postSlug">
+            <column name="post_slug" sql-type="text"/>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

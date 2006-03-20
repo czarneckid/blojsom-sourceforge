@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <description>Bean definition file for blojsom</description>
+
+    <import resource="blojsom-plugins.xml"/>
+
+    <bean id="defaultProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="default-blog">default</prop>
+                <prop key="ignore-flavors">admin, rsd</prop>
+                <prop key="installed-locales">en, de, fr, ko, sv, pt_BR</prop>
+                <prop key="resources-directory">/resources/</prop>
+                <prop key="templates-directory">/templates/</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="servletConfigFactoryBean" class="org.blojsom.servlet.ServletConfigFactoryBean">
+    </bean>
+
+    <bean id="eventBroadcaster" class="org.blojsom.event.SimpleEventBroadcaster">
+    </bean>
+
+    <bean id="resourceManager" class="org.blojsom.util.resources.ResourceBundleResourceManager"
+          init-method="init">
+        <property name="resourceBundlesToLoad">
+            <list>
+                <value>org.blojsom.plugin.admin.resources.messages</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="mySQLDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/blojsom?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="blojsom"/>
+        <property name="password" value="blojsom"/>
+    </bean>
+
+    <bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="mySQLDataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>Blog.hbm.xml</value>
+                <value>Entry.hbm.xml</value>
+                <value>Category.hbm.xml</value>
+                <value>Comment.hbm.xml</value>
+                <value>Trackback.hbm.xml</value>
+                <value>Pingback.hbm.xml</value>
+                <value>User.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="c3p0.min_size">10</prop>
+                <prop key="c3p0.max_size">50</prop>
+                <prop key="c3p0.timeout">1800</prop>
+                <prop key="c3p0.max_statements">100</prop>
+                <prop key="show_sql">false</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="fetcher" class="org.blojsom.fetcher.database.DatabaseFetcher" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+    </bean>
+
+    <bean id="authorizationProvider" class="org.blojsom.authorization.database.DatabaseAuthorizationProvider"
+          init-method="init">
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="vm" class="org.blojsom.dispatcher.velocity.VelocityDispatcher" init-method="init">
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">file, class</prop>
+                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
+                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+                <prop key="file.resource.loader.cache">true</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
+                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
+                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+                <prop key="class.resource.loader.cache">true</prop>
+                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+                <prop key="velocimacro.library">org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.permissions.allow.inline">true</prop>
+                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            </props>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
+
+</beans>

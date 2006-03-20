@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="org.blojsom.blog.database.DatabaseCategory" table="Category">
+
+        <id name="id">
+            <column name="category_id" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+
+        <property name="blogId">
+            <column name="blog_id" not-null="true"/>
+        </property>
+
+        <property name="parentCategoryId">
+            <column name="parent_category_id"/>
+        </property>
+
+        <property name="name"/>
+
+        <property name="description"/>
+
+        <many-to-one name="parentCategory" column="parent_category_id" class="org.blojsom.blog.database.DatabaseCategory" lazy="false" insert="false" update="false"/>
+
+        <map name="metaData" table="categorymetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+            <key column="category_id" not-null="true"/>
+            <map-key column="metadata_key" type="string"/>
+            <element column="metadata_value" type="string"/>
+        </map>
+
+    </class>
+
+</hibernate-mapping>

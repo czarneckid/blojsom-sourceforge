@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <description>Plugin definition file for blojsom</description>
+
+    <bean id="basic-authentication" class="org.blojsom.plugin.security.BasicAuthenticationPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+    </bean>
+    <bean id="calendar-filter" class="org.blojsom.plugin.calendar.CalendarFilterPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="calendar-gui" class="org.blojsom.plugin.calendar.VelocityCalendarPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="chrono" class="org.blojsom.plugin.chrono.ChronoPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="collection-utilities" class="org.blojsom.plugin.common.CollectionUtilitiesPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="conditional-get" class="org.blojsom.plugin.limiter.ConditionalGetPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="convert-line-breaks" class="org.blojsom.plugin.common.ConvertLineBreaksPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="date-format" class="org.blojsom.plugin.date.DateFormatPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="days-since-posted" class="org.blojsom.plugin.statistics.DaysSincePostedPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="excerpt" class="org.blojsom.plugin.excerpt.ExcerptPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="footnote" class="org.blojsom.plugin.footnote.FootnotePlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="googlehighlight" class="org.blojsom.plugin.highlight.GoogleHighlightPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="href-hyperlinks" class="org.blojsom.plugin.hyperlink.HyperlinkURLPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="language-selection" class="org.blojsom.plugin.language.LanguageSelectionPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    <bean id="macro-expansion" class="org.blojsom.plugin.macro.MacroExpansionPlugin" init-method="init" destroy-method="destroy">
+    </bean>
+    <bean id="macro-expansion-admin" class="org.blojsom.plugin.macro.admin.MacroExpansionAdminPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>        
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+    <bean id="markdown" class="org.blojsom.plugin.markdown.MarkdownPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
+    <bean id="meta" class="org.blojsom.plugin.meta.MetaPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="nofollow" class="org.blojsom.plugin.nofollow.NoFollowPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="preview" class="org.blojsom.plugin.limiter.PreviewPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="rss-enclosure" class="org.blojsom.plugin.common.RSSEnclosurePlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+    </bean>
+    <bean id="simple-obfuscation" class="org.blojsom.plugin.obfuscation.SimpleObfuscationPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="string-utilities" class="org.blojsom.plugin.common.StringUtilitiesPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="tag-cloud" class="org.blojsom.plugin.technorati.TagCloudPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="technorati-tags" class="org.blojsom.plugin.technorati.TechnoratiTagsPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">file, class</prop>
+                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
+                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+                <prop key="file.resource.loader.cache">true</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
+                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
+                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+                <prop key="class.resource.loader.cache">true</prop>
+                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+                <prop key="velocimacro.library">
+                    org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.permissions.allow.inline">true</prop>
+                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="textile" class="org.blojsom.plugin.textile.TextilePlugin" init-method="init" destroy-method="destroy">        
+    </bean>
+    <bean id="weblogs-ping" class="org.blojsom.plugin.weblogsping.WeblogsPingPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    <bean id="word-count" class="org.blojsom.plugin.statistics.WordCountPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="xss-filter" class="org.blojsom.plugin.filter.XSSFilterPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+
+    <!-- Comment plugins -->
+    <bean id="comment" class="org.blojsom.plugin.comment.CommentPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">file, class</prop>
+                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
+                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+                <prop key="file.resource.loader.cache">true</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
+                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
+                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+                <prop key="class.resource.loader.cache">true</prop>
+                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+                <prop key="velocimacro.library">
+                    org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.permissions.allow.inline">true</prop>
+                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="comment-moderation" class="org.blojsom.plugin.comment.CommentModerationPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="math-comment-moderation" class="org.blojsom.plugin.comment.MathCommentAuthenticationPlugin" init-method="init"
+          destroy-method="destroy"/>
+
+    <!-- Trackback plugins -->
+    <bean id="trackback" class="org.blojsom.plugin.trackback.TrackbackPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">file, class</prop>
+                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
+                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+                <prop key="file.resource.loader.cache">true</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
+                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
+                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+                <prop key="class.resource.loader.cache">true</prop>
+                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+                <prop key="velocimacro.library">
+                    org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.permissions.allow.inline">true</prop>
+                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="auto-trackback" class="org.blojsom.plugin.trackback.AutoTrackbackPlugin" init-method="init"
+          destroy-method="destroy"/>
+    <bean id="trackback-moderation" class="org.blojsom.plugin.trackback.TrackbackModerationPlugin" init-method="init"
+          destroy-method="destroy"/>
+
+    <!-- Pingback plugins -->
+    <bean id="pingback" class="org.blojsom.plugin.pingback.PingbackPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">file, class</prop>
+                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
+                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+                <prop key="file.resource.loader.cache">true</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
+                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
+                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+                <prop key="class.resource.loader.cache">true</prop>
+                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+                <prop key="velocimacro.library">
+                    org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.permissions.allow.inline">true</prop>
+                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Administration plugins -->
+    <!-- Beans required by every admin plugin -->
+    <!--
+    <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+    -->
+    <bean id="admin" class="org.blojsom.plugin.admin.BaseAdminPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-authorization" class="org.blojsom.plugin.admin.EditBlogAuthorizationPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-categories" class="org.blojsom.plugin.admin.EditBlogCategoriesPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-entries" class="org.blojsom.plugin.admin.EditBlogEntriesPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-flavors" class="org.blojsom.plugin.admin.EditBlogFlavorsPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-plugins" class="org.blojsom.plugin.admin.EditBlogPluginsPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-permissions" class="org.blojsom.plugin.admin.EditBlogPermissionsPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blog-properties" class="org.blojsom.plugin.admin.EditBlogPropertiesPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="properties">
+            <ref bean="defaultProperties"/>
+        </property>
+    </bean>
+
+    <bean id="templateEditProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="accepted-template-extensions">vm</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="edit-blog-templates" class="org.blojsom.plugin.admin.EditBlogTemplatesPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="templateEditProperties">
+            <ref bean="templateEditProperties"/>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+    </bean>
+
+    <bean id="fileUploadProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="temporary-directory">/tmp</prop>
+                <prop key="maximum-upload-size">25000000</prop>
+                <prop key="maximum-memory-size">50000</prop>
+                <prop key="accepted-file-types">image/jpeg, image/gif, image/png, video/x-msvideo, video/x-ms-asf,
+                    audio/x-mpegurl, audio/x-midi, video/quicktime, audio/mpeg, audio/x-mpeg, audio/wav, video/mpeg,
+                    application/vnd.rn-realmedia</prop>
+                <prop key="invalid-file-extensions">.jsp, .jspf, .jspi, .jspx, .php, .cgi</prop>
+                <prop key="resources-directory">/resources/</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="file-upload" class="org.blojsom.plugin.admin.FileUploadPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fileUploadProperties">
+            <ref bean="fileUploadProperties"/>
+        </property>
+    </bean>
+
+    <bean id="list-web-admin-plugins" class="org.blojsom.plugin.admin.ListWebAdminPluginsPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+    </bean>
+
+    <bean id="permission-check" class="org.blojsom.plugin.permission.PermissionCheckPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+    </bean>
+
+</beans>
