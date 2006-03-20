@@ -40,8 +40,8 @@ import java.util.Map;
  * AuthorizationProvider
  *
  * @author David Czarnecki
+ * @version $Id: AuthorizationProvider.java,v 1.2 2006-03-20 22:17:09 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: AuthorizationProvider.java,v 1.1 2006-03-20 21:31:11 czarneckid Exp $
  */
 public interface AuthorizationProvider {
 
@@ -53,10 +53,11 @@ public interface AuthorizationProvider {
     public void init() throws ConfigurationException;
 
     /**
+     * Load a {@link User} from a blog
      *
-     * @param blog
-     * @param userLogin
-     * @throws org.blojsom.BlojsomException
+     * @param blog      {@link Blog}
+     * @param userLogin Login ID
+     * @throws AuthorizationException If there is an error loading the {@link User} from the blog
      */
     public User loadUser(Blog blog, String userLogin) throws AuthorizationException;
 
@@ -66,9 +67,9 @@ public interface AuthorizationProvider {
      * @param blog                 {@link Blog}
      * @param authorizationContext {@link Map} to be used to provide other information for authorization. This will
      *                             change depending on the authorization provider.
-     * @param userLogin             Username
+     * @param userLogin            Username
      * @param password             Password
-     * @throws org.blojsom.BlojsomException If there is an error authorizing the username and password
+     * @throws AuthorizationException If there is an error authorizing the username and password
      */
     public void authorize(Blog blog, Map authorizationContext, String userLogin, String password) throws AuthorizationException;
 
@@ -78,9 +79,9 @@ public interface AuthorizationProvider {
      * @param blog              {@link Blog}
      * @param permissionContext {@link Map} to be used to provide other information for permission check. This will
      *                          change depending on the authorization provider.
-     * @param userLogin          Username
+     * @param userLogin         Username
      * @param permission        Permission
-     * @throws org.blojsom.BlojsomException If there is an error checking the permission for the username and permission
+     * @throws AuthorizationException If there is an error checking the permission for the username and permission
      */
     public void checkPermission(Blog blog, Map permissionContext, String userLogin, String permission) throws AuthorizationException;
 }
