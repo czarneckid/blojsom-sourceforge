@@ -4,7 +4,7 @@
 
 <beans>
 
-    <description>Plugin definition file for blojsom</description>
+    <description>Bean definition file for blojsom XML-RPC</description>
 
     <bean id="defaultProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
