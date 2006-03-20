@@ -53,7 +53,7 @@ import java.util.*;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.2 2006-03-20 22:27:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -115,8 +115,10 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * @param blog
-     * @return
+     * Retrieve the users for a given blog
+     *
+     * @param blog {@link Blog}
+     * @return List of {@link User}s for a blog
      */
     protected User[] getUsersForBlog(Blog blog) {
         Session session = _sessionFactory.openSession();
@@ -143,10 +145,12 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * @param blog
-     * @param userID
-     * @return
-     * @throws AuthorizationException
+     * Load a given {@link User} from a blog given their ID
+     *
+     * @param blog {@link Blog}
+     * @param userID User ID
+     * @return {@link User}
+     * @throws AuthorizationException If there is an error loading the user
      */
     protected User loadUserFromBlog(Blog blog, Integer userID) throws AuthorizationException {
         if (userID == null) {
@@ -179,10 +183,12 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     }
 
     /**
-     * @param blog
-     * @param user
-     * @return
-     * @throws AuthorizationException
+     * Save a given {@link User} to the blog
+     *
+     * @param blog {@link Blog}
+     * @param user {@link User}
+     * @return {@link User}
+     * @throws AuthorizationException If there is an error saving the user to the blog
      */
     protected User saveUserToBlog(Blog blog, User user) throws AuthorizationException {
         try {
@@ -225,9 +231,10 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * Add the permissions for the users in a blog to the context
      *
-     * @param context
-     * @param blog
+     * @param context Context
+     * @param blog {@link Blog}
      */
     protected void setupPermissionsInContext(Map context, Blog blog) {
         User[] users = getUsersForBlog(blog);
