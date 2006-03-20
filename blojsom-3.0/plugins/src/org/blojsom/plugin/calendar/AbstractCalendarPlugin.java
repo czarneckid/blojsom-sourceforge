@@ -50,25 +50,11 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: AbstractCalendarPlugin.java,v 1.1 2006-03-20 21:30:53 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements Plugin {
 
-    private Log _logger = LogFactory.getLog(AbstractCalendarPlugin.class);
-
     protected static final String BLOJSOM_CALENDAR_LOCALE = "BLOJSOM_CALENDAR_LOCALE";
-
-    /**
-     * Key under which the blog calendar will be placed
-     * (example: on the request for the JSPDispatcher)
-     */
-    public static final String BLOJSOM_CALENDAR = "BLOJSOM_CALENDAR";
-
-    /**
-     * Key under which the blog calendar vtl helper will be placed
-     * (example: on the request for the JSPDispatcher)
-     */
-    public static final String BLOJSOM_CALENDAR_VTLHELPER = "BLOJSOM_CALENDAR_VTLHELPER";
 
     /**
      * Request parameter for the "year"
@@ -97,6 +83,17 @@ public abstract class AbstractCalendarPlugin implements Plugin {
      */
     protected static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
 
+    /**
+     * Key under which the blog calendar will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_CALENDAR = "BLOJSOM_CALENDAR";
+
+    /**
+     * Key under which the blog calendar vtl helper will be placed
+     * (example: on the request for the JSPDispatcher)
+     */
+    public static final String BLOJSOM_CALENDAR_VTLHELPER = "BLOJSOM_CALENDAR_VTLHELPER";
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -158,7 +155,6 @@ public abstract class AbstractCalendarPlugin implements Plugin {
                     calendar.set(Calendar.YEAR, currentYear);
                 } catch (NumberFormatException e) {
                     year = "";
-                    _logger.error("Invalid Year Param submitted and ignored: " + year);
                 }
 
                 month = httpServletRequest.getParameter(MONTH_PARAM);
@@ -175,7 +171,6 @@ public abstract class AbstractCalendarPlugin implements Plugin {
                         calendar.set(Calendar.MONTH, currentMonth);
                     } catch (NumberFormatException e) {
                         month = "";
-                        _logger.error("Invalid Month Param submitted and ignored: " + month);
                     }
                 }
 
@@ -190,12 +185,10 @@ public abstract class AbstractCalendarPlugin implements Plugin {
                     try {
                         currentDay = Integer.parseInt(day);
                         if (currentDay > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                            _logger.info("Adjusting day of month to max maximum for selected month");
                             currentDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                         }
                         calendar.set(Calendar.DAY_OF_MONTH, currentDay);
                     } catch (NumberFormatException e) {
-                        _logger.error("Invalid Day Param submitted and ignored: " + day);
                     }
                 }
             }

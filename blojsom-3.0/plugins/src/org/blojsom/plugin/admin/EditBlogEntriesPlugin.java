@@ -64,7 +64,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.2 2006-03-20 22:32:39 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -78,9 +78,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String ADD_BLOG_ENTRY_PAGE = "/org/blojsom/plugin/admin/templates/admin-add-blog-entry";
 
     // Constants
-    protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
-    protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY";
-    protected static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY";
 
     // Localization constants
     private static final String FAILED_PERMISSION_EDIT_KEY = "failed.permission.edit.text";
@@ -113,19 +113,19 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String APPROVE_BLOG_PINGBACKS = "approve-blog-pingbacks";
 
     // Form elements
-    protected static final String BLOG_CATEGORY_ID = "blog-category-id";
-    protected static final String BLOG_CATEGORY_NAME = "blog-category-name";
-    protected static final String BLOG_ENTRY_ID = "blog-entry-id";
-    protected static final String BLOG_ENTRY_TITLE = "blog-entry-title";
-    protected static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
-    protected static final String BLOG_COMMENT_ID = "blog-comment-id";
-    protected static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
-    protected static final String BLOG_PINGBACK_ID = "blog-pingback-id";
-    protected static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
-    protected static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
-    protected static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
-    protected static final String PING_BLOG_URLS = "ping-blog-urls";
-    protected static final String UPDATED_BLOG_CATEGORY_NAME = "updated-blog-category-name";
+    private static final String BLOG_CATEGORY_ID = "blog-category-id";
+    private static final String BLOG_CATEGORY_NAME = "blog-category-name";
+    private static final String BLOG_ENTRY_ID = "blog-entry-id";
+    private static final String BLOG_ENTRY_TITLE = "blog-entry-title";
+    private static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
+    private static final String BLOG_COMMENT_ID = "blog-comment-id";
+    private static final String BLOG_TRACKBACK_ID = "blog-trackback-id";
+    private static final String BLOG_PINGBACK_ID = "blog-pingback-id";
+    private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
+    private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
+    private static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
+    private static final String PING_BLOG_URLS = "ping-blog-urls";
+    private static final String UPDATED_BLOG_CATEGORY_NAME = "updated-blog-category-name";
 
     // Permissions
     private static final String EDIT_BLOG_ENTRIES_PERMISSION = "edit_blog_entries_permission";

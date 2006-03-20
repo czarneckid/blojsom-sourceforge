@@ -46,7 +46,7 @@ import java.util.Map;
  * Comment moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: CommentModerationPlugin.java,v 1.1 2006-03-20 21:30:53 czarneckid Exp $
+ * @version $Id: CommentModerationPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentModerationPlugin implements Plugin {
@@ -72,7 +72,6 @@ public class CommentModerationPlugin implements Plugin {
      *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        _logger.debug("Initialized comment moderation plugin");
     }
 
     /**
@@ -115,7 +114,9 @@ public class CommentModerationPlugin implements Plugin {
                 commentMetaData.put(BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
                 context.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA, commentMetaData);
 
-                _logger.debug("Marking comment as requiring approval");
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Marking comment as requiring approval");
+                }
             }
         }
     }

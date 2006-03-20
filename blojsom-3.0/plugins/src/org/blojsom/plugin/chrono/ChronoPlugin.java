@@ -37,19 +37,19 @@ import org.blojsom.plugin.PluginException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * ChronoPlugin
- * <p />
+ * <p/>
  * This plugin sorts the entries in ascending order. The oldest entry will be first and the
  * most recent entry will be last.
  *
  * @author David Czarnecki
+ * @version $Id: ChronoPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: ChronoPlugin.java,v 1.1 2006-03-20 21:30:53 czarneckid Exp $
  */
 public class ChronoPlugin implements Plugin {
 
@@ -72,22 +72,18 @@ public class ChronoPlugin implements Plugin {
      * @return Modified set of blog entries
      * @throws PluginException If there is an error processing the blog entries
      */
-    public Entry[] process(HttpServletRequest httpServletRequest,
-                           HttpServletResponse httpServletResponse,
-                           Blog blog,
-                           Map context,
-                           Entry[] entries) throws PluginException {
+    public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         if (entries.length == 0) {
             return entries;
         } else {
-           ArrayList entriesList = new ArrayList();
+            ArrayList entriesList = new ArrayList();
             for (int i = 0; i < entries.length; i++) {
                 Entry entry = entries[i];
                 entriesList.add(entry);
             }
 
             Collections.reverse(entriesList);
-            
+
             return (Entry[]) entriesList.toArray(new Entry[entriesList.size()]);
         }
     }
