@@ -50,7 +50,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TagCloudPlugin.java,v 1.1 2006-03-20 21:30:59 czarneckid Exp $
+ * @version $Id: TagCloudPlugin.java,v 1.2 2006-03-20 22:51:00 czarneckid Exp $
  */
 public class TagCloudPlugin implements Plugin {
 
@@ -130,7 +130,9 @@ public class TagCloudPlugin implements Plugin {
             Integer tagCount = (Integer) tagMap.get(tag);
             int tagRank = rankTagPerEntries(tagCount.intValue(), 1, maxTagCount.intValue());
 
-            _logger.debug("Tag rank for " + tag + " tag: " + tagRank);
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Tag rank for " + tag + " tag: " + tagRank);
+            }
             tagMap.put(tag, new Integer(tagRank));
         }
 
@@ -157,7 +159,7 @@ public class TagCloudPlugin implements Plugin {
         }
 
         double scaledCount = (double) (tagCount - minTagCount) / (maxTagCount - minTagCount);
-        double scaledSize = (double) scaledCount * (MAX_FONTSIZE - MIN_FONTSIZE) + MIN_FONTSIZE;
+        double scaledSize = scaledCount * (MAX_FONTSIZE - MIN_FONTSIZE) + MIN_FONTSIZE;
 
         return (int) Math.ceil(scaledSize);
     }

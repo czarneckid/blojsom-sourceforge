@@ -49,7 +49,7 @@ import java.util.Map;
  * ConditionalGetPlugin
  *
  * @author David Czarnecki
- * @version $Id: ConditionalGetPlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
+ * @version $Id: ConditionalGetPlugin.java,v 1.2 2006-03-20 22:50:43 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ConditionalGetPlugin implements Plugin {
@@ -67,9 +67,8 @@ public class ConditionalGetPlugin implements Plugin {
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
-     * 
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error initializing the plugin
+     *
+     * @throws PluginException If there is an error initializing the plugin
      */
     public void init() throws PluginException {
     }
@@ -96,7 +95,9 @@ public class ConditionalGetPlugin implements Plugin {
 
             // Check first to see if neither of the headers we need to check are present
             if ((ifModifiedSinceHeader == -1) && (httpServletRequest.getHeader(IF_NONE_MATCH_HEADER) == null)) {
-                _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present.");
+                }
             } else {
                 ArrayList datesToCheck = new ArrayList(5);
                 Date[] dates;
@@ -141,23 +142,33 @@ public class ConditionalGetPlugin implements Plugin {
 
                     if (ifModifiedSinceDate != null) {
                         if (latestEntryDate.toString().equals(ifModifiedSinceDate.toString())) {
-                            _logger.debug("Returning 304 response based on If-Modified-Since header");
+                            if (_logger.isDebugEnabled()) {
+                                _logger.debug("Returning 304 response based on If-Modified-Since header");
+                            }
                             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                             break;
                         } else {
-                            _logger.debug("Latest entry date/If-Modified-Since date: " + latestEntryDate.toString() + "/" + ifModifiedSinceDate.toString());
+                            if (_logger.isDebugEnabled()) {
+                                _logger.debug("Latest entry date/If-Modified-Since date: " + latestEntryDate.toString() + "/" + ifModifiedSinceDate.toString());
+                            }
                         }
                     } else if (ifNoneMatchHeader != null) {
                         String calculatedIfNoneMatchHeader = "\"" + BlojsomUtils.digestString(BlojsomUtils.getISO8601Date(latestEntryDate)) + "\"";
                         if (ifNoneMatchHeader.equals(calculatedIfNoneMatchHeader)) {
-                            _logger.debug("Returning 304 response based on If-None-Match header");
+                            if (_logger.isDebugEnabled()) {
+                                _logger.debug("Returning 304 response based on If-None-Match header");
+                            }
                             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                             break;
                         } else {
-                            _logger.debug("Calculated ETag/If-None-Match ETag: " + calculatedIfNoneMatchHeader + "/" + ifNoneMatchHeader);
+                            if (_logger.isDebugEnabled()) {
+                                _logger.debug("Calculated ETag/If-None-Match ETag: " + calculatedIfNoneMatchHeader + "/" + ifNoneMatchHeader);
+                            }
                         }
                     } else {
-                        _logger.error("No If-Modified-Since or If-None-Match HTTP headers present and not caught in initial check.");
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("No If-Modified-Since or If-None-Match HTTP headers present and not caught in initial check.");
+                        }
                     }
                 }
             }
@@ -169,8 +180,7 @@ public class ConditionalGetPlugin implements Plugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error performing cleanup for this plugin
+     * @throws PluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws PluginException {
     }
@@ -178,8 +188,7 @@ public class ConditionalGetPlugin implements Plugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error in finalizing this plugin
+     * @throws PluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws PluginException {
     }

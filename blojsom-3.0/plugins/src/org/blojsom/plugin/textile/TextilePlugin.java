@@ -51,7 +51,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: TextilePlugin.java,v 1.1 2006-03-20 21:31:00 czarneckid Exp $
+ * @version $Id: TextilePlugin.java,v 1.2 2006-03-20 22:51:04 czarneckid Exp $
  */
 public class TextilePlugin implements Plugin {
 
@@ -106,7 +106,9 @@ public class TextilePlugin implements Plugin {
             Entry entry = entries[x];
             if (entry.getPostSlug().endsWith(TEXTILE_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_TEXTILE)
                     || Boolean.valueOf(blog.getProperty(PLUGIN_TEXTILE_PROCESS_ALL_ENTRIES)).booleanValue()) {
-                _logger.debug("Textile processing: " + entry.getTitle());
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Textile processing: " + entry.getId());
+                }
                 entry.setDescription(_textile.process(entry.getDescription()));
             }
         }

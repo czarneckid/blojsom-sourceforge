@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: AutoTrackbackPlugin.java,v 1.1 2006-03-20 21:31:01 czarneckid Exp $
+ * @version $Id: AutoTrackbackPlugin.java,v 1.2 2006-03-20 22:51:08 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements Plugin {
 
@@ -105,7 +105,9 @@ public class AutoTrackbackPlugin implements Plugin {
                 // Read the entire contents of the URL into a buffer
                 if (hrefMatcher.groupCount() == 2) {
                     String hyperlink = hrefMatcher.group(1);
-                    _logger.debug("Found hyperlink: " + hyperlink);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Found hyperlink: " + hyperlink);
+                    }
                     BufferedReader br;
                     URL hyperlinkURL = new URL(hyperlink);
                     br = new BufferedReader(new InputStreamReader(hyperlinkURL.openStream()));
@@ -118,14 +120,18 @@ public class AutoTrackbackPlugin implements Plugin {
                     // Look for the Auto Trackback RDF in the HTML
                     Matcher rdfOuterMatcher = RDF_OUTER_PATTERN.matcher(contents.toString());
                     while (rdfOuterMatcher.find()) {
-                        _logger.debug("Found outer RDF text in hyperlink");
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Found outer RDF text in hyperlink");
+                        }
                         for (int i = 0; i < rdfOuterMatcher.groupCount(); i++) {
                             String outerRdfText = rdfOuterMatcher.group(i);
 
                             // Look for the inner RDF description
                             Matcher rdfInnerMatcher = RDF_INNER_PATTERN.matcher(outerRdfText);
                             while (rdfInnerMatcher.find()) {
-                                _logger.debug("Found inner RDF text in hyperlink");
+                                if (_logger.isDebugEnabled()) {
+                                    _logger.debug("Found inner RDF text in hyperlink");
+                                }
                                 for (int j = 0; j < rdfInnerMatcher.groupCount(); j++) {
                                     String innerRdfText = rdfInnerMatcher.group(j);
 
@@ -136,12 +142,16 @@ public class AutoTrackbackPlugin implements Plugin {
 
                                         // If we find a match, send a trackback ping to the
                                         if (dcIdentifier.equals(hyperlink)) {
-                                            _logger.debug("Matched dc:identifier to hyperlink");
+                                            if (_logger.isDebugEnabled()) {
+                                                _logger.debug("Matched dc:identifier to hyperlink");
+                                            }
                                             Matcher trackbackPingMatcher = TRACKBACK_PING_PATTERN.matcher(innerRdfText);
                                             if (trackbackPingMatcher.find()) {
                                                 StringBuffer trackbackPingURL = new StringBuffer(trackbackPingMatcher.group(1));
 
-                                                _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
+                                                if (_logger.isDebugEnabled()) {
+                                                    _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
+                                                }
                                                 URL trackbackUrl = new URL(trackbackPingURL.toString());
 
                                                 // Open a connection to the trackback URL and read its input
@@ -169,7 +179,9 @@ public class AutoTrackbackPlugin implements Plugin {
                 }
             }
         } catch (IOException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
     }
 

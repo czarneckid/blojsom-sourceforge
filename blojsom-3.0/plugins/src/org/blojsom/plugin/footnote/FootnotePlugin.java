@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: FootnotePlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
+ * @version $Id: FootnotePlugin.java,v 1.2 2006-03-20 22:50:39 czarneckid Exp $
  */
 public class FootnotePlugin implements Plugin {
 
@@ -105,7 +105,9 @@ public class FootnotePlugin implements Plugin {
 
                     matcher.appendReplacement(modifiedContent, "<sup id=\"footnoteref-" + footnoteIndex + "\"><a href=\"#footnote-" + footnoteIndex + "\">" + footnoteIndex + "</a></sup>");
                 } catch (NumberFormatException e) {
-                    _logger.error("Footnote index in post is not a valid integer [" + matcher.group(1) + "]");
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Footnote index in post is not a valid integer [" + matcher.group(1) + "]");
+                    }
                 }
             }
 
@@ -117,6 +119,7 @@ public class FootnotePlugin implements Plugin {
                 modifiedContent.append("<hr/>");
                 modifiedContent.append("<ol>");
                 Iterator footnotesIterator = footnotes.keySet().iterator();
+                
                 while (footnotesIterator.hasNext()) {
                     String footnoteIndex = (String) footnotesIterator.next();
                     modifiedContent.append("<li id=\"footnote-").append(footnoteIndex).append("\"><p>");
@@ -124,6 +127,7 @@ public class FootnotePlugin implements Plugin {
                     modifiedContent.append("<a href=\"#footnoteref-").append(footnoteIndex).append("\" class=\"footnoteBackLink\" title=\"Jump back to footnote ").append(footnoteIndex).append(" in the text.\">");
                     modifiedContent.append("&#8617;</a></p></li>");
                 }
+
                 modifiedContent.append("</ol>");
                 modifiedContent.append("</div>");
 

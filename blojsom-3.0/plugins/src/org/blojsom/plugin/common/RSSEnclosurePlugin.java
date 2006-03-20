@@ -61,7 +61,7 @@ import java.util.Properties;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.1 2006-03-20 21:30:54 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.2 2006-03-20 22:50:35 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class RSSEnclosurePlugin implements Plugin, Listener {
@@ -172,7 +172,6 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
                 try {
                     rssEnclosureLength = Long.parseLong((String) entry.getMetaData().get(RSS_ENCLOSURE_LENGTH));
                 } catch (NumberFormatException e) {
-                    _logger.error(e);
                 }
                 String rssEnclosureType = (String) entry.getMetaData().get(RSS_ENCLOSURE_TYPE);
 
@@ -181,13 +180,17 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
 
                 entry.getMetaData().put(METADATA_RSS_ENCLOSURE, rssEnclosure);
                 entry.getMetaData().put(METADATA_ESS_ENCLOSURE_OBJECT, rssEnclosureObject);
-                _logger.debug("Added explicit enclosure: " + rssEnclosure);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Added explicit enclosure: " + rssEnclosure);
+                }
             } else {
                 if (BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RSS_ENCLOSURE)) {
                     String enclosureName = BlojsomUtils.getFilenameFromPath((String) entry.getMetaData().get(METADATA_RSS_ENCLOSURE));
                     File enclosure = new File(servletContext.getRealPath("/") + _resourcesDirectory + blog.getBlogId() + "/" + enclosureName);
                     if (enclosure.exists()) {
-                        _logger.debug("Adding enclosure to entry for file: " + enclosureName);
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Adding enclosure to entry for file: " + enclosureName);
+                        }
 
                         MimetypesFileTypeMap mimetypesFileTypeMap = new MimetypesFileTypeMap();
                         addAdditionalMimeTypes(mimetypesFileTypeMap);
@@ -209,7 +212,9 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
                         RSSEnclosure rssEnclosure = new RSSEnclosure(url, enclosure.length(), type);
                         entry.getMetaData().put(METADATA_RSS_ENCLOSURE, enclosureElement.toString());
                         entry.getMetaData().put(METADATA_ESS_ENCLOSURE_OBJECT, rssEnclosure);
-                        _logger.debug("Added enclosure: " + enclosureElement.toString());
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Added enclosure: " + enclosureElement.toString());
+                        }
                     }
                 }
             }
@@ -251,7 +256,9 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
      */
     public void processEvent(Event event) {
         if (event instanceof ProcessEntryEvent) {
-            _logger.debug("Handling process blog entry event");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Handling process blog entry event");
+            }
 
             ProcessEntryEvent processBlogEntryEvent = (ProcessEntryEvent) event;
             String blogId = processBlogEntryEvent.getBlog().getBlogId();

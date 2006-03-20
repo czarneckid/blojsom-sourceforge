@@ -52,7 +52,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: LanguageSelectionPlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
+ * @version $Id: LanguageSelectionPlugin.java,v 1.2 2006-03-20 22:50:41 czarneckid Exp $
  */
 public class LanguageSelectionPlugin implements Plugin, Listener {
 
@@ -139,7 +139,9 @@ public class LanguageSelectionPlugin implements Plugin, Listener {
      */
     public void processEvent(Event event) {
         if (event instanceof ProcessEntryEvent) {
-            _logger.debug("Handling process blog entry event");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Handling process blog entry event");
+            }
             ProcessEntryEvent processBlogEntryEvent = (ProcessEntryEvent) event;
 
             String language = BlojsomUtils.getRequestValue(METADATA_LANGUAGE, processBlogEntryEvent.getHttpServletRequest());
@@ -158,14 +160,18 @@ public class LanguageSelectionPlugin implements Plugin, Listener {
             // Preserve the current language selection if none submitted
             if (processBlogEntryEvent.getEntry() != null) {
                 String currentLanguage = (String) processBlogEntryEvent.getEntry().getMetaData().get(METADATA_LANGUAGE);
-                _logger.debug("Current language: " + currentLanguage);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Current language: " + currentLanguage);
+                }
                 processBlogEntryEvent.getContext().put(BLOJSOM_PLUGIN_CURRENT_LANGUAGE_SELECTION, currentLanguage);
             }
 
             if (!BlojsomUtils.checkNullOrBlank(language)) {
                 processBlogEntryEvent.getEntry().getMetaData().put(METADATA_LANGUAGE, language);
                 processBlogEntryEvent.getContext().put(BLOJSOM_PLUGIN_CURRENT_LANGUAGE_SELECTION, language);
-                _logger.debug("Added/updated language: " + language);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Added/updated language: " + language);
+                }
             } else {
                 if (processBlogEntryEvent.getEntry() != null) {
                     processBlogEntryEvent.getEntry().getMetaData().remove(METADATA_LANGUAGE);

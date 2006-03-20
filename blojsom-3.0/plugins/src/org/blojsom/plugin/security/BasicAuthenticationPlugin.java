@@ -50,7 +50,7 @@ import java.util.Map;
  * before they are able to see any blog entries.
  *
  * @author David Czarnecki
- * @version $Id: BasicAuthenticationPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: BasicAuthenticationPlugin.java,v 1.2 2006-03-20 22:50:58 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BasicAuthenticationPlugin extends BaseAdminPlugin {
@@ -68,17 +68,7 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
     public BasicAuthenticationPlugin() {
     }
 
-    /**
-     * Initialize this plugin. This method only called when the plugin is instantiated.
-     *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error initializing the plugin
-     */
-    public void init() throws PluginException {
-        super.init();
-    }
-
-    /**
+   /**
      * Set the {@link AuthorizationProvider}
      *
      * @param authorizationProvider {@link AuthorizationProvider}
@@ -132,7 +122,9 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
                     }
                 }
             } catch (UnsupportedEncodingException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 return false;
             }
@@ -157,6 +149,7 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
             setAuthenticationRequired(httpServletResponse, blog);
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, FAILED_AUTHORIZATION_PAGE);
+            
             return new Entry[0];
         }
 

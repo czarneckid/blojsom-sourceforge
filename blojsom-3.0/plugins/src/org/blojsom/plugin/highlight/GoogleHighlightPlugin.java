@@ -30,7 +30,8 @@
  */
 package org.blojsom.plugin.highlight;
 
-import org.blojsom.blog.*;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 
@@ -48,8 +49,8 @@ import java.util.regex.Pattern;
  * Based on work from http://www.textism.com/
  *
  * @author Mark Lussier
+ * @version $Id: GoogleHighlightPlugin.java,v 1.2 2006-03-20 22:50:40 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: GoogleHighlightPlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
  */
 public class GoogleHighlightPlugin implements Plugin {
 
@@ -88,7 +89,6 @@ public class GoogleHighlightPlugin implements Plugin {
      * Used to replace matches in entries that HAVE html tags
      */
     private static final String HIGHLIGHT_HTML = "$1<span class=\"searchhighlight\">$2</span>";
-
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -134,11 +134,7 @@ public class GoogleHighlightPlugin implements Plugin {
      * @return Modified set of blog entries
      * @throws PluginException If there is an error processing the blog entries
      */
-    public Entry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               Blog blog,
-                               Map context,
-                               Entry[] entries) throws PluginException {
+    public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         String referer = httpServletRequest.getHeader(HEADER_REFERER);
 
         if (referer != null && referer.matches(EXPRESSSION_GOOGLE)) {
@@ -154,14 +150,10 @@ public class GoogleHighlightPlugin implements Plugin {
                     for (int y = 0; y < searchwords.length; y++) {
                         String word = searchwords[y];
                         if (!isHtml) {
-                            entry.setDescription(entry.getDescription().replaceAll(START_BOUNDRY + word + END_BOUNDRY,
-                                    HIGHLIGHT_PLAINTEXT));
+                            entry.setDescription(entry.getDescription().replaceAll(START_BOUNDRY + word + END_BOUNDRY, HIGHLIGHT_PLAINTEXT));
                         } else {
-                            entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + START_BOUNDRY
-                                    + word + END_BOUNDRY,
-                                    HIGHLIGHT_HTML));
+                            entry.setDescription(entry.getDescription().replaceAll(EXPRESSION_HTMLPREFIX + START_BOUNDRY + word + END_BOUNDRY, HIGHLIGHT_HTML));
                         }
-
                     }
                 }
             }

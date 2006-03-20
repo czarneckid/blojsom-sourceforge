@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: XSSFilterPlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.2 2006-03-20 22:50:38 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class XSSFilterPlugin implements Plugin, Listener {
@@ -89,8 +89,6 @@ public class XSSFilterPlugin implements Plugin, Listener {
      */
     public void init() throws PluginException {
         _eventBroadcaster.addListener(this);
-
-        _logger.debug("Initialized XSS Filter plugin");
     }
 
     /**
@@ -163,7 +161,9 @@ public class XSSFilterPlugin implements Plugin, Listener {
      */
     public void processEvent(Event event) {
         if (event instanceof CommentResponseSubmissionEvent) {
-            _logger.debug("Processing comment response submission event");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Processing comment response submission event");
+            }
             CommentResponseSubmissionEvent commentEvent = (CommentResponseSubmissionEvent) event;
 
             String commentText = commentEvent.getContent();
@@ -177,7 +177,9 @@ public class XSSFilterPlugin implements Plugin, Listener {
 
             // Check to see if we should process entries through the XSS filter
             if (Boolean.valueOf(blog.getProperty(XSS_FILTER_PROCESS_ENTRIES_IP)).booleanValue()) {
-                _logger.debug("Processing process blog entry event");
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Processing process blog entry event");
+                }
                 if (entryEvent.getEntry() != null) {
                     String entryText = entryEvent.getEntry().getDescription();
                     entryText = processContent(entryText, entryEvent.getBlog());

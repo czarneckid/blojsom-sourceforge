@@ -44,7 +44,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: HyperlinkURLPlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
+ * @version $Id: HyperlinkURLPlugin.java,v 1.2 2006-03-20 22:50:40 czarneckid Exp $
  */
 public class HyperlinkURLPlugin implements Plugin {
 
@@ -100,7 +100,7 @@ public class HyperlinkURLPlugin implements Plugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws org.blojsom.plugin.PluginException If there is an error performing cleanup for this plugin
+     * @throws PluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws PluginException {
     }
@@ -108,10 +108,8 @@ public class HyperlinkURLPlugin implements Plugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws org.blojsom.plugin.PluginException If there is an error in finalizing this plugin
+     * @throws PluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws PluginException {
     }
-
-
 }

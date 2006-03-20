@@ -30,10 +30,9 @@
  */
 package org.blojsom.plugin.permission;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.blojsom.authorization.AuthorizationProvider;
-import org.blojsom.blog.*;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 
@@ -45,12 +44,10 @@ import java.util.Map;
  * Permission Check plugin
  *
  * @author David Czarnecki
- * @version $Id: PermissionCheckPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: PermissionCheckPlugin.java,v 1.2 2006-03-20 22:50:54 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PermissionCheckPlugin implements Plugin {
-
-    private Log _logger = LogFactory.getLog(PermissionCheckPlugin.class);
 
     public static final String BLOJSOM_PERMISSION_CHECKER = "BLOJSOM_PERMISSION_CHECKER";
 
@@ -65,16 +62,19 @@ public class PermissionCheckPlugin implements Plugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error initializing the plugin
+     * @throws PluginException If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        _logger.debug("Initialized Permission Check plugin");
     }
 
+    /**
+     * Set the {@link AuthorizationProvider}
+     *
+     * @param authorizationProvider {@link AuthorizationProvider}
+     */
     public void setAuthorizationProvider(AuthorizationProvider authorizationProvider) {
         _authorizationProvider = authorizationProvider;
-    }    
+    }
 
     /**
      * Process the blog entries
@@ -85,8 +85,7 @@ public class PermissionCheckPlugin implements Plugin {
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error processing the blog entries
+     * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         PermissionChecker permissionChecker = new PermissionChecker(blog, _authorizationProvider, context);
@@ -98,8 +97,7 @@ public class PermissionCheckPlugin implements Plugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error performing cleanup for this plugin
+     * @throws PluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws PluginException {
     }
@@ -107,8 +105,7 @@ public class PermissionCheckPlugin implements Plugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error in finalizing this plugin
+     * @throws PluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws PluginException {
     }

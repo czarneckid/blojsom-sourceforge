@@ -66,7 +66,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.1 2006-03-20 21:31:01 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.2 2006-03-20 22:51:08 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -252,7 +252,9 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         context.put(BLOJSOM_TRACKBACK_PLUGIN_ENABLED, blog.getBlogTrackbacksEnabled());
         if (!blog.getBlogTrackbacksEnabled().booleanValue()) {
-            _logger.debug("Trackbacks not enabled for blog: " + blog.getBlogId());
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Trackbacks not enabled for blog: " + blog.getBlogId());
+            }
 
             return entries;
         }
@@ -296,7 +298,9 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
                 } catch (NumberFormatException e) {
                     trackbackThrottleMinutes = TRACKBACK_THROTTLE_DEFAULT_MINUTES;
                 }
-                _logger.debug("Trackback throttling enabled at: " + trackbackThrottleMinutes + " minutes");
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Trackback throttling enabled at: " + trackbackThrottleMinutes + " minutes");
+                }
 
                 if (_ipAddressTrackbackTimes.containsKey(remoteIPAddress)) {
                     Calendar currentTime = Calendar.getInstance();
@@ -305,7 +309,9 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
 
                     long differenceInMinutes = timeDifference / (60 * 1000);
                     if (differenceInMinutes < trackbackThrottleMinutes) {
-                        _logger.debug("Trackback throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + trackbackThrottleMinutes + " minutes");
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Trackback throttle enabled. Comment from IP address: " + remoteIPAddress + " in less than " + trackbackThrottleMinutes + " minutes");
+                        }
 
                         context.put(BLOJSOM_TRACKBACK_RETURN_CODE, new Integer(1));
                         context.put(BLOJSOM_TRACKBACK_MESSAGE, "Trackback throttling enabled.");
@@ -313,7 +319,9 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
 
                         return entries;
                     } else {
-                        _logger.debug("Trackback throttle enabled. Resetting date of last comment to current time");
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Trackback throttle enabled. Resetting date of last comment to current time");
+                        }
                         _ipAddressTrackbackTimes.put(remoteIPAddress, currentTime);
                     }
                 } else {
@@ -382,16 +390,19 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
                         int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
                         int daysBetweenDates = BlojsomUtils.daysBetweenDates(entryForTrackback.getDate(), new Date());
                         if ((daysExpiration > 0) && (daysBetweenDates >= daysExpiration)) {
-                            _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days. Difference in days: " + daysBetweenDates);
+                            if (_logger.isDebugEnabled()) {
+                                _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days. Difference in days: " + daysBetweenDates);
+                            }
 
                             return entries;
                         }
                     } catch (NumberFormatException e) {
-                        _logger.error("Error in parameter " + TRACKBACK_DAYS_EXPIRATION_IP + ": " + trackbackDaysExpiration);
                     }
                 }
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             }
 
             Map trackbackMetaData = new HashMap();
@@ -425,7 +436,9 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
                 // For persisting the Last-Modified time
                 context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
             } else {
-                _logger.info("Trackback meta-data contained destroy key. Trackback was not saved");
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("Trackback meta-data contained destroy key. Trackback was not saved");
+                }
             }
 
             context.put(BLOJSOM_TRACKBACK_RETURN_CODE, code);
@@ -488,6 +501,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
             }
 
             context.put(BLOJSOM_TRACKBACK_MESSAGE, e.getMessage());
+
             return new Integer(1);
         }
     }
@@ -587,7 +601,9 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
 
                     email.send();
                 } catch (EmailException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }

@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * to comments and trackbacks.
  *
  * @author David Czarnecki
- * @version $Id: NoFollowPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: NoFollowPlugin.java,v 1.2 2006-03-20 22:50:50 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class NoFollowPlugin implements Plugin {
@@ -78,7 +78,6 @@ public class NoFollowPlugin implements Plugin {
      *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        _logger.debug("Initialized NoFollow plugin");
     }
 
     /**

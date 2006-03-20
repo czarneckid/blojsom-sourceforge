@@ -52,7 +52,7 @@ import java.util.Map;
  * <a href="http://daringfireball.net/projects/markdown/">John Gruber's Markdown site</a>.
  *
  * @author David Czarnecki
- * @version $Id: MarkdownPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: MarkdownPlugin.java,v 1.2 2006-03-20 22:50:45 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MarkdownPlugin implements Plugin {
@@ -80,8 +80,7 @@ public class MarkdownPlugin implements Plugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error initializing the plugin
+     * @throws PluginException If there is an error initializing the plugin
      */
     public void init() throws PluginException {
         _markdownExecution = _servletConfig.getInitParameter(PLUGIN_MARKDOWN_EXECUTION_IP);
@@ -118,7 +117,8 @@ public class MarkdownPlugin implements Plugin {
             for (int i = 0; i < entries.length; i++) {
                 Entry entry = entries[i];
 
-                if ((entry.getPostSlug().endsWith(MARKDOWN_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_MARKDOWN))) {
+                if ((entry.getPostSlug().endsWith(MARKDOWN_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_MARKDOWN)))
+                {
                     try {
                         Process process = Runtime.getRuntime().exec(_markdownExecution);
                         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), BlojsomConstants.UTF8));
@@ -149,8 +149,7 @@ public class MarkdownPlugin implements Plugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error performing cleanup for this plugin
+     * @throws PluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws PluginException {
     }
@@ -158,8 +157,7 @@ public class MarkdownPlugin implements Plugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error in finalizing this plugin
+     * @throws PluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws PluginException {
     }

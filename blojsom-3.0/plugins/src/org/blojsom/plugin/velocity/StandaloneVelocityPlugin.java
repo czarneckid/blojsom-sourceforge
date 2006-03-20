@@ -49,7 +49,7 @@ import java.util.Properties;
  * StandalongVelocityPlugin
  *
  * @author David Czarnecki
- * @version $Id: StandaloneVelocityPlugin.java,v 1.1 2006-03-20 21:31:08 czarneckid Exp $
+ * @version $Id: StandaloneVelocityPlugin.java,v 1.2 2006-03-20 22:51:10 czarneckid Exp $
  * @since blojsom 3.0
  */
 public abstract class StandaloneVelocityPlugin implements Plugin {
@@ -68,7 +68,6 @@ public abstract class StandaloneVelocityPlugin implements Plugin {
      *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        _logger.debug("Initialized Standalone Velocity plugin");
     }
 
     /**
@@ -109,7 +108,9 @@ public abstract class StandaloneVelocityPlugin implements Plugin {
             updatedVelocityProperties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, servletContext.getRealPath("/WEB-INF/" + blog.getBlogId() + "/templates/") + ", " + servletContext.getRealPath("/WEB-INF/templates/"));
             velocityEngine.init(updatedVelocityProperties);
         } catch (Exception e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
 
             return null;
         }
@@ -120,20 +121,26 @@ public abstract class StandaloneVelocityPlugin implements Plugin {
         VelocityContext velocityContext = new VelocityContext(context);
 
         if (!velocityEngine.templateExists(template)) {
-            _logger.error("Could not find template for user: " + template);
+            if (_logger.isErrorEnabled()) {
+                _logger.error("Could not find template for user: " + template);
+            }
 
             return null;
         } else {
             try {
                 velocityEngine.mergeTemplate(template, BlojsomConstants.UTF8, velocityContext, writer);
             } catch (Exception e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 return null;
             }
         }
 
-        _logger.debug("Merged template: " + template);
+        if (_logger.isDebugEnabled()) {
+            _logger.debug("Merged template: " + template);
+        }
 
         return writer.toString();
     }

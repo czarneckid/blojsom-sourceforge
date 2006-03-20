@@ -34,25 +34,21 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.1 2006-03-20 21:30:53 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.2 2006-03-20 22:50:34 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
-
-    private Log _logger = LogFactory.getLog(MathCommentAuthenticationPlugin.class);
 
     private static final String MATH_COMMENT_AUTHENTICATION_OPERATIONS_IP = "math-comment-authentication-operations";
     private static final String MATH_COMMENT_AUTHENTICATION_BOUND_IP = "math-comment-authentication-bound";
@@ -103,7 +99,6 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                             passedCheck = true;
                         }
                     } catch (NumberFormatException e) {
-                        _logger.error(e);
                     }
                 }
 
@@ -118,7 +113,6 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                     commentMetaData.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY, Boolean.TRUE);
                     context.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA, commentMetaData);
 
-                    _logger.info("Failed math comment authentication check.");
                     context.put(BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE, "Failed math comment authentication check.");
                 } else {
                     context.put(BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_STATUS_MESSAGE, "Passed math comment authentication check.");
@@ -134,7 +128,6 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                 try {
                     bound = Integer.parseInt(boundProperty);
                 } catch (NumberFormatException e) {
-                    _logger.error(e);
                 }
             }
 
@@ -147,7 +140,6 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin {
                         availableOperations -= 1;
                     }
                 } catch (NumberFormatException e) {
-                    _logger.error(e);
                 }
             }
 

@@ -44,8 +44,8 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
+ * @version $Id: SimpleSearchPlugin.java,v 1.2 2006-03-20 22:50:58 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: SimpleSearchPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
  */
 public class SimpleSearchPlugin implements Plugin {
 
@@ -79,15 +79,11 @@ public class SimpleSearchPlugin implements Plugin {
      * @return Modified set of blog entries
      * @throws PluginException If there is an error processing the blog entries
      */
-    public Entry[] process(HttpServletRequest httpServletRequest,
-                           HttpServletResponse httpServletResponse,
-                           Blog blog,
-                           Map context,
-                           Entry[] entries) throws PluginException {
+    public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         String query = httpServletRequest.getParameter(QUERY_PARAM);
         if (query == null) {
             return entries;
-        } else {            
+        } else {
             query = query.toLowerCase();
         }
 
@@ -111,8 +107,7 @@ public class SimpleSearchPlugin implements Plugin {
     /**
      * Perform any cleanup for the plugin. Called after {@link #process}.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error performing cleanup for this plugin
+     * @throws PluginException If there is an error performing cleanup for this plugin
      */
     public void cleanup() throws PluginException {
     }
@@ -120,8 +115,7 @@ public class SimpleSearchPlugin implements Plugin {
     /**
      * Called when BlojsomServlet is taken out of service
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error in finalizing this plugin
+     * @throws PluginException If there is an error in finalizing this plugin
      */
     public void destroy() throws PluginException {
     }

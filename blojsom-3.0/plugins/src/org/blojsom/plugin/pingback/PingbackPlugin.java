@@ -50,8 +50,8 @@ import org.blojsom.plugin.admin.event.EntryUpdatedEvent;
 import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.plugin.pingback.event.PingbackAddedEvent;
 import org.blojsom.plugin.velocity.StandaloneVelocityPlugin;
-import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.mail.Session;
 import javax.naming.Context;
@@ -77,7 +77,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.2 2006-03-20 22:50:56 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, Listener {
@@ -131,12 +131,11 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error initializing the plugin
+     * @throws PluginException If there is an error initializing the plugin
      */
     public void init() throws PluginException {
         super.init();
-        
+
         _callbackHandler = new PingbackPluginAsyncCallback();
 
         _mailServer = _servletConfig.getInitParameter(EmailConstants.SMTPSERVER_IP);
@@ -201,7 +200,8 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
      *
      * @param blog  {@link org.blojsom.blog.Blog} information
      * @param email Email message
-     * @throws org.apache.commons.mail.EmailException If there is an error preparing the e-mail message
+     * @throws org.apache.commons.mail.EmailException
+     *          If there is an error preparing the e-mail message
      */
     protected void setupEmail(Blog blog, Entry entry, Email email) throws EmailException {
         email.setCharset(BlojsomConstants.UTF8);
@@ -250,7 +250,8 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
             EntryEvent entryEvent = (EntryEvent) event;
 
             String text = entryEvent.getEntry().getDescription();
-            if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(entryEvent.getEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS)) {
+            if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(entryEvent.getEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS))
+            {
                 String pingbackURL;
                 // XXX
                 String sourceURI = entryEvent.getEntry().getId().toString();
@@ -258,10 +259,14 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
 
                 Pattern hrefPattern = Pattern.compile(HREF_REGEX, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.DOTALL);
                 Matcher hrefMatcher = hrefPattern.matcher(text);
-                _logger.debug("Checking for href's in entry: " + entryEvent.getEntry().getId());
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Checking for href's in entry: " + entryEvent.getEntry().getId());
+                }
                 while (hrefMatcher.find()) {
                     targetURI = hrefMatcher.group(1);
-                    _logger.debug("Found potential targetURI: " + targetURI);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Found potential targetURI: " + targetURI);
+                    }
 
                     // Perform an HTTP request and first see if the X-Pingback header is available
                     try {
@@ -293,19 +298,27 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
                             parameters.add(sourceURI);
                             parameters.add(targetURI);
                             try {
-                                _logger.debug("Sending pingback to: " + pingbackURL + " sourceURI: " + sourceURI + " targetURI: " + targetURI);
+                                if (_logger.isDebugEnabled()) {
+                                    _logger.debug("Sending pingback to: " + pingbackURL + " sourceURI: " + sourceURI + " targetURI: " + targetURI);
+                                }
                                 XmlRpcClient xmlRpcClient = new XmlRpcClient(pingbackURL);
                                 xmlRpcClient.executeAsync(PINGBACK_METHOD, parameters, _callbackHandler);
                             } catch (MalformedURLException e) {
-                                _logger.error(e);
+                                if (_logger.isErrorEnabled()) {
+                                    _logger.error(e);
+                                }
                             }
                         }
                     } catch (IOException e) {
-                        _logger.error(e);
+                        if (_logger.isErrorEnabled()) {
+                            _logger.error(e);
+                        }
                     }
                 }
             } else {
-                _logger.debug("No text in blog entry or " + PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS + " not enabled.");
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("No text in blog entry or " + PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS + " not enabled.");
+                }
             }
         } else if (event instanceof PingbackAddedEvent) {
             HtmlEmail email = new HtmlEmail();
@@ -335,7 +348,9 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
 
                     email.send();
                 } catch (EmailException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }
@@ -368,7 +383,9 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
          * @param s   String
          */
         public void handleResult(Object o, URL url, String s) {
-            _logger.debug(o.toString());
+            if (_logger.isDebugEnabled()) {
+                _logger.debug(o.toString());
+            }
         }
 
         /**
@@ -379,7 +396,9 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
          * @param s   String
          */
         public void handleError(Exception e, URL url, String s) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
     }
 }

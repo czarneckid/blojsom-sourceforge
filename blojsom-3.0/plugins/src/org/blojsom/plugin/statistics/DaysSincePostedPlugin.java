@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DaysSincePostedPlugin.java,v 1.1 2006-03-20 21:30:59 czarneckid Exp $
+ * @version $Id: DaysSincePostedPlugin.java,v 1.2 2006-03-20 22:50:59 czarneckid Exp $
  */
 public class DaysSincePostedPlugin implements Plugin {
 
@@ -70,9 +70,6 @@ public class DaysSincePostedPlugin implements Plugin {
      *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("Initialized Days Since Posted plugin");
-        }
     }
 
     /**

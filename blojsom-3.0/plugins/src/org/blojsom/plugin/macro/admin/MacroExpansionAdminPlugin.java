@@ -51,7 +51,7 @@ import java.util.HashMap;
  * Macro Expansion Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MacroExpansionAdminPlugin.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: MacroExpansionAdminPlugin.java,v 1.2 2006-03-20 22:50:44 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MacroExpansionAdminPlugin extends WebAdminPlugin {
@@ -162,7 +162,9 @@ public class MacroExpansionAdminPlugin extends WebAdminPlugin {
                         _fetcher.saveBlog(blog);
                     } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
-                            _logger.error(e);
+                            if (_logger.isErrorEnabled()) {
+                                _logger.error(e);
+                            }
                         }
                     }
 

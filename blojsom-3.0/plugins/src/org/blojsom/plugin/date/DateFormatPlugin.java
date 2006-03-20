@@ -49,7 +49,7 @@ import java.util.TimeZone;
  * DateFormatPlugin
  *
  * @author David Czarnecki
- * @version $Id: DateFormatPlugin.java,v 1.1 2006-03-20 21:30:55 czarneckid Exp $
+ * @version $Id: DateFormatPlugin.java,v 1.2 2006-03-20 22:50:35 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DateFormatPlugin implements Plugin {
@@ -101,17 +101,23 @@ public class DateFormatPlugin implements Plugin {
         if (BlojsomUtils.checkNullOrBlank(blogTimeZoneId)) {
             blogTimeZoneId = TimeZone.getDefault().getID();
         }
-        _logger.debug("Timezone ID: " + blogTimeZoneId);
+        if (_logger.isDebugEnabled()) {
+            _logger.debug("Timezone ID: " + blogTimeZoneId);
+        }
         // Defaults to GMT if the Id is invalid
         _blogTimeZone = TimeZone.getTimeZone(blogTimeZoneId);
 
         String blogDateFormatPattern = blog.getProperty(BLOG_DATEFORMAT_PATTERN_IP);
         if (BlojsomUtils.checkNullOrBlank(blogDateFormatPattern)) {
             _blogDateFormatPattern = null;
-            _logger.debug("No value supplied for blog-dateformat-pattern");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("No value supplied for blog-dateformat-pattern");
+            }
         } else {
             _blogDateFormatPattern = blogDateFormatPattern;
-            _logger.debug("Date format pattern: " + blogDateFormatPattern);
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Date format pattern: " + blogDateFormatPattern);
+            }
         }
 
         // Get a DateFormat for the specified TimeZone
@@ -124,13 +130,15 @@ public class DateFormatPlugin implements Plugin {
                 sdf.applyPattern(_blogDateFormatPattern);
                 _blogDateFormat = sdf;
             } catch (IllegalArgumentException ie) {
-                _logger.error("Date format pattern \"" + _blogDateFormatPattern + "\" is invalid - using DateFormat.FULL");
+                if (_logger.isErrorEnabled()) {
+                    _logger.error("Date format pattern \"" + _blogDateFormatPattern + "\" is invalid - using DateFormat.FULL");
+                }
             } catch (ClassCastException ce) {
-                _logger.warn("Cannot cast to SimpleDateFormat to apply date format pattern");
             }
         }
 
         context.put(BLOJSOM_DATE_FORMAT, _blogDateFormat);
+        
         return entries;
     }
 

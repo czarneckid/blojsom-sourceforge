@@ -30,8 +30,6 @@
  */
 package org.blojsom.plugin.excerpt;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
@@ -49,7 +47,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: ExcerptPlugin.java,v 1.1 2006-03-20 21:30:56 czarneckid Exp $
+ * @version $Id: ExcerptPlugin.java,v 1.2 2006-03-20 22:50:36 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ExcerptPlugin implements Plugin {
@@ -59,9 +57,6 @@ public class ExcerptPlugin implements Plugin {
     private static final String EXCERPT_EXPRESSION = "(^|\\s).*<div class=\"excerpt\">(.*)</div>.*";
     private static final String SHOWME_START = "$2 &nbsp;<a class=\"smm\" href=\"";
     private static final String SHOWME_FINISH = "&amp;" + SHOWME_PARAM + "=y\">Read More</a>";
-
-
-    private Log _logger = LogFactory.getLog(ExcerptPlugin.class);
 
     /**
      * Default Constructor
@@ -92,11 +87,9 @@ public class ExcerptPlugin implements Plugin {
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         String showme = BlojsomUtils.getRequestValue(SHOWME_PARAM, httpServletRequest);
         if (showme == null) {
-            _logger.debug("Processing all entries");
             processEntries(blog, entries);
-        } else {
-            _logger.debug("Not processing because request param was set");
         }
+
         return entries;
     }
 
