@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.1 2006-03-20 21:31:14 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.2 2006-03-21 16:34:13 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -171,7 +171,15 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
+     * Return a new {@link org.blojsom.blog.Blog} instance
      *
+     * @return {@link org.blojsom.blog.Blog}
+     */
+    public Blog newBlog() {
+        return new DatabaseBlog();
+    }
+
+    /**
      * @param blogId
      * @return
      * @throws FetcherException
@@ -206,7 +214,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @throws FetcherException
      */
@@ -225,6 +232,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             throw new FetcherException("Unable to save blog inforamtion: " + blog.getBlogId(), e);
+        }
+    }
+
+    /**
+     * Delete a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error deleting the blog
+     */
+    public void deleteBlog(Blog blog) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            session.delete(blog);
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException("Unable to delete blog inforamtion: " + blog.getBlogId(), e);
         }
     }
 
@@ -355,7 +386,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param categoryId
      * @return
@@ -387,7 +417,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param categoryId
      * @param limit
@@ -421,7 +450,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param entryId
      * @return
@@ -522,8 +550,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             // Get the requested category and put it in the context
             String requestedCategory = getBlogCategory(blog, httpServletRequest);
             Criteria requestedCategoryCriteria = session.createCriteria(DatabaseCategory.class);
-            requestedCategoryCriteria.add(Restrictions.and(Restrictions.eq("name", BlojsomUtils.addSlashes(requestedCategory)),
-                    Restrictions.eq("blogId", blog.getBlogId())));
+            requestedCategoryCriteria.add(Restrictions.and(Restrictions.eq("name", BlojsomUtils.addSlashes(requestedCategory)), Restrictions.eq("blogId", blog.getBlogId())));
             DatabaseCategory dbCategory = (DatabaseCategory) requestedCategoryCriteria.uniqueResult();
 
             // XXX: Need to ensure only a single category name is placed on the request
@@ -555,7 +582,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @return
      * @throws FetcherException
@@ -585,7 +611,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param categoryId
      * @return
@@ -616,7 +641,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param entry
      * @throws FetcherException
@@ -664,7 +688,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param entry
      * @throws FetcherException
@@ -696,7 +719,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param entry
      * @throws FetcherException
@@ -728,7 +750,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param category
      * @throws FetcherException
@@ -763,7 +784,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param category
      * @throws FetcherException
@@ -795,7 +815,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param category
      * @throws FetcherException
@@ -827,7 +846,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param comment
      * @throws FetcherException
@@ -855,7 +873,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param comment
      * @throws FetcherException
@@ -883,7 +900,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param comment
      * @throws FetcherException
@@ -911,7 +927,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param trackback
      * @throws FetcherException
@@ -939,7 +954,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param trackback
      * @throws FetcherException
@@ -968,7 +982,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param trackback
      * @throws FetcherException
@@ -996,7 +1009,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param pingback
      * @throws FetcherException
@@ -1024,7 +1036,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param pingback
      * @throws FetcherException
@@ -1053,7 +1064,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     *
      * @param blog
      * @param pingback
      * @throws FetcherException
@@ -1106,9 +1116,9 @@ public class DatabaseFetcher implements Fetcher, Listener {
         try {
             _sessionFactory.close();
         } catch (HibernateException e) {
-           if (_logger.isErrorEnabled()) {
-               _logger.error(e);
-           }
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         if (_logger.isDebugEnabled()) {

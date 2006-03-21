@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.1 2006-03-20 21:31:14 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.2 2006-03-21 16:33:28 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -88,6 +88,13 @@ public interface Fetcher {
     public Category newCategory();
 
     /**
+     * Return a new {@link Blog} instance
+     *
+     * @return {@link Blog}
+     */
+    public Blog newBlog();
+
+    /**
      *
      * @param blogId
      * @return
@@ -101,6 +108,14 @@ public interface Fetcher {
      * @throws FetcherException
      */
     public void saveBlog(Blog blog) throws FetcherException;
+
+    /**
+     * Delete a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error deleting the blog
+     */
+    public void deleteBlog(Blog blog) throws FetcherException;
 
     /**
      * Fetch a set of {@link Entry} objects.
