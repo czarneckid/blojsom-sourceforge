@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.2 2006-03-21 16:32:38 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -89,7 +89,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     private static final String INDIVIDUAL_BLOG_PROPERTY = "individual-blog-property";
     private static final String INDIVIDUAL_BLOG_PROPERTY_VALUE = "individual-blog-property-value";
 
-    private Properties _properties;
+    private Properties _blojsomProperties;
     private Fetcher _fetcher;
 
     /**
@@ -112,8 +112,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
      *
      * @param properties Default properties
      */
-    public void setProperties(Properties properties) {
-        _properties = properties;
+    public void setBlojsomProperties(Properties blojsomProperties) {
+        _blojsomProperties = blojsomProperties;
     }
 
     /**
@@ -303,7 +303,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
         }
 
-        String installedLocales = _properties.getProperty(BlojsomConstants.INSTALLED_LOCALES_IP);
+        String installedLocales = _blojsomProperties.getProperty(BlojsomConstants.INSTALLED_LOCALES_IP);
         if (installedLocales != null) {
             context.put(BLOJSOM_INSTALLED_LOCALES, BlojsomUtils.parseCommaList(installedLocales));
         }
