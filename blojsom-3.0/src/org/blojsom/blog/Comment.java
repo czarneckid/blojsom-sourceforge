@@ -39,43 +39,49 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Comment.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: Comment.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public interface Comment {
 
     /**
+     * Set the comment ID
      *
-     * @param id
+     * @param id Comment ID
      */
     void setId(Integer id);
 
     /**
+     * Get the comment ID
      *
-     * @return
+     * @return Comment ID
      */
     public Integer getId();
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     void setBlogId(String blogId);
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     String getBlogId();
 
     /**
+     * Get the blog entry ID
      *
-     * @return
+     * @return Blog entry ID
      */
     public Integer getBlogEntryId();
 
     /**
+     * Set the blog entry ID
      *
-     * @param blogEntryId
+     * @param blogEntryId Blog entry ID
      */
     public void setBlogEntryId(Integer blogEntryId);
 
@@ -123,6 +129,7 @@ public interface Comment {
 
     /**
      * Get the comment as a escaped string
+     *
      * @return Escaped Comment
      */
     String getEscapedComment();
@@ -166,7 +173,7 @@ public interface Comment {
     /**
      * Get the trackback meta-data
      *
-     * @return Meta-data as a {@link java.util.Map}
+     * @return Meta-data as a {@link Map}
      */
     Map getMetaData();
 
@@ -180,7 +187,7 @@ public interface Comment {
     /**
      * Set the trackback meta-data
      *
-     * @param metaData {@link java.util.Map} containing meta-data for this comment
+     * @param metaData {@link Map} containing meta-data for this comment
      */
     void setMetaData(Map metaData);
 
@@ -203,52 +210,58 @@ public interface Comment {
     String getDateAsFormat(String format, Locale locale);
 
     /**
-     * Retrieve the {@link org.blojsom.blog.Entry} associated with this comment
+     * Retrieve the {@link Entry} associated with this comment
      *
-     * @return {@link org.blojsom.blog.Entry}
+     * @return {@link Entry}
      */
     Entry getEntry();
 
     /**
-     * Set the {@link org.blojsom.blog.Entry} associated with this comment
+     * Set the {@link Entry} associated with this comment
      *
-     * @param blogEntry {@link org.blojsom.blog.Entry}
+     * @param blogEntry {@link Entry}
      */
     void setEntry(Entry entry);
 
     /**
+     * Get the comment parent ID
      *
-     * @return
+     * @return Comment parent ID
      */
     public Integer getParentId();
 
     /**
+     * Set the comment parent ID
      *
-     * @param parentId
+     * @param parentId Comment parent ID
      */
     public void setParentId(Integer parentId);
 
     /**
+     * Get the IP
      *
-     * @return
+     * @return IP
      */
     public String getIp();
 
     /**
+     * Set the IP
      *
-     * @param ip
+     * @param ip IP
      */
     public void setIp(String ip);
 
     /**
+     * Get the status
      *
-     * @return
+     * @return Status
      */
     public String getStatus();
 
     /**
+     * Set the status
      *
-     * @param status
+     * @param status Status
      */
     public void setStatus(String status);
 }

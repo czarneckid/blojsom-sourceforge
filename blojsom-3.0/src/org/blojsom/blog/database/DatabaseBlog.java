@@ -46,7 +46,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: DatabaseBlog.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
@@ -56,79 +56,88 @@ public class DatabaseBlog implements Blog, Serializable {
     private Map _properties;
 
     /**
-     *
+     * Create a new instance of the database blog
      */
     public DatabaseBlog() {
     }
 
     /**
+     * Retrieve the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId() {
         return _blogId;
     }
 
     /**
+     * Set the blog ID
      *
-     * @param blogID
+     * @param blogID Blog ID
      */
     public void setBlogId(String blogID) {
         _blogId = blogID;
     }
 
     /**
+     * Get a map of the templates
      *
-     * @return
+     * @return Map of the templates
      */
     public Map getTemplates() {
         return Collections.unmodifiableMap(_templates);
     }
 
     /**
+     * Set the templates
      *
-     * @param templates
+     * @param templates Map of the templates
      */
     public void setTemplates(Map templates) {
         _templates = templates;
     }
 
     /**
+     * Get a map of the plugins
      *
-     * @return
+     * @return Map of the plugins
      */
     public Map getPlugins() {
         return Collections.unmodifiableMap(_plugins);
     }
 
     /**
+     * Set the plugins
      *
-     * @param plugins
+     * @param plugins Plugins
      */
     public void setPlugins(Map plugins) {
         _plugins = plugins;
     }
 
     /**
+     * Get the properties for the blog
      *
-     * @return
+     * @return Properties for the blog
      */
     public Map getProperties() {
         return _properties;
     }
 
     /**
+     * Set the properties for the blog
      *
-     * @param properties
+     * @param properties Blog properties
      */
     public void setProperties(Map properties) {
         _properties = properties;
     }
 
     /**
+     * Get a named property
      *
-     * @param property
-     * @return
+     * @param property Property name
+     * @return Value of property
      */
     public String getProperty(String property) {
         return (String) _properties.get(property);

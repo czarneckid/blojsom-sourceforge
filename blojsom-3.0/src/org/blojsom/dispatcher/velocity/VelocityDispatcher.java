@@ -61,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: VelocityDispatcher.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.2 2006-03-21 02:43:53 czarneckid Exp $
  */
 public class VelocityDispatcher implements Dispatcher {
 
@@ -186,7 +186,9 @@ public class VelocityDispatcher implements Dispatcher {
             updatedProperties.put(VelocityEngine.FILE_RESOURCE_LOADER_PATH, servletContext.getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory) + ", " + servletContext.getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _templatesDirectory));
             velocityEngine.init(updatedProperties);
         } catch (Exception e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
 
             return;
         }
@@ -197,7 +199,10 @@ public class VelocityDispatcher implements Dispatcher {
 
         if (pageParameter != null) {
             flavorTemplateForPage = BlojsomUtils.getTemplateForPage(flavorTemplate, pageParameter);
-            _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
+
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Retrieved template for page: " + flavorTemplateForPage);
+            }
         }
 
         // Setup the VelocityContext
@@ -208,7 +213,10 @@ public class VelocityDispatcher implements Dispatcher {
         if (flavorTemplateForPage != null) {
             // Try and look for the flavor page template for the individual user
             if (!velocityEngine.templateExists(flavorTemplateForPage)) {
-                _logger.error("Could not find flavor page template for user: " + flavorTemplateForPage);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error("Could not find flavor page template for user: " + flavorTemplateForPage);
+                }
+
                 responseWriter.flush();
                 destroyVelocityContext(velocityContext);
 
@@ -217,7 +225,10 @@ public class VelocityDispatcher implements Dispatcher {
                 try {
                     velocityEngine.mergeTemplate(flavorTemplateForPage, BlojsomConstants.UTF8, velocityContext, responseWriter);
                 } catch (Exception e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+
                     responseWriter.flush();
                     destroyVelocityContext(velocityContext);
 
@@ -229,7 +240,10 @@ public class VelocityDispatcher implements Dispatcher {
         } else {
             // Otherwise, fallback and look for the flavor template for the individual user
             if (!velocityEngine.templateExists(flavorTemplate)) {
-                _logger.error("Could not find flavor template for user: " + flavorTemplate);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error("Could not find flavor template for user: " + flavorTemplate);
+                }
+
                 responseWriter.flush();
                 destroyVelocityContext(velocityContext);
 
@@ -238,7 +252,10 @@ public class VelocityDispatcher implements Dispatcher {
                 try {
                     velocityEngine.mergeTemplate(flavorTemplate, BlojsomConstants.UTF8, velocityContext, responseWriter);
                 } catch (Exception e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+
                     responseWriter.flush();
                     destroyVelocityContext(velocityContext);
 
@@ -246,7 +263,9 @@ public class VelocityDispatcher implements Dispatcher {
                 }
             }
 
-            _logger.debug("Dispatched to flavor template: " + flavorTemplate);
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Dispatched to flavor template: " + flavorTemplate);
+            }
         }
 
         responseWriter.flush();
@@ -296,13 +315,21 @@ public class VelocityDispatcher implements Dispatcher {
                     success = _velocityEngine.evaluate(_velocityContext, sw, LOG_TAG, template);
                 }
             } catch (ParseErrorException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (MethodInvocationException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (ResourceNotFoundException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (IOException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             }
 
             if (success) {

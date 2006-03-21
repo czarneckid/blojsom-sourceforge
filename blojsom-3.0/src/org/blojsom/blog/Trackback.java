@@ -30,50 +30,56 @@
  */
 package org.blojsom.blog;
 
-import java.util.Map;
-import java.util.Locale;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author David Czarnecki
+ * @version $Id: Trackback.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: Trackback.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
  */
 public interface Trackback {
 
     /**
+     * Set the trackback ID
      *
-     * @param id
+     * @param id Trackback ID
      */
     void setId(Integer id);
 
     /**
+     * Get the trackback ID
      *
-     * @return
+     * @return Trackback ID
      */
     public Integer getId();
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     void setBlogId(String blogId);
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     String getBlogId();
 
     /**
+     * Get the blog entry ID
      *
-     * @return
+     * @return Blog entry ID
      */
     public Integer getBlogEntryId();
 
     /**
+     * Set the blog entry ID
      *
-     * @param blogEntryId
+     * @param blogEntryId Blog entry ID
      */
     public void setBlogEntryId(Integer blogEntryId);
 
@@ -166,16 +172,16 @@ public interface Trackback {
     String getDateAsFormat(String format, Locale locale);
 
     /**
-     * Retrieve the {@link org.blojsom.blog.Entry} associated with this trackback
+     * Retrieve the {@link Entry} associated with this trackback
      *
-     * @return {@link org.blojsom.blog.Entry}
+     * @return {@link Entry}
      */
     Entry getEntry();
 
     /**
-     * Set the {@link org.blojsom.blog.Entry} associated with this trackback
+     * Set the {@link Entry} associated with this trackback
      *
-     * @param blogEntry {@link org.blojsom.blog.Entry}
+     * @param blogEntry {@link Entry}
      */
     void setEntry(Entry blogEntry);
 
@@ -194,26 +200,30 @@ public interface Trackback {
     void setTrackbackDate(Date trackbackDate);
 
     /**
+     * Get the IP
      *
-     * @return
+     * @return IP
      */
     public String getIp();
 
     /**
+     * Get the IP
      *
-     * @param ip
+     * @return IP
      */
     public void setIp(String ip);
 
     /**
+     * Get the status
      *
-     * @return
+     * @return Status
      */
     public String getStatus();
 
     /**
+     * Set the status
      *
-     * @param status
+     * @param status Status
      */
     public void setStatus(String status);
 }

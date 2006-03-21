@@ -38,55 +38,63 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public interface Blog {
 
     /**
+     * Retrieve the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId();
 
     /**
+     * Set the blog ID
      *
-     * @param blogID
+     * @param blogID Blog ID
      */
     public void setBlogId(String blogID);
 
     /**
+     * Get a map of the templates
      *
-     * @return
+     * @return Map of the templates
      */
     public Map getTemplates();
 
     /**
+     * Set the templates
      *
-     * @param templates
+     * @param templates Map of the templates
      */
     public void setTemplates(Map templates);
 
     /**
+     * Get a map of the plugins
      *
-     * @return
+     * @return Map of the plugins
      */
     public Map getPlugins();
 
     /**
+     * Set the plugins
      *
-     * @param plugins
+     * @param plugins Plugins
      */
     public void setPlugins(Map plugins);
 
     /**
+     * Get the properties for the blog
      *
-     * @return
+     * @return Properties for the blog
      */
     public Map getProperties();
 
     /**
+     * Set the properties for the blog
      *
-     * @param properties
+     * @param properties Blog properties
      */
     public void setProperties(Map properties);
 
@@ -408,9 +416,10 @@ public interface Blog {
     void setDigestAlgorithm(String digestAlgorithm);
 
     /**
+     * Set a property for the blog
      *
-     * @param name
-     * @param value
+     * @param name Property name
+     * @param value Property value
      */
     void setProperty(String name, String value);
 }

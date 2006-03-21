@@ -46,7 +46,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseComment.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: DatabaseComment.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public class DatabaseComment implements Comment, Serializable {
 
@@ -66,13 +66,13 @@ public class DatabaseComment implements Comment, Serializable {
     protected String _ip;
 
     /**
-     *
+     * Create a new instance of the database comment
      */
     public DatabaseComment() {
     }
 
     /**
-     * Get the id of this blog comments
+     * Get the id of this blog comment
      *
      * @return Id
      */
@@ -92,48 +92,54 @@ public class DatabaseComment implements Comment, Serializable {
     }
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     public void setBlogId(String blogId) {
         _blogId = blogId;
     }
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId() {
         return _blogId;
     }
 
     /**
+     * Get the blog entry ID
      *
-     * @return
+     * @return Blog entry ID
      */
     public Integer getBlogEntryId() {
         return _blogEntryId;
     }
 
     /**
+     * Set the blog entry ID
      *
-     * @param blogEntryId
+     * @param blogEntryId Blog entry ID
      */
     public void setBlogEntryId(Integer blogEntryId) {
         _blogEntryId = blogEntryId;
     }
 
     /**
+     * Get the {@link Entry}
      *
-     * @return
+     * @return {@link Entry}
      */
     public Entry getEntry() {
         return _entry;
     }
 
     /**
+     * Set the {@link Entry}
      *
-     * @param entry
+     * @param entry {@link Entry}
      */
     public void setEntry(Entry entry) {
         _entry = entry;
@@ -251,7 +257,7 @@ public class DatabaseComment implements Comment, Serializable {
     /**
      * Get the trackback meta-data
      *
-     * @return Meta-data as a {@link java.util.Map}
+     * @return Meta-data as a {@link Map}
      */
     public Map getMetaData() {
         if (_metaData == null) {
@@ -317,51 +323,56 @@ public class DatabaseComment implements Comment, Serializable {
     }
 
     /**
+     * Get the comment parent ID
      *
-     * @return
+     * @return Comment parent ID
      */
     public Integer getParentId() {
         return _parentId;
     }
 
     /**
+     * Set the comment parent ID
      *
-     * @param parentId
+     * @param parentId Comment parent ID
      */
     public void setParentId(Integer parentId) {
         _parentId = parentId;
     }
 
     /**
+     * Get the IP
      *
-     * @return
+     * @return IP
      */
     public String getIp() {
         return _ip;
     }
 
     /**
+     * Set the IP
      *
-     * @param ip
+     * @param ip IP
      */
     public void setIp(String ip) {
         _ip = ip;
     }
 
     /**
+     * Get the status
      *
-     * @return
+     * @return Status
      */
     public String getStatus() {
         return _status;
     }
 
     /**
+     * Set the status
      *
-     * @param status
+     * @param status Status
      */
     public void setStatus(String status) {
         _status = status;
     }
-
 }

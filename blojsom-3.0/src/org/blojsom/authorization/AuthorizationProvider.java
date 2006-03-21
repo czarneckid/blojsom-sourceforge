@@ -40,7 +40,7 @@ import java.util.Map;
  * AuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: AuthorizationProvider.java,v 1.2 2006-03-20 22:17:09 czarneckid Exp $
+ * @version $Id: AuthorizationProvider.java,v 1.3 2006-03-21 02:40:39 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface AuthorizationProvider {
@@ -61,6 +61,43 @@ public interface AuthorizationProvider {
      */
     public User loadUser(Blog blog, String userLogin) throws AuthorizationException;
 
+    /**
+     * Retrieve the users for a given blog
+     *
+     * @param blog {@link Blog}
+     * @return List of {@link User}s for a blog
+     */
+    public User[] getUsers(Blog blog);
+
+    /**
+     * Load a given {@link User} from a blog given their ID
+     *
+     * @param blog {@link Blog}
+     * @param userID User ID
+     * @return {@link User}
+     * @throws AuthorizationException If there is an error loading the user
+     */
+    public User loadUser(Blog blog, Integer userID) throws AuthorizationException;
+
+    /**
+     * Save a given {@link User} to the blog
+     *
+     * @param blog {@link Blog}
+     * @param user {@link User}
+     * @return {@link User}
+     * @throws AuthorizationException If there is an error saving the user to the blog
+     */
+    public User saveUser(Blog blog, User user) throws AuthorizationException;
+
+    /**
+     * Delete a given user from a blog
+     *
+     * @param blog {@link Blog}
+     * @param userID User ID
+     * @throws AuthorizationException If there is an error deleting the user from the blog
+     */
+    
+    public void deleteUser(Blog blog, Integer userID) throws AuthorizationException;
     /**
      * Authorize a username and password for the given {@link Blog}
      *

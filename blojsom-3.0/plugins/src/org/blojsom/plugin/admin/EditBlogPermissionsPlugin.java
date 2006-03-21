@@ -36,24 +36,22 @@ import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.blog.User;
-import org.blojsom.blog.database.DatabaseUser;
-import org.blojsom.event.EventBroadcaster;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
-import org.hibernate.*;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.2 2006-03-20 22:27:17 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.3 2006-03-21 02:40:31 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -87,128 +85,11 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     // Permissions
     private static final String EDIT_BLOG_PERMISSIONS_PERMISSION = "edit_blog_permissions_permission";
 
-    private EventBroadcaster _eventBroadcaster;
-    private SessionFactory _sessionFactory;
-
     /**
      * Construct a new instance of the Edit Blog Permissions plugin
      */
     public EditBlogPermissionsPlugin() {
-    }
-
-    /**
-     * Set the {@link SessionFactory}
-     *
-     * @param sessionFactory {@link SessionFactory}
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        _sessionFactory = sessionFactory;
-    }
-
-    /**
-     * Set the {@link EventBroadcaster}
-     *
-     * @param eventBroadcaster {@link EventBroadcaster}
-     */
-    public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
-        _eventBroadcaster = eventBroadcaster;
-    }
-
-    /**
-     * Retrieve the users for a given blog
-     *
-     * @param blog {@link Blog}
-     * @return List of {@link User}s for a blog
-     */
-    protected User[] getUsersForBlog(Blog blog) {
-        Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-
-        Criteria userCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseUser.class);
-        userCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
-        userCriteria.addOrder(Order.asc("userLogin"));
-
-        List userList = userCriteria.list();
-
-        tx.commit();
-        session.close();
-
-        try {
-            return (DatabaseUser[]) userList.toArray(new DatabaseUser[userList.size()]);
-        } catch (Exception e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-
-            return new DatabaseUser[0];
-        }
-    }
-
-    /**
-     * Load a given {@link User} from a blog given their ID
-     *
-     * @param blog {@link Blog}
-     * @param userID User ID
-     * @return {@link User}
-     * @throws AuthorizationException If there is an error loading the user
-     */
-    protected User loadUserFromBlog(Blog blog, Integer userID) throws AuthorizationException {
-        if (userID == null) {
-            return new DatabaseUser();
-        } else {
-            try {
-                Session session = _sessionFactory.openSession();
-                Transaction tx = session.beginTransaction();
-
-                User user = (DatabaseUser) session.load(DatabaseUser.class, userID);
-                if (!user.getBlogId().equals(blog.getBlogId())) {
-                    tx.commit();
-                    session.close();
-
-                    throw new AuthorizationException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
-                }
-
-                tx.commit();
-                session.close();
-
-                return user;
-            } catch (HibernateException e) {
-                if (_logger.isErrorEnabled()) {
-                    _logger.error(e);
-                }
-
-                throw new AuthorizationException("Unable to load user ID: " + userID + " from blog: " + blog.getBlogId(), e);
-            }
-        }
-    }
-
-    /**
-     * Save a given {@link User} to the blog
-     *
-     * @param blog {@link Blog}
-     * @param user {@link User}
-     * @return {@link User}
-     * @throws AuthorizationException If there is an error saving the user to the blog
-     */
-    protected User saveUserToBlog(Blog blog, User user) throws AuthorizationException {
-        try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
-
-            session.update(user);
-
-            tx.commit();
-            session.close();
-
-            return user;
-        } catch (HibernateException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-
-            throw new AuthorizationException("Unable to save user login: " + user.getUserLogin() + " to blog: " + blog.getBlogId(), e);
-        }
-    }
+    }        
 
     /**
      * Read the permissions file for a given blog
@@ -237,7 +118,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
      * @param blog {@link Blog}
      */
     protected void setupPermissionsInContext(Map context, Blog blog) {
-        User[] users = getUsersForBlog(blog);
+        User[] users = _authorizationProvider.getUsers(blog);
         TreeMap userIDs = new TreeMap();
         for (int i = 0; i < users.length; i++) {
             User userFromBlog = users[i];
@@ -290,7 +171,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                 if (!BlojsomUtils.checkNullOrBlank(permissionToAdd) && (permissionToAdd.endsWith(PERMISSION_SUFFIX))) {
                     User user;
                     try {
-                        user = loadUserFromBlog(blog, Integer.valueOf(blogUserID));
+                        user = _authorizationProvider.loadUser(blog, Integer.valueOf(blogUserID));
                     } catch (AuthorizationException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
@@ -314,7 +195,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                     user.getMetaData().put(permissionToAdd, Boolean.TRUE.toString());
 
                     try {
-                        saveUserToBlog(blog, user);
+                        _authorizationProvider.saveUser(blog, user);
 
                         addOperationResultMessage(context, getAdminResource(PERMISSIONS_SAVED_KEY, PERMISSIONS_SAVED_KEY, blog.getBlogAdministrationLocale()));
                     } catch (AuthorizationException e) {
@@ -338,7 +219,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                 if (!BlojsomUtils.checkNullOrBlank(permissionToDelete) && (permissionToDelete.endsWith(PERMISSION_SUFFIX))) {
                     User user;
                     try {
-                        user = loadUserFromBlog(blog, Integer.valueOf(blogUserID));
+                        user = _authorizationProvider.loadUser(blog, Integer.valueOf(blogUserID));
                     } catch (AuthorizationException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
@@ -362,7 +243,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                     user.getMetaData().remove(permissionToDelete);
 
                     try {
-                        saveUserToBlog(blog, user);
+                        _authorizationProvider.saveUser(blog, user);
 
                         addOperationResultMessage(context, getAdminResource(PERMISSIONS_SAVED_KEY, PERMISSIONS_SAVED_KEY, blog.getBlogAdministrationLocale()));
                     } catch (AuthorizationException e) {

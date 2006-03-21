@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseEntry.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: DatabaseEntry.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public class DatabaseEntry implements Entry, Serializable {
 
@@ -68,54 +68,60 @@ public class DatabaseEntry implements Entry, Serializable {
     protected String _postSlug;
 
     /**
-     *
+     * Create a new instance of the database entry
      */
     public DatabaseEntry() {
     }
 
     /**
+     * Set the entry ID
      *
-     * @param id
+     * @param id Entry ID
      */
     public void setId(Integer id) {
         _id = id;
     }
 
     /**
+     * Get the entry ID
      *
-     * @return
+     * @return Entry ID
      */
     public Integer getId() {
         return _id;
     }
 
     /**
+     * Get the blog category ID
      *
-     * @return
+     * @return Blog category ID
      */
     public Integer getBlogCategoryId() {
         return _blogCategoryId;
     }
 
     /**
+     * Set the blog category ID
      *
-     * @param blogCategoryId
+     * @param blogCategoryId Blog category ID
      */
     public void setBlogCategoryId(Integer blogCategoryId) {
         _blogCategoryId = blogCategoryId;
     }
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId() {
         return _blogId;
     }
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     public void setBlogId(String blogId) {
         _blogId = blogId;
@@ -142,16 +148,18 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
+     * Get the last modified date
      *
-     * @return
+     * @return Last modified date
      */
     public Date getModifiedDate() {
         return _modifiedDate;
     }
 
     /**
+     * Set the last modified date
      *
-     * @param modifiedDate
+     * @param modifiedDate Last modified date
      */
     public void setModifiedDate(Date modifiedDate) {
         _modifiedDate = modifiedDate;
@@ -318,7 +326,7 @@ public class DatabaseEntry implements Entry, Serializable {
 
     /**
      * Set the comments for this blog entry. The comments must be an <code>List</code>
-     * of {@link org.blojsom.blog.Comment}. This method will not writeback or change the comments on disk.
+     * of {@link Comment}. This method will not writeback or change the comments on disk.
      *
      * @param comments Comments for this entry
      */
@@ -327,7 +335,7 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
-     * Get the comments as an array of {@link org.blojsom.blog.Comment} objects
+     * Get the comments as an array of {@link Comment} objects
      *
      * @return BlogComment[] array
      */
@@ -509,64 +517,71 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
+     * Set whether comments are allowed
      *
-     * @param allowComments
+     * @param allowComments <code>true</code> if comments are allowed, <code>false</code> otherwise
      */
     public void setAllowComments(Integer allowComments) {
         _allowComments = allowComments;
     }
 
     /**
+     * Set whether trackbacks are allowed
      *
-     * @param allowTrackbacks
+     * @param allowTrackbacks <code>true</code> if trackbacks are allowed, <code>false</code> otherwise
      */
     public void setAllowTrackbacks(Integer allowTrackbacks) {
         _allowTrackbacks = allowTrackbacks;
     }
-
-    /**
+/**
+     * Set whether pingbacks are allowed
      *
-     * @param allowPingbacks
+     * @param allowPingbacks <code>true</code> if pingbacks are allowed, <code>false</code> otherwise
      */
     public void setAllowPingbacks(Integer allowPingbacks) {
         _allowPingbacks = allowPingbacks;
     }
 
     /**
+     * Get the status
      *
-     * @return
+     * @return Status
      */
     public String getStatus() {
         return _status;
     }
 
     /**
+     * Set the status
      *
-     * @param status
+     * @param status Status
      */
     public void setStatus(String status) {
         _status = status;
     }
 
     /**
+     * Get the author
      *
-     * @return
+     * @return Author
      */
     public String getAuthor() {
         return _author;
     }
 
     /**
+     * Set the author
      *
-     * @param author
+     * @param author Author
      */
     public void setAuthor(String author) {
         _author = author;
     }
 
     /**
+     * Whether or not comments are allowed
      *
-     * @return
+     * @return <code>true</code> if comments are allowed, <code>false</code> otherwise
      */
     public Boolean allowsComments() {
         if (_allowComments == null) {
@@ -577,8 +592,9 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
+     * Whether or not trackbacks are allowed
      *
-     * @return
+     * @return <code>true</code> if trackbacks are allowed, <code>false</code> otherwise
      */
     public Boolean allowsTrackbacks() {
         if (_allowTrackbacks == null) {
@@ -589,8 +605,9 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
+     * Whether or not pingbacks are allowed
      *
-     * @return
+     * @return <code>true</code> if pingbacks are allowed, <code>false</code> otherwise
      */
     public Boolean allowsPingbacks() {
         if (_allowPingbacks == null) {
@@ -601,16 +618,18 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
+     * Get the post slug
      *
-     * @return
+     * @return Post slug
      */
     public String getPostSlug() {
         return _postSlug;
     }
 
     /**
+     * Set the post slug
      *
-     * @param postSlug
+     * @param postSlug Post slug
      */
     public void setPostSlug(String postSlug) {
         _postSlug = postSlug;

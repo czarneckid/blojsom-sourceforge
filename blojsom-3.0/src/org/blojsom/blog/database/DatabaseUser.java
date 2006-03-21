@@ -39,7 +39,7 @@ import java.util.Map;
  * DatabaseUser
  *
  * @author David Czarnecki
- * @version $Id: DatabaseUser.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: DatabaseUser.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseUser implements User {
@@ -55,132 +55,169 @@ public class DatabaseUser implements User {
     protected Map _metaData;
 
     /**
-     *
+     * Create a new instance of the database user
      */
     public DatabaseUser() {
     }
 
     /**
-     * @return
+     * Get the user ID
+     *
+     * @return User ID
      */
     public Integer getId() {
         return _id;
     }
 
     /**
-     * @param id
+     * Set the user ID
+     *
+     * @param id User ID
      */
     public void setId(Integer id) {
         _id = id;
     }
 
     /**
-     * @return
+     * Get the blog ID
+     *
+     * @return Blog ID
      */
     public String getBlogId() {
         return _blogId;
     }
 
     /**
-     * @param blogId
+     * Set the blog ID
+     *
+     * @param blogId Blog ID
      */
     public void setBlogId(String blogId) {
         _blogId = blogId;
     }
 
     /**
-     * @return
+     * Get the user login
+     *
+     * @return User login
      */
     public String getUserLogin() {
         return _userLogin;
     }
 
     /**
-     * @param userLogin
+     * Set the user login
+     *
+     * @param userLogin User login
      */
     public void setUserLogin(String userLogin) {
         _userLogin = userLogin;
     }
 
     /**
-     * @return
+     * Get the password
+     *
+     * @return Password
      */
     public String getUserPassword() {
         return _userPassword;
     }
 
     /**
-     * @param userPassword
+     * Set the password
+     *
+     * @param userPassword Password
      */
     public void setUserPassword(String userPassword) {
         _userPassword = userPassword;
     }
 
     /**
-     * @return
+     * Get the user name
+     *
+     * @return User name
      */
     public String getUserName() {
         return _userName;
     }
 
     /**
-     * @param userName
+     * Set the user name
+     *
+     * @param userName User name
      */
     public void setUserName(String userName) {
         _userName = userName;
     }
 
     /**
-     * @return
+     * Get the user e-mail
+     *
+     * @return User e-mail
      */
     public String getUserEmail() {
         return _userEmail;
     }
 
     /**
-     * @param userEmail
+     * Set the user e-mail
+     *
+     * @param userEmail User e-mail
      */
     public void setUserEmail(String userEmail) {
         _userEmail = userEmail;
     }
 
     /**
-     * @return
+     * Get the user registered date
+     *
+     * @return User registered date
      */
     public Date getUserRegistered() {
         return _userRegistered;
     }
 
     /**
-     * @param userRegistered
+     * Set the user registered date
+     *
+     * @param userRegistered User registered date
      */
     public void setUserRegistered(Date userRegistered) {
         _userRegistered = userRegistered;
     }
 
     /**
-     * @return
+     * Get the user status
+     *
+     * @return User status
      */
     public String getUserStatus() {
         return _userStatus;
     }
 
     /**
-     * @param userStatus
+     * Set the user status
+     *
+     * @param userStatus User status
      */
     public void setUserStatus(String userStatus) {
         _userStatus = userStatus;
     }
 
     /**
-     * @return
+     * Get the meta-data
+     *
+     * @return Meta-data
      */
     public Map getMetaData() {
         return _metaData;
     }
 
+
     /**
-     * @param metaData
+     * Set the meta-data
+     *
+     * @param metaData Meta-data
      */
     public void setMetaData(Map metaData) {
         _metaData = metaData;

@@ -38,115 +38,133 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: User.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: User.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public interface User {
 
     /**
+     * Get the user ID
      *
-     * @return
+     * @return User ID
      */
     public Integer getId();
 
     /**
+     * Set the user ID
      *
-     * @param id
+     * @param id User ID
      */
     public void setId(Integer id);
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId();
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     public void setBlogId(String blogId);
 
     /**
+     * Get the user login
      *
-     * @return
+     * @return User login
      */
     public String getUserLogin();
 
     /**
+     * Set the user login
      *
-     * @param userLogin
+     * @param userLogin User login
      */
     public void setUserLogin(String userLogin);
 
     /**
+     * Get the password
      *
-     * @return
+     * @return Password
      */
     public String getUserPassword();
 
     /**
+     * Set the password
      *
-     * @param userPassword
+     * @param userPassword Password
      */
     public void setUserPassword(String userPassword);
 
     /**
+     * Get the user name
      *
-     * @return
+     * @return User name
      */
     public String getUserName();
 
     /**
+     * Set the user name
      *
-     * @param userName
+     * @param userName User name
      */
     public void setUserName(String userName);
 
     /**
+     * Get the user e-mail
      *
-     * @return
+     * @return User e-mail
      */
     public String getUserEmail();
 
     /**
+     * Set the user e-mail
      *
-     * @param userEmail
+     * @param userEmail User e-mail
      */
     public void setUserEmail(String userEmail);
 
     /**
+     * Get the user registered date
      *
-     * @return
+     * @return User registered date
      */
     public Date getUserRegistered();
 
     /**
+     * Set the user registered date
      *
-     * @param userRegistered
+     * @param userRegistered User registered date
      */
     public void setUserRegistered(Date userRegistered);
 
     /**
+     * Get the user status
      *
-     * @return
+     * @return User status
      */
     public String getUserStatus();
 
     /**
+     * Set the user status
      *
-     * @param userStatus
+     * @param userStatus User status
      */
     public void setUserStatus(String userStatus);
 
     /**
+     * Get the meta-data
      *
-     * @return
+     * @return Meta-data
      */
     public Map getMetaData();
 
     /**
-     * 
-     * @param metaData
+     * Set the meta-data
+     *
+     * @param metaData Meta-data
      */
     public void setMetaData(Map metaData);
 }

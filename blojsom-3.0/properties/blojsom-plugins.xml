@@ -350,13 +350,7 @@
         </property>
         <property name="resourceManager">
             <ref bean="resourceManager"/>
-        </property>
-        <property name="eventBroadcaster">
-            <ref bean="eventBroadcaster"/>
-        </property>
-        <property name="sessionFactory">
-            <ref bean="hibernateSessionFactory"/>
-        </property>
+        </property>        
     </bean>
 
     <bean id="edit-blog-properties" class="org.blojsom.plugin.admin.EditBlogPropertiesPlugin" init-method="init"

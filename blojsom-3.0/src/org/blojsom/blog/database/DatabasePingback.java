@@ -37,12 +37,12 @@ import org.blojsom.blog.Pingback;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabasePingback.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: DatabasePingback.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public class DatabasePingback extends DatabaseTrackback implements Pingback {
 
     /**
-     * 
+     * Create a new instance of the database pingback
      */
     public DatabasePingback() {
     }    

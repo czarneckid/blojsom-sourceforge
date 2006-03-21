@@ -31,50 +31,55 @@
 package org.blojsom.blog;
 
 import java.util.Map;
-import java.util.List;
 
 /**
  * Category
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Category.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: Category.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public interface Category {
 
     /**
+     * Get the category ID
      *
-     * @return
+     * @return Category ID
      */
     Integer getId();
 
     /**
+     * Set the category ID
      *
-     * @param id
+     * @param id Category ID
      */
     void setId(Integer id);
 
     /**
+     * Get the blog parent category ID
      *
-     * @return
+     * @return Parent category ID
      */
     Integer getParentCategoryId();
 
     /**
+     * Se the parent category ID
      *
-     * @param id
+     * @param parentCategoryId Parent category ID
      */
     void setParentCategoryId(Integer id);
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     String getBlogId();
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     void setBlogId(String blogId);
 

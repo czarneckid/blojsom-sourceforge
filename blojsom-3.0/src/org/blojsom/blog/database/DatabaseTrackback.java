@@ -30,22 +30,22 @@
  */
 package org.blojsom.blog.database;
 
-import org.blojsom.blog.Trackback;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.Trackback;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Locale;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * DatabaseTrackback
  *
  * @author David Czarnecki
+ * @version $Id: DatabaseTrackback.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: DatabaseTrackback.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
  */
 public class DatabaseTrackback implements Trackback, Serializable {
 
@@ -65,54 +65,60 @@ public class DatabaseTrackback implements Trackback, Serializable {
     protected String _ip;
 
     /**
-     *
+     * Create a new instance of the database trackback
      */
     public DatabaseTrackback() {
     }
 
     /**
+     * Set the trackback ID
      *
-     * @param id
+     * @param id Trackback ID
      */
     public void setId(Integer id) {
         _id = id;
     }
 
     /**
+     * Get the trackback ID
      *
-     * @return
+     * @return Trackback ID
      */
     public Integer getId() {
         return _id;
     }
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     public void setBlogId(String blogId) {
         _blogId = blogId;
     }
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId() {
         return _blogId;
     }
 
     /**
+     * Get the blog entry ID
      *
-     * @return
+     * @return Blog entry ID
      */
     public Integer getBlogEntryId() {
         return _blogEntryId;
     }
 
     /**
+     * Set the blog entry ID
      *
-     * @param blogEntryId
+     * @param blogEntryId Blog entry ID
      */
     public void setBlogEntryId(Integer blogEntryId) {
         _blogEntryId = blogEntryId;
@@ -134,7 +140,7 @@ public class DatabaseTrackback implements Trackback, Serializable {
      */
     public void setEntry(Entry entry) {
         _entry = entry;
-    }    
+    }
 
     /**
      * Get the title of the trackback
@@ -306,32 +312,36 @@ public class DatabaseTrackback implements Trackback, Serializable {
     }
 
     /**
+     * Get the IP
      *
-     * @return
+     * @return IP
      */
     public String getIp() {
         return _ip;
     }
 
     /**
+     * Get the IP
      *
-     * @param ip
+     * @return IP
      */
     public void setIp(String ip) {
         _ip = ip;
     }
 
     /**
+     * Get the status
      *
-     * @return
+     * @return Status
      */
     public String getStatus() {
         return _status;
     }
 
     /**
+     * Set the status
      *
-     * @param status
+     * @param status Status
      */
     public void setStatus(String status) {
         _status = status;

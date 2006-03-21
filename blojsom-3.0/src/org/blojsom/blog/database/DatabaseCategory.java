@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseCategory.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: DatabaseCategory.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public class DatabaseCategory implements Category, Serializable {
 
@@ -55,54 +55,60 @@ public class DatabaseCategory implements Category, Serializable {
     protected String _description = null;
 
     /**
-     *
+     * Create a new instance of the database category
      */
     public DatabaseCategory() {
     }
 
     /**
+     * Get the category ID
      *
-     * @return
+     * @return Category ID
      */
     public Integer getId() {
         return _id;
     }
 
     /**
+     * Set the category ID
      *
-     * @param id
+     * @param id Category ID
      */
     public void setId(Integer id) {
         _id = id;
     }
 
     /**
+     * Get the blog parent category ID
      *
-     * @return
+     * @return Parent category ID
      */
     public Integer getParentCategoryId() {
         return _parentCategoryId;
     }
 
     /**
+     * Se the parent category ID
      *
-     * @param parentCategoryId
+     * @param parentCategoryId Parent category ID
      */
     public void setParentCategoryId(Integer parentCategoryId) {
         _parentCategoryId = parentCategoryId;
     }
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     public String getBlogId() {
         return _blogId;
     }
 
     /**
-     * 
-     * @param blogId
+     * Set the blog ID
+     *
+     * @param blogId Blog ID
      */
     public void setBlogId(String blogId) {
         _blogId = blogId;
@@ -174,7 +180,7 @@ public class DatabaseCategory implements Category, Serializable {
     /**
      * Returns the parent category of this category. Defaults to "/"
      *
-     * @return {@link org.blojsom.blog.Category} containing the parent category
+     * @return {@link Category} containing the parent category
      */
     public Category getParentCategory() {
         return _parentCategory;
@@ -183,7 +189,7 @@ public class DatabaseCategory implements Category, Serializable {
     /**
      * Sets the parent category of this category
      *
-     * @param cateogory {@link org.blojsom.blog.Category} that represents the parent category
+     * @param cateogry {@link Category} that represents the parent category
      */
     public void setParentCategory(Category parentCategory) {
         _parentCategory = parentCategory;

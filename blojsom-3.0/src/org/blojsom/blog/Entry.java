@@ -40,43 +40,49 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Entry.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: Entry.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
  */
 public interface Entry {
 
     /**
+     * Get the entry ID
      *
-     * @return
+     * @return Entry ID
      */
     Integer getId();
 
     /**
+     * Set the entry ID
      *
-     * @param id
+     * @param id Entry ID
      */
     void setId(Integer id);
 
     /**
+     * Get the blog ID
      *
-     * @return
+     * @return Blog ID
      */
     String getBlogId();
 
     /**
+     * Set the blog ID
      *
-     * @param blogId
+     * @param blogId Blog ID
      */
     void setBlogId(String blogId);
 
     /**
+     * Get the blog category ID
      *
-     * @return
+     * @return Blog category ID
      */
     public Integer getBlogCategoryId();
 
     /**
+     * Set the blog category ID
      *
-     * @param blogCategoryId
+     * @param blogCategoryId Blog category ID
      */
     public void setBlogCategoryId(Integer blogCategoryId);
 
@@ -200,14 +206,16 @@ public interface Entry {
     Integer getAllowComments();
 
     /**
+     * Whether or not comments are allowed
      *
-     * @return
+     * @return <code>true</code> if comments are allowed, <code>false</code> otherwise
      */
     Boolean allowsComments();
 
     /**
+     * Set whether comments are allowed
      *
-     * @param allowComments
+     * @param allowComments <code>true</code> if comments are allowed, <code>false</code> otherwise
      */
     void setAllowComments(Integer allowComments);
 
@@ -248,14 +256,16 @@ public interface Entry {
     Integer getAllowTrackbacks();
 
     /**
+     * Whether or not trackbacks are allowed
      *
-     * @return
+     * @return <code>true</code> if trackbacks are allowed, <code>false</code> otherwise
      */
     Boolean allowsTrackbacks();
 
     /**
+     * Set whether trackbacks are allowed
      *
-     * @param allowTrackbacks
+     * @param allowTrackbacks <code>true</code> if trackbacks are allowed, <code>false</code> otherwise
      */
     void setAllowTrackbacks(Integer allowTrackbacks);
 
@@ -324,14 +334,16 @@ public interface Entry {
     Integer getAllowPingbacks();
 
     /**
+     * Whether or not pingbacks are allowed
      *
-     * @return
+     * @return <code>true</code> if pingbacks are allowed, <code>false</code> otherwise
      */
     Boolean allowsPingbacks();
 
     /**
+     * Set whether pingbacks are allowed
      *
-     * @param allowPingbacks
+     * @param allowPingbacks <code>true</code> if pingbacks are allowed, <code>false</code> otherwise
      */
     void setAllowPingbacks(Integer allowPingbacks);
 
@@ -365,50 +377,58 @@ public interface Entry {
     int getNumPingbacks();
 
     /**
+     * Get the status
      *
-     * @return
+     * @return Status
      */
     public String getStatus();
 
     /**
+     * Set the status
      *
-     * @param status
+     * @param status Status
      */
     public void setStatus(String status);
 
     /**
+     * Get the author
      *
-     * @return
+     * @return Author
      */
     public String getAuthor();
 
     /**
+     * Set the author
      *
-     * @param author
+     * @param author Author
      */
     public void setAuthor(String author);
 
     /**
+     * Get the post slug
      *
-     * @return
+     * @return Post slug
      */
     public String getPostSlug();
 
     /**
+     * Set the post slug
      *
-     * @param postSlug
+     * @param postSlug Post slug
      */
     public void setPostSlug(String postSlug);
 
     /**
+     * Get the last modified date
      *
-     * @return
+     * @return Last modified date
      */
     public Date getModifiedDate();
 
     /**
+     * Set the last modified date
      *
-     * @param modifiedDate
+     * @param modifiedDate Last modified date
      */
     public void setModifiedDate(Date modifiedDate);
 }
