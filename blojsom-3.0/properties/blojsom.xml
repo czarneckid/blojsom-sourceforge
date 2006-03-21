@@ -16,6 +16,7 @@
                 <prop key="installed-locales">en, de, fr, ko, sv, pt_BR</prop>
                 <prop key="resources-directory">/resources/</prop>
                 <prop key="templates-directory">/templates/</prop>
+                <prop key="blogs-directory">/blogs/</prop>
             </props>
         </property>
     </bean>

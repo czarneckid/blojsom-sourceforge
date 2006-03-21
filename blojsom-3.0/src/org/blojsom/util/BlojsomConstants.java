@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.1 2006-03-20 21:31:17 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.2 2006-03-21 16:26:08 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -295,6 +295,8 @@ public interface BlojsomConstants {
     public static final String TEMPLATES_DIRECTORY_IP = "templates-directory";
     public static final String RESOURCES_DIRECTORY_IP = "resources-directory";
     public static final String DEFAULT_CONFIGURATION_BASE_DIRECTORY = "/WEB-INF/";
+    public static final String BLOGS_DIRECTORY_IP = "blogs-directory";
+    public static final String DEFAULT_BLOGS_DIRECTORY = "/blogs/";
     public static final String DEFAULT_TEMPLATES_DIRECTORY = "/templates/";
     public static final String DEFAULT_RESOURCES_DIRECTORY = "/resources/";
     public static final String INSTALLED_LOCALES_IP = "installed-locales";
