@@ -47,7 +47,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.2 2006-03-21 16:32:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -104,8 +104,8 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
     private Map _acceptedTemplateExtensions;
     private Properties _templateEditProperties;
     private Properties _blojsomProperties;
-
     private String _templatesDirectory;
+    private String _blogsDirectory;
 
     /**
      * Default constructor.
@@ -153,6 +153,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         }
 
         _templatesDirectory = _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP, BlojsomConstants.DEFAULT_TEMPLATES_DIRECTORY);
+        _blogsDirectory = _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP, BlojsomConstants.DEFAULT_BLOGS_DIRECTORY);
     }
 
     /**
@@ -236,7 +237,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
         }
 
         // Add list of templates to context
-        File templatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory);
+        File templatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory);
         _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
         putTemplatesInContext(templatesDirectory, context);
@@ -268,7 +269,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
                 return entries;
             }
 
-            File blogTemplateFile = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory + blogTemplate);
+            File blogTemplateFile = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory + blogTemplate);
             _logger.debug("Reading template file: " + blogTemplateFile.toString());
 
             try {
@@ -314,7 +315,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
             }
 
             String blogTemplateData = BlojsomUtils.getRequestValue(BLOG_TEMPLATE_DATA, httpServletRequest);
-            File blogTemplateFile = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory + blogTemplate);
+            File blogTemplateFile = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory + blogTemplate);
 
             _logger.debug("Writing template file: " + blogTemplateFile.toString());
 

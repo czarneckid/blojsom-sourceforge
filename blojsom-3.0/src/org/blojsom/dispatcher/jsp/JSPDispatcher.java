@@ -54,17 +54,17 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: JSPDispatcher.java,v 1.1 2006-03-21 03:11:09 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.2 2006-03-21 16:32:21 czarneckid Exp $
  */
 public class JSPDispatcher implements Dispatcher {
 
     private Log _logger = LogFactory.getLog(JSPDispatcher.class);
 
-    private String _templatesDirectory;
-
     private ServletContext _context;
     private ServletConfig _servletConfig;
     private Properties _blojsomProperties;
+    private String _templatesDirectory;
+    private String _blogsDirectory;
 
     /**
      * Create a new JSPDispatcher
@@ -99,11 +99,8 @@ public class JSPDispatcher implements Dispatcher {
      */
     public void init() throws BlojsomException {
         _templatesDirectory = _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP, BlojsomConstants.DEFAULT_TEMPLATES_DIRECTORY);
+        _blogsDirectory = _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP, BlojsomConstants.DEFAULT_BLOGS_DIRECTORY);
         _context = _servletConfig.getServletContext();
-
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("Initialized JSP dispatcher");
-        }
     }
 
     /**
@@ -151,7 +148,7 @@ public class JSPDispatcher implements Dispatcher {
 
         // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
-            String templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
+            String templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
             if (_context.getResource(templateToLoad) != null) {
                 httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                 httpServletResponse.getWriter().flush();
@@ -179,7 +176,7 @@ public class JSPDispatcher implements Dispatcher {
             }
         } else {
             // Otherwise, fallback and look for the flavor template for the individual user
-            String templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplate);
+            String templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplate);
             if (_context.getResource(templateToLoad) != null) {
                 httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                 httpServletResponse.getWriter().flush();

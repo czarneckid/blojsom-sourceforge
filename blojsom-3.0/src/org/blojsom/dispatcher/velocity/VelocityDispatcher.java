@@ -61,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: VelocityDispatcher.java,v 1.2 2006-03-21 02:43:53 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.3 2006-03-21 16:32:21 czarneckid Exp $
  */
 public class VelocityDispatcher implements Dispatcher {
 
@@ -74,6 +74,7 @@ public class VelocityDispatcher implements Dispatcher {
     private Properties _blojsomProperties;
 
     private String _templatesDirectory;
+    private String _blogsDirectory;
 
     /**
      * Create a new instance of the Velocity dispatcher
@@ -88,6 +89,7 @@ public class VelocityDispatcher implements Dispatcher {
      */
     public void init() throws org.blojsom.BlojsomException {
         _templatesDirectory = _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP, BlojsomConstants.DEFAULT_TEMPLATES_DIRECTORY);
+        _blogsDirectory = _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP, BlojsomConstants.DEFAULT_BLOGS_DIRECTORY);
 
         if (_logger.isDebugEnabled()) {
             _logger.debug("Initialized Velocity dispatcher");
@@ -183,7 +185,7 @@ public class VelocityDispatcher implements Dispatcher {
         VelocityEngine velocityEngine = new VelocityEngine();
         try {
             Properties updatedProperties = (Properties) _velocityProperties.clone();
-            updatedProperties.put(VelocityEngine.FILE_RESOURCE_LOADER_PATH, servletContext.getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blog.getBlogId() + _templatesDirectory) + ", " + servletContext.getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _templatesDirectory));
+            updatedProperties.put(VelocityEngine.FILE_RESOURCE_LOADER_PATH, servletContext.getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory) + ", " + servletContext.getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _templatesDirectory));
             velocityEngine.init(updatedProperties);
         } catch (Exception e) {
             if (_logger.isErrorEnabled()) {

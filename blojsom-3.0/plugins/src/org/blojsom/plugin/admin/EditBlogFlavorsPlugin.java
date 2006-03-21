@@ -43,16 +43,13 @@ import org.blojsom.util.BlojsomUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.2 2006-03-21 16:32:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -97,6 +94,9 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_FLAVORS_PERMISSION = "edit_blog_flavors_permission";
 
     private Fetcher _fetcher;
+    private Properties _blojsomProperties;
+    private String _templatesDirectory;
+    private String _blogsDirectory;
 
     /**
      * Default constructor.
@@ -114,15 +114,35 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * Set the default blojsom properties
+     *
+     * @param defaultProperties Default blojsom properties
+     */
+    public void setBlojsomProperties(Properties blojsomProperties) {
+        _blojsomProperties = blojsomProperties;
+    }
+
+    /**
+     * Initialize this plugin. This method only called when the plugin is instantiated.
+     *
+     * @throws If there is an error initializing the plugin
+     */
+    public void init() throws PluginException {
+        super.init();
+
+        _templatesDirectory = _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP, BlojsomConstants.DEFAULT_TEMPLATES_DIRECTORY);
+        _blogsDirectory = _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP, BlojsomConstants.DEFAULT_BLOGS_DIRECTORY);
+    }
+
+    /**
      * Add flavor information to the context
      *
      * @param blog {@link Blog}
      * @param context Context
      */
     protected void addFlavorInformationToContext(Blog blog, Map context) {
-
         // Put the available templates in the context for the edit flavors template
-        File templatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + "/WEB-INF/" + blog.getBlogId() + "/templates/");
+        File templatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory);
         _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
         File[] templates = templatesDirectory.listFiles();
