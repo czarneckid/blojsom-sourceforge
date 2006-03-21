@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.1 2006-03-20 21:31:17 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.2 2006-03-21 03:11:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -162,7 +162,9 @@ public class BlojsomServlet extends HttpServlet {
         try {
             blog = fetcher.loadBlog(blogId);
         } catch (FetcherException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
 
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID: " + blogId);
 
@@ -203,7 +205,9 @@ public class BlojsomServlet extends HttpServlet {
             categories = fetcher.fetchCategories(httpServletRequest, httpServletResponse, blog, flavor, context);
             entries = fetcher.fetchEntries(httpServletRequest, httpServletResponse, blog, flavor, context);
         } catch (FetcherException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         String[] pluginChain;
@@ -335,7 +339,9 @@ public class BlojsomServlet extends HttpServlet {
         try {
             dispatcher = (org.blojsom.dispatcher.Dispatcher) _classPathXmlApplicationContext.getBean(templateExtension);
         } catch (BeansException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
 
             httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unable to retrieve dispatcher for template extension: " + templateExtension);
         }

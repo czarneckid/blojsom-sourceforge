@@ -264,10 +264,7 @@
         </property>
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
-        </property>
-        <property name="sessionFactory">
-            <ref bean="hibernateSessionFactory"/>
-        </property>
+        </property>        
     </bean>
 
     <bean id="edit-blog-categories" class="org.blojsom.plugin.admin.EditBlogCategoriesPlugin" init-method="init"

@@ -90,6 +90,7 @@
         </property>
     </bean>
 
+    <!-- Dispatchers -->
     <bean id="vm" class="org.blojsom.dispatcher.velocity.VelocityDispatcher" init-method="init">
         <property name="velocityProperties">
             <props>
@@ -110,6 +111,15 @@
                 <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
             </props>
         </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
+
+    <bean id="jsp" class="org.blojsom.dispatcher.jsp.JSPDispatcher" init-method="init">
         <property name="blojsomProperties">
             <ref bean="defaultProperties"/>
         </property>

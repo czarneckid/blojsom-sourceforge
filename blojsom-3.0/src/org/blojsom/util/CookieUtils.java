@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletResponse;
  * CookieUtils
  *
  * @author David Czarnecki
+ * @version $Id: CookieUtils.java,v 1.2 2006-03-21 03:11:08 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: CookieUtils.java,v 1.1 2006-03-20 21:31:17 czarneckid Exp $
  */
 public class CookieUtils {
 
@@ -47,9 +47,9 @@ public class CookieUtils {
      * Return a cookie given a particular key
      *
      * @param httpServletRequest Request
-     * @param cookieKey Cookie key
+     * @param cookieKey          Cookie key
      * @return <code>Cookie</code> of the requested key or <code>null</code> if no cookie
-     * under that name is found
+     *         under that name is found
      */
     public static Cookie getCookie(HttpServletRequest httpServletRequest, String cookieKey) {
         Cookie[] cookies = httpServletRequest.getCookies();
@@ -71,13 +71,10 @@ public class CookieUtils {
      * Add a cookie with a key and value to the response
      *
      * @param httpServletResponse Response
-     * @param cookieKey Cookie key
-     * @param cookieValue Cookie value
+     * @param cookieKey           Cookie key
+     * @param cookieValue         Cookie value
      */
-    public static void addCookie(HttpServletResponse httpServletResponse,
-                                  int cookieExpiration,
-                                  String cookieKey,
-                                  String cookieValue) {
+    public static void addCookie(HttpServletResponse httpServletResponse, int cookieExpiration, String cookieKey, String cookieValue) {
         Cookie cookie = new Cookie(cookieKey, cookieValue);
         cookie.setMaxAge(cookieExpiration);
         httpServletResponse.addCookie(cookie);

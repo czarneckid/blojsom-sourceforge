@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * ResourceBundleResourceManager
  *
  * @author David Czarnecki
- * @version $Id: ResourceBundleResourceManager.java,v 1.1 2006-03-20 21:31:18 czarneckid Exp $
+ * @version $Id: ResourceBundleResourceManager.java,v 1.2 2006-03-21 03:11:09 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ResourceBundleResourceManager implements ResourceManager {
@@ -77,14 +77,20 @@ public class ResourceBundleResourceManager implements ResourceManager {
                 String resourceBundle = _resourceBundles[i];
                 try {
                     ResourceBundle.getBundle(resourceBundle);
-                    _logger.debug("Loaded resource bundle: " + resourceBundle);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Loaded resource bundle: " + resourceBundle);
+                    }
                 } catch (Exception e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }
 
-        _logger.debug("Initialized resource bundle resource manager");
+        if (_logger.isDebugEnabled()) {
+            _logger.debug("Initialized resource bundle resource manager");
+        }
     }
 
     /**
@@ -98,9 +104,9 @@ public class ResourceBundleResourceManager implements ResourceManager {
     public String getString(String resourceID, String resource, String fallback) {
         try {
             ResourceBundle resourceBundle = ResourceBundle.getBundle(resource);
+
             return resourceBundle.getString(resourceID);
         } catch (MissingResourceException e) {
-            _logger.error(e);
         }
 
         return fallback;
@@ -145,9 +151,9 @@ public class ResourceBundleResourceManager implements ResourceManager {
     public String getString(String resourceID, String resource, String fallback, Locale locale) {
         try {
             ResourceBundle resourceBundle = ResourceBundle.getBundle(resource, locale);
+
             return resourceBundle.getString(resourceID);
         } catch (MissingResourceException e) {
-            _logger.error(e);
         }
 
         return fallback;
@@ -167,7 +173,6 @@ public class ResourceBundleResourceManager implements ResourceManager {
         try {
             value = MessageFormat.format(pattern, arguments);
         } catch (Exception e) {
-            _logger.error(e);
         }
 
         return value;
