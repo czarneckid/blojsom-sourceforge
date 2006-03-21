@@ -319,6 +319,9 @@
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
     </bean>
 
     <bean id="edit-blog-plugins" class="org.blojsom.plugin.admin.EditBlogPluginsPlugin" init-method="init"
@@ -364,7 +367,7 @@
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
-        <property name="properties">
+        <property name="blojsomProperties">
             <ref bean="defaultProperties"/>
         </property>
     </bean>
