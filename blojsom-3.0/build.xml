@@ -42,7 +42,8 @@
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
-    <property name="default.user" value="default"/>
+    <property name="default.blog" value="default"/>
+    <property name="default.blog.dir" value="blogs/default"/>
     <property name="bootstrap.user" value="bootstrap"/>
     <property name="source.version" value="1.4"/>
     <property name="target.version" value="1.4"/>
@@ -106,8 +107,8 @@
         </copy>
 
         <!-- Copy general templates for default user -->
-        <mkdir dir="${war.dir}/WEB-INF/${default.user}/templates/"/>
-        <copy todir="${war.dir}/WEB-INF/${default.user}/templates/">
+        <mkdir dir="${war.dir}/WEB-INF/${default.blog.dir}/templates/"/>
+        <copy todir="${war.dir}/WEB-INF/${default.blog.dir}/templates/">
             <fileset dir="${templates.dir}">
                 <include name="**/*.vm"/>
                 <exclude name="**/html*.vm"/>
@@ -126,14 +127,14 @@
         -->
 
         <!-- Copy theme templates and resources for default user -->
-        <mkdir dir="${resources.dir}/${default.user}"/>
-        <copy todir="${war.dir}/WEB-INF/${default.user}/templates">
+        <mkdir dir="${resources.dir}/${default.blog}"/>
+        <copy todir="${war.dir}/WEB-INF/${default.blog.dir}/templates">
             <fileset dir="${default.theme.templates.dir}"/>
         </copy>
-        <copy todir="${resources.dir}/${default.user}">
+        <copy todir="${resources.dir}/${default.blog}">
             <fileset dir="${templates.resources.dir}"/>
         </copy>
-        <copy todir="${resources.dir}/${default.user}">
+        <copy todir="${resources.dir}/${default.blog}">
             <fileset dir="${default.theme.resources.dir}"/>
         </copy>
         
@@ -168,7 +169,7 @@
         </delete>
         <delete file="${war.file}"/>
         <delete dir="${webinf.dir}/themes"/>
-        <delete dir="${resources.dir}/${default.user}" includeemptydirs="true"/>
+        <delete dir="${resources.dir}/${default.blog}" includeemptydirs="true"/>
         <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>
     </target>
 
