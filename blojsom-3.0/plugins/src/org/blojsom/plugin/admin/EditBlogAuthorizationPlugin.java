@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.3 2006-03-22 21:23:55 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.4 2006-03-22 22:36:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -72,6 +72,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     private static final String PASSWORD_CHECK_FAILED_KEY = "password.check.failed.text";
     private static final String MISSING_PARAMETERS_KEY = "missing.parameters.text";
     private static final String MISSING_BLOG_ID_KEY = "no.blog.id.delete.text";
+    private static final String USER_LOGIN_EXISTS_KEY = "user.login.exists.text";
 
     // Pages
     private static final String EDIT_BLOG_AUTHORIZATION_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-authorization";
@@ -199,6 +200,16 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                     User user = null;
                     if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action)) {
+                        try {
+                            _fetcher.loadUser(blog, blogLoginID);
+
+                            addOperationResultMessage(context, formatAdminResource(USER_LOGIN_EXISTS_KEY, USER_LOGIN_EXISTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogLoginID}));
+                            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
+
+                            return entries;
+                        } catch (Exception e) {
+                        }
+
                         user = new DatabaseUser();
                         user.setBlogId(blog.getBlogId());
                         user.setUserEmail(blogUserEmail);
