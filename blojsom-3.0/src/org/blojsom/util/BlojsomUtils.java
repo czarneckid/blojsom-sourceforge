@@ -50,7 +50,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.1 2006-03-20 21:31:17 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.2 2006-03-22 21:22:13 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1573,7 +1573,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String constructBlogURL(HttpServletRequest httpServletRequest, String blogID) {
         StringBuffer result = new StringBuffer(constructBaseURL(httpServletRequest));
 
-        result.append(httpServletRequest.getServletPath()).append("/").append(blogID).append("/");
+        result.append(httpServletRequest.getServletPath()).append("/").append(blogID);
 
         return result.toString();
     }
