@@ -8,6 +8,7 @@
 
     <import resource="blojsom-plugins.xml"/>
 
+    <!-- Helper beans -->
     <bean id="defaultProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
@@ -17,6 +18,7 @@
                 <prop key="resources-directory">/resources/</prop>
                 <prop key="templates-directory">/templates/</prop>
                 <prop key="blogs-directory">/blogs/</prop>
+                <prop key="bootstrap-directory">/bootstrap/</prop>
             </props>
         </property>
     </bean>
@@ -92,6 +94,7 @@
     </bean>
 
     <!-- Dispatchers -->
+    <!-- Dispatchers are referenced by template suffix. vm will serve Velocity templates. jsp will serve JSP templates. --> 
     <bean id="vm" class="org.blojsom.dispatcher.velocity.VelocityDispatcher" init-method="init">
         <property name="velocityProperties">
             <props>
