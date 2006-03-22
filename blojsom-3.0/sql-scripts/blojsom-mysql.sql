@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: blojsom
 -- ------------------------------------------------------
--- Server version	5.0.15-standard
+-- Server version	5.0.18-standard
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,11 +29,13 @@ CREATE TABLE `Blog` (
 DROP TABLE IF EXISTS `Category`;
 CREATE TABLE `Category` (
   `category_id` int(11) NOT NULL auto_increment,
-  `blog_id` char(64) NOT NULL,
-  `parent_category_id` int(11) default '0',
+  `blog_id` varchar(50) NOT NULL,
+  `parent_category_id` int(11) default NULL,
   `name` text NOT NULL,
   `description` text,
-  PRIMARY KEY  (`category_id`)
+  PRIMARY KEY  (`category_id`),
+  KEY `category_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `category_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -44,7 +46,9 @@ DROP TABLE IF EXISTS `CategoryMetadata`;
 CREATE TABLE `CategoryMetadata` (
   `category_id` int(11) NOT NULL,
   `metadata_key` text NOT NULL,
-  `metadata_value` text
+  `metadata_value` text,
+  KEY `categorymetadata_category_categoryidfk` (`category_id`),
+  CONSTRAINT `categorymetadata_category_categoryidfk` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -64,7 +68,9 @@ CREATE TABLE `Comment` (
   `status` varchar(255) default NULL,
   `comment_parent` int(11) default NULL,
   `blog_id` varchar(50) NOT NULL,
-  PRIMARY KEY  (`comment_id`)
+  PRIMARY KEY  (`comment_id`),
+  KEY `comment_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `comment_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -75,7 +81,9 @@ DROP TABLE IF EXISTS `CommentMetadata`;
 CREATE TABLE `CommentMetadata` (
   `comment_id` int(11) NOT NULL,
   `metadata_key` text NOT NULL,
-  `metadata_value` text
+  `metadata_value` text,
+  KEY `commentmetadata_comment_commentidfk` (`comment_id`),
+  CONSTRAINT `commentmetadata_comment_commentidfk` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`comment_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -85,7 +93,7 @@ CREATE TABLE `CommentMetadata` (
 DROP TABLE IF EXISTS `Entry`;
 CREATE TABLE `Entry` (
   `entry_id` int(11) NOT NULL auto_increment,
-  `blog_id` char(64) NOT NULL,
+  `blog_id` varchar(50) NOT NULL,
   `title` text,
   `description` text,
   `entry_date` datetime NOT NULL,
@@ -98,8 +106,8 @@ CREATE TABLE `Entry` (
   `post_slug` text NOT NULL,
   `modified_date` datetime NOT NULL,
   PRIMARY KEY  (`entry_id`),
-  KEY `newfk` (`blog_category_id`),
-  CONSTRAINT `newfk` FOREIGN KEY (`blog_category_id`) REFERENCES `category` (`category_id`)
+  KEY `entry_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -110,7 +118,9 @@ DROP TABLE IF EXISTS `EntryMetadata`;
 CREATE TABLE `EntryMetadata` (
   `entry_id` int(11) NOT NULL,
   `metadata_key` text NOT NULL,
-  `metadata_value` text
+  `metadata_value` text,
+  KEY `entrymetadata_entry_entryidfk` (`entry_id`),
+  CONSTRAINT `entrymetadata_entry_entryidfk` FOREIGN KEY (`entry_id`) REFERENCES `entry` (`entry_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -129,7 +139,9 @@ CREATE TABLE `Pingback` (
   `blog_id` varchar(50) NOT NULL,
   `ip` varchar(100) default NULL,
   `status` varchar(255) default NULL,
-  PRIMARY KEY  (`pingback_id`)
+  PRIMARY KEY  (`pingback_id`),
+  KEY `pingback_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `pingback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -140,7 +152,9 @@ DROP TABLE IF EXISTS `PingbackMetadata`;
 CREATE TABLE `PingbackMetadata` (
   `pingback_id` int(11) NOT NULL,
   `metadata_key` text NOT NULL,
-  `metadata_value` text
+  `metadata_value` text,
+  KEY `pingbackmetadata_pingback_pingbackidfk` (`pingback_id`),
+  CONSTRAINT `pingbackmetadata_pingback_pingbackidfk` FOREIGN KEY (`pingback_id`) REFERENCES `pingback` (`pingback_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -151,7 +165,9 @@ DROP TABLE IF EXISTS `Plugin`;
 CREATE TABLE `Plugin` (
   `blog_id` varchar(50) NOT NULL,
   `plugin_flavor` varchar(50) NOT NULL,
-  `plugin_value` varchar(4096) default NULL
+  `plugin_value` varchar(4096) default NULL,
+  KEY `plugin_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -162,7 +178,9 @@ DROP TABLE IF EXISTS `Properties`;
 CREATE TABLE `Properties` (
   `blog_id` varchar(50) NOT NULL,
   `property_name` varchar(255) NOT NULL,
-  `property_value` longtext
+  `property_value` longtext,
+  KEY `properties_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `properties_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -173,7 +191,9 @@ DROP TABLE IF EXISTS `Template`;
 CREATE TABLE `Template` (
   `blog_id` varchar(50) NOT NULL,
   `template_flavor` varchar(50) NOT NULL,
-  `template_value` varchar(255) default NULL
+  `template_value` varchar(255) default NULL,
+  KEY `template_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `template_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -192,7 +212,9 @@ CREATE TABLE `Trackback` (
   `blog_id` varchar(50) NOT NULL,
   `ip` varchar(100) default NULL,
   `status` varchar(255) default NULL,
-  PRIMARY KEY  (`trackback_id`)
+  PRIMARY KEY  (`trackback_id`),
+  KEY `trackback_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `trackback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -203,7 +225,9 @@ DROP TABLE IF EXISTS `TrackbackMetadata`;
 CREATE TABLE `TrackbackMetadata` (
   `trackback_id` int(11) NOT NULL,
   `metadata_key` text NOT NULL,
-  `metadata_value` text
+  `metadata_value` text,
+  KEY `trackbackmetadata_trackback_trackbackidfk` (`trackback_id`),
+  CONSTRAINT `trackbackmetadata_trackback_trackbackidfk` FOREIGN KEY (`trackback_id`) REFERENCES `trackback` (`trackback_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -220,7 +244,9 @@ CREATE TABLE `User` (
   `user_registered` datetime NOT NULL,
   `user_status` varchar(64) NOT NULL,
   `blog_id` varchar(50) NOT NULL,
-  PRIMARY KEY  (`user_id`)
+  PRIMARY KEY  (`user_id`),
+  KEY `user_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -233,7 +259,9 @@ CREATE TABLE `UserMetadata` (
   `user_id` int(11) NOT NULL,
   `metadata_key` varchar(255) NOT NULL,
   `metadata_value` text,
-  PRIMARY KEY  (`user_metadata_id`)
+  PRIMARY KEY  (`user_metadata_id`),
+  KEY `usermetadata_user_useridfk` (`user_id`),
+  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
