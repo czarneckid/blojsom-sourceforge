@@ -264,7 +264,10 @@
         </property>
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
-        </property>        
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
     </bean>
 
     <bean id="edit-blog-categories" class="org.blojsom.plugin.admin.EditBlogCategoriesPlugin" init-method="init"
@@ -350,7 +353,10 @@
         </property>
         <property name="resourceManager">
             <ref bean="resourceManager"/>
-        </property>        
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
     </bean>
 
     <bean id="edit-blog-properties" class="org.blojsom.plugin.admin.EditBlogPropertiesPlugin" init-method="init"
@@ -369,6 +375,73 @@
         </property>
         <property name="blojsomProperties">
             <ref bean="defaultProperties"/>
+        </property>
+    </bean>
+
+    <bean id="edit-blogs" class="org.blojsom.plugin.admin.EditBlogsPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="defaultBlogProperties">
+            <map>
+                <entry key="blog-language" value="en"/>
+                <entry key="blog-country" value="US"/>
+                <entry key="blog-name" value="NAME YOUR BLOG"/>
+                <entry key="blog-description" value="DESCRIBE YOUR BLOG"/>
+                <entry key="blog-entries-display" value="15"/>
+                <entry key="blog-owner" value="BLOG OWNER NAME"/>
+                <entry key="blog-owner-email" value="BLOG_OWNER@EMAIL.COM"/>
+                <entry key="blog-comments-enabled" value="true"/>
+                <entry key="blog-pingbacks-enabled" value="true"/>
+                <entry key="blog-trackbacks-enabled" value="true"/>
+                <entry key="blog-email-enabled" value="true"/>
+                <entry key="blog-default-flavor" value="html"/>
+                <entry key="plugin-comment-autoformat" value="true"/>
+                <entry key="linear-navigation-enabled" value="true"/>
+                <entry key="comment-moderation-enabled" value="true"/>
+                <entry key="trackback-moderation-enabled" value="true"/>
+                <entry key="blog-ping-urls" value="http://rpc.pingomatic.com"/>
+                <entry key="blojsom-extension-metaweblog-accepted-types" value="image/jpeg, image/gif, image/png, img"/>
+            </map>
+        </property>
+        <property name="defaultPluginProperties">
+            <map>
+                <entry key="admin" value="admin"/>
+                <entry key="atom" value=""/>
+                <entry key="default" value="conditional-get, meta, limiter, nofollow, rss-enclosure"/>
+                <entry key="html" value="meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, limiter, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags"/>
+                <entry key="rdf" value=""/>
+                <entry key="rss" value=""/>
+                <entry key="rss2" value=""/>
+            </map>
+        </property>
+        <property name="defaultTemplateProperties">
+            <map>
+                <entry key="admin" value="org/blojsom/plugin/admin/templates/admin.vm, text/html;charset=UTF-8"/>
+                <entry key="atom" value="atom.vm, application/atom+xml;charset=UTF-8"/>
+                <entry key="html" value="asual.vm, text/html;charset=UTF-8"/>
+                <entry key="rsd" value="rsd.vm, application/rsd+xml;charset=UTF-8"/>
+                <entry key="rss" value="rss.vm, text/xml;charset=UTF-8"/>
+                <entry key="rss2" value="rss2.vm, text/xml;charset=UTF-8"/>
+                <entry key="rdf" value="rdf.vm, text/xml;charset=UTF-8"/>
+            </map>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+        <property name="protectedBlogs">
+            <map>
+                <entry key="default" value="default"/>
+            </map>
         </property>
     </bean>
 
