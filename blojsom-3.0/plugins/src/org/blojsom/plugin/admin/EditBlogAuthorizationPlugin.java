@@ -32,12 +32,13 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.blog.User;
 import org.blojsom.blog.database.DatabaseUser;
 import org.blojsom.event.EventBroadcaster;
+import org.blojsom.fetcher.Fetcher;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.admin.event.AuthorizationAddedEvent;
 import org.blojsom.plugin.admin.event.AuthorizationDeletedEvent;
@@ -54,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.2 2006-03-21 02:40:31 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.3 2006-03-22 21:23:55 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -98,12 +99,22 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_AUTHORIZATION_PERMISSION = "edit_blog_authorization_permission";
     private static final String EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION = "edit_other_users_authorization_permission";
 
+    private Fetcher _fetcher;
     private EventBroadcaster _eventBroadcaster;
 
     /**
      * Default constructor
      */
     public EditBlogAuthorizationPlugin() {
+    }
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
     }
 
     /**
@@ -209,10 +220,10 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                         }
                     } else {
                         try {
-                            user = _authorizationProvider.loadUser(blog, Integer.valueOf(blogUserID));
+                            user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
                             user.setUserEmail(blogUserEmail);
                             user.setUserPassword(blogUserPassword);
-                        } catch (AuthorizationException e) {
+                        } catch (FetcherException e) {
                             if (_logger.isErrorEnabled()) {
                                 _logger.error(e);
                             }
@@ -220,11 +231,11 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     }
 
                     try {
-                        _authorizationProvider.saveUser(blog, user);
+                        _fetcher.saveUser(blog, user);
 
                         addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, blog.getBlogAdministrationLocale(), new Object[]{user.getUserLogin()}));
                         _eventBroadcaster.processEvent(new AuthorizationAddedEvent(this, new Date(), httpServletRequest, httpServletResponse, blog, context, user.getId()));
-                    } catch (AuthorizationException e) {
+                    } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
                         }
@@ -255,7 +266,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                 try {
                     Integer userID = Integer.valueOf(blogUserID);
                     try {
-                        _authorizationProvider.deleteUser(blog, userID);
+                        _fetcher.deleteUser(blog, userID);
 
                         if (_logger.isDebugEnabled()) {
                             _logger.debug("Removed user: " + blogUserID + " from blog: " + blog.getBlogId());
@@ -263,7 +274,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                         addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_DELETE_KEY, SUCCESSFUL_AUTHORIZATION_DELETE_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogUserID}));
                         _eventBroadcaster.processEvent(new AuthorizationDeletedEvent(this, new Date(), httpServletRequest, httpServletResponse, blog, context, userID));
-                    } catch (AuthorizationException e) {
+                    } catch (FetcherException e) {
                         addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogUserID}));
 
                         if (_logger.isErrorEnabled()) {
@@ -283,7 +294,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             }
         }
 
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _authorizationProvider.getUsers(blog));
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
         httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
 
         return entries;
