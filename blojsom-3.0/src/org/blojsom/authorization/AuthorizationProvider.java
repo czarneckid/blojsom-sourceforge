@@ -40,7 +40,7 @@ import java.util.Map;
  * AuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: AuthorizationProvider.java,v 1.3 2006-03-21 02:40:39 czarneckid Exp $
+ * @version $Id: AuthorizationProvider.java,v 1.4 2006-03-22 21:46:46 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface AuthorizationProvider {
@@ -51,53 +51,7 @@ public interface AuthorizationProvider {
      * @throws ConfigurationException If there is an error initializing the provider
      */
     public void init() throws ConfigurationException;
-
-    /**
-     * Load a {@link User} from a blog
-     *
-     * @param blog      {@link Blog}
-     * @param userLogin Login ID
-     * @throws AuthorizationException If there is an error loading the {@link User} from the blog
-     */
-    public User loadUser(Blog blog, String userLogin) throws AuthorizationException;
-
-    /**
-     * Retrieve the users for a given blog
-     *
-     * @param blog {@link Blog}
-     * @return List of {@link User}s for a blog
-     */
-    public User[] getUsers(Blog blog);
-
-    /**
-     * Load a given {@link User} from a blog given their ID
-     *
-     * @param blog {@link Blog}
-     * @param userID User ID
-     * @return {@link User}
-     * @throws AuthorizationException If there is an error loading the user
-     */
-    public User loadUser(Blog blog, Integer userID) throws AuthorizationException;
-
-    /**
-     * Save a given {@link User} to the blog
-     *
-     * @param blog {@link Blog}
-     * @param user {@link User}
-     * @return {@link User}
-     * @throws AuthorizationException If there is an error saving the user to the blog
-     */
-    public User saveUser(Blog blog, User user) throws AuthorizationException;
-
-    /**
-     * Delete a given user from a blog
-     *
-     * @param blog {@link Blog}
-     * @param userID User ID
-     * @throws AuthorizationException If there is an error deleting the user from the blog
-     */
     
-    public void deleteUser(Blog blog, Integer userID) throws AuthorizationException;
     /**
      * Authorize a username and password for the given {@link Blog}
      *

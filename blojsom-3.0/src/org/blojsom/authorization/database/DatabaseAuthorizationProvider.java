@@ -36,20 +36,17 @@ import org.blojsom.ConfigurationException;
 import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.Blog;
-import org.blojsom.blog.User;
 import org.blojsom.blog.database.DatabaseUser;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Order;
 
 import java.util.Map;
-import java.util.List;
 
 /**
  * Database authorization provider
  *
  * @author David Czarnecki
- * @version $Id: DatabaseAuthorizationProvider.java,v 1.3 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseAuthorizationProvider.java,v 1.4 2006-03-22 21:46:48 czarneckid Exp $
  * @since blojsom. 3.0
  */
 public class DatabaseAuthorizationProvider implements AuthorizationProvider {
@@ -84,165 +81,6 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
     }
 
     /**
-     * Load a {@link User} from a blog
-     *
-     * @param blog      {@link Blog}
-     * @param userLogin Login ID
-     * @throws AuthorizationException If there is an error loading the {@link User} from the blog
-     */
-    public User loadUser(Blog blog, String userLogin) throws AuthorizationException {
-        try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
-
-            Criteria userCriteria = session.createCriteria(DatabaseUser.class);
-            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getBlogId()));
-
-            DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
-
-            tx.commit();
-            session.close();
-
-            return user;
-        } catch (HibernateException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-
-            throw new AuthorizationException(e);
-        }
-    }
-
-    /**
-     * Retrieve the users for a given blog
-     *
-     * @param blog {@link Blog}
-     * @return List of {@link User}s for a blog
-     */
-    public User[] getUsers(Blog blog) {
-        Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-
-        Criteria userCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseUser.class);
-        userCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
-        userCriteria.addOrder(Order.asc("userLogin"));
-
-        List userList = userCriteria.list();
-
-        tx.commit();
-        session.close();
-
-        try {
-            return (DatabaseUser[]) userList.toArray(new DatabaseUser[userList.size()]);
-        } catch (Exception e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-
-            return new DatabaseUser[0];
-        }
-    }
-
-    /**
-     * Load a given {@link User} from a blog given their ID
-     *
-     * @param blog {@link Blog}
-     * @param userID User ID
-     * @return {@link User}
-     * @throws AuthorizationException If there is an error loading the user
-     */
-    public User loadUser(Blog blog, Integer userID) throws AuthorizationException {
-        if (userID == null) {
-            return new DatabaseUser();
-        } else {
-            try {
-                Session session = _sessionFactory.openSession();
-                Transaction tx = session.beginTransaction();
-
-                User user = (DatabaseUser) session.load(DatabaseUser.class, userID);
-                if (!user.getBlogId().equals(blog.getBlogId())) {
-                    tx.commit();
-                    session.close();
-
-                    throw new AuthorizationException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
-                }
-
-                tx.commit();
-                session.close();
-
-                return user;
-            } catch (HibernateException e) {
-                if (_logger.isErrorEnabled()) {
-                    _logger.error(e);
-                }
-
-                throw new AuthorizationException("Unable to load user ID: " + userID + " from blog: " + blog.getBlogId(), e);
-            }
-        }
-    }
-
-    /**
-     * Save a given {@link User} to the blog
-     *
-     * @param blog {@link Blog}
-     * @param user {@link User}
-     * @return {@link User}
-     * @throws AuthorizationException If there is an error saving the user to the blog
-     */
-    public User saveUser(Blog blog, User user) throws AuthorizationException {
-        try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
-
-            session.update(user);
-
-            tx.commit();
-            session.close();
-
-            return user;
-        } catch (HibernateException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-
-            throw new AuthorizationException("Unable to save user login: " + user.getUserLogin() + " to blog: " + blog.getBlogId(), e);
-        }
-    }
-
-    /**
-     * Delete a given user from a blog
-     *
-     * @param blog {@link Blog}
-     * @param userID User ID
-     * @throws AuthorizationException If there is an error deleting the user from the blog
-     */
-    public void deleteUser(Blog blog, Integer userID) throws AuthorizationException {
-        try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
-
-            User userToDelete = (DatabaseUser) session.load(DatabaseUser.class, userID);
-            if (!userToDelete.getBlogId().equals(blog.getBlogId())) {
-                tx.commit();
-                session.close();
-
-                throw new AuthorizationException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
-            }
-
-            session.delete(userToDelete);
-
-            tx.commit();
-            session.close();
-        } catch (HibernateException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-
-            throw new AuthorizationException("Unable to delete user ID: " + userID + " from blog: " + blog.getBlogId(), e);
-        }
-    }
-
-    /**
      * Authorize a username and password for the given {@link Blog}
      *
      * @param blog                 {@link Blog}
@@ -269,6 +107,13 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
             userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getBlogId()));
 
             DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
+
+            if (user == null) {
+                tx.commit();
+                session.close();
+
+                throw new AuthorizationException("User login not found");
+            }
 
             tx.commit();
             session.close();
