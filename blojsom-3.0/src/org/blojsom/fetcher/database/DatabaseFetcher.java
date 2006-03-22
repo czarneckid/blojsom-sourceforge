@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.3 2006-03-22 21:21:38 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.4 2006-03-22 22:39:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -329,7 +329,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
         }
 
-        // XXX: Hibernate (Previous/Next blog entries)
         if (permalink != null) {
             Session session = _sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
@@ -594,7 +593,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
             requestedCategoryCriteria.add(Restrictions.and(Restrictions.eq("name", BlojsomUtils.addSlashes(requestedCategory)), Restrictions.eq("blogId", blog.getBlogId())));
             DatabaseCategory dbCategory = (DatabaseCategory) requestedCategoryCriteria.uniqueResult();
 
-            // XXX: Need to ensure only a single category name is placed on the request
             if (dbCategory != null) {
                 context.put(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY, dbCategory);
             }
@@ -799,13 +797,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
         try {
             Session session = _sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
-
-            // XXX
-            /*
-            if (category.getBlogId() == null) {
-                category.setBlogId(blog.getBlogId());
-            }
-            */
 
             if (category.getId() == null) {
                 session.save(category);
