@@ -6,6 +6,7 @@
 
     <description>Bean definition file for blojsom XML-RPC</description>
 
+    <!-- Helper beans -->
     <bean id="defaultProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
@@ -25,36 +26,6 @@
                 -->
                 <prop key="$default">metaWeblog</prop>
             </props>
-        </property>
-    </bean>
-
-    <bean id="blogger" class="org.blojsom.extension.xmlrpc.handler.BloggerAPIHandler">
-        <property name="authorizationProvider">
-            <ref bean="authorizationProvider"/>
-        </property>
-        <property name="fetcher">
-            <ref bean="fetcher"/>
-        </property>
-        <property name="eventBroadcaster">
-            <ref bean="eventBroadcaster"/>
-        </property>
-        <property name="servletConfig">
-            <ref bean="servletConfigFactoryBean"/>
-        </property>
-    </bean>
-
-    <bean id="metaWeblog" class="org.blojsom.extension.xmlrpc.handler.MetaWeblogAPIHandler">
-        <property name="authorizationProvider">
-            <ref bean="authorizationProvider"/>
-        </property>
-        <property name="fetcher">
-            <ref bean="fetcher"/>
-        </property>
-        <property name="eventBroadcaster">
-            <ref bean="eventBroadcaster"/>
-        </property>
-        <property name="servletConfig">
-            <ref bean="servletConfigFactoryBean"/>
         </property>
     </bean>
 
@@ -125,6 +96,38 @@
           init-method="init">
         <property name="sessionFactory">
             <ref bean="hibernateSessionFactory"/>
+        </property>
+    </bean>
+
+    <!-- API handlers -->
+    <!-- API handlers are referenced by API name. blogger will serve the Blogger API. metaWeblog will serve the MetaWeblog API -->     
+    <bean id="blogger" class="org.blojsom.extension.xmlrpc.handler.BloggerAPIHandler">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
+
+    <bean id="metaWeblog" class="org.blojsom.extension.xmlrpc.handler.MetaWeblogAPIHandler">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
         </property>
     </bean>
 
