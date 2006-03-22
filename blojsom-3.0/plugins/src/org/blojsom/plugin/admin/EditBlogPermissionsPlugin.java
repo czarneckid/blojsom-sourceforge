@@ -32,10 +32,11 @@ package org.blojsom.plugin.admin;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.blog.User;
+import org.blojsom.fetcher.Fetcher;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -51,7 +52,7 @@ import java.util.TreeMap;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.3 2006-03-21 02:40:31 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.4 2006-03-22 21:25:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -85,11 +86,22 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
     // Permissions
     private static final String EDIT_BLOG_PERMISSIONS_PERMISSION = "edit_blog_permissions_permission";
 
+    private Fetcher _fetcher;
+
     /**
      * Construct a new instance of the Edit Blog Permissions plugin
      */
     public EditBlogPermissionsPlugin() {
-    }        
+    }
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
+    }
 
     /**
      * Read the permissions file for a given blog
@@ -118,7 +130,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
      * @param blog {@link Blog}
      */
     protected void setupPermissionsInContext(Map context, Blog blog) {
-        User[] users = _authorizationProvider.getUsers(blog);
+        User[] users = _fetcher.getUsers(blog);
         TreeMap userIDs = new TreeMap();
         for (int i = 0; i < users.length; i++) {
             User userFromBlog = users[i];
@@ -171,8 +183,8 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                 if (!BlojsomUtils.checkNullOrBlank(permissionToAdd) && (permissionToAdd.endsWith(PERMISSION_SUFFIX))) {
                     User user;
                     try {
-                        user = _authorizationProvider.loadUser(blog, Integer.valueOf(blogUserID));
-                    } catch (AuthorizationException e) {
+                        user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
+                    } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
                         }
@@ -195,10 +207,10 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                     user.getMetaData().put(permissionToAdd, Boolean.TRUE.toString());
 
                     try {
-                        _authorizationProvider.saveUser(blog, user);
+                        _fetcher.saveUser(blog, user);
 
                         addOperationResultMessage(context, getAdminResource(PERMISSIONS_SAVED_KEY, PERMISSIONS_SAVED_KEY, blog.getBlogAdministrationLocale()));
-                    } catch (AuthorizationException e) {
+                    } catch (FetcherException e) {
                         _logger.error(e);
 
                         addOperationResultMessage(context, getAdminResource(ERROR_SAVING_PERMISSIONS_KEY, ERROR_SAVING_PERMISSIONS_KEY, blog.getBlogAdministrationLocale()));
@@ -219,8 +231,8 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                 if (!BlojsomUtils.checkNullOrBlank(permissionToDelete) && (permissionToDelete.endsWith(PERMISSION_SUFFIX))) {
                     User user;
                     try {
-                        user = _authorizationProvider.loadUser(blog, Integer.valueOf(blogUserID));
-                    } catch (AuthorizationException e) {
+                        user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
+                    } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
                         }
@@ -243,10 +255,10 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                     user.getMetaData().remove(permissionToDelete);
 
                     try {
-                        _authorizationProvider.saveUser(blog, user);
+                        _fetcher.saveUser(blog, user);
 
                         addOperationResultMessage(context, getAdminResource(PERMISSIONS_SAVED_KEY, PERMISSIONS_SAVED_KEY, blog.getBlogAdministrationLocale()));
-                    } catch (AuthorizationException e) {
+                    } catch (FetcherException e) {
                         _logger.error(e);
 
                         addOperationResultMessage(context, getAdminResource(ERROR_SAVING_PERMISSIONS_KEY, ERROR_SAVING_PERMISSIONS_KEY, blog.getBlogAdministrationLocale()));
