@@ -53,7 +53,7 @@ import java.util.TreeMap;
  * EditBlogPluginsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.2 2006-03-22 21:42:30 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
@@ -154,12 +154,16 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
             Map pluginChain = new HashMap(blog.getPlugins());
 
             // Iterate over the user's flavors and update the plugin chains
-            Iterator flavorIterator = blog.getPlugins().keySet().iterator();
+            Iterator flavorIterator = blog.getTemplates().keySet().iterator();
             String updatedFlavor;
             while (flavorIterator.hasNext()) {
                 String flavor = (String) flavorIterator.next();
                 updatedFlavor = BlojsomUtils.getRequestValue(flavor + "." + BlojsomConstants.BLOJSOM_PLUGIN_CHAIN, httpServletRequest);
-                pluginChain.put(flavor, updatedFlavor);
+                if (!BlojsomUtils.checkNullOrBlank(updatedFlavor)) {
+                    pluginChain.put(flavor, updatedFlavor);
+                } else {
+                    pluginChain.put(flavor, "");
+                }
             }
 
             // Check for the default flavor
