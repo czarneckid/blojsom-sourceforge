@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.2 2006-03-21 16:34:13 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.3 2006-03-22 21:21:38 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -180,6 +180,15 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
+     * Return a new {@link org.blojsom.blog.User} instance
+     *
+     * @return {@link org.blojsom.blog.User}
+     */
+    public User newUser() {
+        return new DatabaseUser();
+    }
+
+    /**
      * @param blogId
      * @return
      * @throws FetcherException
@@ -257,6 +266,38 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException("Unable to delete blog inforamtion: " + blog.getBlogId(), e);
         }
+    }
+
+    /**
+     * Load the blog IDs
+     *
+     * @return List of blog IDs
+     * @throws org.blojsom.fetcher.FetcherException
+     *          If there is an error loading the blog IDs
+     */
+    public String[] loadBlogIDs() throws FetcherException {
+        String[] blogIDs;
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            SQLQuery sqlQuery = session.createSQLQuery("select blog_id from blog");
+            List blogIDList = sqlQuery.list();
+
+            tx.commit();
+            session.close();
+
+            blogIDs = (String[]) blogIDList.toArray(new String[blogIDList.size()]);
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException("Unable to load blog IDs", e);
+        }
+
+        return blogIDs;
     }
 
     /**
@@ -1087,6 +1128,169 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             throw new FetcherException(e);
+        }
+    }
+
+    /**
+     * Load a {@link User} from a blog
+     *
+     * @param blog      {@link Blog}
+     * @param userLogin Login ID
+     * @throws FetcherException If there is an error loading the {@link User} from the blog
+     */
+    public User loadUser(Blog blog, String userLogin) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria userCriteria = session.createCriteria(DatabaseUser.class);
+            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getBlogId()));
+
+            DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
+
+            tx.commit();
+            session.close();
+
+            return user;
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+    }
+
+    /**
+     * Retrieve the users for a given blog
+     *
+     * @param blog {@link Blog}
+     * @return List of {@link User}s for a blog
+     */
+    public User[] getUsers(Blog blog) {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Criteria userCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseUser.class);
+        userCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        userCriteria.addOrder(Order.asc("userLogin"));
+
+        List userList = userCriteria.list();
+
+        tx.commit();
+        session.close();
+
+        try {
+            return (DatabaseUser[]) userList.toArray(new DatabaseUser[userList.size()]);
+        } catch (Exception e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            return new DatabaseUser[0];
+        }
+    }
+
+    /**
+     * Load a given {@link User} from a blog given their ID
+     *
+     * @param blog {@link Blog}
+     * @param userID User ID
+     * @return {@link User}
+     * @throws FetcherException If there is an error loading the user
+     */
+    public User loadUser(Blog blog, Integer userID) throws FetcherException {
+        if (userID == null) {
+            return new DatabaseUser();
+        } else {
+            try {
+                Session session = _sessionFactory.openSession();
+                Transaction tx = session.beginTransaction();
+
+                User user = (DatabaseUser) session.load(DatabaseUser.class, userID);
+                if (!user.getBlogId().equals(blog.getBlogId())) {
+                    tx.commit();
+                    session.close();
+
+                    throw new FetcherException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
+                }
+
+                tx.commit();
+                session.close();
+
+                return user;
+            } catch (HibernateException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                throw new FetcherException("Unable to load user ID: " + userID + " from blog: " + blog.getBlogId(), e);
+            }
+        }
+    }
+
+    /**
+     * Save a given {@link User} to the blog
+     *
+     * @param blog {@link Blog}
+     * @param user {@link User}
+     * @return {@link User}
+     * @throws FetcherException If there is an error saving the user to the blog
+     */
+    public User saveUser(Blog blog, User user) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            if (user.getId() == null) {
+                session.save(user);
+            } else {
+                session.update(user);
+            }
+
+            tx.commit();
+            session.close();
+
+            return user;
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException("Unable to save user login: " + user.getUserLogin() + " to blog: " + blog.getBlogId(), e);
+        }
+    }
+
+    /**
+     * Delete a given user from a blog
+     *
+     * @param blog {@link Blog}
+     * @param userID User ID
+     * @throws FetcherException If there is an error deleting the user from the blog
+     */
+    public void deleteUser(Blog blog, Integer userID) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            User userToDelete = (DatabaseUser) session.load(DatabaseUser.class, userID);
+            if (!userToDelete.getBlogId().equals(blog.getBlogId())) {
+                tx.commit();
+                session.close();
+
+                throw new FetcherException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
+            }
+
+            session.delete(userToDelete);
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException("Unable to delete user ID: " + userID + " from blog: " + blog.getBlogId(), e);
         }
     }
 
