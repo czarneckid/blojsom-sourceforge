@@ -37,6 +37,7 @@ import org.blojsom.event.EventBroadcaster;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
 import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
@@ -64,7 +65,7 @@ import java.util.Map;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.2 2006-03-20 22:32:39 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.3 2006-03-22 22:38:25 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -114,7 +115,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
     // Form elements
     private static final String BLOG_CATEGORY_ID = "blog-category-id";
-    private static final String BLOG_CATEGORY_NAME = "blog-category-name";
     private static final String BLOG_ENTRY_ID = "blog-entry-id";
     private static final String BLOG_ENTRY_TITLE = "blog-entry-title";
     private static final String BLOG_ENTRY_DESCRIPTION = "blog-entry-description";
@@ -125,7 +125,6 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
     private static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
     private static final String PING_BLOG_URLS = "ping-blog-urls";
-    private static final String UPDATED_BLOG_CATEGORY_NAME = "updated-blog-category-name";
 
     // Permissions
     private static final String EDIT_BLOG_ENTRIES_PERMISSION = "edit_blog_entries_permission";
@@ -289,7 +288,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowTrackbacks = BlojsomUtils.getRequestValue(BlojsomMetaDataConstants.BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String allowPingbacks = BlojsomUtils.getRequestValue(BlojsomMetaDataConstants.BLOG_METADATA_PINGBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
-            //String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
+            String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
 
             // XXX
             //String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
@@ -326,14 +325,14 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryToUpdate.setAllowPingbacks(new Integer(1));
                 }
 
-                // XXX
-                /*
                 if (BlojsomUtils.checkNullOrBlank(pingBlogURLS)) {
                     entryMetaData.put(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA, "true");
                 } else {
                     entryMetaData.remove(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA);
                 }
 
+                // XXX
+                /*
                 if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
                     entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
                 } else {
@@ -471,7 +470,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowTrackbacks = BlojsomUtils.getRequestValue(BlojsomMetaDataConstants.BLOG_METADATA_TRACKBACKS_DISABLED, httpServletRequest);
             String allowPingbacks = BlojsomUtils.getRequestValue(BlojsomMetaDataConstants.BLOG_METADATA_PINGBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
-            //String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
+            String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
 
             // XXX
             //String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
@@ -522,12 +521,14 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 entry.setAllowPingbacks(new Integer(1));
             }
 
-            // XXX
-            /*
             if (BlojsomUtils.checkNullOrBlank(pingBlogURLS)) {
                 entryMetaData.put(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA, "true");
+            } else {
+                entryMetaData.remove(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA);
             }
 
+            // XXX
+            /*
             if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
                 entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
             }
