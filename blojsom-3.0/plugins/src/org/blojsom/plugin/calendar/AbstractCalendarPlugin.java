@@ -30,12 +30,11 @@
  */
 package org.blojsom.plugin.calendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +49,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: AbstractCalendarPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.3 2006-03-23 19:50:56 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements Plugin {
 
@@ -128,6 +127,7 @@ public abstract class AbstractCalendarPlugin implements Plugin {
 
         String requestedDateKey;
         String calendarUrl = blog.getBlogURL();
+        calendarUrl = BlojsomUtils.addTrailingSlash(calendarUrl);
 
         // Default to the Current Month and Year
         Calendar calendar = Calendar.getInstance(locale);
