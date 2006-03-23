@@ -44,7 +44,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.2 2006-03-20 22:50:58 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.3 2006-03-23 07:16:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class SimpleSearchPlugin implements Plugin {
@@ -52,7 +52,7 @@ public class SimpleSearchPlugin implements Plugin {
     /**
      * Request parameter for the "query"
      */
-    private static final String QUERY_PARAM = "query";
+    protected static final String QUERY_PARAM = "query";
 
     /**
      * Default constructor
