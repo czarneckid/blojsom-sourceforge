@@ -44,15 +44,20 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * BlojsomUtils
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.2 2006-03-22 21:22:13 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.3 2006-03-23 16:48:00 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
+
+    private static final int REGEX_OPTIONS = Pattern.DOTALL | Pattern.MULTILINE | Pattern.CASE_INSENSITIVE;
+    private static final Pattern STRIP_HTML_PATTERN = Pattern.compile("(<.*?>)|(^.*?>)|(<.*?$)", REGEX_OPTIONS);
 
     /**
      * Private constructor so that the class cannot be instantiated.
@@ -377,7 +382,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         int lastCommaIndex = value.lastIndexOf(",");
-        
+
         if (lastCommaIndex == -1) {
             return new String[]{value};
         } else {
@@ -468,7 +473,7 @@ public class BlojsomUtils implements BlojsomConstants {
                     buffer.append(URLEncoder.encode(name, UTF8)).append("=").append(URLEncoder.encode(value, UTF8)).append("&");
                 }
             } catch (UnsupportedEncodingException e) {
-            }            
+            }
         }
 
         return buffer.toString();
@@ -1778,8 +1783,10 @@ public class BlojsomUtils implements BlojsomConstants {
             return text;
         }
 
-        return text.replaceAll("\\<.*?\\>", "");
-    }
+        Matcher m = STRIP_HTML_PATTERN.matcher(text);
+        
+        return m.replaceAll("");
+   }
 
     /**
      * Convert a <code>String[]</code> to a <code>List</code>
@@ -1845,7 +1852,7 @@ public class BlojsomUtils implements BlojsomConstants {
 
         return input;
     }
-    
+
     /**
      * Check to see if the blog base URL or blog URL are present. If not, construct them dynamically by calling
      * {@link #constructBaseURL(javax.servlet.http.HttpServletRequest)} and {@link #constructBlogURL(javax.servlet.http.HttpServletRequest, String)}.
