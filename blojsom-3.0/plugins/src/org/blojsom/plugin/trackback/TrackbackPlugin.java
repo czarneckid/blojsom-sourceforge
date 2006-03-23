@@ -38,6 +38,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.blog.Trackback;
+import org.blojsom.blog.User;
 import org.blojsom.event.Event;
 import org.blojsom.event.EventBroadcaster;
 import org.blojsom.event.Listener;
@@ -66,7 +67,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.2 2006-03-20 22:51:08 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.3 2006-03-23 04:25:26 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -555,10 +556,14 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
         String authorEmail = blog.getBlogOwnerEmail();
 
         if (author != null) {
-            // XXX
-            authorEmail = "";
-            if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
-                authorEmail = blog.getBlogOwnerEmail();
+            try {
+                User user = _fetcher.loadUser(blog, author);
+
+                authorEmail = user.getUserEmail();
+                if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                    authorEmail = blog.getBlogOwnerEmail();
+                }
+            } catch (FetcherException e) {
             }
         }
 

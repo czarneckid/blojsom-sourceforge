@@ -38,6 +38,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Comment;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.User;
 import org.blojsom.event.Event;
 import org.blojsom.event.EventBroadcaster;
 import org.blojsom.event.Listener;
@@ -67,7 +68,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: CommentPlugin.java,v 1.1 2006-03-20 21:30:53 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.2 2006-03-23 04:25:26 czarneckid Exp $
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
 
@@ -227,14 +228,19 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
     protected EventBroadcaster _eventBroadcaster;
 
     /**
-     * Set the {@link org.blojsom.event.EventBroadcaster} event broadcaster
+     * Set the {@link EventBroadcaster} event broadcaster
      *
-     * @param eventBroadcaster {@link org.blojsom.event.EventBroadcaster}
+     * @param eventBroadcaster {@link EventBroadcaster}
      */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
     }
 
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
     public void setFetcher(Fetcher fetcher) {
         _fetcher = fetcher;
     }
@@ -663,10 +669,14 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
         String authorEmail = blog.getBlogOwnerEmail();
 
         if (author != null) {
-            // XXX
-            authorEmail = "";
-            if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
-                authorEmail = blog.getBlogOwnerEmail();
+            try {
+                User user = _fetcher.loadUser(blog, author);
+
+                authorEmail = user.getUserEmail();
+                if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                    authorEmail = blog.getBlogOwnerEmail();
+                }
+            } catch (FetcherException e) {
             }
         }
 
