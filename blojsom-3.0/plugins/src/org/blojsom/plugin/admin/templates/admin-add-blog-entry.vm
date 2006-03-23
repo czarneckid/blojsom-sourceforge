@@ -81,7 +81,11 @@
                             <tr>
                                 <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') <br />(MM/dd/yyyy HH:mm:ss)</td>
                                 <td><input type="text" size="30" name="blog-entry-publish-datetime"/></td>
-                            </tr>                            
+                            </tr>
+                            <tr>
+                                <td>#adminResource('post.slug.text' 'Post slug')</td>
+                                <td><input type="text" size="50" name="post-slug"/></td>
+                            </tr>
                             #DisplayTemplateAdditions()
                             <tr>
                                 <td>&nbsp;</td>

@@ -42,6 +42,7 @@ import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
 import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
+import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.plugin.comment.event.CommentDeletedEvent;
 import org.blojsom.plugin.comment.event.CommentApprovedEvent;
@@ -60,12 +61,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.HttpURLConnection;
+import java.net.URLEncoder;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.3 2006-03-22 22:38:25 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.4 2006-03-23 02:04:42 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -123,7 +131,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_PINGBACK_ID = "blog-pingback-id";
     private static final String BLOG_ENTRY_PUBLISH_DATETIME = "blog-entry-publish-datetime";
     private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
-    private static final String BLOG_ENTRY_PROPOSED_NAME = "blog-entry-proposed-name";
+    private static final String POST_SLUG = "post-slug";
     private static final String PING_BLOG_URLS = "ping-blog-urls";
 
     // Permissions
@@ -365,16 +373,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 _logger.debug("Updated blog entry: " + entryToUpdate.getId());
 
                 StringBuffer entryLink = new StringBuffer();
-                entryLink.append("<a href=\"").append(blog.getBlogURL()).append(entryToUpdate.getBlogCategory().getName()).append("?permalink=").append(entryToUpdate.getTitle()).append("\">").append(entryToUpdate.getTitle()).append("</a>");
+                entryLink.append("<a href=\"").append(blog.getBlogURL()).append(entryToUpdate.getBlogCategory().getName()).append(entryToUpdate.getPostSlug()).append("\">").append(entryToUpdate.getEscapedTitle()).append("</a>");
                 addOperationResultMessage(context, formatAdminResource(UPDATED_BLOG_ENTRY_KEY, UPDATED_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[] {entryLink.toString()}));
 
                 EntryUpdatedEvent updateEvent = new EntryUpdatedEvent(this, new Date(), entryToUpdate, blog);
                 _eventBroadcaster.broadcastEvent(updateEvent);
 
                 // Send trackback pings
-                // XXX
                 if (!BlojsomUtils.checkNullOrBlank(blogTrackbackURLs)) {
-                    //sendTrackbackPings(blog, entryToUpdate, blogTrackbackURLs);
+                    sendTrackbackPings(blog, entryToUpdate, blogTrackbackURLs);
                 }
 
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
@@ -471,6 +478,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowPingbacks = BlojsomUtils.getRequestValue(BlojsomMetaDataConstants.BLOG_METADATA_PINGBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
+            String postSlug = BlojsomUtils.getRequestValue(POST_SLUG, httpServletRequest);
 
             // XXX
             //String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
@@ -485,6 +493,10 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             entry.setDate(new Date());
             entry.setModifiedDate(entry.getDate());
             entry.setBlogCategoryId(categoryId);
+
+            if (!BlojsomUtils.checkNullOrBlank(postSlug)) {
+                entry.setPostSlug(postSlug);
+            }
 
             Map entryMetaData = new HashMap();
             username = (String) httpServletRequest.getSession().getAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
@@ -543,7 +555,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 _fetcher.loadEntry(blog, entry);
 
                 StringBuffer entryLink = new StringBuffer();
-                entryLink.append("<a href=\"").append(blog.getBlogURL()).append(entry.getBlogCategory().getName()).append(entry.getTitle()).append("\">").append(entry.getTitle()).append("</a>");
+                entryLink.append("<a href=\"").append(blog.getBlogURL()).append(entry.getBlogCategory().getName()).append(entry.getPostSlug()).append("\">").append(entry.getEscapedTitle()).append("</a>");
                 addOperationResultMessage(context, formatAdminResource(ADDED_BLOG_ENTRY_KEY, ADDED_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{entryLink.toString()}));
 
                 EntryAddedEvent addedEvent = new EntryAddedEvent(this, new Date(), entry, blog);
@@ -553,10 +565,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, formatAdminResource(FAILED_ADD_BLOG_ENTRY_KEY, FAILED_ADD_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
             }
 
-            // XXX
             // Send trackback pings
             if (!BlojsomUtils.checkNullOrBlank(blogTrackbackURLs)) {
-                //sendTrackbackPings(blog, entry, blogTrackbackURLs);
+                sendTrackbackPings(blog, entry, blogTrackbackURLs);
             }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_ACTION);
@@ -883,7 +894,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         }
-        
+
         return entries;
     }
 
@@ -894,26 +905,26 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
      * @param entry             Blog entry
      * @param blogTrackbackURLs Trackback URLs
      */
-    /*
-    protected void sendTrackbackPings(Blog blog, BlogEntry entry, String blogTrackbackURLs) {
+    protected void sendTrackbackPings(Blog blog, Entry entry, String blogTrackbackURLs) {
         // Build the URL parameters for the trackback ping URL
         StringBuffer trackbackPingURLParameters = new StringBuffer();
         try {
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(entry.getLink());
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(entry.getTitle(), UTF8));
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), UTF8));
+            StringBuffer entryLink = new StringBuffer(blog.getBlogURL()).append(entry.getBlogCategory().getName()).append(entry.getPostSlug());
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(entryLink);
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(entry.getTitle(), BlojsomConstants.UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), BlojsomConstants.UTF8));
 
             String excerpt = entry.getDescription().replaceAll("<.*?>", "");
             if (excerpt.length() > 255) {
                 excerpt = excerpt.substring(0, 251);
                 excerpt += "...";
             }
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, UTF8));
+            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, BlojsomConstants.UTF8));
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
         }
 
-        String[] trackbackURLs = BlojsomUtils.parseDelimitedList(blogTrackbackURLs, WHITESPACE);
+        String[] trackbackURLs = BlojsomUtils.parseDelimitedList(blogTrackbackURLs, BlojsomConstants.WHITESPACE);
         if (trackbackURLs != null && trackbackURLs.length > 0) {
             for (int i = 0; i < trackbackURLs.length; i++) {
                 String trackbackURL = trackbackURLs[i].trim();
@@ -927,11 +938,11 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     // Open a connection to the trackback URL and read its input
                     HttpURLConnection trackbackUrlConnection = (HttpURLConnection) trackbackUrl.openConnection();
                     trackbackUrlConnection.setRequestMethod("POST");
-                    trackbackUrlConnection.setRequestProperty("Content-Encoding", UTF8);
+                    trackbackUrlConnection.setRequestProperty("Content-Encoding", BlojsomConstants.UTF8);
                     trackbackUrlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     trackbackUrlConnection.setRequestProperty("Content-Length", "" + trackbackPingURLParameters.length());
                     trackbackUrlConnection.setDoOutput(true);
-                    trackbackUrlConnection.getOutputStream().write(trackbackPingURLParameters.toString().getBytes(UTF8));
+                    trackbackUrlConnection.getOutputStream().write(trackbackPingURLParameters.toString().getBytes(BlojsomConstants.UTF8));
                     trackbackUrlConnection.connect();
                     BufferedReader trackbackStatus = new BufferedReader(new InputStreamReader(trackbackUrlConnection.getInputStream()));
                     String line;
@@ -948,5 +959,4 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
         }
     }
-    */
 }
