@@ -57,7 +57,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.1 2006-03-23 07:06:22 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.2 2006-03-23 07:16:01 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
@@ -93,8 +93,6 @@ public class AkismetModerationPlugin implements Plugin, Listener {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @param servletConfig        Servlet config object for the plugin to retrieve any initialization parameters
-     * @param blojsomConfiguration {@link org.blojsom.blog.BlojsomConfiguration} information
      * @throws org.blojsom.plugin.PluginException
      *          If there is an error initializing the plugin
      */
@@ -107,12 +105,11 @@ public class AkismetModerationPlugin implements Plugin, Listener {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param blog                {@link Blog} instance
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error processing the blog entries
+     * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         return entries;
