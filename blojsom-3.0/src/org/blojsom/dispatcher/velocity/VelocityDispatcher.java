@@ -61,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: VelocityDispatcher.java,v 1.3 2006-03-21 16:32:21 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.4 2006-03-23 14:28:27 czarneckid Exp $
  */
 public class VelocityDispatcher implements Dispatcher {
 
@@ -90,10 +90,6 @@ public class VelocityDispatcher implements Dispatcher {
     public void init() throws org.blojsom.BlojsomException {
         _templatesDirectory = _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP, BlojsomConstants.DEFAULT_TEMPLATES_DIRECTORY);
         _blogsDirectory = _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP, BlojsomConstants.DEFAULT_BLOGS_DIRECTORY);
-
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("Initialized Velocity dispatcher");
-        }
     }
 
     /**
