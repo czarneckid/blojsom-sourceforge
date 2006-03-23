@@ -424,6 +424,7 @@
                 <entry key="default" value="conditional-get, meta, limiter, nofollow, rss-enclosure"/>
                 <entry key="html" value="meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, limiter, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags"/>
                 <entry key="rdf" value=""/>
+                <entry key="rsd" value=""/>
                 <entry key="rss" value=""/>
                 <entry key="rss2" value=""/>
             </map>
