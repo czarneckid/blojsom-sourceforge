@@ -44,20 +44,18 @@ import org.blojsom.util.BlojsomUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Example;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.5 2006-03-23 02:04:11 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.6 2006-03-23 16:50:22 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -770,7 +768,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             if (entry.getId() == null) {
-                entry.setPostSlug(createPostSlug(blog, entry));                
+                entry.setPostSlug(createPostSlug(blog, entry));
                 session.save(entry);
             } else {
                 session.update(entry);
@@ -1154,6 +1152,48 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         }
+    }
+
+    /**
+     * Load a pingback given the source URI and target URI
+     *
+     * @param blog {@link Blog}
+     * @param sourceURI Source URI
+     * @param targetURI Target URI
+     * @return {@link Pingback} given the source and target URIs or <code>null</code> if not found
+     * @throws FetcherException If there was an erorr loading the pingback
+     */
+    public Pingback loadPingback(Blog blog, String sourceURI, String targetURI) throws FetcherException {
+        Pingback pingback;
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Map metaData = new HashMap();
+            metaData.put("pingback-source-uri", sourceURI);
+            metaData.put("pingback-target-uri", targetURI);
+
+            Pingback pingbackToFind = newPingback();
+            pingbackToFind.setBlogId(blog.getBlogId());
+            pingbackToFind.setMetaData(metaData);
+
+            Criteria pingbackCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
+            pingbackCriteria.add(Example.create(pingbackToFind));
+
+            pingback = (Pingback) pingbackCriteria.uniqueResult();
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+
+        return pingback;
     }
 
     /**

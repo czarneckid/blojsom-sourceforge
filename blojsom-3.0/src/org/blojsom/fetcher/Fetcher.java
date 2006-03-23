@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.5 2006-03-23 04:24:09 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.6 2006-03-23 16:50:17 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -332,6 +332,17 @@ public interface Fetcher {
      * @throws FetcherException
      */
     public void loadPingback(Blog blog, Pingback pingback) throws FetcherException;
+
+    /**
+     * Load a pingback given the source URI and target URI
+     *
+     * @param blog {@link Blog}
+     * @param sourceURI Source URI
+     * @param targetURI Target URI
+     * @return {@link Pingback} given the source and target URIs or <code>null</code> if not found
+     * @throws FetcherException If there was an erorr loading the pingback
+     */
+    public Pingback loadPingback(Blog blog, String sourceURI, String targetURI) throws FetcherException;
 
     /**
      *
