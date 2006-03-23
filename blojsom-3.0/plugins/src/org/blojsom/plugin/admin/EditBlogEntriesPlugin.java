@@ -40,6 +40,7 @@ import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
 import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
 import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
+import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
@@ -73,7 +74,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.4 2006-03-23 02:04:42 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.5 2006-03-23 04:23:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -106,6 +107,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String APPROVED_PINGBACKS_KEY = "approved.pingbacks.text";
     private static final String DELETED_PINGBACKS_KEY = "deleted.pingbacks.text";
     private static final String BLANK_ENTRY_KEY = "blank.entry.text";
+    private static final String INVALID_CATEGORYID_KEY = "invalid.categoryid.text";
 
     // Actions
     private static final String EDIT_BLOG_ENTRIES_ACTION = "edit-blog-entries";
@@ -192,14 +194,20 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(action)) {
-            _logger.debug("User did not request edit action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User did not request edit action");
+            }
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
-            _logger.debug("User requested edit blog entries page");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested edit blog entries page");
+            }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
         } else if (EDIT_BLOG_ENTRIES_ACTION.equals(action)) {
-            _logger.debug("User requested edit blog entries list page");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested edit blog entries list page");
+            }
 
             String blogCategoryId = BlojsomUtils.getRequestValue(BLOG_CATEGORY_ID, httpServletRequest);
             Integer categoryId;
@@ -207,22 +215,19 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 categoryId = Integer.valueOf(blogCategoryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
+                addOperationResultMessage(context, formatAdminResource(INVALID_CATEGORYID_KEY, INVALID_CATEGORYID_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogCategoryId}));
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
 
-                categoryId = new Integer(0);
+                return entries;
             }
 
             try {
                 entries = _fetcher.loadAllEntriesForCategory(blog, categoryId);
                 category = _fetcher.loadCategory(blog, categoryId);
-
-                if (entries != null) {
-                    _logger.debug("Retrieved " + entries.length + " entries from category: " + blogCategoryId);
-                } else {
-                    _logger.debug("No entries found in category: " + blogCategoryId);
-                }
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 entries = new Entry[0];
             }
@@ -232,19 +237,20 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRIES_LIST_PAGE);
         } else if (EDIT_BLOG_ENTRY_ACTION.equals(action)) {
-            _logger.debug("User requested edit blog entry action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested edit blog entry action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
-            Integer entryId = null;
+            Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
-                entries = new Entry[0];
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+                return entries;
             }
-            _logger.debug("Blog entry id: " + blogEntryId);
 
             try {
                 Entry entry = _fetcher.newEntry();
@@ -254,36 +260,42 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
-                entries = new Entry[0];
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+                return entries;
             }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         } else if (UPDATE_BLOG_ENTRY_ACTION.equals(action)) {
-            _logger.debug("User requested update blog entry action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested update blog entry action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
-            Integer entryId = null;
+            Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
-                entries = new Entry[0];
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+                return entries;
             }
-            _logger.debug("Blog entry id: " + blogEntryId);
 
             String blogCategoryId = BlojsomUtils.getRequestValue(BLOG_CATEGORY_ID, httpServletRequest);
             Integer categoryId;
             try {
                 categoryId = Integer.valueOf(blogCategoryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
+                addOperationResultMessage(context, formatAdminResource(INVALID_CATEGORYID_KEY, INVALID_CATEGORYID_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
 
-                categoryId = new Integer(0);
+                return entries;
             }
 
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
@@ -297,9 +309,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String allowPingbacks = BlojsomUtils.getRequestValue(BlojsomMetaDataConstants.BLOG_METADATA_PINGBACKS_DISABLED, httpServletRequest);
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
-
-            // XXX
-            //String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
+            String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
 
             try {
                 Entry entryToUpdate = _fetcher.newEntry();
@@ -339,25 +349,20 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     entryMetaData.remove(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA);
                 }
 
-                // XXX
-                /*
                 if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
                     entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
                 } else {
                     entryMetaData.remove(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS);
                 }
-                */
 
                 String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);
                 if (!BlojsomUtils.checkNullOrBlank(entryPublishDateTime)) {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                     try {
                         Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
-                        _logger.debug("Publishing blog entry at: " + publishDateTime.toString());
                         entryToUpdate.setDate(publishDateTime);
                         entryToUpdate.setModifiedDate(publishDateTime);
                     } catch (ParseException e) {
-                        _logger.error(e);
                     }
                 } else {
                     entryToUpdate.setModifiedDate(new Date());
@@ -370,7 +375,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 _fetcher.saveEntry(blog, entryToUpdate);
                 _fetcher.loadEntry(blog, entryToUpdate);
 
-                _logger.debug("Updated blog entry: " + entryToUpdate.getId());
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Updated blog entry: " + entryToUpdate.getId());
+                }
 
                 StringBuffer entryLink = new StringBuffer();
                 entryLink.append("<a href=\"").append(blog.getBlogURL()).append(entryToUpdate.getBlogCategory().getName()).append(entryToUpdate.getPostSlug()).append("\">").append(entryToUpdate.getEscapedTitle()).append("</a>");
@@ -387,32 +394,29 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entryToUpdate);
            } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
                 entries = new Entry[0];
-            } catch (org.blojsom.BlojsomException e) {
-                _logger.error(e);
-
-                addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogEntryId}));
-                entries = new Entry[0];
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
             }
         } else if (DELETE_BLOG_ENTRY_ACTION.equals(action)) {
-            _logger.debug("User requested delete blog entry action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested delete blog entry action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
-            Integer entryId = null;
+            Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
-                entries = new Entry[0];
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+                return entries;
             }
-            _logger.debug("Blog entry id: " + blogEntryId);
 
             try {
                 Entry entryToDelete = _fetcher.newEntry();
@@ -427,12 +431,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 EntryDeletedEvent deleteEvent = new EntryDeletedEvent(this, new Date(), entryToDelete, blog);
                 _eventBroadcaster.broadcastEvent(deleteEvent);
             } catch (FetcherException e) {
-                _logger.error(e);
-
-                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_BLOG_ENTRY_KEY, FAILED_DELETE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
-                entries = new Entry[0];
-            } catch (org.blojsom.BlojsomException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_BLOG_ENTRY_KEY, FAILED_DELETE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -440,21 +441,26 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRIES_PAGE);
         } else if (NEW_BLOG_ENTRY_ACTION.equals(action)) {
-            _logger.debug("User requested new blog entry action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested new blog entry action");
+            }
 
             _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), null, blog, httpServletRequest, httpServletResponse, context));
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADD_BLOG_ENTRY_PAGE);
         } else if (ADD_BLOG_ENTRY_ACTION.equals(action)) {
-            _logger.debug("User requested add blog entry action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested add blog entry action");
+            }
             String blogCategoryId = BlojsomUtils.getRequestValue(BLOG_CATEGORY_ID, httpServletRequest);
             Integer categoryId;
             try {
                 categoryId = Integer.valueOf(blogCategoryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
+                addOperationResultMessage(context, formatAdminResource(INVALID_CATEGORYID_KEY, INVALID_CATEGORYID_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
 
-                categoryId = new Integer(0);
+                return entries;
             }
 
             String blogEntryDescription = BlojsomUtils.getRequestValue(BLOG_ENTRY_DESCRIPTION, httpServletRequest);
@@ -479,9 +485,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             String blogTrackbackURLs = BlojsomUtils.getRequestValue(BLOG_TRACKBACK_URLS, httpServletRequest);
             String pingBlogURLS = BlojsomUtils.getRequestValue(PING_BLOG_URLS, httpServletRequest);
             String postSlug = BlojsomUtils.getRequestValue(POST_SLUG, httpServletRequest);
-
-            // XXX
-            //String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
+            String sendPingbacks = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, httpServletRequest);
 
             Entry entry;
             entry = _fetcher.newEntry();
@@ -507,11 +511,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 try {
                     Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
-                    _logger.debug("Publishing blog entry at: " + publishDateTime.toString());
                     entry.setDate(publishDateTime);
                     entry.setModifiedDate(publishDateTime);
                 } catch (ParseException e) {
-                    _logger.error(e);
                 }
             }
 
@@ -539,12 +541,11 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 entryMetaData.remove(WeblogsPingPlugin.NO_PING_WEBLOGS_METADATA);
             }
 
-            // XXX
-            /*
             if (!BlojsomUtils.checkNullOrBlank(sendPingbacks)) {
                 entryMetaData.put(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS, "true");
-            }
-            */
+            } else {
+                entryMetaData.remove(PingbackPlugin.PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS);
+            }                       
 
             entry.setMetaData(entryMetaData);
 
@@ -560,9 +561,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 EntryAddedEvent addedEvent = new EntryAddedEvent(this, new Date(), entry, blog);
                 _eventBroadcaster.broadcastEvent(addedEvent);
-            } catch (org.blojsom.BlojsomException e) {
-                _logger.error(e);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
                 addOperationResultMessage(context, formatAdminResource(FAILED_ADD_BLOG_ENTRY_KEY, FAILED_ADD_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+                return entries;
             }
 
             // Send trackback pings
@@ -573,15 +580,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_ACTION);
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
         } else if (DELETE_BLOG_COMMENTS.equals(action)) {
-            _logger.debug("User requested delete comments action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested delete comments action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
 
@@ -605,7 +612,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                                     _eventBroadcaster.broadcastEvent(new CommentDeletedEvent(this, new Date(), blogComment, blog));
                                 } catch (FetcherException e) {
-                                    _logger.error(e);
+                                    if (_logger.isErrorEnabled()) {
+                                        _logger.error(e);
+                                    }
                                 }
                             }
                         }
@@ -618,7 +627,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -626,15 +637,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         } else if (APPROVE_BLOG_COMMENTS.equals(action)) {
-            _logger.debug("User requested approve comments action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested approve comments action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
 
@@ -672,7 +683,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -680,15 +693,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         } else if (DELETE_BLOG_TRACKBACKS.equals(action)) {
-            _logger.debug("User requested delete blog trackbacks action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested delete blog trackbacks action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
 
@@ -712,7 +725,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                                     _eventBroadcaster.broadcastEvent(new TrackbackDeletedEvent(this, new Date(), trackback, blog));
                                 } catch (FetcherException e) {
-                                    _logger.error(e);
+                                    if (_logger.isErrorEnabled()) {
+                                        _logger.error(e);
+                                    }
                                 }
                             }
                         }
@@ -725,7 +740,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -733,15 +750,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         } else if (APPROVE_BLOG_TRACKBACKS.equals(action)) {
-            _logger.debug("User requested approve blog trackbacks action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested approve blog trackbacks action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
 
@@ -766,7 +783,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                                     _eventBroadcaster.broadcastEvent(new TrackbackApprovedEvent(this, new Date(), trackback, blog));
                                 } catch (FetcherException e) {
-                                    _logger.error(e);
+                                    if (_logger.isErrorEnabled()) {
+                                        _logger.error(e);
+                                    }
                                 }
                             }
                         }
@@ -779,7 +798,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -787,15 +808,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         } else if (DELETE_BLOG_PINGBACKS.equals(action)) {
-            _logger.debug("User requested delete blog pingbacks action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested delete blog pingbacks action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
 
@@ -819,7 +840,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                                     _eventBroadcaster.broadcastEvent(new PingbackDeletedEvent(this, new Date(), pingback, blog));
                                 } catch (FetcherException e) {
-                                    _logger.error(e);
+                                    if (_logger.isErrorEnabled()) {
+                                        _logger.error(e);
+                                    }
                                 }
                             }
                         }
@@ -832,7 +855,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -840,14 +865,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
         } else if (APPROVE_BLOG_PINGBACKS.equals(action)) {
-            _logger.debug("User requested approve blog pingbacks action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested approve blog pingbacks action");
+            }
 
             String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
             Integer entryId;
             try {
                 entryId = Integer.valueOf(blogEntryId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
@@ -873,7 +899,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                                     _eventBroadcaster.broadcastEvent(new PingbackApprovedEvent(this, new Date(), pingback, blog));
                                 } catch (FetcherException e) {
-                                    _logger.error(e);
+                                    if (_logger.isErrorEnabled()) {
+                                        _logger.error(e);
+                                    }
                                 }
                             }
                         }
@@ -886,7 +914,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
                 entries = new Entry[0];
@@ -921,7 +951,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, BlojsomConstants.UTF8));
         } catch (UnsupportedEncodingException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         String[] trackbackURLs = BlojsomUtils.parseDelimitedList(blogTrackbackURLs, BlojsomConstants.WHITESPACE);
@@ -930,7 +962,9 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 String trackbackURL = trackbackURLs[i].trim();
                 StringBuffer trackbackPingURL = new StringBuffer(trackbackURL);
 
-                _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Automatically sending trackback ping to URL: " + trackbackPingURL.toString());
+                }
 
                 try {
                     URL trackbackUrl = new URL(trackbackPingURL.toString());
@@ -952,9 +986,13 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                     trackbackUrlConnection.disconnect();
 
-                    _logger.debug("Trackback status for ping to " + trackbackURL + ": " + status.toString());
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Trackback status for ping to " + trackbackURL + ": " + status.toString());
+                    }
                 } catch (IOException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }
