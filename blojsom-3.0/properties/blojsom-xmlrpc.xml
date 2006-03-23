@@ -18,12 +18,10 @@
     <bean id="xmlrpcProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
-                <prop key="blogger">org.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler</prop>
-                <prop key="metaWeblog">org.blojsom.extension.xmlrpc.handlers.MetaWeblogAPIHandler</prop>
-                <prop key="mt">org.blojsom.extension.xmlrpc.handlers.MovableTypeAPIHandler</prop>
-                <!--
-                <prop key="pingback">org.blojsom.extension.xmlrpc.handlers.PingbackHandler</prop>
-                -->
+                <prop key="blogger">org.blojsom.extension.xmlrpc.handler.BloggerAPIHandler</prop>
+                <prop key="metaWeblog">org.blojsom.extension.xmlrpc.handler.MetaWeblogAPIHandler</prop>
+                <prop key="mt">org.blojsom.extension.xmlrpc.handler.MovableTypeAPIHandler</prop>
+                <prop key="pingback">org.blojsom.extension.xmlrpc.handler.PingbackHandler</prop>
                 <prop key="$default">metaWeblog</prop>
             </props>
         </property>
@@ -131,4 +129,33 @@
         </property>
     </bean>
 
+    <bean id="mt" class="org.blojsom.extension.xmlrpc.handler.MovableTypeAPIHandler">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
+
+    <bean id="pingback" class="org.blojsom.extension.xmlrpc.handler.PingbackHandler">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
 </beans>

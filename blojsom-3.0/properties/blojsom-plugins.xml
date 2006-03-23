@@ -204,6 +204,9 @@
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
         <property name="velocityProperties">
             <props>
                 <prop key="resource.loader">file, class</prop>
@@ -411,6 +414,7 @@
                 <entry key="trackback-moderation-enabled" value="true"/>
                 <entry key="blog-ping-urls" value="http://rpc.pingomatic.com"/>
                 <entry key="blojsom-extension-metaweblog-accepted-types" value="image/jpeg, image/gif, image/png, img"/>
+                <entry key="xmlrpc-enabled" value="true"/>
             </map>
         </property>
         <property name="defaultPluginProperties">
