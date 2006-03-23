@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.4 2006-03-23 02:04:17 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.5 2006-03-23 04:24:09 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -342,6 +342,14 @@ public interface Fetcher {
     public void deletePingback(Blog blog, Pingback pingback) throws FetcherException;
 
     /**
+     * Retrieve the users for a given blog
+     *
+     * @param blog {@link Blog}
+     * @return List of {@link User}s for a blog
+     */
+    public User[] getUsers(Blog blog);
+    
+    /**
      * Load a {@link User} from a blog
      *
      * @param blog      {@link Blog}
@@ -349,14 +357,6 @@ public interface Fetcher {
      * @throws FetcherException If there is an error loading the {@link User} from the blog
      */
     public User loadUser(Blog blog, String userLogin) throws FetcherException;
-
-    /**
-     * Retrieve the users for a given blog
-     *
-     * @param blog {@link Blog}
-     * @return List of {@link User}s for a blog
-     */
-    public User[] getUsers(Blog blog);
 
     /**
      * Load a given {@link User} from a blog given their ID
