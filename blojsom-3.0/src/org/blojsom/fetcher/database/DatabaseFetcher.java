@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.4 2006-03-22 22:39:20 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.5 2006-03-23 02:04:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -520,6 +520,43 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
+     * Load an {@link Entry} given a post slug
+     *
+     * @param blog     {@link Blog}
+     * @param postSlug Post slug
+     * @return {@link Entry} for the given post slug
+     * @throws org.blojsom.fetcher.FetcherException
+     *          If an entry for the blog and post slug cannot be found
+     */
+    public Entry loadEntry(Blog blog, String postSlug) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.eq("postSlug", postSlug));
+
+            Entry entry = (DatabaseEntry) entryCriteria.uniqueResult();
+
+            tx.commit();
+            session.close();
+
+            if (entry == null) {
+                throw new FetcherException("Entry could not be loaded with post slug: " + postSlug);
+            }
+
+            return entry;
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+    }
+
+    /**
      * Determine the blog category based on the request
      *
      * @param httpServletRequest Request
@@ -680,6 +717,37 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
+     * Create a unique post slug
+     *
+     * @param blog {@link Blog}
+     * @param entry {@link Entry}
+     * @return Unique post slug
+     */
+    protected String createPostSlug(Blog blog, Entry entry) {
+        String postSlug;
+
+        if (BlojsomUtils.checkNullOrBlank(entry.getPostSlug())) {
+            postSlug = BlojsomUtils.getPostSlug(entry.getTitle(), entry.getDescription());
+        } else {
+            postSlug = entry.getPostSlug();
+        }
+
+        int postSlugTag = 1;
+        boolean postSlugOK = false;
+
+        while (!postSlugOK) {
+            try {
+                loadEntry(blog, postSlug);
+                postSlug += ("-" + postSlugTag++);
+            } catch (FetcherException e) {
+                postSlugOK = true;
+            }
+        }
+
+        return postSlug;
+    }
+
+    /**
      * @param blog
      * @param entry
      * @throws FetcherException
@@ -701,15 +769,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entry.setModifiedDate(entry.getDate());
             }
 
-            if (entry.getBlogCategoryId() == null) {
-                entry.setBlogCategoryId(new Integer(0));
-            }
-
-            if (entry.getPostSlug() == null) {
-                entry.setPostSlug(BlojsomUtils.getPostSlug(entry.getTitle(), entry.getDescription()));
-            }
-
             if (entry.getId() == null) {
+                entry.setPostSlug(createPostSlug(blog, entry));                
                 session.save(entry);
             } else {
                 session.update(entry);
@@ -1185,7 +1246,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a given {@link User} from a blog given their ID
      *
-     * @param blog {@link Blog}
+     * @param blog   {@link Blog}
      * @param userID User ID
      * @return {@link User}
      * @throws FetcherException If there is an error loading the user
@@ -1255,7 +1316,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Delete a given user from a blog
      *
-     * @param blog {@link Blog}
+     * @param blog   {@link Blog}
      * @param userID User ID
      * @throws FetcherException If there is an error deleting the user from the blog
      */

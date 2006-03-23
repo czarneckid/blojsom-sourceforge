@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.3 2006-03-22 21:21:37 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.4 2006-03-23 02:04:17 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -176,6 +176,16 @@ public interface Fetcher {
      * @throws FetcherException
      */
     public Entry loadEntry(Blog blog, Integer entryId) throws FetcherException;
+
+    /**
+     * Load an {@link Entry} given a post slug
+     *
+     * @param blog {@link Blog}
+     * @param postSlug Post slug
+     * @return {@link Entry} for the given post slug
+     * @throws FetcherException If an entry for the blog and post slug cannot be found
+     */
+    public Entry loadEntry(Blog blog, String postSlug) throws FetcherException;
 
     /**
      * Fetch a set of {@link Category} objects
