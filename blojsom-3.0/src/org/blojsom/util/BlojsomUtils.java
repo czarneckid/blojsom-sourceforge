@@ -52,7 +52,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.3 2006-03-23 16:48:00 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.4 2006-03-23 19:49:41 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -949,15 +949,27 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static String getCalendarNavigationUrl(String prefix, int month, int day, int year) {
         StringBuffer dateurl = new StringBuffer(prefix);
-        if (month != -1) {
-            dateurl.append("?month=").append(month);
-        }
-        if (day != -1) {
-            dateurl.append("&amp;day=").append(day);
-        }
+
         if (year != -1) {
-            dateurl.append("&amp;year=").append(year);
+            dateurl.append(year).append("/");
         }
+
+        if (month != -1) {
+            if (month < 10) {
+                dateurl.append("0");
+            }
+
+            dateurl.append(month).append("/");
+        }
+
+        if (day != -1) {
+            if (day < 10) {
+                dateurl.append("0");
+            }
+            
+            dateurl.append(day).append("/");
+        }
+
         return dateurl.toString();
     }
 
@@ -1844,6 +1856,24 @@ public class BlojsomUtils implements BlojsomConstants {
 
         if (!input.startsWith("/")) {
             input = "/" + input;
+        }
+
+        if (!input.endsWith("/")) {
+            input += "/";
+        }
+
+        return input;
+    }
+
+    /**
+     * Add a trailing slash to the input
+     *
+     * @param input Input
+     * @return Input with trailing slash added
+     */
+    public static String addTrailingSlash(String input) {
+        if (input == null) {
+            return "/";
         }
 
         if (!input.endsWith("/")) {
