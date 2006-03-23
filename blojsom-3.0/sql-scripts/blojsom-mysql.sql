@@ -129,7 +129,7 @@ CREATE TABLE `EntryMetadata` (
 
 DROP TABLE IF EXISTS `Pingback`;
 CREATE TABLE `Pingback` (
-  `pingback_id` int(11) NOT NULL,
+  `pingback_id` int(11) NOT NULL auto_increment,
   `entry_id` int(11) NOT NULL,
   `title` text,
   `excerpt` text,
