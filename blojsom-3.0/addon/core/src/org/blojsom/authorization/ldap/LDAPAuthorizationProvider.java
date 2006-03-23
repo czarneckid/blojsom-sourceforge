@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.authorization;
+package org.blojsom.authorization.ldap;
 
 import netscape.ldap.LDAPConnection;
 import netscape.ldap.LDAPException;
@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
 import org.blojsom.ConfigurationException;
 import org.blojsom.authorization.database.DatabaseAuthorizationProvider;
+import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.blog.Blog;
 import org.blojsom.util.BlojsomUtils;
 
@@ -70,7 +71,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.1 2006-03-23 06:32:14 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.1 2006-03-23 14:27:33 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
