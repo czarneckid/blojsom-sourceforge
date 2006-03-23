@@ -39,6 +39,7 @@ import org.apache.xmlrpc.AsyncCallback;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.User;
 import org.blojsom.event.Event;
 import org.blojsom.event.EventBroadcaster;
 import org.blojsom.event.Listener;
@@ -52,6 +53,8 @@ import org.blojsom.plugin.pingback.event.PingbackAddedEvent;
 import org.blojsom.plugin.velocity.StandaloneVelocityPlugin;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.fetcher.FetcherException;
+import org.blojsom.fetcher.Fetcher;
 
 import javax.mail.Session;
 import javax.naming.Context;
@@ -77,7 +80,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.2 2006-03-20 22:50:56 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.3 2006-03-23 04:27:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, Listener {
@@ -110,6 +113,7 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
     private String _mailServerPassword;
     private Session _session;
     private EventBroadcaster _eventBroadcaster;
+    private Fetcher _fetcher;
 
     private PingbackPluginAsyncCallback _callbackHandler;
 
@@ -120,12 +124,21 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
     }
 
     /**
-     * Set the {@link org.blojsom.event.EventBroadcaster} event broadcaster
+     * Set the {@link EventBroadcaster} event broadcaster
      *
-     * @param eventBroadcaster {@link org.blojsom.event.EventBroadcaster}
+     * @param eventBroadcaster {@link EventBroadcaster}
      */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
+    }
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
     }
 
     /**
@@ -229,10 +242,14 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
         String authorEmail = blog.getBlogOwnerEmail();
 
         if (author != null) {
-            // XXX
-            authorEmail = "";
-            if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
-                authorEmail = blog.getBlogOwnerEmail();
+            try {
+                User user = _fetcher.loadUser(blog, author);
+
+                authorEmail = user.getUserEmail();
+                if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                    authorEmail = blog.getBlogOwnerEmail();
+                }
+            } catch (FetcherException e) {
             }
         }
 
@@ -253,8 +270,7 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
             if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(entryEvent.getEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS))
             {
                 String pingbackURL;
-                // XXX
-                String sourceURI = entryEvent.getEntry().getId().toString();
+                StringBuffer sourceURI = new StringBuffer().append(entryEvent.getBlog().getBlogURL()).append(entryEvent.getEntry().getBlogCategory().getName()).append(entryEvent.getEntry().getPostSlug());
                 String targetURI;
 
                 Pattern hrefPattern = Pattern.compile(HREF_REGEX, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.DOTALL);
@@ -295,12 +311,13 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
                         // Finally, send the pingback
                         if (pingbackURL != null && targetURI != null) {
                             Vector parameters = new Vector();
-                            parameters.add(sourceURI);
+                            parameters.add(sourceURI.toString());
                             parameters.add(targetURI);
                             try {
                                 if (_logger.isDebugEnabled()) {
                                     _logger.debug("Sending pingback to: " + pingbackURL + " sourceURI: " + sourceURI + " targetURI: " + targetURI);
                                 }
+                               
                                 XmlRpcClient xmlRpcClient = new XmlRpcClient(pingbackURL);
                                 xmlRpcClient.executeAsync(PINGBACK_METHOD, parameters, _callbackHandler);
                             } catch (MalformedURLException e) {
