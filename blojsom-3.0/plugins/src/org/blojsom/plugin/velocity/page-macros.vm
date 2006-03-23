@@ -210,7 +210,7 @@
  *
  * @param $entry Blog entry
  *#
-#macro(EntryCategoryName $entry)#if ($entry.getBlogCategory().getName()) $entry.getBlogCategory().getName() #else $entry.getBlogCategory().getCategory()#end#end
+#macro(EntryCategoryName $entry)#if ($entry.getBlogCategory().getDescription()) $entry.getBlogCategory().getDescription() #else $entry.getBlogCategory().getName()#end#end
 
 #**
  * Output the trackback auto-discovery RDF fragment
@@ -235,12 +235,12 @@
         <rdf:Description
              rdf:about="$entryLink"
              dc:identifier="$entryLink"
-             dc:title="$entry.getTitle()"
-             dc:subject="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()"
+             dc:title="$entry.getEscapedTitle()"
+             dc:subject="$entry.getEncodedCategory()"
              dc:description="$blogDescription.replaceAll("-{2,}+","")"
-             dc:creator="$BLOJSOM_BLOG.getBlogOwner()"
+             dc:creator="#BlogOwner()"
              dc:date="$entry.getISO8601Date()"
-             trackback:ping="$entryLink?tb=y" />
+             trackback:ping="$entryLink?tb=y&amp;entry_id=$entry.getId()" />
      </rdf:RDF>
 -->
 #end
@@ -253,11 +253,10 @@
  *#
 #macro(XMLRPCLink $entry $xmlrpcurl)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedName())
-    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #if ("" == $xmlrpcurl)
         #set($xmlrpcurl = "xmlrpc")
     #end
-    #set ($xmlrpcLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_BLOG_ID/$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPostSlug()")
+    #set ($xmlrpcLink = "$BLOJSOM_BLOG.getBlogBaseURL()/$xmlrpcurl/$BLOJSOM_BLOG_ID$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPostSlug()")
 #end
 
 #**
@@ -267,7 +266,6 @@
  *#
 #macro(DatelessFriendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedName())
-    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getPostSlug()")
 #end
 
@@ -278,7 +276,6 @@
  *#
 #macro(FriendlyPermalink $entry)
     #set ($categoryForEntry = $entry.getBlogCategory().getEncodedName())
-    #if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
     #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPostSlug()")
 #end
 
@@ -295,7 +292,7 @@
  *
  * @param $blogCategory Blog category
  *#
-#macro(CategoryName $blogCategory)#if ($blogCategory.getName()) $blogCategory.getName() #else $blogCategory.getCategory()#end#end
+#macro(CategoryName $blogCategory)#if ($blogCategory.getDescription()) $blogCategory.getDescription() #else $blogCategory.getName()#end#end
 
 #**
  * Output the category name without leading or trailing /'s
