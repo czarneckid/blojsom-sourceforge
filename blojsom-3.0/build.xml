@@ -44,7 +44,8 @@
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
     <property name="default.blog" value="default"/>
     <property name="default.blog.dir" value="blogs/default"/>
-    <property name="bootstrap.user" value="bootstrap"/>
+    <property name="bootstrap.blog" value="bootstrap"/>
+    <property name="bootstrap.blog.dir" value="blogs/bootstrap"/>
     <property name="source.version" value="1.4"/>
     <property name="target.version" value="1.4"/>
 
@@ -116,15 +117,13 @@
         </copy>
 
         <!-- Copy general templates for bootstrap user -->
-        <!--
-        <mkdir dir="${war.dir}/WEB-INF/${bootstrap.user}/templates/"/>
-        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/templates/">
+        <mkdir dir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/templates/"/>
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/templates/">
             <fileset dir="${templates.dir}">
                 <include name="**/*.vm"/>
                 <exclude name="**/html*.vm"/>
             </fileset>
         </copy>
-        -->
 
         <!-- Copy theme templates and resources for default user -->
         <mkdir dir="${resources.dir}/${default.blog}"/>
@@ -137,21 +136,18 @@
         <copy todir="${resources.dir}/${default.blog}">
             <fileset dir="${default.theme.resources.dir}"/>
         </copy>
-        
 
         <!-- Copy theme templates and resources for bootstrap user -->
-        <!--
-        <mkdir dir="${war.dir}/WEB-INF/${bootstrap.user}/resources/"/>
-        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/templates">
+        <mkdir dir="${resources.dir}/${bootstrap.blog}"/>
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/templates">
             <fileset dir="${default.theme.templates.dir}"/>
         </copy>
-        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/resources">
+        <copy todir="${resources.dir}/${bootstrap.blog}">
             <fileset dir="${templates.resources.dir}"/>
         </copy>
-        <copy todir="${war.dir}/WEB-INF/${bootstrap.user}/resources">
+        <copy todir="${resources.dir}/${bootstrap.blog}">
             <fileset dir="${default.theme.resources.dir}"/>
         </copy>
-        -->
     </target>
 
     <!-- =================================================================== -->
@@ -169,8 +165,27 @@
         </delete>
         <delete file="${war.file}"/>
         <delete dir="${webinf.dir}/themes"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Cleans up generated stuff                                           -->
+    <!-- =================================================================== -->
+    <target name="clean-with-templates" description="Removes generated files from the build">
+        <delete dir="${compile.dir}"/>
+        <delete dir="${build.dir}"/>
+        <delete dir="${docs.dir}"/>
+        <delete dir="${velocidoc.dir}"/>
+        <delete dir="${distro.dir}"/>
+        <delete dir="${build.dir}"/>
+        <delete>
+            <fileset dir="${webinf.lib.dir}" includes="${name}-*.jar"/>
+        </delete>
+        <delete file="${war.file}"/>
+        <delete dir="${webinf.dir}/themes"/>
+        <delete dir="${war.dir}/WEB-INF/${default.blog.dir}" includeemptydirs="true"/>
+        <delete dir="${war.dir}/WEB-INF/${bootstrap.blog.dir}" includeemptydirs="true"/>
         <delete dir="${resources.dir}/${default.blog}" includeemptydirs="true"/>
-        <delete dir="${resources.dir}/${bootstrap.user}" includeemptydirs="true"/>
+        <delete dir="${resources.dir}/${bootstrap.blog}" includeemptydirs="true"/>
     </target>
 
     <!-- =================================================================== -->
