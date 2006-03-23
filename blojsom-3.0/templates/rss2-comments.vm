@@ -3,21 +3,22 @@
 <rss version="2.0">
     <channel>
         #foreach ($entry in $BLOJSOM_ENTRIES)
+        #FriendlyPermalink($entry)
         <title>$entry.getEscapedTitle()</title>
-        <link>$entry.getEscapedLink()</link>
+        <link>$entryLink</link>
         <description>$entry.getEscapedDescription()</description>
-        <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
+        <language>#BlogLanguage()</language>
 		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>$BLOJSOM_VERSION</generator>
         <pubDate>$BLOJSOM_DATE</pubDate>
         <category>$entry.getEncodedCategory()</category>
-        <managingEditor>$BLOJSOM_BLOG.getBlogOwnerEmail()</managingEditor>
-        <webMaster>$BLOJSOM_BLOG.getBlogOwnerEmail()</webMaster>
+        <managingEditor>#BlogOwnerEmail()</managingEditor>
+        <webMaster>#BlogOwnerEmail()</webMaster>
 
         #foreach ($entryComment in $entry.getComments())
         <item>
            <title>$entry.getEscapedTitle()</title>
-           <link>$entry.getEscapedLink()</link>
+           <link>$entryLink</link>
            <description>$entryComment.getEscapedComment()</description>
            <pubDate>$entryComment.getRFC822Date()</pubDate>
            <author>$entryComment.getAuthorEmail()</author>

@@ -13,7 +13,7 @@
     <p>
     <input size="8" name="query" /> : 
     <anchor>
-    <go href="?flavor=$BLOJSOM_REQUESTED_FLAVOR" method="post">
+    <go href="#BlogURL()/?flavor=$BLOJSOM_REQUESTED_FLAVOR" method="post">
     <postfield name="query" value="$(query)" />
     <postfield name="site" value="search"/>
     </go>Search</anchor>
@@ -31,7 +31,7 @@
 <p align="center"><b>Categories:</b></p>   
 
 #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
-<p><a href="$blogCategory.getCategoryURL()?flavor=wml">#CategoryName($blogCategory)</a></p>
+<p><a href="#BlogURL()$blogCategory.getName()/?flavor=wml">#CategoryName($blogCategory)</a></p>
 #end
 <p align="center"><b> - . - </b></p>
 </card>

@@ -3,16 +3,15 @@
 <rss version="0.92">
     <channel>
         #foreach ($entry in $BLOJSOM_ENTRIES)
+        #FriendlyPermalink($entry)
         <title>$entry.getEscapedTitle()</title>
-        <link>$entry.getEscapedLink()</link>
+        <link>$entryLink</link>
         <description>$entry.getEscapedDescription()</description>
-        <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
-
-
+        <language>#BlogLanguage()</language>
         #foreach ($entryComment in $entry.getComments())
         <item>
            <title>$entry.getEscapedTitle()</title>
-           <link>$entry.getEscapedLink()</link>
+           <link>$entryLink</link>
            <description>$entryComment.getComment()</description>
         </item>
         #end

@@ -2,14 +2,15 @@
 <!-- name="generator" content="$BLOJSOM_VERSION" -->
 <rss version="0.92">
     <channel>
-        <title>$BLOJSOM_BLOG.getBlogName()</title>
-        <link>$BLOJSOM_BLOG.getBlogURL()</link>
-        <description>$BLOJSOM_BLOG.getBlogDescription()</description>
-        <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
+        <title>#EscapedBlogName()</title>
+        <link>#BlogURL()/</link>
+        <description>#EscapedBlogDescription()</description>
+        <language>#BlogLanguage()</language>
         #foreach ($entry in $BLOJSOM_ENTRIES)
+        #FriendlyPermalink($entry)
         <item>
             <title>$entry.getEscapedTitle()</title>
-            <link>$entry.getEscapedLink()</link>
+            <link>$entryLink</link>
             <description>$entry.getEscapedDescription()</description>
         </item>
         #end

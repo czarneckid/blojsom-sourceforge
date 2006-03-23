@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="#BlogLanguage()">
 	<head>
 		#parse( "asual-head.vm" )
 	</head>
@@ -33,16 +33,16 @@
 											</div>
 											#set( $totalComments = $totalComments + 1)
 										#end
-										#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+										#if ($entry.allowsComments())
 
 											<h3>Your comment:</h3>
-											<form id="commentform" method="post" action=".">
+											<form id="commentform" method="post" action="$entryLink">
 												<div>
 													<input type="hidden" name="comment" value="y" />
 													<input type="hidden" name="page" value="comments" />
-													<input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()" />
-													<input type="hidden" name="permalink" value="$entry.getPermalink()" />
-												</div>
+													<input type="hidden" name="entry_id" value="$entry.getId()" />
+                                                    <input type="hidden" name="permalink" value="$entry.getPostSlug()" />
+                                                </div>
 												<div class="label"><label for="author">Author (<span class="red">*</span>):</label></div>
 												<div class="input"><input id="author" name="author" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end" class="fixed" /></div>
 
