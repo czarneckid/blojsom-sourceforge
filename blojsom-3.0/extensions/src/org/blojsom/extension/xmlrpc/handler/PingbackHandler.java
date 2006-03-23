@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.1 2006-03-23 04:21:47 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.2 2006-03-23 17:26:51 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
@@ -78,6 +78,9 @@ public class PingbackHandler extends APIHandler {
     protected static final int PINGBACK_ALREADY_REGISTERED_CODE = 48;
     protected static final int PINGBACK_ACCESS_DENIED_CODE = 49;
     protected static final int PINGBACK_UPSTREAM_SERVER_ERROR_CODE = 50;
+
+    protected static final String PINGBACK_SOURCE_URI_METADATA = "pingback-source-uri";
+    protected static final String PINGBACK_TARGET_URI_METADATA = "pingback-target-uri";
 
     /**
      * Construct a new Pingback handler
@@ -225,6 +228,15 @@ public class PingbackHandler extends APIHandler {
             throw new XmlRpcException(PINGBACK_GENERIC_FAULT_CODE, "Unable to retrieve target URI");
         }
 
+        // Check that the resource hasn't already been registered
+        try {
+            Pingback pingback = _fetcher.loadPingback(_blog, sourceURI, targetURI);
+            if (pingback != null) {
+                throw new XmlRpcException(PINGBACK_ALREADY_REGISTERED_CODE, "Pingback already registered");
+            }
+        } catch (FetcherException e) {
+        }
+
         // Check the resource is pingback-enabled
         try {
             Entry entry = _fetcher.loadEntry(_blog, permalink);
@@ -239,6 +251,8 @@ public class PingbackHandler extends APIHandler {
                 pingback.setStatus(ResponseConstants.NEW_STATUS);
 
                 Map pingbackMetaData = new HashMap();
+                pingbackMetaData.put(PINGBACK_SOURCE_URI_METADATA, sourceURI);
+                pingbackMetaData.put(PINGBACK_TARGET_URI_METADATA, targetURI);
 
                 _eventBroadcaster.processEvent(new PingbackResponseSubmissionEvent(this, new Date(), _blog, _httpServletRequest, _httpServletResponse, getTitleFromSource(sourcePage.toString()), getTitleFromSource(sourcePage.toString()), sourceURI, getExcerptFromSource(sourcePage.toString(), targetURI), entry, pingbackMetaData));
 
