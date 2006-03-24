@@ -69,7 +69,7 @@
                 <prop key="c3p0.timeout">1800</prop>
                 <prop key="c3p0.max_statements">100</prop>
                 <prop key="show_sql">false</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
                 <!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
             </props>
         </property>
