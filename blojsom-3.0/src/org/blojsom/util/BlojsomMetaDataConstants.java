@@ -34,7 +34,7 @@ package org.blojsom.util;
  * BlojsomMetaDataConstants
  *
  * @author David Czarnecki
- * @version $Id: BlojsomMetaDataConstants.java,v 1.1 2006-03-20 21:31:17 czarneckid Exp $
+ * @version $Id: BlojsomMetaDataConstants.java,v 1.2 2006-03-24 23:47:43 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface BlojsomMetaDataConstants {
@@ -90,4 +90,9 @@ public interface BlojsomMetaDataConstants {
      * Entry meta-data key indicating "draft" status
      */
     public static final String DRAFT_STATUS = "draft";
+
+    /**
+     * Entry meta-data key indicating "new" status
+     */
+    public static final String NEW_STATUS = "new";
 }
