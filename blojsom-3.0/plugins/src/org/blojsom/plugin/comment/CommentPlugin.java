@@ -68,7 +68,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: CommentPlugin.java,v 1.2 2006-03-23 04:25:26 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.3 2006-03-24 23:47:09 czarneckid Exp $
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
 
@@ -171,6 +171,11 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
     private static final int COOKIE_EXPIRATION_AGE = 604800;
 
     /**
+     * Form item, comment parent ID
+     */
+    private static final String COMMENT_PARENT_ID = "comment_parent_id";
+
+    /**
      * Key under which the indicator this plugin is "live" will be placed
      * (example: on the request for the JSPDispatcher)
      */
@@ -216,7 +221,6 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
     public static final String BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT = "BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT";
 
     public static final String BLOJSOM_PLUGIN_COMMENT_METADATA = "BLOJSOM_PLUGIN_COMMENT_METADATA";
-
     public static final String BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY = "BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY";
 
     private Map _ipAddressCommentTimes;
@@ -605,7 +609,14 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                     comment.setStatus(ResponseConstants.APPROVED_STATUS);
                 }
                 comment.setMetaData(commentMetaData);
-                // XXX: Handling of comment parent? Check for parent_comment_id in request?
+
+                String commentParentID = BlojsomUtils.getRequestValue(COMMENT_PARENT_ID, httpServletRequest);
+                if (!BlojsomUtils.checkNullOrBlank(commentParentID)) {
+                    try {
+                        comment.setParentId(Integer.valueOf(commentParentID));
+                    } catch (NumberFormatException e) {
+                    }
+                }
 
                 _fetcher.saveComment(blog, comment);
             } catch (FetcherException e) {
