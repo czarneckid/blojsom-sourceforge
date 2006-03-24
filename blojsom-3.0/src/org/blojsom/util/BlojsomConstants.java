@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.3 2006-03-22 21:47:31 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.4 2006-03-24 18:43:09 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -164,6 +164,7 @@ public interface BlojsomConstants {
 
     public static final String BLOJSOM_APPLICATION_CONTEXT = "BLOJSOM_APPLICATION_CONTEXT";
     public static final String BLOJSOM_XMLRPC_APPLICATION_CONTEXT = "BLOJSOM_XMLRPC_APPLICATION_CONTEXT";
+    public static final String BLOJSOM_COMMENTAPI_APPLICATION_CONTEXT = "BLOJSOM_COMMENTAPI_APPLICATION_CONTEXT";
 
     /**
      * UTF-8 encoding
