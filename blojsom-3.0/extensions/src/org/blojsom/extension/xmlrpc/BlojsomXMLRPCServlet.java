@@ -65,7 +65,7 @@ import java.util.Properties;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.1 2006-03-20 21:30:34 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2006-03-24 19:04:41 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
 
@@ -197,8 +197,8 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
             printWriter.print(XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE);
             printWriter.flush();
         } else {
-            // Determine the appropriate user from the URL
-            String blogId = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+            // Determine the appropriate blog from the URL
+            String blogId = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
             if (BlojsomUtils.checkNullOrBlank(blogId) || "/".equals(blogId)) {
                 httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + blogId);
 

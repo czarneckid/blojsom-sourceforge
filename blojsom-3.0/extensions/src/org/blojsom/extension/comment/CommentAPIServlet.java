@@ -78,7 +78,7 @@ import java.util.HashMap;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CommentAPIServlet.java,v 1.1 2006-03-24 18:15:27 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.2 2006-03-24 19:04:32 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet {
 
@@ -176,7 +176,7 @@ public class CommentAPIServlet extends HttpServlet {
         String commentDCCreator = null;
 
         // Determine the appropriate user from the URL
-        String blogId = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+        String blogId = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
         if (BlojsomUtils.checkNullOrBlank(blogId) || "/".equals(blogId)) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + blogId);
 

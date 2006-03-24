@@ -52,7 +52,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.4 2006-03-23 19:49:41 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.5 2006-03-24 19:04:55 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -237,13 +237,10 @@ public class BlojsomUtils implements BlojsomConstants {
                 for (int i = 0; i < expressions.length; i++) {
                     String expression = expressions[i];
                     if (pathname.getName().matches(expression)) {
-                        if (pathname.lastModified() <= today.getTime()) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return pathname.lastModified() <= today.getTime();
                     }
                 }
+
                 return false;
             }
         };
@@ -316,27 +313,6 @@ public class BlojsomUtils implements BlojsomConstants {
      */
     public static FileFilter getExtensionFilter(final String extension) {
         return getExtensionsFilter(new String[]{extension});
-    }
-
-    /**
-     * Visit a set of directories and add items to a list matching a list of extensions
-     *
-     * @param extensions          Extensions to match
-     * @param excludedDirectories Directories to exclude
-     * @param directoryOrFile     Starting directory
-     * @param items               List of items
-     */
-    public static void visitFilesAndDirectories(final Date today, final String[] extensions, final String[] excludedDirectories, final File directoryOrFile, List items) {
-        File[] subDirectories = directoryOrFile.listFiles(getExtensionsFilter(extensions, excludedDirectories, true));
-        for (int i = 0; i < subDirectories.length; i++) {
-            if (subDirectories[i].isDirectory()) {
-                visitFilesAndDirectories(today, extensions, excludedDirectories, subDirectories[i], items);
-            } else {
-                if (subDirectories[i].lastModified() <= today.getTime()) {
-                    items.add(subDirectories[i]);
-                }
-            }
-        }
     }
 
     /**
@@ -480,26 +456,6 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Strip off the blog home directory for a requested blog category
-     *
-     * @param blogHome          Blog home value
-     * @param requestedCategory Requested blog category
-     * @return Blog category only
-     */
-    public static String getBlogCategory(String blogHome,
-                                         String requestedCategory) {
-        requestedCategory = requestedCategory.replace('\\', '/');
-        int indexOfBlogHome = requestedCategory.indexOf(blogHome);
-        if (indexOfBlogHome == -1) {
-            return "";
-        }
-        indexOfBlogHome += blogHome.length();
-        String returnCategory = requestedCategory.substring(indexOfBlogHome);
-        returnCategory = removeInitialSlash(returnCategory);
-        return '/' + returnCategory;
-    }
-
-    /**
      * Return a URL to the main blog site without the servlet path requested
      *
      * @param blogURL     URL for the blog
@@ -594,7 +550,7 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         int s = 0;
-        int e = 0;
+        int e;
         StringBuffer result = new StringBuffer();
 
         while ((e = str.indexOf(pattern, s)) >= 0) {
@@ -680,7 +636,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String getDateKey(Date date) {
         StringBuffer value = new StringBuffer();
         Calendar calendar = Calendar.getInstance();
-        long l = 0;
+        long l;
 
         calendar.setTime(date);
         value.append(calendar.get(Calendar.YEAR));
@@ -745,7 +701,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param input Input string
      * @return Input string with beginning and ending "/" removed or <code>null</code> if the input was null
      */
-    public static final String removeSlashes(String input) {
+    public static String removeSlashes(String input) {
         input = removeInitialSlash(input);
         input = removeTrailingSlash(input);
         return input;
@@ -777,7 +733,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param page           Requested page
      * @return
      */
-    public static final String getTemplateForPage(String flavorTemplate, String page) {
+    public static String getTemplateForPage(String flavorTemplate, String page) {
         int dotIndex = flavorTemplate.lastIndexOf(".");
         if (dotIndex == -1) {
             return flavorTemplate + '-' + page;
@@ -804,7 +760,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param httpServletRequest Request
      * @return Value of the key as a string, or <code>null</code> if there is no parameter/attribute
      */
-    public static final String getRequestValue(String key, HttpServletRequest httpServletRequest) {
+    public static String getRequestValue(String key, HttpServletRequest httpServletRequest) {
         return getRequestValue(key, httpServletRequest, false);
     }
 
@@ -817,7 +773,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param preferAttributes   If request attributes should be checked before request parameters
      * @return Value of the key as a string, or <code>null</code> if there is no parameter/attribute
      */
-    public static final String getRequestValue(String key, HttpServletRequest httpServletRequest, boolean preferAttributes) {
+    public static String getRequestValue(String key, HttpServletRequest httpServletRequest, boolean preferAttributes) {
         if (!preferAttributes) {
             if (httpServletRequest.getParameter(key) != null) {
                 return httpServletRequest.getParameter(key);
@@ -842,7 +798,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param blogEntryExtensions Regex for blog entries so that we only pickup requests for valid blog entries
      * @return Filename portion of permalink request
      */
-    public static final String getFilenameForPermalink(String permalink, String[] blogEntryExtensions) {
+    public static String getFilenameForPermalink(String permalink, String[] blogEntryExtensions) {
         if (permalink == null) {
             return null;
         }
@@ -886,7 +842,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return URL encoded string, <code>null</code> if the input was null,
      *         or <code>input</code> unmodified there is an encoding exception
      */
-    public static final String urlEncode(String input) {
+    public static String urlEncode(String input) {
         if (input == null) {
             return null;
         }
@@ -905,7 +861,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return URL encoded string, <code>null</code> if the input was null,
      *         or <code>input</code> unmodified there is an encoding exception
      */
-    public static final String urlEncodeForLink(String input) {
+    public static String urlEncodeForLink(String input) {
         if (input == null) {
             return null;
         }
@@ -926,7 +882,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param input Input string
      * @return URL decoded string or <code>null</code> if either the input was null or there is a decoding exception
      */
-    public static final String urlDecode(String input) {
+    public static String urlDecode(String input) {
         if (input == null) {
             return null;
         }
@@ -1016,7 +972,8 @@ public class BlojsomUtils implements BlojsomConstants {
                 MessageDigest _md = MessageDigest.getInstance(algorithm);
                 _md.update(data.getBytes());
                 byte[] _digest = _md.digest();
-                String _ds = toHexString(_digest, 0, _digest.length);
+                String _ds;
+                _ds = toHexString(_digest, 0, _digest.length);
                 result = _ds;
             } catch (NoSuchAlgorithmException e) {
                 result = null;
@@ -1103,7 +1060,7 @@ public class BlojsomUtils implements BlojsomConstants {
             Object value;
             HashMap convertedProperties = new HashMap();
             while (keyIterator.hasNext()) {
-                key = (String) keyIterator.next();
+                key = keyIterator.next();
                 value = properties.get(key);
                 convertedProperties.put(key, value);
             }
@@ -1128,7 +1085,7 @@ public class BlojsomUtils implements BlojsomConstants {
             Object value;
             HashMap convertedProperties = new HashMap();
             while (keyIterator.hasNext()) {
-                key = (String) keyIterator.next();
+                key = keyIterator.next();
                 value = properties.get(key);
                 if (value instanceof List) {
                     convertedProperties.put(key, value);
@@ -1188,7 +1145,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param pathInfo Path information
      * @return Everything after the second "/" character in the path
      */
-    public static final String getCategoryFromPath(String pathInfo) {
+    public static String getCategoryFromPath(String pathInfo) {
         if (pathInfo == null || "/".equals(pathInfo)) {
             return "/";
         } else {
@@ -1202,14 +1159,14 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Returns user id information from the path provided to the method where the path provided is
+     * Returns blog id information from the path provided to the method where the path provided is
      * assumed to be everything after the servlet instance with a user id at the very beginning of the path.
      * For example, /david/this/is/the/category
      *
      * @param pathInfo Path information
      * @return Everything before the second "/" character in the path
      */
-    public static final String getUserFromPath(String pathInfo) {
+    public static String getBlogFromPath(String pathInfo) {
         if (pathInfo == null || "/".equals(pathInfo)) {
             return null;
         } else {
@@ -1361,11 +1318,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return <code>true</code> if the string is null or blank (after trimming), <code>false</code> otherwise
      */
     public static boolean checkNullOrBlank(String input) {
-        if (input == null || "".equals(input.trim())) {
-            return true;
-        }
-
-        return false;
+        return (input == null || "".equals(input.trim()));
     }
 
     /**
@@ -1682,7 +1635,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String[] getLanguagesForSystem(Locale locale) {
         Locale[] installedLocales = Locale.getAvailableLocales();
         ArrayList languageList = new ArrayList(installedLocales.length);
-        String[] languages = null;
+        String[] languages;
         String language;
 
         for (int i = 0; i < installedLocales.length; i++) {
@@ -1709,7 +1662,7 @@ public class BlojsomUtils implements BlojsomConstants {
     public static String[] getCountriesForSystem(Locale locale) {
         Locale[] installedLocales = Locale.getAvailableLocales();
         ArrayList countryList = new ArrayList(installedLocales.length);
-        String[] countries = null;
+        String[] countries;
         String country;
 
         for (int i = 0; i < installedLocales.length; i++) {

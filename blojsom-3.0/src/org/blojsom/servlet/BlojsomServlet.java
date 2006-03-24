@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.2 2006-03-21 03:11:08 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.3 2006-03-24 19:04:51 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -142,7 +142,7 @@ public class BlojsomServlet extends HttpServlet {
         // Check for an overriding id
         String blogId = httpServletRequest.getParameter(BlojsomConstants.BLOG_ID_PARAM);
         if (BlojsomUtils.checkNullOrBlank(blogId)) {
-            String blogIdFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+            String blogIdFromPath = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
             if (blogIdFromPath == null) {
                 blogId = blojsomDefaultProperties.getProperty(BlojsomConstants.DEFAULT_BLOG_IP);
             } else {

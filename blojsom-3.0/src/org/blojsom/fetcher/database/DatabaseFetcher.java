@@ -55,7 +55,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.6 2006-03-23 16:50:22 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.7 2006-03-24 19:04:46 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -564,7 +564,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         // Determine the user requested category
         String requestedCategory;
         httpServletRequest.getPathInfo();
-        String blogIdFromPath = BlojsomUtils.getUserFromPath(httpServletRequest.getPathInfo());
+        String blogIdFromPath = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
         if (blogIdFromPath == null) {
             requestedCategory = httpServletRequest.getPathInfo();
         } else {
