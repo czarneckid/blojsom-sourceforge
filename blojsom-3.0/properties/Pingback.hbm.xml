@@ -42,6 +42,14 @@
             <column name="status" length="255"/>
         </property>
 
+        <property name="sourceURI">
+            <column name="source_uri"/>
+        </property>
+
+        <property name="targetURI">
+            <column name="target_uri"/>
+        </property>
+
         <map name="metaData" table="pingbackmetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
             <key column="pingback_id" not-null="true"/>
             <map-key column="metadata_key" type="string"/>

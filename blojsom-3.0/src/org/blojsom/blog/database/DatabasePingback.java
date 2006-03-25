@@ -37,13 +37,52 @@ import org.blojsom.blog.Pingback;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabasePingback.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabasePingback.java,v 1.3 2006-03-25 07:10:46 czarneckid Exp $
  */
 public class DatabasePingback extends DatabaseTrackback implements Pingback {
+
+    protected String _sourceURI;
+    protected String _targetURI;
 
     /**
      * Create a new instance of the database pingback
      */
     public DatabasePingback() {
-    }    
+    }
+
+    /**
+     * Get the source URI
+     *
+     * @return Source URI
+     */
+    public String getSourceURI() {
+        return _sourceURI;
+    }
+
+    /**
+     * Set the source URI
+     *
+     * @param sourceURI Source URI
+     */
+    public void setSourceURI(String sourceURI) {
+        _sourceURI = sourceURI;
+    }
+
+    /**
+     * Get the target URI
+     *
+     * @return Target URI
+     */
+    public String getTargetURI() {
+        return _targetURI;
+    }
+
+    /**
+     * Set the target URI
+     *
+     * @param targetURI Target URI
+     */
+    public void setTargetURI(String targetURI) {
+        _targetURI = targetURI;
+    }
 }

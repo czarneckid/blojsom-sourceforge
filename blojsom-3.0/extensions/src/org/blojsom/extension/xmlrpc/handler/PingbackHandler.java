@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.2 2006-03-23 17:26:51 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.3 2006-03-25 07:10:30 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
@@ -231,6 +231,7 @@ public class PingbackHandler extends APIHandler {
         // Check that the resource hasn't already been registered
         try {
             Pingback pingback = _fetcher.loadPingback(_blog, sourceURI, targetURI);
+            
             if (pingback != null) {
                 throw new XmlRpcException(PINGBACK_ALREADY_REGISTERED_CODE, "Pingback already registered");
             }
@@ -249,10 +250,10 @@ public class PingbackHandler extends APIHandler {
                 pingback.setEntry(entry);
                 pingback.setIp(_httpServletRequest.getRemoteAddr());
                 pingback.setStatus(ResponseConstants.NEW_STATUS);
+                pingback.setSourceURI(sourceURI);
+                pingback.setTargetURI(targetURI);
 
                 Map pingbackMetaData = new HashMap();
-                pingbackMetaData.put(PINGBACK_SOURCE_URI_METADATA, sourceURI);
-                pingbackMetaData.put(PINGBACK_TARGET_URI_METADATA, targetURI);
 
                 _eventBroadcaster.processEvent(new PingbackResponseSubmissionEvent(this, new Date(), _blog, _httpServletRequest, _httpServletResponse, getTitleFromSource(sourcePage.toString()), getTitleFromSource(sourcePage.toString()), sourceURI, getExcerptFromSource(sourcePage.toString(), targetURI), entry, pingbackMetaData));
 

@@ -44,18 +44,20 @@ import org.blojsom.util.BlojsomUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Example;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.7 2006-03-24 19:04:46 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.8 2006-03-25 07:10:50 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -1170,16 +1172,10 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Session session = _sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
 
-            Map metaData = new HashMap();
-            metaData.put("pingback-source-uri", sourceURI);
-            metaData.put("pingback-target-uri", targetURI);
-
-            Pingback pingbackToFind = newPingback();
-            pingbackToFind.setBlogId(blog.getBlogId());
-            pingbackToFind.setMetaData(metaData);
-
             Criteria pingbackCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
-            pingbackCriteria.add(Example.create(pingbackToFind));
+            pingbackCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.eq("sourceURI", sourceURI))
+                    .add(Restrictions.eq("targetURI", targetURI));
 
             pingback = (Pingback) pingbackCriteria.uniqueResult();
 

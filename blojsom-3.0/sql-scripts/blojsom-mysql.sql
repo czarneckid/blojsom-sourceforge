@@ -139,6 +139,8 @@ CREATE TABLE `Pingback` (
   `blog_id` varchar(50) NOT NULL,
   `ip` varchar(100) default NULL,
   `status` varchar(255) default NULL,
+  `source_uri` text NOT NULL,
+  `target_uri` text NOT NULL,
   PRIMARY KEY  (`pingback_id`),
   KEY `pingback_blog_blogidfk` (`blog_id`),
   CONSTRAINT `pingback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
