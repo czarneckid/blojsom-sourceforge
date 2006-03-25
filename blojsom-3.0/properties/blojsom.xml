@@ -14,7 +14,7 @@
             <props>
                 <prop key="default-blog">default</prop>
                 <prop key="ignore-flavors">admin, rsd</prop>
-                <prop key="installed-locales">en, de, fr, ko, sv, pt_BR</prop>
+                <prop key="installed-locales">de, en, fr, jp, ko, pt_BR, sv</prop>
                 <prop key="resources-directory">/resources/</prop>
                 <prop key="templates-directory">/templates/</prop>
                 <prop key="blogs-directory">/blogs/</prop>
