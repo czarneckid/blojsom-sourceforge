@@ -46,6 +46,7 @@
     <property name="default.blog.dir" value="blogs/default"/>
     <property name="bootstrap.blog" value="bootstrap"/>
     <property name="bootstrap.blog.dir" value="blogs/bootstrap"/>
+    <property name="sql.scripts.dir" value="${basedir}/sql-scripts"/>
     <property name="source.version" value="1.4"/>
     <property name="target.version" value="1.4"/>
 
@@ -147,6 +148,11 @@
         </copy>
         <copy todir="${resources.dir}/${bootstrap.blog}">
             <fileset dir="${default.theme.resources.dir}"/>
+        </copy>
+
+        <!-- Copy the SQL scripts -->
+        <copy todir="${build.dir}">
+            <fileset dir="${sql.scripts.dir}"/>
         </copy>
     </target>
 
