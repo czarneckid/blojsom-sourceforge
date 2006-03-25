@@ -55,9 +55,12 @@ import java.util.regex.Pattern;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.82 2006-03-15 02:27:32 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.83 2006-03-25 04:14:27 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
+
+    private static final int REGEX_OPTIONS = Pattern.DOTALL | Pattern.CASE_INSENSITIVE;
+    private static final Pattern STRIP_HTML_PATTERN = Pattern.compile("^[^<>]*>|<.*?>|<[^<>]*$", REGEX_OPTIONS);
 
     /**
      * Private constructor so that the class cannot be instantiated.
@@ -2107,9 +2110,6 @@ public class BlojsomUtils implements BlojsomConstants {
         return fetchedEntry;
     }
 
-    private static final int REGEX_OPTIONS = Pattern.DOTALL | Pattern.MULTILINE | Pattern.CASE_INSENSITIVE;
-    private static final Pattern STRIP_HTML_PATTERN = Pattern.compile("(<.*?>)|(^.*?>)|(<.*?$)", REGEX_OPTIONS);
-    
     /**
      * Strip all HTML from a given piece of text
      *

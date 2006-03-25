@@ -52,12 +52,12 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.5 2006-03-24 19:04:55 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.6 2006-03-25 04:13:11 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
-    private static final int REGEX_OPTIONS = Pattern.DOTALL | Pattern.MULTILINE | Pattern.CASE_INSENSITIVE;
-    private static final Pattern STRIP_HTML_PATTERN = Pattern.compile("(<.*?>)|(^.*?>)|(<.*?$)", REGEX_OPTIONS);
+    private static final int REGEX_OPTIONS = Pattern.DOTALL | Pattern.CASE_INSENSITIVE;
+    private static final Pattern STRIP_HTML_PATTERN = Pattern.compile("^[^<>]*>|<.*?>|<[^<>]*$", REGEX_OPTIONS);
 
     /**
      * Private constructor so that the class cannot be instantiated.
