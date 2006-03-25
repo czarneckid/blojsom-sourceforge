@@ -48,7 +48,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseLoader.java,v 1.1 2006-03-25 17:57:44 czarneckid Exp $
+ * @version $Id: DatabaseLoader.java,v 1.2 2006-03-25 18:41:03 czarneckid Exp $
  */
 public class DatabaseLoader {
 
@@ -117,7 +117,7 @@ public class DatabaseLoader {
 
             if (tables.size() > 0) {
                 if (_logger.isInfoEnabled()) {
-                    _logger.info("Blojsom database already created");
+                    _logger.info("blojsom database already created");
                 }
             } else {
                 Connection sqlConnection = session.connection();
