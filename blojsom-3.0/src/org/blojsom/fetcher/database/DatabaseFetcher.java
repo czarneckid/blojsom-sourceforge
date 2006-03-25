@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.8 2006-03-25 07:10:50 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.9 2006-03-25 17:56:03 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -195,27 +195,25 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Blog loadBlog(String blogId) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Transaction tx = null;
 
         Blog blog = null;
 
         try {
+            tx = session.beginTransaction();
             blog = (Blog) session.load(DatabaseBlog.class, blogId);
+            tx.commit();
         } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
         } finally {
-            try {
-                transaction.commit();
-            } catch (HibernateException e) {
-                if (_logger.isErrorEnabled()) {
-                    _logger.error(e);
-                }
-            }
-
             session.close();
         }
 
