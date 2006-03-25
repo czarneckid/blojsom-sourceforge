@@ -23,6 +23,29 @@
         </property>
     </bean>
 
+    <bean id="defaultVelocityProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="resource.loader">file, class</prop>
+                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
+                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
+                <prop key="file.resource.loader.cache">true</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
+                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
+                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+                <prop key="class.resource.loader.cache">true</prop>
+                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+                <prop key="velocimacro.library">
+                    org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.permissions.allow.inline">true</prop>
+                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="servletConfigFactoryBean" class="org.blojsom.servlet.ServletConfigFactoryBean">
     </bean>
 
@@ -97,23 +120,7 @@
     <!-- Dispatchers are referenced by template suffix. vm will serve Velocity templates. jsp will serve JSP templates. --> 
     <bean id="vm" class="org.blojsom.dispatcher.velocity.VelocityDispatcher" init-method="init">
         <property name="velocityProperties">
-            <props>
-                <prop key="resource.loader">file, class</prop>
-                <prop key="file.resource.loader.description">Velocity File Resource Loader</prop>
-                <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
-                <prop key="file.resource.loader.cache">true</prop>
-                <prop key="file.resource.loader.modificationCheckInterval">60</prop>
-                <prop key="class.resource.loader.description">Velocity Classpath Resource Loader</prop>
-                <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
-                <prop key="class.resource.loader.cache">true</prop>
-                <prop key="class.resource.loader.modificationCheckInterval">0</prop>
-                <prop key="input.encoding">UTF-8</prop>
-                <prop key="output.encoding">UTF-8</prop>
-                <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
-                <prop key="velocimacro.library">org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
-                <prop key="velocimacro.permissions.allow.inline">true</prop>
-                <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
-            </props>
+            <ref bean="defaultVelocityProperties"/>
         </property>
         <property name="blojsomProperties">
             <ref bean="defaultProperties"/>
