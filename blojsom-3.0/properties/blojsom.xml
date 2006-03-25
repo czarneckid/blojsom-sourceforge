@@ -94,6 +94,17 @@
         </property>
     </bean>
 
+    <!-- Initial database creation bean -->
+    <bean id="dbloader" class="org.blojsom.util.database.DatabaseLoader" init-method="init">
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+        <property name="dbScript" value="/WEB-INF/classes/blojsom-full-initial-data-mysql.sql"/>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
+
     <bean id="fetcher" class="org.blojsom.fetcher.database.DatabaseFetcher" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
