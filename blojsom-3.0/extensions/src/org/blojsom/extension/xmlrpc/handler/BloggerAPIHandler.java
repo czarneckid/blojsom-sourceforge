@@ -43,6 +43,7 @@ import org.blojsom.plugin.admin.event.EntryDeletedEvent;
 import org.blojsom.plugin.admin.event.EntryUpdatedEvent;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 
 import java.util.*;
 
@@ -51,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BloggerAPIHandler.java,v 1.1 2006-03-20 21:30:39 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.2 2006-03-25 00:03:25 czarneckid Exp $
  */
 public class BloggerAPIHandler extends APIHandler {
 
@@ -316,6 +317,12 @@ public class BloggerAPIHandler extends APIHandler {
                 entry.setDescription(content);
                 entry.setAuthor(userid);
 
+                if (publish) {
+                    entry.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
+                } else {
+                    entry.setStatus(BlojsomMetaDataConstants.DRAFT_STATUS);
+                }
+
                 _fetcher.saveEntry(_blog, entry);
 
                 result = Integer.toString(entry.getId().intValue());
@@ -379,6 +386,12 @@ public class BloggerAPIHandler extends APIHandler {
                 }
                 entryToEdit.setDescription(content);
                 entryToEdit.setModifiedDate(new Date());
+
+                if (publish) {
+                    entryToEdit.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
+                } else {
+                    entryToEdit.setStatus(BlojsomMetaDataConstants.DRAFT_STATUS);
+                }
 
                 _fetcher.saveEntry(_blog, entryToEdit);
 

@@ -60,7 +60,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MetaWeblogAPIHandler.java,v 1.1 2006-03-20 21:30:39 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.2 2006-03-25 00:03:25 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends APIHandler {
 
@@ -442,6 +442,12 @@ public class MetaWeblogAPIHandler extends APIHandler {
                     entryToEdit.setModifiedDate(dateCreated);
                 } else {
                     entryToEdit.setModifiedDate(new Date());
+                }
+
+                if (publish) {
+                    entryToEdit.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
+                } else {
+                    entryToEdit.setStatus(BlojsomMetaDataConstants.DRAFT_STATUS);
                 }
 
                 _fetcher.saveEntry(_blog, entryToEdit);
