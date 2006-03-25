@@ -45,9 +45,9 @@ import org.blojsom.event.Listener;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
-import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.plugin.comment.event.CommentAddedEvent;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
+import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.plugin.email.EmailConstants;
 import org.blojsom.plugin.velocity.StandaloneVelocityPlugin;
 import org.blojsom.util.BlojsomConstants;
@@ -67,8 +67,8 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
+ * @version $Id: CommentPlugin.java,v 1.4 2006-03-25 00:09:59 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: CommentPlugin.java,v 1.3 2006-03-24 23:47:09 czarneckid Exp $
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
 
@@ -683,9 +683,13 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
             try {
                 User user = _fetcher.loadUser(blog, author);
 
-                authorEmail = user.getUserEmail();
-                if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                if (user == null) {
                     authorEmail = blog.getBlogOwnerEmail();
+                } else {
+                    authorEmail = user.getUserEmail();
+                    if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                        authorEmail = blog.getBlogOwnerEmail();
+                    }
                 }
             } catch (FetcherException e) {
             }

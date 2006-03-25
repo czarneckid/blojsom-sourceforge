@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.3 2006-03-23 04:25:26 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.4 2006-03-25 00:10:17 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -559,9 +559,13 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
             try {
                 User user = _fetcher.loadUser(blog, author);
 
-                authorEmail = user.getUserEmail();
-                if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                if (user == null) {
                     authorEmail = blog.getBlogOwnerEmail();
+                } else {
+                    authorEmail = user.getUserEmail();
+                    if (BlojsomUtils.checkNullOrBlank(authorEmail)) {
+                        authorEmail = blog.getBlogOwnerEmail();
+                    }
                 }
             } catch (FetcherException e) {
             }
