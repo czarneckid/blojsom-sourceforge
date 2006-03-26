@@ -51,7 +51,7 @@ import java.util.WeakHashMap;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.2 2006-03-26 18:45:32 czarneckid Exp $
+ * @version $Id: WeatherPlugin.java,v 1.3 2006-03-26 18:57:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeatherPlugin implements Plugin {
@@ -90,6 +90,12 @@ public class WeatherPlugin implements Plugin {
         _weatherInformation = new WeakHashMap();
     }
 
+    /**
+     * Read the {@link Weather} settings for a blog
+     *
+     * @param blog {@link Blog}
+     * @return {@link Weather} settings for the blog
+     */
     protected Weather readWeatherSettingsForBlog(Blog blog) {
         Weather weather = new Weather();
 
@@ -114,12 +120,11 @@ public class WeatherPlugin implements Plugin {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param blog                {@link Blog} instance
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error processing the blog entries
+     * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         try {
