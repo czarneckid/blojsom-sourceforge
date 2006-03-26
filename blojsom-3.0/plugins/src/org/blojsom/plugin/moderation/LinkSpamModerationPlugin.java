@@ -39,6 +39,8 @@ import org.blojsom.event.EventBroadcaster;
 import org.blojsom.event.Listener;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
+import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
@@ -58,7 +60,7 @@ import java.util.regex.Pattern;
  * Link spam moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: LinkSpamModerationPlugin.java,v 1.1 2006-03-26 21:06:19 czarneckid Exp $
+ * @version $Id: LinkSpamModerationPlugin.java,v 1.2 2006-03-26 21:46:57 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class LinkSpamModerationPlugin implements Plugin, Listener {
@@ -201,6 +203,10 @@ public class LinkSpamModerationPlugin implements Plugin, Listener {
                             metaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
                         } else {
                             metaData.put(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY, Boolean.TRUE);
+                        }
+                    } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
+                        if (deleteLinkSpam) {
+                            metaData.put(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY, Boolean.TRUE);
                         }
                     }
                 }
