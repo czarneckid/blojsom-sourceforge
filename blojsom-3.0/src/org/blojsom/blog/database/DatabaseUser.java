@@ -34,15 +34,16 @@ import org.blojsom.blog.User;
 
 import java.util.Date;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * DatabaseUser
  *
  * @author David Czarnecki
- * @version $Id: DatabaseUser.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseUser.java,v 1.3 2006-03-26 18:45:13 czarneckid Exp $
  * @since blojsom 3.0
  */
-public class DatabaseUser implements User {
+public class DatabaseUser implements User, Serializable {
 
     protected Integer _id;
     protected String _blogId;
