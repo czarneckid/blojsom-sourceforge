@@ -1,5 +1,5 @@
                     <th colspan="2">#adminResource('technorati.tags.text' 'Technorati Tags')</th>
                     <tr>
-                        <td>#adminResource('technorati.tags.text' 'Technorati Tags')</td>
+                        <td>#adminResource('technorati.tags.text' 'Technorati Tags') - Separate multiple tags using a comma</td>
                         <td><input type="text" name="technorati-tags" size="50" value="$!TECHNORATI_TAGS"/></td>
                     </tr>
