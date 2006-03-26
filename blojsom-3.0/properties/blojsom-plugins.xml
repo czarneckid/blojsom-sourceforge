@@ -121,6 +121,8 @@
     </bean>
     <bean id="textile" class="org.blojsom.plugin.textile.TextilePlugin" init-method="init" destroy-method="destroy">        
     </bean>
+    <bean id="weather" class="org.blojsom.plugin.weather.WeatherPlugin" init-method="init" destroy-method="destroy">        
+    </bean>
     <bean id="weblogs-ping" class="org.blojsom.plugin.weblogsping.WeblogsPingPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
