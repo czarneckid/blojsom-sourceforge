@@ -52,7 +52,7 @@ import java.util.zip.GZIPInputStream;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: WeatherFetcher.java,v 1.1 2006-03-26 16:27:30 czarneckid Exp $
+ * @version $Id: WeatherFetcher.java,v 1.2 2006-03-26 18:45:32 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeatherFetcher {
@@ -75,7 +75,9 @@ public class WeatherFetcher {
         try {
             _documentBuilder = documentBuilderFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
     }
 
@@ -121,7 +123,9 @@ public class WeatherFetcher {
             Document document = _documentBuilder.parse(new InputSource(new StringReader(buffer.toString())));
             provider.parseDocument(document);
         } catch (SAXException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         bis.close();

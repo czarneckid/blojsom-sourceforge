@@ -44,13 +44,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * WeatherPlugin
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: WeatherPlugin.java,v 1.1 2006-03-26 16:27:30 czarneckid Exp $
+ * @version $Id: WeatherPlugin.java,v 1.2 2006-03-26 18:45:32 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeatherPlugin implements Plugin {
@@ -77,6 +78,8 @@ public class WeatherPlugin implements Plugin {
      */
     public static final String DEFAULT_WEATHER_CODE = "ALB";
 
+    private Map _weatherInformation;
+
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
@@ -84,6 +87,7 @@ public class WeatherPlugin implements Plugin {
      *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
+        _weatherInformation = new WeakHashMap();
     }
 
     protected Weather readWeatherSettingsForBlog(Blog blog) {
@@ -118,15 +122,31 @@ public class WeatherPlugin implements Plugin {
      *          If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
-        Weather weather = readWeatherSettingsForBlog(blog);
-        WeatherFetcher weatherFetcher = new WeatherFetcher();
-        WeatherInformation weatherInformation = new NWSInformation(weather.getStationCode());
-
         try {
-            weatherFetcher.retrieveForecast(weatherInformation);
+            WeatherInformation weatherInformation = (WeatherInformation) _weatherInformation.get(blog.getBlogId());
+
+            if (weatherInformation == null) {
+                Weather weather = readWeatherSettingsForBlog(blog);
+                WeatherFetcher weatherFetcher = new WeatherFetcher();
+                WeatherInformation weatherInformationForBlog = new NWSInformation(weather.getStationCode());
+
+                weatherFetcher.retrieveForecast(weatherInformationForBlog);
+
+                _weatherInformation.put(blog.getBlogId(), weatherInformationForBlog);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Put weather information for " + blog.getBlogId() + " in cache");
+                }
+            } else {
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Retrieved weather information for " + blog.getBlogId() + " from cache");
+                }
+            }
+
             context.put(WeatherConstants.BLOJSOM_WEATHER_INFORMATION, weatherInformation);
         } catch (IOException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         return entries;
