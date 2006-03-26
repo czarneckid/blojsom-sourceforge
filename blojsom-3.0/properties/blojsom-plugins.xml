@@ -78,6 +78,11 @@
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
+    <bean id="linkspam" class="org.blojsom.plugin.moderation.LinkSpamModerationPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
     <bean id="macro-expansion" class="org.blojsom.plugin.macro.MacroExpansionPlugin" init-method="init" destroy-method="destroy">
     </bean>
     <bean id="macro-expansion-admin" class="org.blojsom.plugin.macro.admin.MacroExpansionAdminPlugin" init-method="init" destroy-method="destroy">
@@ -129,6 +134,11 @@
         </property>
     </bean>
     <bean id="nofollow" class="org.blojsom.plugin.nofollow.NoFollowPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="openproxy" class="org.blojsom.plugin.moderation.OpenProxyModerationPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
     <bean id="preview" class="org.blojsom.plugin.limiter.PreviewPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="rss-enclosure" class="org.blojsom.plugin.common.RSSEnclosurePlugin" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
