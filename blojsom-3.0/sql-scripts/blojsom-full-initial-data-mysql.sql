@@ -279,7 +279,7 @@ CREATE TABLE `Plugin` (
 
 /*!40000 ALTER TABLE `Plugin` DISABLE KEYS */;
 LOCK TABLES `Plugin` WRITE;
-INSERT INTO `Plugin` VALUES ('default','html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, limiter, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags'),('default','default','conditional-get, meta, limiter, nofollow, rss-enclosure'),('default','admin','admin');
+INSERT INTO `Plugin` VALUES ('default','html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags'),('default','default','conditional-get, meta, nofollow, rss-enclosure'),('default','admin','admin');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Plugin` ENABLE KEYS */;
 
