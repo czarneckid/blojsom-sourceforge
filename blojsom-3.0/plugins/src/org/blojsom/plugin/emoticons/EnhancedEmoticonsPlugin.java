@@ -48,8 +48,8 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jan Wessely
- * @version $Id: EnhancedEmoticonsPlugin.java,v 1.1 2006-03-26 20:28:38 czarneckid Exp $
- * @since blojsom 2.23
+ * @version $Id: EnhancedEmoticonsPlugin.java,v 1.2 2006-03-26 20:29:11 czarneckid Exp $
+ * @since blojsom 3.0
  */
 public class EnhancedEmoticonsPlugin implements Plugin {
 

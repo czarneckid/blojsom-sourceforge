@@ -26,6 +26,46 @@
     <bean id="date-format" class="org.blojsom.plugin.date.DateFormatPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="days-since-posted" class="org.blojsom.plugin.statistics.DaysSincePostedPlugin" init-method="init"
           destroy-method="destroy"/>
+    <bean id="emoticons" class="org.blojsom.plugin.emoticons.EnhancedEmoticonsPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="emoticons">
+            <map>
+                <entry key="emoticons" value="angry, blush, confused, cool, cry, devil, grin, happy, laugh, love, mischief, plain, sad, shocked, silly, wink"/>
+                <entry key="angry.pattern" value="&gt;("/>
+                <entry key="angry" value="/images/emoticons/mozilla_yell.gif"/>
+                <entry key="blush.pattern" value="*^_^*"/>
+                <entry key="blush" value="/images/emoticons/mozilla_embarassed.gif"/>
+                <entry key="confused.pattern" value="`:|"/>
+                <entry key="confused" value="/images/emoticons/mozilla_undecided.gif"/>
+                <entry key="cool.pattern" value="])"/>
+                <entry key="cool" value="/images/emoticons/mozilla_cool.gif"/>
+                <entry key="cry.pattern" value=":'("/>
+                <entry key="cry" value="/images/emoticons/mozilla_cry.gif"/>
+                <entry key="devil.pattern" value="})"/>
+                <entry key="devil" value="/images/emoticons/mozilla_innocent.gif"/>
+                <entry key="grin.pattern" value=":D"/>
+                <entry key="grin" value="/images/emoticons/mozilla_smile.gif"/>
+                <entry key="happy.pattern" value=":)"/>
+                <entry key="happy" value="/images/emoticons/mozilla_laughing.gif"/>
+                <entry key="laugh.pattern" value="(D"/>
+                <entry key="laugh" value="/images/emoticons/mozilla_laughing.gif"/>
+                <entry key="love.pattern" value="&lt;3"/>
+                <entry key="love" value="/images/emoticons/mozilla_kiss.gif"/>
+                <entry key="mischief.pattern" value=";7)"/>
+                <entry key="mischief" value="/images/emoticons/mozilla_sealed.gif"/>
+                <entry key="plain.pattern" value=":|"/>
+                <entry key="plain" value="/images/emoticons/mozilla_smile.gif"/>
+                <entry key="sad.pattern" value=":("/>
+                <entry key="sad" value="/images/emoticons/mozilla_frown.gif"/>
+                <entry key="shocked.pattern" value=":O"/>
+                <entry key="shocked" value="/images/emoticons/mozilla_surprised.gif"/>
+                <entry key="silly.pattern" value=":P"/>
+                <entry key="silly" value="/images/emoticons/mozilla_tongueout.gif"/>
+                <entry key="wink.pattern" value=";)"/>
+                <entry key="wink" value="/images/emoticons/mozilla_wink.gif"/>
+            </map>
+        </property>
+    </bean>
     <bean id="excerpt" class="org.blojsom.plugin.excerpt.ExcerptPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="footnote" class="org.blojsom.plugin.footnote.FootnotePlugin" init-method="init" destroy-method="destroy"/>
     <bean id="googlehighlight" class="org.blojsom.plugin.highlight.GoogleHighlightPlugin" init-method="init"
