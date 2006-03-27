@@ -6,7 +6,7 @@
 
     <description>Bean definition file for blojsom Comment API</description>
 
-    <!-- Helper beans -->
+    <!-- START: Helper beans -->
     <bean id="defaultProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
@@ -16,9 +16,6 @@
     </bean>
 
     <bean id="servletConfigFactoryBean" class="org.blojsom.servlet.ServletConfigFactoryBean">
-    </bean>
-
-    <bean id="eventBroadcaster" class="org.blojsom.event.SimpleEventBroadcaster">
     </bean>
 
     <bean id="mySQLDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -53,6 +50,11 @@
             </props>
         </property>
     </bean>
+    <!-- END: Helper beans -->
+
+    <!-- START: blojsom provider beans -->
+    <bean id="eventBroadcaster" class="org.blojsom.event.SimpleEventBroadcaster">
+    </bean>
 
     <bean id="fetcher" class="org.blojsom.fetcher.database.DatabaseFetcher" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
@@ -68,5 +70,6 @@
             <ref bean="defaultProperties"/>
         </property>
     </bean>
+    <!-- END: blojsom provider beans -->
 
 </beans>

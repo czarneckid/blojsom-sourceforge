@@ -6,7 +6,7 @@
 
     <description>Bean definition file for blojsom XML-RPC</description>
 
-    <!-- Helper beans -->
+    <!-- START: Helper beans -->
     <bean id="defaultProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
@@ -28,18 +28,6 @@
     </bean>
 
     <bean id="servletConfigFactoryBean" class="org.blojsom.servlet.ServletConfigFactoryBean">
-    </bean>
-
-    <bean id="eventBroadcaster" class="org.blojsom.event.SimpleEventBroadcaster">
-    </bean>
-
-    <bean id="resourceManager" class="org.blojsom.util.resources.ResourceBundleResourceManager"
-          init-method="init">
-        <property name="resourceBundlesToLoad">
-            <list>
-                <value>org.blojsom.plugin.admin.resources.messages</value>
-            </list>
-        </property>
     </bean>
 
     <bean id="mySQLDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -74,6 +62,18 @@
             </props>
         </property>
     </bean>
+    <!-- END: Helper beans -->
+
+    <!-- START: blojsom provider beans -->
+    <bean id="authorizationProvider" class="org.blojsom.authorization.database.DatabaseAuthorizationProvider"
+          init-method="init">
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="eventBroadcaster" class="org.blojsom.event.SimpleEventBroadcaster">
+    </bean>
 
     <bean id="fetcher" class="org.blojsom.fetcher.database.DatabaseFetcher" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
@@ -90,14 +90,17 @@
         </property>
     </bean>
 
-    <bean id="authorizationProvider" class="org.blojsom.authorization.database.DatabaseAuthorizationProvider"
+    <bean id="resourceManager" class="org.blojsom.util.resources.ResourceBundleResourceManager"
           init-method="init">
-        <property name="sessionFactory">
-            <ref bean="hibernateSessionFactory"/>
+        <property name="resourceBundlesToLoad">
+            <list>
+                <value>org.blojsom.plugin.admin.resources.messages</value>
+            </list>
         </property>
     </bean>
+    <!-- END: blojsom provider beans -->
 
-    <!-- API handlers -->
+    <!-- START: API handlers -->
     <!-- API handlers are referenced by API name. blogger will serve the Blogger API. metaWeblog will serve the MetaWeblog API -->     
     <bean id="blogger" class="org.blojsom.extension.xmlrpc.handler.BloggerAPIHandler">
         <property name="authorizationProvider">
@@ -158,4 +161,6 @@
             <ref bean="servletConfigFactoryBean"/>
         </property>
     </bean>
+    <!-- END: API handlers -->
+
 </beans>
