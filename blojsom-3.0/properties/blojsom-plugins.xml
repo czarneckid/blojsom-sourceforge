@@ -174,12 +174,12 @@
     <bean id="simple-obfuscation" class="org.blojsom.plugin.obfuscation.SimpleObfuscationPlugin" init-method="init"
           destroy-method="destroy"/>
     <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init" destroy-method="destroy"/>
-    <bean id="spam-phrase" class="org.blojsom.plugin.moderation.SpamPhraseModerationPlugin" init-method="init" destroy-method="destroy">
+    <bean id="spamphrase-moderation" class="org.blojsom.plugin.moderation.SpamPhraseModerationPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="spam-phrase-admin" class="org.blojsom.plugin.moderation.admin.SpamPhraseModerationAdminPlugin" init-method="init"
+    <bean id="spamphrase-moderation-admin" class="org.blojsom.plugin.moderation.admin.SpamPhraseModerationAdminPlugin" init-method="init"
         destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>

@@ -54,7 +54,7 @@ import java.util.Map;
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.1 2006-03-27 13:04:08 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.2 2006-03-27 14:05:46 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
@@ -136,12 +136,11 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param blog                {@link Blog} instance
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
-     * @throws org.blojsom.plugin.PluginException
-     *          If there is an error processing the blog entries
+     * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         entries = super.process(httpServletRequest, httpServletResponse, blog, context, entries);
