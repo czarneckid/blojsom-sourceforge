@@ -52,7 +52,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.6 2006-03-25 04:13:11 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.7 2006-03-27 13:03:27 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1856,5 +1856,28 @@ public class BlojsomUtils implements BlojsomConstants {
         if (checkNullOrBlank(blog.getBlogAdminURL())) {
             blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID));
         }
+    }
+
+    /**
+     * Return a {@link List} as a string
+     *
+     * @param values {@link List} of values
+     * @param separator Separator in-between values
+     * @return {@link List} as a string where each item is separated by the <code>separator</code>
+     */
+    public static String listToString(List values, String separator) {
+        StringBuffer valuesAsString = new StringBuffer();
+
+        if (values != null && values.size() > 0) {
+            for (int i = 0; i < values.size(); i++) {
+                String value = (String) values.get(i);
+                valuesAsString.append(value);
+                if (i < values.size() - 1) {
+                    valuesAsString.append(separator);
+                }
+            }
+        }
+
+        return valuesAsString.toString();
     }
 }
