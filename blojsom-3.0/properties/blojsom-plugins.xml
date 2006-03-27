@@ -72,6 +72,26 @@
           destroy-method="destroy"/>
     <bean id="href-hyperlinks" class="org.blojsom.plugin.hyperlink.HyperlinkURLPlugin" init-method="init"
           destroy-method="destroy"/>
+    <bean id="ip-moderation" class="org.blojsom.plugin.moderation.IPAddressModerationPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    <bean id="ip-moderation-admin" class="org.blojsom.plugin.moderation.admin.IPAddressModerationAdminPlugin" init-method="init"
+        destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="language-selection" class="org.blojsom.plugin.language.LanguageSelectionPlugin" init-method="init"
           destroy-method="destroy">
         <property name="eventBroadcaster">
