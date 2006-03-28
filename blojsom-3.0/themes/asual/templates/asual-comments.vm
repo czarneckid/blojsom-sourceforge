@@ -34,8 +34,8 @@
 											#set( $totalComments = $totalComments + 1)
 										#end
 										#if ($entry.allowsComments())
-
-											<h3>Your comment:</h3>
+                                            #FriendlyPermalink($entry)
+                                            <h3>Your comment:</h3>
 											<form id="commentform" method="post" action="$entryLink">
 												<div>
 													<input type="hidden" name="comment" value="y" />
