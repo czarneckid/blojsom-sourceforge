@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+        PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+    <!-- blojsom filter definitions -->
+
+    <filter>
+        <filter-name>PermalinkFilter</filter-name>
+        <filter-class>org.blojsom.filter.PermalinkFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>PageFilter</filter-name>
+        <filter-class>org.blojsom.filter.PageFilter</filter-class>
+        <init-param>
+            <param-name>use-root-blog-compatability</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>SkipEntriesFilter</filter-name>
+        <filter-class>org.blojsom.filter.SkipEntriesFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>FeedFilter</filter-name>
+        <filter-class>org.blojsom.filter.FeedFilter</filter-class>
+        <init-param>
+            <param-name>default-feed-type</param-name>
+            <param-value>rss2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>permalink-extensions</param-name>
+            <param-value>.html, .txt</param-value>
+        </init-param>
+    </filter>
+
+    <!-- blojsom filter mappings -->
+
+    <filter-mapping>
+        <filter-name>FeedFilter</filter-name>
+        <servlet-name>blojsom</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PageFilter</filter-name>
+        <servlet-name>blojsom</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>SkipEntriesFilter</filter-name>
+        <servlet-name>blojsom</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PermalinkFilter</filter-name>
+        <servlet-name>blojsom</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PermalinkFilter</filter-name>
+        <servlet-name>blojsomxmlrpc</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PermalinkFilter</filter-name>
+        <servlet-name>blojsomcommentapi</servlet-name>
+    </filter-mapping>
+
+    <!-- blojsom servlet definitions -->
+
+    <servlet>
+        <servlet-name>blojsom</servlet-name>
+        <servlet-class>org.blojsom.servlet.BlojsomServlet</servlet-class>
+        <init-param>
+            <param-name>smtp-server</param-name>
+            <param-value>mail.blojsom.com</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>blojsomxmlrpc</servlet-name>
+        <servlet-class>org.blojsom.extension.xmlrpc.BlojsomXMLRPCServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>blojsomcommentapi</servlet-name>
+        <servlet-class>org.blojsom.extension.comment.CommentAPIServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+    <!-- blojsom servlet mappings -->
+
+    <servlet-mapping>
+        <servlet-name>blojsom</servlet-name>
+        <url-pattern>/blog/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>blojsomxmlrpc</servlet-name>
+        <url-pattern>/xmlrpc/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>blojsomcommentapi</servlet-name>
+        <url-pattern>/commentapi/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Other configuration settings -->
+
+    <session-config>
+        <session-timeout>90</session-timeout>
+    </session-config>
+
+</web-app>
