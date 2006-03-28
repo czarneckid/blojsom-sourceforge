@@ -67,7 +67,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.4 2006-03-25 00:09:59 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.5 2006-03-28 01:24:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -596,6 +596,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
         if (blogCommentsEnabled) {
             try {
                 comment = _fetcher.newComment();
+                comment.setBlogEntryId(entry.getId());
                 comment.setEntry(entry);
                 comment.setAuthor(author);
                 comment.setAuthorEmail(authorEmail);
