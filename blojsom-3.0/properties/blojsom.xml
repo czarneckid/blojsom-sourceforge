@@ -6,6 +6,7 @@
 
     <description>Bean definition file for blojsom</description>
 
+    <import resource="blojsom-helper-beans-include.xml"/>
     <import resource="blojsom-plugins.xml"/>
 
     <!-- START: Helper beans -->
@@ -42,42 +43,6 @@
                     org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
                 <prop key="velocimacro.permissions.allow.inline">true</prop>
                 <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="servletConfigFactoryBean" class="org.blojsom.servlet.ServletConfigFactoryBean">
-    </bean>
-       
-    <bean id="mySQLDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost/blojsom?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
-        <property name="username" value="blojsom"/>
-        <property name="password" value="blojsom"/>
-    </bean>
-
-    <bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="mySQLDataSource"/>
-        <property name="mappingResources">
-            <list>
-                <value>Blog.hbm.xml</value>
-                <value>Entry.hbm.xml</value>
-                <value>Category.hbm.xml</value>
-                <value>Comment.hbm.xml</value>
-                <value>Trackback.hbm.xml</value>
-                <value>Pingback.hbm.xml</value>
-                <value>User.hbm.xml</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="c3p0.min_size">10</prop>
-                <prop key="c3p0.max_size">50</prop>
-                <prop key="c3p0.timeout">1800</prop>
-                <prop key="c3p0.max_statements">100</prop>
-                <prop key="show_sql">false</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
-                <!-- <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
             </props>
         </property>
     </bean>
