@@ -35,13 +35,14 @@ import org.blojsom.blog.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Fetcher
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.6 2006-03-23 16:50:17 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.7 2006-03-28 01:24:42 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -144,10 +145,10 @@ public interface Fetcher {
      * @throws FetcherException If there is an error retrieving the blog entries for the request
      */
     public Entry[] fetchEntries(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    Blog blog,
-                                    String flavor,
-                                    Map context) throws FetcherException;
+                                HttpServletResponse httpServletResponse,
+                                Blog blog,
+                                String flavor,
+                                Map context) throws FetcherException;
 
     /**
      *
@@ -199,10 +200,10 @@ public interface Fetcher {
      * @throws FetcherException If there is an error retrieving the blog categories for the request
      */
     public Category[] fetchCategories(HttpServletRequest httpServletRequest,
-                                          HttpServletResponse httpServletResponse,
-                                          Blog blog,
-                                          String flavor,
-                                          Map context) throws FetcherException;
+                                      HttpServletResponse httpServletResponse,
+                                      Blog blog,
+                                      String flavor,
+                                      Map context) throws FetcherException;
 
     /**
      *
@@ -294,6 +295,14 @@ public interface Fetcher {
     public void deleteComment(Blog blog, Comment comment) throws FetcherException;
 
     /**
+     * Load the recent comments for a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error retrieving the recent comments
+     */
+    public List loadRecentComments(Blog blog) throws FetcherException;
+
+    /**
      *
      * @param blog
      * @param trackback
@@ -359,7 +368,7 @@ public interface Fetcher {
      * @return List of {@link User}s for a blog
      */
     public User[] getUsers(Blog blog);
-    
+
     /**
      * Load a {@link User} from a blog
      *

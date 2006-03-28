@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.4 2006-03-24 18:43:09 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.5 2006-03-28 01:24:42 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -331,4 +331,6 @@ public interface BlojsomConstants {
     public static final String RECURSIVE_CATEGORIES = "recursive-categories";
     public static final String PREFERRED_SYNDICATION_FLAVOR = "preferred-syndication-flavor";
     public static final String USE_DYNAMIC_BLOG_URLS = "use-dynamic-blog-urls";
+    public static final String RECENT_COMMENTS_COUNT = "recent-comments-count";
+    public static final int DEFAULT_RECENT_COMMENTS_COUNT = 5;
 }

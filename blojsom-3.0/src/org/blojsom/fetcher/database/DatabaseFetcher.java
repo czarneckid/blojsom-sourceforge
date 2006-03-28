@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.9 2006-03-25 17:56:03 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.10 2006-03-28 01:24:42 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -1015,6 +1015,51 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         }
+    }
+
+    /**
+     * Load the recent comments for a blog
+     *
+     * @param blog  {@link Blog}
+     * @throws FetcherException If there is an error retrieving the recent comments
+     */
+    public List loadRecentComments(Blog blog) throws FetcherException {
+        List recentComments;
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
+            commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.eq("status", "approved"))
+                    .addOrder(Order.desc("commentDate"));
+
+            String recentCommentsCount = blog.getProperty(BlojsomConstants.RECENT_COMMENTS_COUNT);
+            int count;
+            try {
+                count = Integer.parseInt(recentCommentsCount);
+            } catch (NumberFormatException e) {
+                count = BlojsomConstants.DEFAULT_RECENT_COMMENTS_COUNT;
+            }
+
+            if (count > 0) {
+                commentsCriteria.setMaxResults(count);
+            }
+
+            recentComments = commentsCriteria.list();
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+
+        return recentComments;
     }
 
     /**
