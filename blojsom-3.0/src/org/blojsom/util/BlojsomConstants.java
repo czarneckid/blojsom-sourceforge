@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.6 2006-03-28 04:30:48 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.7 2006-03-28 16:14:11 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -283,6 +283,8 @@ public interface BlojsomConstants {
     public static final String WHITESPACE = " \t\n\f\r";
 
     public static final String REDIRECT_TO_PARAM = "redirect_to";
+
+    public static final String PAGE_NUMBER_PARAM = "pg_num";
 
     /**
      * Various HTTP caching headers

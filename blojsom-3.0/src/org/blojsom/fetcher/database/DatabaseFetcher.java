@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.11 2006-03-28 04:30:48 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.12 2006-03-28 16:14:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -386,6 +386,20 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 return (Entry[]) permalinkEntryList.toArray(new DatabaseEntry[permalinkEntryList.size()]);
             }
         } else {
+            String pgNum = BlojsomUtils.getRequestValue(BlojsomConstants.PAGE_NUMBER_PARAM, httpServletRequest);
+            int page;
+            try {
+                page = Integer.parseInt(pgNum);
+                page -= 1;
+                if (page < 0) {
+                    page = 0;
+                }
+            } catch (NumberFormatException e) {
+                page = 0;
+            }
+
+            page *= blog.getBlogDisplayEntries();
+
             if (category != null && !"/".equals(category.getName())) {
                 Session session = _sessionFactory.openSession();
                 Transaction tx = session.beginTransaction();
@@ -396,6 +410,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.add(Restrictions.lt("date", new Date()));
                 entryCriteria.addOrder(Order.desc("date"));
                 entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
+                entryCriteria.setFirstResult(page);
 
                 List entryList = entryCriteria.list();
 
@@ -412,6 +427,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.add(Restrictions.lt("date", new Date()));
                 entryCriteria.addOrder(Order.desc("date"));
                 entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
+                entryCriteria.setFirstResult(page);
 
                 List entryList = entryCriteria.list();
 
