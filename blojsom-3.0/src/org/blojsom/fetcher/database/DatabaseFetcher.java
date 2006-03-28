@@ -57,7 +57,7 @@ import java.util.Properties;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.10 2006-03-28 01:24:42 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.11 2006-03-28 04:30:48 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -1145,6 +1145,51 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
+     * Load the recent trackbacks for a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error retrieving the recent trackbacks
+     */
+    public List loadRecentTrackbacks(Blog blog) throws FetcherException {
+        List recentTrackbacks;
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
+            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.eq("status", "approved"))
+                    .addOrder(Order.desc("trackbackDate"));
+
+            String recentTrackbacksCount = blog.getProperty(BlojsomConstants.RECENT_TRACKBACKS_COUNT);
+            int count;
+            try {
+                count = Integer.parseInt(recentTrackbacksCount);
+            } catch (NumberFormatException e) {
+                count = BlojsomConstants.DEFAULT_RECENT_TRACKBACKS_COUNT;
+            }
+
+            if (count > 0) {
+                trackbacksCriteria.setMaxResults(count);
+            }
+
+            recentTrackbacks = trackbacksCriteria.list();
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+
+        return recentTrackbacks;
+    }
+
+    /**
      * @param blog
      * @param pingback
      * @throws FetcherException
@@ -1260,6 +1305,51 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         }
+    }
+
+    /**
+     * Load the recent pingbacks for a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error retrieving the recent pingbacks
+     */
+    public List loadRecentPingbacks(Blog blog) throws FetcherException {
+        List recentPingbacks;
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria pingbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
+            pingbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.eq("status", "approved"))
+                    .addOrder(Order.desc("trackbackDate"));
+
+            String recentPingbacksCount = blog.getProperty(BlojsomConstants.RECENT_PINGBACKS_COUNT);
+            int count;
+            try {
+                count = Integer.parseInt(recentPingbacksCount);
+            } catch (NumberFormatException e) {
+                count = BlojsomConstants.DEFAULT_RECENT_PINGBACKS_COUNT;
+            }
+
+            if (count > 0) {
+                pingbacksCriteria.setMaxResults(count);
+            }
+
+            recentPingbacks = pingbacksCriteria.list();
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+
+        return recentPingbacks;
     }
 
     /**

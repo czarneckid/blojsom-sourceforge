@@ -160,11 +160,6 @@
         </property>
     </bean>
     <bean id="preview" class="org.blojsom.plugin.limiter.PreviewPlugin" init-method="init" destroy-method="destroy"/>
-    <bean id="recent-comments" class="org.blojsom.plugin.comment.RecentCommentsPlugin" init-method="init" destroy-method="destroy">
-        <property name="fetcher">
-            <ref bean="fetcher"/>
-        </property>
-    </bean>
     <bean id="rss-enclosure" class="org.blojsom.plugin.common.RSSEnclosurePlugin" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
@@ -249,6 +244,11 @@
           destroy-method="destroy"/>
     <bean id="math-comment-moderation" class="org.blojsom.plugin.comment.MathCommentAuthenticationPlugin" init-method="init"
           destroy-method="destroy"/>
+    <bean id="recent-comments" class="org.blojsom.plugin.comment.RecentCommentsPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
 
     <!-- Trackback plugins -->
     <bean id="trackback" class="org.blojsom.plugin.trackback.TrackbackPlugin" init-method="init" destroy-method="destroy">
@@ -267,6 +267,11 @@
     </bean>
     <bean id="auto-trackback" class="org.blojsom.plugin.trackback.AutoTrackbackPlugin" init-method="init"
           destroy-method="destroy"/>
+    <bean id="recent-trackbacks" class="org.blojsom.plugin.trackback.RecentTrackbacksPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="trackback-moderation" class="org.blojsom.plugin.trackback.TrackbackModerationPlugin" init-method="init"
           destroy-method="destroy"/>
 
@@ -283,6 +288,11 @@
         </property>
         <property name="velocityProperties">
             <ref bean="defaultVelocityProperties"/>
+        </property>
+    </bean>
+    <bean id="recent-pingbacks" class="org.blojsom.plugin.pingback.RecentPingbacksPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
         </property>
     </bean>
 

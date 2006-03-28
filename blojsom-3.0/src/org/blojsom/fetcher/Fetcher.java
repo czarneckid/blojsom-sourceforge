@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.7 2006-03-28 01:24:42 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.8 2006-03-28 04:30:48 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -327,6 +327,14 @@ public interface Fetcher {
     public void deleteTrackback(Blog blog, Trackback trackback) throws FetcherException;
 
     /**
+     * Load the recent trackbacks for a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error retrieving the recent trackbacks
+     */
+    public List loadRecentTrackbacks(Blog blog) throws FetcherException;
+
+    /**
      *
      * @param blog
      * @param pingback
@@ -360,6 +368,14 @@ public interface Fetcher {
      * @throws FetcherException
      */
     public void deletePingback(Blog blog, Pingback pingback) throws FetcherException;
+
+    /**
+     * Load the recent pingbacks for a blog
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error retrieving the recent pingbacks
+     */
+    public List loadRecentPingbacks(Blog blog) throws FetcherException;
 
     /**
      * Retrieve the users for a given blog

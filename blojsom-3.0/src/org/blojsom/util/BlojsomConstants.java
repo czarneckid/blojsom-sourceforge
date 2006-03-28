@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.5 2006-03-28 01:24:42 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.6 2006-03-28 04:30:48 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -333,4 +333,10 @@ public interface BlojsomConstants {
     public static final String USE_DYNAMIC_BLOG_URLS = "use-dynamic-blog-urls";
     public static final String RECENT_COMMENTS_COUNT = "recent-comments-count";
     public static final int DEFAULT_RECENT_COMMENTS_COUNT = 5;
+    public static final String RECENT_TRACKBACKS_COUNT = "recent-trackbacks-count";
+    public static final int DEFAULT_RECENT_TRACKBACKS_COUNT = 5;
+    public static final String RECENT_PINGBACKS_COUNT = "recent-pingbacks-count";
+    public static final int DEFAULT_RECENT_PINGBACKS_COUNT = 5;
+
 }
+
