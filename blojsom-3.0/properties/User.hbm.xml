@@ -40,7 +40,7 @@
             <column name="user_status"/>
         </property>
 
-        <map name="metaData" table="usermetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+        <map name="metaData" table="UserMetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
             <key column="user_id" not-null="true"/>
             <map-key column="metadata_key" type="string"/>
             <element column="metadata_value" type="string"/>

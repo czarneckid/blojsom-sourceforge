@@ -50,7 +50,7 @@
             <column name="target_uri"/>
         </property>
 
-        <map name="metaData" table="pingbackmetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+        <map name="metaData" table="PingbackMetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
             <key column="pingback_id" not-null="true"/>
             <map-key column="metadata_key" type="string"/>
             <element column="metadata_value" type="string"/>

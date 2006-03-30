@@ -48,7 +48,7 @@
             <column name="status" length="255"/>
         </property>
 
-        <map name="metaData" table="commentmetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+        <map name="metaData" table="CommentMetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
             <key column="comment_id" not-null="true"/>
             <map-key column="metadata_key" type="string"/>
             <element column="metadata_value" type="string"/>

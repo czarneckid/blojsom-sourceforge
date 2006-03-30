@@ -54,7 +54,7 @@ CREATE TABLE `Category` (
   `description` text,
   PRIMARY KEY  (`category_id`),
   KEY `category_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `category_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `category_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `CategoryMetadata` (
   `metadata_key` text NOT NULL,
   `metadata_value` text,
   KEY `categorymetadata_category_categoryidfk` (`category_id`),
-  CONSTRAINT `categorymetadata_category_categoryidfk` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE
+  CONSTRAINT `categorymetadata_category_categoryidfk` FOREIGN KEY (`category_id`) REFERENCES `Category` (`category_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -110,7 +110,7 @@ CREATE TABLE `Comment` (
   `blog_id` varchar(50) NOT NULL,
   PRIMARY KEY  (`comment_id`),
   KEY `comment_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `comment_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `comment_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `CommentMetadata` (
   `metadata_key` text NOT NULL,
   `metadata_value` text,
   KEY `commentmetadata_comment_commentidfk` (`comment_id`),
-  CONSTRAINT `commentmetadata_comment_commentidfk` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`comment_id`) ON DELETE CASCADE
+  CONSTRAINT `commentmetadata_comment_commentidfk` FOREIGN KEY (`comment_id`) REFERENCES `Comment` (`comment_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -167,7 +167,7 @@ CREATE TABLE `Entry` (
   `modified_date` datetime NOT NULL,
   PRIMARY KEY  (`entry_id`),
   KEY `entry_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -190,7 +190,7 @@ CREATE TABLE `EntryMetadata` (
   `metadata_key` text NOT NULL,
   `metadata_value` text,
   KEY `entrymetadata_entry_entryidfk` (`entry_id`),
-  CONSTRAINT `entrymetadata_entry_entryidfk` FOREIGN KEY (`entry_id`) REFERENCES `entry` (`entry_id`) ON DELETE CASCADE
+  CONSTRAINT `entrymetadata_entry_entryidfk` FOREIGN KEY (`entry_id`) REFERENCES `Entry` (`entry_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -223,7 +223,7 @@ CREATE TABLE `Pingback` (
   `target_uri` text NOT NULL,
   PRIMARY KEY  (`pingback_id`),
   KEY `pingback_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `pingback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `pingback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `PingbackMetadata` (
   `metadata_key` text NOT NULL,
   `metadata_value` text,
   KEY `pingbackmetadata_pingback_pingbackidfk` (`pingback_id`),
-  CONSTRAINT `pingbackmetadata_pingback_pingbackidfk` FOREIGN KEY (`pingback_id`) REFERENCES `pingback` (`pingback_id`) ON DELETE CASCADE
+  CONSTRAINT `pingbackmetadata_pingback_pingbackidfk` FOREIGN KEY (`pingback_id`) REFERENCES `Pingback` (`pingback_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -269,7 +269,7 @@ CREATE TABLE `Plugin` (
   `plugin_flavor` varchar(50) NOT NULL,
   `plugin_value` varchar(4096) default NULL,
   KEY `plugin_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`Blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -293,7 +293,7 @@ CREATE TABLE `Properties` (
   `property_name` varchar(255) NOT NULL,
   `property_value` longtext,
   KEY `properties_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `properties_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `properties_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -317,7 +317,7 @@ CREATE TABLE `Template` (
   `template_flavor` varchar(50) NOT NULL,
   `template_value` varchar(255) default NULL,
   KEY `template_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `template_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `template_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -349,7 +349,7 @@ CREATE TABLE `Trackback` (
   `status` varchar(255) default NULL,
   PRIMARY KEY  (`trackback_id`),
   KEY `trackback_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `trackback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `trackback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -372,7 +372,7 @@ CREATE TABLE `TrackbackMetadata` (
   `metadata_key` text NOT NULL,
   `metadata_value` text,
   KEY `trackbackmetadata_trackback_trackbackidfk` (`trackback_id`),
-  CONSTRAINT `trackbackmetadata_trackback_trackbackidfk` FOREIGN KEY (`trackback_id`) REFERENCES `trackback` (`trackback_id`) ON DELETE CASCADE
+  CONSTRAINT `trackbackmetadata_trackback_trackbackidfk` FOREIGN KEY (`trackback_id`) REFERENCES `Trackback` (`trackback_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -401,7 +401,7 @@ CREATE TABLE `User` (
   `blog_id` varchar(50) NOT NULL,
   PRIMARY KEY  (`user_id`),
   KEY `user_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -427,7 +427,7 @@ CREATE TABLE `UserMetadata` (
   `metadata_value` text,
   PRIMARY KEY  (`user_metadata_id`),
   KEY `usermetadata_user_useridfk` (`user_id`),
-  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

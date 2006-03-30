@@ -42,7 +42,7 @@
             <column name="status" length="255"/>
         </property>
 
-        <map name="metaData" table="trackbackmetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+        <map name="metaData" table="TrackbackMetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
             <key column="trackback_id" not-null="true"/>
             <map-key column="metadata_key" type="string"/>
             <element column="metadata_value" type="string"/>
