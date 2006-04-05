@@ -31,6 +31,7 @@
 package org.blojsom.util;
 
 import org.blojsom.blog.Blog;
+import org.blojsom.blog.Response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.7 2006-03-27 13:03:27 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.8 2006-04-05 00:38:56 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -789,6 +790,23 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         return null;
+    }
+
+    /**
+     * Get request values for a given key and if not available, returns and empty <code>String[]</code>
+     *
+     * @param key Parameter to retrieve
+     * @param httpServletRequest Request
+     * @return Request values for the key as a <code>String[]</code>
+     */
+    public static String[] getRequestValues(String key, HttpServletRequest httpServletRequest) {
+        String[] values = httpServletRequest.getParameterValues(key);
+
+        if (values == null) {
+            values = new String[0];
+        }
+
+        return values;
     }
 
     /**
@@ -1880,4 +1898,21 @@ public class BlojsomUtils implements BlojsomConstants {
 
         return valuesAsString.toString();
     }
+
+    public static Comparator RESPONSE_COMPARATOR = new Comparator() {
+        public int compare(Object object, Object object1) {
+            if (object instanceof Response && object1 instanceof Response) {
+                Response obj = (Response) object;
+                Response obj1 = (Response) object1;
+
+                if (obj.getDate().before(obj1.getDate())) {
+                    return -1;
+                } else if (obj.getDate().after(obj1.getDate())) {
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+    };
 }
