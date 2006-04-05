@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseEntry.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseEntry.java,v 1.3 2006-04-05 00:48:27 czarneckid Exp $
  */
 public class DatabaseEntry implements Entry, Serializable {
 
@@ -633,5 +633,41 @@ public class DatabaseEntry implements Entry, Serializable {
      */
     public void setPostSlug(String postSlug) {
         _postSlug = postSlug;
+    }
+
+    /**
+     * Get the responses (comments, trackbacks, pingbacks)
+     *
+     * @return Responses (comments, trackbacks, pingbacks)
+     */
+    public List getResponses() {
+        List responses = new ArrayList();
+
+        responses.addAll(getComments());
+        responses.addAll(getTrackbacks());
+        responses.addAll(getPingbacks());
+
+        Collections.sort(responses, BlojsomUtils.RESPONSE_COMPARATOR);
+
+        return responses;
+    }
+
+    /**
+     * Get the responses (comments, trackbacks, pingbacks) matching some set of status codes
+     *
+     * @param status Set of status codes
+     * @return Responses (comments, trackbacks, pingbacks) matching some set of status codes
+     */
+    public List getResponsesMatchingStatus(String status) {
+        List responses = getResponses();
+
+        for (int i = 0; i < responses.size(); i++) {
+            Response response = (Response) responses.get(i);
+            if (!status.equals(response.getStatus())) {
+                responses.set(i, null);
+            }
+        }
+
+        return BlojsomUtils.removeNullValues(responses);
     }
 }
