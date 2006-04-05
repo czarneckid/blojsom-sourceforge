@@ -59,7 +59,7 @@ import java.util.Map;
  * EditBlogCategoriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.2 2006-03-22 21:24:32 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.3 2006-04-05 00:50:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
@@ -129,6 +129,20 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
     }
 
     /**
+     * Get the display name for a category prefering the description over the name
+     *
+     * @param category {@link Category}
+     * @return Display name (Description if available, otherwise Name)
+     */
+    protected String getDisplayName(Category category) {
+        if (!BlojsomUtils.checkNullOrBlank(category.getDescription())) {
+            return category.getDescription();
+        }
+
+        return category.getName();
+    }
+
+    /**
      * Process the blog entries
      *
      * @param httpServletRequest  Request
@@ -151,7 +165,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             Category[] allCategories = _fetcher.loadAllCategories(blog);
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES, allCategories);
         } catch (FetcherException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         String username = getUsernameFromSession(httpServletRequest, blog);
@@ -163,15 +179,23 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
         }
 
         if (BlojsomUtils.checkNullOrBlank(action)) {
-            _logger.debug("User did not request edit action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User did not request edit action");
+            }
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
-            _logger.debug("User requested edit categories page");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested edit categories page");
+            }
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
         } else if (DELETE_BLOG_CATEGORY_ACTION.equals(action)) {
-            _logger.debug("User request blog category delete action");
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User request blog category delete action");
+            }
             String blogCategoryId = BlojsomUtils.getRequestValue(BLOG_CATEGORY_ID, httpServletRequest);
-            _logger.debug("Delting blog category: " + blogCategoryId);
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Delting blog category: " + blogCategoryId);
+            }
 
             try {
                 Integer categoryID = Integer.valueOf(blogCategoryId);
@@ -180,16 +204,18 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 _fetcher.loadCategory(blog, blogCategoryToDelete);
                 _fetcher.deleteCategory(blog, blogCategoryToDelete);
 
-                _logger.debug("Deleted blog category: " + blogCategoryId);
-                addOperationResultMessage(context, formatAdminResource(DELETED_CATEGORY_KEY, DELETED_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Deleted blog category: " + blogCategoryId);
+                }
+                addOperationResultMessage(context, formatAdminResource(DELETED_CATEGORY_KEY, DELETED_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{getDisplayName(blogCategoryToDelete)}));
 
                 _eventBroadcaster.broadcastEvent(new CategoryDeletedEvent(this, new Date(), blogCategoryToDelete, blog));
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_DELETED_CATEGORY_KEY, FAILED_DELETED_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, formatAdminResource(FAILED_DELETED_CATEGORY_KEY, FAILED_DELETED_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
             }
@@ -197,7 +223,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
         } else if (EDIT_BLOG_CATEGORY_ACTION.equals(action)) {
             String blogCategoryId = BlojsomUtils.getRequestValue(BLOG_CATEGORY_ID, httpServletRequest);
-            _logger.debug("Editing blog category: " + blogCategoryId);
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("Editing blog category: " + blogCategoryId);
+            }
             Category blogCategoryToEdit;
 
             try {
@@ -218,13 +246,13 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY_METADATA, categoryPropertiesString.toString());
             } catch (NumberFormatException e) {
-                _logger.error(e);
-
                 addOperationResultMessage(context, formatAdminResource(FAILED_LOAD_CATEGORY_KEY, FAILED_LOAD_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
-                addOperationResultMessage(context, formatAdminResource(FAILED_LOAD_CATEGORY_KEY, FAILED_LOAD_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blog}));
+                addOperationResultMessage(context, formatAdminResource(FAILED_LOAD_CATEGORY_KEY, FAILED_LOAD_CATEGORY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
             }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_CATEGORY_PAGE);
@@ -248,9 +276,13 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             String blogCategoryDescription = BlojsomUtils.getRequestValue(BLOG_CATEGORY_DESCRIPTION, httpServletRequest);
 
             if (!isUpdatingCategory) {
-                _logger.debug("Adding blog category: " + blogCategoryName);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Adding blog category: " + blogCategoryName);
+                }
             } else {
-                _logger.debug("Updating blog category: " + blogCategoryName);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Updating blog category: " + blogCategoryName);
+                }
             }
 
             String blogCategoryMetaData = BlojsomUtils.getRequestValue(BLOG_CATEGORY_META_DATA, httpServletRequest);
@@ -259,7 +291,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             }
 
             if (!isUpdatingCategory) {
-                _logger.debug("Adding blog category meta-data: " + blogCategoryMetaData);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Adding blog category meta-data: " + blogCategoryMetaData);
+                }
             }
 
             // Separate the blog category meta-data into key/value pairs
@@ -275,7 +309,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                     }
                 }
             } catch (IOException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
                 addOperationResultMessage(context, getAdminResource(FAILED_CATEGORY_METADATA_READ_KEY, FAILED_CATEGORY_METADATA_READ_KEY, blog.getBlogAdministrationLocale()));
             }
@@ -284,7 +320,6 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             try {
                 parentCategoryID = Integer.valueOf(blogCategoryParentId);
             } catch (NumberFormatException e) {
-                _logger.error(e);
             }
 
             Category blogCategory;
@@ -298,14 +333,14 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
                     _fetcher.loadCategory(blog, blogCategory);
                 } catch (NumberFormatException e) {
-                    _logger.error(e);
-
                     addOperationResultMessage(context, formatAdminResource(CATEGORY_CHANGE_FAILED_KEY, CATEGORY_CHANGE_FAILED_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
                     httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
 
                     return entries;
                 } catch (FetcherException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
 
                     addOperationResultMessage(context, formatAdminResource(CATEGORY_CHANGE_FAILED_KEY, CATEGORY_CHANGE_FAILED_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
                     httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
@@ -316,13 +351,12 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
             if (!BlojsomUtils.checkNullOrBlank(blogCategoryParentId)) {
                 blogCategory.setParentCategoryId(parentCategoryID);
+            } else {
+                blogCategory.setParentCategoryId(null);
             }
+
             blogCategory.setName(blogCategoryName);
-
-            if (!BlojsomUtils.checkNullOrBlank(blogCategoryDescription)) {
-                blogCategory.setDescription(blogCategoryDescription);
-            }
-
+            blogCategory.setDescription(blogCategoryDescription);
             blogCategory.setBlogId(blog.getBlogId());
             blogCategory.setMetaData(categoryMetaData);
 
@@ -330,22 +364,28 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
                 _fetcher.saveCategory(blog, blogCategory);
 
                 if (!isUpdatingCategory) {
-                    _logger.debug("Successfully added new blog category: " + blogCategoryName);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Successfully added new blog category: " + blogCategoryName);
+                    }
 
-                    addOperationResultMessage(context, formatAdminResource(CATEGORY_ADD_SUCCESS_KEY, CATEGORY_ADD_SUCCESS_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryName}));
+                    addOperationResultMessage(context, formatAdminResource(CATEGORY_ADD_SUCCESS_KEY, CATEGORY_ADD_SUCCESS_KEY, blog.getBlogAdministrationLocale(), new Object[]{getDisplayName(blogCategory)}));
 
                     _eventBroadcaster.broadcastEvent(new CategoryAddedEvent(this, new Date(), blogCategory, blog));
                 } else {
-                    _logger.debug("Successfully updated blog category: " + blogCategoryName);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Successfully updated blog category: " + blogCategoryName);
+                    }
 
-                    addOperationResultMessage(context, formatAdminResource(CATEGORY_UPDATE_SUCCESS_KEY, CATEGORY_UPDATE_SUCCESS_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryName}));
+                    addOperationResultMessage(context, formatAdminResource(CATEGORY_UPDATE_SUCCESS_KEY, CATEGORY_UPDATE_SUCCESS_KEY, blog.getBlogAdministrationLocale(), new Object[]{getDisplayName(blogCategory)}));
 
                     _eventBroadcaster.broadcastEvent(new CategoryUpdatedEvent(this, new Date(), blogCategory, blog));
                 }
-            } catch (org.blojsom.BlojsomException e) {
-                _logger.error(e);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
 
-                addOperationResultMessage(context, formatAdminResource(CATEGORY_CHANGE_FAILED_KEY, CATEGORY_CHANGE_FAILED_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryName}));
+                addOperationResultMessage(context, formatAdminResource(CATEGORY_CHANGE_FAILED_KEY, CATEGORY_CHANGE_FAILED_KEY, blog.getBlogAdministrationLocale(), new Object[]{getDisplayName(blogCategory)}));
             }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_CATEGORIES_PAGE);
@@ -355,7 +395,9 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
             Category[] allCategories = _fetcher.loadAllCategories(blog);
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES, allCategories);
         } catch (FetcherException e) {
-            _logger.error(e);
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         return entries;
