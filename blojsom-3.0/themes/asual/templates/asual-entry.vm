@@ -1,10 +1,11 @@
 
                             #FriendlyPermalink($entry)
+                            #set($approvedResponses = $entry.getResponsesMatchingStatus("approved"))
                             #set($permalink = $entryLink)
                             <div class="entry">
                                 #if($entryDate != $entry.getDateAsFormat('dd MM yyyy'))<h3>$entry.getDateAsFormat('EEEE, d MMMM yyyy')</h3>
                                 #set($entryDate = $entry.getDateAsFormat('dd MM yyyy'))#end
-
+                            
                                 <h4><a href="$permalink" title="Permalink of &quot;$entry.getTitle()&quot;">$entry.getTitle()</a></h4>
                                 #if($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #FriendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY)<a href="$entryLink">&laquo;&nbsp;$!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">Main</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #FriendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle()&nbsp;&raquo;</a>#end#end
 
@@ -16,12 +17,85 @@
                                     #if($entry.getAuthor())Posted by <span class="author">$entry.getAuthor()</span> at $entry.getDateAsFormat("h:mm a") in <a href="#BlogURL()$entry.getCategory()" title="$entry.getCategory()">#if($entry.getBlogCategory().getDescription())$entry.getBlogCategory().getDescription()#else$entry.getBlogCategory().getName()#end</a>#end
                                 </div>
                                 <div class="links">
-                                    #if ($entry.allowsComments())<span class="commentslink"><a href="$permalink?page=comments" title="Click here to see the comments on &quot;$entry.getEscapedTitle()&quot;"><span></span>Comments ($entry.getNumComments())</a></span>#end #if ($entry.allowsTrackbacks())<span class="trackbackslink"><a href="$permalink?page=trackback" title="Click here to see the trackbacks of &quot;$entry.getEscapedTitle()&quot;"><span></span>Trackbacks ($entry.getNumTrackbacks())</a></span>#end
+
+                                    #set ($numResponses = $approvedResponses.size())
+                                    <span class="commentslink"><a href="$permalink" title="Click here to see the responses on &quot;$entry.getEscapedTitle()&quot;"><span></span>Responses ($numResponses)</a></span>
                                 </div>
                                 #set( $totalEntries = $totalEntries + 1)
+
                                 #if ($BLOJSOM_PERMALINK)
-                                    #TrackbackAutoDiscovery($entry false)
+                                <!-- START: Permalink item -->
+                                #if ($entry.allowsTrackbacks())
+                                #TrackbackAutoDiscovery($entry false)
                                 #end
 
+                                <p>
+                                    <p>&nbsp;</p>
+                                    #if ($entry.allowsTrackbacks())
+                                    <p>[<a href="$permalink?tb=y&amp;entry_id=$entry.getId()" title="Trackback">Trackback URL for this entry</a>]</p>
+                                    #end
+
+                                    #set ($responseCounter = 1)
+                                    #foreach ($response in $approvedResponses)
+                                    <div class="comment">
+                                        <a name="response-$responseCounter"></a>
+                                    #if ($response.getType().equals("comment"))
+                                        <strong><a href="$permalink#response-$responseCounter">Comment</a>:</strong> <span class="author">#if($response.getAuthorURL() && $response.getAuthorURL().length() > 0)<a href="$response.getAuthorURL()">$response.getAuthor()</a>#else$response.getAuthor()#end</span> at $response.getDateAsFormat("EEE, d MMM h:mm a")
+                                        <p class="post">$response.getComment()</p>
+                                    #elseif ($response.getType().equals("trackback"))
+                                        <strong><a href="$permalink#response-$responseCounter">Trackback</a>:</strong> <span class="author"><a href="$response.getUrl()">#if ($response.getBlogName())$response.getBlogName()#else$response.getUrl()#end</a></span> at $response.getDateAsFormat("EEE, d MMM h:mm a")
+                                        #if ($response.getExcerpt())<p class="post">#if($response.getTitle())<strong>$response.getTitle()</strong><br />#end$response.getExcerpt()</p>#end
+                                    #elseif ($response.getType().equals("pingback"))
+                                        <strong><a href="$permalink#response-$responseCounter">Pingback</a>:</strong> <span class="author"><a href="$response.getUrl()">#if ($response.getBlogName())$response.getBlogName()#else$response.getUrl()#end</a></span> at $response.getDateAsFormat("EEE, d MMM h:mm a")
+                                        #if ($response.getExcerpt())<p class="post">#if($response.getTitle())<strong>$response.getTitle()</strong><br />#end$response.getExcerpt()</p>#end
+                                    #end
+                                    </div>
+                                    #set($responseCounter = $responseCounter + 1)
+                                    #end
+                                </p>
+
+                                #if ($entry.allowsComments())
+                                <!-- START: Comment form -->
+                                    <h3>Your comment:</h3>
+                                    <form id="commentform" method="post" action="$permalink">
+                                        <div>
+                                            <input type="hidden" name="comment" value="y" />
+                                            <input type="hidden" name="page" value="comments" />
+                                            <input type="hidden" name="entry_id" value="$entry.getId()" />
+                                            <input type="hidden" name="permalink" value="$entry.getPostSlug()" />
+                                        </div>
+                                        <div class="label"><label for="author">Author (<span class="red">*</span>):</label></div>
+                                        <div class="input"><input id="author" name="author" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end" class="fixed" /></div>
+
+                                        <div class="label"><label for="authorEmail">E-mail:</label></div>
+                                        <div class="input"><input id="authorEmail" name="authorEmail" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end" class="fixed" /><span>(not displayed)</span></div>
+
+                                        <div class="label"><label for="authorURL">URL:</label></div>
+                                        <div class="input"><input id="authorURL" name="authorURL" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end" class="fixed" /></div>
+
+                                        <div class="label"><label for="commentText">Comment (<span class="red">*</span>):</label></div>
+                                        <div class="input"><textarea name="commentText" id="commentText" rows="7" cols="55" onkeyup="reloadPreviewDiv();" class="fixed"></textarea></div>
+
+                                        <div class="label">&nbsp;</div>
+                                        <div class="input"><label for="remember"><input id="remember" name="remember" type="checkbox" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)checked="true" #end /> Remember me?</label></div>
+
+                                        <div class="clear"></div>
+
+                                        <div class="label">&nbsp;</div>
+                                        <div class="input"><input type="submit" name="submit" value="Comment" class="button" /><input type="reset" name="reset" value="Reset" class="button" /></div>
+
+                                        <div class="clear"></div>
+
+                                        <div class="label">&nbsp;</div>
+                                        <div class="input">
+                                            <h4>Live Comment Preview:</h4>
+                                            <div id="commentPreview">&nbsp;</div>
+                                        </div>
+                                    </form>
+                                <!-- END: Comment form -->
+                                #end
+
+                                <!-- END: Permalink item -->
+                                #end
                             </div>
                             <div class="clear"></div>
