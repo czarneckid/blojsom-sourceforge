@@ -1,9 +1,10 @@
-#AdministrationHeader("#adminResource('edit.flavors.page.header' 'Edit Flavors')")
+#AdminPageTitle('edit.flavors.page.header' 'Edit Flavors')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
 
 <body>
     <div id="wrap">
 
-        <h1>Blosjom Administration Interface</h1>
+        <h1>Blojsom Administration Interface</h1>
 
         #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
 
@@ -152,4 +153,4 @@
     </div>
 </body>
 
-#AdministrationFooter()
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

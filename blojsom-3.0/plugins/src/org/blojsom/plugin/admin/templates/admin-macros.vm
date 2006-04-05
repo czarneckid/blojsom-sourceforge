@@ -63,7 +63,10 @@
 
 #macro(showErrorMessage)
     #if ($BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT)
-        <p class="note"><a href="#">Status</a>: $BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT</p>
+        <p class="note" id="operation_result"><a href="#">Status</a>: $BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT</p>
+        <script type="text/javascript">
+            new Effect.Highlight('operation_result', {duration:3});
+        </script>
     #end
 #end
 
@@ -90,6 +93,8 @@
 #end
 
 #macro( adminResource $resourceID $fallback )$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale())#end
+        
+#macro(AdminPageTitle $resourceID $fallback)#set ($page = $!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale()))#end
 
 #macro(LocalizedText $bundle $resourceID $fallback)$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, $bundle, $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale())#end
 
@@ -121,3 +126,4 @@ $BLOJSOM_RENDER_TOOL.evaluate($templateAddition)
 #end
 
 #macro(OnClickDeletePrompt $specific)onClick="return confirm${specific}Delete()"#end
+

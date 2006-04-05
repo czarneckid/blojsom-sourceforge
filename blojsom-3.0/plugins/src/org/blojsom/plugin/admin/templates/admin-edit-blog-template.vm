@@ -1,9 +1,10 @@
-#AdministrationHeader("#adminResource('update.blog.template.page.header' 'Update Blog Template')")
+#AdminPageTitle('update.blog.template.page.header' 'Update Blog Template')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
 
 <body>
     <div id="wrap">
 
-        <h1>Blosjom Administration Interface</h1>
+        <h1>Blojsom Administration Interface</h1>
 
         #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
 
@@ -45,4 +46,4 @@
 
 </body>
 
-#AdministrationFooter()
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

@@ -1,13 +1,26 @@
-#AdministrationHeader("#adminResource('add.blog.entry.header' 'Add Blog Entry')")
+#AdminPageTitle('add.blog.entry.header' 'Add Blog Entry')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
 
 <body>
     <div id="wrap">
 
-        <h1>Blosjom Administration Interface</h1>
+        <h1>Blojsom Administration Interface</h1>
 
         #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
 
         #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <!-- JAVASCRIPT -->
+        <script type="text/javascript">
+            function reloadPreviewDiv() {
+                var previewString = document.getElementById('blog-entry-description').value;
+                document.getElementById('blog-entry-preview').innerHTML = previewString;
+            }
+
+            function loadPreviewText() {
+                document.getElementById('blog-entry-preview').innerHTML = document.getElementById('blog-entry-description').value;
+            }
+        </script>
 
         <div id="main">
                 #showErrorMessage()
@@ -28,7 +41,7 @@
                             </tr>
                             <tr><td></td><td>
                                 <div id="quicktags">
-                                Quicktags: <script src="$BLOJSOM_BLOG.getBlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
+                                Quicktags: <script src="#BlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
                                 <script language="JavaScript" type="text/javascript">edToolbar();</script>
                                 </div></td>
                             </tr>
@@ -101,4 +114,4 @@
     </div>
 </body>
 
-#AdministrationFooter()
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")
