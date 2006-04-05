@@ -30,16 +30,16 @@
  */
 package org.blojsom.extension.xmlrpc.handler;
 
-import org.blojsom.authorization.AuthorizationProvider;
-import org.blojsom.fetcher.Fetcher;
-import org.blojsom.blog.Blog;
-import org.blojsom.BlojsomException;
-import org.blojsom.event.EventBroadcaster;
 import org.apache.xmlrpc.XmlRpcException;
+import org.blojsom.authorization.AuthorizationException;
+import org.blojsom.authorization.AuthorizationProvider;
+import org.blojsom.blog.Blog;
+import org.blojsom.event.EventBroadcaster;
+import org.blojsom.fetcher.Fetcher;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletConfig;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -48,7 +48,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: APIHandler.java,v 1.1 2006-03-20 21:30:39 czarneckid Exp $
+ * @version $Id: APIHandler.java,v 1.2 2006-04-05 00:44:02 czarneckid Exp $
  */
 public abstract class APIHandler {
 
@@ -168,7 +168,7 @@ public abstract class APIHandler {
     protected void checkXMLRPCPermission(String username, String permission) throws XmlRpcException {
         try {
             _authorizationProvider.checkPermission(_blog, new HashMap(), username, permission);
-        } catch (BlojsomException e) {
+        } catch (AuthorizationException e) {
             throw new XmlRpcException(PERMISSION_EXCEPTION, PERMISSION_EXCEPTION_MSG);
         }
     }
