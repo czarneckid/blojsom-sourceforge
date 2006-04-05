@@ -39,8 +39,7 @@
                 <prop key="input.encoding">UTF-8</prop>
                 <prop key="output.encoding">UTF-8</prop>
                 <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
-                <prop key="velocimacro.library">
-                    org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
+                <prop key="velocimacro.library">org/blojsom/plugin/admin/templates/admin-macros.vm,org/blojsom/plugin/velocity/page-macros.vm,user-macros.vm</prop>
                 <prop key="velocimacro.permissions.allow.inline">true</prop>
                 <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
             </props>
