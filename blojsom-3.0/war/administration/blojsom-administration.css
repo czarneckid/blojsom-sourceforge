@@ -4,7 +4,7 @@
 body {
 padding: 8px 0 20px 0;
 margin:0;
-font:.7em/1.6em  "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif;
+font:1.1em/1.6em  "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif;
 background: url(images/blojsom-bg.gif) repeat-x #F8FBFC;
 min-width: 800px;
  }
@@ -56,7 +56,7 @@ p { margin:10px 0 10px 0; color:333;}
 /* ----------------------------------------------------------------- */
 
 ul#nav { height:28px; margin:0; padding:0; }
-ul#nav { list-style: none; padding: 0 0 0 15px; margin: 0; font: 11px "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif; }
+ul#nav { list-style: none; padding: 0 0 0 15px; margin: 0; font: 16px "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif; }
 #nav li { float: left; position: relative; height:28px; text-align: left; width: 120px;  }
 /* not applied by IE Mac or PC \*/
 html>body #nav li { width:auto; }
@@ -68,7 +68,7 @@ html>body #nav li { width:auto; }
 #nav li li { display: block; width:120px; text-align: left; float: none; height: auto; line-height:1.6em; background-color: transparent; border-bottom:1px solid #B9C3C8; }
 #nav li li a { display: block; width:120px; padding:4px 10px; font-weight: normal; color: #2D5879; line-height:20px; height: auto;}
 /* not applied by IE Mac or PC \*/
-html>body #nav li li a { width:100; }
+html>body #nav li li a { width:100px; }
 /* End hack */
 #nav li li a:hover { background-color:#2D5879; background-image:none; color:#fff; }
 #nav li:hover ul, #nav li.over ul { display: block; }
@@ -117,7 +117,7 @@ div.mainClm {
 
 }
 table td {
-	font:.7em/1.6em  "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif;
+	font:1.1em/1.6em  "Lucida Grande", "Trebuchet MS", Verdana, Arial, sans-serif;
 	padding:2px 5px;
 	}
 
@@ -139,7 +139,7 @@ form input.small { width:100px; }
 	float: right;
 	margin-left: 0;
 	padding: 10px;
-  width: 25%;	
-  background-color: #F5F9DE;
+    width: 25%;
+    background-color: #F5F9DE;
 	border: 1px solid #ADAE8C;
 }
