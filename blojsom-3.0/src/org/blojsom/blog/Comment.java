@@ -39,9 +39,9 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Comment.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: Comment.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
  */
-public interface Comment {
+public interface Comment extends Response {
 
     /**
      * Set the comment ID
@@ -236,32 +236,4 @@ public interface Comment {
      * @param parentId Comment parent ID
      */
     public void setParentId(Integer parentId);
-
-    /**
-     * Get the IP
-     *
-     * @return IP
-     */
-    public String getIp();
-
-    /**
-     * Set the IP
-     *
-     * @param ip IP
-     */
-    public void setIp(String ip);
-
-    /**
-     * Get the status
-     *
-     * @return Status
-     */
-    public String getStatus();
-
-    /**
-     * Set the status
-     *
-     * @param status Status
-     */
-    public void setStatus(String status);
 }

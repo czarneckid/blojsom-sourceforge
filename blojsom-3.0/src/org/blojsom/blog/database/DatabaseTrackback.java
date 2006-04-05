@@ -32,6 +32,7 @@ package org.blojsom.blog.database;
 
 import org.blojsom.blog.Entry;
 import org.blojsom.blog.Trackback;
+import org.blojsom.blog.Response;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -44,7 +45,7 @@ import java.util.Map;
  * DatabaseTrackback
  *
  * @author David Czarnecki
- * @version $Id: DatabaseTrackback.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseTrackback.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseTrackback implements Trackback, Serializable {
@@ -345,5 +346,23 @@ public class DatabaseTrackback implements Trackback, Serializable {
      */
     public void setStatus(String status) {
         _status = status;
+    }
+
+    /**
+     * Retrieve the date for this object
+     *
+     * @return Date
+     */
+    public Date getDate() {
+        return _trackbackDate;
+    }
+
+    /**
+     * Get the response type
+     *
+     * @return Response type
+     */
+    public String getType() {
+        return TRACKBACK_TYPE;
     }
 }

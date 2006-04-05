@@ -32,6 +32,7 @@ package org.blojsom.blog.database;
 
 import org.blojsom.blog.Comment;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.Response;
 import org.blojsom.util.BlojsomUtils;
 
 import java.io.Serializable;
@@ -46,7 +47,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseComment.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseComment.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
  */
 public class DatabaseComment implements Comment, Serializable {
 
@@ -374,5 +375,23 @@ public class DatabaseComment implements Comment, Serializable {
      */
     public void setStatus(String status) {
         _status = status;
+    }
+
+    /**
+     * Retrieve the date for this object
+     *
+     * @return Date
+     */
+    public Date getDate() {
+        return _commentDate;
+    }
+
+    /**
+     * Get the response type
+     *
+     * @return Response type
+     */
+    public String getType() {
+        return COMMENT_TYPE;
     }
 }

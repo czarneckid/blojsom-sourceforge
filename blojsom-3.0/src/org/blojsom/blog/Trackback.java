@@ -36,10 +36,10 @@ import java.util.Map;
 
 /**
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
  * @since blojsom 3.0
  */
-public interface Trackback {
+public interface Trackback extends Response {
 
     /**
      * Set the trackback ID
@@ -198,32 +198,4 @@ public interface Trackback {
      * @param trackbackDate Trackback date
      */
     void setTrackbackDate(Date trackbackDate);
-
-    /**
-     * Get the IP
-     *
-     * @return IP
-     */
-    public String getIp();
-
-    /**
-     * Get the IP
-     *
-     * @return IP
-     */
-    public void setIp(String ip);
-
-    /**
-     * Get the status
-     *
-     * @return Status
-     */
-    public String getStatus();
-
-    /**
-     * Set the status
-     *
-     * @param status Status
-     */
-    public void setStatus(String status);
 }

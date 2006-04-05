@@ -37,7 +37,7 @@ import org.blojsom.blog.Pingback;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabasePingback.java,v 1.3 2006-03-25 07:10:46 czarneckid Exp $
+ * @version $Id: DatabasePingback.java,v 1.4 2006-04-05 00:46:32 czarneckid Exp $
  */
 public class DatabasePingback extends DatabaseTrackback implements Pingback {
 
@@ -84,5 +84,14 @@ public class DatabasePingback extends DatabaseTrackback implements Pingback {
      */
     public void setTargetURI(String targetURI) {
         _targetURI = targetURI;
+    }
+
+    /**
+     * Get the response type
+     *
+     * @return Response type
+     */
+    public String getType() {
+        return PINGBACK_TYPE;
     }
 }

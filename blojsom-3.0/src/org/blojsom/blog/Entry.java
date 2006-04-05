@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Entry.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: Entry.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
  */
 public interface Entry {
 
@@ -431,4 +431,19 @@ public interface Entry {
      * @param modifiedDate Last modified date
      */
     public void setModifiedDate(Date modifiedDate);
+
+    /**
+     * Get the responses (comments, trackbacks, pingbacks)
+     *
+     * @return Responses (comments, trackbacks, pingbacks)
+     */
+    public List getResponses();
+
+    /**
+     * Get the responses (comments, trackbacks, pingbacks) matching some status
+     *
+     * @param status Status
+     * @return Responses (comments, trackbacks, pingbacks) matching some status
+     */
+    public List getResponsesMatchingStatus(String status);
 }
