@@ -315,6 +315,8 @@
 #end
 #end
 
+#macro(CategoryDescription $category)#if (!("" == $category.getDescription()))$category.getDescription()#else$category.getName()#end#end
+
 ###############################################
 ## Template Snippet Macros
 ###############################################
