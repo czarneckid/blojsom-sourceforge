@@ -299,7 +299,7 @@
     <!-- Administration plugins -->
     <!-- Beans required by every admin plugin -->
     <!--
-    <property name="servletConfig">
+        <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
         <property name="authorizationProvider">
@@ -318,6 +318,24 @@
         </property>
         <property name="resourceManager">
             <ref bean="resourceManager"/>
+        </property>
+    </bean>
+
+    <bean id="bulk-response-management" class="org.blojsom.plugin.admin.BulkResponseManagement" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
         </property>
     </bean>
 

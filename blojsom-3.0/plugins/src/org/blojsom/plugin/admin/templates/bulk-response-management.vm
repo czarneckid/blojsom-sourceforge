@@ -1,0 +1,85 @@
+#AdminPageTitle('console.header' '')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="header">
+            <h2>#adminResource('manage.responses.text' '')</h2>
+        </div>
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <div class="mainClm">
+
+                    <script type="text/javascript">
+                    function checkAll(form, type, state) {
+                        for (i = 0, n = form.elements.length; i < n; i++) {
+                            if(form.elements[i].type == "checkbox" && form.elements[i].name.indexOf(type) != -1) {
+                                form.elements[i].checked = state;
+                            }
+                        }
+                    }
+
+                    function checkSingle(item, state) {
+                        item.checked = state;
+                    }
+                    </script>
+
+                    #set ($responseCounter = 1)
+                    <form name="brm" id="brm" action="." method="post" accept-charset="UTF-8">
+
+                        <p align="right">
+                            You may select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);checkAll(document.getElementById('brm'),'delete',true);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',true);checkAll(document.getElementById('brm'),'delete',false);">approval</a><br/>
+                            Or you may un-select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'delete',false);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);">approval</a>
+                        </p>
+
+                        <input type="hidden" name="action" value="bulk-response-management"/>
+                        <input type="hidden" name="flavor" value="admin"/>
+                        <input type="hidden" name="plugins" value="bulk-response-management"/>
+
+                        #foreach ($response in $BULK_RESPONSES)
+                        <h3>&nbsp;</h3>
+                        <p>
+                            <strong>$responseCounter.</strong> $response.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale()) ( <strong>$response.getType()</strong> ) ( IP: $!response.getIp() )<br/>
+                            #if ($response.getType().equals("comment"))
+                            #set ($delete = "delete_comments")
+                            #set ($approve = "approve_comments")
+                            <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
+                            $response.getComment()
+                            #elseif ($response.getType().equals("trackback"))
+                            #set ($delete = "delete_trackbacks")
+                            #set ($approve = "approve_trackbacks")
+                            <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
+                            $response.getExcerpt()
+                            #elseif ($response.getType().equals("pingback"))
+                            #set ($delete = "delete_pingbacks")
+                            #set ($approve = "approve_pingbacks")
+                            <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
+                            <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
+                            $response.getExcerpt()
+                            #end
+                            <p align="right">[ <input type="checkbox" name="$delete" value="$response.getId()" id="delete-$responseCounter" onclick="checkSingle(document.getElementById('approve-$responseCounter'),false)">Delete</input> - <input type="checkbox" name="$approve" value="$response.getId()" id="approve-$responseCounter" onclick="checkSingle(document.getElementById('delete-$responseCounter'),false)">Approve</input> ] </p>
+                            #set ($delete = "")
+                            #set ($approve = "")
+                        </p>
+                        #set($responseCounter = $responseCounter + 1)
+                        #end
+
+                        <input type="submit" name="submit" value="#adminResource('submit.text' '')"/> <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")
