@@ -45,7 +45,7 @@ import java.util.Map;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.1 2006-03-24 23:48:44 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.2 2006-04-05 00:44:37 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPluginUtils {
@@ -73,7 +73,7 @@ public class MoblogPluginUtils {
         } else {
             mailbox.setEnabled(false);
             if (_logger.isInfoEnabled()) {
-                _logger.info("Marked moblog mailbox as disabled for blog: " + blogID + ". No " + MoblogPlugin.PROPERTY_HOSTNAME + " property.");
+                _logger.info("Skipping blog: " + blogID + ". No " + MoblogPlugin.PROPERTY_HOSTNAME + " property.");
             }
 
             return mailbox;
@@ -85,7 +85,7 @@ public class MoblogPluginUtils {
         } else {
             mailbox.setEnabled(false);
             if (_logger.isInfoEnabled()) {
-                _logger.info("Marked moblog mailbox as disabled for blog: " + blog + ". No " + MoblogPlugin.PROPERTY_USERID + " property.");
+                _logger.info("Skipping blog: " + blog + ". No " + MoblogPlugin.PROPERTY_USERID + " property.");
             }
 
             return mailbox;
@@ -97,7 +97,7 @@ public class MoblogPluginUtils {
         } else {
             mailbox.setEnabled(false);
             if (_logger.isInfoEnabled()) {
-                _logger.info("Marked moblog mailbox as disabled for blog: " + blog + ". No " + MoblogPlugin.PROPERTY_PASSWORD + " property.");
+                _logger.info("Skipping blog: " + blog + ". No " + MoblogPlugin.PROPERTY_PASSWORD + " property.");
             }
 
             return mailbox;
