@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.4 2006-03-22 22:36:29 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.5 2006-04-05 00:49:30 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -186,6 +186,8 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                         httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
                         addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
 
+                        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
+
                         return entries;
                     }
 
@@ -205,9 +207,10 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                             addOperationResultMessage(context, formatAdminResource(USER_LOGIN_EXISTS_KEY, USER_LOGIN_EXISTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogLoginID}));
                             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
+                            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
 
                             return entries;
-                        } catch (Exception e) {
+                        } catch (FetcherException e) {
                         }
 
                         user = new DatabaseUser();
@@ -234,6 +237,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                             user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
                             user.setUserEmail(blogUserEmail);
                             user.setUserPassword(blogUserPassword);
+                            user.setUserName(blogUserName);
                         } catch (FetcherException e) {
                             if (_logger.isErrorEnabled()) {
                                 _logger.error(e);
@@ -270,6 +274,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                 {
                     httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
                     addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
 
                     return entries;
                 }
