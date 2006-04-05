@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.8 2006-03-28 04:30:48 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.9 2006-04-05 00:40:53 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -111,17 +111,19 @@ public interface Fetcher {
     public String[] loadBlogIDs() throws FetcherException;
 
     /**
+     * Load the {@link Blog} given the blog ID
      *
-     * @param blogId
-     * @return
-     * @throws FetcherException
+     * @param blogId Blog ID
+     * @return {@link Blog}
+     * @throws FetcherException If there is an error loading the blog
      */
     public Blog loadBlog(String blogId) throws FetcherException;
 
     /**
-     * 
-     * @param blog
-     * @throws FetcherException
+     * Save a {@link Blog}
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error saving the blog
      */
     public void saveBlog(Blog blog) throws FetcherException;
 
@@ -151,30 +153,33 @@ public interface Fetcher {
                                 Map context) throws FetcherException;
 
     /**
+     * Load all the entries for a given category
      *
-     * @param blog
-     * @param categoryId
-     * @return
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param categoryId Category ID
+     * @return Blog entries for a given category
+     * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadAllEntriesForCategory(Blog blog, Integer categoryId) throws FetcherException;
 
     /**
+     * Load all the entries for a given category
      *
-     * @param blog
-     * @param categoryId
-     * @param limit
-     * @return
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param categoryId Category ID
+     * @param limit Limit on number of entries to return
+     * @return Blog entries for a given category
+     * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntriesForCategory(Blog blog, Integer categoryId, Integer limit) throws FetcherException;
 
     /**
+     * Load an {@link Entry} for a given entry ID
      *
-     * @param blog
-     * @param entryId
-     * @return
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param entryId Entry ID
+     * @return {@link Entry}
+     * @throws FetcherException If there is an error loading the entry
      */
     public Entry loadEntry(Blog blog, Integer entryId) throws FetcherException;
 
@@ -206,91 +211,102 @@ public interface Fetcher {
                                       Map context) throws FetcherException;
 
     /**
+     * Load each {@link Category} for a given blog
      *
-     * @param blog
-     * @return
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @return {@link Category} list for the blog
+     * @throws FetcherException If there is an error loading the categories
      */
     public Category[] loadAllCategories(Blog blog) throws FetcherException;
 
     /**
+     * Load the {@link Category} for a given category ID
      *
-     * @param blog
-     * @param categoryId
-     * @return
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param categoryId Category ID
+     * @return {@link Category} for the given category ID
+     * @throws FetcherException If there is an error loading the category
      */
     public Category loadCategory(Blog blog, Integer categoryId) throws FetcherException;
 
     /**
+     * Save a given {@link Entry}
      *
-     * @param blog
-     * @param entry
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param entry {@link Entry} to save
+     * @throws FetcherException If there is an error saving the entry
      */
     public void saveEntry(Blog blog, Entry entry) throws FetcherException;
 
     /**
+     * Load a given {@link Entry}
      *
-     * @param blog
-     * @param entry
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param entry {@link Entry} to load
+     * @throws FetcherException If there is an error loading the entry
      */
     public void loadEntry(Blog blog, Entry entry) throws FetcherException;
 
     /**
+     * Delete a given {@link Entry}
      *
-     * @param blog
-     * @param entry
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param entry {@link Entry} to delete
+     * @throws FetcherException If there is an error deleting the entry
      */
     public void deleteEntry(Blog blog, Entry entry) throws FetcherException;
 
     /**
+     * Save a given {@link Category}
      *
-     * @param blog
-     * @param category
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param category {@link Category} to save
+     * @throws FetcherException If there is an error saving the category
      */
     public void saveCategory(Blog blog, Category category) throws FetcherException;
 
     /**
+     * Load a given {@link Category}
      *
-     * @param blog
-     * @param category
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param category {@link Category} to load
+     * @throws FetcherException If there is an loading saving the category
      */
     public void loadCategory(Blog blog, Category category) throws FetcherException;
 
     /**
+     * Delete a given {@link Category}
      *
-     * @param blog
-     * @param category
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param category {@link Category} to delete
+     * @throws FetcherException If there is an error deleting the category
      */
     public void deleteCategory(Blog blog, Category category) throws FetcherException;
 
     /**
+     * Save a given {@link Comment}
      *
-     * @param blog
-     * @param comment
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param comment {@link Comment} to save
+     * @throws FetcherException If there is an error saving the comment
      */
     public void saveComment(Blog blog, Comment comment) throws FetcherException;
 
     /**
+     * Load a given {@link Comment}
      *
-     * @param blog
-     * @param comment
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param comment {@link Comment} to load
+     * @throws FetcherException If there is an error loading the comment
      */
     public void loadComment(Blog blog, Comment comment) throws FetcherException;
 
     /**
+     * Delete a given {@link Comment}
      *
-     * @param blog
-     * @param comment
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param comment {@link Comment} to delete
+     * @throws FetcherException If there is an error deleting the comment
      */
     public void deleteComment(Blog blog, Comment comment) throws FetcherException;
 
@@ -303,26 +319,29 @@ public interface Fetcher {
     public List loadRecentComments(Blog blog) throws FetcherException;
 
     /**
+     * Save a given {@link Trackback}
      *
-     * @param blog
-     * @param trackback
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param trackback {@link Trackback} to save
+     * @throws FetcherException If there is an error saving the trackback
      */
     public void saveTrackback(Blog blog, Trackback trackback) throws FetcherException;
 
     /**
+     * Load a given {@link Trackback}
      *
-     * @param blog
-     * @param trackback
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param trackback {@link Trackback} to load
+     * @throws FetcherException If there is an error loading the trackback
      */
     public void loadTrackback(Blog blog, Trackback trackback) throws FetcherException;
 
     /**
+     * Delete a given {@link Trackback}
      *
-     * @param blog
-     * @param trackback
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param trackback {@link Trackback} to delete
+     * @throws FetcherException If there is an error deleting the trackback
      */
     public void deleteTrackback(Blog blog, Trackback trackback) throws FetcherException;
 
@@ -335,18 +354,20 @@ public interface Fetcher {
     public List loadRecentTrackbacks(Blog blog) throws FetcherException;
 
     /**
+     * Save a given {@link Pingback}
      *
-     * @param blog
-     * @param pingback
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param pingback {@link Pingback} to save
+     * @throws FetcherException If there is an error saving the pingback
      */
     public void savePingback(Blog blog, Pingback pingback) throws FetcherException;
 
     /**
+     * Load a given {@link Pingback}
      *
-     * @param blog
-     * @param pingback
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param pingback {@link Pingback} to load
+     * @throws FetcherException If there is an error loading the pingback
      */
     public void loadPingback(Blog blog, Pingback pingback) throws FetcherException;
 
@@ -362,10 +383,11 @@ public interface Fetcher {
     public Pingback loadPingback(Blog blog, String sourceURI, String targetURI) throws FetcherException;
 
     /**
+     * Delete a given {@link Pingback}
      *
-     * @param blog
-     * @param pingback
-     * @throws FetcherException
+     * @param blog {@link Blog}
+     * @param pingback {@link Pingback} to delete
+     * @throws FetcherException If there is an error deleting the pingback
      */
     public void deletePingback(Blog blog, Pingback pingback) throws FetcherException;
 
@@ -422,6 +444,16 @@ public interface Fetcher {
      * @throws FetcherException If there is an error deleting the user from the blog
      */
     public void deleteUser(Blog blog, Integer userID) throws FetcherException;
+    
+    /**
+     * Load the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
+     *
+     * @param blog {@link Blog}
+     * @param status List of status codes to load
+     * @return List of responses (comments, trackbacks, pingbacks) matching one of a set of status codes
+     * @throws FetcherException If there is an error loading the responses
+     */
+    public List loadResponses(Blog blog, String[] status) throws FetcherException;
 
     /**
      * Called when {@link org.blojsom.servlet.BlojsomServlet} is taken out of service

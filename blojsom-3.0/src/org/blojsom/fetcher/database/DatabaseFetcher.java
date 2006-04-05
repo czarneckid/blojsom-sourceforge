@@ -48,16 +48,13 @@ import org.hibernate.criterion.Restrictions;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.12 2006-03-28 16:14:11 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.13 2006-04-05 00:40:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -189,9 +186,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blogId
-     * @return
-     * @throws FetcherException
+     * Load the {@link Blog} given the blog ID
+     *
+     * @param blogId Blog ID
+     * @return {@link Blog}
+     * @throws FetcherException If there is an error loading the blog
      */
     public Blog loadBlog(String blogId) throws FetcherException {
         Session session = _sessionFactory.openSession();
@@ -221,8 +220,10 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @throws FetcherException
+     * Save a {@link Blog}
+     *
+     * @param blog {@link Blog}
+     * @throws FetcherException If there is an error saving the blog
      */
     public void saveBlog(Blog blog) throws FetcherException {
         try {
@@ -440,10 +441,12 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param categoryId
-     * @return
-     * @throws FetcherException
+     * Load all the entries for a given category
+     *
+     * @param blog {@link Blog}
+     * @param categoryId Category ID
+     * @return Blog entries for a given category
+     * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadAllEntriesForCategory(Blog blog, Integer categoryId) throws FetcherException {
         try {
@@ -471,11 +474,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param categoryId
-     * @param limit
-     * @return
-     * @throws FetcherException
+     * Load all the entries for a given category
+     *
+     * @param blog {@link Blog}
+     * @param categoryId Category ID
+     * @param limit Limit on number of entries to return
+     * @return Blog entries for a given category
+     * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntriesForCategory(Blog blog, Integer categoryId, Integer limit) throws FetcherException {
         try {
@@ -504,10 +509,12 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param entryId
-     * @return
-     * @throws FetcherException
+     * Load an {@link Entry} for a given entry ID
+     *
+     * @param blog {@link Blog}
+     * @param entryId Entry ID
+     * @return {@link Entry}
+     * @throws FetcherException If there is an error loading the entry
      */
     public Entry loadEntry(Blog blog, Integer entryId) throws FetcherException {
         try {
@@ -672,9 +679,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @return
-     * @throws FetcherException
+     * Load each {@link Category} for a given blog
+     *
+     * @param blog {@link Blog}
+     * @return {@link Category} list for the blog
+     * @throws FetcherException If there is an error loading the categories
      */
     public Category[] loadAllCategories(Blog blog) throws FetcherException {
         try {
@@ -701,10 +710,12 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param categoryId
-     * @return
-     * @throws FetcherException
+     * Load the {@link Category} for a given category ID
+     *
+     * @param blog {@link Blog}
+     * @param categoryId Category ID
+     * @return {@link Category} for the given category ID
+     * @throws FetcherException If there is an error loading the category
      */
     public Category loadCategory(Blog blog, Integer categoryId) throws FetcherException {
         try {
@@ -762,9 +773,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param entry
-     * @throws FetcherException
+     * Save a given {@link Entry}
+     *
+     * @param blog {@link Blog}
+     * @param entry {@link Entry} to save
+     * @throws FetcherException If there is an error saving the entry
      */
     public void saveEntry(Blog blog, Entry entry) throws FetcherException {
         try {
@@ -802,9 +815,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param entry
-     * @throws FetcherException
+     * Load a given {@link Entry}
+     *
+     * @param blog {@link Blog}
+     * @param entry {@link Entry} to load
+     * @throws FetcherException If there is an error loading the entry
      */
     public void loadEntry(Blog blog, Entry entry) throws FetcherException {
         if (entry.getId() == null) {
@@ -833,9 +848,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param entry
-     * @throws FetcherException
+     * Delete a given {@link Entry}
+     *
+     * @param blog {@link Blog}
+     * @param entry {@link Entry} to delete
+     * @throws FetcherException If there is an error deleting the entry
      */
     public void deleteEntry(Blog blog, Entry entry) throws FetcherException {
         if (entry.getId() == null) {
@@ -864,9 +881,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param category
-     * @throws FetcherException
+     * Save a given {@link Category}
+     *
+     * @param blog {@link Blog}
+     * @param category {@link Category} to save
+     * @throws FetcherException If there is an error saving the category
      */
     public void saveCategory(Blog blog, Category category) throws FetcherException {
         try {
@@ -891,9 +910,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param category
-     * @throws FetcherException
+     * Load a given {@link Category}
+     *
+     * @param blog {@link Blog}
+     * @param category {@link Category} to load
+     * @throws FetcherException If there is an loading saving the category
      */
     public void loadCategory(Blog blog, Category category) throws FetcherException {
         if (category.getId() == null) {
@@ -922,9 +943,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param category
-     * @throws FetcherException
+     * Delete a given {@link Category}
+     *
+     * @param blog {@link Blog}
+     * @param category {@link Category} to delete
+     * @throws FetcherException If there is an error deleting the category
      */
     public void deleteCategory(Blog blog, Category category) throws FetcherException {
         if (category.getId() == null) {
@@ -953,9 +976,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param comment
-     * @throws FetcherException
+     * Save a given {@link Comment}
+     *
+     * @param blog {@link Blog}
+     * @param comment {@link Comment} to save
+     * @throws FetcherException If there is an error saving the comment
      */
     public void saveComment(Blog blog, Comment comment) throws FetcherException {
         try {
@@ -980,9 +1005,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param comment
-     * @throws FetcherException
+     * Load a given {@link Comment}
+     *
+     * @param blog {@link Blog}
+     * @param comment {@link Comment} to load
+     * @throws FetcherException If there is an error loading the comment
      */
     public void loadComment(Blog blog, Comment comment) throws FetcherException {
         if (comment.getId() == null) {
@@ -1007,9 +1034,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param comment
-     * @throws FetcherException
+     * Delete a given {@link Comment}
+     *
+     * @param blog {@link Blog}
+     * @param comment {@link Comment} to delete
+     * @throws FetcherException If there is an error deleting the comment
      */
     public void deleteComment(Blog blog, Comment comment) throws FetcherException {
         if (comment.getId() == null) {
@@ -1079,9 +1108,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param trackback
-     * @throws FetcherException
+     * Save a given {@link Trackback}
+     *
+     * @param blog {@link Blog}
+     * @param trackback {@link Trackback} to save
+     * @throws FetcherException If there is an error saving the trackback
      */
     public void saveTrackback(Blog blog, Trackback trackback) throws FetcherException {
         try {
@@ -1106,9 +1137,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param trackback
-     * @throws FetcherException
+     * Load a given {@link Trackback}
+     *
+     * @param blog {@link Blog}
+     * @param trackback {@link Trackback} to load
+     * @throws FetcherException If there is an error loading the trackback
      */
     public void loadTrackback(Blog blog, Trackback trackback) throws FetcherException {
         if (trackback.getId() == null) {
@@ -1134,9 +1167,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param trackback
-     * @throws FetcherException
+     * Delete a given {@link Trackback}
+     *
+     * @param blog {@link Blog}
+     * @param trackback {@link Trackback} to delete
+     * @throws FetcherException If there is an error deleting the trackback
      */
     public void deleteTrackback(Blog blog, Trackback trackback) throws FetcherException {
         if (trackback.getId() == null) {
@@ -1206,9 +1241,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param pingback
-     * @throws FetcherException
+     * Save a given {@link Pingback}
+     *
+     * @param blog {@link Blog}
+     * @param pingback {@link Pingback} to save
+     * @throws FetcherException If there is an error saving the pingback
      */
     public void savePingback(Blog blog, Pingback pingback) throws FetcherException {
         try {
@@ -1233,9 +1270,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param pingback
-     * @throws FetcherException
+     * Load a given {@link Pingback}
+     *
+     * @param blog {@link Blog}
+     * @param pingback {@link Pingback} to load
+     * @throws FetcherException If there is an error loading the pingback
      */
     public void loadPingback(Blog blog, Pingback pingback) throws FetcherException {
         if (pingback.getId() == null) {
@@ -1297,9 +1336,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     }
 
     /**
-     * @param blog
-     * @param pingback
-     * @throws FetcherException
+     * Delete a given {@link Pingback}
+     *
+     * @param blog {@link Blog}
+     * @param pingback {@link Pingback} to delete
+     * @throws FetcherException If there is an error deleting the pingback
      */
     public void deletePingback(Blog blog, Pingback pingback) throws FetcherException {
         if (pingback.getId() == null) {
@@ -1387,6 +1428,10 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             tx.commit();
             session.close();
+
+            if (user == null) {
+                throw new FetcherException("Unable to load user login: " + userLogin + " for blog: " + blog.getBlogId());
+            }
 
             return user;
         } catch (HibernateException e) {
@@ -1529,6 +1574,47 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException("Unable to delete user ID: " + userID + " from blog: " + blog.getBlogId(), e);
         }
+    }
+
+    /**
+     * Load the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
+     *
+     * @param blog {@link Blog}
+     * @param status List of status codes to load
+     * @return List of responses (comments, trackbacks, pingbacks) matching one of a set of status codes
+     * @throws FetcherException If there is an error loading the responses
+     */
+    public List loadResponses(Blog blog, String[] status) throws FetcherException {
+        List responses = new ArrayList();
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
+            commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.in("status", status));
+
+            responses.addAll(commentsCriteria.list());
+
+            Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
+            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.in("status", status));
+
+            responses.addAll(trackbacksCriteria.list());
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+
+        Collections.sort(responses, BlojsomUtils.RESPONSE_COMPARATOR);
+        return responses;
     }
 
     /**
