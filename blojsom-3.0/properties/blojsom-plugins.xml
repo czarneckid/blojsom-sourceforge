@@ -590,6 +590,21 @@
         </property>
     </bean>
 
+    <bean id="forgotten-password" class="org.blojsom.plugin.admin.ForgottenPasswordPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+
     <bean id="list-web-admin-plugins" class="org.blojsom.plugin.admin.ListWebAdminPluginsPlugin" init-method="init"
           destroy-method="destroy">
         <property name="servletConfig">
