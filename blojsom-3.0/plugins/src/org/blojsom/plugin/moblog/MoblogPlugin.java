@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.1 2006-03-24 23:48:44 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.2 2006-04-10 12:49:45 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin {
@@ -731,7 +731,7 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
     protected String sanitizeContentType(String contentType) {
         int semicolonIndex = contentType.indexOf(";");
         if (semicolonIndex != -1) {
-            return contentType.substring(0, semicolonIndex);
+            contentType = contentType.substring(0, semicolonIndex);
         }
 
         return contentType.toLowerCase();

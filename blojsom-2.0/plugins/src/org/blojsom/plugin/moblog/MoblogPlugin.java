@@ -68,7 +68,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.31 2006-01-04 16:53:12 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.32 2006-04-10 12:47:45 czarneckid Exp $
  * @since blojsom 2.14
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConstants {
@@ -774,8 +774,8 @@ public class MoblogPlugin extends StandaloneVelocityPlugin implements EmailConst
      */
     protected String sanitizeContentType(String contentType) {
         int semicolonIndex = contentType.indexOf(";");
-        if (semicolonIndex != -1) {
-            return contentType.substring(0, semicolonIndex);
+		if (semicolonIndex != -1) {
+            contentType = contentType.substring(0, semicolonIndex);
         }
 
         return contentType.toLowerCase();
