@@ -10,7 +10,7 @@
     <bean id="servletConfigFactoryBean" class="org.blojsom.servlet.ServletConfigFactoryBean">
     </bean>
 
-    <bean id="mySQLDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/blojsom?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
         <property name="username" value="blojsom"/>
@@ -18,7 +18,7 @@
     </bean>
 
     <bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="mySQLDataSource"/>
+        <property name="dataSource" ref="dataSource"/>
         <property name="mappingResources">
             <list>
                 <value>Blog.hbm.xml</value>
