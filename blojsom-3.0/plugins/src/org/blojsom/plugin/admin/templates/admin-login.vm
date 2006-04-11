@@ -17,7 +17,7 @@
                 <div class="mainClm">
                     <h3>#adminResource('login.header' 'Login')</h3>
                     <table>
-                        <form name="blojsom-login" action="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin" method="post">
+                        <form name="blojsom-login" action="#BlogAdminURL()/?flavor=admin" method="post">
                             <tr>
                                 <td>#adminResource('username.text' 'Username')</td>
                                 <td>
@@ -39,10 +39,10 @@
                             </tr>
                             <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                             <tr>
-                                <td></td><td><a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&plugins=forgotten-password&action=page">#adminResource('forget.your.password.text' 'Forget your password?')</a></td>
+                                <td></td><td><a href="#BlogAdminURL()/?flavor=admin&plugins=forgotten-password&action=page">#adminResource('forget.your.password.text' 'Forget your password?')</a></td>
                             </tr>
                             <tr>
-                                <td></td><td>Back to <a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></td>
+                                <td></td><td>Back to <a href="#BlogURL()/">$BLOJSOM_BLOG.getBlogName()</a></td>
                             </tr>
                         </form>
                     </table>
