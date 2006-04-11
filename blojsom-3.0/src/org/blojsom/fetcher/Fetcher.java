@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.9 2006-04-05 00:40:53 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.10 2006-04-11 19:52:45 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -172,6 +172,17 @@ public interface Fetcher {
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntriesForCategory(Blog blog, Integer categoryId, Integer limit) throws FetcherException;
+
+    /**
+     * Load a set of entries using a given page size and page in which to retrieve the entries
+     *
+     * @param blog {@link Blog}
+     * @param pageSize Page size
+     * @param page Page
+     * @return Blog entries
+     * @throws FetcherException If there is an error loading the entries
+     */
+    public Entry[] loadEntries(Blog blog, int pageSize, int page) throws FetcherException;
 
     /**
      * Load an {@link Entry} for a given entry ID

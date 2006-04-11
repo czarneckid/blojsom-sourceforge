@@ -54,7 +54,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.13 2006-04-05 00:40:53 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.14 2006-04-11 19:52:48 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -506,6 +506,45 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         }
+    }
+
+    /**
+     * Load a set of entries using a given page size and page in which to retrieve the entries
+     *
+     * @param blog     {@link Blog}
+     * @param pageSize Page size
+     * @param page     Page
+     * @return Blog entries
+     * @throws FetcherException If there is an error loading the entries
+     */
+    public Entry[] loadEntries(Blog blog, int pageSize, int page) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        page -= 1;
+        if (page < 0) {
+            page = 0;
+        }
+
+        if (pageSize < 1) {
+            pageSize = 1;
+        }
+
+        page *= pageSize;
+
+        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+        entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        entryCriteria.add(Restrictions.lt("date", new Date()));
+        entryCriteria.addOrder(Order.desc("date"));
+        entryCriteria.setMaxResults(pageSize);
+        entryCriteria.setFirstResult(page);
+
+        List entryList = entryCriteria.list();
+
+        tx.commit();
+        session.close();
+
+        return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
     }
 
     /**
