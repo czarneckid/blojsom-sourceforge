@@ -1,0 +1,30 @@
+#AdminPageTitle('manage.entries.header' 'Manage Entries')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <div class="mainClm">
+                    <h3>Latest posts</h3>
+                    <table>
+                    #foreach ($entry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
+
+                    #end
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")
