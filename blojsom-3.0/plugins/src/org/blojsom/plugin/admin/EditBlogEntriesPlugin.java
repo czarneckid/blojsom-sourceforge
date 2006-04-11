@@ -74,7 +74,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.5 2006-03-23 04:23:08 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.6 2006-04-11 19:55:44 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -86,6 +86,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_ENTRIES_LIST_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entries-list";
     private static final String EDIT_BLOG_ENTRY_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-entry";
     private static final String ADD_BLOG_ENTRY_PAGE = "/org/blojsom/plugin/admin/templates/admin-add-blog-entry";
+    private static final String MANAGE_BLOG_ENTRIES_PAGE = "/org/blojsom/plugin/admin/templates/admin-manage-blog-entries";
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST";
@@ -122,6 +123,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String APPROVE_BLOG_COMMENTS = "approve-blog-comments";
     private static final String APPROVE_BLOG_TRACKBACKS = "approve-blog-trackbacks";
     private static final String APPROVE_BLOG_PINGBACKS = "approve-blog-pingbacks";
+    private static final String EDIT_ENTRIES_LIST = "edit-entries-list";
 
     // Form elements
     private static final String BLOG_CATEGORY_ID = "blog-category-id";
@@ -164,6 +166,49 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
      */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
+    }
+
+    /**
+     * Delete a blog entry
+     * @param httpServletRequest Request
+     * @param blog {@link Blog}
+     * @param context Context
+     * @return <code>true</code> if the entry was deleted, <code>false</code> otherwise
+     */
+    protected boolean deleteBlogEntry(HttpServletRequest httpServletRequest, Blog blog, Map context) {
+        String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
+        Integer entryId;
+        try {
+            entryId = Integer.valueOf(blogEntryId);
+        } catch (NumberFormatException e) {
+            addOperationResultMessage(context, formatAdminResource(FAILED_RETRIEVE_BLOG_ENTRY_KEY, FAILED_RETRIEVE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+            return false;
+        }
+
+        try {
+            Entry entryToDelete = _fetcher.newEntry();
+            entryToDelete.setId(entryId);
+
+            _fetcher.loadEntry(blog, entryToDelete);
+            String title = entryToDelete.getTitle();
+            _fetcher.deleteEntry(blog,entryToDelete);
+
+            addOperationResultMessage(context, formatAdminResource(DELETED_BLOG_ENTRY_KEY, DELETED_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{title}));
+
+            EntryDeletedEvent deleteEvent = new EntryDeletedEvent(this, new Date(), entryToDelete, blog);
+            _eventBroadcaster.broadcastEvent(deleteEvent);
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_BLOG_ENTRY_KEY, FAILED_DELETE_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogEntryId}));
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -923,6 +968,33 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_ENTRY_PAGE);
+        } else if (EDIT_ENTRIES_LIST.equals(action)) {
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested edit entries list action");
+            }
+
+            String page = BlojsomUtils.getRequestValue(BlojsomConstants.PAGE_NUMBER_PARAM, httpServletRequest);
+            int pgNum;
+            try {
+                pgNum = Integer.parseInt(page);
+            } catch (NumberFormatException e) {
+                pgNum = 1;
+            }
+
+            if (pgNum < 1) {
+                pgNum = 1;
+            }
+
+            try {
+                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST, _fetcher.loadEntries(blog, 10, pgNum));
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+            }
+
+            context.put(BlojsomConstants.PAGE_NUMBER_PARAM, new Integer(pgNum));
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, MANAGE_BLOG_ENTRIES_PAGE);
         }
 
         return entries;
