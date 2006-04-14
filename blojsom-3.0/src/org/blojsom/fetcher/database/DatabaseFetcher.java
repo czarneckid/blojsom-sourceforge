@@ -44,6 +44,7 @@ import org.blojsom.util.BlojsomUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Projections;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +55,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.14 2006-04-11 19:52:48 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.15 2006-04-14 20:14:59 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -545,6 +546,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
         session.close();
 
         return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+    }
+
+    /**
+     * Count the number of entries for a blog
+     *
+     * @param blog {@link Blog}
+     * @return Number of entries
+     * @throws FetcherException If there is an error counting the blog entries
+     */
+    public Integer countEntries(Blog blog) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+        entryCriteria.setProjection(Projections.rowCount());
+        entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        entryCriteria.add(Restrictions.lt("date", new Date()));
+
+        List entryList = entryCriteria.list();
+
+        tx.commit();
+        session.close();
+
+        return (Integer) entryList.get(0);
     }
 
     /**
