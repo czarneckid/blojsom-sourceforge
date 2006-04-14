@@ -14,13 +14,37 @@
             <div id="contents">
                 #showErrorMessage()
 
+                #set($confirmationText = "#adminResource('delete.blog.entry.confirmation.text' '')")
+                #DeleteConfirmationPrompt('' $confirmationText)
+
                 <div class="mainClm">
                     <h3>Latest posts</h3>
                     <table>
-                    #foreach ($entry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
-
-                    #end
+                        <tr>
+                            <th>ID</th> <th>Posted on</th> <th>Title</th> <th>Category</th> <th>Responses</th> <th>Author</th>
+                        </tr>
+                        #foreach ($entry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
+                        <tr>
+                            <td>$entry.getId()</td>
+                            <td>$entry.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale())</td>
+                            <td>$entry.getEscapedTitle()</td>
+                            <td>#CategoryDescription($entry.getBlogCategory())</td>
+                            <td>$entry.getResponses().size()</td>
+                            <td>$entry.getAuthor()</td>
+                            <td><a href="#BlogURL()$entry.getBlogCategory().getName()$entry.getPostSlug()">View</a></td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&action=edit-blog-entry&plugins=edit-blog-entries&blog-category-id=$entry.getBlogCategory().getId()&blog-entry-id=$entry.getId()">Edit</a></td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&action=delete-blog-entry&plugins=edit-blog-entries&blog-category-id=$entry.getBlogCategory().getId()&blog-entry-id=$entry.getId()" #OnClickDeletePrompt('')>Delete</a></td>
+                        </tr>
+                        #end
                     </table>
+
+                    #set($page_number = $pg_num.intValue())
+                    #set($next_page = $page_number + 1)
+                    #set($previous_page = $page_number - 1)
+                    #if ($page_number > 1)
+                    <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$previous_page">&laquo; Previous page</a>
+                    #end
+                    <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$next_page">Next page &raquo;</a>
                 </div>
             </div>
         </div>
