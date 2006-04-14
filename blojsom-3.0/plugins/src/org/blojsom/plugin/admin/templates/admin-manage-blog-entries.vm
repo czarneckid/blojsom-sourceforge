@@ -17,6 +17,11 @@
                 #set($confirmationText = "#adminResource('delete.blog.entry.confirmation.text' '')")
                 #DeleteConfirmationPrompt('' $confirmationText)
 
+                #set($page_number = $pg_num.intValue())
+                #set($total_pages = $BLOJSOM_PLUGIN_TOTAL_ENTRIES_PAGES.intValue())
+                #set($next_page = $page_number + 1)
+                #set($previous_page = $page_number - 1)
+
                 <div class="mainClm">
                     <h3>Latest posts</h3>
                     <table>
@@ -33,18 +38,17 @@
                             <td>$entry.getAuthor()</td>
                             <td><a href="#BlogURL()$entry.getBlogCategory().getName()$entry.getPostSlug()">View</a></td>
                             <td><a href="#BlogAdminURL()/?flavor=admin&action=edit-blog-entry&plugins=edit-blog-entries&blog-category-id=$entry.getBlogCategory().getId()&blog-entry-id=$entry.getId()">Edit</a></td>
-                            <td><a href="#BlogAdminURL()/?flavor=admin&action=delete-blog-entry&plugins=edit-blog-entries&blog-category-id=$entry.getBlogCategory().getId()&blog-entry-id=$entry.getId()" #OnClickDeletePrompt('')>Delete</a></td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&subaction=delete-blog-entry-list&pg_num=$page_number&blog-entry-id=$entry.getId()" #OnClickDeletePrompt('')>Delete</a></td>
                         </tr>
                         #end
                     </table>
 
-                    #set($page_number = $pg_num.intValue())
-                    #set($next_page = $page_number + 1)
-                    #set($previous_page = $page_number - 1)
                     #if ($page_number > 1)
                     <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$previous_page">&laquo; Previous page</a>
                     #end
+                    #if ($page_number < $total_pages)
                     <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$next_page">Next page &raquo;</a>
+                    #end
                 </div>
             </div>
         </div>

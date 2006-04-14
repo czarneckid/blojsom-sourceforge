@@ -56,7 +56,7 @@ import java.util.Map;
  * BaseAdminPlugin
  *
  * @author David Czarnecki
- * @version $Id: BaseAdminPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.2 2006-04-14 20:15:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BaseAdminPlugin implements Plugin, PermissionedPlugin {
@@ -70,6 +70,7 @@ public class BaseAdminPlugin implements Plugin, PermissionedPlugin {
     protected static final String BLOJSOM_ADMIN_PLUGIN_USERNAME_PARAM = "username";
     protected static final String BLOJSOM_ADMIN_PLUGIN_PASSWORD_PARAM = "password";
     protected static final String ACTION_PARAM = "action";
+    protected static final String SUBACTION_PARAM = "subaction";
     protected static final String BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT = "BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT";
     protected static final String BLOJSOM_USER_AUTHENTICATED = "BLOJSOM_USER_AUTHENTICATED";
     protected static final String BLOJSOM_ADMIN_MESSAGES_RESOURCE = "org.blojsom.plugin.admin.resources.messages";
