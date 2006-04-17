@@ -60,7 +60,6 @@
                                     <form id="commentform" method="post" action="$permalink">
                                         <div>
                                             <input type="hidden" name="comment" value="y" />
-                                            <input type="hidden" name="page" value="comments" />
                                             <input type="hidden" name="entry_id" value="$entry.getId()" />
                                             <input type="hidden" name="permalink" value="$entry.getPostSlug()" />
                                         </div>
