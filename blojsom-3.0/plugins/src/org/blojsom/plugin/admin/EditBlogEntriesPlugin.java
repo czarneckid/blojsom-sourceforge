@@ -74,7 +74,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.7 2006-04-14 20:15:19 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.8 2006-04-17 16:06:05 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -126,6 +126,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String APPROVE_BLOG_PINGBACKS = "approve-blog-pingbacks";
     private static final String EDIT_ENTRIES_LIST = "edit-entries-list";
     private static final String DELETE_BLOG_ENTRY_LIST = "delete-blog-entry-list";
+    private static final String AJAX_DELETE_COMMENT = "ajax-delete-comment";
+    private static final String AJAX_APPROVE_COMMENT = "ajax-approve-comment";
 
     // Form elements
     private static final String BLOG_CATEGORY_ID = "blog-category-id";
@@ -1010,6 +1012,131 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             context.put(BlojsomConstants.PAGE_NUMBER_PARAM, new Integer(pgNum));
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, MANAGE_BLOG_ENTRIES_PAGE);
+        } else if (AJAX_DELETE_COMMENT.equals(action)) {
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested AJAX delete comment action");
+            }
+
+            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
+            Integer entryId;
+            try {
+                entryId = Integer.valueOf(blogEntryId);
+            } catch (NumberFormatException e) {
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                return entries;
+            }
+
+            Entry entry;
+            try {
+                entry = _fetcher.loadEntry(blog, entryId);
+                String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
+
+                if (blogCommentIDs != null && blogCommentIDs.length > 0) {
+                    for (int i = 0; i < blogCommentIDs.length; i++) {
+                        String blogCommentID = blogCommentIDs[i];
+                        Comment[] blogComments = entry.getCommentsAsArray();
+                        for (int j = 0; j < blogComments.length; j++) {
+                            Comment blogComment = blogComments[j];
+                            if (blogComment.getId().equals(Integer.valueOf(blogCommentID))) {
+                                try {
+                                    _fetcher.deleteComment(blog, blogComment);
+
+                                    _eventBroadcaster.broadcastEvent(new CommentDeletedEvent(this, new Date(), blogComment, blog));
+                                } catch (FetcherException e) {
+                                    if (_logger.isErrorEnabled()) {
+                                        _logger.error(e);
+                                    }
+
+                                    context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+                                }
+                            }
+                        }
+                    }
+
+                    addOperationResultMessage(context, formatAdminResource(DELETED_COMMENTS_KEY, DELETED_COMMENTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(blogCommentIDs.length)}));
+                }
+
+                _fetcher.loadEntry(blog, entry);
+
+                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
+
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                entries = new Entry[0];
+            }
+        } else if (AJAX_APPROVE_COMMENT.equals(action)) {
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested AJAX approve comment action");
+            }
+
+            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
+            Integer entryId;
+            try {
+                entryId = Integer.valueOf(blogEntryId);
+            } catch (NumberFormatException e) {
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                return entries;
+            }
+
+            Entry entry;
+            try {
+                entry = _fetcher.loadEntry(blog, entryId);
+                String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
+
+                if (blogCommentIDs != null && blogCommentIDs.length > 0) {
+                    for (int i = 0; i < blogCommentIDs.length; i++) {
+                        String blogCommentID = blogCommentIDs[i];
+                        Comment[] blogComments = entry.getCommentsAsArray();
+                        for (int j = 0; j < blogComments.length; j++) {
+                            Comment blogComment = blogComments[j];
+                            if (blogComment.getId().equals(Integer.valueOf(blogCommentID))) {
+                                try {
+                                    blogComment.setStatus(ResponseConstants.APPROVED_STATUS);
+                                    _fetcher.saveComment(blog, blogComment);
+
+                                    _eventBroadcaster.broadcastEvent(new CommentApprovedEvent(this, new Date(), blogComment, blog));
+                                } catch (FetcherException e) {
+                                    _logger.error(e);
+
+                                    context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+                                }
+                            }
+                        }
+                    }
+
+                    addOperationResultMessage(context, formatAdminResource(APPROVED_COMMENTS_KEY, APPROVED_COMMENTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(blogCommentIDs.length)}));
+                }
+
+                _fetcher.loadEntry(blog, entry);
+
+                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
+
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                entries = new Entry[0];
+            }
         }
 
         return entries;
