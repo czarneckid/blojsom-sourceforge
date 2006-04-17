@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseEntry.java,v 1.3 2006-04-05 00:48:27 czarneckid Exp $
+ * @version $Id: DatabaseEntry.java,v 1.4 2006-04-17 20:42:55 czarneckid Exp $
  */
 public class DatabaseEntry implements Entry, Serializable {
 
@@ -653,10 +653,10 @@ public class DatabaseEntry implements Entry, Serializable {
     }
 
     /**
-     * Get the responses (comments, trackbacks, pingbacks) matching some set of status codes
+     * Get the responses (comments, trackbacks, pingbacks) matching some status code
      *
-     * @param status Set of status codes
-     * @return Responses (comments, trackbacks, pingbacks) matching some set of status codes
+     * @param status Status code
+     * @return Responses (comments, trackbacks, pingbacks) matching some status code
      */
     public List getResponsesMatchingStatus(String status) {
         List responses = getResponses();
@@ -664,6 +664,25 @@ public class DatabaseEntry implements Entry, Serializable {
         for (int i = 0; i < responses.size(); i++) {
             Response response = (Response) responses.get(i);
             if (!status.equals(response.getStatus())) {
+                responses.set(i, null);
+            }
+        }
+
+        return BlojsomUtils.removeNullValues(responses);
+    }
+
+    /**
+     * Get the responses (comments, trackbacks, pingbacks) not matching some status code
+     *
+     * @param status Status code
+     * @return Responses (comments, trackbacks, pingbacks) not matching some status code
+     */
+    public List getResponsesNotMatchingStatus(String status) {
+        List responses = getResponses();
+
+        for (int i = 0; i < responses.size(); i++) {
+            Response response = (Response) responses.get(i);
+            if (status.equals(response.getStatus())) {
                 responses.set(i, null);
             }
         }

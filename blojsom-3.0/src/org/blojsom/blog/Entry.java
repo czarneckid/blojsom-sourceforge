@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Entry.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
+ * @version $Id: Entry.java,v 1.4 2006-04-17 20:42:52 czarneckid Exp $
  */
 public interface Entry {
 
@@ -440,10 +440,18 @@ public interface Entry {
     public List getResponses();
 
     /**
-     * Get the responses (comments, trackbacks, pingbacks) matching some status
+     * Get the responses (comments, trackbacks, pingbacks) matching some status code
      *
-     * @param status Status
-     * @return Responses (comments, trackbacks, pingbacks) matching some status
+     * @param status Status code
+     * @return Responses (comments, trackbacks, pingbacks) matching some status code
      */
     public List getResponsesMatchingStatus(String status);
+
+    /**
+     * Get the responses (comments, trackbacks, pingbacks) not matching some status code
+     *
+     * @param status Status code
+     * @return Responses (comments, trackbacks, pingbacks) not matching some status code
+     */
+    public List getResponsesNotMatchingStatus(String status);
 }
