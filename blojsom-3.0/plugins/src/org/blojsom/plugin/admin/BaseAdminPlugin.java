@@ -56,7 +56,7 @@ import java.util.Map;
  * BaseAdminPlugin
  *
  * @author David Czarnecki
- * @version $Id: BaseAdminPlugin.java,v 1.2 2006-04-14 20:15:19 czarneckid Exp $
+ * @version $Id: BaseAdminPlugin.java,v 1.3 2006-04-17 16:04:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BaseAdminPlugin implements Plugin, PermissionedPlugin {
@@ -83,6 +83,7 @@ public class BaseAdminPlugin implements Plugin, PermissionedPlugin {
     // Pages
     protected static final String ADMIN_ADMINISTRATION_PAGE = "/org/blojsom/plugin/admin/templates/admin";
     protected static final String ADMIN_LOGIN_PAGE = "/org/blojsom/plugin/admin/templates/admin-login";
+    protected static final String ADMIN_AJAX_RESPONSE = "/org/blojsom/plugin/admin/templates/admin-ajax-response";
 
     // Actions
     protected static final String LOGIN_ACTION = "login";
