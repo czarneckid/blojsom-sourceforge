@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.7 2006-03-28 16:14:11 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.8 2006-04-17 16:04:39 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -285,6 +285,10 @@ public interface BlojsomConstants {
     public static final String REDIRECT_TO_PARAM = "redirect_to";
 
     public static final String PAGE_NUMBER_PARAM = "pg_num";
+
+    public static final String BLOJSOM_AJAX_STATUS = "BLOJSOM_AJAX_STATUS";
+    public static final String SUCCESS = "success";
+    public static final String FAILURE = "failure";
 
     /**
      * Various HTTP caching headers
