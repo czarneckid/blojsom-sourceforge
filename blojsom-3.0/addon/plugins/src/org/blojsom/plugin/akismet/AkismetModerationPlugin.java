@@ -43,6 +43,7 @@ import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
+import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
@@ -57,7 +58,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.2 2006-03-23 07:16:01 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.3 2006-04-18 18:44:38 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
@@ -153,7 +154,9 @@ public class AkismetModerationPlugin implements Plugin, Listener {
 
             String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
             if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
-                _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
             } else {
                 Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
                 String responseType = Akismet.COMMENT_TYPE_BLANK;
@@ -162,6 +165,8 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                     responseType = Akismet.COMMENT_TYPE_COMMENT;
                 } else if (responseSubmissionEvent instanceof TrackbackResponseSubmissionEvent) {
                     responseType = Akismet.COMMENT_TYPE_TRACKBACK;
+                } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
+                    responseType = Akismet.COMMENT_TYPE_PINGBACK;
                 }
 
                 // Check the content from Akismet
@@ -186,9 +191,13 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                     }
 
                     if (!deleteSpam) {
-                        _logger.debug("Marking response for moderation");
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Marking response for moderation");
+                        }
                     } else {
-                        _logger.debug("Marking response for automatic deletion");
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Marking response for automatic deletion");
+                        }
                     }
 
                     if (responseSubmissionEvent instanceof CommentResponseSubmissionEvent) {
