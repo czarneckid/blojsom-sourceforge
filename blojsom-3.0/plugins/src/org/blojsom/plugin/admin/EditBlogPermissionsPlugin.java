@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.4 2006-03-22 21:25:11 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.5 2006-04-18 21:24:18 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -136,7 +136,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
             User userFromBlog = users[i];
             Map permissionsForUser = readPermissionsForUser(userFromBlog);
 
-            userIDs.put(userFromBlog.getId(), permissionsForUser);
+            userIDs.put(userFromBlog.getUserLogin(), permissionsForUser);
         }
 
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP, Collections.unmodifiableMap(userIDs));
@@ -183,7 +183,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                 if (!BlojsomUtils.checkNullOrBlank(permissionToAdd) && (permissionToAdd.endsWith(PERMISSION_SUFFIX))) {
                     User user;
                     try {
-                        user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
+                        user = _fetcher.loadUser(blog, blogUserID);
                     } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
@@ -231,7 +231,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                 if (!BlojsomUtils.checkNullOrBlank(permissionToDelete) && (permissionToDelete.endsWith(PERMISSION_SUFFIX))) {
                     User user;
                     try {
-                        user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
+                        user = _fetcher.loadUser(blog, blogUserID);
                     } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
