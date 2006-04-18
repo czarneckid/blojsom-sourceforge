@@ -139,14 +139,14 @@
         </copy>
 
         <!-- Copy theme templates and resources for bootstrap user -->
-        <mkdir dir="${resources.dir}/${bootstrap.blog}"/>
+        <mkdir dir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/resources/"/>
         <copy todir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/templates">
             <fileset dir="${default.theme.templates.dir}"/>
         </copy>
-        <copy todir="${resources.dir}/${bootstrap.blog}">
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/resources/">
             <fileset dir="${templates.resources.dir}"/>
         </copy>
-        <copy todir="${resources.dir}/${bootstrap.blog}">
+        <copy todir="${war.dir}/WEB-INF/${bootstrap.blog.dir}/resources/">
             <fileset dir="${default.theme.resources.dir}"/>
         </copy>
 
