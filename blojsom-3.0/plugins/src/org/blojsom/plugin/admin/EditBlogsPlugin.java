@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.1 2006-03-22 21:49:06 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.2 2006-04-18 21:03:23 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -399,7 +399,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                             String resourcesDirectoryPath = _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP, BlojsomConstants.DEFAULT_RESOURCES_DIRECTORY);
 
                             File bootstrapResourcesDirectory = new File(_servletConfig.getServletContext().getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY) + blogsDirectoryPath + bootstrapDirectoryPath + resourcesDirectoryPath);
-                            File newBlogResourcesDirectory = new File(_servletConfig.getServletContext().getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY) + resourcesDirectoryPath + blogID);
+                            File newBlogResourcesDirectory = new File(_servletConfig.getServletContext().getRealPath(resourcesDirectoryPath) + "/" + blogID);
                             File bootstrapTemplatesDirectory = new File(_servletConfig.getServletContext().getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY) + blogsDirectoryPath + bootstrapDirectoryPath + templatesDirectoryPath);
                             File newBlogTemplatesDirectory = new File(_servletConfig.getServletContext().getRealPath(BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY) + blogsDirectoryPath + blogID + templatesDirectoryPath);
 
