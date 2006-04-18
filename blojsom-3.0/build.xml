@@ -381,43 +381,10 @@
         <jar file="${addon.extensions.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
         -->
-
-        <!-- Resources -->
-        <!--
-        <delete dir="${compile.dir}"/>
-        <mkdir dir="${compile.dir}"/>
-        <copy todir="${compile.dir}">
-            <fileset dir="${addon.src.dir}">
-                <include name="**/*.properties"/>
-            </fileset>
-        </copy>
-        <copy todir="${compile.dir}">
-            <fileset dir="${addon.extensions.src.dir}">
-                <include name="**/*.properties"/>
-            </fileset>
-        </copy>
-        <copy todir="${compile.dir}">
-            <fileset dir="${addon.plugins.src.dir}">
-                <include name="**/*.properties"/>
-            </fileset>
-        </copy>
-        <jar file="${addon.resources.jar}" basedir="${compile.dir}"/>
-        <delete dir="${compile.dir}"/>
-        -->
     </target>
 
     <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
-    <!-- NOTE: To create the Quickstart distribution, do the following:      -->
-    <!--
-         1. Add the following to /WEB-INF/default/authorization.properties:
-            default=123default456
-         2. Remove the blog-home, blog-url, and blog-base-url properties from /WEB-INF/default/blog.properties
-         3. Remove the following line from /WEB-INF/plugin-admin-edit-users.properties:
-            blog-home-base-directory=/change/me/please/
-         4. Change the blojsom-blog-home parameter in /WEB-INF/blojsom.properties to:
-            blojsom-blog-home={user.home}/blojsom-blogs/
-    -->
     <!-- =================================================================== -->
     <target name="war" depends="compile" description="Create a deployable WAR file">
         <copy todir="${war.dir}/WEB-INF/themes">
@@ -562,6 +529,9 @@
         </zip>
     </target>
 
+    <!-- =================================================================== -->
+    <!-- Create a distribution (add-ons, themes, templates, source)          -->
+    <!-- =================================================================== -->
     <target name="create-distribution" depends="clean, create-addon-bundle, create-source-distribution, create-themes-bundle, create-templates-bundle"
         description="Create the add-on bundle, themes and templates packages, and source distribution">
     </target>
