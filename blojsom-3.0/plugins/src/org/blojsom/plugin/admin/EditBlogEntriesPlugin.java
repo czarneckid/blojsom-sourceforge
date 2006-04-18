@@ -38,15 +38,12 @@ import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.weblogsping.WeblogsPingPlugin;
-import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
-import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
+import org.blojsom.plugin.pingback.event.*;
 import org.blojsom.plugin.pingback.PingbackPlugin;
-import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
-import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
+import org.blojsom.plugin.trackback.event.*;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.common.ResponseConstants;
-import org.blojsom.plugin.comment.event.CommentDeletedEvent;
-import org.blojsom.plugin.comment.event.CommentApprovedEvent;
+import org.blojsom.plugin.comment.event.*;
 import org.blojsom.plugin.admin.event.EntryAddedEvent;
 import org.blojsom.plugin.admin.event.ProcessEntryEvent;
 import org.blojsom.plugin.admin.event.EntryDeletedEvent;
@@ -74,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.8 2006-04-17 16:06:05 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.9 2006-04-18 17:11:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -126,8 +123,13 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String APPROVE_BLOG_PINGBACKS = "approve-blog-pingbacks";
     private static final String EDIT_ENTRIES_LIST = "edit-entries-list";
     private static final String DELETE_BLOG_ENTRY_LIST = "delete-blog-entry-list";
-    private static final String AJAX_DELETE_COMMENT = "ajax-delete-comment";
-    private static final String AJAX_APPROVE_COMMENT = "ajax-approve-comment";
+
+    // AJAX actions
+    private static final String AJAX_DELETE_RESPONSE = "ajax-delete-response";
+    private static final String AJAX_APPROVE_RESPONSE = "ajax-approve-response";
+    private static final String AJAX_UNAPPROVE_RESPONSE = "ajax-unapprove-response";
+    private static final String AJAX_MARK_SPAM_RESPONSE = "ajax-mark-spam-response";
+    private static final String AJAX_UNMARK_SPAM_RESPONSE = "ajax-unmark-spam-response";
 
     // Form elements
     private static final String BLOG_CATEGORY_ID = "blog-category-id";
@@ -141,6 +143,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOG_TRACKBACK_URLS = "blog-trackback-urls";
     private static final String POST_SLUG = "post-slug";
     private static final String PING_BLOG_URLS = "ping-blog-urls";
+    private static final String RESPONSE_TYPE = "response-type";
+    private static final String RESPONSE_ID = "response-id";
 
     // Permissions
     private static final String EDIT_BLOG_ENTRIES_PERMISSION = "edit_blog_entries_permission";
@@ -1012,15 +1016,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             context.put(BlojsomConstants.PAGE_NUMBER_PARAM, new Integer(pgNum));
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, MANAGE_BLOG_ENTRIES_PAGE);
-        } else if (AJAX_DELETE_COMMENT.equals(action)) {
+        } else if (AJAX_DELETE_RESPONSE.equals(action)) {
             if (_logger.isDebugEnabled()) {
-                _logger.debug("User requested AJAX delete comment action");
+                _logger.debug("User requested AJAX delete response action");
             }
 
-            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
-            Integer entryId;
+            String responseId = BlojsomUtils.getRequestValue(RESPONSE_ID, httpServletRequest);
+            Integer responseID;
             try {
-                entryId = Integer.valueOf(blogEntryId);
+                responseID = Integer.valueOf(responseId);
             } catch (NumberFormatException e) {
                 context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
@@ -1028,40 +1032,50 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 return entries;
             }
 
-            Entry entry;
+            String responseType = BlojsomUtils.getRequestValue(RESPONSE_TYPE, httpServletRequest);
             try {
-                entry = _fetcher.loadEntry(blog, entryId);
-                String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
+                if (Response.COMMENT_TYPE.equals(responseType)) {
+                    Comment comment = _fetcher.newComment();
+                    comment.setBlogId(blog.getBlogId());
+                    comment.setId(responseID);
+                    _fetcher.loadComment(blog, comment);
+                    _fetcher.deleteComment(blog, comment);
 
-                if (blogCommentIDs != null && blogCommentIDs.length > 0) {
-                    for (int i = 0; i < blogCommentIDs.length; i++) {
-                        String blogCommentID = blogCommentIDs[i];
-                        Comment[] blogComments = entry.getCommentsAsArray();
-                        for (int j = 0; j < blogComments.length; j++) {
-                            Comment blogComment = blogComments[j];
-                            if (blogComment.getId().equals(Integer.valueOf(blogCommentID))) {
-                                try {
-                                    _fetcher.deleteComment(blog, blogComment);
+                    _eventBroadcaster.broadcastEvent(new CommentDeletedEvent(this, new Date(), comment, blog));
 
-                                    _eventBroadcaster.broadcastEvent(new CommentDeletedEvent(this, new Date(), blogComment, blog));
-                                } catch (FetcherException e) {
-                                    if (_logger.isErrorEnabled()) {
-                                        _logger.error(e);
-                                    }
-
-                                    context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
-                                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
-                                }
-                            }
-                        }
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX delete comment response complete: " + responseId);
                     }
+                } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
+                    Trackback trackback = _fetcher.newTrackback();
+                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setId(responseID);
+                    _fetcher.loadTrackback(blog, trackback);
+                    _fetcher.deleteTrackback(blog, trackback);
 
-                    addOperationResultMessage(context, formatAdminResource(DELETED_COMMENTS_KEY, DELETED_COMMENTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(blogCommentIDs.length)}));
+                    _eventBroadcaster.broadcastEvent(new TrackbackDeletedEvent(this, new Date(), trackback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX delete trackback response complete: " + responseId);
+                    }
+                } else if (Response.PINGBACK_TYPE.equals(responseType)) {
+                    Pingback pingback = _fetcher.newPingback();
+                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setId(responseID);
+                    _fetcher.loadPingback(blog, pingback);
+                    _fetcher.deletePingback(blog, pingback);
+
+                    _eventBroadcaster.broadcastEvent(new PingbackDeletedEvent(this, new Date(), pingback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX delete pingback response complete: " + responseId);
+                    }
+                } else {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Unknown response type for AJAX delete response: " + responseType);
+                    }
                 }
 
-                _fetcher.loadEntry(blog, entry);
-
-                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
                 context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
 
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
@@ -1075,15 +1089,15 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 entries = new Entry[0];
             }
-        } else if (AJAX_APPROVE_COMMENT.equals(action)) {
+        } else if (AJAX_APPROVE_RESPONSE.equals(action)) {
             if (_logger.isDebugEnabled()) {
-                _logger.debug("User requested AJAX approve comment action");
+                _logger.debug("User requested AJAX approve response action");
             }
 
-            String blogEntryId = BlojsomUtils.getRequestValue(BLOG_ENTRY_ID, httpServletRequest);
-            Integer entryId;
+            String responseId = BlojsomUtils.getRequestValue(RESPONSE_ID, httpServletRequest);
+            Integer responseID;
             try {
-                entryId = Integer.valueOf(blogEntryId);
+                responseID = Integer.valueOf(responseId);
             } catch (NumberFormatException e) {
                 context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
@@ -1091,39 +1105,281 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 return entries;
             }
 
-            Entry entry;
+            String responseType = BlojsomUtils.getRequestValue(RESPONSE_TYPE, httpServletRequest);
             try {
-                entry = _fetcher.loadEntry(blog, entryId);
-                String[] blogCommentIDs = httpServletRequest.getParameterValues(BLOG_COMMENT_ID);
+                if (Response.COMMENT_TYPE.equals(responseType)) {
+                    Comment comment = _fetcher.newComment();
+                    comment.setBlogId(blog.getBlogId());
+                    comment.setId(responseID);
+                    _fetcher.loadComment(blog, comment);
+                    comment.setStatus(ResponseConstants.APPROVED_STATUS);
+                    _fetcher.saveComment(blog, comment);
 
-                if (blogCommentIDs != null && blogCommentIDs.length > 0) {
-                    for (int i = 0; i < blogCommentIDs.length; i++) {
-                        String blogCommentID = blogCommentIDs[i];
-                        Comment[] blogComments = entry.getCommentsAsArray();
-                        for (int j = 0; j < blogComments.length; j++) {
-                            Comment blogComment = blogComments[j];
-                            if (blogComment.getId().equals(Integer.valueOf(blogCommentID))) {
-                                try {
-                                    blogComment.setStatus(ResponseConstants.APPROVED_STATUS);
-                                    _fetcher.saveComment(blog, blogComment);
+                    _eventBroadcaster.broadcastEvent(new CommentApprovedEvent(this, new Date(), comment, blog));
 
-                                    _eventBroadcaster.broadcastEvent(new CommentApprovedEvent(this, new Date(), blogComment, blog));
-                                } catch (FetcherException e) {
-                                    _logger.error(e);
-
-                                    context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
-                                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
-                                }
-                            }
-                        }
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX approve comment response complete: " + responseId);
                     }
+                } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
+                    Trackback trackback = _fetcher.newTrackback();
+                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setId(responseID);
+                    _fetcher.loadTrackback(blog, trackback);
+                    trackback.setStatus(ResponseConstants.APPROVED_STATUS);
+                    _fetcher.saveTrackback(blog, trackback);
 
-                    addOperationResultMessage(context, formatAdminResource(APPROVED_COMMENTS_KEY, APPROVED_COMMENTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(blogCommentIDs.length)}));
+                    _eventBroadcaster.broadcastEvent(new TrackbackApprovedEvent(this, new Date(), trackback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX approve trackback response complete: " + responseId);
+                    }
+                } else if (Response.PINGBACK_TYPE.equals(responseType)) {
+                    Pingback pingback = _fetcher.newPingback();
+                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setId(responseID);
+                    _fetcher.loadPingback(blog, pingback);
+                    pingback.setStatus(ResponseConstants.APPROVED_STATUS);
+                    _fetcher.savePingback(blog, pingback);
+
+                    _eventBroadcaster.broadcastEvent(new PingbackApprovedEvent(this, new Date(), pingback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX approve pingback response complete: " + responseId);
+                    }
+                } else {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Unknown response type for AJAX approve response: " + responseType);
+                    }
                 }
 
-                _fetcher.loadEntry(blog, entry);
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
 
-                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                entries = new Entry[0];
+            }
+        } else if (AJAX_UNAPPROVE_RESPONSE.equals(action)) {
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested AJAX unapprove response action");
+            }
+
+            String responseId = BlojsomUtils.getRequestValue(RESPONSE_ID, httpServletRequest);
+            Integer responseID;
+            try {
+                responseID = Integer.valueOf(responseId);
+            } catch (NumberFormatException e) {
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                return entries;
+            }
+
+            String responseType = BlojsomUtils.getRequestValue(RESPONSE_TYPE, httpServletRequest);
+            try {
+                if (Response.COMMENT_TYPE.equals(responseType)) {
+                    Comment comment = _fetcher.newComment();
+                    comment.setBlogId(blog.getBlogId());
+                    comment.setId(responseID);
+                    _fetcher.loadComment(blog, comment);
+                    comment.setStatus(ResponseConstants.NEW_STATUS);
+                    _fetcher.saveComment(blog, comment);
+
+                    _eventBroadcaster.broadcastEvent(new CommentUnapprovedEvent(this, new Date(), comment, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX unapprove comment response complete: " + responseId);
+                    }
+                } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
+                    Trackback trackback = _fetcher.newTrackback();
+                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setId(responseID);
+                    _fetcher.loadTrackback(blog, trackback);
+                    trackback.setStatus(ResponseConstants.NEW_STATUS);
+                    _fetcher.saveTrackback(blog, trackback);
+
+                    _eventBroadcaster.broadcastEvent(new TrackbackUnapprovedEvent(this, new Date(), trackback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX unapprove trackback response complete: " + responseId);
+                    }
+                } else if (Response.PINGBACK_TYPE.equals(responseType)) {
+                    Pingback pingback = _fetcher.newPingback();
+                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setId(responseID);
+                    _fetcher.loadPingback(blog, pingback);
+                    pingback.setStatus(ResponseConstants.NEW_STATUS);
+                    _fetcher.savePingback(blog, pingback);
+
+                    _eventBroadcaster.broadcastEvent(new PingbackUnapprovedEvent(this, new Date(), pingback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX unapprove pingback response complete: " + responseId);
+                    }
+                } else {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Unknown response type for AJAX unapprove response: " + responseType);
+                    }
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
+
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                entries = new Entry[0];
+            }
+        } else if (AJAX_MARK_SPAM_RESPONSE.equals(action)) {
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested AJAX mark spam response action");
+            }
+
+            String responseId = BlojsomUtils.getRequestValue(RESPONSE_ID, httpServletRequest);
+            Integer responseID;
+            try {
+                responseID = Integer.valueOf(responseId);
+            } catch (NumberFormatException e) {
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                return entries;
+            }
+
+            String responseType = BlojsomUtils.getRequestValue(RESPONSE_TYPE, httpServletRequest);
+            try {
+                if (Response.COMMENT_TYPE.equals(responseType)) {
+                    Comment comment = _fetcher.newComment();
+                    comment.setBlogId(blog.getBlogId());
+                    comment.setId(responseID);
+                    _fetcher.loadComment(blog, comment);
+                    comment.setStatus(ResponseConstants.SPAM_STATUS);
+                    _fetcher.saveComment(blog, comment);
+
+                    _eventBroadcaster.broadcastEvent(new CommentMarkedSpamEvent(this, new Date(), comment, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX mark comment spam response complete: " + responseId);
+                    }
+                } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
+                    Trackback trackback = _fetcher.newTrackback();
+                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setId(responseID);
+                    _fetcher.loadTrackback(blog, trackback);
+                    trackback.setStatus(ResponseConstants.SPAM_STATUS);
+                    _fetcher.saveTrackback(blog, trackback);
+
+                    _eventBroadcaster.broadcastEvent(new TrackbackMarkedSpamEvent(this, new Date(), trackback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX mark trackback spam response complete: " + responseId);
+                    }
+                } else if (Response.PINGBACK_TYPE.equals(responseType)) {
+                    Pingback pingback = _fetcher.newPingback();
+                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setId(responseID);
+                    _fetcher.loadPingback(blog, pingback);
+                    pingback.setStatus(ResponseConstants.SPAM_STATUS);
+                    _fetcher.savePingback(blog, pingback);
+
+                    _eventBroadcaster.broadcastEvent(new PingbackMarkedSpamEvent(this, new Date(), pingback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX mark pingback spam response complete: " + responseId);
+                    }
+                } else {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Unknown response type for AJAX mark spam response: " + responseType);
+                    }
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
+
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                entries = new Entry[0];
+            }
+        } else if (AJAX_UNMARK_SPAM_RESPONSE.equals(action)) {
+            if (_logger.isDebugEnabled()) {
+                _logger.debug("User requested AJAX unmark spam response action");
+            }
+
+            String responseId = BlojsomUtils.getRequestValue(RESPONSE_ID, httpServletRequest);
+            Integer responseID;
+            try {
+                responseID = Integer.valueOf(responseId);
+            } catch (NumberFormatException e) {
+                context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.FAILURE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);
+
+                return entries;
+            }
+
+            String responseType = BlojsomUtils.getRequestValue(RESPONSE_TYPE, httpServletRequest);
+            try {
+                if (Response.COMMENT_TYPE.equals(responseType)) {
+                    Comment comment = _fetcher.newComment();
+                    comment.setBlogId(blog.getBlogId());
+                    comment.setId(responseID);
+                    _fetcher.loadComment(blog, comment);
+                    comment.setStatus(ResponseConstants.NEW_STATUS);
+                    _fetcher.saveComment(blog, comment);
+
+                    _eventBroadcaster.broadcastEvent(new CommentUnmarkedSpamEvent(this, new Date(), comment, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX unmark comment spam response complete: " + responseId);
+                    }
+                } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
+                    Trackback trackback = _fetcher.newTrackback();
+                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setId(responseID);
+                    _fetcher.loadTrackback(blog, trackback);
+                    trackback.setStatus(ResponseConstants.NEW_STATUS);
+                    _fetcher.saveTrackback(blog, trackback);
+
+                    _eventBroadcaster.broadcastEvent(new TrackbackUnmarkedSpamEvent(this, new Date(), trackback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX unmark trackback spam response complete: " + responseId);
+                    }
+                } else if (Response.PINGBACK_TYPE.equals(responseType)) {
+                    Pingback pingback = _fetcher.newPingback();
+                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setId(responseID);
+                    _fetcher.loadPingback(blog, pingback);
+                    pingback.setStatus(ResponseConstants.NEW_STATUS);
+                    _fetcher.savePingback(blog, pingback);
+
+                    _eventBroadcaster.broadcastEvent(new PingbackUnmarkedSpamEvent(this, new Date(), pingback, blog));
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("AJAX unmark pingback spam response complete: " + responseId);
+                    }
+                } else {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Unknown response type for AJAX mark spam response: " + responseType);
+                    }
+                }
+
                 context.put(BlojsomConstants.BLOJSOM_AJAX_STATUS, BlojsomConstants.SUCCESS);
 
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_AJAX_RESPONSE);

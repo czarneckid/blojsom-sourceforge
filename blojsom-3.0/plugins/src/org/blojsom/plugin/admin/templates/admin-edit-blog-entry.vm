@@ -24,6 +24,61 @@
                     </form>
                 </p>
 
+                <script type="text/javascript">
+                    function dropOut(id) {
+                        new Effect.DropOut(id);
+                    }
+
+                    function pulsate(id) {
+                        new Effect.Pulsate(id, {duration:2});
+                    }
+
+                    function approveResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, markSpamElement, unmarkSpamElement) {
+                        Element.hide(shownElement);
+                        Element.show(hiddenElement);
+                        Element.hide(unmarkSpamElement);
+                        Element.show(markSpamElement);
+
+                        var postbody = 'flavor=admin&action=ajax-approve-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                    }
+
+                    function unapproveResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, markSpamElement, unmarkSpamElement) {
+                        Element.hide(shownElement);
+                        Element.show(hiddenElement);
+                        Element.hide(unmarkSpamElement);
+                        Element.show(markSpamElement);
+
+                        var postbody = 'flavor=admin&action=ajax-unapprove-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                    }
+
+                    function markSpamResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, approveElement, unapproveElement) {
+                        Element.hide(shownElement);
+                        Element.show(hiddenElement);
+                        Element.show(approveElement);
+                        Element.hide(unapproveElement);
+
+                        var postbody = 'flavor=admin&action=ajax-mark-spam-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                    }
+
+                    function unmarkSpamResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, approveElement, unapproveElement) {
+                        Element.hide(shownElement);
+                        Element.show(hiddenElement);
+                        Element.show(approveElement);
+                        Element.hide(unapproveElement);
+
+                        var postbody = 'flavor=admin&action=ajax-unmark-spam-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                    }
+
+                    function deleteResponseAJAX(responseID, responseType, responseElement) {
+                        var postbody = 'flavor=admin&action=ajax-delete-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:dropOut(responseElement)});
+                    }
+                </script>
+
                 <!-- Edit blog entries form -->
                 <div class="mainClm">
                     <h3>#adminResource('edit.blog.entry.header' 'Edit Blog Entry')</h3>
@@ -43,7 +98,7 @@
                             </tr>
                             <tr><td></td><td>
                                 <div id="quicktags">
-                                Quicktags: <script src="$BLOJSOM_BLOG.getBlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
+                                Quicktags: <script src="#BlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
                                 <script language="JavaScript" type="text/javascript">edToolbar();</script>
                                 </div></td>
                             </tr>
@@ -96,7 +151,7 @@
                             <tr>
                                 <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') <br />(MM/dd/yyyy HH:mm:ss)</td>
                                 <td><input type="text" size="30" name="blog-entry-publish-datetime"/></td>
-                            </tr>                            
+                            </tr>
                             #DisplayTemplateAdditions()
                             <tr>
                                 <td>&nbsp;</td>
@@ -109,203 +164,38 @@
                     </table>
                 </div>
 
-                <!-- Approve comments form -->
-                <div class="mainClm">
-                    <h3>#adminResource('approve.blog.comments.text' 'Approve blog comments')</h3>
-                    <table>
-                        <form name="approve-blog-comments" action="." method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="approve-blog-comments"/>
-                            <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
-                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
-                                #foreach ($blogComment in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
-                                #set ($commentModerated = $!blogComment.getStatus())
-                                #if ($commentModerated != 'approved')
-                                <tr>
-                                    <td><input type="checkbox" name="blog-comment-id" value="$blogComment.getId()"/>&nbsp;
-                                    Comment by: <a href="mailto:$blogComment.getAuthorEmail()">$blogComment.getAuthor()</a> -
-                                        <a href="$blogComment.getAuthorURL()">$blogComment.getAuthorURL()</a>
-                                        Left on: $blogComment.getCommentDate()<p />
-                                        $blogComment.getComment()<br /></td>
-                                </tr>
-                                #end
-                                #set ($commentModerated = '')
-                                #end
+                #set($responseCounter = 1)
+                #foreach ($response in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getResponses())
+                <div id="response$responseCounter">
+                    <div class="mainClm">
+                        <p>
+                            <strong>$responseCounter.</strong> $response.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale()) ( <strong>$response.getType()</strong> ) ( IP: $!response.getIp() )<br/>
+                            #if ($response.getType().equals("comment"))
+                            #set ($delete = "delete_comments")
+                            #set ($approve = "approve_comments")
+                            <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
+                            $response.getComment()
+                            #elseif ($response.getType().equals("trackback"))
+                            #set ($delete = "delete_trackbacks")
+                            #set ($approve = "approve_trackbacks")
+                            <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
+                            $response.getExcerpt()
+                            #elseif ($response.getType().equals("pingback"))
+                            #set ($delete = "delete_pingbacks")
+                            #set ($approve = "approve_pingbacks")
+                            <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
+                            <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
+                            $response.getExcerpt()
                             #end
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>
-                                    <input type="submit" name="submit" value="#adminResource('approve.checked.comments.text' 'Approve checked comments')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
-                                </td>
-                            </tr>
-                        </form>
-                    </table>
+                            <p align="right">[ <a href="javascript:;" onclick="deleteResponseAJAX($response.getId(), '$response.getType()', response$responseCounter)">Delete</a> - <a href="javascript:;" #if ($response.getStatus().equals("approved"))style="display:none"#end id="approve$responseCounter" onclick="approveResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, approve$responseCounter, unapprove$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter)">Approve</a> <a href="javascript:;" #if (!$response.getStatus().equals("approved"))style="display:none"#end id="unapprove$responseCounter" onclick="unapproveResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, unapprove$responseCounter, approve$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter)">Unapprove</a> - <a href="javascript:;" #if ($response.getStatus().equals("spam"))style="display:none"#end id="markSpam$responseCounter" onclick="markSpamResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter, approve$responseCounter, unapprove$responseCounter)">Mark as spam</a> <a href="javascript:;" #if (!$response.getStatus().equals("spam"))style="display:none"#end id="unmarkSpam$responseCounter" onclick="unmarkSpamResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, unmarkSpam$responseCounter, markSpam$responseCounter, approve$responseCounter, unapprove$responseCounter)">Unmark as spam</a> ]</p>
+                            #set ($delete = "")
+                            #set ($approve = "")
+                        </p>
+                        #set($responseCounter = $responseCounter + 1)
+                    </div>
                 </div>
+                #end
 
-                <!-- Delete comments form -->
-                <div class="mainClm">
-                    <h3>#adminResource('delete.blog.comments.text' 'Delete blog comments')</h3>
-                    <table>
-                        <form name="delete-blog-comments" action="." method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="delete-blog-comments"/>
-                            <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
-                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
-                                #foreach ($blogComment in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getComments())
-                                <tr>
-                                    <td><input type="checkbox" name="blog-comment-id" value="$blogComment.getId()"/>&nbsp;
-                                    Comment by: <a href="mailto:$blogComment.getAuthorEmail()">$blogComment.getAuthor()</a> -
-                                        <a href="$blogComment.getAuthorURL()">$blogComment.getAuthorURL()</a>
-                                        Left on: $blogComment.getCommentDate()<p />
-                                        $blogComment.getComment()<br /></td>
-                                </tr>
-                                #end
-                            #end
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.checked.comments.text' 'Delete checked comments')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
-                                </td>
-                            </tr>
-                        </form>
-                    </table>
-                </div>
-
-                <!-- Approve trackbacks form -->
-                <div class="mainClm">
-                    <h3>#adminResource('approve.blog.trackbacks.text' 'Approve blog trackbacks')</h3>
-                    <table>
-                        <form name="approve-blog-trackbacks" action="." method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="approve-blog-trackbacks"/>
-                            <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
-                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
-                                #foreach ($blogTrackback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
-                                #set ($trackbackModerated = $!blogTrackback.getStatus())
-                                #if ($trackbackModerated != 'approved')
-                                <tr>
-                                    <td><input type="checkbox" name="blog-trackback-id" value="$blogTrackback.getId()"/>&nbsp;
-                                    Trackback from: <a href="$blogTrackback.getUrl()">#if ($blogTrackback.getBlogName())$blogTrackback.getBlogName()#else$blogTrackback.getUrl()#end</a>
-                                    Left on: $blogTrackback.getTrackbackDate()<br/>
-                                    Title: #if ($blogTrackback.getTitle()) $blogTrackback.getTitle() #end<br />
-                                    #if ($blogTrackback.getExcerpt()) $blogTrackback.getExcerpt() #end<br /></td>
-                                </tr>
-                                #end
-                                #set ($trackbackModerated = '')
-                                #end
-                            #end
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>
-                                    <input type="submit" name="submit" value="#adminResource('approve.checked.trackbacks.text' 'Approve checked trackbacks')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
-                                </td>
-                            </tr>
-                        </form>
-                    </table>
-                </div>
-
-                <!-- Delete trackbacks form -->
-                <div class="mainClm">
-                    <h3>#adminResource('delete.blog.trackbacks.text' 'Delete blog trackbacks')</h3>
-                    <table>
-                        <form name="delete-blog-trackbacks" action="." method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="delete-blog-trackbacks"/>
-                            <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
-                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
-                                #foreach ($blogTrackback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getTrackbacks())
-                                <tr>
-                                    <td><input type="checkbox" name="blog-trackback-id" value="$blogTrackback.getId()"/>&nbsp;
-                                    Trackback from: <a href="$blogTrackback.getUrl()">#if ($blogTrackback.getBlogName())$blogTrackback.getBlogName()#else$blogTrackback.getUrl()#end</a>
-                                    Left on: $blogTrackback.getTrackbackDate()<br/>
-                                    Title: #if ($blogTrackback.getTitle()) $blogTrackback.getTitle() #end<br />
-                                    #if ($blogTrackback.getExcerpt()) $blogTrackback.getExcerpt() #end<br /></td>
-                                </tr>
-                                #end
-                            #end
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.checked.trackbacks.text' 'Delete checked trackbacks')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
-                                </td>
-                            </tr>
-                        </form>
-                    </table>
-                </div>
-
-                <!-- Approve pingbacks form -->
-                <div class="mainClm">
-                    <h3>#adminResource('approve.blog.pingbacks.text' 'Approve blog pingbacks')</h3>
-                    <table>
-                        <form name="approve-blog-pingbacks" action="." method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="approve-blog-pingbacks"/>
-                            <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
-                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
-                                #foreach ($blogPingback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
-                                #set ($pingbackModerated = $!blogPingback.getStatus())
-                                #if ($pingbackModerated != 'approved')
-                                <tr>
-                                    <td><input type="checkbox" name="blog-pingback-id" value="$blogPingback.getId()"/>&nbsp;
-                                    Pingback from: <a href="$blogPingback.getUrl()">#if ($blogPingback.getBlogName())$blogPingback.getBlogName()#else$blogPingback.getUrl()#end</a>
-                                    Left on: $blogPingback.getTrackbackDate()<br/>
-                                    Title: #if ($blogPingback.getTitle()) $blogPingback.getTitle() #end<br />
-                                    #if ($blogPingback.getExcerpt()) $blogPingback.getExcerpt() #end<br /></td>
-                                </tr>
-                                #end
-                                #set ($pingbackModerated = '')
-                                #end
-                            #end
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>
-                                    <input type="submit" name="submit" value="#adminResource('approve.checked.pingbacks.text' 'Approve checked pingbacks')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
-                                </td>
-                            </tr>
-                        </form>
-                    </table>
-                </div>
-
-                <!-- Delete pingbacks form -->
-                <div class="mainClm">
-                    <h3>#adminResource('delete.blog.pingbacks.text' 'Delete blog pingbacks')</h3>
-                    <table>
-                        <form name="delete-blog-pingbacks" action="." method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="delete-blog-pingbacks"/>
-                            <input type="hidden" name="flavor" value="admin"/>
-                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
-                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
-                            #if ($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
-                                #foreach ($blogPingback in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getPingbacks())
-                                <tr>
-                                    <td><input type="checkbox" name="blog-pingback-id" value="$blogPingback.getId()"/>&nbsp;
-                                    Pingback from: <a href="$blogPingback.getUrl()">#if ($blogPingback.getBlogName())$blogPingback.getBlogName()#else$blogPingback.getUrl()#end</a>
-                                    Left on: $blogPingback.getTrackbackDate()<br/>
-                                    Title: #if ($blogPingback.getTitle()) $blogPingback.getTitle() #end<br />
-                                    #if ($blogPingback.getExcerpt()) $blogPingback.getExcerpt() #end<br /></td>
-                                </tr>
-                                #end
-                            #end
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td>
-                                    <input type="submit" name="submit" value="#adminResource('delete.checked.pingbacks.text' 'Delete checked pingbacks')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
-                                </td>
-                            </tr>
-                        </form>
-                    </table>
-                </div>
         </div>
     </div>
 </body>
