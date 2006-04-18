@@ -29,10 +29,6 @@
                         new Effect.DropOut(id);
                     }
 
-                    function pulsate(id) {
-                        new Effect.Pulsate(id, {duration:2});
-                    }
-
                     function approveResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, markSpamElement, unmarkSpamElement) {
                         Element.hide(shownElement);
                         Element.show(hiddenElement);
@@ -40,7 +36,7 @@
                         Element.show(markSpamElement);
 
                         var postbody = 'flavor=admin&action=ajax-approve-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
-                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
                     }
 
                     function unapproveResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, markSpamElement, unmarkSpamElement) {
@@ -50,7 +46,7 @@
                         Element.show(markSpamElement);
 
                         var postbody = 'flavor=admin&action=ajax-unapprove-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
-                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
                     }
 
                     function markSpamResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, approveElement, unapproveElement) {
@@ -60,7 +56,7 @@
                         Element.hide(unapproveElement);
 
                         var postbody = 'flavor=admin&action=ajax-mark-spam-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
-                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
                     }
 
                     function unmarkSpamResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, approveElement, unapproveElement) {
@@ -70,7 +66,7 @@
                         Element.hide(unapproveElement);
 
                         var postbody = 'flavor=admin&action=ajax-unmark-spam-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
-                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:pulsate(responseElement)});
+                        new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
                     }
 
                     function deleteResponseAJAX(responseID, responseType, responseElement) {
