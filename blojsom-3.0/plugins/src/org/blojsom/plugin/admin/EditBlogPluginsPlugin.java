@@ -44,7 +44,6 @@ import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,7 +52,7 @@ import java.util.TreeMap;
  * EditBlogPluginsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPluginsPlugin.java,v 1.2 2006-03-22 21:42:30 czarneckid Exp $
+ * @version $Id: EditBlogPluginsPlugin.java,v 1.3 2006-04-19 20:32:37 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPluginsPlugin extends BaseAdminPlugin {
@@ -121,7 +120,7 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
             return entries;
         }
 
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP, blog.getPlugins());
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP, new TreeMap(blog.getPlugins()));
 
         // Add the list of available plugins
         ApplicationContext applicationContext = (ApplicationContext) _servletConfig.getServletContext().getAttribute(BlojsomConstants.BLOJSOM_APPLICATION_CONTEXT);
@@ -151,7 +150,7 @@ public class EditBlogPluginsPlugin extends BaseAdminPlugin {
         } else if (MODIFY_PLUGIN_CHAINS.equals(action)) {
             _logger.debug("User requested modify blog plugins action");
 
-            Map pluginChain = new HashMap(blog.getPlugins());
+            Map pluginChain = new TreeMap(blog.getPlugins());
 
             // Iterate over the user's flavors and update the plugin chains
             Iterator flavorIterator = blog.getTemplates().keySet().iterator();
