@@ -15,10 +15,13 @@
                 #showErrorMessage()
                 <div class="mainClm">
                     <h3>#adminResource('configure.plugin.mappings.text' '')</h3>
-                    <table>
+                    <p>The following table lists each of the flavors you have setup for your blog and the order in which plugins
+                        are executed for a given flavor. If no plugins are listed for a given flavor, blojsom will use
+                    execute the plugins in the <strong>default</strong> mapping. </p>
+                    <table border=".5">
                         <tr>
-                            <th>#adminResource('flavor.text' 'Flavor')</th>
-                            <th>#adminResource('plugin.chain.map.text' 'Plugin chain map')</th>
+                            <th align="center">#adminResource('flavor.text' 'Flavor')</th>
+                            <th align="center">#adminResource('plugin.chain.map.text' 'Plugin chain map')</th>
                         </tr>
                         <form name="edit-blog-plugins" action="." method="post" accept-charset="UTF-8">
                             <input type="hidden" name="action" value="modify-plugin-chains"/>
@@ -26,9 +29,9 @@
                             <input type="hidden" name="plugins" value="edit-blog-plugins"/>
                                 #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP.keySet())
                             <tr>
-                                <td>$flavor plugin chain map</td>
+                                <td>#if ($flavor.equals("default")) <strong>$flavor</strong> #else $flavor #end</td>
                                 <td>
-                                    <input name="${flavor}.blojsom-plugin-chain" type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP.get($flavor)"/>
+                                    <input name="${flavor}.blojsom-plugin-chain" type="text" size="80" value="$BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP.get($flavor)"/>
                                 </td>
                             </tr>
                                 #end
