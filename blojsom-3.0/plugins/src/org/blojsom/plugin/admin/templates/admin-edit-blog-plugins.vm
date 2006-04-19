@@ -15,13 +15,11 @@
                 #showErrorMessage()
                 <div class="mainClm">
                     <h3>#adminResource('configure.plugin.mappings.text' '')</h3>
-                    <p>The following table lists each of the flavors you have setup for your blog and the order in which plugins
-                        are executed for a given flavor. If no plugins are listed for a given flavor, blojsom will use
-                    execute the plugins in the <strong>default</strong> mapping. </p>
+                    <p>#adminResource('plugins.help.text' '')</p>
                     <table border=".5">
                         <tr>
-                            <th align="center">#adminResource('flavor.text' 'Flavor')</th>
-                            <th align="center">#adminResource('plugin.chain.map.text' 'Plugin chain map')</th>
+                            <th align="center">#adminResource('flavor.text' '')</th>
+                            <th align="center">#adminResource('plugins.text' '')</th>
                         </tr>
                         <form name="edit-blog-plugins" action="." method="post" accept-charset="UTF-8">
                             <input type="hidden" name="action" value="modify-plugin-chains"/>
@@ -38,8 +36,8 @@
                             <tr>
                                 <td></td>
                                 <td colspan="2">
-                                    <input type="submit" name="submit" value="#adminResource('edit.blog.plugin.chains.text' 'Edit blog plugin chains')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                    <input type="submit" name="submit" value="#adminResource('submit.text' '')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
                                 </td>
                             </tr>
                         </form>
@@ -48,9 +46,9 @@
             </div>
 
             <div id="sidebar">
-                <h4>Available Plugins</h4>
+                <h4>#adminResource('available.plugins.text' '')</h4>
                 #foreach ($plugin in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS.keySet())
-                   <a href="#">$plugin&nbsp;</a><br/>
+                   <a href="javascript:;" title="$plugin">$plugin&nbsp;</a><br/>
                 #end
             </div>
         </div>
