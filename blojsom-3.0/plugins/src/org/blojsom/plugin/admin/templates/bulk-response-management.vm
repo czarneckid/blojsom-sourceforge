@@ -10,15 +10,13 @@
 
         #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
 
-        <div id="header">
-            <h2>#adminResource('manage.responses.text' '')</h2>
-        </div>
-
         <div id="main">
             <div id="contents">
                 #showErrorMessage()
 
                 <div class="mainClm">
+
+                    <h3>#adminResource('manage.responses.text' '')</h3>
 
                     <script type="text/javascript">
                     function checkAll(form, type, state) {
