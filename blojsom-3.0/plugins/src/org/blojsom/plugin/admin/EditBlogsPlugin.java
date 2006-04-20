@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.2 2006-04-18 21:03:23 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.3 2006-04-20 19:22:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -212,7 +212,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
 
             // Check user is allowed to delete blogs
             if (!checkPermission(blog, null, username, DELETE_BLOG_PERMISSION)) {
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                 addOperationResultMessage(context, getAdminResource(FAILED_DELETE_BLOGS_PERMISSION_KEY, FAILED_DELETE_BLOGS_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
 
                 return entries;
@@ -224,7 +224,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                 return entries;
             } else if (_protectedBlogs.containsKey(blogID)) {
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                 addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_PROTECTED_BLOG_KEY, FAILED_DELETE_PROTECTED_BLOG_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogID}));
 
                 return entries;
@@ -282,7 +282,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, formatAdminResource(DELETED_BLOG_KEY, DELETED_BLOG_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogID}));
             }
 
-            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
         } else if (ADD_BLOG_USER_ACTION.equals(action)) {
             if (_logger.isDebugEnabled()) {
                 _logger.debug("User requested add blog action");
@@ -290,7 +290,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
 
             // Check user is allowed to add blogs
             if (!checkPermission(blog, null, username, ADD_BLOG_PERMISSION)) {
-                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                 addOperationResultMessage(context, getAdminResource(FAILED_ADD_BLOGS_PERMISSION_KEY, FAILED_ADD_BLOGS_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
 
                 return entries;
