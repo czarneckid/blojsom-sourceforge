@@ -23,10 +23,10 @@
                 #set($previous_page = $page_number - 1)
 
                 <div class="mainClm">
-                    <h3>Latest posts</h3>
-                    <table>
+                    <h3>#adminResource('latest.posts.text' '')</h3>
+                    <table border=".5">
                         <tr>
-                            <th>ID</th> <th>Posted on</th> <th>Title</th> <th>Category</th> <th>Responses</th> <th>Author</th>
+                            <th>#adminResource('id.text' '')</th> <th>#adminResource('posted.on.text' '')</th> <th>#adminResource('title.text' '')</th> <th>#adminResource('category.text' '')</th> <th>#adminResource('responses.text' '')</th> <th>#adminResource('author.text' '')</th> <th colspan="3">#adminResource('actions.text' '')</th>
                         </tr>
                         #foreach ($entry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
                         <tr>
@@ -44,10 +44,10 @@
                     </table>
 
                     #if ($page_number > 1)
-                    <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$previous_page">&laquo; Previous page</a>
+                    <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$previous_page">&laquo; #adminResource('previous.page.text' '')</a>
                     #end
                     #if ($page_number < $total_pages)
-                    <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$next_page">Next page &raquo;</a>
+                    <a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=$next_page">#adminResource('next.page.text' '') &raquo;</a>
                     #end
                 </div>
             </div>
