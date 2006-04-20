@@ -20,6 +20,14 @@
             function loadPreviewText() {
                 document.getElementById('blog-entry-preview').innerHTML = document.getElementById('blog-entry-description').value;
             }
+
+            function changeToDraft() {
+                document.getElementById('status').value = "draft";
+            }
+
+            function changeToPublish() {
+                document.getElementById('status').value = "published";
+            }
         </script>
 
         <div id="main">
@@ -27,10 +35,11 @@
                 <div class="mainClm">
                     <h3>#adminResource('add.blog.entry.header' 'Add Blog Entry')</h3>
                      <table>
-                        <form name="add-blog-entry" action="." method="post" accept-charset="UTF-8">
+                        <form name="addblogentry" action="." method="post" accept-charset="UTF-8">
                             <input type="hidden" name="action" value="add-blog-entry"/>
                             <input type="hidden" name="flavor" value="admin"/>
                             <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                            <input type="hidden" id="status" name="status" value="draft"/>
                             <tr>
                                 <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
                                 <td><input type="text" size="50" name="blog-entry-title"/></td>
@@ -103,8 +112,9 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('add.blog.entry.text' 'Add blog entry')"/>
-                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                    <input type="submit" name="submitdraft" value="#adminResource('save.as.draft.text' '')" onclick="changeToDraft();"/>
+                                    <input type="submit" name="submitpublish" value="#adminResource('publish.text' '')" onclick="changeToPublish();"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
                                 </td>
                             </tr>
                         </form>

@@ -73,6 +73,14 @@
                         var postbody = 'flavor=admin&action=ajax-delete-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
                         new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:dropOut(responseElement)});
                     }
+
+                    function changeToDraft() {
+                        document.getElementById('status').value = "draft";
+                    }
+
+                    function changeToPublish() {
+                        document.getElementById('status').value = "published";
+                    }
                 </script>
 
                 <!-- Edit blog entries form -->
@@ -84,6 +92,7 @@
                             <input type="hidden" name="flavor" value="admin"/>
                             <input type="hidden" name="plugins" value="edit-blog-entries"/>
                             <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
+                            <input type="hidden" id="status" name="status" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getStatus()"/>
                             <tr>
                                 <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
                                 <td><input type="text" size="50" name="blog-entry-title" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedTitle()"/></td>
@@ -152,7 +161,8 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input type="submit" name="submit" value="#adminResource('update.blog.entry.text' 'Update blog entry')"/>
+                                    <input type="submit" name="submitdraft" value="#adminResource('save.as.draft.text' '')" onclick="changeToDraft();"/>
+                                    <input type="submit" name="submitpublish" value="#adminResource('publish.text' '')" onclick="changeToPublish();"/>
                                     <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
                                 </td>
                             </tr>
