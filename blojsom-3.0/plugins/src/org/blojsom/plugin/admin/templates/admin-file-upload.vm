@@ -67,6 +67,23 @@
                     </table>
                 </div>
             </div>
+
+            <!-- Accepted file types / Invalid file extensions -->
+            <div id="sidebar">
+                <h4>#adminResource('accepted.file.types.text' 'Accepted file types')</h4>
+                #foreach ($type in $ACCEPTED_FILE_TYPES)
+                    #if ($type.trim().length() > 0)
+                    <a href="javascript:;">$type&nbsp;</a><br/>
+                    #end
+                #end
+
+                <p></p>
+
+                <h4>#adminResource('invalid.file.extensions.text' 'Invalid file extensions')</h4>
+                #foreach ($extension in $INVALID_FILE_EXTENSIONS)
+                    <a href="javascript:;">$extension&nbsp;</a><br/>
+                #end
+            </div>
         </div>
     </div>
 </body>
