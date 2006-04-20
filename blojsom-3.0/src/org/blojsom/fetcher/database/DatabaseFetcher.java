@@ -41,6 +41,7 @@ import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -55,7 +56,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.15 2006-04-14 20:14:59 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.16 2006-04-20 13:28:43 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -335,7 +336,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
             permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
-                    .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)));
+                    .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
+                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
 
             List permalinkEntryList = permalinkCriteria.list();
 
@@ -410,6 +412,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
                 entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
                 entryCriteria.add(Restrictions.lt("date", new Date()));
+                entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 entryCriteria.addOrder(Order.desc("date"));
                 entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
                 entryCriteria.setFirstResult(page);
@@ -427,6 +430,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
                 entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
                 entryCriteria.add(Restrictions.lt("date", new Date()));
+                entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 entryCriteria.addOrder(Order.desc("date"));
                 entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
                 entryCriteria.setFirstResult(page);
