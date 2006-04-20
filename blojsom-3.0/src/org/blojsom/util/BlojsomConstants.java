@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.8 2006-04-17 16:04:39 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.9 2006-04-20 21:54:36 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -230,6 +230,11 @@ public interface BlojsomConstants {
      * Default country for blog if none supplied (US)
      */
     public static final String BLOG_COUNTRY_DEFAULT = "US";
+
+    /**
+     * Default time zone (America/New_York)
+     */
+    public static final String BLOG_DEFAULT_TIMEZONE = "America/New_York";
 
     /**
      * Default number of blog entries to display 
