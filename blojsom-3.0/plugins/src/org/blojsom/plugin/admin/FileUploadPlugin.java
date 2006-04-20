@@ -51,7 +51,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author David Czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.1 2006-03-20 21:30:44 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.2 2006-04-20 15:40:44 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -88,6 +88,8 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
     // Constants
     private static final String PLUGIN_ADMIN_FILE_UPLOAD_FILES = "PLUGIN_ADMIN_FILE_UPLOAD_FILES";
+    private static final String ACCEPTED_FILE_TYPES = "ACCEPTED_FILE_TYPES";
+    private static final String INVALID_FILE_EXTENSIONS = "INVALID_FILE_EXTENSIONS";
 
     // Actions
     private static final String UPLOAD_FILE_ACTION = "upload-file";
@@ -401,7 +403,9 @@ public class FileUploadPlugin extends BaseAdminPlugin {
 
         resourceFilesMap = new TreeMap(resourceFilesMap);
         context.put(PLUGIN_ADMIN_FILE_UPLOAD_FILES, resourceFilesMap);
-
+        context.put(ACCEPTED_FILE_TYPES, new TreeMap(_acceptedFileTypes));
+        context.put(INVALID_FILE_EXTENSIONS, new TreeMap(BlojsomUtils.listToMap(BlojsomUtils.arrayToList(_invalidFileExtensions))));
+        
         return entries;
     }
 }
