@@ -1,6 +1,5 @@
         <ul id="nav">
             <li><a href="#BlogAdminURL()/?flavor=admin">#adminResource('administration.text' '')</a></li>
-            <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-categories&action=page">#adminResource('edit.blog.categories.page.header' '')</a></li>
             <li><a href="#">#adminResource('entries.page.header' '')</a>
                 <ul>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry">#adminResource('add.entry.text' '')</a></li>
@@ -9,6 +8,7 @@
             </li>
             <li><a href="#">#adminResource('manager.page.header' 'Manage')</a>
                 <ul>
+                    <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-categories&action=page">#adminResource('edit.blog.categories.page.header' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=1">#adminResource('entries.text' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=bulk-response-management&action=page">#adminResource('responses.text' '')</a></li>
                 </ul>
