@@ -16,7 +16,7 @@
 
                 <div class="mainClm">
                     <h3>#adminResource('blog.properties.page.header' 'Blog Properties')</h3>
-                    <table>
+                    <table border=".5">
                         <tr>
                             <th>#adminResource('blog.property.text' 'Blog property')</th> <th>#adminResource('current.value.text' 'Current value')</th>
                         </tr>
@@ -174,7 +174,7 @@
 
                 <div class="mainClm">
                     <h3>#adminResource('set.individual.property.text' 'Set individual blog property')</h3>
-                    <table>
+                    <table border=".5">
                         <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
 
                             <input type="hidden" name="action" value="set-blog-property"/>
@@ -201,7 +201,7 @@
 
                  <div class="mainClm">
                     <h3>#adminResource('check.individual.property.text' 'Check individual blog property')</h3>
-                    <table>
+                    <table border=".5">
                         <form name="edit-blog-properties" action="." method="post" accept-charset="UTF-8">
 
                             <input type="hidden" name="action" value="check-blog-property"/>
