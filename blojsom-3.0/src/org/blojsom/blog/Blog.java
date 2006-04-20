@@ -38,7 +38,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.3 2006-04-20 21:53:53 czarneckid Exp $
  */
 public interface Blog {
 
@@ -266,9 +266,25 @@ public interface Blog {
      */
     String getDigestAlgorithm();
 
+    /**
+     * Get a named property from the blog
+     *
+     * @param property Name
+     * @return Value of the property
+     */
     String getProperty(String property);
 
-        /**
+    /**
+     * Get a named property from the blog
+     *
+     * @param property Name
+     * @param fallback Fallback value
+     * @param allowNullBlank Use the fallback property if <code>allowNullBlank</code> is <code>false</code>
+     * @return Value of the property
+     */
+    String getProperty(String property, String fallback, boolean allowNullBlank);
+
+    /**
      * Set the new name for the blog
      *
      * @param blogName Blog name

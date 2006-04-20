@@ -46,7 +46,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseBlog.java,v 1.3 2006-04-20 21:53:53 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
@@ -141,6 +141,24 @@ public class DatabaseBlog implements Blog, Serializable {
      */
     public String getProperty(String property) {
         return (String) _properties.get(property);
+    }
+
+    /**
+     * Get a named property from the blog
+     *
+     * @param property Name
+     * @param fallback Fallback value
+     * @param allowNullBlank Use the fallback property if <code>allowNullBlank</code> is <code>false</code>
+     * @return Value of the property
+     */
+    public String getProperty(String property, String fallback, boolean allowNullBlank) {
+        String value = (String) _properties.get(property);
+
+        if (!allowNullBlank && BlojsomUtils.checkNullOrBlank(value)) {
+            return fallback;
+        }
+
+        return value;
     }
 
     /**
