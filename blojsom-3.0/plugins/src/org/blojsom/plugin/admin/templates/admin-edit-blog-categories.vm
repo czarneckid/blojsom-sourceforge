@@ -27,7 +27,7 @@
                         #foreach ($blogCategory in $BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES)
                         <tr>
                             <td>$blogCategory.getId()</td>
-                            <td>$blogCategory.getName()</td>
+                            <td>#CategoryName($blogCategory)</td>
                             <td>#CategoryDescription($blogCategory)</td>
                             <td>#if ($blogCategory.getParentCategory())#CategoryDescription($blogCategory.getParentCategory()) #else &nbsp; #end</td>
                             <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-categories&action=edit-blog-category&blog-category-id=$blogCategory.getId()">#adminResource('edit.text' '')</a></td>

@@ -22,11 +22,10 @@
                             <input type="hidden" name="action" value="update-blog-category"/>
                             <input type="hidden" name="flavor" value="admin"/>
                             <input type="hidden" name="plugins" value="edit-blog-categories"/>
-                            <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY.getName()"/>
                             <input type="hidden" name="blog-category-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY.getId()"/>
                             <tr>
                                 <td>#adminResource('category.name.text' 'Category name')</td>
-                                <td><input type="text" size="50" value="$BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY.getName()" disabled="true"/></td>
+                                <td><input type="text" size="50" name="blog-category-name" value="#CategoryName($BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_CATEGORY)" /></td>
                             </tr>
                             <tr>
                                 <td>#adminResource('category.parent.text' 'Category parent')</td>

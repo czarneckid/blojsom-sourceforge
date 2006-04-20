@@ -27,7 +27,7 @@
                                 <td>
                                     <select name="blog-category-id">
                                     #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
-                                        <option value="$blogCategory.getId()">#if ($blogCategory.getDescription())$blogCategory.getDescription()#else$blogCategory.getName()#end</option>
+                                        <option value="$blogCategory.getId()">#CategoryDescription($blogCategory)</option>
                                     #end
                                     </select>
                                 </td>
@@ -56,7 +56,7 @@
                                 <td>
                                     <select name="blog-category-id">
                                     #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
-                                        <option value="$blogCategory.getId()">#if ($blogCategory.getDescription())$blogCategory.getDescription()#else$blogCategory.getName()#end</option>
+                                        <option value="$blogCategory.getId()">#CategoryDescription($blogCategory)</option>
                                     #end
                                     </select>
                                 </td>
