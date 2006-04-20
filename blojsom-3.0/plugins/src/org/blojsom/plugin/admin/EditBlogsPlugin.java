@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.3 2006-04-20 19:22:29 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.4 2006-04-20 21:55:23 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -279,6 +279,12 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                     _logger.debug("Wrote new blojsom configuration after deleting blog: " + blogID);
                 }
 
+                try {
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOGS, _fetcher.loadBlogIDs());
+                } catch (FetcherException e) {
+                    _logger.error(e);
+                }
+
                 addOperationResultMessage(context, formatAdminResource(DELETED_BLOG_KEY, DELETED_BLOG_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogID}));
             }
 
@@ -431,7 +437,12 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                                 return entries;
                             }
 
-
+                            try {
+                                context.put(BLOJSOM_PLUGIN_EDIT_BLOGS, _fetcher.loadBlogIDs());
+                            } catch (FetcherException e) {
+                                _logger.error(e);
+                            }
+                            
                             addOperationResultMessage(context, formatAdminResource(ADDED_NEW_WEBLOG_KEY, ADDED_NEW_WEBLOG_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogID}));
                         } else {
                             // User login ID or user e-mail is null or blank
