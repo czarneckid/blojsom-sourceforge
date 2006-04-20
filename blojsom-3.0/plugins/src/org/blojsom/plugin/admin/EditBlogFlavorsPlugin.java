@@ -49,7 +49,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.2 2006-03-21 16:32:19 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.3 2006-04-20 18:55:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -61,6 +61,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
     // Pages
     private static final String EDIT_BLOG_FLAVORS_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-flavors";
+    private static final String EDIT_BLOG_FLAVOR_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-flavor";
 
     // Constants
     private static final String DEFAULT_MIME_TYPE = "text/html";
@@ -68,6 +69,11 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS = "BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS";
+
+    private static final String FLAVOR_NAME_EDIT = "FLAVOR_NAME_EDIT";
+    private static final String FLAVOR_TYPE_EDIT = "FLAVOR_TYPE_EDIT";
+    private static final String FLAVOR_CHARACTER_SET_EDIT = "FLAVOR_CHARACTER_SET_EDIT";
+    private static final String FLAVOR_TEMPLATE_EDIT = "FLAVOR_TEMPLATE_EDIT";
 
     // Localization constants
     private static final String FAILED_EDIT_FLAVOR_PERMISSION_KEY = "failed.edit.flavor.permission.text";
@@ -83,6 +89,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     private static final String ADD_BLOG_FLAVOR_ACTION = "add-blog-flavor";
     private static final String MODIFY_BLOG_FLAVOR_ACTION = "modify-blog-flavor";
     private static final String DELETE_BLOG_FLAVOR_ACTION = "delete-blog-flavor";
+    private static final String EDIT_BLOG_FLAVOR_ACTION = "edit-blog-flavor";
 
     // Form elements
     private static final String FLAVOR_NAME = "flavor-name";
@@ -304,6 +311,25 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             }
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
+        } else if (EDIT_BLOG_FLAVOR_ACTION.equals(action)) {
+            String flavor = BlojsomUtils.getRequestValue(FLAVOR_NAME, httpServletRequest);
+
+            context.put(FLAVOR_NAME_EDIT, flavor);
+
+            Map templates = blog.getTemplates();
+            String templateAndType = (String) templates.get(flavor);
+            String[] templateType = BlojsomUtils.parseCommaList(templateAndType);
+            String[] typeAndCharacterSet = BlojsomUtils.parseDelimitedList(templateType[1], ";", true);
+
+            _logger.debug(templateAndType);
+            _logger.debug(templateType[0]);
+            _logger.debug(typeAndCharacterSet[0] + ":" + typeAndCharacterSet[1]);
+
+            context.put(FLAVOR_TYPE_EDIT, typeAndCharacterSet[0]);
+            context.put(FLAVOR_CHARACTER_SET_EDIT, typeAndCharacterSet[1].substring(typeAndCharacterSet[1].indexOf("=") + 1));
+            context.put(FLAVOR_TEMPLATE_EDIT, templateType[0]);
+
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_FLAVOR_PAGE);
         }
 
         return entries;
