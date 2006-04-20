@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.2 2006-03-21 16:32:38 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.3 2006-04-20 21:56:27 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -163,6 +163,9 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.BLOG_ADMINISTRATION_LOCALE_IP, httpServletRequest);
             blog.setBlogAdministrationLocale(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-timezone-id", httpServletRequest);
+            if (BlojsomUtils.checkNullOrBlank(blogPropertyValue)) {
+                blogPropertyValue = BlojsomConstants.BLOG_DEFAULT_TIMEZONE;
+            }
             blog.setProperty("blog-timezone-id", blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue("blog-display-entries", httpServletRequest);
             try {
