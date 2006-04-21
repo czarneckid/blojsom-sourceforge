@@ -28,7 +28,7 @@
                         </tr>
                         <tr>
                             <td>#adminResource('template.text' 'Template')</td>
-                            <td><textarea rows="30" cols="100" name="blog-template-data">$BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE</textarea></td>
+                            <td><textarea rows="30" cols="120" name="blog-template-data">$BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE</textarea></td>
                         </tr>
 
                         <tr>
