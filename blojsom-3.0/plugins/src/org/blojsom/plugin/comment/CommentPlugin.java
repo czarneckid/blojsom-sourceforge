@@ -62,12 +62,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.io.IOException;
 
 /**
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.5 2006-03-28 01:24:08 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.6 2006-04-21 13:48:16 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -574,6 +575,14 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
                     CookieUtils.addCookie(httpServletResponse, _cookieExpiration, COOKIE_REMEMBER_ME, "true");
                     context.put(BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME, "true");
+                }
+
+                String redirectTo = BlojsomUtils.getRequestValue(BlojsomConstants.REDIRECT_TO_PARAM, httpServletRequest);
+                if (!BlojsomUtils.checkNullOrBlank(redirectTo)) {
+                    try {
+                        httpServletResponse.sendRedirect(redirectTo);
+                    } catch (IOException e) {                        
+                    }
                 }
             }
         }

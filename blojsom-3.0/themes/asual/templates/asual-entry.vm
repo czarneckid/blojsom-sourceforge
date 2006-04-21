@@ -62,6 +62,7 @@
                                             <input type="hidden" name="comment" value="y" />
                                             <input type="hidden" name="entry_id" value="$entry.getId()" />
                                             <input type="hidden" name="permalink" value="$entry.getPostSlug()" />
+                                            <input type="hidden" name="redirect_to" value="$permalink" />
                                         </div>
                                         <div class="label"><label for="author">Author (<span class="red">*</span>):</label></div>
                                         <div class="input"><input id="author" name="author" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end" class="fixed" /></div>
