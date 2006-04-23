@@ -15,13 +15,13 @@
             </li>
             <li><a href="#">#adminResource('weblog.settings.text' '')</a>
                 <ul>
-                    <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-authorization&action=page">#adminResource('authorization.page.header' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blogs&action=page">#adminResource('blogs.text' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=file-upload&action=page">#adminResource('files.text' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-flavors&action=page">#adminResource('flavors.text' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-permissions&action=page">#adminResource('permissions.page.header' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-properties&action=page">#adminResource('properties.text' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-templates&action=page">#adminResource('templates.text' '')</a></li>
+                    <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-authorization&action=page">#adminResource('users.text' '')</a></li>
                 </ul>
             </li>
             <li><a href="#">#adminResource('plugin.settings.text' '')</a>
