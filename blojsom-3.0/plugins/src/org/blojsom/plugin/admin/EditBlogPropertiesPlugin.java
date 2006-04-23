@@ -37,6 +37,7 @@ import org.blojsom.blog.Entry;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
@@ -54,7 +55,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.3 2006-04-20 21:56:27 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.4 2006-04-23 17:53:38 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -220,6 +221,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             // Pingback properties
             blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.BLOG_PINGBACKS_ENABLED_IP, httpServletRequest);
             blog.setBlogPingbacksEnabled(Boolean.valueOf(blogPropertyValue));
+            blogPropertyValue = BlojsomUtils.getRequestValue(PingbackPlugin.PINGBACK_PREFIX_IP, httpServletRequest);
+            blog.setProperty(PingbackPlugin.PINGBACK_PREFIX_IP, blogPropertyValue);
 
             // Weblogs Ping plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(WeblogsPingPlugin.BLOG_PING_URLS_IP, httpServletRequest);
