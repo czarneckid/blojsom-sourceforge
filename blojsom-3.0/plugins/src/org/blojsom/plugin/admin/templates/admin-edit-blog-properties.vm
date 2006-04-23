@@ -51,7 +51,6 @@
                             <tr>
                                 <td>#adminResource('blog.default.flavor.text' '')</td>
                                 <td>
-                                    #* <input name="blog-default-flavor" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDefaultFlavor()"/> *#
                                     <select name="blog-default-flavor">
                                     #foreach ($flavor in $BLOJSOM_BLOG.getTemplates().keySet())
                                         <option value="$flavor" #if ($BLOJSOM_BLOG.getBlogDefaultFlavor().equals($flavor)) SELECTED #end>$flavor</option>
