@@ -1,4 +1,4 @@
-#AdminPageTitle('authorization.page.header' 'Authorization')
+#AdminPageTitle('users.text' '')
 #parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
 
 <body>
