@@ -1,0 +1,87 @@
+#AdminPageTitle('authorization.page.header' 'Authorization')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                #set($confirmationText = "#adminResource('delete.authorized.user.confirmation.text' '')")
+                #set($specificType = 'Authorization')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
+                <div class="mainClm">
+                    <h3>#adminResource('users.text' '') (<a href="#adduser">#adminResource('add.new.user.text' '')</a>)</h3>
+                    <table border=".5">
+                        <tr>
+                            <th>#adminResource('authorized.user.id.text' '')</th> <th colspan="2">#adminResource('actions.text' '')</th>
+                        </tr>
+                        #foreach ($blogUser in $BLOJSOM_PLUGIN_EDIT_BLOG_USERS)
+                        <tr>
+                            <td>$blogUser.getUserLogin()</td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-authorization&action=edit-blog-authorization&blog-user-id=$blogUser.getId()">#adminResource('edit.text' '')</a></td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-authorization&action=delete-blog-authorization&blog-user-id=$blogUser.getId()" #OnClickDeletePrompt($specificType)>#adminResource('delete.text' '')</a></td>
+                        </tr>
+                        #end
+                    </table>
+                </div>
+
+                <a name="adduser" />
+                <!-- Add blog user authorization form -->
+                <div class="mainClm">
+                    <h3>#adminResource('add.new.user.text' '')</h3>
+                    <table>
+                        <form name="add-blog-authorization" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="add-blog-authorization"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-authorization"/>
+                            <input type="hidden" name="blog-user-id" value="-1"/>
+                            <tr>
+                                <td>#adminResource('authorized.user.id.text' '')</td>
+                                <td><input type="text" size="35" name="blog-login-id"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.name.text' '')</td>
+                                <td><input type="text" size="35" name="blog-user-name"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.password.text' '')</td>
+                                <td><input type="password" size="15" name="blog-user-password"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.password.check.text' '')</td>
+                                <td><input type="password" size="15" name="blog-user-password-check"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.email.text' '')</td>
+                                <td><input type="text" size="30" name="blog-user-email"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.permissions.text' '')</td>
+                                <td><input type="text" size="50" name="blog-permissions"/></td>
+                            </tr>
+                            <tr />
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.authorized.user.text' '')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

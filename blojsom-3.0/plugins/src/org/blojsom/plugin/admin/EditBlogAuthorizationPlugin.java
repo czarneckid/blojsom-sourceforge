@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.5 2006-04-05 00:49:30 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.6 2006-04-23 14:52:43 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -75,16 +75,19 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
     private static final String USER_LOGIN_EXISTS_KEY = "user.login.exists.text";
 
     // Pages
+    private static final String EDIT_BLOG_AUTHORIZATIONS_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-authorizations";
     private static final String EDIT_BLOG_AUTHORIZATION_PAGE = "/org/blojsom/plugin/admin/templates/admin-edit-blog-authorization";
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_USERS = "BLOJSOM_PLUGIN_EDIT_BLOG_USERS";
+    private static final String BLOJSOM_PLUGIN_EDIT_BLOG_USER = "BLOJSOM_PLUGIN_EDIT_BLOG_USER";
     private static final String NEW_USER_STATUS = "new";
 
     // Actions
     private static final String ADD_BLOG_AUTHORIZATION_ACTION = "add-blog-authorization";
     private static final String MODIFY_BLOG_AUTHORIZATION_ACTION = "modify-blog-authorization";
     private static final String DELETE_BLOG_AUTHORIZATION_ACTION = "delete-blog-authorization";
+    private static final String EDIT_BLOG_AUTHORIZATION = "edit-blog-authorization";
 
     // Form elements
     private static final String BLOG_USER_ID = "blog-user-id";
@@ -159,6 +162,8 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
         } else if (PAGE_ACTION.equals(action)) {
             _logger.debug("User requested edit blog authorization page");
+
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
         } else if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action) || MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action)) {
             if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action)) {
                 _logger.debug("User requested add authorization action");
@@ -174,97 +179,130 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             String blogUserEmail = BlojsomUtils.getRequestValue(BLOG_USER_EMAIL, httpServletRequest);
             String blogUserPermissions = BlojsomUtils.getRequestValue(BLOG_PERMISSIONS, httpServletRequest);
 
-            if (!BlojsomUtils.checkNullOrBlank(blogUserID) && !BlojsomUtils.checkNullOrBlank(blogUserPassword) && !BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck))
-            {
-                if (blogUserPassword.equals(blogUserPasswordCheck)) {
-                    if (BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
-                        blogUserEmail = "";
-                    }
+            if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
+                if (BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
+                    blogUserEmail = "";
+                }
 
-                    if ((!username.equals(blogUserID)) && !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
-                    {
-                        httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
-                        addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
+                if ((!username.equals(blogUserID)) && !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
+                {
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
+                    addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
 
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
+
+                    return entries;
+                }
+
+                boolean modifyingPassword = true;
+
+                if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action) && (BlojsomUtils.checkNullOrBlank(blogUserPassword) || BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)))
+                {
+                    addOperationResultMessage(context, getAdminResource(MISSING_PARAMETERS_KEY, MISSING_PARAMETERS_KEY, blog.getBlogAdministrationLocale()));
+                    _logger.debug("Missing parameters from the request to complete add/modify authorization action");
+
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
+
+                    return entries;
+                } else if (MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action) && BlojsomUtils.checkNullOrBlank(blogUserPassword) && BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
+                    modifyingPassword = false;
+                } else if (MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action) && !blogUserPassword.equals(blogUserPasswordCheck)) {
+                    addOperationResultMessage(context, getAdminResource(PASSWORD_CHECK_FAILED_KEY, PASSWORD_CHECK_FAILED_KEY, blog.getBlogAdministrationLocale()));
+                    _logger.debug("Password and password check not equal for add/modify authorization action");
+
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
+
+                    return entries;
+                }
+
+                if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action) && (!blogUserPassword.equals(blogUserPasswordCheck))) {
+                    addOperationResultMessage(context, getAdminResource(PASSWORD_CHECK_FAILED_KEY, PASSWORD_CHECK_FAILED_KEY, blog.getBlogAdministrationLocale()));
+                    _logger.debug("Password and password check not equal for add/modify authorization action");
+
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
+
+                    return entries;
+                }
+
+                if (blog.getUseEncryptedPasswords().booleanValue()) {
+                    blogUserPassword = BlojsomUtils.digestString(blogUserPassword, blog.getDigestAlgorithm());
+                }
+
+                String[] permissions = null;
+                if (!BlojsomUtils.checkNullOrBlank(blogUserPermissions)) {
+                    permissions = BlojsomUtils.parseOnlyCommaList(blogUserPermissions, true);
+                }
+
+                User user = null;
+                if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action)) {
+                    try {
+                        _fetcher.loadUser(blog, blogLoginID);
+
+                        addOperationResultMessage(context, formatAdminResource(USER_LOGIN_EXISTS_KEY, USER_LOGIN_EXISTS_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogLoginID}));
+                        httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
                         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
 
                         return entries;
+                    } catch (FetcherException e) {
                     }
 
-                    if (blog.getUseEncryptedPasswords().booleanValue()) {
-                        blogUserPassword = BlojsomUtils.digestString(blogUserPassword, blog.getDigestAlgorithm());
-                    }
-
-                    String[] permissions = null;
-                    if (!BlojsomUtils.checkNullOrBlank(blogUserPermissions)) {
-                        permissions = BlojsomUtils.parseOnlyCommaList(blogUserPermissions, true);
-                    }
-
-                    User user = null;
-                    if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action)) {
-                        try {
-                            _fetcher.loadUser(blog, blogLoginID);
-
-                            addOperationResultMessage(context, formatAdminResource(USER_LOGIN_EXISTS_KEY, USER_LOGIN_EXISTS_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogLoginID}));
-                            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
-                            context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
-
-                            return entries;
-                        } catch (FetcherException e) {
-                        }
-
-                        user = new DatabaseUser();
-                        user.setBlogId(blog.getBlogId());
-                        user.setUserEmail(blogUserEmail);
-                        user.setUserLogin(blogLoginID);
-                        user.setUserName(blogUserName);
-                        user.setUserPassword(blogUserPassword);
-                        user.setUserRegistered(new Date());
-                        user.setUserStatus(NEW_USER_STATUS);
-                        if (permissions != null) {
-                            Map userMetaData = new HashMap();
-                            for (int i = 0; i < permissions.length; i++) {
-                                String permission = permissions[i];
-                                if (permission.endsWith("_permission") && checkPermission(blog, null, username, ADD_BLOG_AUTHORIZATION_PERMISSIONS_PERMISSION)) {
-                                    userMetaData.put(permission, Boolean.TRUE.toString());
-                                }
-                            }
-
-                            user.setMetaData(userMetaData);
-                        }
-                    } else {
-                        try {
-                            user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
-                            user.setUserEmail(blogUserEmail);
-                            user.setUserPassword(blogUserPassword);
-                            user.setUserName(blogUserName);
-                        } catch (FetcherException e) {
-                            if (_logger.isErrorEnabled()) {
-                                _logger.error(e);
+                    user = new DatabaseUser();
+                    user.setBlogId(blog.getBlogId());
+                    user.setUserEmail(blogUserEmail);
+                    user.setUserLogin(blogLoginID);
+                    user.setUserName(blogUserName);
+                    user.setUserPassword(blogUserPassword);
+                    user.setUserRegistered(new Date());
+                    user.setUserStatus(NEW_USER_STATUS);
+                    if (permissions != null) {
+                        Map userMetaData = new HashMap();
+                        for (int i = 0; i < permissions.length; i++) {
+                            String permission = permissions[i];
+                            if (permission.endsWith("_permission") && checkPermission(blog, null, username, ADD_BLOG_AUTHORIZATION_PERMISSIONS_PERMISSION))
+                            {
+                                userMetaData.put(permission, Boolean.TRUE.toString());
                             }
                         }
-                    }
 
+                        user.setMetaData(userMetaData);
+                    }
+                } else {
                     try {
-                        _fetcher.saveUser(blog, user);
+                        user = _fetcher.loadUser(blog, Integer.valueOf(blogUserID));
+                        user.setUserEmail(blogUserEmail);
+                        if (modifyingPassword) {
+                            user.setUserPassword(blogUserPassword);
+                        }
 
-                        addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, blog.getBlogAdministrationLocale(), new Object[]{user.getUserLogin()}));
-                        _eventBroadcaster.processEvent(new AuthorizationAddedEvent(this, new Date(), httpServletRequest, httpServletResponse, blog, context, user.getId()));
+                        user.setUserName(blogUserName);
                     } catch (FetcherException e) {
                         if (_logger.isErrorEnabled()) {
                             _logger.error(e);
                         }
-
-                        addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogLoginID}));
                     }
-                } else {
-                    addOperationResultMessage(context, getAdminResource(PASSWORD_CHECK_FAILED_KEY, PASSWORD_CHECK_FAILED_KEY, blog.getBlogAdministrationLocale()));
-                    _logger.debug("Password and password check not equal for add/modify authorization action");
+                }
+
+                try {
+                    _fetcher.saveUser(blog, user);
+
+                    addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, SUCCESSFUL_AUTHORIZATION_UPDATE_KEY, blog.getBlogAdministrationLocale(), new Object[]{user.getUserLogin()}));
+                    _eventBroadcaster.processEvent(new AuthorizationAddedEvent(this, new Date(), httpServletRequest, httpServletResponse, blog, context, user.getId()));
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+
+                    addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, UNSUCCESSFUL_AUTHORIZATION_UPDATE_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogLoginID}));
                 }
             } else {
                 addOperationResultMessage(context, getAdminResource(MISSING_PARAMETERS_KEY, MISSING_PARAMETERS_KEY, blog.getBlogAdministrationLocale()));
                 _logger.debug("Missing parameters from the request to complete add/modify authorization action");
             }
+
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
         } else if (DELETE_BLOG_AUTHORIZATION_ACTION.equals(action)) {
             _logger.debug("User requested delete authorization action");
 
@@ -272,7 +310,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
                 if ((!username.equals(blogUserID)) && !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
                 {
-                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
                     addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
                     context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
 
@@ -282,13 +320,14 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                 try {
                     Integer userID = Integer.valueOf(blogUserID);
                     try {
+                        User user = _fetcher.loadUser(blog, userID);
                         _fetcher.deleteUser(blog, userID);
 
                         if (_logger.isDebugEnabled()) {
                             _logger.debug("Removed user: " + blogUserID + " from blog: " + blog.getBlogId());
                         }
 
-                        addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_DELETE_KEY, SUCCESSFUL_AUTHORIZATION_DELETE_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogUserID}));
+                        addOperationResultMessage(context, formatAdminResource(SUCCESSFUL_AUTHORIZATION_DELETE_KEY, SUCCESSFUL_AUTHORIZATION_DELETE_KEY, blog.getBlogAdministrationLocale(), new Object[]{user.getUserLogin()}));
                         _eventBroadcaster.processEvent(new AuthorizationDeletedEvent(this, new Date(), httpServletRequest, httpServletResponse, blog, context, userID));
                     } catch (FetcherException e) {
                         addOperationResultMessage(context, formatAdminResource(UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, UNSUCCESSFUL_AUTHORIZATION_DELETE_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogUserID}));
@@ -308,10 +347,29 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, getAdminResource(MISSING_BLOG_ID_KEY, MISSING_BLOG_ID_KEY, blog.getBlogAdministrationLocale()));
                 _logger.debug("No blog user id to delete from authorization");
             }
+
+            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
+        } else if (EDIT_BLOG_AUTHORIZATION.equals(action)) {
+            _logger.debug("User requested edit authorization action");
+
+            String userID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
+            if (!BlojsomUtils.checkNullOrBlank(userID)) {
+                try {
+                    User user = _fetcher.loadUser(blog, Integer.valueOf(userID));
+
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USER, user);
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                }
+            } else {
+                httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
+            }
         }
 
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
-        httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATION_PAGE);
 
         return entries;
     }
