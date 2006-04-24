@@ -20,7 +20,7 @@
 
                     #foreach ($blogUserID in $BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP.keySet())
                     #set ($permissionsList = $BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP.get($blogUserID))
-                    <table>
+                    <table border=".5">
                         <tr><td>$blogUserID</td><td>#foreach ($permission in $permissionsList.keySet()) $permission #end</td></tr>
                     </table>
                 #end
