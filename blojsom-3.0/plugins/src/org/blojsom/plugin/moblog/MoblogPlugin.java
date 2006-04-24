@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.2 2006-04-10 12:49:45 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.3 2006-04-24 11:15:48 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin {
@@ -240,7 +240,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                 _pollTime = Integer.parseInt(moblogPollTime);
             } catch (NumberFormatException e) {
                 if (_logger.isErrorEnabled()) {
-                    _logger.error("Invalid time specified for: " + PLUGIN_MOBLOG_POLL_TIME);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Invalid time specified for: " + PLUGIN_MOBLOG_POLL_TIME);
+                    }
                 }
                 _pollTime = DEFAULT_POLL_TIME;
             }
@@ -352,14 +354,18 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                 // -- Try to get hold of the default folder --
                 folder = store.getDefaultFolder();
                 if (folder == null) {
-                    _logger.error("Default folder is null.");
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Default folder is null.");
+                    }
                     _finished = true;
                 }
 
                 // -- ...and its INBOX --
                 folder = folder.getFolder(mailbox.getFolder());
                 if (folder == null) {
-                    _logger.error("No POP3 folder called " + mailbox.getFolder());
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("No POP3 folder called " + mailbox.getFolder());
+                    }
                     _finished = true;
                 }
 
@@ -369,15 +375,22 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                 // -- Get the message wrappers and process them --
                 Message[] msgs = folder.getMessages();
 
-                _logger.debug("Found [" + msgs.length + "] messages");
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Found [" + msgs.length + "] messages");
+                }
 
                 for (int msgNum = 0; msgNum < msgs.length; msgNum++) {
                     String from = ((InternetAddress) msgs[msgNum].getFrom()[0]).getAddress();
-                    _logger.debug("Processing message: " + msgNum);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Processing message: " + msgNum);
+                    }
 
                     if (!checkSender(mailbox, from)) {
-                        _logger.debug("Unauthorized sender address: " + from);
-                        _logger.debug("Deleting message: " + msgNum);
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Unauthorized sender address: " + from);
+                            _logger.debug("Deleting message: " + msgNum);
+                        }
+
                         msgs[msgNum].setFlag(Flags.Flag.DELETED, true);
                     } else {
                         Message email = msgs[msgNum];
@@ -404,7 +417,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                         String secretWord = mailbox.getSecretWord();
                         if (secretWord != null) {
                             if (!subject.startsWith(secretWord)) {
-                                _logger.error("Message does not begin with secret word for user id: " + mailbox.getUserId());
+                                if (_logger.isErrorEnabled()) {
+                                    _logger.error("Message does not begin with secret word for user id: " + mailbox.getUserId());
+                                }
                                 msgs[msgNum].setFlag(Flags.Flag.DELETED, true);
 
                                 continue;
@@ -447,7 +462,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                                 if (mmpbpType != null) {
                                                     mmpbpType = sanitizeContentType(mmpbpType);
                                                     if (TEXT_HTML_MIME_TYPE.equals(mmpbpType)) {
-                                                        _logger.debug("Using HTML part of multipart/alternative: " + type);
+                                                        if (_logger.isDebugEnabled()) {
+                                                            _logger.debug("Using HTML part of multipart/alternative: " + type);
+                                                        }
                                                         InputStream is = bp.getInputStream();
 
                                                         BufferedReader reader = new BufferedReader(new InputStreamReader(is, BlojsomConstants.UTF8));
@@ -470,25 +487,35 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                                             moblogContext.put(MOBLOG_BODY_TEXT, description.toString());
                                                         }
                                                     } else {
-                                                        _logger.debug("Skipping non-HTML part of multipart/alternative block");
+                                                        if (_logger.isDebugEnabled()) {
+                                                            _logger.debug("Skipping non-HTML part of multipart/alternative block");
+                                                        }
                                                     }
                                                 } else {
-                                                    _logger.info("Unknown mimetype for multipart/alternative block");
+                                                    if (_logger.isInfoEnabled()) {
+                                                        _logger.info("Unknown mimetype for multipart/alternative block");
+                                                    }
                                                 }
                                             }
                                         } else {
-                                            _logger.debug("Multipart alternative block not instance of MimeMultipart");
+                                            if (_logger.isDebugEnabled()) {
+                                                _logger.debug("Multipart alternative block not instance of MimeMultipart");
+                                            }
                                         }
                                     } else {
                                         if (imageMimeTypes.containsKey(type)) {
-                                            _logger.debug("Creating image of type: " + type);
+                                            if (_logger.isDebugEnabled()) {
+                                                _logger.debug("Creating image of type: " + type);
+                                            }
                                             String outputFilename = BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
                                             String extension = BlojsomUtils.getFileExtension(bp.getFileName());
                                             if (BlojsomUtils.checkNullOrBlank(extension)) {
                                                 extension = "";
                                             }
 
-                                            _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension);
+                                            if (_logger.isDebugEnabled()) {
+                                                _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension);
+                                            }
                                             MoblogPluginUtils.saveFile(mailbox.getOutputDirectory() + File.separator + outputFilename, "." + extension, bp.getInputStream());
 
                                             String baseurl = mailbox.getBlogBaseURL();
@@ -497,14 +524,18 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                             moblogImageInformation.put(MOBLOG_IMAGE_URL, baseurl + mailbox.getUrlPrefix() + outputFilename + "." + extension);
                                             moblogImages.add(moblogImageInformation);
                                         } else if (attachmentMimeTypes.containsKey(type)) {
-                                            _logger.debug("Creating attachment of type: " + type);
+                                            if (_logger.isDebugEnabled()) {
+                                                _logger.debug("Creating attachment of type: " + type);
+                                            }
                                             String outputFilename = BlojsomUtils.digestString(bp.getFileName() + "-" + new Date().getTime());
                                             String extension = BlojsomUtils.getFileExtension(bp.getFileName());
                                             if (BlojsomUtils.checkNullOrBlank(extension)) {
                                                 extension = "";
                                             }
 
-                                            _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension);
+                                            if (_logger.isDebugEnabled()) {
+                                                _logger.debug("Writing to: " + mailbox.getOutputDirectory() + File.separator + outputFilename + "." + extension);
+                                            }
                                             MoblogPluginUtils.saveFile(mailbox.getOutputDirectory() + File.separator + outputFilename, "." + extension, bp.getInputStream());
 
                                             String baseurl = mailbox.getBlogBaseURL();
@@ -515,7 +546,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                         } else if (textMimeTypes.containsKey(type)) {
                                             if ((isMultipartAlternative && (TEXT_HTML_MIME_TYPE.equals(type))) || !isMultipartAlternative)
                                             {
-                                                _logger.debug("Using text part of type: " + type);
+                                                if (_logger.isDebugEnabled()) {
+                                                    _logger.debug("Using text part of type: " + type);
+                                                }
                                                 InputStream is = bp.getInputStream();
 
                                                 BufferedReader reader = new BufferedReader(new InputStreamReader(is, BlojsomConstants.UTF8));
@@ -537,11 +570,15 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                                 }
                                             }
                                         } else {
-                                            _logger.info("Unknown mimetype for multipart: " + type);
+                                            if (_logger.isInfoEnabled()) {
+                                                _logger.info("Unknown mimetype for multipart: " + type);
+                                            }
                                         }
                                     }
                                 } else {
-                                    _logger.debug("Body part has no defined mime type. Skipping.");
+                                    if (_logger.isDebugEnabled()) {
+                                        _logger.debug("Body part has no defined mime type. Skipping.");
+                                    }
                                 }
                             }
                         } else {
@@ -573,7 +610,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                     moblogContext.put(MOBLOG_BODY_TEXT, description.toString());
                                 }
                             } else {
-                                _logger.info("Unknown mimetype: " + mimeType);
+                                if (_logger.isInfoEnabled()) {
+                                    _logger.info("Unknown mimetype: " + mimeType);
+                                }
                             }
                         }
 
@@ -595,7 +634,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                         categoryFromSubject += "/";
                                     }
                                     categoryInSubject = true;
-                                    _logger.info("Using category [" + categoryFromSubject + "] for entry: " + subject);
+                                    if (_logger.isInfoEnabled()) {
+                                        _logger.info("Using category [" + categoryFromSubject + "] for entry: " + subject);
+                                    }
                                 }
                             }
                         }
@@ -630,7 +671,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
 
                             _eventBroadcaster.broadcastEvent(new EntryAddedEvent(this, new Date(), entry, blog));
                         } catch (FetcherException e) {
-                            _logger.error(e);
+                            if (_logger.isErrorEnabled()) {
+                                _logger.error(e);
+                            }
                         }
                     }
                 }
@@ -645,16 +688,26 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                         store.close();
                     }
                 } catch (MessagingException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             } catch (ConnectException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (NoSuchProviderException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (MessagingException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (IOException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } finally {
                 try {
                     if (folder != null && folder.isOpen()) {
@@ -665,7 +718,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                         store.close();
                     }
                 } catch (MessagingException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }
@@ -676,7 +731,9 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
         public void run() {
             try {
                 while (!_finished) {
-                    _logger.debug("Moblog plugin waking up and looking for new messages");
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Moblog plugin waking up and looking for new messages");
+                    }
 
                     String[] blogIDs = _fetcher.loadBlogIDs();
                     for (int i = 0; i < blogIDs.length; i++) {
@@ -686,19 +743,27 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                         Mailbox mailbox = MoblogPluginUtils.readMailboxSettingsForBlog( _servletConfig, blog);
                         if (mailbox != null) {
                             if (mailbox.isEnabled()) {
-                                _logger.debug("Checking mailbox: " + mailbox.getUserId() + " for blog: " + mailbox.getBlogId());
+                                if (_logger.isDebugEnabled()) {
+                                    _logger.debug("Checking mailbox: " + mailbox.getUserId() + " for blog: " + mailbox.getBlogId());
+                                }
                                 processMailbox(mailbox);
                             }
                         }
                     }
 
-                    _logger.debug("Moblog plugin off to take a nap");
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Moblog plugin off to take a nap");
+                    }
                     sleep(_pollTime * 1000);
                 }
             } catch (InterruptedException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             } catch (FetcherException e) {
-                _logger.error(e);
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             }
         }
 
