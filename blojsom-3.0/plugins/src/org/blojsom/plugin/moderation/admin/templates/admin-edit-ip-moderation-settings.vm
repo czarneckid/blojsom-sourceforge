@@ -60,7 +60,7 @@
                                 <td>#adminResource('ip.address.text' 'IP address')</td>
                                 <td>
                                     #set ($counter = 0)
-                                    <select name="ip-address" size="3" multiple>
+                                    <select name="ip-address" size="5" multiple>
                                         #foreach ($ipAddress in $BLOJSOM_PLUGIN_IP_BLACKLIST)
                                         <option value="$counter">$ipAddress</option>
                                         #set($counter = $counter + 1)
@@ -93,7 +93,7 @@
                                 <td>#adminResource('ip.address.text' 'IP address')</td>
                                 <td>
                                     #set ($counter = 0)
-                                    <select name="ip-address" size="3" multiple>
+                                    <select name="ip-address" size="5" multiple>
                                         #foreach ($ipAddress in $BLOJSOM_PLUGIN_IP_WHITELIST)
                                         <option value="$counter">$ipAddress</option>
                                         #set($counter = $counter + 1)
@@ -116,19 +116,20 @@
 
             <!-- Current IP moderation settings (blacklist) -->
             <div id="sidebar">
-                <h4>#adminResource('current.ip.address.moderation.settings.blacklist.text' 'Current IP address moderation settings (blacklist)')</h4>
+                <h4>#adminResource('current.ip.address.moderation.settings.blacklist.text' '')</h4>
                 #foreach ($ipAddress in $BLOJSOM_PLUGIN_IP_BLACKLIST)
                    <a href="#">$ipAddress&nbsp;</a><br/>
                 #end
-            </div>
 
-            <!-- Current IP moderation settings (whitelist) -->
-            <div id="sidebar">
-                <h4>#adminResource('current.ip.address.moderation.settings.whitelist.text' 'Current IP address moderation settings (whitelist)')</h4>
+                <p></p>
+
+                <!-- Current IP moderation settings (whitelist) -->
+                <h4>#adminResource('current.ip.address.moderation.settings.whitelist.text' '')</h4>
                 #foreach ($ipAddress in $BLOJSOM_PLUGIN_IP_WHITELIST)
                    <a href="#">$ipAddress&nbsp;</a><br/>
                 #end
             </div>
+
         </div>
     </div>
 </body>
