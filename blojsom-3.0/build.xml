@@ -511,6 +511,7 @@
                 <include name="extensions/**"/>
                 <include name="plugins/**"/>
                 <include name="src/**"/>
+                <include name="sql-scripts/**"/>
 
                 <!-- Library directory -->
                 <include name="lib/"/>
