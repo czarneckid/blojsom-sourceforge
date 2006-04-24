@@ -386,7 +386,7 @@
     <!-- =================================================================== -->
     <!-- Create the war file                                                 -->
     <!-- =================================================================== -->
-    <target name="war" depends="compile" description="Create a deployable WAR file">
+    <target name="war" depends="clean-with-templates, compile" description="Create a deployable WAR file">
         <copy todir="${war.dir}/WEB-INF/themes">
             <fileset dir="${themes.dir}"/>
         </copy>
@@ -494,8 +494,11 @@
     <!-- =================================================================== -->
     <!-- Create a source distribution                                        -->
     <!-- =================================================================== -->
-    <target name="create-source-distribution" depends="clean, prepare" description="Creates the source distribution">
+    <target name="create-source-distribution" depends="clean-with-templates" description="Creates the source distribution">
         <tstamp/>
+        <mkdir dir="${compile.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${distro.dir}"/>
         <zip zipfile="${distro.dir}/${name}-${version}-source.zip">
             <zipfileset dir="${basedir}">
                 <!-- Base files -->
@@ -532,7 +535,7 @@
     <!-- =================================================================== -->
     <!-- Create a distribution (add-ons, themes, templates, source)          -->
     <!-- =================================================================== -->
-    <target name="create-distribution" depends="clean, create-addon-bundle, create-source-distribution, create-themes-bundle, create-templates-bundle"
+    <target name="create-distribution" depends="clean-with-templates, create-addon-bundle, create-source-distribution, create-themes-bundle, create-templates-bundle"
         description="Create the add-on bundle, themes and templates packages, and source distribution">
     </target>
 
