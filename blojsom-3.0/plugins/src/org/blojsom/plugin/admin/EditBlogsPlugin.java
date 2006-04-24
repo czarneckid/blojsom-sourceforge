@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.4 2006-04-20 21:55:23 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.5 2006-04-24 12:22:37 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -444,11 +444,10 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                             }
                             
                             addOperationResultMessage(context, formatAdminResource(ADDED_NEW_WEBLOG_KEY, ADDED_NEW_WEBLOG_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogID}));
+                            httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                         } else {
                             // User login ID or user e-mail is null or blank
                         }
-
-                        return entries;
                     }
                 }
             }
