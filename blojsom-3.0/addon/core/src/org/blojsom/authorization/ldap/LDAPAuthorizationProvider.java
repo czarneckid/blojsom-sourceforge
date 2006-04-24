@@ -34,6 +34,7 @@ import netscape.ldap.LDAPConnection;
 import netscape.ldap.LDAPException;
 import netscape.ldap.LDAPSearchResults;
 import netscape.ldap.LDAPv2;
+import netscape.ldap.factory.JSSESocketFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
@@ -71,7 +72,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.1 2006-03-23 14:27:33 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.2 2006-04-24 16:51:45 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
@@ -82,6 +83,7 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
     private static final String BLOG_LDAP_AUTHORIZATION_UID_IP = "blog-ldap-authorization-uid";
     private static final String BLOG_LDAP_AUTHORIZATION_BINDING_USER_IP = "blog-ldap-authorization-bindinguser";
     private static final String BLOG_LDAP_AUTHORIZATION_BINDING_PASSWORD_IP = "blog-ldap-authorization-bindingpassword";
+    private static final String BLOG_LDAP_AUTHORIZATION_USE_SSL = "blog-ldap-authorization-use-ssl";
 
     private static final String UID_DEFAULT = "uid";
 
@@ -94,6 +96,7 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
     private String _bindingUser = null;
     private String _bindingPassword = null;
     private ServletConfig _servletConfig;
+    private boolean _useSSL = false;
 
     /**
      * Default constructor
@@ -123,6 +126,11 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
         String port = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_PORT_IP);
         if (!BlojsomUtils.checkNullOrBlank(_servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_UID_IP))) {
             _uidAttributeName = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_UID_IP);
+        }
+
+        if (!BlojsomUtils.checkNullOrBlank(_servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_USE_SSL))) {
+            String bool = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_USE_SSL);
+            _useSSL = Boolean.valueOf(bool).booleanValue();
         }
 
         // We don't setup a credentions map here, because with LDAP, you can't
@@ -176,6 +184,7 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
             _logger.debug("LDAP Authorization Provider UID: " + _uidAttributeName);
             _logger.debug("LDAP Authorization Provider binding user: " + _bindingUser);
             _logger.debug("LDAP Authorization Provider binding password: **********");
+            _logger.debug("LDAP Authorization Provider UseSSL: " + _useSSL);
 
             _logger.debug("Initialized LDAP authorization provider");
         }
@@ -204,7 +213,14 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
         }
 
         try {
-            LDAPConnection ldapConnection = new LDAPConnection();
+            LDAPConnection ldapConnection;
+
+            if (_useSSL) {
+                JSSESocketFactory ldapSocketFactory = new JSSESocketFactory();
+                ldapConnection = new LDAPConnection(ldapSocketFactory);
+            } else {
+                ldapConnection = new LDAPConnection();
+            }
 
             // Connect to the directory server
             ldapConnection.connect(_ldapServer, _ldapPort);
@@ -256,7 +272,14 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
      */
     protected String getDN(String username) {
         try {
-            LDAPConnection ldapConnection = new LDAPConnection();
+            LDAPConnection ldapConnection;
+
+            if (_useSSL) {
+                JSSESocketFactory ldapSocketFactory = new JSSESocketFactory();
+                ldapConnection = new LDAPConnection(ldapSocketFactory);
+            } else {
+                ldapConnection = new LDAPConnection();
+            }
 
             // Connect to the directory server
             ldapConnection.connect(_ldapServer, _ldapPort);

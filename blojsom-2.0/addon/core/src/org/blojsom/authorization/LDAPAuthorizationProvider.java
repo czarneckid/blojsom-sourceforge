@@ -34,6 +34,7 @@ import netscape.ldap.LDAPConnection;
 import netscape.ldap.LDAPException;
 import netscape.ldap.LDAPSearchResults;
 import netscape.ldap.LDAPv2;
+import netscape.ldap.factory.JSSESocketFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
@@ -70,7 +71,7 @@ import java.util.Map;
  * http://www.mozilla.org/directory/.
  *
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.8 2006-01-04 16:22:22 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.9 2006-04-24 16:52:13 czarneckid Exp $
  * @since blojsom 2.22
  */
 public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider implements BlojsomConstants {
@@ -81,6 +82,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
     private static final String BLOG_LDAP_AUTHORIZATION_UID_IP = "blog-ldap-authorization-uid";
     private static final String BLOG_LDAP_AUTHORIZATION_BINDING_USER_IP = "blog-ldap-authorization-bindinguser";
     private static final String BLOG_LDAP_AUTHORIZATION_BINDING_PASSWORD_IP = "blog-ldap-authorization-bindingpassword";
+    private static final String BLOG_LDAP_AUTHORIZATION_USE_SSL = "blog-ldap-authorization-use-ssl";
 
     private static final String UID_DEFAULT = "uid";
 
@@ -92,6 +94,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
 
     private String _bindingUser = null;
     private String _bindingPassword = null;
+    private boolean _useSSL = false;
 
     /**
      * Default constructor
@@ -113,8 +116,14 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
         _ldapServer = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_SERVER_IP);
         _ldapDN = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_DN_IP);
         String port = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_PORT_IP);
+
         if (!BlojsomUtils.checkNullOrBlank(_servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_UID_IP))) {
             _uidAttributeName = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_UID_IP);
+        }
+
+        if (!BlojsomUtils.checkNullOrBlank(_servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_USE_SSL))) {
+            String bool = _servletConfig.getInitParameter(BLOG_LDAP_AUTHORIZATION_USE_SSL);
+            _useSSL = Boolean.valueOf(bool).booleanValue();
         }
 
         // We don't setup a credentions map here, because with LDAP, you can't
@@ -155,6 +164,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
         _logger.debug("LDAP Authorization Provider UID: " + _uidAttributeName);
         _logger.debug("LDAP Authorization Provider binding user: " + _bindingUser);
         _logger.debug("LDAP Authorization Provider binding password: **********");
+        _logger.debug("LDAP Authorization Provider UseSSL: " + _useSSL);
 
         _logger.debug("Initialized LDAP authorization provider");
     }
@@ -213,7 +223,15 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
         }
 
         try {
-            LDAPConnection ldapConnection = new LDAPConnection();
+
+            LDAPConnection ldapConnection;
+
+            if (_useSSL) {
+                JSSESocketFactory ldapSocketFactory = new JSSESocketFactory();
+                ldapConnection = new LDAPConnection(ldapSocketFactory);
+            } else {
+                ldapConnection = new LDAPConnection();
+            }
 
             // Connect to the directory server
             ldapConnection.connect(_ldapServer, _ldapPort);
@@ -258,8 +276,16 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
      * @return DN for a given username or <code>null</code> if there is an exception in lookup
      */
     protected String getDN(String username) {
+
         try {
-            LDAPConnection ldapConnection = new LDAPConnection();
+            LDAPConnection ldapConnection;
+
+            if (_useSSL) {
+                JSSESocketFactory ldapSocketFactory = new JSSESocketFactory();
+                ldapConnection = new LDAPConnection(ldapSocketFactory);
+            } else {
+                ldapConnection = new LDAPConnection();
+            }
 
             // Connect to the directory server
             ldapConnection.connect(_ldapServer, _ldapPort);
@@ -272,8 +298,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
 
             // Search for the dn of the user given the username (uid).
             String[] attrs = {};
-            LDAPSearchResults res = ldapConnection.search(_ldapDN,
-                    LDAPv2.SCOPE_SUB, "(" + _uidAttributeName + "=" + username + ")", attrs, true);
+            LDAPSearchResults res = ldapConnection.search(_ldapDN, LDAPv2.SCOPE_SUB, "(" + _uidAttributeName + "=" + username + ")", attrs, true);
 
             if (!res.hasMoreElements()) {
                 // No such user.
@@ -288,6 +313,7 @@ public class LDAPAuthorizationProvider extends PropertiesAuthorizationProvider i
             return dn;
         } catch (LDAPException e) {
             // Some exception occurred above; the search for the dn failed.
+            _logger.debug("Error getting DN:" + e.getLDAPErrorMessage());
             return null;
         }
     }
