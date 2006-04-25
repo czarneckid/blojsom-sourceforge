@@ -625,4 +625,25 @@
         </property>
     </bean>
 
+    <bean id="theme-switcher" class="org.blojsom.plugin.admin.ThemeSwitcherPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>        
+    </bean>
+
 </beans>
