@@ -18,6 +18,7 @@
                 <prop key="installed-locales">de, en, fr, jp, ko, pt_BR, sv</prop>
                 <prop key="resources-directory">/resources/</prop>
                 <prop key="templates-directory">/templates/</prop>
+                <prop key="themes-directory">/themes/</prop>
                 <prop key="blogs-directory">/blogs/</prop>
                 <prop key="bootstrap-directory">/bootstrap/</prop>
             </props>
