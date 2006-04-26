@@ -52,7 +52,7 @@ import java.util.*;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.1 2006-04-25 16:27:23 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.2 2006-04-26 02:10:49 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -84,7 +84,7 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
     private static final String FLAVOR = "flavor-name";
 
     // Permissions
-    private static final String SWITCH_THEME_PERMISSION = "switch_theme";
+    private static final String SWITCH_THEME_PERMISSION = "switch_theme_permission";
     private static final String DEFAULT_THEMES_DIRECTORY = "/themes/";
     private static final String THEMES_DIRECTORY_IP = "themes-directory";
 
