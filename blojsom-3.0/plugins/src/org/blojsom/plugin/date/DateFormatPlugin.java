@@ -32,11 +32,11 @@ package org.blojsom.plugin.date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.blog.*;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomUtils;
-import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +50,7 @@ import java.util.TimeZone;
  * DateFormatPlugin
  *
  * @author David Czarnecki
- * @version $Id: DateFormatPlugin.java,v 1.3 2006-04-20 21:55:42 czarneckid Exp $
+ * @version $Id: DateFormatPlugin.java,v 1.4 2006-04-26 02:09:45 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DateFormatPlugin implements Plugin {
@@ -108,7 +108,7 @@ public class DateFormatPlugin implements Plugin {
         // Defaults to GMT if the Id is invalid
         _blogTimeZone = TimeZone.getTimeZone(blogTimeZoneId);
 
-        String blogDateFormatPattern = blog.getProperty(BLOG_DATEFORMAT_PATTERN_IP, BlojsomConstants.BLOG_DEFAULT_TIMEZONE, false);
+        String blogDateFormatPattern = blog.getProperty(BLOG_DATEFORMAT_PATTERN_IP, "EEEE, d MMMM yyyy", false);
         if (BlojsomUtils.checkNullOrBlank(blogDateFormatPattern)) {
             _blogDateFormatPattern = null;
             if (_logger.isDebugEnabled()) {
