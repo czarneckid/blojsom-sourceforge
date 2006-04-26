@@ -56,7 +56,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.16 2006-04-20 13:28:43 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.17 2006-04-26 02:10:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -793,6 +793,38 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
             categoryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                     .add(Restrictions.eq("id", categoryId));
+
+            Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
+
+            tx.commit();
+            session.close();
+
+            return category;
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+    }
+
+    /**
+     * Load the {@link Category} for a given category name
+     *
+     * @param blog {@link Blog}
+     * @param name Category name
+     * @return {@link Category} for the given category name
+     * @throws FetcherException If there is an error loading the category
+     */
+    public Category loadCategory(Blog blog, String name) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
+            categoryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.eq("name", name));
 
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
 

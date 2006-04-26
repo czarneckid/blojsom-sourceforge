@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.11 2006-04-14 20:14:57 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.12 2006-04-26 02:10:08 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -248,6 +248,16 @@ public interface Fetcher {
      * @throws FetcherException If there is an error loading the category
      */
     public Category loadCategory(Blog blog, Integer categoryId) throws FetcherException;
+
+    /**
+     * Load the {@link Category} for a given category name
+     *
+     * @param blog {@link Blog}
+     * @param name Category name
+     * @return {@link Category} for the given category name
+     * @throws FetcherException If there is an error loading the category
+     */
+    public Category loadCategory(Blog blog, String name) throws FetcherException;
 
     /**
      * Save a given {@link Entry}
