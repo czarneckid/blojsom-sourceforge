@@ -80,7 +80,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.5 2006-04-23 17:53:38 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.6 2006-04-27 22:49:34 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, Listener {
@@ -105,6 +105,7 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
      */
     public static final String BLOJSOM_PINGBACK_PLUGIN_METADATA_IP = "BLOJSOM_PINGBACK_PLUGIN_METADATA_IP";
 
+    public static final String BLOJSOM_PINGBACK_PLUGIN_APPROVED = "BLOJSOM_PINGBACK_PLUGIN_APPROVED";
     public static final String BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY = "BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY";
     public static final String PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS = "send-pingbacks";
 
