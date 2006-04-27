@@ -44,6 +44,7 @@ import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
 import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
+import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
@@ -58,7 +59,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.3 2006-04-18 18:44:38 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.4 2006-04-27 22:48:59 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
@@ -179,7 +180,7 @@ public class AkismetModerationPlugin implements Plugin, Listener {
 
                 boolean isSpam = akismet.commentCheck(httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), httpServletRequest.getHeader("Referer"), entryLink.toString(), responseType, responseSubmissionEvent.getSubmitter(), responseSubmissionEvent.getSubmitterItem1(), responseSubmissionEvent.getSubmitterItem2(), responseSubmissionEvent.getContent(), null);
 
-                metaData.put(AKISMET_PLUGIN_RESPONSE, Boolean.valueOf(isSpam));
+                metaData.put(AKISMET_PLUGIN_RESPONSE, Boolean.valueOf(isSpam).toString());
 
                 // If Akismet identifies the content as spam, process for moderation or deletion accordingly
                 if (isSpam) {
@@ -212,6 +213,12 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                         } else {
                             metaData.put(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY, Boolean.TRUE);
                         }
+                    } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
+                        if (!deleteSpam) {
+                            metaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED, Boolean.FALSE.toString());
+                        } else {
+                            metaData.put(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY, Boolean.TRUE);
+                        }
                     }
                 } else {
                     boolean automaticApproval = Boolean.valueOf(blog.getProperty(AKISMET_PLUGIN_AUTOMATIC_APPROVAL_IP)).booleanValue();
@@ -220,6 +227,8 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                             metaData.put(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.TRUE.toString());
                         } else if (responseSubmissionEvent instanceof TrackbackResponseSubmissionEvent) {
                             metaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.TRUE.toString());
+                        } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
+                            metaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED, Boolean.TRUE.toString());
                         }
                     }
                 }
