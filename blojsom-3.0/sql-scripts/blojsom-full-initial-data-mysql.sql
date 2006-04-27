@@ -269,7 +269,7 @@ CREATE TABLE `Plugin` (
   `plugin_flavor` varchar(50) NOT NULL,
   `plugin_value` varchar(4096) default NULL,
   KEY `plugin_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`Blog_id`) ON DELETE CASCADE
+  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
