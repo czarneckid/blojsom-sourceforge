@@ -56,7 +56,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.17 2006-04-26 02:10:08 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.18 2006-04-27 02:49:04 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -323,8 +323,9 @@ public class DatabaseFetcher implements Fetcher, Listener {
         }
 
         // Determine if a permalink has been requested
-        String permalink = httpServletRequest.getParameter(BlojsomConstants.PERMALINK_PARAM);
+        String permalink = BlojsomUtils.getRequestValue(BlojsomConstants.PERMALINK_PARAM, httpServletRequest);
         if (permalink != null) {
+            permalink = BlojsomUtils.urlDecode(permalink);
             if (_logger.isDebugEnabled()) {
                 _logger.debug("Permalink request for: " + permalink);
             }
@@ -349,7 +350,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                         .add(Restrictions.gt("date", entry.getDate()))
                         .add(Restrictions.lt("date", new Date()));
-                permalinkCriteria.addOrder(Order.desc("date"));
+                permalinkCriteria.addOrder(Order.asc("date"));
                 permalinkCriteria.setMaxResults(1);
 
                 List nextList = permalinkCriteria.list();
