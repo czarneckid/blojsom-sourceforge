@@ -56,7 +56,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.18 2006-04-27 02:49:04 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.19 2006-04-27 17:39:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -540,7 +540,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
         entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
-        entryCriteria.add(Restrictions.lt("date", new Date()));
         entryCriteria.addOrder(Order.desc("date"));
         entryCriteria.setMaxResults(pageSize);
         entryCriteria.setFirstResult(page);
