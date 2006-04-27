@@ -40,11 +40,12 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomImplementation.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
+ * @version $Id: BlojsomImplementation.java,v 1.2 2006-04-27 03:16:52 czarneckid Exp $
  */
 public class BlojsomImplementation extends ModuleImpl implements Blojsom {
 
     private String _author;
+    private String _technoratiTags;
     private String _postSlug;
     private boolean _allowsComments;
     private boolean _allowsTrackbacks;
@@ -63,7 +64,9 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
 
     public void copyFrom(Object object) {
         Blojsom blojsom = (Blojsom) object;
+
         setAuthor(blojsom.getAuthor());
+        setTechnoratiTags(blojsom.getTechnoratiTags());
         setPostSlug(blojsom.getPostSlug());
         setAllowsComments(blojsom.getAllowsComments());
         setAllowsTrackbacks(blojsom.getAllowsTrackbacks());
@@ -132,6 +135,14 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
 
     public void setAuthor(String author) {
         _author = author;
+    }
+
+    public String getTechnoratiTags() {
+        return _technoratiTags;
+    }
+
+    public void setTechnoratiTags(String technoratiTags) {
+        _technoratiTags = technoratiTags;
     }
 
     public String getPostSlug() {

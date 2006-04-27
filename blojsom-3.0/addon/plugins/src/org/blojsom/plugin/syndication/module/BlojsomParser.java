@@ -45,7 +45,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomParser.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
+ * @version $Id: BlojsomParser.java,v 1.2 2006-04-27 03:16:52 czarneckid Exp $
  */
 public class BlojsomParser implements ModuleParser {
 
@@ -60,10 +60,15 @@ public class BlojsomParser implements ModuleParser {
         BlojsomImplementation blojsomModule = new BlojsomImplementation();
 
         Element e = element.getChild("author", BLOJSOM_NS);
-
         if (e != null) {
             foundSomething = true;
             blojsomModule.setAuthor(e.getText());
+        }
+
+        e = element.getChild("technoratiTags", BLOJSOM_NS);
+        if (e != null) {
+            foundSomething = true;
+            blojsomModule.setTechnoratiTags(e.getText());
         }
 
         e = element.getChild("postSlug", BLOJSOM_NS);

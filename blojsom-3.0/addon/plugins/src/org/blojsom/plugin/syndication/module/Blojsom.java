@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blojsom.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
+ * @version $Id: Blojsom.java,v 1.2 2006-04-27 03:16:52 czarneckid Exp $
  */
 public interface Blojsom extends Module {
 
@@ -50,6 +50,9 @@ public interface Blojsom extends Module {
 
     public String getPostSlug();
     public void setPostSlug(String postSlug);
+
+    public String getTechnoratiTags();
+    public void setTechnoratiTags(String technoratiTags);
 
     public boolean getAllowsComments();
     public void setAllowsComments(boolean allowsComments);

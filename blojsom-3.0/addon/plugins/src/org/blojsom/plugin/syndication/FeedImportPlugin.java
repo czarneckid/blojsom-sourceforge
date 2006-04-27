@@ -42,6 +42,7 @@ import org.blojsom.blog.*;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.plugin.technorati.TechnoratiTagsPlugin;
 import org.blojsom.plugin.syndication.module.*;
 import org.blojsom.plugin.admin.WebAdminPlugin;
 import org.blojsom.util.BlojsomConstants;
@@ -59,7 +60,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.2 2006-04-27 03:16:45 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -226,7 +227,19 @@ public class FeedImportPlugin extends WebAdminPlugin {
 
                             BlojsomImplementation blojsomImplementation = (BlojsomImplementation) entry.getModule(Blojsom.BLOJSOM_URI);
                             if (blojsomImplementation != null) {
-                                newEntry.setAuthor(blojsomImplementation.getAuthor());
+                                if (blojsomImplementation.getAuthor() != null) {
+                                    newEntry.setAuthor(blojsomImplementation.getAuthor());
+                                }
+
+                                if (blojsomImplementation.getTechnoratiTags() != null) {
+                                    Map metadata = newEntry.getMetaData();
+                                    metadata.put(TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS, blojsomImplementation.getTechnoratiTags());
+                                    newEntry.setMetaData(metadata);
+                                }
+
+                                if (blojsomImplementation.getPostSlug() != null) {
+                                    newEntry.setPostSlug(blojsomImplementation.getPostSlug());
+                                }
 
                                 // Handle responses
                                 if (blojsomImplementation.getAllowsComments()) {
@@ -245,10 +258,6 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                     newEntry.setAllowPingbacks(new Integer(1));
                                 } else {
                                     newEntry.setAllowPingbacks(new Integer(0));
-                                }
-
-                                if (blojsomImplementation.getPostSlug() != null) {
-                                    newEntry.setPostSlug(blojsomImplementation.getPostSlug());
                                 }
                             }
 
