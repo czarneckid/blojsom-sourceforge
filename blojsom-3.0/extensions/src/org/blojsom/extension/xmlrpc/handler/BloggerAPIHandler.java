@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BloggerAPIHandler.java,v 1.2 2006-03-25 00:03:25 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.3 2006-04-27 20:03:00 czarneckid Exp $
  */
 public class BloggerAPIHandler extends APIHandler {
 
@@ -229,7 +229,7 @@ public class BloggerAPIHandler extends APIHandler {
                     }
 
                     _bloglist.put(MEMBER_URL, _blog.getBlogURL() + category.getName());
-                    _bloglist.put(MEMBER_BLOGID, category.getId());
+                    _bloglist.put(MEMBER_BLOGID, Integer.toString(category.getId().intValue()));
                     _bloglist.put(MEMBER_BLOGNAME, description);
 
                     result.add(_bloglist);
@@ -440,8 +440,8 @@ public class BloggerAPIHandler extends APIHandler {
                 Entry entry = _fetcher.loadEntry(_blog, postID);
 
                 Hashtable entrystruct = new Hashtable();
-                entrystruct.put(MEMBER_POSTID, entry.getId());
-                entrystruct.put(MEMBER_BLOGID, entry.getBlogCategory().getId());
+                entrystruct.put(MEMBER_POSTID, Integer.toString(entry.getId().intValue()));
+                entrystruct.put(MEMBER_BLOGID, Integer.toString(entry.getBlogCategory().getId().intValue()));
                 entrystruct.put(MEMBER_TITLE, entry.getTitle());
                 entrystruct.put(MEMBER_URL, _blog.getBlogURL() + entry.getCategory() + entry.getPostSlug());
                 entrystruct.put(MEMBER_CONTENT, entry.getTitle() + BlojsomConstants.LINE_SEPARATOR + entry.getDescription());
@@ -543,8 +543,8 @@ public class BloggerAPIHandler extends APIHandler {
                 for (int x = 0; x < entries.length; x++) {
                     Entry entry = entries[x];
                     Hashtable entrystruct = new Hashtable();
-                    entrystruct.put(MEMBER_POSTID, entry.getId());
-                    entrystruct.put(MEMBER_BLOGID, entry.getBlogCategory().getId());
+                    entrystruct.put(MEMBER_POSTID, Integer.toString(entry.getId().intValue()));
+                    entrystruct.put(MEMBER_BLOGID, Integer.toString(entry.getBlogCategory().getId().intValue()));
                     entrystruct.put(MEMBER_TITLE, entry.getTitle());
                     entrystruct.put(MEMBER_URL, _blog.getBlogURL() + entry.getCategory() + entry.getPostSlug());
                     entrystruct.put(MEMBER_CONTENT, entry.getTitle() + BlojsomConstants.LINE_SEPARATOR + entry.getDescription());

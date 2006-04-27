@@ -49,7 +49,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MovableTypeAPIHandler.java,v 1.1 2006-03-20 21:30:39 czarneckid Exp $
+ * @version $Id: MovableTypeAPIHandler.java,v 1.2 2006-04-27 20:03:00 czarneckid Exp $
  */
 public class MovableTypeAPIHandler extends APIHandler {
 
@@ -127,7 +127,7 @@ public class MovableTypeAPIHandler extends APIHandler {
                     entrystruct.put(MEMBER_TITLE, entry.getTitle());
                     entrystruct.put(MEMBER_USERID, entry.getAuthor());
                     entrystruct.put(MEMBER_DATECREATED, entry.getDate());
-                    entrystruct.put(MEMBER_POSTID, entry.getId());
+                    entrystruct.put(MEMBER_POSTID, Integer.toString(entry.getId().intValue()));
 
                     recentPosts.add(entrystruct);
                 }
@@ -176,7 +176,7 @@ public class MovableTypeAPIHandler extends APIHandler {
                         description = category.getName();
                     }
 
-                    catlist.put(MEMBER_CATEGORYID, category.getId());
+                    catlist.put(MEMBER_CATEGORYID, Integer.toString(category.getId().intValue()));
                     catlist.put(MEMBER_CATEGORYNAME, description);
 
                     result.add(catlist);

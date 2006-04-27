@@ -60,7 +60,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MetaWeblogAPIHandler.java,v 1.2 2006-03-25 00:03:25 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.3 2006-04-27 20:03:00 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends APIHandler {
 
@@ -238,7 +238,7 @@ public class MetaWeblogAPIHandler extends APIHandler {
                     }
 
                     _bloglist.put(MEMBER_URL, _blog.getBlogURL() + category.getName());
-                    _bloglist.put(MEMBER_BLOGID, category.getId());
+                    _bloglist.put(MEMBER_BLOGID, Integer.toString(category.getId().intValue()));
                     _bloglist.put(MEMBER_BLOGNAME, description);
 
                     result.add(_bloglist);
@@ -294,7 +294,7 @@ public class MetaWeblogAPIHandler extends APIHandler {
                     catlist.put(MEMBER_HTML_URL, _blog.getBlogURL() + category.getName());
                     catlist.put(MEMBER_RSS_URL, _blog.getBlogURL() + category.getName() + "?flavor=rss2");
 
-                    result.put(category.getId(), catlist);
+                    result.put(Integer.toString(category.getId().intValue()), catlist);
                 }
             } else {
                 throw new XmlRpcException(NOBLOGS_EXCEPTION, NOBLOGS_EXCEPTION_MSG);
@@ -420,7 +420,7 @@ public class MetaWeblogAPIHandler extends APIHandler {
 
             Integer postID;
             try {
-                postID = Integer.valueOf(postid);
+                postID = Integer.valueOf(BlojsomUtils.removeSlashes(postid));
             } catch (NumberFormatException e) {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
@@ -489,15 +489,17 @@ public class MetaWeblogAPIHandler extends APIHandler {
             _authorizationProvider.authorize(_blog, null, userid, password);
             checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
+            /*
             Integer postID;
             try {
                 postID = Integer.valueOf(postid);
             } catch (NumberFormatException e) {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
+            */
 
             try {
-                Entry entry = _fetcher.loadEntry(_blog, postID);
+                Entry entry = _fetcher.loadEntry(_blog, Integer.valueOf(postid));
 
                 Hashtable postcontent = new Hashtable();
                 postcontent.put(MEMBER_TITLE, entry.getTitle());
@@ -505,10 +507,10 @@ public class MetaWeblogAPIHandler extends APIHandler {
                 postcontent.put(MEMBER_DESCRIPTION, entry.getDescription());
                 postcontent.put(MEMBER_DATE_CREATED, entry.getDate());
                 postcontent.put(MEMBER_PERMALINK, _blog.getBlogURL() + entry.getCategory() + entry.getPostSlug());
-                postcontent.put(MEMBER_POSTID, entry.getId());
+                postcontent.put(MEMBER_POSTID, Integer.toString(entry.getId().intValue()));
 
                 Vector postCategories = new Vector(1);
-                postCategories.add(entry.getBlogCategoryId());
+                postCategories.add(Integer.toString(entry.getBlogCategoryId().intValue()));
                 postcontent.put(MEMBER_CATEGORIES, postCategories);
 
                 return postcontent;
@@ -550,7 +552,7 @@ public class MetaWeblogAPIHandler extends APIHandler {
 
             Integer postID;
             try {
-                postID = Integer.valueOf(postid);
+                postID = Integer.valueOf(BlojsomUtils.removeSlashes(postid));
             } catch (NumberFormatException e) {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
@@ -616,10 +618,10 @@ public class MetaWeblogAPIHandler extends APIHandler {
                     entrystruct.put(MEMBER_DESCRIPTION, entry.getDescription());
                     entrystruct.put(MEMBER_DATE_CREATED, entry.getDate());
                     entrystruct.put(MEMBER_PERMALINK, _blog.getBlogURL() + entry.getCategory() + entry.getPostSlug());
-                    entrystruct.put(MEMBER_POSTID, entry.getId());
+                    entrystruct.put(MEMBER_POSTID, Integer.toString(entry.getId().intValue()));
 
                     Vector postCategories = new Vector(1);
-                    postCategories.add(entry.getBlogCategoryId());
+                    postCategories.add(Integer.toString(entry.getBlogCategoryId().intValue()));
                     entrystruct.put(MEMBER_CATEGORIES, postCategories);
 
                     recentPosts.add(entrystruct);
