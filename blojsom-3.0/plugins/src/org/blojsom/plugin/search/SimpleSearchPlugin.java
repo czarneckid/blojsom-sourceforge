@@ -30,34 +30,50 @@
  */
 package org.blojsom.plugin.search;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.fetcher.Fetcher;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.3 2006-03-23 07:16:20 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.4 2006-04-28 17:36:03 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class SimpleSearchPlugin implements Plugin {
+
+    private Log _logger = LogFactory.getLog(SimpleSearchPlugin.class);
 
     /**
      * Request parameter for the "query"
      */
     protected static final String QUERY_PARAM = "query";
 
+    private Fetcher _fetcher;
+
     /**
      * Default constructor
      */
     public SimpleSearchPlugin() {
+    }
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
     }
 
     /**
@@ -87,20 +103,14 @@ public class SimpleSearchPlugin implements Plugin {
             query = query.toLowerCase();
         }
 
-        ArrayList entriesMatchingQuery = new ArrayList(5);
-
-        for (int i = 0; i < entries.length; i++) {
-            Entry entry = entries[i];
-            if (((entry.getTitle() != null) && (entry.getTitle().toLowerCase().indexOf(query) != -1)) || ((entry.getDescription() != null) && (entry.getDescription().toLowerCase().indexOf(query) != -1)))
-            {
-                entriesMatchingQuery.add(entry);
+        try {
+            return _fetcher.findEntries(blog, query);
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
             }
-        }
 
-        if (entriesMatchingQuery.size() == 0) {
-            return new Entry[0];
-        } else {
-            return (Entry[]) entriesMatchingQuery.toArray(new Entry[entriesMatchingQuery.size()]);
+            return entries;
         }
     }
 
