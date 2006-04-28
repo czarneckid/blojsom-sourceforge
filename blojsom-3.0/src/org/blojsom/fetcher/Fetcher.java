@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.12 2006-04-26 02:10:08 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.13 2006-04-28 17:34:52 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -183,6 +183,16 @@ public interface Fetcher {
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntries(Blog blog, int pageSize, int page) throws FetcherException;
+
+    /**
+     * Find entries which have the search query in their title or description
+     *
+     * @param blog {@link Blog}
+     * @param query Search query
+     * @return Blog entries which have the search query in their title or descirption
+     * @throws FetcherException If there is an error searching through entries
+     */
+    public Entry[] findEntries(Blog blog, String query) throws FetcherException;
 
     /**
      * Count the number of entries for a blog

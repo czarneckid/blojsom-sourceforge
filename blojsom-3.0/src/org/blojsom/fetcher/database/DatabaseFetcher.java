@@ -46,6 +46,7 @@ import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.MatchMode;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.19 2006-04-27 17:39:19 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.20 2006-04-28 17:34:57 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -543,6 +544,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
         entryCriteria.addOrder(Order.desc("date"));
         entryCriteria.setMaxResults(pageSize);
         entryCriteria.setFirstResult(page);
+
+        List entryList = entryCriteria.list();
+
+        tx.commit();
+        session.close();
+
+        return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+    }
+
+    /**
+     * Find entries which have the search query in their title or description
+     *
+     * @param blog  {@link Blog}
+     * @param query Search query
+     * @return Blog entries which have the search query in their title or descirption
+     * @throws FetcherException If there is an error searching through entries
+     */
+    public Entry[] findEntries(Blog blog, String query) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+        entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE), 
+                Restrictions.ilike("description", query, MatchMode.ANYWHERE)));
+        entryCriteria.addOrder(Order.desc("date"));
 
         List entryList = entryCriteria.list();
 
