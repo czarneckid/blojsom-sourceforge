@@ -6,6 +6,15 @@
 
     <description>Plugin definition file for blojsom</description>
 
+    <!-- Add-on plugin -->
+    <!--
+    <bean id="akismet-moderation" class="org.blojsom.plugin.akismet.AkismetModerationPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    -->
+
     <bean id="basic-authentication" class="org.blojsom.plugin.security.BasicAuthenticationPlugin" init-method="init"
           destroy-method="destroy">
         <property name="authorizationProvider">
@@ -173,7 +182,11 @@
     </bean>
     <bean id="simple-obfuscation" class="org.blojsom.plugin.obfuscation.SimpleObfuscationPlugin" init-method="init"
           destroy-method="destroy"/>
-    <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="spamphrase-moderation" class="org.blojsom.plugin.moderation.SpamPhraseModerationPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
