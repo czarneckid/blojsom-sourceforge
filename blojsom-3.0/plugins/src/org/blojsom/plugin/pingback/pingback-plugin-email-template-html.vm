@@ -1,3 +1,4 @@
+#FriendlyPermalink($BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY)
 <html>
     <head></head>
 
@@ -6,7 +7,7 @@
             <strong>Pingback Details</strong>
             <br />
             <br />
-            Pingback on: <a href="#BlogURL()$BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getCategory()?permalink=$BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getTitle()">$!BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getTitle()</a>
+            Pingback on: <a href="$entryLink">$!BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getTitle()</a>
             <br />
             Pingback from: <a href="$!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getUrl()">$!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getBlogName()</a><br />
             Pingback title: $!BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getTitle()<br />

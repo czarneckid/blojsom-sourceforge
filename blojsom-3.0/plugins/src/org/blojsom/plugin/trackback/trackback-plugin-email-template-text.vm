@@ -1,6 +1,7 @@
+#FriendlyPermalink($BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY)
 ==[ Trackback Details ]==========================================================
 
-Trackback on: <a href="#BlogURL()$BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getCategory()?permalink=$BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getTitle()&amp;page=trackback">$!BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getTitle()</a>
+Trackback on: <a href="$entryLink">$!BLOJSOM_TRACKBACK_PLUGIN_BLOG_ENTRY.getTitle()</a>
 
  Trackback from: <a href="$!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getUrl()">$!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getBlogName()</a>
 Trackback title: $!BLOJSOM_TRACKBACK_PLUGIN_TRACKBACK.getTitle()

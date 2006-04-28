@@ -1,6 +1,7 @@
+#FriendlyPermalink($BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY)
 ==[ Comment Details ]==========================================================
 
-Comment on: <a href="#BlogURL()$BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getCategory()?permalink=$BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getTitle()&amp;page=comments">$BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getTitle()</a>
+Comment on: <a href="$entryLink">$BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getTitle()</a>
 
 Comment by: <a href="mailto:$!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthorEmail()">$!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthor()</a> - $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthorURL()
    Left on: $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getCommentDate()
