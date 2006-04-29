@@ -209,7 +209,11 @@
     </bean>
     <bean id="string-utilities" class="org.blojsom.plugin.common.StringUtilitiesPlugin" init-method="init"
           destroy-method="destroy"/>
-    <bean id="tag-cloud" class="org.blojsom.plugin.technorati.TagCloudPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="tag-cloud" class="org.blojsom.plugin.technorati.TagCloudPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="technorati-tags" class="org.blojsom.plugin.technorati.TechnoratiTagsPlugin" init-method="init"
           destroy-method="destroy">
         <property name="eventBroadcaster">
