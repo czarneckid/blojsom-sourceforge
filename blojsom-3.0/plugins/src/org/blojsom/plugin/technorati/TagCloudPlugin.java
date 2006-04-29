@@ -34,13 +34,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.fetcher.Fetcher;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -50,7 +51,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TagCloudPlugin.java,v 1.2 2006-03-20 22:51:00 czarneckid Exp $
+ * @version $Id: TagCloudPlugin.java,v 1.3 2006-04-29 16:15:47 czarneckid Exp $
  */
 public class TagCloudPlugin implements Plugin {
 
@@ -61,10 +62,21 @@ public class TagCloudPlugin implements Plugin {
     private static final int MIN_FONTSIZE = 1;
     private static final int MAX_FONTSIZE = 10;
 
+    private Fetcher _fetcher;
+
     /**
      * Create a new instance of the tag cloud plugin
      */
     public TagCloudPlugin() {
+    }
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
     }
 
     /**
@@ -90,56 +102,74 @@ public class TagCloudPlugin implements Plugin {
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         TreeMap tagMap = new TreeMap();
         String tagQuery = BlojsomUtils.getRequestValue(TAG_QUERY_PARAM, httpServletRequest);
-        ArrayList entriesMatchingTagQuery = new ArrayList(10);
         Integer maxTagCount = new Integer(1);
+        Entry[] entriesMatchingTag = new Entry[0];
 
-        for (int i = 0; i < entries.length; i++) {
-            Entry entry = entries[i];
-
-            if (BlojsomUtils.checkMapForKey(entry.getMetaData(), TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS)) {
-                String[] tags = BlojsomUtils.parseOnlyCommaList((String) entry.getMetaData().get(TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS));
-                String tag;
-                if (tags != null && tags.length > 0) {
-                    for (int j = 0; j < tags.length; j++) {
-                        tag = tags[j].trim();
-                        if (!BlojsomUtils.checkNullOrBlank(tagQuery)) {
-                            if (tagQuery.equals(tag)) {
-                                entriesMatchingTagQuery.add(entries[i]);
-                            }
-                        }
-
-                        if (tagMap.containsKey(tag)) {
-                            Integer tagCount = (Integer) tagMap.get(tag);
-                            tagCount = new Integer(tagCount.intValue() + 1);
-                            if (tagCount.intValue() > maxTagCount.intValue()) {
-                                maxTagCount = new Integer(tagCount.intValue());
-                            }
-
-                            tagMap.put(tag, tagCount);
-                        } else {
-                            tagMap.put(tag, new Integer(1));
-                        }
-                    }
+        if (!BlojsomUtils.checkNullOrBlank(tagQuery)) {
+            try {
+                entriesMatchingTag = _fetcher.findEntriesByMetadataKeyValue(blog, TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS, tagQuery);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Entries matching tag: " + entriesMatchingTag.length);
+                }
+            } catch (FetcherException e) {
+                e.printStackTrace();
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
                 }
             }
         }
 
-        Iterator tagKeyIterator = tagMap.keySet().iterator();
-        while (tagKeyIterator.hasNext()) {
-            String tag = (String) tagKeyIterator.next();
-            Integer tagCount = (Integer) tagMap.get(tag);
-            int tagRank = rankTagPerEntries(tagCount.intValue(), 1, maxTagCount.intValue());
+        Entry[] entriesForTagMap = new Entry[0];
+        try {
+            entriesForTagMap = _fetcher.findEntriesWithMetadataKey(blog, TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS);
 
-            if (_logger.isDebugEnabled()) {
-                _logger.debug("Tag rank for " + tag + " tag: " + tagRank);
+            for (int i = 0; i < entriesForTagMap.length; i++) {
+                Entry entry = entriesForTagMap[i];
+
+                if (BlojsomUtils.checkMapForKey(entry.getMetaData(), TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS)) {
+                    String[] tags = BlojsomUtils.parseOnlyCommaList((String) entry.getMetaData().get(TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS));
+                    String tag;
+                    if (tags != null && tags.length > 0) {
+                        for (int j = 0; j < tags.length; j++) {
+                            tag = tags[j].trim();
+
+                            if (tagMap.containsKey(tag)) {
+                                Integer tagCount = (Integer) tagMap.get(tag);
+                                tagCount = new Integer(tagCount.intValue() + 1);
+                                if (tagCount.intValue() > maxTagCount.intValue()) {
+                                    maxTagCount = new Integer(tagCount.intValue());
+                                }
+
+                                tagMap.put(tag, tagCount);
+                            } else {
+                                tagMap.put(tag, new Integer(1));
+                            }
+                        }
+                    }
+                }
             }
-            tagMap.put(tag, new Integer(tagRank));
+
+            Iterator tagKeyIterator = tagMap.keySet().iterator();
+            while (tagKeyIterator.hasNext()) {
+                String tag = (String) tagKeyIterator.next();
+                Integer tagCount = (Integer) tagMap.get(tag);
+                int tagRank = rankTagPerEntries(tagCount.intValue(), 1, maxTagCount.intValue());
+
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Tag rank for " + tag + " tag: " + tagRank);
+                }
+                tagMap.put(tag, new Integer(tagRank));
+            }
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         context.put(BLOJSOM_PLUGIN_TAG_CLOUD_MAP, tagMap);
 
-        if (!BlojsomUtils.checkNullOrBlank(tagQuery) && entriesMatchingTagQuery.size() > 0) {
-            return (Entry[]) entriesMatchingTagQuery.toArray(new Entry[entriesMatchingTagQuery.size()]);
+        if (!BlojsomUtils.checkNullOrBlank(tagQuery) && (entriesMatchingTag != null) && (entriesMatchingTag.length > 0)) {
+            return entriesMatchingTag;
         }
 
         return entries;
