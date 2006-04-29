@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.13 2006-04-28 17:34:52 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.14 2006-04-29 16:13:38 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -193,6 +193,27 @@ public interface Fetcher {
      * @throws FetcherException If there is an error searching through entries
      */
     public Entry[] findEntries(Blog blog, String query) throws FetcherException;
+
+    /**
+     * Find entries by a metadata key/value pair
+     *
+     * @param blog {@link Blog}
+     * @param metadataKey Metadata key
+     * @param metadataValue Metadata value
+     * @return Entries matching metadata key and value using LIKE syntax for metadata value
+     * @throws FetcherException If there is an error searching through entries
+     */
+    public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue) throws FetcherException;
+
+    /**
+     * Find entries with a given metadata key
+     *
+     * @param blog {@link Blog}
+     * @param metadataKey Metadata key
+     * @return Entries with the given metadata key
+     * @throws FetcherException If there is an error searching through entries
+     */
+    public Entry[] findEntriesWithMetadataKey(Blog blog, String metadataKey) throws FetcherException;
 
     /**
      * Count the number of entries for a blog

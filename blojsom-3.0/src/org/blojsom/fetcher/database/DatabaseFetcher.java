@@ -43,10 +43,7 @@ import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.hibernate.*;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +54,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.20 2006-04-28 17:34:57 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.21 2006-04-29 16:13:42 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -567,7 +564,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
         entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
-        entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE), 
+        entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE),
                 Restrictions.ilike("description", query, MatchMode.ANYWHERE)));
         entryCriteria.addOrder(Order.desc("date"));
 
@@ -577,6 +574,52 @@ public class DatabaseFetcher implements Fetcher, Listener {
         session.close();
 
         return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+    }
+
+    /**
+     * Find entries by a metadata key/value pair
+     *
+     * @param blog {@link Blog}
+     * @param metadataKey Metadata key
+     * @param metadataValue Metadata value
+     * @return Entries matching metadata key and value using LIKE syntax for metadata value
+     * @throws FetcherException If there is an error searching through entries
+     */
+    public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value")
+                .setString("blogId", blog.getBlogId())
+                .setString("metadataKey", metadataKey)
+                .setString("metadataValue", "%" + metadataValue + "%").list();
+
+        tx.commit();
+        session.close();
+
+        return (DatabaseEntry[]) entriesMatchingMetadataKeyValue.toArray(new DatabaseEntry[entriesMatchingMetadataKeyValue.size()]);
+    }
+
+    /**
+     * Find entries with a given metadata key
+     *
+     * @param blog        {@link Blog}
+     * @param metadataKey Metadata key
+     * @return Entries with the given metadata key
+     * @throws FetcherException If there is an error searching through entries
+     */
+    public Entry[] findEntriesWithMetadataKey(Blog blog, String metadataKey) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key")
+                .setString("blogId", blog.getBlogId())
+                .setString("metadataKey", metadataKey).list();
+
+        tx.commit();
+        session.close();
+
+        return (DatabaseEntry[]) entriesMatchingMetadata.toArray(new DatabaseEntry[entriesMatchingMetadata.size()]);
     }
 
     /**
