@@ -54,7 +54,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.21 2006-04-29 16:13:42 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.22 2006-04-30 21:57:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -582,17 +582,28 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @param blog {@link Blog}
      * @param metadataKey Metadata key
      * @param metadataValue Metadata value
+     * @param pre If the search should use % before the metadata value (match anything before)
+     * @param post If the search should use % after the metadata value (match antthing after)
      * @return Entries matching metadata key and value using LIKE syntax for metadata value
      * @throws FetcherException If there is an error searching through entries
      */
-    public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue) throws FetcherException {
+    public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue,
+                                                 boolean pre, boolean post) throws FetcherException {
         Session session = _sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
+
+        String valueSearch = metadataValue;
+        if (pre) {
+            valueSearch = "%" + valueSearch;
+        }
+        if (post) {
+            valueSearch = valueSearch + "%";
+        }
 
         List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value")
                 .setString("blogId", blog.getBlogId())
                 .setString("metadataKey", metadataKey)
-                .setString("metadataValue", "%" + metadataValue + "%").list();
+                .setString("metadataValue", valueSearch).list();
 
         tx.commit();
         session.close();

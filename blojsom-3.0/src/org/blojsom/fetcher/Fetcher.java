@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.14 2006-04-29 16:13:38 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.15 2006-04-30 21:57:17 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -200,10 +200,13 @@ public interface Fetcher {
      * @param blog {@link Blog}
      * @param metadataKey Metadata key
      * @param metadataValue Metadata value
+     * @param pre If the search should use % before the metadata value (match anything before)
+     * @param post If the search should use % after the metadata value (match antthing after)
      * @return Entries matching metadata key and value using LIKE syntax for metadata value
      * @throws FetcherException If there is an error searching through entries
      */
-    public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue) throws FetcherException;
+    public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue,
+                                                 boolean pre, boolean post) throws FetcherException;
 
     /**
      * Find entries with a given metadata key

@@ -51,7 +51,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TagCloudPlugin.java,v 1.3 2006-04-29 16:15:47 czarneckid Exp $
+ * @version $Id: TagCloudPlugin.java,v 1.4 2006-04-30 21:57:05 czarneckid Exp $
  */
 public class TagCloudPlugin implements Plugin {
 
@@ -107,7 +107,8 @@ public class TagCloudPlugin implements Plugin {
 
         if (!BlojsomUtils.checkNullOrBlank(tagQuery)) {
             try {
-                entriesMatchingTag = _fetcher.findEntriesByMetadataKeyValue(blog, TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS, tagQuery);
+                entriesMatchingTag = _fetcher.findEntriesByMetadataKeyValue(blog, TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS,
+                        tagQuery, true, true);
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Entries matching tag: " + entriesMatchingTag.length);
                 }
@@ -119,7 +120,7 @@ public class TagCloudPlugin implements Plugin {
             }
         }
 
-        Entry[] entriesForTagMap = new Entry[0];
+        Entry[] entriesForTagMap;
         try {
             entriesForTagMap = _fetcher.findEntriesWithMetadataKey(blog, TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS);
 
