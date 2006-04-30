@@ -43,12 +43,18 @@ import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.plugin.comment.CommentPlugin;
 import org.blojsom.plugin.comment.event.CommentResponseSubmissionEvent;
+import org.blojsom.plugin.comment.event.CommentMarkedSpamEvent;
+import org.blojsom.plugin.comment.event.CommentUnmarkedSpamEvent;
 import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
+import org.blojsom.plugin.pingback.event.PingbackMarkedSpamEvent;
+import org.blojsom.plugin.pingback.event.PingbackUnmarkedSpamEvent;
 import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.response.event.ResponseSubmissionEvent;
 import org.blojsom.plugin.trackback.TrackbackModerationPlugin;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.plugin.trackback.event.TrackbackResponseSubmissionEvent;
+import org.blojsom.plugin.trackback.event.TrackbackUnmarkedSpamEvent;
+import org.blojsom.plugin.trackback.event.TrackbackMarkedSpamEvent;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +65,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.4 2006-04-27 22:48:59 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.5 2006-04-30 22:23:00 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
@@ -232,6 +238,144 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                         }
                     }
                 }
+            }
+        } else if (event instanceof CommentMarkedSpamEvent) {
+            CommentMarkedSpamEvent commentMarkedSpamEvent = (CommentMarkedSpamEvent) event;
+            Blog blog = commentMarkedSpamEvent.getBlog();
+
+            String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
+            if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
+            } else {
+                Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
+                String responseType = Akismet.COMMENT_TYPE_COMMENT;
+                StringBuffer permalink = new StringBuffer();
+                permalink.append(blog.getBlogURL()).append("/")
+                        .append(commentMarkedSpamEvent.getEntry().getBlogCategory().getName())
+                        .append(commentMarkedSpamEvent.getEntry().getPostSlug());
+
+                akismet.submitSpam(commentMarkedSpamEvent.getComment().getIp(),
+                        null, null, permalink.toString(), responseType, commentMarkedSpamEvent.getComment().getAuthor(),
+                        commentMarkedSpamEvent.getComment().getAuthorEmail(),
+                        commentMarkedSpamEvent.getComment().getAuthorURL(),
+                        commentMarkedSpamEvent.getComment().getComment(), null);
+            }
+        } else if (event instanceof CommentUnmarkedSpamEvent) {
+            CommentUnmarkedSpamEvent commentUnmarkedSpamEvent = (CommentUnmarkedSpamEvent) event;
+            Blog blog = commentUnmarkedSpamEvent.getBlog();
+
+            String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
+            if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
+            } else {
+                Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
+                String responseType = Akismet.COMMENT_TYPE_COMMENT;
+                StringBuffer permalink = new StringBuffer();
+                permalink.append(blog.getBlogURL()).append("/")
+                        .append(commentUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
+                        .append(commentUnmarkedSpamEvent.getEntry().getPostSlug());
+
+                akismet.submitHam(commentUnmarkedSpamEvent.getComment().getIp(),
+                        null, null, permalink.toString(), responseType, commentUnmarkedSpamEvent.getComment().getAuthor(),
+                        commentUnmarkedSpamEvent.getComment().getAuthorEmail(),
+                        commentUnmarkedSpamEvent.getComment().getAuthorURL(),
+                        commentUnmarkedSpamEvent.getComment().getComment(), null);
+            }
+        } else if (event instanceof TrackbackMarkedSpamEvent) {
+            TrackbackMarkedSpamEvent trackbackMarkedSpamEvent = (TrackbackMarkedSpamEvent) event;
+            Blog blog = trackbackMarkedSpamEvent.getBlog();
+
+            String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
+            if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
+            } else {
+                Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
+                String responseType = Akismet.COMMENT_TYPE_TRACKBACK;
+                StringBuffer permalink = new StringBuffer();
+                permalink.append(blog.getBlogURL()).append("/")
+                        .append(trackbackMarkedSpamEvent.getEntry().getBlogCategory().getName())
+                        .append(trackbackMarkedSpamEvent.getEntry().getPostSlug());
+
+                akismet.submitSpam(trackbackMarkedSpamEvent.getTrackback().getIp(),
+                        null, null, permalink.toString(), responseType, trackbackMarkedSpamEvent.getTrackback().getTitle(),
+                        trackbackMarkedSpamEvent.getTrackback().getBlogName(),
+                        trackbackMarkedSpamEvent.getTrackback().getUrl(),
+                        trackbackMarkedSpamEvent.getTrackback().getExcerpt(), null);
+            }
+        } else if (event instanceof TrackbackUnmarkedSpamEvent) {
+            TrackbackUnmarkedSpamEvent trackbackUnmarkedSpamEvent = (TrackbackUnmarkedSpamEvent) event;
+            Blog blog = trackbackUnmarkedSpamEvent.getBlog();
+
+            String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
+            if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
+            } else {
+                Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
+                String responseType = Akismet.COMMENT_TYPE_TRACKBACK;
+                StringBuffer permalink = new StringBuffer();
+                permalink.append(blog.getBlogURL()).append("/")
+                        .append(trackbackUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
+                        .append(trackbackUnmarkedSpamEvent.getEntry().getPostSlug());
+
+                akismet.submitHam(trackbackUnmarkedSpamEvent.getTrackback().getIp(),
+                        null, null, permalink.toString(), responseType, trackbackUnmarkedSpamEvent.getTrackback().getTitle(),
+                        trackbackUnmarkedSpamEvent.getTrackback().getBlogName(),
+                        trackbackUnmarkedSpamEvent.getTrackback().getUrl(),
+                        trackbackUnmarkedSpamEvent.getTrackback().getExcerpt(), null);
+            }
+        } else if (event instanceof PingbackMarkedSpamEvent) {
+            PingbackMarkedSpamEvent pingbackMarkedSpamEvent = (PingbackMarkedSpamEvent) event;
+            Blog blog = pingbackMarkedSpamEvent.getBlog();
+
+            String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
+            if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
+            } else {
+                Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
+                String responseType = Akismet.COMMENT_TYPE_PINGBACK;
+                StringBuffer permalink = new StringBuffer();
+                permalink.append(blog.getBlogURL()).append("/")
+                        .append(pingbackMarkedSpamEvent.getEntry().getBlogCategory().getName())
+                        .append(pingbackMarkedSpamEvent.getEntry().getPostSlug());
+
+                akismet.submitSpam(pingbackMarkedSpamEvent.getPingback().getIp(),
+                        null, null, permalink.toString(), responseType, pingbackMarkedSpamEvent.getPingback().getTitle(),
+                        pingbackMarkedSpamEvent.getPingback().getBlogName(),
+                        pingbackMarkedSpamEvent.getPingback().getUrl(),
+                        pingbackMarkedSpamEvent.getPingback().getExcerpt(), null);
+            }
+        } else if (event instanceof PingbackUnmarkedSpamEvent) {
+            PingbackUnmarkedSpamEvent pingbackUnmarkedSpamEvent = (PingbackUnmarkedSpamEvent) event;
+            Blog blog = pingbackUnmarkedSpamEvent.getBlog();
+
+            String akismetAPIKey = blog.getProperty(AKISMET_PLUGIN_API_KEY_IP);
+            if (BlojsomUtils.checkNullOrBlank(akismetAPIKey)) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("No Akismet API key provided for blog property: " + AKISMET_PLUGIN_API_KEY_IP);
+                }
+            } else {
+                Akismet akismet = new Akismet(akismetAPIKey, blog.getBlogURL());
+                String responseType = Akismet.COMMENT_TYPE_PINGBACK;
+                StringBuffer permalink = new StringBuffer();
+                permalink.append(blog.getBlogURL()).append("/")
+                        .append(pingbackUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
+                        .append(pingbackUnmarkedSpamEvent.getEntry().getPostSlug());
+
+                akismet.submitHam(pingbackUnmarkedSpamEvent.getPingback().getIp(),
+                        null, null, permalink.toString(), responseType, pingbackUnmarkedSpamEvent.getPingback().getTitle(),
+                        pingbackUnmarkedSpamEvent.getPingback().getBlogName(),
+                        pingbackUnmarkedSpamEvent.getPingback().getUrl(),
+                        pingbackUnmarkedSpamEvent.getPingback().getExcerpt(), null);
             }
         }
     }
