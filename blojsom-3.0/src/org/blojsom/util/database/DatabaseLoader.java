@@ -36,6 +36,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import java.io.*;
@@ -48,14 +49,18 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseLoader.java,v 1.2 2006-03-25 18:41:03 czarneckid Exp $
+ * @version $Id: DatabaseLoader.java,v 1.3 2006-05-01 03:02:37 czarneckid Exp $
  */
 public class DatabaseLoader {
 
     private Log _logger = LogFactory.getLog(DatabaseLoader.class);
+
+    private static final String DEFAULT_DETECT_BLOJSOM_SQL = "show tables;";
+
     private String _dbScript;
     private SessionFactory _sessionFactory;
     private ServletConfig _servletConfig;
+    private String _detectBlojsomSQL;
 
     /**
      * Create a new instance of the Database loader
@@ -91,6 +96,15 @@ public class DatabaseLoader {
     }
 
     /**
+     * SQL to detect blojsom
+     *
+     * @param detectBlojsomSQL SQL to detect blojsom
+     */
+    public void setDetectBlojsomSQL(String detectBlojsomSQL) {
+        _detectBlojsomSQL = detectBlojsomSQL;
+    }
+
+    /**
      * Initalize the blojsom database
      */
     public void init() {
@@ -100,6 +114,10 @@ public class DatabaseLoader {
             }
 
             return;
+        }
+
+        if (BlojsomUtils.checkNullOrBlank(_detectBlojsomSQL)) {
+            _detectBlojsomSQL = DEFAULT_DETECT_BLOJSOM_SQL;
         }
 
         Session session = _sessionFactory.openSession();
@@ -112,7 +130,7 @@ public class DatabaseLoader {
                 _logger.info("About to create blojsom database");
             }
 
-            SQLQuery sqlQuery = session.createSQLQuery("show tables;");
+            SQLQuery sqlQuery = session.createSQLQuery(_detectBlojsomSQL);
             List tables = sqlQuery.list();
 
             if (tables.size() > 0) {

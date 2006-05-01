@@ -56,6 +56,9 @@
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
+        <property name="detectBlojsomSQL">
+            <value>show tables;</value>
+        </property>
     </bean>
     <!-- END: Helper beans -->
 
