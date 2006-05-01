@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.3 2006-03-24 19:04:51 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.4 2006-05-01 14:23:45 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -217,7 +217,7 @@ public class BlojsomServlet extends HttpServlet {
         if (httpServletRequest.getParameter(BlojsomConstants.PLUGINS_PARAM) != null) {
             pluginChain = BlojsomUtils.parseCommaList(httpServletRequest.getParameter(BlojsomConstants.PLUGINS_PARAM));
         } else {
-            if (plugins.containsKey(flavor)) {
+            if (plugins.containsKey(flavor) & !BlojsomUtils.checkNullOrBlank(((String) plugins.get(flavor)).trim())) {
                 pluginChain = BlojsomUtils.parseOnlyCommaList((String) plugins.get(flavor), true);
             } else {
                 pluginChain = BlojsomUtils.parseOnlyCommaList((String) plugins.get("default"), true);
