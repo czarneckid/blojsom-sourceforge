@@ -49,7 +49,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.3 2006-04-20 18:55:26 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.4 2006-05-01 15:48:36 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -158,7 +158,6 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             File template = templates[i];
             if (template.isFile()) {
                 templatesList.add(template.getName());
-                _logger.debug("Added template: " + template.getName());
             }
         }
 
@@ -319,14 +318,19 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             Map templates = blog.getTemplates();
             String templateAndType = (String) templates.get(flavor);
             String[] templateType = BlojsomUtils.parseCommaList(templateAndType);
-            String[] typeAndCharacterSet = BlojsomUtils.parseDelimitedList(templateType[1], ";", true);
-
-            _logger.debug(templateAndType);
-            _logger.debug(templateType[0]);
-            _logger.debug(typeAndCharacterSet[0] + ":" + typeAndCharacterSet[1]);
+            String[] typeAndCharacterSet;
+            if (templateType.length == 2) {
+                typeAndCharacterSet = BlojsomUtils.parseDelimitedList(templateType[1], ";", true);
+            } else {
+                typeAndCharacterSet = new String[] {"text/html"};
+            }
 
             context.put(FLAVOR_TYPE_EDIT, typeAndCharacterSet[0]);
-            context.put(FLAVOR_CHARACTER_SET_EDIT, typeAndCharacterSet[1].substring(typeAndCharacterSet[1].indexOf("=") + 1));
+            if (typeAndCharacterSet.length == 2) {
+                context.put(FLAVOR_CHARACTER_SET_EDIT, typeAndCharacterSet[1].substring(typeAndCharacterSet[1].indexOf("=") + 1));
+            } else {
+                context.put(FLAVOR_CHARACTER_SET_EDIT, BlojsomUtils.UTF8);
+            }
             context.put(FLAVOR_TEMPLATE_EDIT, templateType[0]);
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_FLAVOR_PAGE);
