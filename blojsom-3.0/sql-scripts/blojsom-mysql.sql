@@ -233,11 +233,11 @@ CREATE TABLE `TrackbackMetadata` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `User`
+-- Table structure for table `DBUser`
 --
 
-DROP TABLE IF EXISTS `User`;
-CREATE TABLE `User` (
+DROP TABLE IF EXISTS `DBUser`;
+CREATE TABLE `DBUser` (
   `user_id` int(11) NOT NULL auto_increment,
   `user_login` varchar(50) NOT NULL,
   `user_password` varchar(64) NOT NULL,
@@ -252,18 +252,18 @@ CREATE TABLE `User` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `UserMetadata`
+-- Table structure for table `DBUserMetadata`
 --
 
-DROP TABLE IF EXISTS `UserMetadata`;
-CREATE TABLE `UserMetadata` (
+DROP TABLE IF EXISTS `DBUserMetadata`;
+CREATE TABLE `DBUserMetadata` (
   `user_metadata_id` int(11) NOT NULL auto_increment,
   `user_id` int(11) NOT NULL,
   `metadata_key` varchar(255) NOT NULL,
   `metadata_value` text,
   PRIMARY KEY  (`user_metadata_id`),
   KEY `usermetadata_user_useridfk` (`user_id`),
-  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE
+  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `DBUser` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
