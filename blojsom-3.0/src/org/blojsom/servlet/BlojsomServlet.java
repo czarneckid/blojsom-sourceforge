@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.4 2006-05-01 14:23:45 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.5 2006-05-02 21:56:39 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -103,10 +103,10 @@ public class BlojsomServlet extends HttpServlet {
     /**
      * Handle requests made to blojsom
      *
-     * @param httpServletRequest {@link HttpServletRequest} request
+     * @param httpServletRequest  {@link HttpServletRequest} request
      * @param httpServletResponse {@link HttpServletResponse} response
      * @throws ServletException If there is an error serving the request
-     * @throws IOException If there is an error serving the request
+     * @throws IOException      If there is an error serving the request
      */
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         try {
@@ -142,11 +142,14 @@ public class BlojsomServlet extends HttpServlet {
         // Check for an overriding id
         String blogId = httpServletRequest.getParameter(BlojsomConstants.BLOG_ID_PARAM);
         if (BlojsomUtils.checkNullOrBlank(blogId)) {
-            String blogIdFromPath = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
-            if (blogIdFromPath == null) {
-                blogId = blojsomDefaultProperties.getProperty(BlojsomConstants.DEFAULT_BLOG_IP);
-            } else {
-                blogId = blogIdFromPath;
+            blogId = blojsomDefaultProperties.getProperty(BlojsomConstants.DEFAULT_BLOG_IP);
+            if (BlojsomUtils.checkNullOrBlank(blogId)) {
+                String blogIdFromPath = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
+                if (blogIdFromPath == null) {
+                    blogId = blojsomDefaultProperties.getProperty(BlojsomConstants.DEFAULT_BLOG_IP);
+                } else {
+                    blogId = blogIdFromPath;
+                }
             }
         }
 
