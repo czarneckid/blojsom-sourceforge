@@ -54,7 +54,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.22 2006-04-30 21:57:17 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.23 2006-05-02 12:39:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -281,8 +281,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Session session = _sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
 
-            SQLQuery sqlQuery = session.createSQLQuery("select blog_id from blog");
-            List blogIDList = sqlQuery.list();
+            List blogIDList = session.getNamedQuery("blog.id.list").list();
 
             tx.commit();
             session.close();

@@ -29,6 +29,11 @@
             <map-key column="property_name" type="string"/>
             <element column="property_value" type="text"/>
         </map>
+
     </class>
+
+    <sql-query name="blog.id.list">
+        select blog_id from Blog
+    </sql-query>
 
 </hibernate-mapping>
