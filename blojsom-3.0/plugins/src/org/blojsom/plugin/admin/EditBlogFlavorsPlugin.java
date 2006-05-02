@@ -49,7 +49,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.4 2006-05-01 15:48:36 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.5 2006-05-02 12:57:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -296,6 +296,10 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             Map templateMap = new HashMap(blog.getTemplates());
             templateMap.remove(flavorName);
             blog.setTemplates(templateMap);
+
+            Map pluginsMap = new HashMap(blog.getPlugins());
+            pluginsMap.remove(flavorName);
+            blog.setPlugins(pluginsMap);
 
             // Write out the flavor configuration file
             try {
