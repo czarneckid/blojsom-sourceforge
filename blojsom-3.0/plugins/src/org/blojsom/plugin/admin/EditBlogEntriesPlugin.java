@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.11 2006-04-28 15:57:58 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.12 2006-05-03 14:45:09 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -146,6 +146,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String RESPONSE_TYPE = "response-type";
     private static final String RESPONSE_ID = "response-id";
     private static final String STATUS = "status";
+    private static final String QUERY = "query";
 
     // Permissions
     private static final String EDIT_BLOG_ENTRIES_PERMISSION = "edit_blog_entries_permission";
@@ -669,13 +670,21 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     deleteBlogEntry(httpServletRequest, blog, context);
                 }
 
-                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST, _fetcher.loadEntries(blog, 10, pgNum));
+                String query = BlojsomUtils.getRequestValue(QUERY, httpServletRequest);
+                if (!BlojsomUtils.checkNullOrBlank(query)) {
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST, _fetcher.findEntries(blog, query));
+                    context.put(QUERY, BlojsomUtils.escapeString(query));
+                } else {
+                    context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST, _fetcher.loadEntries(blog, 10, pgNum));
+                }
+
                 Integer totalEntries = _fetcher.countEntries(blog);
                 int totalPages = (totalEntries.intValue() / 10);
                 int totalRemaining = (totalEntries.intValue() % 10);
                 if (totalRemaining > 0) {
                     totalPages += 1;
                 }
+
                 context.put(BLOJSOM_PLUGIN_TOTAL_ENTRIES_PAGES, new Integer(totalPages));
             } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {

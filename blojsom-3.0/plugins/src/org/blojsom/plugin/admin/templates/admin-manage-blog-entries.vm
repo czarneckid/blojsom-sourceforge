@@ -23,6 +23,12 @@
 
                 <div class="mainClm">
                     <h3>#adminResource('latest.entries.text' '') (<a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=new-blog-entry">#adminResource('add.new.entry.text' '')</a>)</h3>
+                    <form name="search-blog-entries" action="." method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="flavor" value="admin" />
+                        <input type="hidden" name="action" value="edit-entries-list" />
+                        <input type="hidden" name="plugins" value="edit-blog-entries" />
+                        <h3>Search posts #if ($query) for "$query" #end <input type="text" name="query" #if ($query) value="$query"#end size="20" /> <input type="submit" name="submit" value="#adminResource('submit.text' '')" /></h3>
+                    </form>
                     <table border=".5">
                         <tr>
                             <th>#adminResource('id.text' '')</th> <th>#adminResource('posted.on.text' '')</th> <th>#adminResource('title.text' '')</th> <th>#adminResource('category.text' '')</th> <th>#adminResource('responses.text' '')</th> <th>#adminResource('author.text' '')</th> <th>#adminResource('status.text' '')</th> <th colspan="3">#adminResource('actions.text' '')</th>
