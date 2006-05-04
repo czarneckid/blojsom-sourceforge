@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.9 2006-04-20 21:54:36 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.10 2006-05-04 14:24:33 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -348,6 +348,7 @@ public interface BlojsomConstants {
     public static final int DEFAULT_RECENT_TRACKBACKS_COUNT = 5;
     public static final String RECENT_PINGBACKS_COUNT = "recent-pingbacks-count";
     public static final int DEFAULT_RECENT_PINGBACKS_COUNT = 5;
+    public static final String DEFAULT_POST_CATEGORY = "default-post-category";
 
 }
 

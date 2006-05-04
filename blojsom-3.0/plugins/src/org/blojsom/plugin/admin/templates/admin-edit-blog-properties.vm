@@ -49,6 +49,17 @@
                                 <td>#adminResource('blog.owner.email.text' '')</td> <td><input name="blog-owner-email" type="text" size="50" value="$BLOJSOM_BLOG.getBlogOwnerEmail()"/></td>
                             </tr>
                             <tr>
+                                <td>#adminResource('default.post.category.text' '')</td>
+                                <td>
+                                    <select name="default-post-category">
+                                    #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+                                        #set ($category = "$blogCategory.getId()")
+                                        <option value="$blogCategory.getId()" #if ($category.equals($BLOJSOM_BLOG.getProperty("default-post-category")))selected#end>#CategoryDescription($blogCategory)</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>#adminResource('blog.default.flavor.text' '')</td>
                                 <td>
                                     <select name="blog-default-flavor">

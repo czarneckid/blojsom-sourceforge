@@ -55,7 +55,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.4 2006-04-23 17:53:38 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.5 2006-05-04 14:24:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -193,6 +193,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogURL(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.BLOG_BASE_URL_IP, httpServletRequest);
             blog.setBlogBaseURL(blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.DEFAULT_POST_CATEGORY, httpServletRequest);
+            blog.setProperty(BlojsomConstants.DEFAULT_POST_CATEGORY, blogPropertyValue);
 
             // Comment plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_AUTOFORMAT_IP, httpServletRequest);
