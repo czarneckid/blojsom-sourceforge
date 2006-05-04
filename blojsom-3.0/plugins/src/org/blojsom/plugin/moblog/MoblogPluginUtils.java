@@ -45,7 +45,7 @@ import java.util.Map;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.2 2006-04-05 00:44:37 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.3 2006-05-04 14:07:34 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPluginUtils {
@@ -72,11 +72,6 @@ public class MoblogPluginUtils {
             mailbox.setHostName(hostname);
         } else {
             mailbox.setEnabled(false);
-            if (_logger.isInfoEnabled()) {
-                _logger.info("Skipping blog: " + blogID + ". No " + MoblogPlugin.PROPERTY_HOSTNAME + " property.");
-            }
-
-            return mailbox;
         }
 
         String userid = blog.getProperty(MoblogPlugin.PROPERTY_USERID);
@@ -84,23 +79,13 @@ public class MoblogPluginUtils {
             mailbox.setUserId(userid);
         } else {
             mailbox.setEnabled(false);
-            if (_logger.isInfoEnabled()) {
-                _logger.info("Skipping blog: " + blog + ". No " + MoblogPlugin.PROPERTY_USERID + " property.");
-            }
-
-            return mailbox;
         }
 
         String password = blog.getProperty(MoblogPlugin.PROPERTY_PASSWORD);
         if (!BlojsomUtils.checkNullOrBlank(password)) {
             mailbox.setPassword(password);
         } else {
-            mailbox.setEnabled(false);
-            if (_logger.isInfoEnabled()) {
-                _logger.info("Skipping blog: " + blog + ". No " + MoblogPlugin.PROPERTY_PASSWORD + " property.");
-            }
-
-            return mailbox;
+            mailbox.setEnabled(false);            
         }
 
         mailbox.setUrlPrefix(BlojsomConstants.DEFAULT_RESOURCES_DIRECTORY + blogID + "/");
