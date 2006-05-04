@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.3 2006-04-24 11:15:48 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.4 2006-05-04 01:59:10 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin {
@@ -659,7 +659,7 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                             entry.setDate(new Date());
                             entry.setDescription(moblogText);
                             entry.setTitle(subject);
-                            entry.setStatus(BlojsomMetaDataConstants.NEW_STATUS);
+                            entry.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
 
                             Map entryMetaData = new HashMap();
                             entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR_EXT, from);
