@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomImplementation.java,v 1.2 2006-04-27 03:16:52 czarneckid Exp $
+ * @version $Id: BlojsomImplementation.java,v 1.3 2006-05-04 20:03:53 czarneckid Exp $
  */
 public class BlojsomImplementation extends ModuleImpl implements Blojsom {
 
@@ -53,6 +53,7 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
     private List _comments;
     private List _trackbacks;
     private List _pingbacks;
+    private List _metadata;
 
     public BlojsomImplementation() {
         super(Blojsom.class, Blojsom.BLOJSOM_URI);
@@ -127,6 +128,19 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
             copiedPingbacks.add(copiedPingback);
         }
         setPingbacks(copiedPingbacks);
+
+        // Process metadata
+        List metadata = blojsom.getMetadata();
+        List copiedMetadata = new ArrayList();
+        for (int i = 0; i < metadata.size(); i++) {
+            Metadata metadataItem = (Metadata) metadata.get(i);
+            Metadata copiedMetadataItem = new Metadata();
+            copiedMetadataItem.setKey(metadataItem.getKey());
+            copiedMetadataItem.setValue(metadataItem.getValue());
+
+            copiedMetadata.add(copiedMetadataItem);
+        }
+        setMetadata(copiedMetadata);
     }
 
     public String getAuthor() {
@@ -199,6 +213,14 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
 
     public void setPingbacks(List pingbacks) {
         _pingbacks = pingbacks;
+    }
+
+    public List getMetadata() {
+        return _metadata;
+    }
+
+    public void setMetadata(List metadata) {
+        _metadata = metadata;
     }
 
     public String getUri() {

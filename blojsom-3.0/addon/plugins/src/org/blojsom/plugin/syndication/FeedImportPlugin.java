@@ -62,7 +62,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.3 2006-05-04 19:07:48 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.4 2006-05-04 20:03:50 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -260,6 +260,20 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                     newEntry.setAllowPingbacks(new Integer(1));
                                 } else {
                                     newEntry.setAllowPingbacks(new Integer(0));
+                                }
+
+                                if (blojsomImplementation.getMetadata() != null && blojsomImplementation.getMetadata().size() > 0) {
+                                    Map metadataForEntry = newEntry.getMetaData();
+                                    List metadataItems = blojsomImplementation.getMetadata();
+                                    for (int j = 0; j < metadataItems.size(); j++) {
+                                        Metadata metadata = (Metadata) metadataItems.get(j);
+
+                                        if (metadata.getKey() != null) {
+                                            metadataForEntry.put(metadata.getKey(), metadata.getValue());
+                                        }
+                                    }
+
+                                    newEntry.setMetaData(metadataForEntry);
                                 }
                             }
 

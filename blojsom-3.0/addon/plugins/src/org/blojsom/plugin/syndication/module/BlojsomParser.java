@@ -45,7 +45,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomParser.java,v 1.2 2006-04-27 03:16:52 czarneckid Exp $
+ * @version $Id: BlojsomParser.java,v 1.3 2006-05-04 20:03:53 czarneckid Exp $
  */
 public class BlojsomParser implements ModuleParser {
 
@@ -111,6 +111,12 @@ public class BlojsomParser implements ModuleParser {
         if (e != null) {
             foundSomething = true;
             blojsomModule.setPingbacks(parsePingbacks(e));
+        }
+
+        e = element.getChild("metadataItems", BLOJSOM_NS);
+        if (e != null) {
+            foundSomething = true;
+            blojsomModule.setMetadata(parseMetadata(e));
         }
 
         return (foundSomething) ? blojsomModule : null;
@@ -277,6 +283,30 @@ public class BlojsomParser implements ModuleParser {
         }
 
         return pingbacks;
+    }
+
+    private List parseMetadata(Element e) {
+        List metadata = new ArrayList();
+        List metadataElements = e.getChildren("metadata", BLOJSOM_NS);
+
+        for (int i = 0; i < metadataElements.size(); i++) {
+            Element element = (Element) metadataElements.get(i);
+            Metadata metadataItem = new Metadata();
+
+            Element metadataKey = element.getChild("key", BLOJSOM_NS);
+            if (metadataKey != null) {
+                metadataItem.setKey(metadataKey.getText());
+            }
+
+            Element metadataValue = element.getChild("value", BLOJSOM_NS);
+            if (metadataValue != null) {
+                metadataItem.setValue(metadataValue.getText());
+            }
+
+            metadata.add(metadataItem);
+        }
+        
+        return metadata;
     }
 }
 

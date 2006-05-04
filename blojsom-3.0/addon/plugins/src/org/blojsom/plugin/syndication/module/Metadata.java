@@ -30,48 +30,43 @@
  */
 package org.blojsom.plugin.syndication.module;
 
-import com.sun.syndication.feed.module.Module;
-
-import java.util.List;
-
 /**
- * Module for parsing blojsom-specific information using ROME
+ * Metadata key/value
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blojsom.java,v 1.3 2006-05-04 20:03:53 czarneckid Exp $
+ * @version $Id: Metadata.java,v 1.1 2006-05-04 20:03:53 czarneckid Exp $
  */
-public interface Blojsom extends Module {
+public class Metadata implements Cloneable {
 
-    public static final String BLOJSOM_URI = "http://rome.dev.java.net/module/blojsom/1.0";
+    private String key;
+    private String value;
 
-    public String getAuthor();
-    public void setAuthor(String author);
+    public Metadata() {
+    }
 
-    public String getPostSlug();
-    public void setPostSlug(String postSlug);
+    public String getKey() {
+        return key;
+    }
 
-    public String getTechnoratiTags();
-    public void setTechnoratiTags(String technoratiTags);
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-    public boolean getAllowsComments();
-    public void setAllowsComments(boolean allowsComments);
+    public String getValue() {
+        return value;
+    }
 
-    public boolean getAllowsTrackbacks();
-    public void setAllowsTrackbacks(boolean allowsTrackbacks);
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-    public boolean getAllowsPingbacks();
-    public void setAllowsPingbacks(boolean allowsPingbacks);
+    public Object clone() throws CloneNotSupportedException {
+        Metadata clonedMetadata = new Metadata();
 
-    public List getComments();
-    public void setComments(List comments);
+        clonedMetadata.setKey(key);
+        clonedMetadata.setValue(value);
 
-    public List getTrackbacks();
-    public void setTrackbacks(List trackbacks);
-
-    public List getPingbacks();
-    public void setPingbacks(List pingbacks);
-
-    public List getMetadata();
-    public void setMetadata(List metadata);
+        return clonedMetadata;
+    }
 }
