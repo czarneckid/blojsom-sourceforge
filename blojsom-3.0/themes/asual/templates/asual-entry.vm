@@ -14,7 +14,7 @@
                                     #TechnoratiTags($entry)
                                 </div>
                                 <div class="info">
-                                    #if($entry.getAuthor())Posted by <span class="author">$entry.getAuthor()</span> at $entry.getDateAsFormat("h:mm a") in <a href="#BlogURL()$entry.getCategory()" title="$entry.getCategory()">#if($entry.getBlogCategory().getDescription())$entry.getBlogCategory().getDescription()#else$entry.getBlogCategory().getName()#end</a>#end
+                                    #if($entry.getAuthor())Posted by <span class="author">$entry.getAuthor()</span> at #else Posted at #end $entry.getDateAsFormat("h:mm a") in <a href="#BlogURL()$entry.getCategory()" title="$entry.getCategory()">#CategoryDescription($entry.getBlogCategory())</a>
                                 </div>
                                 <div class="links">
 
