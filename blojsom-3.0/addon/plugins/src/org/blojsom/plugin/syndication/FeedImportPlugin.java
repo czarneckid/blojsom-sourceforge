@@ -33,6 +33,8 @@ package org.blojsom.plugin.syndication;
 import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.module.content.ContentModuleImpl;
+import com.sun.syndication.feed.module.content.ContentModule;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
@@ -60,7 +62,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.2 2006-04-27 03:16:45 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.3 2006-05-04 19:07:48 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -261,69 +263,87 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                 }
                             }
 
+                            ContentModuleImpl contentModule = (ContentModuleImpl) entry.getModule(ContentModule.URI);
+                            if (contentModule != null) {
+                                List encodeds = contentModule.getEncodeds();
+                                if (encodeds != null && encodeds.size() > 0) {
+                                    newEntry.setDescription("");
+
+                                    StringBuffer description = new StringBuffer();
+                                    for (int j = 0; j < encodeds.size(); j++) {
+                                        String encodedContent = (String) encodeds.get(j);
+                                        description.append(encodedContent).append(BlojsomConstants.LINE_SEPARATOR);
+                                    }
+
+                                    newEntry.setDescription(description.toString());
+                                }
+                            }
+
                             try {
                                 _fetcher.saveEntry(blog, newEntry);
                                 _fetcher.loadEntry(blog, newEntry);
 
-                                if (blojsomImplementation.getComments() != null && blojsomImplementation.getComments().size() > 0) {
-                                    List comments = blojsomImplementation.getComments();
-                                    for (int j = 0; j < comments.size(); j++) {
-                                        SimpleComment simpleComment = (SimpleComment) comments.get(j);
-                                        Comment comment = _fetcher.newComment();
+                                if (blojsomImplementation != null) {
+                                    if (blojsomImplementation.getComments() != null && blojsomImplementation.getComments().size() > 0) {
+                                        List comments = blojsomImplementation.getComments();
+                                        for (int j = 0; j < comments.size(); j++) {
+                                            SimpleComment simpleComment = (SimpleComment) comments.get(j);
+                                            Comment comment = _fetcher.newComment();
 
-                                        comment.setAuthor(simpleComment.getAuthor());
-                                        comment.setAuthorEmail(simpleComment.getAuthorEmail());
-                                        comment.setAuthorURL(simpleComment.getAuthorURL());
-                                        comment.setComment(simpleComment.getComment());
-                                        comment.setCommentDate(simpleComment.getCommentDate());
-                                        comment.setIp(simpleComment.getIp());
-                                        comment.setStatus(simpleComment.getStatus());
-                                        comment.setBlogId(blog.getBlogId());
-                                        comment.setBlogEntryId(newEntry.getId());
+                                            comment.setAuthor(simpleComment.getAuthor());
+                                            comment.setAuthorEmail(simpleComment.getAuthorEmail());
+                                            comment.setAuthorURL(simpleComment.getAuthorURL());
+                                            comment.setComment(simpleComment.getComment());
+                                            comment.setCommentDate(simpleComment.getCommentDate());
+                                            comment.setIp(simpleComment.getIp());
+                                            comment.setStatus(simpleComment.getStatus());
+                                            comment.setBlogId(blog.getBlogId());
+                                            comment.setBlogEntryId(newEntry.getId());
 
-                                        _fetcher.saveComment(blog, comment);
+                                            _fetcher.saveComment(blog, comment);
+                                        }
                                     }
-                                }
 
-                                if (blojsomImplementation.getTrackbacks() != null && blojsomImplementation.getTrackbacks().size() > 0) {
-                                    List trackbacks = blojsomImplementation.getTrackbacks();
-                                    for (int j = 0; j < trackbacks.size(); j++) {
-                                        SimpleTrackback simpleTrackback = (SimpleTrackback) trackbacks.get(j);
-                                        Trackback trackback = _fetcher.newTrackback();
+                                    if (blojsomImplementation.getTrackbacks() != null && blojsomImplementation.getTrackbacks().size() > 0) {
+                                        List trackbacks = blojsomImplementation.getTrackbacks();
+                                        for (int j = 0; j < trackbacks.size(); j++) {
+                                            SimpleTrackback simpleTrackback = (SimpleTrackback) trackbacks.get(j);
+                                            Trackback trackback = _fetcher.newTrackback();
 
-                                        trackback.setBlogName(simpleTrackback.getBlogName());
-                                        trackback.setExcerpt(simpleTrackback.getExcerpt());
-                                        trackback.setUrl(simpleTrackback.getUrl());
-                                        trackback.setTitle(simpleTrackback.getTitle());
-                                        trackback.setIp(simpleTrackback.getIp());
-                                        trackback.setTrackbackDate(simpleTrackback.getTrackbackDate());
-                                        trackback.setStatus(simpleTrackback.getStatus());
-                                        trackback.setBlogEntryId(newEntry.getId());
-                                        trackback.setBlogId(blog.getBlogId());
+                                            trackback.setBlogName(simpleTrackback.getBlogName());
+                                            trackback.setExcerpt(simpleTrackback.getExcerpt());
+                                            trackback.setUrl(simpleTrackback.getUrl());
+                                            trackback.setTitle(simpleTrackback.getTitle());
+                                            trackback.setIp(simpleTrackback.getIp());
+                                            trackback.setTrackbackDate(simpleTrackback.getTrackbackDate());
+                                            trackback.setStatus(simpleTrackback.getStatus());
+                                            trackback.setBlogEntryId(newEntry.getId());
+                                            trackback.setBlogId(blog.getBlogId());
 
-                                        _fetcher.saveTrackback(blog, trackback);
+                                            _fetcher.saveTrackback(blog, trackback);
+                                        }
                                     }
-                                }
 
-                                if (blojsomImplementation.getPingbacks() != null && blojsomImplementation.getPingbacks().size() > 0) {
-                                    List pingbacks = blojsomImplementation.getPingbacks();
-                                    for (int j = 0; j < pingbacks.size(); j++) {
-                                        SimplePingback simplePingback = (SimplePingback) pingbacks.get(j);
-                                        Pingback pingback = _fetcher.newPingback();
+                                    if (blojsomImplementation.getPingbacks() != null && blojsomImplementation.getPingbacks().size() > 0) {
+                                        List pingbacks = blojsomImplementation.getPingbacks();
+                                        for (int j = 0; j < pingbacks.size(); j++) {
+                                            SimplePingback simplePingback = (SimplePingback) pingbacks.get(j);
+                                            Pingback pingback = _fetcher.newPingback();
 
-                                        pingback.setBlogName(simplePingback.getBlogName());
-                                        pingback.setExcerpt(simplePingback.getExcerpt());
-                                        pingback.setUrl(simplePingback.getUrl());
-                                        pingback.setTitle(simplePingback.getTitle());
-                                        pingback.setIp(simplePingback.getIp());
-                                        pingback.setTrackbackDate(simplePingback.getPingbackDate());
-                                        pingback.setStatus(simplePingback.getStatus());
-                                        pingback.setSourceURI(simplePingback.getSourceURI());
-                                        pingback.setTargetURI(simplePingback.getTargetURI());
-                                        pingback.setBlogEntryId(newEntry.getId());
-                                        pingback.setBlogId(blog.getBlogId());
+                                            pingback.setBlogName(simplePingback.getBlogName());
+                                            pingback.setExcerpt(simplePingback.getExcerpt());
+                                            pingback.setUrl(simplePingback.getUrl());
+                                            pingback.setTitle(simplePingback.getTitle());
+                                            pingback.setIp(simplePingback.getIp());
+                                            pingback.setTrackbackDate(simplePingback.getPingbackDate());
+                                            pingback.setStatus(simplePingback.getStatus());
+                                            pingback.setSourceURI(simplePingback.getSourceURI());
+                                            pingback.setTargetURI(simplePingback.getTargetURI());
+                                            pingback.setBlogEntryId(newEntry.getId());
+                                            pingback.setBlogId(blog.getBlogId());
 
-                                        _fetcher.savePingback(blog, pingback);
+                                            _fetcher.savePingback(blog, pingback);
+                                        }
                                     }
                                 }
                             } catch (FetcherException e) {
