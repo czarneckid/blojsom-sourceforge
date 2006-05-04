@@ -39,10 +39,13 @@ import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
 import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
+import org.blojsom.plugin.pingback.event.PingbackMarkedSpamEvent;
 import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
 import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
+import org.blojsom.plugin.trackback.event.TrackbackMarkedSpamEvent;
 import org.blojsom.plugin.comment.event.CommentApprovedEvent;
 import org.blojsom.plugin.comment.event.CommentDeletedEvent;
+import org.blojsom.plugin.comment.event.CommentMarkedSpamEvent;
 import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
@@ -57,7 +60,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BulkResponseManagement.java,v 1.1 2006-04-05 00:47:14 czarneckid Exp $
+ * @version $Id: BulkResponseManagement.java,v 1.2 2006-05-04 01:09:22 czarneckid Exp $
  */
 public class BulkResponseManagement extends BaseAdminPlugin {
 
@@ -85,6 +88,9 @@ public class BulkResponseManagement extends BaseAdminPlugin {
     private static final String APPROVE_TRACKBACKS = "approve_trackbacks";
     private static final String DELETE_PINGBACKS = "delete_pingbacks";
     private static final String APPROVE_PINGBACKS = "approve_pingbacks";
+    private static final String MARK_SPAM_COMMENTS = "mark_spam_comments";
+    private static final String MARK_SPAM_TRACKBACKS = "mark_spam_trackbacks";
+    private static final String MARK_SPAM_PINGBACKS = "mark_spam_pingbacks";
 
     private Fetcher _fetcher;
     private EventBroadcaster _eventBroadcaster;
@@ -159,6 +165,82 @@ public class BulkResponseManagement extends BaseAdminPlugin {
             int pingbacksDeleted = 0;
 
             Integer entityID;
+
+            String[] markspamComments = BlojsomUtils.getRequestValues(MARK_SPAM_COMMENTS, httpServletRequest);
+            for (int i = 0; i < markspamComments.length; i++) {
+                try {
+                    String item = markspamComments[i];
+                    entityID = Integer.valueOf(item);
+                    Comment comment = _fetcher.newComment();
+                    comment.setBlogId(blog.getBlogId());
+                    comment.setId(entityID);
+
+                    _fetcher.loadComment(blog, comment);
+
+                    CommentMarkedSpamEvent commentMarkedSpamEvent = new CommentMarkedSpamEvent(this, new Date(), comment, blog);
+                    _eventBroadcaster.broadcastEvent(commentMarkedSpamEvent);
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Marked comment as spam for comment ID: " + entityID);
+                    }
+                } catch (NumberFormatException e) {
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                }
+            }
+
+            String[] markspamTrackbacks = BlojsomUtils.getRequestValues(MARK_SPAM_TRACKBACKS, httpServletRequest);
+            for (int i = 0; i < markspamTrackbacks.length; i++) {
+                try {
+                    String item = markspamTrackbacks[i];
+                    entityID = Integer.valueOf(item);
+                    Trackback trackback = _fetcher.newTrackback();
+                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setId(entityID);
+
+                    _fetcher.loadTrackback(blog, trackback);
+
+                    TrackbackMarkedSpamEvent trackbackMarkedSpamEvent = new TrackbackMarkedSpamEvent(this, new Date(), trackback, blog);
+                    _eventBroadcaster.broadcastEvent(trackbackMarkedSpamEvent);
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Marked trackback as spam for trackback ID: " + entityID);
+                    }
+                } catch (NumberFormatException e) {
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                }
+            }
+
+            String[] markspamPingbacks = BlojsomUtils.getRequestValues(MARK_SPAM_PINGBACKS, httpServletRequest);
+            for (int i = 0; i < markspamPingbacks.length; i++) {
+                try {
+                    String item = markspamPingbacks[i];
+                    entityID = Integer.valueOf(item);
+                    Pingback pingback = _fetcher.newPingback();
+                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setId(entityID);
+
+                    _fetcher.loadPingback(blog, pingback);
+
+                    PingbackMarkedSpamEvent pingbackMarkedSpamEvent = new PingbackMarkedSpamEvent(this, new Date(), pingback, blog);
+                    _eventBroadcaster.broadcastEvent(pingbackMarkedSpamEvent);
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Marked pingback as spam for pingback ID: " + entityID);
+                    }
+                } catch (NumberFormatException e) {
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                }
+            }
+
             String[] delete = BlojsomUtils.getRequestValues(DELETE_COMMENTS, httpServletRequest);
             for (int i = 0; i < delete.length; i++) {
                 String item = delete[i];

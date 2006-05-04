@@ -36,8 +36,8 @@
                     <form name="brm" id="brm" action="." method="post" accept-charset="UTF-8">
 
                         <p align="right">
-                            You may select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);checkAll(document.getElementById('brm'),'delete',true);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',true);checkAll(document.getElementById('brm'),'delete',false);">approval</a><br/>
-                            Or you may un-select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'delete',false);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);">approval</a>
+                            You may select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);checkAll(document.getElementById('brm'),'delete',true);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',true);checkAll(document.getElementById('brm'),'delete',false);">approval</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',true);">spam</a><br/>
+                            Or you may un-select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'delete',false);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);">approval</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',false);">spam</a>
                         </p>
 
                         <input type="hidden" name="action" value="bulk-response-management"/>
@@ -51,23 +51,27 @@
                             #if ($response.getType().equals("comment"))
                             #set ($delete = "delete_comments")
                             #set ($approve = "approve_comments")
+                            #set ($markspam = "mark_spam_comments")
                             <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
                             $response.getComment()
                             #elseif ($response.getType().equals("trackback"))
                             #set ($delete = "delete_trackbacks")
                             #set ($approve = "approve_trackbacks")
+                            #set ($markspam = "mark_spam_trackbacks")
                             <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
                             $response.getExcerpt()
                             #elseif ($response.getType().equals("pingback"))
                             #set ($delete = "delete_pingbacks")
                             #set ($approve = "approve_pingbacks")
+                            #set ($markspam = "mark_spam_pingbacks")
                             <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
                             <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
                             $response.getExcerpt()
                             #end
-                            <p align="right">[ <input type="checkbox" name="$delete" value="$response.getId()" id="delete-$responseCounter" onclick="checkSingle(document.getElementById('approve-$responseCounter'),false)">Delete</input> - <input type="checkbox" name="$approve" value="$response.getId()" id="approve-$responseCounter" onclick="checkSingle(document.getElementById('delete-$responseCounter'),false)">Approve</input> ] </p>
+                            <p align="right">[ <input type="checkbox" name="$delete" value="$response.getId()" id="delete-$responseCounter" onclick="checkSingle(document.getElementById('approve-$responseCounter'),false)">#adminResource('delete.text' '')</input> - <input type="checkbox" name="$approve" value="$response.getId()" id="approve-$responseCounter" onclick="checkSingle(document.getElementById('delete-$responseCounter'),false)">#adminResource('approve.text' '')</input> - <input type="checkbox" name="$markspam" value="$response.getId()" id="markspam-$responseCounter">#adminResource('mark.spam.text' '')</input>] </p>
                             #set ($delete = "")
                             #set ($approve = "")
+                            #set ($markspam = "")
                         </p>
                         #set($responseCounter = $responseCounter + 1)
                         #end
