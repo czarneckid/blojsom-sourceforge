@@ -167,7 +167,8 @@ CREATE TABLE `Entry` (
   `modified_date` datetime NOT NULL,
   PRIMARY KEY  (`entry_id`),
   KEY `entry_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE,
+  CONSTRAINT `entry_category_categoryidfk` FOREIGN KEY (`blog_category_id`) REFERENCES `Category` (`category_id`) ON DELETE CASCADE  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
