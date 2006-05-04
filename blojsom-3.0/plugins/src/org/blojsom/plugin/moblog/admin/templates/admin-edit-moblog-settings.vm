@@ -41,7 +41,14 @@
                             </tr>
                             <tr>
                                 <td>#adminResource('mailbox.category.text' 'Moblog category')</td>
-                                <td><input type="text" size="60" name="moblog-category" value="$!BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getCategoryName()"/></td>
+                                <td>
+                                    <select name="moblog-category">
+                                    #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+                                        #set ($category = "$blogCategory.getId()")
+                                        <option value="$blogCategory.getId()" #if ($category.equals($!BLOJSOM_PLUGIN_MOBLOG_MAILBOX.getCategoryId()))selected#end>#CategoryDescription($blogCategory)</option>
+                                    #end
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td>#adminResource('mailbox.secret.word.text' 'Secret word')</td>
