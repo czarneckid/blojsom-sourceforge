@@ -36,12 +36,12 @@
                         #foreach ($entry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
                         <tr>
                             <td>$entry.getId()</td>
-                            <td>$entry.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale())</td>
-                            <td>$entry.getEscapedTitle()</td>
+                            <td>$!entry.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale())</td>
+                            <td>$!entry.getEscapedTitle()</td>
                             <td>#CategoryDescription($entry.getBlogCategory())</td>
                             <td>$entry.getResponses().size()</td>
-                            <td>$entry.getAuthor()</td>
-                            <td>$entry.getStatus()</td>
+                            <td>$!entry.getAuthor()</td>
+                            <td>$!entry.getStatus()</td>
                             <td><a href="#BlogURL()$entry.getBlogCategory().getName()$entry.getPostSlug()">View</a></td>
                             <td><a href="#BlogAdminURL()/?flavor=admin&action=edit-blog-entry&plugins=edit-blog-entries&blog-category-id=$entry.getBlogCategory().getId()&blog-entry-id=$entry.getId()">Edit</a></td>
                             <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&subaction=delete-blog-entry-list&pg_num=$page_number&blog-entry-id=$entry.getId()" #OnClickDeletePrompt('')>Delete</a></td>
