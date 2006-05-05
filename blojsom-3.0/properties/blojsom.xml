@@ -53,6 +53,7 @@
             <ref bean="hibernateSessionFactory"/>
         </property>
         <property name="dbScript" value="/WEB-INF/classes/blojsom-full-initial-data-mysql.sql"/>
+        <property name="upgrading" value="false"/>
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>

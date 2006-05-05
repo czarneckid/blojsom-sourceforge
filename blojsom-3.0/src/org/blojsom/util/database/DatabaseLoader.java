@@ -32,14 +32,17 @@ package org.blojsom.util.database;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.blojsom.util.BlojsomUtils;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -48,8 +51,8 @@ import java.util.List;
  * Database loader
  *
  * @author David Czarnecki
+ * @version $Id: DatabaseLoader.java,v 1.4 2006-05-05 23:57:03 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: DatabaseLoader.java,v 1.3 2006-05-01 03:02:37 czarneckid Exp $
  */
 public class DatabaseLoader {
 
@@ -61,6 +64,7 @@ public class DatabaseLoader {
     private SessionFactory _sessionFactory;
     private ServletConfig _servletConfig;
     private String _detectBlojsomSQL;
+    private boolean _upgrading = false;
 
     /**
      * Create a new instance of the Database loader
@@ -105,6 +109,15 @@ public class DatabaseLoader {
     }
 
     /**
+     * Signal an upgrade for the database loader
+     *
+     * @param upgrading <code>true</code> if upgrading the database using the database script, <code>false</code> otherwise
+     */
+    public void setUpgrading(boolean upgrading) {
+        _upgrading = upgrading;
+    }
+
+    /**
      * Initalize the blojsom database
      */
     public void init() {
@@ -126,14 +139,20 @@ public class DatabaseLoader {
         try {
             tx = session.beginTransaction();
 
-            if (_logger.isInfoEnabled()) {
-                _logger.info("About to create blojsom database");
+            if (!_upgrading) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("About to create blojsom database");
+                }
+            } else {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info("About to upgrade blojsom database");
+                }
             }
 
             SQLQuery sqlQuery = session.createSQLQuery(_detectBlojsomSQL);
             List tables = sqlQuery.list();
 
-            if (tables.size() > 0) {
+            if (tables.size() > 0 && !_upgrading) {
                 if (_logger.isInfoEnabled()) {
                     _logger.info("blojsom database already created");
                 }
@@ -162,14 +181,20 @@ public class DatabaseLoader {
                 bufferedReader = new BufferedReader(new StringReader(sql.toString()));
                 PreparedStatement preparedStatement;
 
-                 while ((input = bufferedReader.readLine()) != null) {
+                while ((input = bufferedReader.readLine()) != null) {
                     preparedStatement = sqlConnection.prepareStatement(input);
                     preparedStatement.execute();
                 }
 
-               if (_logger.isInfoEnabled()) {
-                   _logger.info("Finised blojsom database creation");
-               }
+                if (!_upgrading) {
+                    if (_logger.isInfoEnabled()) {
+                        _logger.info("Finised blojsom database creation");
+                    }
+                } else {
+                    if (_logger.isInfoEnabled()) {
+                        _logger.info("Finised upgrading blojsom database");
+                    }
+                }
             }
 
             tx.commit();
