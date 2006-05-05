@@ -22,9 +22,17 @@
         </property>
     </bean>
     <bean id="calendar-filter" class="org.blojsom.plugin.calendar.CalendarFilterPlugin" init-method="init"
-          destroy-method="destroy"/>
+          destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="calendar-gui" class="org.blojsom.plugin.calendar.VelocityCalendarPlugin" init-method="init"
-          destroy-method="destroy"/>
+          destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="chrono" class="org.blojsom.plugin.chrono.ChronoPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="collection-utilities" class="org.blojsom.plugin.common.CollectionUtilitiesPlugin" init-method="init"
           destroy-method="destroy"/>
