@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.8 2006-04-05 00:38:56 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.9 2006-05-05 15:58:21 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1915,4 +1915,144 @@ public class BlojsomUtils implements BlojsomConstants {
             return 0;
         }
     };
+
+    /**
+     * Find the first date of a year
+     *
+     * @param locale Locale
+     * @param year Year
+     * @return First date of the requested year
+     */
+    public static Date getFirstDateOfYear(Locale locale, int year) {
+        Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, calendar.getActualMinimum(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND, calendar.getActualMinimum(Calendar.MILLISECOND));
+
+        return calendar.getTime();
+    }
+
+    /**
+     * Find the last date of a year
+     *
+     * @param locale Locale
+     * @param year Year
+     * @return Last date of the requested year
+     */
+    public static Date getLastDateOfYear(Locale locale, int year) {
+        Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, calendar.getActualMaximum(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, calendar.getActualMaximum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND, calendar.getActualMaximum(Calendar.MILLISECOND));
+
+        return calendar.getTime();
+    }
+
+    /**
+     * Find the first date of a year/month
+     *
+     * @param locale Locale
+     * @param year Year
+     * @param month Month
+     * @return FIrst date of the requested year/month
+     */
+    public static Date getFirstDateOfYearMonth(Locale locale, int year, int month) {
+        Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND, calendar.getActualMinimum(Calendar.MILLISECOND));
+
+        return calendar.getTime();
+    }
+
+    /**
+     * Find the last date of a year/month
+     *
+     * @param locale Locale
+     * @param year Year
+     * @param month Month
+     * @return Last date of the requested year/month
+     */
+    public static Date getLastDateOfYearMonth(Locale locale, int year, int month) {
+        Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, calendar.getActualMaximum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND, calendar.getActualMaximum(Calendar.MILLISECOND));
+
+        return calendar.getTime();
+    }
+
+    /**
+     * Get the first date of a year/month/day
+     *
+     * @param locale Locale
+     * @param year Year
+     * @param month Month
+     * @param day Day
+     * @return First date of the requested year/month/day
+     */
+    public static Date getFirstDateOfYearMonthDay(Locale locale, int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        if (day < calendar.getActualMinimum(Calendar.DAY_OF_MONTH)) {
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        } else {
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND, calendar.getActualMinimum(Calendar.MILLISECOND));
+
+        return calendar.getTime();
+    }
+
+    /**
+     * Get the last date of a year/month/day
+     *
+     * @param locale Locale
+     * @param year Year
+     * @param month Month
+     * @param day Day
+     * @return Last date of the requested year/month/day
+     */
+    public static Date getLastDateOfYearMonthDay(Locale locale, int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance(locale);
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        if (day > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        } else {
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, calendar.getActualMaximum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND, calendar.getActualMaximum(Calendar.MILLISECOND));
+
+        return calendar.getTime();
+    }
 }
