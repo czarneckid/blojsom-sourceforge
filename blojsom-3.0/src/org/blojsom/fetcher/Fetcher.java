@@ -36,13 +36,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Fetcher
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.15 2006-04-30 21:57:17 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.16 2006-05-05 16:44:09 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -217,6 +218,17 @@ public interface Fetcher {
      * @throws FetcherException If there is an error searching through entries
      */
     public Entry[] findEntriesWithMetadataKey(Blog blog, String metadataKey) throws FetcherException;
+
+    /**
+     * Find entries between a start and end date
+     *
+     * @param blog {@link Blog}
+     * @param startDate Start date
+     * @param endDate End date
+     * @return Entries between a start and end date
+     * @throws FetcherException If there is an error searching for entries between the dates
+     */
+    public Entry[] findEntriesBetweenDates(Blog blog, Date startDate, Date endDate) throws FetcherException;
 
     /**
      * Count the number of entries for a blog
@@ -508,7 +520,7 @@ public interface Fetcher {
      * @throws FetcherException If there is an error deleting the user from the blog
      */
     public void deleteUser(Blog blog, Integer userID) throws FetcherException;
-    
+
     /**
      * Load the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
      *

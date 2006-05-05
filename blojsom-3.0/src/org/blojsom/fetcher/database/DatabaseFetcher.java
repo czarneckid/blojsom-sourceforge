@@ -54,7 +54,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.23 2006-05-02 12:39:11 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.24 2006-05-05 16:44:09 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -346,7 +346,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
                 permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                         .add(Restrictions.gt("date", entry.getDate()))
-                        .add(Restrictions.lt("date", new Date()));
+                        .add(Restrictions.lt("date", new Date()))
+                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 permalinkCriteria.addOrder(Order.asc("date"));
                 permalinkCriteria.setMaxResults(1);
 
@@ -363,7 +364,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
                 permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
                 permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
-                        .add(Restrictions.lt("date", entry.getDate()));
+                        .add(Restrictions.lt("date", entry.getDate()))
+                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 permalinkCriteria.addOrder(Order.desc("date"));
                 permalinkCriteria.setMaxResults(1);
 
@@ -564,7 +566,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
         entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
         entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE),
-                Restrictions.ilike("description", query, MatchMode.ANYWHERE)));
+                Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
+                .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
         entryCriteria.addOrder(Order.desc("date"));
 
         List entryList = entryCriteria.list();
@@ -630,6 +633,41 @@ public class DatabaseFetcher implements Fetcher, Listener {
         session.close();
 
         return (DatabaseEntry[]) entriesMatchingMetadata.toArray(new DatabaseEntry[entriesMatchingMetadata.size()]);
+    }
+
+    /**
+     * Find entries between a start and end date
+     *
+     * @param blog      {@link Blog}
+     * @param startDate Start date
+     * @param endDate   End date
+     * @return Entries between a start and end date
+     * @throws FetcherException If there is an error searching for entries between the dates
+     */
+    public Entry[] findEntriesBetweenDates(Blog blog, Date startDate, Date endDate) throws FetcherException {
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+            entryCriteria.add(Restrictions.between("modifiedDate", startDate, endDate));
+            entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+            entryCriteria.addOrder(Order.desc("date"));
+
+            List entryList = entryCriteria.list();
+
+            tx.commit();
+            session.close();
+
+            return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
     }
 
     /**
