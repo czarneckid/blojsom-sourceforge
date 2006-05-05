@@ -62,7 +62,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.4 2006-05-04 20:03:50 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.5 2006-05-05 23:55:41 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -100,7 +100,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
      * @return Display name for the plugin
      */
     public String getDisplayName() {
-        return "Feed Import Plugin";
+        return "Feed Import plugin";
     }
 
     /**
