@@ -30,16 +30,16 @@
  */
 package org.blojsom.plugin.calendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
-import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -49,9 +49,11 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CalendarFilterPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.3 2006-05-05 17:47:23 czarneckid Exp $
  */
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
+
+    private Log _logger = LogFactory.getLog(CalendarFilterPlugin.class);
 
     /**
      * Process the blog entries
@@ -66,28 +68,22 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         entries = super.process(httpServletRequest, httpServletResponse, blog, context, entries);
-        Locale locale = (Locale) context.get(BLOJSOM_CALENDAR_LOCALE);
-        BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
 
-        ArrayList updatedEntryList = new ArrayList();
+        Date startDate = (Date) context.get(BLOJSOM_FILTER_START_DATE);
+        Date endDate = (Date) context.get(BLOJSOM_FILTER_END_DATE);
 
-        Calendar entrycalendar = Calendar.getInstance(locale);
-        if (entries != null && entries.length > 0) {
-            for (int x = 0; x < entries.length; x++) {
-                Entry entry = entries[x];
-                String blogDateKey = BlojsomUtils.getDateKey(entry.getDate());
-                entrycalendar.setTime(entry.getDate());
-
-                if (blogCalendar.getRequestedDateKey() == null || (blogDateKey.startsWith(blogCalendar.getRequestedDateKey()))) {
-                    updatedEntryList.add(entry);
+        if (startDate != null && endDate != null) {
+            try {
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Filtering entries betweeen: " + startDate.toString() + " and " + endDate.toString());
+                }
+                
+                entries = _fetcher.findEntriesBetweenDates(blog, startDate, endDate);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
                 }
             }
-        }
-
-        if (updatedEntryList.size() == 0) {
-            entries = new Entry[0];
-        } else {
-            entries = (Entry[]) updatedEntryList.toArray(new Entry[updatedEntryList.size()]);
         }
 
         return entries;
