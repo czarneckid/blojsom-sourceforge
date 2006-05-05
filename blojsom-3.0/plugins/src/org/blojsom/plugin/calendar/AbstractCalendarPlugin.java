@@ -35,12 +35,14 @@ import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.fetcher.Fetcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * AbstractCalendarPlugin is a base plugin that is used by the various calendar plugins
@@ -49,7 +51,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: AbstractCalendarPlugin.java,v 1.3 2006-03-23 19:50:56 czarneckid Exp $
+ * @version $Id: AbstractCalendarPlugin.java,v 1.4 2006-05-05 17:40:33 czarneckid Exp $
  */
 public abstract class AbstractCalendarPlugin implements Plugin {
 
@@ -82,6 +84,9 @@ public abstract class AbstractCalendarPlugin implements Plugin {
      */
     protected static final String BLOJSOM_CALENDAR_SHORTFORMAT = "MMM";
 
+    protected static final String BLOJSOM_FILTER_START_DATE = "BLOJSOM_FILTER_START_DATE";
+    protected static final String BLOJSOM_FILTER_END_DATE = "BLOJSOM_FILTER_END_DATE";
+
     /**
      * Key under which the blog calendar will be placed
      * (example: on the request for the JSPDispatcher)
@@ -93,6 +98,17 @@ public abstract class AbstractCalendarPlugin implements Plugin {
      * (example: on the request for the JSPDispatcher)
      */
     public static final String BLOJSOM_CALENDAR_VTLHELPER = "BLOJSOM_CALENDAR_VTLHELPER";
+
+    protected Fetcher _fetcher;
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
+    }
 
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
@@ -142,7 +158,6 @@ public abstract class AbstractCalendarPlugin implements Plugin {
         String month = null;
         String day = null;
 
-
         year = httpServletRequest.getParameter(YEAR_PARAM);
         if (year != null) {
 
@@ -153,6 +168,11 @@ public abstract class AbstractCalendarPlugin implements Plugin {
                 try {
                     currentYear = Integer.parseInt(year);
                     calendar.set(Calendar.YEAR, currentYear);
+
+                    Date startDate = BlojsomUtils.getFirstDateOfYear(locale, currentYear);
+                    Date endDate = BlojsomUtils.getLastDateOfYear(locale, currentYear);
+                    context.put(BLOJSOM_FILTER_START_DATE, startDate);
+                    context.put(BLOJSOM_FILTER_END_DATE, endDate);
                 } catch (NumberFormatException e) {
                     year = "";
                 }
@@ -169,6 +189,11 @@ public abstract class AbstractCalendarPlugin implements Plugin {
                     try {
                         currentMonth = Integer.parseInt(month) - 1; // Damm Sun!
                         calendar.set(Calendar.MONTH, currentMonth);
+
+                        Date startDate = BlojsomUtils.getFirstDateOfYearMonth(locale, currentYear, currentMonth);
+                        Date endDate = BlojsomUtils.getLastDateOfYearMonth(locale, currentYear, currentMonth);
+                        context.put(BLOJSOM_FILTER_START_DATE, startDate);
+                        context.put(BLOJSOM_FILTER_END_DATE, endDate);
                     } catch (NumberFormatException e) {
                         month = "";
                     }
@@ -187,7 +212,13 @@ public abstract class AbstractCalendarPlugin implements Plugin {
                         if (currentDay > calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                             currentDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                         }
+
                         calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+
+                        Date startDate = BlojsomUtils.getFirstDateOfYearMonthDay(locale, currentYear, currentMonth, currentDay);
+                        Date endDate = BlojsomUtils.getLastDateOfYearMonthDay(locale, currentYear, currentMonth, currentDay);
+                        context.put(BLOJSOM_FILTER_START_DATE, startDate);
+                        context.put(BLOJSOM_FILTER_END_DATE, endDate);
                     } catch (NumberFormatException e) {
                     }
                 }
