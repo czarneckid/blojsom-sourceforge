@@ -79,13 +79,14 @@
     <sql-query name="entry.by.metadata.key.value">
         <return class="org.blojsom.blog.database.DatabaseEntry"/>
         SELECT e1.* FROM Entry e1, EntryMetadata e2 WHERE e1.blog_id = :blogId AND e1.entry_id = e2.entry_id AND
-            e2.metadata_key = :metadataKey AND e2.metadata_value LIKE :metadataValue ORDER BY e1.entry_date DESC
+            e2.metadata_key = :metadataKey AND e2.metadata_value LIKE :metadataValue
+            AND e1.status = 'published' ORDER BY e1.entry_date DESC
     </sql-query>
 
     <sql-query name="entry.by.metadata.key">
         <return class="org.blojsom.blog.database.DatabaseEntry"/>
         SELECT e1.* FROM Entry e1, EntryMetadata e2 WHERE e1.blog_id = :blogId AND e1.entry_id = e2.entry_id AND
-            e2.metadata_key = :metadataKey ORDER BY e1.entry_date DESC
+            e2.metadata_key = :metadataKey AND e1.status = 'published' ORDER BY e1.entry_date DESC
     </sql-query>
 
 </hibernate-mapping>
