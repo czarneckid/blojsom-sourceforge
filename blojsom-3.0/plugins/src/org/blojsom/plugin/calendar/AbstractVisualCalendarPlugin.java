@@ -30,14 +30,18 @@
  */
 package org.blojsom.plugin.calendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
-import org.blojsom.util.BlojsomConstants;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -47,9 +51,11 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.3 2006-05-05 20:19:58 czarneckid Exp $
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
+
+    private Log _logger = LogFactory.getLog(AbstractVisualCalendarPlugin.class);
 
     protected BlogCalendar _blogCalendar;
 
@@ -66,45 +72,35 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         entries = super.process(httpServletRequest, httpServletResponse, blog, context, entries);
+
         Locale locale = (Locale) context.get(BLOJSOM_CALENDAR_LOCALE);
         BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
-
         Calendar entrycalendar = Calendar.getInstance(locale);
-        if (entries != null && entries.length > 0) {
-            for (int x = 0; x < entries.length; x++) {
-                Entry entry = entries[x];
+
+        Date startDate = BlojsomUtils.getFirstDateOfYearMonth(locale, blogCalendar.getCurrentYear(), blogCalendar.getCurrentMonth());
+        Date endDate = BlojsomUtils.getLastDateOfYearMonth(locale, blogCalendar.getCurrentYear(), blogCalendar.getCurrentMonth());
+        
+        try {
+            Entry[] entriesForMonth = _fetcher.findEntriesBetweenDates(blog, startDate, endDate);
+            for (int i = 0; i < entriesForMonth.length; i++) {
+                Entry entry = entriesForMonth[i];
                 entrycalendar.setTime(entry.getDate());
                 int entrymonth = entrycalendar.get(Calendar.MONTH);
                 int entryyear = entrycalendar.get(Calendar.YEAR);
-                // If the Entry is is the same month and the same year, then flag that date as having a Entry
+
+                // If the entry is is the same month and the same year, then flag that date as having a entry
                 if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryyear == blogCalendar.getCurrentYear())) {
                     blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
                 }
             }
-
-            if (context.containsKey(BlojsomConstants.BLOJSOM_PERMALINK)) {
-                // XXX
-                /*
-                ArrayList files = new ArrayList();
-                Date today = new Date();
-                BlojsomUtils.visitFilesAndDirectories(today, user.getBlog().getBlogFileExtensions(), user.getBlog().getBlogDirectoryFilter(), new File(user.getBlog().getBlogHome()), files);
-                Calendar checkCalendar = Calendar.getInstance(locale);
-                for (int i = 0; i < files.size(); i++) {
-                    File entryOnDisk = (File) files.get(i);
-                    checkCalendar.setTimeInMillis(entryOnDisk.lastModified());
-                    int entrymonth = checkCalendar.get(Calendar.MONTH);
-                    int entryyear = checkCalendar.get(Calendar.YEAR);
-                    if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryyear == blogCalendar.getCurrentYear())) {
-                        blogCalendar.setEntryForDOM(checkCalendar.get(Calendar.DAY_OF_MONTH));
-                    }
-                }
-                */
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
             }
         }
 
         context.put(BLOJSOM_CALENDAR, blogCalendar);
-        
+
         return entries;
     }
-
 }
