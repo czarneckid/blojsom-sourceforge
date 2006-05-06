@@ -54,7 +54,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.24 2006-05-05 16:44:09 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.25 2006-05-06 02:52:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -651,7 +651,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
-            entryCriteria.add(Restrictions.between("modifiedDate", startDate, endDate));
+            entryCriteria.add(Restrictions.between("date", startDate, endDate));
             entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
             entryCriteria.addOrder(Order.desc("date"));
 
