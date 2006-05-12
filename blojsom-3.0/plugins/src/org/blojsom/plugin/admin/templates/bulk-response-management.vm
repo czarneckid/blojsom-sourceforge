@@ -32,6 +32,13 @@
                     }
                     </script>
 
+                    <form name="search-blog-responses" action="." method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="flavor" value="admin" />
+                        <input type="hidden" name="action" value="bulk-response-management" />
+                        <input type="hidden" name="plugins" value="bulk-response-management" />
+                        <h3>Search responses #if ($query) for "$query" #end <input type="text" name="query" #if ($query) value="$query"#end size="20" /> <input type="submit" name="submit" value="#adminResource('submit.text' '')" /> <br />(#adminResource('bulk.search.help.text' ''))</h3>
+                    </form>
+
                     #set ($responseCounter = 1)
                     <form name="brm" id="brm" action="." method="post" accept-charset="UTF-8">
 

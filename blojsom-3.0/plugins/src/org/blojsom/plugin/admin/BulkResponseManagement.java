@@ -37,16 +37,16 @@ import org.blojsom.event.EventBroadcaster;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
-import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
-import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
-import org.blojsom.plugin.pingback.event.PingbackMarkedSpamEvent;
-import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
-import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
-import org.blojsom.plugin.trackback.event.TrackbackMarkedSpamEvent;
 import org.blojsom.plugin.comment.event.CommentApprovedEvent;
 import org.blojsom.plugin.comment.event.CommentDeletedEvent;
 import org.blojsom.plugin.comment.event.CommentMarkedSpamEvent;
 import org.blojsom.plugin.common.ResponseConstants;
+import org.blojsom.plugin.pingback.event.PingbackApprovedEvent;
+import org.blojsom.plugin.pingback.event.PingbackDeletedEvent;
+import org.blojsom.plugin.pingback.event.PingbackMarkedSpamEvent;
+import org.blojsom.plugin.trackback.event.TrackbackApprovedEvent;
+import org.blojsom.plugin.trackback.event.TrackbackDeletedEvent;
+import org.blojsom.plugin.trackback.event.TrackbackMarkedSpamEvent;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
@@ -60,13 +60,15 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BulkResponseManagement.java,v 1.2 2006-05-04 01:09:22 czarneckid Exp $
+ * @version $Id: BulkResponseManagement.java,v 1.3 2006-05-12 15:07:59 czarneckid Exp $
  */
 public class BulkResponseManagement extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(BulkResponseManagement.class);
 
     private static final String BULK_RESPONSE_MANAGEMENT_PERMISSION = "bulk_response_management_permission";
+
+    private String [] DEFAULT_RESPONSE_STATUS_LIST = {ResponseConstants.NEW_STATUS, ResponseConstants.SPAM_STATUS};
 
     // Localization constants
     private static final String FAILED_BULK_PERMISSION_KEY = "failed.bulk.permission.text";
@@ -91,9 +93,11 @@ public class BulkResponseManagement extends BaseAdminPlugin {
     private static final String MARK_SPAM_COMMENTS = "mark_spam_comments";
     private static final String MARK_SPAM_TRACKBACKS = "mark_spam_trackbacks";
     private static final String MARK_SPAM_PINGBACKS = "mark_spam_pingbacks";
+    private static final String QUERY = "query";
 
     private Fetcher _fetcher;
     private EventBroadcaster _eventBroadcaster;
+    private String[] _responseStatusList = DEFAULT_RESPONSE_STATUS_LIST;
 
     public BulkResponseManagement() {
     }
@@ -114,6 +118,15 @@ public class BulkResponseManagement extends BaseAdminPlugin {
      */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
+    }
+
+    /**
+     * Set the response status codes to search for in bulk management
+     *
+     * @param statusList Status list
+     */
+    public void setResponseStatusList(String[] statusList) {
+        _responseStatusList = statusList;
     }
 
     /**
@@ -394,16 +407,26 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 }
             }
 
-            addOperationResultMessage(context, formatAdminResource(SUCCESFUL_BULK_PROCESSING_KEY, SUCCESFUL_BULK_PROCESSING_KEY,
+            if (commentsApproved > 0 || commentsDeleted > 0 || trackbacksApproved > 0 || trackbacksDeleted > 0
+                    || pingbacksApproved > 0 || pingbacksDeleted > 0) {
+                addOperationResultMessage(context, formatAdminResource(SUCCESFUL_BULK_PROCESSING_KEY, SUCCESFUL_BULK_PROCESSING_KEY,
                     blog.getBlogAdministrationLocale(),
                     new Object[] {new Integer(commentsApproved), new Integer(commentsDeleted),
                             new Integer(trackbacksApproved), new Integer(trackbacksDeleted),
                             new Integer(pingbacksApproved), new Integer(pingbacksDeleted)}));
+            }
         }
+
+        String query = BlojsomUtils.getRequestValue(QUERY, httpServletRequest);
 
         // Put the responses on the request
         try {
-            context.put(BULK_RESPONSES, _fetcher.loadResponses(blog, new String[] {ResponseConstants.NEW_STATUS, ResponseConstants.SPAM_STATUS}));
+            if (BlojsomUtils.checkNullOrBlank(query)) {
+                context.put(BULK_RESPONSES, _fetcher.findResponsesByStatus(blog, _responseStatusList));
+            } else {
+                context.put(BULK_RESPONSES, _fetcher.findResponsesByQuery(blog, query));
+                context.put(QUERY, BlojsomUtils.escapeString(query));
+            }
         } catch (FetcherException e) {
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
