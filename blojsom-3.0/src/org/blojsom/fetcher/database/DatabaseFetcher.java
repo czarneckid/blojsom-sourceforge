@@ -43,6 +43,7 @@ import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomMetaDataConstants;
 import org.hibernate.*;
+import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.criterion.*;
 
 import javax.servlet.ServletConfig;
@@ -54,7 +55,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.25 2006-05-06 02:52:08 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.26 2006-05-12 15:09:55 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -1802,7 +1803,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @return List of responses (comments, trackbacks, pingbacks) matching one of a set of status codes
      * @throws FetcherException If there is an error loading the responses
      */
-    public List loadResponses(Blog blog, String[] status) throws FetcherException {
+    public List findResponsesByStatus(Blog blog, String[] status) throws FetcherException {
         List responses = new ArrayList();
 
         try {
@@ -1818,6 +1819,57 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
             trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                     .add(Restrictions.in("status", status));
+
+            responses.addAll(trackbacksCriteria.list());
+
+            tx.commit();
+            session.close();
+        } catch (HibernateException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        }
+
+        Collections.sort(responses, BlojsomUtils.RESPONSE_COMPARATOR);
+        return responses;
+    }
+
+    /**
+     * Find the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching some query
+     *
+     * @param blog {@link Blog}
+     * @param query Query which will match on various items such as commenter name, e-mail, IP address, etc.
+     * @return List of responses (comments, trackbacks, pingbacks) matching query
+     * @throws FetcherException If there is an error loading the responses
+     */
+    public List findResponsesByQuery(Blog blog, String query) throws FetcherException {
+        List responses = new ArrayList();
+
+        try {
+            Session session = _sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+
+            Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
+            commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.disjunction()
+                            .add(Restrictions.ilike("author", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("authorURL", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("authorEmail", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("comment", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("ip", query, MatchMode.ANYWHERE)));
+
+            responses.addAll(commentsCriteria.list());
+
+            Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
+            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                    .add(Restrictions.disjunction()
+                            .add(Restrictions.ilike("title", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("excerpt", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("url", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("blogName", query, MatchMode.ANYWHERE))
+                            .add(Restrictions.ilike("ip", query, MatchMode.ANYWHERE)));
 
             responses.addAll(trackbacksCriteria.list());
 

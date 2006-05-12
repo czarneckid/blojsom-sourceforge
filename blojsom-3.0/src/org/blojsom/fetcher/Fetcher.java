@@ -43,7 +43,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.16 2006-05-05 16:44:09 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.17 2006-05-12 15:09:54 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -522,14 +522,24 @@ public interface Fetcher {
     public void deleteUser(Blog blog, Integer userID) throws FetcherException;
 
     /**
-     * Load the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
+     * Find the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
      *
      * @param blog {@link Blog}
-     * @param status List of status codes to load
+     * @param status List of status codes to search
      * @return List of responses (comments, trackbacks, pingbacks) matching one of a set of status codes
      * @throws FetcherException If there is an error loading the responses
      */
-    public List loadResponses(Blog blog, String[] status) throws FetcherException;
+    public List findResponsesByStatus(Blog blog, String[] status) throws FetcherException;
+
+    /**
+     * Find the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching some query
+     *
+     * @param blog {@link Blog}
+     * @param query Query which will match on various items such as commenter name, e-mail, IP address, etc.
+     * @return List of responses (comments, trackbacks, pingbacks) matching query
+     * @throws FetcherException If there is an error loading the responses
+     */
+    public List findResponsesByQuery(Blog blog, String query) throws FetcherException;
 
     /**
      * Called when {@link org.blojsom.servlet.BlojsomServlet} is taken out of service
