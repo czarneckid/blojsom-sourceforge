@@ -36,6 +36,7 @@ import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +50,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CalendarFilterPlugin.java,v 1.3 2006-05-05 17:47:23 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.4 2006-05-12 15:10:54 czarneckid Exp $
  */
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
@@ -72,7 +73,9 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
         Date startDate = (Date) context.get(BLOJSOM_FILTER_START_DATE);
         Date endDate = (Date) context.get(BLOJSOM_FILTER_END_DATE);
 
-        if (startDate != null && endDate != null) {
+        boolean isPermalinkRequest = context.containsKey(BlojsomConstants.BLOJSOM_PERMALINK);
+
+        if (startDate != null && endDate != null && !isPermalinkRequest) {
             try {
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Filtering entries betweeen: " + startDate.toString() + " and " + endDate.toString());
