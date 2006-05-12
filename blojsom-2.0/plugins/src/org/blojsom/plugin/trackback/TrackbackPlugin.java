@@ -62,7 +62,7 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
- * @version $Id: TrackbackPlugin.java,v 1.49 2006-02-27 17:03:25 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.50 2006-05-12 15:31:55 czarneckid Exp $
  */
 public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -71,7 +71,6 @@ public class TrackbackPlugin extends VelocityPlugin implements BlojsomMetaDataCo
     /**
      * Template for comment e-mails
      */
-    public static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/trackback/trackback-plugin-email-template.vm";
     public static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE_TEXT = "org/blojsom/plugin/trackback/trackback-plugin-email-template-text.vm";
     public static final String TRACKBACK_PLUGIN_EMAIL_TEMPLATE_HTML = "org/blojsom/plugin/trackback/trackback-plugin-email-template-html.vm";
 

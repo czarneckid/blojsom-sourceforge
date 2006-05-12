@@ -65,7 +65,7 @@ import java.util.*;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.46 2006-02-27 17:05:39 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.47 2006-05-12 15:31:08 czarneckid Exp $
  */
 public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataConstants, BlojsomListener, EmailConstants {
 
@@ -74,7 +74,6 @@ public class CommentPlugin extends VelocityPlugin implements BlojsomMetaDataCons
     /**
      * Template for comment e-mails
      */
-    public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE = "org/blojsom/plugin/comment/comment-plugin-email-template.vm";
     public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE_TEXT = "org/blojsom/plugin/comment/comment-plugin-email-template-text.vm";
     public static final String COMMENT_PLUGIN_EMAIL_TEMPLATE_HTML = "org/blojsom/plugin/comment/comment-plugin-email-template-html.vm";
 
