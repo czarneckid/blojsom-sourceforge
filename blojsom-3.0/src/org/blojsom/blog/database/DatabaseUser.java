@@ -34,13 +34,14 @@ import org.blojsom.blog.User;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.HashMap;
 import java.io.Serializable;
 
 /**
  * DatabaseUser
  *
  * @author David Czarnecki
- * @version $Id: DatabaseUser.java,v 1.3 2006-03-26 18:45:13 czarneckid Exp $
+ * @version $Id: DatabaseUser.java,v 1.4 2006-05-13 14:09:56 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseUser implements User, Serializable {
@@ -211,6 +212,10 @@ public class DatabaseUser implements User, Serializable {
      * @return Meta-data
      */
     public Map getMetaData() {
+        if (_metaData == null) {
+            return new HashMap();
+        }
+
         return _metaData;
     }
 

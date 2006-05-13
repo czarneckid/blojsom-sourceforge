@@ -35,13 +35,14 @@ import org.blojsom.util.BlojsomUtils;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * DatabaseCategory
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseCategory.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: DatabaseCategory.java,v 1.3 2006-05-13 14:09:56 czarneckid Exp $
  */
 public class DatabaseCategory implements Category, Serializable {
 
@@ -174,6 +175,10 @@ public class DatabaseCategory implements Category, Serializable {
      * @return The properties associated with the category as meta-data, or null if no metadata exists
      */
     public Map getMetaData() {
+        if (_metaData == null) {
+            return new HashMap();
+        }
+
         return _metaData;
     }
 
