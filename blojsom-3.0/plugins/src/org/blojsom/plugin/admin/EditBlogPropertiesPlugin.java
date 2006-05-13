@@ -34,6 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.User;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.PluginException;
@@ -55,7 +56,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.5 2006-05-04 14:24:19 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.6 2006-05-13 14:08:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -80,6 +81,7 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_JVM_LANGUAGES = "BLOJSOM_JVM_LANGUAGES";
     private static final String BLOJSOM_JVM_COUNTRIES = "BLOJSOM_JVM_COUNTRIES";
     private static final String BLOJSOM_JVM_TIMEZONES = "BLOJSOM_JVM_TIMEZONES";
+    private static final String BLOJSOM_USER_OBJECT = "BLOJSOM_USER_OBJECT";
 
     // Permissions
     private static final String EDIT_BLOG_PROPERTIES_PERMISSION = "edit_blog_properties_permission";
@@ -251,6 +253,20 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
                 addOperationResultMessage(context, getAdminResource(FAILED_SAVE_BLOG_PROPERTIES_KEY, FAILED_SAVE_BLOG_PROPERTIES_KEY, blog.getBlogAdministrationLocale()));
             }
 
+            // User-specific settings
+            try {
+                User user = _fetcher.loadUser(blog, username);
+
+                blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.USE_RICHTEXT_EDITOR, httpServletRequest);
+                user.getMetaData().put(BlojsomConstants.USE_RICHTEXT_EDITOR, blogPropertyValue);
+
+                _fetcher.saveUser(blog, user);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+            }
+
             // Request that we go back to the edit blog properties page
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_PROPERTIES_PAGE);
         } else if (SET_BLOG_PROPERTY_ACTION.equals(action)) {
@@ -318,6 +334,13 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
         context.put(BLOJSOM_JVM_LANGUAGES, BlojsomUtils.getLanguagesForSystem(blog.getBlogAdministrationLocale()));
         context.put(BLOJSOM_JVM_COUNTRIES, BlojsomUtils.getCountriesForSystem(blog.getBlogAdministrationLocale()));
         context.put(BLOJSOM_JVM_TIMEZONES, BlojsomUtils.getTimeZonesForSystem(blog.getBlogAdministrationLocale()));
+        try {
+            context.put(BLOJSOM_USER_OBJECT, _fetcher.loadUser(blog, username));
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+        }
 
         return entries;
     }
