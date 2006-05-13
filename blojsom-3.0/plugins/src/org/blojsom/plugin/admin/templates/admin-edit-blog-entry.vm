@@ -10,7 +10,7 @@
 
         #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
 
-        #set($useRichtextEditor = ("true" == $BLOJSOM_BLOG.getProperty("use-richtext-editor")))
+        #set($useRichtextEditor = ("true" == $BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor")))
         #set($isPublished = ("published" == $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getStatus()))
 
         #if ($useRichtextEditor)

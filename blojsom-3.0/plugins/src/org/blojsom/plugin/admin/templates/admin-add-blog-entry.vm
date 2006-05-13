@@ -10,7 +10,7 @@
 
         #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
 
-        #set($useRichtextEditor = ("true" == $BLOJSOM_BLOG.getProperty("use-richtext-editor")))
+        #set($useRichtextEditor = ("true" == $BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor")))
         #if ($useRichtextEditor)
         <script language="javascript" type="text/javascript" src="#BlogBaseURL()/administration/tiny_mce/tiny_mce.js"></script>
         <script language="javascript" type="text/javascript">

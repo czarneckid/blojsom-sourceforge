@@ -70,8 +70,15 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>#adminResource('use.richtext.editor.text' '')</td>
+                                <td>
+                                    #set ($selectListName = "use-richtext-editor")
+                                    #yesNoSelectList($selectListName $!BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor"))                                    
+                                </td>
+                            </tr>
+                            <tr>
                                 #set ($selectListName = "linear-navigation-enabled")
-                                <td>#adminResource('blog.linear.navigation.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getLinearNavigationEnabled())<br />#adminResource('linear.navigation.help.text' '')</td>
+                                <td>#adminResource('blog.linear.navigation.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getLinearNavigationEnabled())<br />#adminResource('linear.navigation.help.text' '')</td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -117,15 +124,15 @@
                             </tr>
                             <tr>
                                 #set ($selectListName = "blog-email-enabled")
-                                <td>#adminResource('blog.email.commentstrackbacks.text' '')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogEmailEnabled())<br />#adminResource('email.help.text' '')</td>
+                                <td>#adminResource('blog.email.commentstrackbacks.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getBlogEmailEnabled())<br />#adminResource('email.help.text' '')</td>
                             </tr>
                             <tr>
                                 #set ($selectListName = "blog-comments-enabled")
-                                <td>#adminResource('blog.comments.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogCommentsEnabled())</td>
+                                <td>#adminResource('blog.comments.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getBlogCommentsEnabled())</td>
                             </tr>
                             <tr>
                                 #set ($selectListName = "comment-moderation-enabled")
-                                <td>#adminResource('blog.comment.moderation.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getProperty("comment-moderation-enabled"))</td>
+                                <td>#adminResource('blog.comment.moderation.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $!BLOJSOM_BLOG.getProperty("comment-moderation-enabled"))</td>
                             </tr>
                             <tr>
                                 <td>#adminResource('comment.prefix.text' '')</td> <td><input name="plugin-comment-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getProperty("plugin-comment-email-prefix")"/><br />#adminResource('comment.prefix.help.text' '')</td>
@@ -141,7 +148,7 @@
                             </tr>
                             <tr>
                                 #set ($selectListName = "plugin-comment-autoformat")
-                                <td>#adminResource('comment.autoformat.text' '')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getProperty("plugin-comment-autoformat"))<br />#adminResource('autoformat.help.text' '')</td>
+                                <td>#adminResource('comment.autoformat.text' '')</td> <td>#yesNoSelectList($selectListName $!BLOJSOM_BLOG.getProperty("plugin-comment-autoformat"))<br />#adminResource('autoformat.help.text' '')</td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -158,11 +165,11 @@
                             </tr>
                             <tr>
                                 #set ($selectListName = "blog-trackbacks-enabled")
-                                <td>#adminResource('blog.trackbacks.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogTrackbacksEnabled())</td>
+                                <td>#adminResource('blog.trackbacks.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getBlogTrackbacksEnabled())</td>
                             </tr>
                             <tr>
                                 #set ($selectListName = "trackback-moderation-enabled")
-                                <td>#adminResource('blog.trackback.moderation.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $!BLOJSOM_BLOG.getProperty("trackback-moderation-enabled"))</td>
+                                <td>#adminResource('blog.trackback.moderation.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $!BLOJSOM_BLOG.getProperty("trackback-moderation-enabled"))</td>
                             </tr>
                             <tr>
                                 <td>#adminResource('trackback.prefix.text' '')</td> <td><input name="plugin-trackback-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getProperty("plugin-trackback-email-prefix")"/><br />#adminResource('trackback.prefix.help.text' '')</td>
@@ -188,7 +195,7 @@
                             </tr>
                             <tr>
                                 #set ($selectListName = "blog-pingbacks-enabled")
-                                <td>#adminResource('blog.pingbacks.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getBlogPingbacksEnabled())</td>
+                                <td>#adminResource('blog.pingbacks.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getBlogPingbacksEnabled())</td>
                             </tr>
                             <tr>
                                 <td>#adminResource('pingback.prefix.text' '')</td> <td><input name="plugin-pingback-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getProperty("plugin-pingback-email-prefix")"/><br />#adminResource('pingback.prefix.help.text' '')</td>
@@ -224,7 +231,7 @@
                             </tr>
                             <tr>
                                 #set ($selectListName = "xmlrpc-enabled")
-                                <td>#adminResource('xmlrpc.enabled.text' '')</td> <td>#trueFalseSelectList($selectListName $BLOJSOM_BLOG.getXmlrpcEnabled())</td>
+                                <td>#adminResource('xmlrpc.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getXmlrpcEnabled())</td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
