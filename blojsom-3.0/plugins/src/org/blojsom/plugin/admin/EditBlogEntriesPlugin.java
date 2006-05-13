@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.12 2006-05-03 14:45:09 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.13 2006-05-13 14:09:25 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -90,6 +90,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY";
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY = "BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY";
     private static final String BLOJSOM_PLUGIN_TOTAL_ENTRIES_PAGES = "BLOJSOM_PLUGIN_TOTAL_ENTRIES_PAGES";
+    private static final String BLOJSOM_USER_OBJECT = "BLOJSOM_USER_OBJECT";
 
     // Localization constants
     private static final String FAILED_PERMISSION_EDIT_KEY = "failed.permission.edit.text";
@@ -245,6 +246,14 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             addOperationResultMessage(context, getAdminResource(FAILED_PERMISSION_EDIT_KEY, FAILED_PERMISSION_EDIT_KEY, blog.getBlogAdministrationLocale()));
 
             return entries;
+        }
+
+        try {
+            context.put(BLOJSOM_USER_OBJECT, _fetcher.loadUser(blog, username));
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
