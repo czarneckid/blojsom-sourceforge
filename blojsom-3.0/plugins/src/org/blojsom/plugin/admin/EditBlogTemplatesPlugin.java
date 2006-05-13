@@ -47,7 +47,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.3 2006-05-12 15:53:03 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.4 2006-05-13 14:08:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -348,8 +348,6 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
 
                 return entries;
             }
-
-            blogTemplate = sanitizeFilename(blogTemplate);
 
             String templateName = BlojsomUtils.getFilenameFromPath(blogTemplate);
             String templateExtension = BlojsomUtils.getFileExtension(templateName);
