@@ -92,6 +92,16 @@
     </select>
 #end
 
+#macro(yesNoSelectList $selectListName $selectedValue)
+    <select name="$selectListName" size="2">
+        #if (!$selectedValue)
+            $selectedValue = "no"
+        #end
+        #if ($selectedValue == true || $selectedValue == "yes" || $selectedValue == "true")<option value="true" selected>Yes</option> #else <option value="true">Yes</option>#end
+        #if ($selectedValue == false || $selectedValue == "no" || $selectedValue == "false")<option value="false" selected>No</option> #else <option value="false">No</option>#end
+    </select>
+#end
+
 #macro( adminResource $resourceID $fallback )$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale())#end
         
 #macro(AdminPageTitle $resourceID $fallback)#set ($page = $!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogAdministrationLocale()))#end
