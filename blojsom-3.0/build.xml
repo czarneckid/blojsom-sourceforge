@@ -42,6 +42,7 @@
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
+    <property name="tinymce.dir" value="${war.dir}/administration/tiny_mce"/>
     <property name="default.blog" value="default"/>
     <property name="default.blog.dir" value="blogs/default"/>
     <property name="bootstrap.blog" value="bootstrap"/>
@@ -436,6 +437,18 @@
         <tstamp/>
         <zip zipfile="${distro.dir}/${name}-${version}-themes.zip">
             <fileset dir="${themes.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Create the TinyMCE bundle                                           -->
+    <!-- =================================================================== -->
+    <target name="create-tinymce-bundle" description="Create the TinyMCE bundle">
+        <tstamp/>
+        <zip zipfile="${distro.dir}/${name}-${version}-tinymce.zip">
+            <fileset dir="${tinymce.dir}.dir}">
                 <include name="**/*"/>
             </fileset>
         </zip>
