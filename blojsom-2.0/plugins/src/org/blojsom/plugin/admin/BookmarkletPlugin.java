@@ -55,7 +55,7 @@ import java.util.Map;
  * Bookmarklet Plugin
  *
  * @author David Czarnecki
- * @version $Id: BookmarkletPlugin.java,v 1.11 2006-01-04 16:52:59 czarneckid Exp $
+ * @version $Id: BookmarkletPlugin.java,v 1.12 2006-05-16 16:07:17 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class BookmarkletPlugin extends EditBlogEntriesPlugin {
@@ -159,9 +159,9 @@ public class BookmarkletPlugin extends EditBlogEntriesPlugin {
                 entry.setBlogCategory(category);
 
                 Map entryMetaData = new HashMap();
-                username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
+                username = (String) httpServletRequest.getSession().getAttribute(user.getBlog().getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY);
                 entryMetaData.put(BlojsomMetaDataConstants.BLOG_ENTRY_METADATA_AUTHOR, username);
-
+                
                 String entryPublishDateTime = httpServletRequest.getParameter(BLOG_ENTRY_PUBLISH_DATETIME);
                 if (!BlojsomUtils.checkNullOrBlank(entryPublishDateTime)) {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
