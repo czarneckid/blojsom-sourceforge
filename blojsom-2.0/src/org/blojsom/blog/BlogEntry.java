@@ -45,7 +45,7 @@ import java.io.Serializable;
  * BlogEntry
  *
  * @author David Czarnecki
- * @version $Id: BlogEntry.java,v 1.16 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: BlogEntry.java,v 1.17 2006-05-16 19:59:34 czarneckid Exp $
  */
 public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataConstants, Serializable {
 
@@ -53,6 +53,7 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
 
     protected String _title;
     protected String _link;
+    protected String _filename;    
     protected String _description;
     protected String _category;
     protected Date _entryDate;
@@ -184,6 +185,24 @@ public abstract class BlogEntry implements BlojsomConstants, BlojsomMetaDataCons
         return BlojsomUtils.escapeString(_title);
     }
 
+    /**
+     * Filename of the blog entry
+     *
+     * @return Blog filename
+     */
+    public String getFilename() {
+        return _filename;
+    }
+
+    /**
+     * Set the proposed filename of the blog entry
+     *
+     * @param filename Filename for the blog entry
+     */
+    public void setFilename(String filename) {
+        _filename = filename;
+    }
+    
     /**
      * Permalink for the blog entry
      *

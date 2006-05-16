@@ -74,7 +74,7 @@ import java.util.*;
  * EditBlogEntriesPlugin
  *
  * @author czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.58 2006-03-01 15:04:08 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.59 2006-05-16 19:59:33 czarneckid Exp $
  * @since blojsom 2.05
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -610,6 +610,17 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
             entry.setMetaData(entryMetaData);
 
+            String filename;
+            if (!BlojsomUtils.checkNullOrBlank(proposedBlogFilename)) {
+                if (proposedBlogFilename.length() > MAXIMUM_FILENAME_LENGTH) {
+                    proposedBlogFilename = proposedBlogFilename.substring(0, MAXIMUM_FILENAME_LENGTH);
+                }
+                proposedBlogFilename = BlojsomUtils.normalize(proposedBlogFilename);
+                filename = proposedBlogFilename;
+                entry.setFilename(filename);
+                _logger.debug("Using proposed blog entry filename: " + filename);
+            }
+            
             try {
                 _blojsomConfiguration.getEventBroadcaster().processEvent(new ProcessBlogEntryEvent(this, new Date(), entry, user, httpServletRequest, httpServletResponse, context));
 

@@ -43,7 +43,7 @@ import java.util.*;
  * FileBackedBlogEntry
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogEntry.java,v 1.34 2006-02-20 17:04:46 czarneckid Exp $
+ * @version $Id: FileBackedBlogEntry.java,v 1.35 2006-05-16 19:59:34 czarneckid Exp $
  * @since blojsom 1.8
  */
 public class FileBackedBlogEntry extends BlogEntry {
@@ -553,7 +553,13 @@ public class FileBackedBlogEntry extends BlogEntry {
         if (_source == null) {
             String category = BlojsomUtils.normalize(_category);
             category = BlojsomUtils.addSlashes(category);
-            String proposedFilename = BlojsomUtils.getBlogEntryFilename(_title, _description);
+            String proposedFilename;
+            if (_filename != null) {
+                proposedFilename = BlojsomUtils.getBlogEntryFilename(_filename, _description);
+            } else {
+                proposedFilename = BlojsomUtils.getBlogEntryFilename(_title, _description);                
+            }
+            
             String fileExtension = blog.getBlogProperty(BLOG_DEFAULT_FILE_EXTENSION_IP);
             if (BlojsomUtils.checkNullOrBlank(fileExtension)) {
                 fileExtension = DEFAULT_ENTRY_EXTENSION;
