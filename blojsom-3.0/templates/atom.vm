@@ -23,7 +23,7 @@
         <updated>$entry.getUTCDate()</updated>
         <published>$entry.getISO8601Date()</published>
         <author>
-            <name>$entry.getAuthor()</name>
+            <name>#if ($entry.getAuthor())$entry.getAuthor()#else#BlogOwner()#end</name>
             <uri>#BlogURL()</uri>
         </author>
         <content type="html" xml:lang="#BlogLanguage()" xml:base="#BlogURL()">
