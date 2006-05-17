@@ -1,58 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="#BlogBaseURL()/atom.css" type="text/css"?>
+<?xml version="1.0" encoding="utf-8"?>
 
-<feed version="0.3"
-    xmlns="http://purl.org/atom/ns#"
-    xml:lang="#BlogLanguage()">
-
-    <!-- required feed elements -->
-    <title mode="escaped">#EscapedBlogName()</title>
-    <link rel="alternate" type="text/html" href="#BlogURL()/"/>
-
-    <link href="#BlogBaseURL()/atomapi/$BLOJSOM_BLOG_ID/" rel="service.post" title="#EscapedBlogName()" type="application/x.atom+xml"/>
-
-    <modified>$BLOJSOM_DATE_UTC</modified>
-
-    <!-- optional feed elements -->
-    <info type="application/xhtml+xml" mode="xml">
-        <div xmlns="http://www.w3.org/1999/xhtml">
-        This is an Atom syndication feed. It is intended to be viewed in a news aggregator or syndicated to
-        another site.  Please visit the <a href="http://intertwingly.net/wiki/pie/">Atom Project</a> for
-        more information.
-        </div>
-    </info>
-
-    <!-- in a single-author feed (like an individual weblog), put author at the feed level;
-    in a multi-author feed (like a group weblog or a comments feed), put author at the entry level -->
-    <author>
-        <!-- required author elements -->
-        <name>#BlogOwner()</name>
-        <!-- optional author elements -->
-        <url>#BlogURL()/</url>
-        <email>#BlogOwnerEmail()</email>
-    </author>
-
-    <!-- optional feed elements -->
-    <tagline>#EscapedBlogDescription()</tagline>
-    <generator url="http://blojsom.sf.net" version="$BLOJSOM_VERSION">blojsom</generator>
-    <copyright mode="escaped">Copyright &#169; 2004 #BlogOwner()</copyright>
-
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html">#EscapedBlogName()</title>
+    <subtitle type="html">
+       #EscapedBlogDescription()
+    </subtitle>
+    <updated>$BLOJSOM_DATE_UTC</updated>
+    <id>#BlogURL()</id>
+    <link rel="alternate" type="text/html" hreflang="#BlogLanguage()" href="#BlogURL()"/>
+    <link rel="self" type="application/atom+xml" href="#BlogURL()?flavor=atom"/>
+    <icon>#BlogBaseURL()favicon.ico</icon>
+    <rights>Copyright (c) #EscapedBlogName()</rights>
+    <generator uri="http://blojsom.sf.net" version="$BLOJSOM_VERSION">
+       $BLOJSOM_VERSION
+    </generator>
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
         #FriendlyPermalink($entry)
-        <!-- required entry elements -->
-        <title>$entry.getEscapedTitle()</title>
+        <title>$entry.getTitle()</title>
         <link rel="alternate" type="text/html" href="$entryLink"/>
-        #XMLRPCLink($entry 'atomapi')
-        <link href="$xmlrpcLink" rel="service.edit" title="Edit $entry.getEscapedTitle()" type="application/x.atom+xml"/>
-
-        <modified>$entry.getISO8601Date()</modified>
-        <issued>$entry.getISO8601Date()</issued>
-        <id>tag:#BlogOwnerEmail(),$entry.getDateAsFormat("yyyy-MM-dd"):$entry.getId()</id>
-
-        <!-- optional entry elements -->
-        <created>$entry.getISO8601Date()</created>
-        <content type="text/html" mode="escaped" xml:lang="#BlogLanguage()" xml:base="#BlogBaseURL()/">
+        <id>$entryLink</id>
+        <updated>$entry.getUTCDate()</updated>
+        <published>$entry.getISO8601Date()</published>
+        <author>
+            <name>$entry.getAuthor()</name>
+            <uri>#BlogURL()</uri>
+        </author>
+        <content type="html" xml:lang="#BlogLanguage()" xml:base="#BlogURL()">
             $entry.getEscapedDescription()
         </content>
     </entry>
