@@ -10,8 +10,9 @@ IP Address: IP Address: $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getIp()
 
 ==[ Comment Administration ]===================================================
 
-     Approve comment: <a href="#BlogAdminURL()?flavor=admin&amp;action=approve-blog-comments&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getBlogEntry().getId()&amp;blog-comment-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getId()">Approve comment</a>
-      Delete comment: <a href="#BlogAdminURL()?flavor=admin&amp;action=delete-blog-comments&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getBlogEntry().getId()&amp;blog-comment-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getId()">Delete comment</a>
+     Approve comment: <a href="#BlogAdminURL()/?flavor=admin&action=approve-blog-comments&plugins=edit-blog-entries&blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getEntry().getId()&blog-comment-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getId()">Approve comment</a>
+      Delete comment: <a href="#BlogAdminURL()/?flavor=admin&action=delete-blog-comments&plugins=edit-blog-entries&blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getEntry().getId()&blog-comment-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getId()">Delete comment</a>
+          Edit entry: <a href="#BlogAdminURL()/?flavor=admin&action=edit-blog-entry&plugins=edit-blog-entries&blog-category-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getEntry().getBlogCategory().getId()&blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getEntry().getId()">Edit entry</a>
 
 ==[ Comment ]==================================================================
 

@@ -11,9 +11,9 @@ Pingback on: <a href="$entryLink">$!BLOJSOM_PINGBACK_PLUGIN_BLOG_ENTRY.getTitle(
 
 ==[ Pingback Administration ]===================================================
 
-Administration login: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin">Login</a>
-   Approve pingback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&amp;action=approve-blog-pingbacks&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()&amp;blog-pingback-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getId()">Approve pingback</a>
-    Delete pingback: <a href="$BLOJSOM_BLOG.getBlogAdminURL()?flavor=admin&amp;action=delete-blog-pingbacks&amp;plugins=edit-blog-entries&amp;blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()&amp;blog-pingback-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getId()">Delete pingback</a>
+   Approve pingback: <a href="#BlogAdminURL()/?flavor=admin&action=approve-blog-pingbacks&plugins=edit-blog-entries&blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()&blog-pingback-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getId()">Approve pingback</a>
+    Delete pingback: <a href="#BlogAdminURL()/?flavor=admin&action=delete-blog-pingbacks&plugins=edit-blog-entries&blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()&blog-pingback-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getId()">Delete pingback</a>
+         Edit entry: <a href="#BlogAdminURL()/?flavor=admin&action=edit-blog-entry&plugins=edit-blog-entries&blog-category-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getBlogCategory().getId()&blog-entry-id=$BLOJSOM_PINGBACK_PLUGIN_PINGBACK.getEntry().getId()">Edit entry</a>
 
 ==[ Pingback ]==================================================================
 
