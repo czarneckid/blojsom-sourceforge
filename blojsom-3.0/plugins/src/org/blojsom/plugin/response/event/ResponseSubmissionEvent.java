@@ -44,7 +44,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: ResponseSubmissionEvent.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: ResponseSubmissionEvent.java,v 1.2 2006-05-28 20:55:05 czarneckid Exp $
  */
 public class ResponseSubmissionEvent extends Event {
 
@@ -130,6 +130,15 @@ public class ResponseSubmissionEvent extends Event {
      */
     public Map getMetaData() {
         return _metaData;
+    }
+
+    /**
+     * Set the meta-data associated with the submission
+     *
+     * @param metaData Meta-data for the submission
+     */
+    public void setMetaData(Map metaData) {
+        _metaData = metaData;
     }
 
     /**
