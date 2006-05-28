@@ -46,7 +46,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseComment.java,v 1.4 2006-04-27 01:53:05 czarneckid Exp $
+ * @version $Id: DatabaseComment.java,v 1.5 2006-05-28 20:54:41 czarneckid Exp $
  */
 public class DatabaseComment implements Comment, Serializable {
 
@@ -255,7 +255,7 @@ public class DatabaseComment implements Comment, Serializable {
     }
 
     /**
-     * Get the trackback meta-data
+     * Get the comment meta-data
      *
      * @return Meta-data as a {@link Map}
      */
@@ -277,7 +277,7 @@ public class DatabaseComment implements Comment, Serializable {
     }
 
     /**
-     * Set the trackback meta-data
+     * Set the comment meta-data
      *
      * @param metaData {@link Map} containing meta-data for this comment
      */

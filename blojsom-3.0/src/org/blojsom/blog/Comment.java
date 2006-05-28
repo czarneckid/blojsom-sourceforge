@@ -39,7 +39,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Comment.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
+ * @version $Id: Comment.java,v 1.4 2006-05-28 20:54:40 czarneckid Exp $
  */
 public interface Comment extends Response {
 
@@ -171,7 +171,7 @@ public interface Comment extends Response {
     String getRFC822Date();
 
     /**
-     * Get the trackback meta-data
+     * Get the comment meta-data
      *
      * @return Meta-data as a {@link Map}
      */
@@ -185,7 +185,7 @@ public interface Comment extends Response {
     void setCommentDate(Date commentDate);
 
     /**
-     * Set the trackback meta-data
+     * Set the comment meta-data
      *
      * @param metaData {@link Map} containing meta-data for this comment
      */
