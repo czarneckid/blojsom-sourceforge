@@ -49,7 +49,7 @@ import java.util.Properties;
  * StandalongVelocityPlugin
  *
  * @author David Czarnecki
- * @version $Id: StandaloneVelocityPlugin.java,v 1.2 2006-03-20 22:51:10 czarneckid Exp $
+ * @version $Id: StandaloneVelocityPlugin.java,v 1.3 2006-05-28 18:30:39 czarneckid Exp $
  * @since blojsom 3.0
  */
 public abstract class StandaloneVelocityPlugin implements Plugin {
@@ -105,7 +105,8 @@ public abstract class StandaloneVelocityPlugin implements Plugin {
 
         try {
             Properties updatedVelocityProperties = (Properties) _velocityProperties.clone();
-            updatedVelocityProperties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, servletContext.getRealPath("/WEB-INF/" + blog.getBlogId() + "/templates/") + ", " + servletContext.getRealPath("/WEB-INF/templates/"));
+            updatedVelocityProperties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, servletContext.getRealPath("/WEB-INF/"
+                    + "blogs/" + blog.getBlogId() + "/templates/") + ", " + servletContext.getRealPath("/WEB-INF/templates/"));
             velocityEngine.init(updatedVelocityProperties);
         } catch (Exception e) {
             if (_logger.isErrorEnabled()) {
