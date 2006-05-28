@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.3 2006-03-25 07:10:30 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.4 2006-05-28 18:18:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
@@ -249,7 +249,6 @@ public class PingbackHandler extends APIHandler {
                 pingback.setBlogId(_blog.getBlogId());
                 pingback.setEntry(entry);
                 pingback.setIp(_httpServletRequest.getRemoteAddr());
-                pingback.setStatus(ResponseConstants.NEW_STATUS);
                 pingback.setSourceURI(sourceURI);
                 pingback.setTargetURI(targetURI);
 
@@ -259,6 +258,14 @@ public class PingbackHandler extends APIHandler {
 
                 // Check to see if the trackback should be destroyed (not saved) automatically
                 if (!pingbackMetaData.containsKey(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY)) {
+
+                    pingback.setMetaData(pingbackMetaData);
+                    if (pingbackMetaData.containsKey(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED)
+                            && "true".equals(pingbackMetaData.get(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED))) {
+                        pingback.setStatus(ResponseConstants.APPROVED_STATUS);
+                    } else {
+                        pingback.setStatus(ResponseConstants.NEW_STATUS);
+                    }
 
                     Integer status = addPingback(entry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI), sourceURI, getTitleFromSource(sourcePage.toString()), pingbackMetaData, pingback);
 
