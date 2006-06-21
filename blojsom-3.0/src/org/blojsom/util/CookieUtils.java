@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * CookieUtils
  *
  * @author David Czarnecki
- * @version $Id: CookieUtils.java,v 1.2 2006-03-21 03:11:08 czarneckid Exp $
+ * @version $Id: CookieUtils.java,v 1.3 2006-06-21 14:24:10 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CookieUtils {
@@ -71,6 +71,7 @@ public class CookieUtils {
      * Add a cookie with a key and value to the response
      *
      * @param httpServletResponse Response
+     * @param cookieExpiration    Cookie expiration (in seconds)
      * @param cookieKey           Cookie key
      * @param cookieValue         Cookie value
      */
