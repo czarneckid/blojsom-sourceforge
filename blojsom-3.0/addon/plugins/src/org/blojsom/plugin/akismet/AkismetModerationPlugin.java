@@ -65,7 +65,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.6 2006-05-26 21:56:56 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.7 2006-06-21 20:42:24 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
@@ -184,10 +184,18 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                         .append(responseSubmissionEvent.getEntry().getCategory())
                         .append(responseSubmissionEvent.getEntry().getPostSlug());
 
-                boolean isSpam = akismet.commentCheck(httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), httpServletRequest.getHeader("Referer"), entryLink.toString(), responseType, responseSubmissionEvent.getSubmitter(), responseSubmissionEvent.getSubmitterItem1(), responseSubmissionEvent.getSubmitterItem2(), responseSubmissionEvent.getContent(), null);
+                boolean isSpam = akismet.commentCheck(httpServletRequest.getRemoteAddr(),
+                        httpServletRequest.getHeader("User-Agent"),
+                        httpServletRequest.getHeader("Referer"),
+                        entryLink.toString(),
+                        responseType,
+                        responseSubmissionEvent.getSubmitter(),
+                        responseSubmissionEvent.getSubmitterItem1(),
+                        responseSubmissionEvent.getSubmitterItem2(),
+                        responseSubmissionEvent.getContent(), null);
 
-                metaData.put(AKISMET_PLUGIN_RESPONSE, Boolean.valueOf(isSpam).toString());
-
+                metaData.put(AKISMET_PLUGIN_RESPONSE, Boolean.toString(isSpam));
+                
                 // If Akismet identifies the content as spam, process for moderation or deletion accordingly
                 if (isSpam) {
                     boolean deleteSpam = DELETE_SPAM_DEFAULT;
@@ -230,26 +238,22 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                     boolean automaticApproval = Boolean.valueOf(blog.getProperty(AKISMET_PLUGIN_AUTOMATIC_APPROVAL_IP)).booleanValue();
                     if (automaticApproval) {
                         if (responseSubmissionEvent instanceof CommentResponseSubmissionEvent) {
-                            if (!metaData.containsKey(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED)
-                                    && !"false".equals(metaData.get(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED))
-                                    && !metaData.containsKey(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY)) {
+                            if (!metaData.containsKey(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY)) {
                                 metaData.put(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.TRUE.toString());
                             }
                         } else if (responseSubmissionEvent instanceof TrackbackResponseSubmissionEvent) {
-                            if (!metaData.containsKey(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED)
-                                    && !"false".equals(metaData.get(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED))
-                                    && !metaData.containsKey(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY)) {
+                            if (!metaData.containsKey(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY)) {
                                 metaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.TRUE.toString());
                             }
                         } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
-                            if (!metaData.containsKey(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED)
-                                    && !"false".equals(metaData.get(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED))
-                                    && !metaData.containsKey(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY)) {
+                            if (!metaData.containsKey(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY)) {
                                 metaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED, Boolean.TRUE.toString());
                             }
                         }
                     }
                 }
+
+                responseSubmissionEvent.setMetaData(metaData);
             }
         } else if (event instanceof CommentMarkedSpamEvent) {
             CommentMarkedSpamEvent commentMarkedSpamEvent = (CommentMarkedSpamEvent) event;
