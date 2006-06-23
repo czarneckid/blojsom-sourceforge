@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.5 2006-05-28 18:18:18 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.6 2006-06-23 18:50:33 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -492,7 +492,11 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
                     && "true".equals(trackbackMetaData.get(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED))) {
                 trackback.setStatus(ResponseConstants.APPROVED_STATUS);
             } else {
-                trackback.setStatus(ResponseConstants.NEW_STATUS);                
+                if ("true".equals(blog.getProperty(TrackbackModerationPlugin.TRACKBACK_MODERATION_ENABLED))) {
+                    trackback.setStatus(ResponseConstants.NEW_STATUS);
+                } else {
+                    trackback.setStatus(ResponseConstants.APPROVED_STATUS);
+                }
             }
 
             _fetcher.saveTrackback(blog, trackback);
