@@ -198,6 +198,10 @@
                                 <td>#adminResource('blog.pingbacks.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getBlogPingbacksEnabled())</td>
                             </tr>
                             <tr>
+                                #set ($selectListName = "pingback-moderation-enabled")
+                                <td>#adminResource('blog.pingback.moderation.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $!BLOJSOM_BLOG.getProperty("pingback-moderation-enabled"))</td>
+                            </tr>
+                            <tr>
                                 <td>#adminResource('pingback.prefix.text' '')</td> <td><input name="plugin-pingback-email-prefix" type="text" size="50" value="$!BLOJSOM_BLOG.getProperty("plugin-pingback-email-prefix")"/><br />#adminResource('pingback.prefix.help.text' '')</td>
                             </tr>
                             <tr>

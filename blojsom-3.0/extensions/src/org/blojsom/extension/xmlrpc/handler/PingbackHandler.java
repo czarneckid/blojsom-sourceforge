@@ -40,6 +40,7 @@ import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.pingback.event.PingbackAddedEvent;
 import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
+import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
@@ -59,7 +60,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.4 2006-05-28 18:18:17 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.5 2006-06-23 18:45:49 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
@@ -264,7 +265,11 @@ public class PingbackHandler extends APIHandler {
                             && "true".equals(pingbackMetaData.get(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED))) {
                         pingback.setStatus(ResponseConstants.APPROVED_STATUS);
                     } else {
-                        pingback.setStatus(ResponseConstants.NEW_STATUS);
+                        if ("true".equals(_blog.getProperty(PingbackPlugin.PINGBACK_MODERATION_ENABLED))) {
+                            pingback.setStatus(ResponseConstants.NEW_STATUS);
+                        } else {
+                            pingback.setStatus(ResponseConstants.APPROVED_STATUS);
+                        }
                     }
 
                     Integer status = addPingback(entry.getTitle(), getExcerptFromSource(sourcePage.toString(), targetURI), sourceURI, getTitleFromSource(sourcePage.toString()), pingbackMetaData, pingback);
