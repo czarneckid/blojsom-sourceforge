@@ -49,7 +49,7 @@ import java.util.ArrayList;
  * FileBackedBlogCategory
  *
  * @author David Czarnecki
- * @version $Id: FileBackedBlogCategory.java,v 1.11 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: FileBackedBlogCategory.java,v 1.12 2006-07-05 16:47:51 czarneckid Exp $
  */
 public class FileBackedBlogCategory extends BlogCategory {
 
@@ -195,7 +195,7 @@ public class FileBackedBlogCategory extends BlogCategory {
         _blogUser = blogUser;
         Blog blog = blogUser.getBlog();
         File blogCategory = new File(blog.getBlogHome() + BlojsomUtils.removeInitialSlash(_category));
-        if (blogCategory.equals(blog.getBlogHome())) {
+        if (blogCategory.equals(new File(blog.getBlogHome()))) {
             if (!BlojsomUtils.deleteDirectory(blogCategory, false)) {
                 throw new BlojsomException("Unable to delete blog category directory: " + _category);
             }
