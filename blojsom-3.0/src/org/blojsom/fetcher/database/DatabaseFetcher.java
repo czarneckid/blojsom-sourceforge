@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.27 2006-05-17 01:30:44 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.28 2006-07-07 01:37:02 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -338,7 +338,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Criteria permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
             permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                     .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
-                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS))
+                    .add(Restrictions.lt("date", new Date()));
 
             List permalinkEntryList = permalinkCriteria.list();
 

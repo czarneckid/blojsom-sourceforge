@@ -50,8 +50,8 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.4 2006-07-07 01:37:01 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.3 2006-05-05 20:19:58 czarneckid Exp $
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {
 
@@ -79,23 +79,30 @@ public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugi
 
         Date startDate = BlojsomUtils.getFirstDateOfYearMonth(locale, blogCalendar.getCurrentYear(), blogCalendar.getCurrentMonth());
         Date endDate = BlojsomUtils.getLastDateOfYearMonth(locale, blogCalendar.getCurrentYear(), blogCalendar.getCurrentMonth());
-        
-        try {
-            Entry[] entriesForMonth = _fetcher.findEntriesBetweenDates(blog, startDate, endDate);
-            for (int i = 0; i < entriesForMonth.length; i++) {
-                Entry entry = entriesForMonth[i];
-                entrycalendar.setTime(entry.getDate());
-                int entrymonth = entrycalendar.get(Calendar.MONTH);
-                int entryyear = entrycalendar.get(Calendar.YEAR);
+        Date now = new Date();
 
-                // If the entry is is the same month and the same year, then flag that date as having a entry
-                if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryyear == blogCalendar.getCurrentYear())) {
-                    blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
-                }
+        if (startDate.before(now)) {
+            if (endDate.after(now)) {
+                endDate = now;
             }
-        } catch (FetcherException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
+            
+            try {
+                Entry[] entriesForMonth = _fetcher.findEntriesBetweenDates(blog, startDate, endDate);
+                for (int i = 0; i < entriesForMonth.length; i++) {
+                    Entry entry = entriesForMonth[i];
+                    entrycalendar.setTime(entry.getDate());
+                    int entrymonth = entrycalendar.get(Calendar.MONTH);
+                    int entryyear = entrycalendar.get(Calendar.YEAR);
+
+                    // If the entry is is the same month and the same year, then flag that date as having a entry
+                    if ((entrymonth == blogCalendar.getCurrentMonth()) && (entryyear == blogCalendar.getCurrentYear())) {
+                        blogCalendar.setEntryForDOM(entrycalendar.get(Calendar.DAY_OF_MONTH));
+                    }
+                }
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
             }
         }
 

@@ -50,7 +50,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CalendarFilterPlugin.java,v 1.4 2006-05-12 15:10:54 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.5 2006-07-07 01:37:01 czarneckid Exp $
  */
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
@@ -72,19 +72,26 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
         Date startDate = (Date) context.get(BLOJSOM_FILTER_START_DATE);
         Date endDate = (Date) context.get(BLOJSOM_FILTER_END_DATE);
+        Date now = new Date();
 
         boolean isPermalinkRequest = context.containsKey(BlojsomConstants.BLOJSOM_PERMALINK);
 
         if (startDate != null && endDate != null && !isPermalinkRequest) {
-            try {
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Filtering entries betweeen: " + startDate.toString() + " and " + endDate.toString());
+            if (startDate.before(now)) {
+                if (endDate.after(now)) {
+                    endDate = now;
                 }
-                
-                entries = _fetcher.findEntriesBetweenDates(blog, startDate, endDate);
-            } catch (FetcherException e) {
-                if (_logger.isErrorEnabled()) {
-                    _logger.error(e);
+
+                try {
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Filtering entries betweeen: " + startDate.toString() + " and " + endDate.toString());
+                    }
+
+                    entries = _fetcher.findEntriesBetweenDates(blog, startDate, endDate);
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }
