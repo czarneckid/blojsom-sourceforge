@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * Edit Blog Permissions plugin handles the adding and deleting of permissions for users of a given blog.
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPermissionsPlugin.java,v 1.5 2006-04-18 21:24:18 czarneckid Exp $
+ * @version $Id: EditBlogPermissionsPlugin.java,v 1.6 2006-07-12 16:32:43 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
@@ -64,7 +64,6 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
 
     // Constants
     private static final String BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP = "BLOJSOM_PLUGIN_EDIT_BLOG_PERMISSIONS_USER_MAP";
-    private static final String PERMISSION_SUFFIX = "_permission";
 
     // Localization constants
     private static final String FAILED_PERMISSIONS_READ_KEY = "failed.read.permissions.text";
@@ -115,7 +114,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
 
         while (keyIterator.hasNext()) {
             String property = (String) keyIterator.next();
-            if (property.endsWith(PERMISSION_SUFFIX)) {
+            if (property.endsWith(BlojsomConstants.PERMISSION_SUFFIX)) {
                 permissions.put(property, user.getMetaData().get(property));
             }
         }
@@ -180,7 +179,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
                 String permissionToAdd = BlojsomUtils.getRequestValue(BLOG_PERMISSION, httpServletRequest);
-                if (!BlojsomUtils.checkNullOrBlank(permissionToAdd) && (permissionToAdd.endsWith(PERMISSION_SUFFIX))) {
+                if (!BlojsomUtils.checkNullOrBlank(permissionToAdd) && (permissionToAdd.endsWith(BlojsomConstants.PERMISSION_SUFFIX))) {
                     User user;
                     try {
                         user = _fetcher.loadUser(blog, blogUserID);
@@ -204,7 +203,13 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
                         return entries;
                     }
 
-                    user.getMetaData().put(permissionToAdd, Boolean.TRUE.toString());
+                    String[] permissions = BlojsomUtils.parseOnlyCommaList(permissionToAdd, true);
+                    for (int i = 0; i < permissions.length; i++) {
+                        String permission = permissions[i];
+                        if (permission.endsWith(BlojsomConstants.PERMISSION_SUFFIX)) {
+                            user.getMetaData().put(permission, Boolean.TRUE.toString());
+                        }
+                    }
 
                     try {
                         _fetcher.saveUser(blog, user);
@@ -228,7 +233,7 @@ public class EditBlogPermissionsPlugin extends BaseAdminPlugin {
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
                 String permissionToDelete = BlojsomUtils.getRequestValue(BLOG_PERMISSION, httpServletRequest);
-                if (!BlojsomUtils.checkNullOrBlank(permissionToDelete) && (permissionToDelete.endsWith(PERMISSION_SUFFIX))) {
+                if (!BlojsomUtils.checkNullOrBlank(permissionToDelete) && (permissionToDelete.endsWith(BlojsomConstants.PERMISSION_SUFFIX))) {
                     User user;
                     try {
                         user = _fetcher.loadUser(blog, blogUserID);
