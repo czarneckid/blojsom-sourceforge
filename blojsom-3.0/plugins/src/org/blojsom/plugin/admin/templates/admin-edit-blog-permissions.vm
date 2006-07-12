@@ -45,8 +45,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>#adminResource('permission.to.add.text' 'Permission to add')</td>
-                                <td><input type="text" size="25" name="blog-permission"/></td>
+                                <td>#adminResource('blog.permissions.text' '')</td>
+                                <td><input type="text" size="50" name="blog-permission"/></td>
                             </tr>
                             <tr />
                             <tr>
