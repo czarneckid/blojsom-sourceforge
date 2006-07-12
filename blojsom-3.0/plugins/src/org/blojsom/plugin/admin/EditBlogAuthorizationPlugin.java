@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.6 2006-04-23 14:52:43 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.7 2006-07-12 16:33:14 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -261,7 +261,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                         Map userMetaData = new HashMap();
                         for (int i = 0; i < permissions.length; i++) {
                             String permission = permissions[i];
-                            if (permission.endsWith("_permission") && checkPermission(blog, null, username, ADD_BLOG_AUTHORIZATION_PERMISSIONS_PERMISSION))
+                            if (permission.endsWith(BlojsomConstants.PERMISSION_SUFFIX) && checkPermission(blog, null, username, ADD_BLOG_AUTHORIZATION_PERMISSIONS_PERMISSION))
                             {
                                 userMetaData.put(permission, Boolean.TRUE.toString());
                             }

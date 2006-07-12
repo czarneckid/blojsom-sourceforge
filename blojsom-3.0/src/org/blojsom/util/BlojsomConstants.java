@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.12 2006-05-12 17:46:37 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.13 2006-07-12 16:33:14 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -294,6 +294,8 @@ public interface BlojsomConstants {
     public static final String BLOJSOM_AJAX_STATUS = "BLOJSOM_AJAX_STATUS";
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
+
+    public static final String PERMISSION_SUFFIX = "_permission";
 
     /**
      * Various HTTP caching headers
