@@ -33,6 +33,7 @@ package org.blojsom.authorization.database;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.ConfigurationException;
+import org.blojsom.util.BlojsomUtils;
 import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.Blog;
@@ -46,7 +47,7 @@ import java.util.Map;
  * Database authorization provider
  *
  * @author David Czarnecki
- * @version $Id: DatabaseAuthorizationProvider.java,v 1.4 2006-03-22 21:46:48 czarneckid Exp $
+ * @version $Id: DatabaseAuthorizationProvider.java,v 1.5 2006-07-14 01:43:01 czarneckid Exp $
  * @since blojsom. 3.0
  */
 public class DatabaseAuthorizationProvider implements AuthorizationProvider {
@@ -117,6 +118,10 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
 
             tx.commit();
             session.close();
+
+            if (blog.getUseEncryptedPasswords().booleanValue()) {
+                password = BlojsomUtils.digestString(password, blog.getDigestAlgorithm());
+            }
 
             if (!password.equals(user.getUserPassword())) {
                 throw new AuthorizationException("Password authorization failure");
