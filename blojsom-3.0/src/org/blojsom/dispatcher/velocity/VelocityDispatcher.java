@@ -61,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: VelocityDispatcher.java,v 1.4 2006-03-23 14:28:27 czarneckid Exp $
+ * @version $Id: VelocityDispatcher.java,v 1.5 2006-07-22 03:59:27 czarneckid Exp $
  */
 public class VelocityDispatcher implements Dispatcher {
 
@@ -133,7 +133,7 @@ public class VelocityDispatcher implements Dispatcher {
             context.put(key, value);
         }
 
-        HttpSession httpSession = httpServletRequest.getSession();
+        HttpSession httpSession = httpServletRequest.getSession(false);
         if (httpSession != null) {
             iterator = new EnumerationIterator(httpSession.getAttributeNames());
             while (iterator.hasNext()) {
