@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.7 2006-06-21 17:37:11 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.8 2006-07-26 01:26:51 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -166,9 +166,25 @@ public class BlojsomServlet extends HttpServlet {
                 _logger.error(e);
             }
 
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID: " + blogId);
+            // Try and use the default blog ID if a blog ID is specified and unable to load the blog
+            String defaultBlogId = blojsomDefaultProperties.getProperty(BlojsomConstants.DEFAULT_BLOG_IP);
+            if (BlojsomUtils.checkNullOrBlank(defaultBlogId)) {
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID: " + blogId);
 
-            return;
+                return;
+            } else {
+                try {
+                    blog = fetcher.loadBlog(defaultBlogId);
+                } catch (FetcherException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+
+                    httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID: " + defaultBlogId);
+
+                    return;
+                }
+            }
         }
 
         if (blog.getProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS) != null) {
