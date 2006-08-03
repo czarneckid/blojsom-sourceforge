@@ -6,6 +6,14 @@
 
     <description>Plugin definition file for blojsom</description>
 
+    <bean id="citats" class="org.blojsom.plugin.citats.CitatsRenderingPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+    </bean>
     <!-- Add-on plugin -->
     <!--
     <bean id="akismet-moderation" class="org.blojsom.plugin.akismet.AkismetModerationPlugin" init-method="init" destroy-method="destroy">
@@ -17,8 +25,14 @@
 
     <bean id="basic-authentication" class="org.blojsom.plugin.security.BasicAuthenticationPlugin" init-method="init"
           destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
         <property name="authorizationProvider">
             <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
         </property>
     </bean>
     <bean id="calendar-filter" class="org.blojsom.plugin.calendar.CalendarFilterPlugin" init-method="init"
