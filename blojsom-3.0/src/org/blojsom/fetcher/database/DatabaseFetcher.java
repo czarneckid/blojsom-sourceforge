@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.28 2006-07-07 01:37:02 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.29 2006-08-16 23:20:56 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -420,6 +420,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.addOrder(Order.desc("date"));
                 entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
                 entryCriteria.setFirstResult(page);
+                entryCriteria.setCacheable(true);
 
                 List entryList = entryCriteria.list();
 
@@ -438,6 +439,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.addOrder(Order.desc("date"));
                 entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
                 entryCriteria.setFirstResult(page);
+                entryCriteria.setCacheable(true);
 
                 List entryList = entryCriteria.list();
 
@@ -466,6 +468,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
             entryCriteria.add(Restrictions.eq("blogCategoryId", categoryId));
             entryCriteria.addOrder(Order.desc("date"));
+            entryCriteria.setCacheable(true);
 
             List entryList = entryCriteria.list();
 
@@ -501,6 +504,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             entryCriteria.add(Restrictions.eq("blogCategoryId", categoryId));
             entryCriteria.addOrder(Order.desc("date"));
             entryCriteria.setMaxResults(limit.intValue());
+            entryCriteria.setCacheable(true);
 
             List entryList = entryCriteria.list();
 
@@ -546,6 +550,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         entryCriteria.addOrder(Order.desc("date"));
         entryCriteria.setMaxResults(pageSize);
         entryCriteria.setFirstResult(page);
+        entryCriteria.setCacheable(true);
 
         List entryList = entryCriteria.list();
 
@@ -573,6 +578,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
                 .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
         entryCriteria.addOrder(Order.desc("date"));
+        entryCriteria.setCacheable(true);
 
         List entryList = entryCriteria.list();
 
@@ -606,7 +612,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             valueSearch = valueSearch + "%";
         }
 
-        List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value")
+        List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value").setCacheable(true)
                 .setString("blogId", blog.getBlogId())
                 .setString("metadataKey", metadataKey)
                 .setString("metadataValue", valueSearch).list();
@@ -629,7 +635,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         Session session = _sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
-        List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key")
+        List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key").setCacheable(true)
                 .setString("blogId", blog.getBlogId())
                 .setString("metadataKey", metadataKey).list();
 
@@ -658,6 +664,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             entryCriteria.add(Restrictions.between("date", startDate, endDate));
             entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
             entryCriteria.addOrder(Order.desc("date"));
+            entryCriteria.setCacheable(true);
 
             List entryList = entryCriteria.list();
 
@@ -689,6 +696,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         entryCriteria.setProjection(Projections.rowCount());
         entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
         entryCriteria.add(Restrictions.lt("date", new Date()));
+        entryCriteria.setCacheable(true);
 
         List entryList = entryCriteria.list();
 
@@ -1301,6 +1309,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                     .add(Restrictions.eq("status", "approved"))
                     .addOrder(Order.desc("commentDate"));
+            commentsCriteria.setCacheable(true);
 
             String recentCommentsCount = blog.getProperty(BlojsomConstants.RECENT_COMMENTS_COUNT);
             int count;
@@ -1434,6 +1443,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                     .add(Restrictions.eq("status", "approved"))
                     .addOrder(Order.desc("trackbackDate"));
+            trackbacksCriteria.setCacheable(true);
 
             String recentTrackbacksCount = blog.getProperty(BlojsomConstants.RECENT_TRACKBACKS_COUNT);
             int count;
@@ -1603,6 +1613,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             pingbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
                     .add(Restrictions.eq("status", "approved"))
                     .addOrder(Order.desc("trackbackDate"));
+            pingbacksCriteria.setCacheable(true);
 
             String recentPingbacksCount = blog.getProperty(BlojsomConstants.RECENT_PINGBACKS_COUNT);
             int count;
