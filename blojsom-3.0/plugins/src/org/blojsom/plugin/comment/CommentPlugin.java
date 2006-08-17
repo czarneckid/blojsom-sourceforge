@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.9 2006-06-23 18:50:32 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.10 2006-08-17 18:25:16 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -334,7 +334,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
         // Check to see if the person has requested they be "remembered" and if so
         // extract their information from the appropriate cookies
         Cookie authorCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_AUTHOR);
-        if ((authorCookie != null) && ((author == null) || "".equals(author))) {
+        if ((authorCookie != null) && BlojsomUtils.checkNullOrBlank(author)) {
             author = authorCookie.getValue();
             if (_logger.isDebugEnabled()) {
                 _logger.debug("Pulling author from cookie: " + author);
@@ -347,7 +347,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
             }
 
             Cookie authorEmailCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_EMAIL);
-            if ((authorEmailCookie != null) && ((authorEmail == null) || "".equals(authorEmail))) {
+            if ((authorEmailCookie != null) && BlojsomUtils.checkNullOrBlank(authorEmail)) {
                 authorEmail = authorEmailCookie.getValue();
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Pulling author email from cookie: " + authorEmail);
@@ -361,7 +361,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
             }
 
             Cookie authorUrlCookie = CookieUtils.getCookie(httpServletRequest, COOKIE_URL);
-            if ((authorUrlCookie != null) && ((authorURL == null) || "".equals(authorURL))) {
+            if ((authorUrlCookie != null) && BlojsomUtils.checkNullOrBlank(authorURL)) {
                 authorURL = authorUrlCookie.getValue();
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Pulling author URL from cookie: " + authorURL);
@@ -390,7 +390,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
             String commentText = httpServletRequest.getParameter(COMMENT_TEXT_PARAM);
             String remember = httpServletRequest.getParameter(REMEMBER_ME_PARAM);
 
-            if ((author != null && !"".equals(author)) && (commentText != null && !"".equals(commentText))) {
+            if (!BlojsomUtils.checkNullOrBlank(author) && !BlojsomUtils.checkNullOrBlank(commentText)) {
                 // Check for comment throttling
                 String commentThrottleValue = blog.getProperty(COMMENT_THROTTLE_MINUTES_IP);
                 if (!BlojsomUtils.checkNullOrBlank(commentThrottleValue)) {
