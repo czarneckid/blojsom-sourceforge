@@ -40,7 +40,6 @@ import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.plugin.pingback.PingbackPlugin;
 import org.blojsom.plugin.pingback.event.PingbackAddedEvent;
 import org.blojsom.plugin.pingback.event.PingbackResponseSubmissionEvent;
-import org.blojsom.plugin.comment.CommentModerationPlugin;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
@@ -60,7 +59,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.5 2006-06-23 18:45:49 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.6 2006-08-17 18:25:46 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
