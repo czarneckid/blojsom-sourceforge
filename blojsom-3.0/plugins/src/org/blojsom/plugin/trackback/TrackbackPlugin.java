@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.6 2006-06-23 18:50:33 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.7 2006-08-17 18:24:17 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -354,6 +354,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
 
                 excerpt = BlojsomUtils.stripLineTerminators(excerpt, " ");
             }
+            excerpt = BlojsomUtils.escapeStringSimple(excerpt);
 
             if (blogName == null) {
                 blogName = "";
