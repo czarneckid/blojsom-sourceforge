@@ -6,14 +6,6 @@
 
     <description>Plugin definition file for blojsom</description>
 
-    <bean id="citats" class="org.blojsom.plugin.citats.CitatsRenderingPlugin" init-method="init" destroy-method="destroy">
-        <property name="eventBroadcaster">
-            <ref bean="eventBroadcaster"/>
-        </property>
-        <property name="servletConfig">
-            <ref bean="servletConfigFactoryBean"/>
-        </property>
-    </bean>
     <!-- Add-on plugin -->
     <!--
     <bean id="akismet-moderation" class="org.blojsom.plugin.akismet.AkismetModerationPlugin" init-method="init" destroy-method="destroy">
