@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.7 2006-07-12 16:33:14 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.8 2006-08-17 01:01:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -184,8 +184,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     blogUserEmail = "";
                 }
 
-                if ((!username.equals(blogUserID)) && !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
-                {
+                if (!checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION)) {
                     httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
                     addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
 
@@ -306,9 +305,29 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
         } else if (DELETE_BLOG_AUTHORIZATION_ACTION.equals(action)) {
             _logger.debug("User requested delete authorization action");
 
+            // Load the current authorized user's ID for checking against the incoming blog user ID
+            String authorizedUserID;
+            try {
+                User currentAuthorizedUser = _fetcher.loadUser(blog, username);
+                authorizedUserID = currentAuthorizedUser.getId().toString();
+
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Edit blog authorization authenticated user ID: " + authorizedUserID);
+                }
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+
+                addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
+                context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
+
+                return entries;
+            }
+
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
-                if ((!username.equals(blogUserID)) && !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
+                if ((authorizedUserID.equals(blogUserID)) || !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
                 {
                     httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
                     addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
