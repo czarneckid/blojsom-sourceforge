@@ -31,13 +31,15 @@
 package org.blojsom.plugin.syndication.module;
 
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Simple trackback
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: SimpleTrackback.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
+ * @version $Id: SimpleTrackback.java,v 1.2 2006-08-18 17:24:12 czarneckid Exp $
  */
 public class SimpleTrackback implements Cloneable {
 
@@ -48,6 +50,7 @@ public class SimpleTrackback implements Cloneable {
     private Date trackbackDate;
     private String ip;
     private String status;
+    private List metadata;
 
     public SimpleTrackback() {
     }
@@ -108,6 +111,14 @@ public class SimpleTrackback implements Cloneable {
         this.status = status;
     }
 
+    public List getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(List metadata) {
+        this.metadata = metadata;
+    }
+
     public Object clone() throws CloneNotSupportedException {
         SimpleTrackback cloned = new SimpleTrackback();
 
@@ -118,6 +129,20 @@ public class SimpleTrackback implements Cloneable {
         cloned.setTitle(title);
         cloned.setTrackbackDate(trackbackDate);
         cloned.setUrl(url);
+
+        // Process metadata
+        List copiedMetadata = new ArrayList();
+        if (metadata != null) {
+            for (int i = 0; i < metadata.size(); i++) {
+                Metadata metadataItem = (Metadata) metadata.get(i);
+                Metadata copiedMetadataItem = new Metadata();
+                copiedMetadataItem.setKey(metadataItem.getKey());
+                copiedMetadataItem.setValue(metadataItem.getValue());
+
+                copiedMetadata.add(copiedMetadataItem);
+            }
+        }
+        cloned.setMetadata(copiedMetadata);
 
         return cloned;
     }

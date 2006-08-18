@@ -45,7 +45,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomParser.java,v 1.3 2006-05-04 20:03:53 czarneckid Exp $
+ * @version $Id: BlojsomParser.java,v 1.4 2006-08-18 17:24:12 czarneckid Exp $
  */
 public class BlojsomParser implements ModuleParser {
 
@@ -166,6 +166,11 @@ public class BlojsomParser implements ModuleParser {
                     comment.setIp(ip.getText());
                 }
 
+                Element metadata = element.getChild("commentMetadata", BLOJSOM_NS);
+                if (metadata != null) {
+                    comment.setMetadata(parseMetadata(metadata));
+                }
+
                 comments.add(comment);
             }
         }
@@ -215,6 +220,11 @@ public class BlojsomParser implements ModuleParser {
                 Element trackbackStatus = element.getChild("trackbackStatus", BLOJSOM_NS);
                 if (trackbackStatus != null) {
                     trackback.setStatus(trackbackStatus.getText());
+                }
+
+                Element metadata = element.getChild("trackbackMetadata", BLOJSOM_NS);
+                if (metadata != null) {
+                    trackback.setMetadata(parseMetadata(metadata));
                 }
 
                 trackbacks.add(trackback);
@@ -276,6 +286,11 @@ public class BlojsomParser implements ModuleParser {
                 Element pingbackTargetURI = element.getChild("pingbackTargetURI", BLOJSOM_NS);
                 if (pingbackTargetURI != null) {
                     pingback.setTargetURI(pingbackTargetURI.getText());
+                }
+
+                Element metadata = element.getChild("pingbackMetadata", BLOJSOM_NS);
+                if (metadata != null) {
+                    pingback.setMetadata(parseMetadata(metadata));
                 }
 
                 pingbacks.add(pingback);

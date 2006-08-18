@@ -31,13 +31,15 @@
 package org.blojsom.plugin.syndication.module;
 
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Simple pingback
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: SimplePingback.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
+ * @version $Id: SimplePingback.java,v 1.2 2006-08-18 17:24:12 czarneckid Exp $
  */
 public class SimplePingback implements Cloneable {
 
@@ -50,6 +52,7 @@ public class SimplePingback implements Cloneable {
     private String status;
     private String sourceURI;
     private String targetURI;
+    private List metadata;
 
     public SimplePingback() {
     }
@@ -126,6 +129,14 @@ public class SimplePingback implements Cloneable {
         this.targetURI = targetURI;
     }
 
+    public List getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(List metadata) {
+        this.metadata = metadata;
+    }    
+
     public Object clone() throws CloneNotSupportedException {
         SimplePingback cloned = new SimplePingback();
 
@@ -138,6 +149,20 @@ public class SimplePingback implements Cloneable {
         cloned.setUrl(url);
         cloned.setSourceURI(sourceURI);
         cloned.setTargetURI(targetURI);
+
+        // Process metadata
+        List copiedMetadata = new ArrayList();
+        if (metadata != null) {
+            for (int i = 0; i < metadata.size(); i++) {
+                Metadata metadataItem = (Metadata) metadata.get(i);
+                Metadata copiedMetadataItem = new Metadata();
+                copiedMetadataItem.setKey(metadataItem.getKey());
+                copiedMetadataItem.setValue(metadataItem.getValue());
+
+                copiedMetadata.add(copiedMetadataItem);
+            }
+        }
+        cloned.setMetadata(copiedMetadata);
 
         return cloned;
     }

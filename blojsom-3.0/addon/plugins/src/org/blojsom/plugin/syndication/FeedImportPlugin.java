@@ -62,7 +62,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.5 2006-05-05 23:55:41 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.6 2006-08-18 17:24:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -314,6 +314,20 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                             comment.setBlogId(blog.getBlogId());
                                             comment.setBlogEntryId(newEntry.getId());
 
+                                            if (simpleComment.getMetadata() != null && simpleComment.getMetadata().size() > 0) {
+                                                Map metadataForComment = comment.getMetaData();
+                                                List metadataItems = simpleComment.getMetadata();
+                                                for (int k = 0; k < metadataItems.size(); k++) {
+                                                    Metadata metadata = (Metadata) metadataItems.get(k);
+
+                                                    if (metadata.getKey() != null) {
+                                                        metadataForComment.put(metadata.getKey(), metadata.getValue());
+                                                    }
+                                                }
+
+                                                comment.setMetaData(metadataForComment);
+                                            }
+
                                             _fetcher.saveComment(blog, comment);
                                         }
                                     }
@@ -333,6 +347,20 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                             trackback.setStatus(simpleTrackback.getStatus());
                                             trackback.setBlogEntryId(newEntry.getId());
                                             trackback.setBlogId(blog.getBlogId());
+
+                                            if (simpleTrackback.getMetadata() != null && simpleTrackback.getMetadata().size() > 0) {
+                                                Map metadataForTrackback = trackback.getMetaData();
+                                                List metadataItems = simpleTrackback.getMetadata();
+                                                for (int k = 0; k < metadataItems.size(); k++) {
+                                                    Metadata metadata = (Metadata) metadataItems.get(k);
+
+                                                    if (metadata.getKey() != null) {
+                                                        metadataForTrackback.put(metadata.getKey(), metadata.getValue());
+                                                    }
+                                                }
+
+                                                trackback.setMetaData(metadataForTrackback);
+                                            }
 
                                             _fetcher.saveTrackback(blog, trackback);
                                         }
@@ -355,6 +383,20 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                             pingback.setTargetURI(simplePingback.getTargetURI());
                                             pingback.setBlogEntryId(newEntry.getId());
                                             pingback.setBlogId(blog.getBlogId());
+
+                                            if (simplePingback.getMetadata() != null && simplePingback.getMetadata().size() > 0) {
+                                                Map metadataForPingback = pingback.getMetaData();
+                                                List metadataItems = simplePingback.getMetadata();
+                                                for (int k = 0; k < metadataItems.size(); k++) {
+                                                    Metadata metadata = (Metadata) metadataItems.get(k);
+
+                                                    if (metadata.getKey() != null) {
+                                                        metadataForPingback.put(metadata.getKey(), metadata.getValue());
+                                                    }
+                                                }
+
+                                                pingback.setMetaData(metadataForPingback);
+                                            }
 
                                             _fetcher.savePingback(blog, pingback);
                                         }

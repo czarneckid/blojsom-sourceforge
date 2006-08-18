@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomImplementation.java,v 1.3 2006-05-04 20:03:53 czarneckid Exp $
+ * @version $Id: BlojsomImplementation.java,v 1.4 2006-08-18 17:24:12 czarneckid Exp $
  */
 public class BlojsomImplementation extends ModuleImpl implements Blojsom {
 
@@ -86,6 +86,7 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
             copiedComment.setIp(comment.getIp());
             copiedComment.setCommentDate(comment.getCommentDate());
             copiedComment.setStatus(comment.getStatus());
+            copiedComment.setMetadata(comment.getMetadata());
 
             copiedComments.add(copiedComment);
         }
@@ -104,6 +105,7 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
             copiedTrackback.setTitle(trackback.getTitle());
             copiedTrackback.setTrackbackDate(trackback.getTrackbackDate());
             copiedTrackback.setUrl(trackback.getUrl());
+            copiedTrackback.setMetadata(trackback.getMetadata());
 
             copiedTrackbacks.add(copiedTrackback);
         }
@@ -124,6 +126,7 @@ public class BlojsomImplementation extends ModuleImpl implements Blojsom {
             copiedPingback.setUrl(pingback.getUrl());
             copiedPingback.setSourceURI(pingback.getSourceURI());
             copiedPingback.setTargetURI(pingback.getTargetURI());
+            copiedPingback.setMetadata(pingback.getMetadata());
 
             copiedPingbacks.add(copiedPingback);
         }

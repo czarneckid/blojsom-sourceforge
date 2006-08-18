@@ -30,14 +30,16 @@
  */
 package org.blojsom.plugin.syndication.module;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Simple comment
  *
  * @author David Czarnecki
+ * @version $Id: SimpleComment.java,v 1.2 2006-08-18 17:24:12 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: SimpleComment.java,v 1.1 2006-04-27 02:52:09 czarneckid Exp $
  */
 public class SimpleComment implements Cloneable {
 
@@ -48,6 +50,7 @@ public class SimpleComment implements Cloneable {
     private Date commentDate;
     private String ip;
     private String status;
+    private List metadata;
 
     public SimpleComment() {
     }
@@ -108,6 +111,14 @@ public class SimpleComment implements Cloneable {
         this.status = status;
     }
 
+    public List getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(List metadata) {
+        this.metadata = metadata;
+    }
+
     public Object clone() throws CloneNotSupportedException {
         SimpleComment cloned = new SimpleComment();
 
@@ -118,6 +129,20 @@ public class SimpleComment implements Cloneable {
         cloned.setCommentDate(commentDate);
         cloned.setIp(ip);
         cloned.setStatus(status);
+
+        // Process metadata
+        List copiedMetadata = new ArrayList();
+        if (metadata != null) {
+            for (int i = 0; i < metadata.size(); i++) {
+                Metadata metadataItem = (Metadata) metadata.get(i);
+                Metadata copiedMetadataItem = new Metadata();
+                copiedMetadataItem.setKey(metadataItem.getKey());
+                copiedMetadataItem.setValue(metadataItem.getValue());
+
+                copiedMetadata.add(copiedMetadataItem);
+            }
+        }
+        cloned.setMetadata(copiedMetadata);
 
         return cloned;
     }
