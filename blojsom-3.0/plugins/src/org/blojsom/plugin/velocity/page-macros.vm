@@ -466,8 +466,8 @@
  * Output the math comment question as a form item to add to your comment page
  *#
 #macro(MathCommentFormItem)
-<p class="label">Answer $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2 =</p>
-<p class="input"><input type="text" name="mathAnswerCheck" value="" class="fixed" /></p>
+<div class="label">Answer $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE1 $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_OPERATION $!BLOJSOM_MATH_AUTHENTICATOR_PLUGIN_VALUE2 =</div>
+<div class="input"><input type="text" name="mathAnswerCheck" value="" class="fixed" /></div>
 #end
 
 #**
