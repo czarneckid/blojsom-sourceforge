@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: XSSFilterPlugin.java,v 1.2 2006-03-20 22:50:38 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.3 2006-08-22 18:54:31 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class XSSFilterPlugin implements Plugin, Listener {
@@ -77,6 +77,11 @@ public class XSSFilterPlugin implements Plugin, Listener {
 
     private EventBroadcaster _eventBroadcaster;
 
+    /**
+     * Set the {@link EventBroadcaster} to use
+     *
+     * @param eventBroadcaster {@link EventBroadcaster}
+     */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
     }
