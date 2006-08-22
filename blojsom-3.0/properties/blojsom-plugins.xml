@@ -273,8 +273,16 @@
     </bean>
     <bean id="comment-moderation" class="org.blojsom.plugin.comment.CommentModerationPlugin" init-method="init"
           destroy-method="destroy"/>
+
+    <!--
     <bean id="math-comment-moderation" class="org.blojsom.plugin.comment.MathCommentAuthenticationPlugin" init-method="init"
-          destroy-method="destroy"/>
+          destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    -->
+
     <bean id="recent-comments" class="org.blojsom.plugin.comment.RecentCommentsPlugin" init-method="init" destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
