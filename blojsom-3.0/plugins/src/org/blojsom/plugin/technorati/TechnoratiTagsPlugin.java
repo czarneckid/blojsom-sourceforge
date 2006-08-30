@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * Technorati tags plugin
  *
  * @author David Czarnecki
- * @version $Id: TechnoratiTagsPlugin.java,v 1.1 2006-03-20 21:30:59 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.2 2006-08-30 13:37:57 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -116,6 +116,7 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Li
                     String tagLinkTemplate = mergeTemplate(TECHNORATI_TAG_LINK_TEMPLATE, blog, new HashMap());
                     for (int j = 0; j < tags.length; j++) {
                         String tag = tags[j].trim();
+                        tag = BlojsomUtils.escapeStringSimple(tag);
 
                         tagLinks.add(MessageFormat.format(tagLinkTemplate, new String[]{tag}));
                     }
