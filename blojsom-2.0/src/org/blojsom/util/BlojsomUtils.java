@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.83 2006-03-25 04:14:27 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.84 2006-08-30 14:17:40 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -568,6 +568,23 @@ public class BlojsomUtils implements BlojsomConstants {
         return unescaped;
     }
 
+    /**
+     * Return an escaped string where &lt;, &gt; are converted to their HTML equivalents
+     *
+     * @param input Unescaped string
+     * @return Escaped string containing HTML equivalents for &lt;, &gt;
+     */
+    public static String escapeBrackets(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        String unescaped = replace(input, "<", "&lt;");
+        unescaped = replace(unescaped, ">", "&gt;");
+
+        return unescaped;
+    }
+    
     /**
      * Return an escaped string where &lt;meta, &lt;link tags are escaped
      *
