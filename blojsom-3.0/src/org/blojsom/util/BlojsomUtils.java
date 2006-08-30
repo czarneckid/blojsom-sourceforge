@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.9 2006-05-05 15:58:21 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.10 2006-08-30 13:37:10 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -508,6 +508,23 @@ public class BlojsomUtils implements BlojsomConstants {
 
         String unescaped = replace(input, "&", "&amp;");
         unescaped = replace(unescaped, "<", "&lt;");
+        unescaped = replace(unescaped, ">", "&gt;");
+
+        return unescaped;
+    }
+
+    /**
+     * Return an escaped string where &lt;, &gt; are converted to their HTML equivalents
+     *
+     * @param input Unescaped string
+     * @return Escaped string containing HTML equivalents for &lt;, &gt;
+     */
+    public static String escapeBrackets(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        String unescaped = replace(input, "<", "&lt;");
         unescaped = replace(unescaped, ">", "&gt;");
 
         return unescaped;
