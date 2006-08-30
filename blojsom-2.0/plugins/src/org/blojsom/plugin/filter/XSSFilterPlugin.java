@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: XSSFilterPlugin.java,v 1.4 2006-01-19 17:34:42 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.5 2006-08-30 14:18:04 czarneckid Exp $
  * @since blojsom 2.27
  */
 public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
@@ -186,6 +186,12 @@ public class XSSFilterPlugin implements BlojsomPlugin, BlojsomListener {
 
                     // Save the processed entry text
                     entryEvent.getBlogEntry().setDescription(entryText);
+
+                    String entryTitle = entryEvent.getBlogEntry().getTitle();
+                    entryTitle = processContent(entryTitle, entryEvent.getBlogUser().getBlog());
+
+                    // Save the processed entry title
+                    entryEvent.getBlogEntry().setTitle(entryTitle);
                 }
             }
         }

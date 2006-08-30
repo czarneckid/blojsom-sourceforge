@@ -55,7 +55,7 @@ import java.util.HashMap;
  * Technorati tags plugin
  *
  * @author David Czarnecki
- * @version $Id: TechnoratiTagsPlugin.java,v 1.6 2006-02-20 14:50:57 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.7 2006-08-30 14:18:04 czarneckid Exp $
  * @since blojsom 2.25
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements BlojsomListener {
@@ -113,6 +113,7 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Bl
                     String tagLinkTemplate = mergeTemplate(TECHNORATI_TAG_LINK_TEMPLATE, user, new HashMap());
                     for (int j = 0; j < tags.length; j++) {
                         String tag = tags[j].trim();
+                        tag = BlojsomUtils.escapeStringSimple(tag);
 
                         tagLinks.add(MessageFormat.format(tagLinkTemplate, new String[]{tag}));
                     }

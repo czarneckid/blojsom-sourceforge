@@ -58,7 +58,7 @@ import java.net.HttpURLConnection;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.10 2006-01-04 16:53:00 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.11 2006-08-30 14:18:04 czarneckid Exp $
  * @since blojsom 2.20
  */
 public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
@@ -142,6 +142,8 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
                     BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_LENGTH) &&
                     BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_TYPE)) {
                 String rssEnclosureURL = (String) entry.getMetaData().get(RSS_ENCLOSURE_URL);
+                rssEnclosureURL = BlojsomUtils.escapeBrackets(rssEnclosureURL);
+
                 long rssEnclosureLength = -1;
                 try {
                     rssEnclosureLength = Long.parseLong((String) entry.getMetaData().get(RSS_ENCLOSURE_LENGTH));
@@ -177,6 +179,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
                         StringBuffer enclosureElement = new StringBuffer();
                         String url = user.getBlog().getBlogBaseURL() + _blojsomConfiguration.getResourceDirectory() +
                                 user.getId() + "/" + enclosure.getName();
+                        url = BlojsomUtils.escapeBrackets(url);
                         enclosureElement.append("<enclosure url=\"");
                         enclosureElement.append(url);
                         enclosureElement.append("\" length=\"");
@@ -274,7 +277,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
 
                 _logger.debug("Current enclosure: " + currentEnclosure);
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_ATTACHMENT, currentEnclosure);
-                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, currentEnclosureURL);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, BlojsomUtils.escapeBrackets(currentEnclosureURL));
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_LENGTH_ITEM, currentEnclosureLength);
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_TYPE_ITEM, currentEnclosureType);
             }
@@ -294,7 +297,7 @@ public class RSSEnclosurePlugin implements BlojsomPlugin, BlojsomListener {
 
                 processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_LENGTH, rssEnclosureLength);
                 processBlogEntryEvent.getBlogEntry().getMetaData().put(RSS_ENCLOSURE_TYPE, rssEnclosureType);
-                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, rssEnclosureURL);
+                processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_URL_ITEM, BlojsomUtils.escapeBrackets(rssEnclosureURL));
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_LENGTH_ITEM, rssEnclosureLength);
                 processBlogEntryEvent.getContext().put(RSS_ENCLOSURE_TYPE_ITEM, rssEnclosureType);
 
