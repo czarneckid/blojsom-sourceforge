@@ -46,6 +46,9 @@
                             You may select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);checkAll(document.getElementById('brm'),'delete',true);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',true);checkAll(document.getElementById('brm'),'delete',false);">approval</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',true);">spam</a><br/>
                             Or you may un-select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'delete',false);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);">approval</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',false);">spam</a>
                         </p>
+                        <p>
+                            <input type="submit" name="submit" value="#adminResource('submit.text' '')"/> <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                        </p>
 
                         <input type="hidden" name="action" value="bulk-response-management"/>
                         <input type="hidden" name="flavor" value="admin"/>
@@ -62,7 +65,7 @@
                             #set ($approve = "approve_comments")
                             #set ($markspam = "mark_spam_comments")
                             <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
-                            <div id="response$responseCounter" style="display: none">
+                            <div id="response$responseCounter" #if (!$displayResponseText)style="display: none"#end>
                             $response.getComment()
                             </div>
                             #elseif ($response.getType().equals("trackback"))
@@ -70,7 +73,7 @@
                             #set ($approve = "approve_trackbacks")
                             #set ($markspam = "mark_spam_trackbacks")
                             <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
-                            <div id="response$responseCounter" style="display: none">
+                            <div id="response$responseCounter" #if (!$displayResponseText)style="display: none"#end>
                             $response.getExcerpt()
                             </div>
                             #elseif ($response.getType().equals("pingback"))
@@ -79,7 +82,7 @@
                             #set ($markspam = "mark_spam_pingbacks")
                             <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
                             <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
-                            <div id="response$responseCounter" style="display: none">
+                            <div id="response$responseCounter" #if (!$displayResponseText)style="display: none"#end>
                             $response.getExcerpt()
                             </div>
                             #end
@@ -91,7 +94,9 @@
                         #set($responseCounter = $responseCounter + 1)
                         #end
 
+                        #if ($responseCounter > 1)
                         <input type="submit" name="submit" value="#adminResource('submit.text' '')"/> <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                        #end
                     </form>
                 </div>
             </div>

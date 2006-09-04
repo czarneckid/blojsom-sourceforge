@@ -60,13 +60,14 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BulkResponseManagement.java,v 1.3 2006-05-12 15:07:59 czarneckid Exp $
+ * @version $Id: BulkResponseManagement.java,v 1.4 2006-09-04 17:57:58 czarneckid Exp $
  */
 public class BulkResponseManagement extends BaseAdminPlugin {
 
     private Log _logger = LogFactory.getLog(BulkResponseManagement.class);
 
     private static final String BULK_RESPONSE_MANAGEMENT_PERMISSION = "bulk_response_management_permission";
+    private static final String BLOJSOM_USER_OBJECT = "BLOJSOM_USER_OBJECT";
 
     private String [] DEFAULT_RESPONSE_STATUS_LIST = {ResponseConstants.NEW_STATUS, ResponseConstants.SPAM_STATUS};
 
@@ -99,6 +100,9 @@ public class BulkResponseManagement extends BaseAdminPlugin {
     private EventBroadcaster _eventBroadcaster;
     private String[] _responseStatusList = DEFAULT_RESPONSE_STATUS_LIST;
 
+    /**
+     * Create a new instance of the bulk response management plugin.
+     */
     public BulkResponseManagement() {
     }
 
@@ -153,6 +157,14 @@ public class BulkResponseManagement extends BaseAdminPlugin {
             addOperationResultMessage(context, getAdminResource(FAILED_BULK_PERMISSION_KEY, FAILED_BULK_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
 
             return entries;
+        }
+
+        try {
+            context.put(BLOJSOM_USER_OBJECT, _fetcher.loadUser(blog, username));
+        } catch (FetcherException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
         }
 
         String action = BlojsomUtils.getRequestValue(ACTION_PARAM, httpServletRequest);
