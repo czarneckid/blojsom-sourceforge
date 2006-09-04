@@ -51,29 +51,37 @@
                         <input type="hidden" name="flavor" value="admin"/>
                         <input type="hidden" name="plugins" value="bulk-response-management"/>
 
+                        #set($displayResponseText = ("true" == $BLOJSOM_USER_OBJECT.getMetaData().get("display-response-text")))
+
                         #foreach ($response in $BULK_RESPONSES)
                         <h3>&nbsp;</h3>
                         <p>
-                            <strong>$responseCounter.</strong> $response.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale()) ( <strong>$response.getType()</strong> ) ( IP: $!response.getIp() )<br/>
+                            <strong>$responseCounter. ( <a href="#" title="Show" onclick="Element.show('response$responseCounter'); return false;">+</a> <a href="#" title="Hide" onclick="Element.hide('response$responseCounter'); return false;">-</a> ) </strong> $response.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale()) ( <strong>$response.getType()</strong> ) ( IP: $!response.getIp() )<br/>
                             #if ($response.getType().equals("comment"))
                             #set ($delete = "delete_comments")
                             #set ($approve = "approve_comments")
                             #set ($markspam = "mark_spam_comments")
                             <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
+                            <div id="response$responseCounter" style="display: none">
                             $response.getComment()
+                            </div>
                             #elseif ($response.getType().equals("trackback"))
                             #set ($delete = "delete_trackbacks")
                             #set ($approve = "approve_trackbacks")
                             #set ($markspam = "mark_spam_trackbacks")
                             <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
+                            <div id="response$responseCounter" style="display: none">
                             $response.getExcerpt()
+                            </div>
                             #elseif ($response.getType().equals("pingback"))
                             #set ($delete = "delete_pingbacks")
                             #set ($approve = "approve_pingbacks")
                             #set ($markspam = "mark_spam_pingbacks")
                             <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
                             <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
+                            <div id="response$responseCounter" style="display: none">
                             $response.getExcerpt()
+                            </div>
                             #end
                             <p align="right">[ <input type="checkbox" name="$delete" value="$response.getId()" id="delete-$responseCounter" onclick="checkSingle(document.getElementById('approve-$responseCounter'),false)">#adminResource('delete.text' '')</input> - <input type="checkbox" name="$approve" value="$response.getId()" id="approve-$responseCounter" onclick="checkSingle(document.getElementById('delete-$responseCounter'),false)">#adminResource('approve.text' '')</input> - <input type="checkbox" name="$markspam" value="$response.getId()" id="markspam-$responseCounter">#adminResource('mark.spam.text' '')</input>] </p>
                             #set ($delete = "")
