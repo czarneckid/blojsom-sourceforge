@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.13 2006-05-13 14:09:25 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.14 2006-09-05 23:57:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -524,7 +524,32 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             if (_logger.isDebugEnabled()) {
                 _logger.debug("User requested add blog entry action");
             }
+
             String blogCategoryId = BlojsomUtils.getRequestValue(BLOG_CATEGORY_ID, httpServletRequest);
+
+            // Create a category for the blog if one doesn't exist
+            if (BlojsomUtils.checkNullOrBlank(blogCategoryId)) {
+                Category category = _fetcher.newCategory();
+                category.setBlogId(blog.getBlogId());
+                category.setDescription("Uncategorized");
+                category.setName("uncategorized");
+                category.setParentCategoryId(null);
+
+                try {
+                    _fetcher.saveCategory(blog, category);
+                    blogCategoryId = category.getId().toString();
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+
+                    addOperationResultMessage(context, formatAdminResource(FAILED_ADD_BLOG_ENTRY_KEY, FAILED_ADD_BLOG_ENTRY_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogCategoryId}));
+                    httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_ADMINISTRATION_PAGE);
+
+                    return entries;
+                }
+            }
+
             Integer categoryId;
             try {
                 categoryId = Integer.valueOf(blogCategoryId);
