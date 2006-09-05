@@ -64,26 +64,26 @@
                             #set ($delete = "delete_comments")
                             #set ($approve = "approve_comments")
                             #set ($markspam = "mark_spam_comments")
-                            <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
+                            <strong>$!response.getEscapedAuthor()</strong> ( <a href="mailto:$!response.getEscapedAuthorEmail()">$response.getEscapedAuthorEmail()</a> / <a href="$!response.getEscapedAuthorURL()">$!response.getEscapedAuthorURL()</a> )<br/>
                             <div id="response$responseCounter" #if (!$displayResponseText)style="display: none"#end>
-                            $response.getComment()
+                            $response.getEscapedComment()
                             </div>
                             #elseif ($response.getType().equals("trackback"))
                             #set ($delete = "delete_trackbacks")
                             #set ($approve = "approve_trackbacks")
                             #set ($markspam = "mark_spam_trackbacks")
-                            <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
+                            <strong>From: </strong><a href="$!response.getEscapedUrl()">$!response.getEscapedTitle()</a> ( $!response.getEscapedBlogName() )<br/>
                             <div id="response$responseCounter" #if (!$displayResponseText)style="display: none"#end>
-                            $response.getExcerpt()
+                            $response.getEscapedExcerpt()
                             </div>
                             #elseif ($response.getType().equals("pingback"))
                             #set ($delete = "delete_pingbacks")
                             #set ($approve = "approve_pingbacks")
                             #set ($markspam = "mark_spam_pingbacks")
-                            <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
-                            <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
+                            <strong>From: </strong><a href="$!response.getEscapedSourceURI()">$!response.getEscapedSourceURI()</a><br/>
+                            <strong>  To: </strong><a href="$!response.getEscapedTargetURI()">$!response.getEscapedTargetURI()</a><br/>
                             <div id="response$responseCounter" #if (!$displayResponseText)style="display: none"#end>
-                            $response.getExcerpt()
+                            $response.getEscapedExcerpt()
                             </div>
                             #end
                             <p align="right">[ <input type="checkbox" name="$delete" value="$response.getId()" id="delete-$responseCounter" onclick="checkSingle(document.getElementById('approve-$responseCounter'),false)">#adminResource('delete.text' '')</input> - <input type="checkbox" name="$approve" value="$response.getId()" id="approve-$responseCounter" onclick="checkSingle(document.getElementById('delete-$responseCounter'),false)">#adminResource('approve.text' '')</input> - <input type="checkbox" name="$markspam" value="$response.getId()" id="markspam-$responseCounter">#adminResource('mark.spam.text' '')</input>] </p>

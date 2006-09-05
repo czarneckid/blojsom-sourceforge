@@ -228,19 +228,19 @@
                             #if ($response.getType().equals("comment"))
                             #set ($delete = "delete_comments")
                             #set ($approve = "approve_comments")
-                            <strong>$!response.getAuthor()</strong> ( <a href="mailto:$!response.getAuthorEmail()">$response.getAuthorEmail()</a> / <a href="$!response.getAuthorURL()">$!response.getAuthorURL()</a> )<br/>
-                            $response.getComment()
+                            <strong>$!response.getEscapedAuthor()</strong> ( <a href="mailto:$!response.getEscapedAuthorEmail()">$response.getEscapedAuthorEmail()</a> / <a href="$!response.getEscapedAuthorURL()">$!response.getEscapedAuthorURL()</a> )<br/>
+                            $response.getEscapedComment()
                             #elseif ($response.getType().equals("trackback"))
                             #set ($delete = "delete_trackbacks")
                             #set ($approve = "approve_trackbacks")
-                            <strong>From: </strong><a href="$!response.getUrl()">$!response.getTitle()</a> ( $!response.getBlogName() )<br/>
-                            $response.getExcerpt()
+                            <strong>From: </strong><a href="$!response.getEscapedUrl()">$!response.getEscapedTitle()</a> ( $!response.getEscapedBlogName() )<br/>
+                            $response.getEscapedExcerpt()
                             #elseif ($response.getType().equals("pingback"))
                             #set ($delete = "delete_pingbacks")
                             #set ($approve = "approve_pingbacks")
-                            <strong>From: </strong><a href="$!response.getSourceURI()">$!response.getSourceURI()</a><br/>
-                            <strong>  To: </strong><a href="$!response.getTargetURI()">$!response.getTargetURI()</a><br/>
-                            $response.getExcerpt()
+                            <strong>From: </strong><a href="$!response.getEscapedSourceURI()">$!response.getEscapedSourceURI()</a><br/>
+                            <strong>  To: </strong><a href="$!response.getEscapedTargetURI()">$!response.getEscapedTargetURI()</a><br/>
+                            $response.getEscapedExcerpt()
                             #end
                             <p align="right">[ <a href="javascript:;" onclick="deleteResponseAJAX($response.getId(), '$response.getType()', response$responseCounter)">Delete</a> - <a href="javascript:;" #if ($response.getStatus().equals("approved"))style="display:none"#end id="approve$responseCounter" onclick="approveResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, approve$responseCounter, unapprove$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter)">Approve</a> <a href="javascript:;" #if (!$response.getStatus().equals("approved"))style="display:none"#end id="unapprove$responseCounter" onclick="unapproveResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, unapprove$responseCounter, approve$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter)">Unapprove</a> - <a href="javascript:;" #if ($response.getStatus().equals("spam"))style="display:none"#end id="markSpam$responseCounter" onclick="markSpamResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter, approve$responseCounter, unapprove$responseCounter)">Mark as spam</a> <a href="javascript:;" #if (!$response.getStatus().equals("spam"))style="display:none"#end id="unmarkSpam$responseCounter" onclick="unmarkSpamResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, unmarkSpam$responseCounter, markSpam$responseCounter, approve$responseCounter, unapprove$responseCounter)">Unmark as spam</a> ]</p>
                             #set ($delete = "")
