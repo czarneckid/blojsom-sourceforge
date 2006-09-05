@@ -46,7 +46,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseComment.java,v 1.5 2006-05-28 20:54:41 czarneckid Exp $
+ * @version $Id: DatabaseComment.java,v 1.6 2006-09-05 17:30:26 czarneckid Exp $
  */
 public class DatabaseComment implements Comment, Serializable {
 
@@ -156,6 +156,15 @@ public class DatabaseComment implements Comment, Serializable {
     }
 
     /**
+     * Get the author as an escaped string
+     *
+     * @return Escaped author
+     */
+    public String getEscapedAuthor() {
+        return BlojsomUtils.escapeString(_author);
+    }
+
+    /**
      * Set the author of the comment
      *
      * @param author Comment's new author
@@ -174,6 +183,15 @@ public class DatabaseComment implements Comment, Serializable {
     }
 
     /**
+     * Get the escaped e-mail of the author of the comment
+     *
+     * @return Escaped author e-mail
+     */
+    public String getEscapedAuthorEmail() {
+        return BlojsomUtils.escapeString(_authorEmail);
+    }
+
+    /**
      * Set the e-mail of the author of the comment
      *
      * @param authorEmail Author's new e-mail
@@ -189,6 +207,15 @@ public class DatabaseComment implements Comment, Serializable {
      */
     public String getAuthorURL() {
         return _authorURL;
+    }
+
+    /**
+     * Get the escaped URL of the author
+     *
+     * @return Escaped URL
+     */
+    public String getEscapedAuthorURL() {
+        return BlojsomUtils.escapeString(_authorURL);
     }
 
     /**

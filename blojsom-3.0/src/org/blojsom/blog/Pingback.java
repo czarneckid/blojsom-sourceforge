@@ -35,7 +35,7 @@ package org.blojsom.blog;
  * 
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Pingback.java,v 1.2 2006-03-25 07:10:41 czarneckid Exp $
+ * @version $Id: Pingback.java,v 1.3 2006-09-05 17:30:21 czarneckid Exp $
  */
 public interface Pingback extends Trackback {
 
@@ -45,6 +45,13 @@ public interface Pingback extends Trackback {
      * @return Source URI
      */
     String getSourceURI();
+
+    /**
+     * Get the escaped source URI
+     *
+     * @return Escaped source URI
+     */
+    String getEscapedSourceURI();
 
     /**
      * Set the source URI
@@ -59,6 +66,13 @@ public interface Pingback extends Trackback {
      * @return Target URI
      */
     String getTargetURI();
+
+    /**
+     * Get the escaped target URI
+     *
+     * @return Escaped target URI
+     */
+    String getEscapedTargetURI();
 
     /**
      * Set the target URI

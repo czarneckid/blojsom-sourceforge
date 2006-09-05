@@ -32,6 +32,7 @@ package org.blojsom.blog.database;
 
 import org.blojsom.blog.Entry;
 import org.blojsom.blog.Trackback;
+import org.blojsom.util.BlojsomUtils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -44,7 +45,7 @@ import java.util.Map;
  * DatabaseTrackback
  *
  * @author David Czarnecki
- * @version $Id: DatabaseTrackback.java,v 1.4 2006-04-27 01:53:05 czarneckid Exp $
+ * @version $Id: DatabaseTrackback.java,v 1.5 2006-09-05 17:30:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseTrackback implements Trackback, Serializable {
@@ -152,6 +153,15 @@ public class DatabaseTrackback implements Trackback, Serializable {
     }
 
     /**
+     * Get the escaped title of the trackback
+     *
+     * @return Escaped title
+     */
+    public String getEscapedTitle() {
+        return BlojsomUtils.escapeString(_title);
+    }
+
+    /**
      * Set the title of the trackback
      *
      * @param title Trackback title
@@ -167,6 +177,15 @@ public class DatabaseTrackback implements Trackback, Serializable {
      */
     public String getExcerpt() {
         return _excerpt;
+    }
+
+    /**
+     * Get the excerpt as an escaped string
+     *
+     * @return Escaped excerpt
+     */
+    public String getEscapedExcerpt() {
+        return BlojsomUtils.escapeString(_excerpt);
     }
 
     /**
@@ -188,6 +207,15 @@ public class DatabaseTrackback implements Trackback, Serializable {
     }
 
     /**
+     * Get the escaped url of the trackback
+     *
+     * @return Escaped url
+     */
+    public String getEscapedUrl() {
+        return BlojsomUtils.escapeString(_url);
+    }
+
+    /**
      * Set the url of the trackback
      *
      * @param url Trackback url
@@ -203,6 +231,15 @@ public class DatabaseTrackback implements Trackback, Serializable {
      */
     public String getBlogName() {
         return _blogName;
+    }
+
+    /**
+     * Get the escaped blog name of the trackback
+     *
+     * @return Escaped blog name
+     */
+    public String getEscapedBlogName() {
+        return BlojsomUtils.escapeString(_blogName);
     }
 
     /**

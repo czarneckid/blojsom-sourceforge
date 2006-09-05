@@ -31,13 +31,14 @@
 package org.blojsom.blog.database;
 
 import org.blojsom.blog.Pingback;
+import org.blojsom.util.BlojsomUtils;
 
 /**
  * DatabasePingback
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabasePingback.java,v 1.4 2006-04-05 00:46:32 czarneckid Exp $
+ * @version $Id: DatabasePingback.java,v 1.5 2006-09-05 17:30:26 czarneckid Exp $
  */
 public class DatabasePingback extends DatabaseTrackback implements Pingback {
 
@@ -60,6 +61,15 @@ public class DatabasePingback extends DatabaseTrackback implements Pingback {
     }
 
     /**
+     * Get the escaped source URI
+     *
+     * @return Escaped source URI
+     */
+    public String getEscapedSourceURI() {
+        return BlojsomUtils.escapeString(_sourceURI);
+    }
+
+    /**
      * Set the source URI
      *
      * @param sourceURI Source URI
@@ -75,6 +85,15 @@ public class DatabasePingback extends DatabaseTrackback implements Pingback {
      */
     public String getTargetURI() {
         return _targetURI;
+    }
+
+    /**
+     * Get the escaped target URI
+     *
+     * @return Escaped target URI
+     */
+    public String getEscapedTargetURI() {
+        return BlojsomUtils.escapeString(_targetURI);
     }
 
     /**

@@ -39,7 +39,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Comment.java,v 1.4 2006-05-28 20:54:40 czarneckid Exp $
+ * @version $Id: Comment.java,v 1.5 2006-09-05 17:30:21 czarneckid Exp $
  */
 public interface Comment extends Response {
 
@@ -93,6 +93,13 @@ public interface Comment extends Response {
     String getAuthor();
 
     /**
+     * Get the author as an escaped string
+     *
+     * @return Escaped author
+     */
+    String getEscapedAuthor();
+
+    /**
      * Set the author of the comment
      *
      * @param author Comment's new author
@@ -107,6 +114,13 @@ public interface Comment extends Response {
     String getAuthorEmail();
 
     /**
+     * Get the escaped e-mail of the author of the comment
+     *
+     * @return Escaped author e-mail
+     */
+    String getEscapedAuthorEmail();
+
+    /**
      * Set the e-mail of the author of the comment
      *
      * @param authorEmail Author's new e-mail
@@ -119,6 +133,13 @@ public interface Comment extends Response {
      * @return Author's URL
      */
     String getAuthorURL();
+
+    /**
+     * Get the escaped URL of the author
+     *
+     * @return Escaped URL
+     */
+    String getEscapedAuthorURL();
 
     /**
      * Set the URL for the author

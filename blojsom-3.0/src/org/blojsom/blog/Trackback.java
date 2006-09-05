@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.3 2006-04-05 00:46:32 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.4 2006-09-05 17:30:25 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface Trackback extends Response {
@@ -91,6 +91,13 @@ public interface Trackback extends Response {
     String getTitle();
 
     /**
+     * Get the escaped title of the trackback
+     *
+     * @return Escaped title
+     */
+    String getEscapedTitle();
+
+    /**
      * Set the title of the trackback
      *
      * @param title Trackback title
@@ -103,6 +110,13 @@ public interface Trackback extends Response {
      * @return Trackback excerpt
      */
     String getExcerpt();
+
+    /**
+     * Get the excerpt as an escaped string
+     *
+     * @return Escaped excerpt
+     */
+    String getEscapedExcerpt();
 
     /**
      * Set the excerpt of the trackback
@@ -119,6 +133,13 @@ public interface Trackback extends Response {
     String getUrl();
 
     /**
+     * Get the escaped url of the trackback
+     *
+     * @return Escaped url
+     */
+    String getEscapedUrl();
+
+    /**
      * Set the url of the trackback
      *
      * @param url Trackback url
@@ -131,6 +152,14 @@ public interface Trackback extends Response {
      * @return Trackback blog name
      */
     String getBlogName();
+
+    /**
+     * Get the escaped blog name of the trackback
+     *
+     * @return Escaped blog name
+     */
+    String getEscapedBlogName();
+
 
     /**
      * Get the trackback meta-data
