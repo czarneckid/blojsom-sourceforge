@@ -60,7 +60,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MetaWeblogAPIHandler.java,v 1.3 2006-04-27 20:03:00 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.4 2006-09-06 01:22:22 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends APIHandler {
 
@@ -489,17 +489,15 @@ public class MetaWeblogAPIHandler extends APIHandler {
             _authorizationProvider.authorize(_blog, null, userid, password);
             checkXMLRPCPermission(userid, METAWEBLOG_API_PERMISSION);
 
-            /*
             Integer postID;
             try {
                 postID = Integer.valueOf(postid);
             } catch (NumberFormatException e) {
                 throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
             }
-            */
 
             try {
-                Entry entry = _fetcher.loadEntry(_blog, Integer.valueOf(postid));
+                Entry entry = _fetcher.loadEntry(_blog, postID);
 
                 Hashtable postcontent = new Hashtable();
                 postcontent.put(MEMBER_TITLE, entry.getTitle());
