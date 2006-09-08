@@ -50,7 +50,7 @@ import java.util.*;
  * BlojsomConfiguration
  *
  * @author David Czarnecki
- * @version $Id: BlojsomConfiguration.java,v 1.41 2006-01-04 16:59:53 czarneckid Exp $
+ * @version $Id: BlojsomConfiguration.java,v 1.42 2006-09-08 14:10:18 czarneckid Exp $
  * @since blojsom 2.0
  */
 public class BlojsomConfiguration implements BlojsomConstants {
@@ -89,17 +89,22 @@ public class BlojsomConfiguration implements BlojsomConstants {
 
         _installationDirectory = servletConfig.getServletContext().getRealPath("/");
         if (BlojsomUtils.checkNullOrBlank(_installationDirectory)) {
+            _installationDirectory = getBlojsomPropertyAsString(BLOJSOM_INSTALLATION_DIRECTORY_IP);
+        }
+        if (BlojsomUtils.checkNullOrBlank(_installationDirectory)) {
+            try {
+                System.setProperty("blojsom.installation.directory", _installationDirectory);
+            } catch (Exception e) {
+                _logger.error(e);
+            }
+        }
+        if (BlojsomUtils.checkNullOrBlank(_installationDirectory)) {
             _logger.error("No installation directory set for blojsom");
             throw new BlojsomConfigurationException("No installation directory set for blojsom");
         } else {
             if (!_installationDirectory.endsWith("/")) {
                 _installationDirectory += "/";
             }
-        }
-        try {
-            System.setProperty("blojsom.installation.directory", _installationDirectory);
-        } catch (Exception e) {
-            _logger.error(e);
         }
         _logger.debug("Using installation directory: " + _installationDirectory);
 
@@ -192,7 +197,7 @@ public class BlojsomConfiguration implements BlojsomConstants {
                     String afterProperty = _globalBlogHome.substring(closingBraceIndex + 1);
                     _globalBlogHome = property + afterProperty;
                     // Normalize the blog-home path
-                    _globalBlogHome = BlojsomUtils.replace(_globalBlogHome, "\\", "/");
+                    _globalBlogHome = _globalBlogHome.replaceAll("\\\\", "/");
                 }
             }
 
