@@ -56,7 +56,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.7 2006-06-23 18:45:50 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.8 2006-09-09 18:37:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -259,8 +259,8 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             try {
                 User user = _fetcher.loadUser(blog, username);
 
-                blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.USE_RICHTEXT_EDITOR, httpServletRequest);
-                user.getMetaData().put(BlojsomConstants.USE_RICHTEXT_EDITOR, blogPropertyValue);
+                blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.USE_RICHTEXT_EDITOR_PREFERENCE, httpServletRequest);
+                user.getMetaData().put(BlojsomConstants.USE_RICHTEXT_EDITOR_PREFERENCE, blogPropertyValue);
 
                 _fetcher.saveUser(blog, user);
             } catch (FetcherException e) {
