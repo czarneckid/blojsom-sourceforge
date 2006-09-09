@@ -38,6 +38,11 @@
 #macro(BlogBaseURL)$BLOJSOM_BLOG.getBlogBaseURL()#end
 
 #**
+ * Display the base admin URL of your blog
+ *#
+#macro(BlogBaseAdminURL)$BLOJSOM_BLOG.getBlogBaseAdminURL()#end
+
+#**
  * Display the language of your blog
  *#
 #macro(BlogLanguage)$BLOJSOM_BLOG.getBlogLanguage()#end

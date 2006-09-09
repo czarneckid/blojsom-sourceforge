@@ -219,6 +219,7 @@ CREATE TABLE Properties (
 INSERT INTO Properties VALUES ('default','blog-url','http://localhost:8080/blojsom/blog/default');
 INSERT INTO Properties VALUES ('default','blog-admin-url','http://localhost:8080/blojsom/blog/default');
 INSERT INTO Properties VALUES ('default','blog-base-url','http://localhost:8080/blojsom');
+INSERT INTO Properties VALUES ('default','blog-base-admin-url','http://localhost:8080/blojsom');
 INSERT INTO Properties VALUES ('default','blog-language','en');
 INSERT INTO Properties VALUES ('default','blog-name','NAME YOUR BLOG');
 INSERT INTO Properties VALUES ('default','blog-description','DESCRIBE YOUR BLOG');

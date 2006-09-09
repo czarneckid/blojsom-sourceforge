@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.15 2006-07-22 03:56:31 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.16 2006-09-09 18:36:42 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -326,6 +326,7 @@ public interface BlojsomConstants {
     public static final String BLOG_URL_IP = "blog-url";
     public static final String BLOG_ADMIN_URL_IP = "blog-admin-url"; 
     public static final String BLOG_BASE_URL_IP = "blog-base-url";
+    public static final String BLOG_BASE_ADMIN_URL_IP = "blog-base-admin-url";
     public static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
     public static final String BLOG_AUTHORIZATION_IP = "blog-authorization";
     public static final String BLOG_OWNER = "blog-owner";
@@ -352,8 +353,8 @@ public interface BlojsomConstants {
     public static final int DEFAULT_RECENT_PINGBACKS_COUNT = 5;
     public static final String DEFAULT_POST_CATEGORY = "default-post-category";
 
-    // User options
-    public static final String USE_RICHTEXT_EDITOR = "use-richtext-editor";
+    // User preferences
+    public static final String USE_RICHTEXT_EDITOR_PREFERENCE = "use-richtext-editor";
     
 }
 

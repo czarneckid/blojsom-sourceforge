@@ -46,7 +46,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.3 2006-04-20 21:53:53 czarneckid Exp $
+ * @version $Id: DatabaseBlog.java,v 1.4 2006-09-09 18:37:02 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
@@ -205,6 +205,15 @@ public class DatabaseBlog implements Blog, Serializable {
      */
     public String getBlogURL() {
         return (String) _properties.get(BlojsomConstants.BLOG_URL_IP);
+    }
+
+    /**
+     * Base admin URL for the blog
+     *
+     * @return Blog base admin URL
+     */
+    public String getBlogBaseAdminURL() {
+        return (String) _properties.get(BlojsomConstants.BLOG_BASE_ADMIN_URL_IP);
     }
 
     /**
@@ -593,6 +602,15 @@ public class DatabaseBlog implements Blog, Serializable {
      */
     public void setBlogAdminURL(String blogAdminURL) {
         _properties.put(BlojsomConstants.BLOG_ADMIN_URL_IP, blogAdminURL);
+    }
+
+    /**
+     * Set the new base admin URL for the blog
+     *
+     * @param blogBaseAdminURL Blog base admin URL
+     */
+    public void setBlogBaseAdminURL(String blogBaseAdminURL) {
+        _properties.put(BlojsomConstants.BLOG_BASE_ADMIN_URL_IP, blogBaseAdminURL);
     }
 
     /**

@@ -38,7 +38,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.3 2006-04-20 21:53:53 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.4 2006-09-09 18:37:02 czarneckid Exp $
  */
 public interface Blog {
 
@@ -139,6 +139,13 @@ public interface Blog {
      * @return Blog admin URL
      */
     String getBlogAdminURL();
+
+    /**
+     * Base admin URL for the blog
+     *
+     * @return Blog base admin URL
+     */
+    String getBlogBaseAdminURL();
 
     /**
      * Base URL for the blog
@@ -423,6 +430,13 @@ public interface Blog {
      * @param blogAdminURL Blog admin URL
      */
     void setBlogAdminURL(String blogAdminURL);
+
+    /**
+     * Set the new base admin URL for the blog
+     *
+     * @param blogBaseAdminURL Blog base admin URL
+     */
+    void setBlogBaseAdminURL(String blogBaseAdminURL);
 
     /**
      * Set the in-use password digest algorithm
