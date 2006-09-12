@@ -486,6 +486,22 @@
         </property>
     </bean>
 
+    <bean id="edit-blog-preferences" class="org.blojsom.plugin.admin.EditBlogPreferencesPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+
     <bean id="edit-blog-properties" class="org.blojsom.plugin.admin.EditBlogPropertiesPlugin" init-method="init"
           destroy-method="destroy">
         <property name="servletConfig">
