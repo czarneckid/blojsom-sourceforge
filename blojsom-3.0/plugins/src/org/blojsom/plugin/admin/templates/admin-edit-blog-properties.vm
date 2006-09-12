@@ -70,13 +70,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>#adminResource('use.richtext.editor.text' '')</td>
-                                <td>
-                                    #set ($selectListName = "use-richtext-editor")
-                                    #yesNoSelectList($selectListName $!BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor"))                                    
-                                </td>
-                            </tr>
-                            <tr>
                                 #set ($selectListName = "linear-navigation-enabled")
                                 <td>#adminResource('blog.linear.navigation.enabled.text' '')</td> <td>#yesNoSelectList($selectListName $BLOJSOM_BLOG.getLinearNavigationEnabled())<br />#adminResource('linear.navigation.help.text' '')</td>
                             </tr>
