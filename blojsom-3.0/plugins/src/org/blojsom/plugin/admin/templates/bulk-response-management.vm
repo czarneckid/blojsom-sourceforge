@@ -95,6 +95,7 @@
                         #end
 
                         #if ($responseCounter > 1)
+                        <h3>&nbsp;</h3>
                         <input type="submit" name="submit" value="#adminResource('submit.text' '')"/> <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
                         #end
                     </form>
