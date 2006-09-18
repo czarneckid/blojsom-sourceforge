@@ -47,7 +47,7 @@ import java.util.Map;
 
 /**
  * @author David Czarnecki
- * @version $Id: EditBlogPreferencesPlugin.java,v 1.1 2006-09-12 14:51:45 czarneckid Exp $
+ * @version $Id: EditBlogPreferencesPlugin.java,v 1.2 2006-09-18 18:30:53 czarneckid Exp $
  */
 public class EditBlogPreferencesPlugin extends BaseAdminPlugin {
 
@@ -125,6 +125,9 @@ public class EditBlogPreferencesPlugin extends BaseAdminPlugin {
 
                 String blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.USE_RICHTEXT_EDITOR_PREFERENCE, httpServletRequest);
                 user.getMetaData().put(BlojsomConstants.USE_RICHTEXT_EDITOR_PREFERENCE, blogPropertyValue);
+
+                blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.DISPLAY_RESPONSE_TEXT_PREFERENCE, httpServletRequest);
+                user.getMetaData().put(BlojsomConstants.DISPLAY_RESPONSE_TEXT_PREFERENCE, blogPropertyValue);
 
                 _fetcher.saveUser(blog, user);
             } catch (FetcherException e) {

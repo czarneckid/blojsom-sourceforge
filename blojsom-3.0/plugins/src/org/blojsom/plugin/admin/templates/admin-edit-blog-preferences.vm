@@ -23,6 +23,27 @@
                             <input type="hidden" name="flavor" value="admin"/>
                             <input type="hidden" name="plugins" value="edit-blog-preferences"/>
 
+
+                            <!-- Response preferences -->
+                            <tr>
+                                <th>#adminResource('response.preferences.text' '')</th>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('display.response.text' '')</td>
+                                <td>
+                                    #set ($selectListName = "display-response-text")
+                                    #yesNoSelectList($selectListName $!BLOJSOM_USER_OBJECT.getMetaData().get("display-response-text"))
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <!-- Write preferences -->
+                            <tr>
+                                <th>#adminResource('write.preferences.text' '')</th>
+                            </tr>
                             <tr>
                                 <td>#adminResource('use.richtext.editor.text' '')</td>
                                 <td>
@@ -30,6 +51,7 @@
                                     #yesNoSelectList($selectListName $!BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor"))
                                 </td>
                             </tr>
+
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>

@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.16 2006-09-09 18:36:42 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.17 2006-09-18 18:30:54 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -355,6 +355,6 @@ public interface BlojsomConstants {
 
     // User preferences
     public static final String USE_RICHTEXT_EDITOR_PREFERENCE = "use-richtext-editor";
-    
+    public static final String DISPLAY_RESPONSE_TEXT_PREFERENCE = "display-response-text";
 }
 
