@@ -199,7 +199,7 @@
                             </tr>
                             <tr>
                                 <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') <br />(MM/dd/yyyy HH:mm:ss)</td>
-                                <td><input type="text" size="30" name="blog-entry-publish-datetime"/></td>
+                                <td><input type="text" size="30" name="blog-entry-publish-datetime" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getDateAsFormat('MM/dd/yyyy HH:mm:ss')"/></td>
                             </tr>
                             #DisplayTemplateAdditions()
                             <tr>
