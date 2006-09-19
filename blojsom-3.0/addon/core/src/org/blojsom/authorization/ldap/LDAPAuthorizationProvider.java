@@ -30,22 +30,20 @@
  */
 package org.blojsom.authorization.ldap;
 
-import netscape.ldap.LDAPConnection;
-import netscape.ldap.LDAPException;
-import netscape.ldap.LDAPSearchResults;
-import netscape.ldap.LDAPv2;
+import netscape.ldap.*;
 import netscape.ldap.factory.JSSESocketFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.BlojsomException;
 import org.blojsom.ConfigurationException;
-import org.blojsom.authorization.database.DatabaseAuthorizationProvider;
 import org.blojsom.authorization.AuthorizationException;
+import org.blojsom.authorization.database.DatabaseAuthorizationProvider;
 import org.blojsom.blog.Blog;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
 import java.util.Map;
+import java.util.Enumeration;
 
 /**
  * LDAPAuthorizationProvider
@@ -72,7 +70,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.2 2006-04-24 16:51:45 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.3 2006-09-19 02:17:42 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
@@ -193,7 +191,7 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
     /**
      * Authorize a username and password for the given {@link Blog}
      *
-     * @param blog             {@link Blog}
+     * @param blog                 {@link Blog}
      * @param authorizationContext {@link Map} to be used to provide other information for authorization. This will
      *                             change depending on the authorization provider. This parameter is not used in this implementation.
      * @param username             Username.  In this implementation, this value must match that of the blog user's ID.
@@ -289,19 +287,22 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Using LDAP authentication for LDAP connection");
                 }
+
                 ldapConnection.authenticate(3, _bindingUser, _bindingPassword);
             }
 
             // Search for the dn of the user given the username (uid).
             String[] attrs = {};
-            LDAPSearchResults res = ldapConnection.search(_ldapDN,
-                    LDAPv2.SCOPE_SUB, "(" + _uidAttributeName + "=" + username + ")", attrs, true);
+            LDAPSearchResults res = ldapConnection.search(_ldapDN, LDAPv2.SCOPE_SUB, "(" + _uidAttributeName + "=" + username + ")", attrs, true);
 
             if (!res.hasMoreElements()) {
                 // No such user.
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("User '" + username + "' does not exist in LDAP directory.");
                 }
+
+                ldapConnection.disconnect();
+
                 return null;
             }
 
@@ -316,6 +317,111 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
             // Some exception occurred above; the search for the dn failed.
             return null;
         }
+    }
+
+    /**
+     * Get a specific attribute value for a given username
+     *
+     * @param username  Username
+     * @param attribute Attribute
+     * @return attribute value for a given username or <code>null</code> if there is an exception in lookup
+     */
+    protected String getAttribute(String username, String attribute) {
+        LDAPConnection ldapConnection = null;
+        String value = null;
+
+        try {
+            // Connect to the server.
+            if (_useSSL) {
+                JSSESocketFactory ldapSocketFactory = new JSSESocketFactory();
+                ldapConnection = new LDAPConnection(ldapSocketFactory);
+            } else {
+                ldapConnection = new LDAPConnection();
+            }
+
+            ldapConnection.connect(_ldapServer, _ldapPort);
+
+            // Authenticate with the server
+            if (!BlojsomUtils.checkNullOrBlank(_bindingUser) && !BlojsomUtils.checkNullOrBlank(_bindingPassword)) {
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Using LDAP authentication for LDAP connection");
+                }
+
+                ldapConnection.authenticate(3, _bindingUser, _bindingPassword);
+            }
+
+            // Send the search request.
+            String attrs[] = {attribute};
+            LDAPSearchResults res = ldapConnection.search(_ldapDN, LDAPConnection.SCOPE_SUB, "(" + _uidAttributeName + "=" + username + ")", attrs, false);
+
+            // Iterate through and print out the results.
+            while (res.hasMoreElements()) {
+                // Get the next directory entry.
+                LDAPEntry findEntry = null;
+
+                try {
+                    findEntry = res.next();
+                } catch (LDAPException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Error: " + e.toString());
+                    }
+
+                    continue;
+                }
+
+                // Print the DN of the entry.
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug(findEntry.getDN());
+                }
+
+                // Get the attributes of the entry
+                LDAPAttributeSet findAttrs = findEntry.getAttributeSet();
+                Enumeration enumAttrs = findAttrs.getAttributes();
+
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("\tAttributes: ");
+                }
+
+                // Loop on attributes
+                while (enumAttrs.hasMoreElements()) {
+                    LDAPAttribute anAttr = (LDAPAttribute) enumAttrs.nextElement();
+                    String attrName = anAttr.getName();
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("\t\t" + attrName);
+                    }
+
+                    // Loop on values for this attribute
+                    Enumeration enumVals = anAttr.getStringValues();
+                    if (enumVals != null) {
+                        while (enumVals.hasMoreElements()) {
+                            String aVal = (String) enumVals.nextElement();
+                            value = aVal;
+
+                            if (_logger.isDebugEnabled()) {
+                                _logger.debug("\t\t\t" + aVal);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (LDAPException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error("Error: " + e.toString());
+            }
+        }
+
+        // Done, so disconnect
+        if ((ldapConnection != null) && ldapConnection.isConnected()) {
+            try {
+                ldapConnection.disconnect();
+            } catch (LDAPException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error("Error: " + e.toString());
+                }
+            }
+        }
+
+        return value;
     }
 
     /**
