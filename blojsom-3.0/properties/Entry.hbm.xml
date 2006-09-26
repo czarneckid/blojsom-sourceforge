@@ -12,7 +12,7 @@
         </id>
 
         <property name="blogId">
-            <column name="blog_id" sql-type="string" not-null="true"/>
+            <column name="blog_id" not-null="true"/>
         </property>
 
         <property name="title"/>

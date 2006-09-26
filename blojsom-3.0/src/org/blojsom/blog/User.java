@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: User.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: User.java,v 1.3 2006-09-26 02:55:21 czarneckid Exp $
  */
 public interface User {
 
@@ -61,14 +61,14 @@ public interface User {
      *
      * @return Blog ID
      */
-    public String getBlogId();
+    public Integer getBlogId();
 
     /**
      * Set the blog ID
      *
      * @param blogId Blog ID
      */
-    public void setBlogId(String blogId);
+    public void setBlogId(Integer blogId);
 
     /**
      * Get the user login

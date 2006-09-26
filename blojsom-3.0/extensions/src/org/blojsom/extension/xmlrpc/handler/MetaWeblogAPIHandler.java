@@ -60,7 +60,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MetaWeblogAPIHandler.java,v 1.4 2006-09-06 01:22:22 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.5 2006-09-26 02:55:20 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends APIHandler {
 
@@ -355,7 +355,7 @@ public class MetaWeblogAPIHandler extends APIHandler {
                 Category category = _fetcher.loadCategory(_blog, blogID);
                 Entry entry = _fetcher.newEntry();
 
-                entry.setBlogId(_blog.getBlogId());
+                entry.setBlogId(_blog.getId());
                 entry.setBlogCategoryId(category.getId());
                 if (dateCreated == null) {
                     entry.setDate(new Date());

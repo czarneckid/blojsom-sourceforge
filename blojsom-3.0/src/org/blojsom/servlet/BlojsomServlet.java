@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.9 2006-08-16 15:25:17 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.10 2006-09-26 02:55:24 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -350,7 +350,7 @@ public class BlojsomServlet extends HttpServlet {
         String templateAndType = (String) blog.getTemplates().get(flavor);
         String[] templateData = BlojsomUtils.parseOnlyCommaList(templateAndType, true);
         String templateExtension = BlojsomUtils.getFileExtension(templateData[0]);
-
+       
         Dispatcher dispatcher = null;
         try {
             dispatcher = (org.blojsom.dispatcher.Dispatcher) _classPathXmlApplicationContext.getBean(templateExtension);

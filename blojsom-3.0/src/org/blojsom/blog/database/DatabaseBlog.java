@@ -46,10 +46,11 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.4 2006-09-09 18:37:02 czarneckid Exp $
+ * @version $Id: DatabaseBlog.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
+    private Integer _id;
     private String _blogId;
     private Map _templates;
     private Map _plugins;
@@ -59,6 +60,24 @@ public class DatabaseBlog implements Blog, Serializable {
      * Create a new instance of the database blog
      */
     public DatabaseBlog() {
+    }
+
+    /**
+     * Retrieve the unique id
+     *
+     * @return Unique ID
+     */
+    public Integer getId() {
+        return _id;
+    }
+
+    /**
+     * Set the id
+     *
+     * @param id Unique ID
+     */
+    public void setId(Integer id) {
+        _id = id;
     }
 
     /**

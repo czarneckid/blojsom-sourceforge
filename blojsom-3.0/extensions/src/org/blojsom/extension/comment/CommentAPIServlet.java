@@ -78,7 +78,7 @@ import java.util.HashMap;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CommentAPIServlet.java,v 1.2 2006-03-24 19:04:32 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.3 2006-09-26 02:55:19 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet {
 
@@ -320,7 +320,7 @@ public class CommentAPIServlet extends HttpServlet {
                     comment.setAuthor(commentAuthor);
                     comment.setAuthorEmail(commentEmail);
                     comment.setAuthorURL(commentLink);
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setComment(commentText);
                     comment.setCommentDate(new Date());
                     comment.setEntry(entry);

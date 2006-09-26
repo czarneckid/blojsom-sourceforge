@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.4 2006-05-04 01:59:10 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.5 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin {
@@ -655,7 +655,7 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                             entry = _fetcher.newEntry();
 
                             entry.setBlogCategoryId(Integer.valueOf(categoryID));
-                            entry.setBlogId(mailbox.getBlogId());
+                            entry.setBlogId(mailbox.getId());
                             entry.setDate(new Date());
                             entry.setDescription(moblogText);
                             entry.setTitle(subject);

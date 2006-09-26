@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.14 2006-09-05 23:57:17 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.15 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -530,7 +530,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             // Create a category for the blog if one doesn't exist
             if (BlojsomUtils.checkNullOrBlank(blogCategoryId)) {
                 Category category = _fetcher.newCategory();
-                category.setBlogId(blog.getBlogId());
+                category.setBlogId(blog.getId());
                 category.setDescription("Uncategorized");
                 category.setName("uncategorized");
                 category.setParentCategoryId(null);
@@ -588,7 +588,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             Entry entry;
             entry = _fetcher.newEntry();
 
-            entry.setBlogId(blog.getBlogId());
+            entry.setBlogId(blog.getId());
             entry.setTitle(blogEntryTitle);
             entry.setBlogCategoryId(categoryId);
             entry.setDescription(blogEntryDescription);
@@ -748,7 +748,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 if (Response.COMMENT_TYPE.equals(responseType)) {
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(responseID);
                     _fetcher.loadComment(blog, comment);
                     _fetcher.deleteComment(blog, comment);
@@ -760,7 +760,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(responseID);
                     _fetcher.loadTrackback(blog, trackback);
                     _fetcher.deleteTrackback(blog, trackback);
@@ -772,7 +772,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.PINGBACK_TYPE.equals(responseType)) {
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(responseID);
                     _fetcher.loadPingback(blog, pingback);
                     _fetcher.deletePingback(blog, pingback);
@@ -821,7 +821,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 if (Response.COMMENT_TYPE.equals(responseType)) {
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(responseID);
                     _fetcher.loadComment(blog, comment);
                     comment.setStatus(ResponseConstants.APPROVED_STATUS);
@@ -834,7 +834,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(responseID);
                     _fetcher.loadTrackback(blog, trackback);
                     trackback.setStatus(ResponseConstants.APPROVED_STATUS);
@@ -847,7 +847,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.PINGBACK_TYPE.equals(responseType)) {
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(responseID);
                     _fetcher.loadPingback(blog, pingback);
                     pingback.setStatus(ResponseConstants.APPROVED_STATUS);
@@ -897,7 +897,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 if (Response.COMMENT_TYPE.equals(responseType)) {
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(responseID);
                     _fetcher.loadComment(blog, comment);
                     comment.setStatus(ResponseConstants.NEW_STATUS);
@@ -910,7 +910,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(responseID);
                     _fetcher.loadTrackback(blog, trackback);
                     trackback.setStatus(ResponseConstants.NEW_STATUS);
@@ -923,7 +923,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.PINGBACK_TYPE.equals(responseType)) {
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(responseID);
                     _fetcher.loadPingback(blog, pingback);
                     pingback.setStatus(ResponseConstants.NEW_STATUS);
@@ -973,7 +973,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 if (Response.COMMENT_TYPE.equals(responseType)) {
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(responseID);
                     _fetcher.loadComment(blog, comment);
                     comment.setStatus(ResponseConstants.SPAM_STATUS);
@@ -986,7 +986,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(responseID);
                     _fetcher.loadTrackback(blog, trackback);
                     trackback.setStatus(ResponseConstants.SPAM_STATUS);
@@ -999,7 +999,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.PINGBACK_TYPE.equals(responseType)) {
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(responseID);
                     _fetcher.loadPingback(blog, pingback);
                     pingback.setStatus(ResponseConstants.SPAM_STATUS);
@@ -1049,7 +1049,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
             try {
                 if (Response.COMMENT_TYPE.equals(responseType)) {
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(responseID);
                     _fetcher.loadComment(blog, comment);
                     comment.setStatus(ResponseConstants.NEW_STATUS);
@@ -1062,7 +1062,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.TRACKBACK_TYPE.equals(responseType)) {
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(responseID);
                     _fetcher.loadTrackback(blog, trackback);
                     trackback.setStatus(ResponseConstants.NEW_STATUS);
@@ -1075,7 +1075,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     }
                 } else if (Response.PINGBACK_TYPE.equals(responseType)) {
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(responseID);
                     _fetcher.loadPingback(blog, pingback);
                     pingback.setStatus(ResponseConstants.NEW_STATUS);

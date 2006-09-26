@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.5 2006-04-24 12:22:37 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.6 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -376,7 +376,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
 
                         if (!BlojsomUtils.checkNullOrBlank(blogLoginID) && !BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
                             User user = _fetcher.newUser();
-                            user.setBlogId(blogToAdd.getBlogId());
+                            user.setBlogId(blogToAdd.getId());
                             user.setUserEmail(blogUserEmail);
                             Map userMetaData = new HashMap();
                             userMetaData.put("all_permissions_permission", "true");

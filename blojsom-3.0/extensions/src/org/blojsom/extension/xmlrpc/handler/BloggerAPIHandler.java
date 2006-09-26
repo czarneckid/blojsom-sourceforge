@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BloggerAPIHandler.java,v 1.3 2006-04-27 20:03:00 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.4 2006-09-26 02:55:20 czarneckid Exp $
  */
 public class BloggerAPIHandler extends APIHandler {
 
@@ -309,7 +309,7 @@ public class BloggerAPIHandler extends APIHandler {
                     entry.setTitle(title);
                 }
 
-                entry.setBlogId(_blog.getBlogId());
+                entry.setBlogId(_blog.getId());
                 entry.setBlogCategoryId(category.getId());
                 entry.setDate(new Date());
                 entry.setModifiedDate(entry.getDate());

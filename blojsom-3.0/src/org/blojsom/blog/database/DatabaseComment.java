@@ -46,12 +46,12 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseComment.java,v 1.6 2006-09-05 17:30:26 czarneckid Exp $
+ * @version $Id: DatabaseComment.java,v 1.7 2006-09-26 02:55:21 czarneckid Exp $
  */
 public class DatabaseComment implements Comment, Serializable {
 
     protected Integer _id;
-    protected String _blogId;
+    protected Integer _blogId;
     protected Integer _blogEntryId;
     protected Entry _entry;
 
@@ -96,7 +96,7 @@ public class DatabaseComment implements Comment, Serializable {
      *
      * @param blogId Blog ID
      */
-    public void setBlogId(String blogId) {
+    public void setBlogId(Integer blogId) {
         _blogId = blogId;
     }
 
@@ -105,7 +105,7 @@ public class DatabaseComment implements Comment, Serializable {
      *
      * @return Blog ID
      */
-    public String getBlogId() {
+    public Integer getBlogId() {
         return _blogId;
     }
 

@@ -38,9 +38,23 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.4 2006-09-09 18:37:02 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
  */
 public interface Blog {
+
+    /**
+     * Retrieve the unique id
+     *
+     * @return Unique ID
+     */
+    public Integer getId();
+
+    /**
+     * Set the id
+     *
+     * @param id Unique ID
+     */
+    public void setId(Integer id);
 
     /**
      * Retrieve the blog ID

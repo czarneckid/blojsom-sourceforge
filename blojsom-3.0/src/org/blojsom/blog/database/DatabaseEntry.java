@@ -42,13 +42,13 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseEntry.java,v 1.4 2006-04-17 20:42:55 czarneckid Exp $
+ * @version $Id: DatabaseEntry.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
  */
 public class DatabaseEntry implements Entry, Serializable {
 
     protected Integer _id;
     protected Integer _blogCategoryId;
-    protected String _blogId;
+    protected Integer _blogId;
 
     protected String _title;
     protected String _link;
@@ -114,7 +114,7 @@ public class DatabaseEntry implements Entry, Serializable {
      *
      * @return Blog ID
      */
-    public String getBlogId() {
+    public Integer getBlogId() {
         return _blogId;
     }
 
@@ -123,7 +123,7 @@ public class DatabaseEntry implements Entry, Serializable {
      *
      * @param blogId Blog ID
      */
-    public void setBlogId(String blogId) {
+    public void setBlogId(Integer blogId) {
         _blogId = blogId;
     }
 

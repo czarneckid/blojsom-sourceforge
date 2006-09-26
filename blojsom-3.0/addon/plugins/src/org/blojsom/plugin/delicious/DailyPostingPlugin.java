@@ -55,7 +55,7 @@ import java.util.*;
  * Plugin to post links from your <a href="http://del.icio.us">del.icio.us</a> account to your blog.
  *
  * @author David Czarnecki
- * @version $Id: DailyPostingPlugin.java,v 1.1 2006-03-24 22:50:48 czarneckid Exp $
+ * @version $Id: DailyPostingPlugin.java,v 1.2 2006-09-26 02:55:18 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DailyPostingPlugin extends StandaloneVelocityPlugin {
@@ -287,7 +287,7 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                                             entry = _fetcher.newEntry();
 
                                             String title = MessageFormat.format(postTitle, new Object[]{nowAsString, deliciousUsername});
-                                            entry.setBlogId(blogID);
+                                            entry.setBlogId(blog.getId());
                                             entry.setTitle(title);
                                             entry.setDescription(renderedLinkTemplate);
                                             entry.setDate(new Date());

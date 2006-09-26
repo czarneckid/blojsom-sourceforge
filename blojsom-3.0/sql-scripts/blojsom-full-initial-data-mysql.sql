@@ -26,8 +26,9 @@ USE blojsom;
 
 DROP TABLE IF EXISTS `Blog`;
 CREATE TABLE `Blog` (
+  `id` int(11) NOT NULL auto_increment,
   `blog_id` varchar(50) NOT NULL,
-  PRIMARY KEY  (`blog_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -37,7 +38,7 @@ CREATE TABLE `Blog` (
 
 /*!40000 ALTER TABLE `Blog` DISABLE KEYS */;
 LOCK TABLES `Blog` WRITE;
-INSERT INTO `Blog` VALUES ('default');
+INSERT INTO `Blog` VALUES (1, 'default');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Blog` ENABLE KEYS */;
 
@@ -48,13 +49,13 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `Category`;
 CREATE TABLE `Category` (
   `category_id` int(11) NOT NULL auto_increment,
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `parent_category_id` int(11) default NULL,
   `name` text NOT NULL,
   `description` text,
   PRIMARY KEY  (`category_id`),
   KEY `category_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `category_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `category_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -64,7 +65,7 @@ CREATE TABLE `Category` (
 
 /*!40000 ALTER TABLE `Category` DISABLE KEYS */;
 LOCK TABLES `Category` WRITE;
-INSERT INTO `Category` VALUES (1,'default',NULL,'/uncategorized/','Uncategorized');
+INSERT INTO `Category` VALUES (1,1,NULL,'/uncategorized/','Uncategorized');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Category` ENABLE KEYS */;
 
@@ -107,10 +108,10 @@ CREATE TABLE `Comment` (
   `ip` varchar(100) default NULL,
   `status` varchar(255) default NULL,
   `comment_parent` int(11) default NULL,
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   PRIMARY KEY  (`comment_id`),
   KEY `comment_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `comment_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `comment_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -153,7 +154,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `Entry`;
 CREATE TABLE `Entry` (
   `entry_id` int(11) NOT NULL auto_increment,
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `title` text,
   `description` text,
   `entry_date` datetime NOT NULL,
@@ -167,7 +168,7 @@ CREATE TABLE `Entry` (
   `modified_date` datetime NOT NULL,
   PRIMARY KEY  (`entry_id`),
   KEY `entry_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE,
+  CONSTRAINT `entry_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE,
   CONSTRAINT `entry_category_categoryidfk` FOREIGN KEY (`blog_category_id`) REFERENCES `Category` (`category_id`) ON DELETE CASCADE  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -217,14 +218,14 @@ CREATE TABLE `Pingback` (
   `url` text,
   `blog_name` text,
   `trackback_date` datetime NOT NULL,
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `ip` varchar(100) default NULL,
   `status` varchar(255) default NULL,
   `source_uri` text NOT NULL,
   `target_uri` text NOT NULL,
   PRIMARY KEY  (`pingback_id`),
   KEY `pingback_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `pingback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `pingback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -266,11 +267,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Plugin`;
 CREATE TABLE `Plugin` (
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `plugin_flavor` varchar(50) NOT NULL,
   `plugin_value` varchar(4096) default NULL,
   KEY `plugin_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -280,7 +281,7 @@ CREATE TABLE `Plugin` (
 
 /*!40000 ALTER TABLE `Plugin` DISABLE KEYS */;
 LOCK TABLES `Plugin` WRITE;
-INSERT INTO `Plugin` VALUES ('default','html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags'),('default','default','conditional-get, meta, nofollow, rss-enclosure'),('default','admin','admin');
+INSERT INTO `Plugin` VALUES (1,'html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags'),(1,'default','conditional-get, meta, nofollow, rss-enclosure'),(1,'admin','admin');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Plugin` ENABLE KEYS */;
 
@@ -290,11 +291,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Properties`;
 CREATE TABLE `Properties` (
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `property_name` varchar(255) NOT NULL,
   `property_value` longtext,
   KEY `properties_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `properties_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `properties_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -304,7 +305,7 @@ CREATE TABLE `Properties` (
 
 /*!40000 ALTER TABLE `Properties` DISABLE KEYS */;
 LOCK TABLES `Properties` WRITE;
-INSERT INTO `Properties` VALUES ('default','blog-url','http://localhost:8080/blojsom/blog/default'),('default','blog-admin-url','http://localhost:8080/blojsom/blog/default'),('default','blog-base-url','http://localhost:8080/blojsom'),('default','blog-base-admin-url','http://localhost:8080/blojsom'),('default','blog-language','en'),('default','blog-name','NAME YOUR BLOG'),('default','blog-description','DESCRIBE YOUR BLOG'),('default','blog-entries-display','15'),('default','blog-owner','Default Owner'),('default','blog-owner-email','default_owner@email.com'),('default','blog-comments-enabled','true'),('default','blog-trackbacks-enabled','true'),('default','blog-email-enabled','true'),('default','blog-default-flavor','html'),('default','plugin-comment-autoformat','true'),('default','linear-navigation-enabled','true'),('default','comment-moderation-enabled','true'),('default','trackback-moderation-enabled','true'),('default','pingback-moderation-enabled','true'),('default','blog-ping-urls','http://rpc.pingomatic.com'),('default','blojsom-extension-metaweblog-accepted-types','image/jpeg, image/gif, image/png, img'),('default','xmlrpc-enabled','true'),('default','blog-pingbacks-enabled','true');
+INSERT INTO `Properties` VALUES (1,'blog-url','http://localhost:8080/blojsom/blog/default'),(1,'blog-admin-url','http://localhost:8080/blojsom/blog/default'),(1,'blog-base-url','http://localhost:8080/blojsom'),(1,'blog-base-admin-url','http://localhost:8080/blojsom'),(1,'blog-language','en'),(1,'blog-name','NAME YOUR BLOG'),(1,'blog-description','DESCRIBE YOUR BLOG'),(1,'blog-entries-display','15'),(1,'blog-owner','Default Owner'),(1,'blog-owner-email','default_owner@email.com'),(1,'blog-comments-enabled','true'),(1,'blog-trackbacks-enabled','true'),(1,'blog-email-enabled','true'),(1,'blog-default-flavor','html'),(1,'plugin-comment-autoformat','true'),(1,'linear-navigation-enabled','true'),(1,'comment-moderation-enabled','true'),(1,'trackback-moderation-enabled','true'),(1,'pingback-moderation-enabled','true'),(1,'blog-ping-urls','http://rpc.pingomatic.com'),(1,'blojsom-extension-metaweblog-accepted-types','image/jpeg, image/gif, image/png, img'),(1,'xmlrpc-enabled','true'),(1,'blog-pingbacks-enabled','true');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Properties` ENABLE KEYS */;
 
@@ -314,11 +315,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Template`;
 CREATE TABLE `Template` (
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `template_flavor` varchar(50) NOT NULL,
   `template_value` varchar(255) default NULL,
   KEY `template_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `template_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `template_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -328,7 +329,7 @@ CREATE TABLE `Template` (
 
 /*!40000 ALTER TABLE `Template` DISABLE KEYS */;
 LOCK TABLES `Template` WRITE;
-INSERT INTO `Template` VALUES ('default','rss','rss.vm, text/xml;charset=UTF-8'),('default','rsd','rsd.vm, application/rsd+xml;charset=UTF-8'),('default','html','asual.vm, text/html;charset=UTF-8'),('default','atom','atom.vm, application/atom+xml;charset=UTF-8'),('default','rss2','rss2.vm, text/xml;charset=UTF-8'),('default','rdf','rdf.vm, text/xml;charset=UTF-8'),('default','admin','org/blojsom/plugin/admin/templates/admin.vm, text/html;charset=UTF-8');
+INSERT INTO `Template` VALUES (1,'rss','rss.vm, text/xml;charset=UTF-8'),(1,'rsd','rsd.vm, application/rsd+xml;charset=UTF-8'),(1,'html','asual.vm, text/html;charset=UTF-8'),(1,'atom','atom.vm, application/atom+xml;charset=UTF-8'),(1,'rss2','rss2.vm, text/xml;charset=UTF-8'),(1,'rdf','rdf.vm, text/xml;charset=UTF-8'),(1,'admin','org/blojsom/plugin/admin/templates/admin.vm, text/html;charset=UTF-8');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Template` ENABLE KEYS */;
 
@@ -345,12 +346,12 @@ CREATE TABLE `Trackback` (
   `url` text,
   `blog_name` text,
   `trackback_date` datetime NOT NULL,
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   `ip` varchar(100) default NULL,
   `status` varchar(255) default NULL,
   PRIMARY KEY  (`trackback_id`),
   KEY `trackback_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `trackback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `trackback_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -399,10 +400,10 @@ CREATE TABLE `DBUser` (
   `user_email` varchar(100) NOT NULL,
   `user_registered` datetime NOT NULL,
   `user_status` varchar(64) NOT NULL,
-  `blog_id` varchar(50) NOT NULL,
+  `blog_id` int(11) NOT NULL,
   PRIMARY KEY  (`user_id`),
   KEY `user_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`blog_id`) ON DELETE CASCADE
+  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -412,7 +413,7 @@ CREATE TABLE `DBUser` (
 
 /*!40000 ALTER TABLE `DBUser` DISABLE KEYS */;
 LOCK TABLES `DBUser` WRITE;
-INSERT INTO `DBUser` VALUES (1,'default','default','Default User','default_owner@email.com',NOW(),'','default');
+INSERT INTO `DBUser` VALUES (1,'default','default','Default User','default_owner@email.com',NOW(),'',1);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `DBUser` ENABLE KEYS */;
 

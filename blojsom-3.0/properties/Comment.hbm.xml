@@ -13,7 +13,7 @@
         </id>
 
         <property name="blogId">
-            <column name="blog_id" length="50" not-null="true"/>
+            <column name="blog_id" not-null="true"/>
         </property>
 
         <property name="blogEntryId">

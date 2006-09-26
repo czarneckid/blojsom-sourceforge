@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Entry.java,v 1.4 2006-04-17 20:42:52 czarneckid Exp $
+ * @version $Id: Entry.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
  */
 public interface Entry {
 
@@ -63,14 +63,14 @@ public interface Entry {
      *
      * @return Blog ID
      */
-    String getBlogId();
+    Integer getBlogId();
 
     /**
      * Set the blog ID
      *
      * @param blogId Blog ID
      */
-    void setBlogId(String blogId);
+    void setBlogId(Integer blogId);
 
     /**
      * Get the blog category ID

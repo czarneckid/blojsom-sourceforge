@@ -59,7 +59,7 @@ import java.util.Map;
  * EditBlogCategoriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogCategoriesPlugin.java,v 1.3 2006-04-05 00:50:19 czarneckid Exp $
+ * @version $Id: EditBlogCategoriesPlugin.java,v 1.4 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
@@ -357,7 +357,7 @@ public class EditBlogCategoriesPlugin extends BaseAdminPlugin {
 
             blogCategory.setName(blogCategoryName);
             blogCategory.setDescription(blogCategoryDescription);
-            blogCategory.setBlogId(blog.getBlogId());
+            blogCategory.setBlogId(blog.getId());
             blogCategory.setMetaData(categoryMetaData);
 
             try {

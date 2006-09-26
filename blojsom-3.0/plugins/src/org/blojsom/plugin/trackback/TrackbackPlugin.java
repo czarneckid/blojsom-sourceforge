@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.7 2006-08-17 18:24:17 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.8 2006-09-26 02:55:20 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -486,7 +486,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
             trackback.setUrl(url);
             trackback.setBlogName(blogName);
             trackback.setTrackbackDate(new Date());
-            trackback.setBlogId(blog.getBlogId());
+            trackback.setBlogId(blog.getId());
             trackback.setIp(httpServletRequest.getRemoteAddr());
             trackback.setMetaData(trackbackMetaData);
             if (trackbackMetaData.containsKey(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED)

@@ -41,13 +41,13 @@ import java.io.Serializable;
  * DatabaseUser
  *
  * @author David Czarnecki
- * @version $Id: DatabaseUser.java,v 1.4 2006-05-13 14:09:56 czarneckid Exp $
+ * @version $Id: DatabaseUser.java,v 1.5 2006-09-26 02:55:22 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseUser implements User, Serializable {
 
     protected Integer _id;
-    protected String _blogId;
+    protected Integer _blogId;
     protected String _userLogin;
     protected String _userPassword;
     protected String _userName;
@@ -85,7 +85,7 @@ public class DatabaseUser implements User, Serializable {
      *
      * @return Blog ID
      */
-    public String getBlogId() {
+    public Integer getBlogId() {
         return _blogId;
     }
 
@@ -94,7 +94,7 @@ public class DatabaseUser implements User, Serializable {
      *
      * @param blogId Blog ID
      */
-    public void setBlogId(String blogId) {
+    public void setBlogId(Integer blogId) {
         _blogId = blogId;
     }
 

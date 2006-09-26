@@ -47,7 +47,7 @@ import java.util.Map;
  * Database authorization provider
  *
  * @author David Czarnecki
- * @version $Id: DatabaseAuthorizationProvider.java,v 1.5 2006-07-14 01:43:01 czarneckid Exp $
+ * @version $Id: DatabaseAuthorizationProvider.java,v 1.6 2006-09-26 02:55:21 czarneckid Exp $
  * @since blojsom. 3.0
  */
 public class DatabaseAuthorizationProvider implements AuthorizationProvider {
@@ -105,7 +105,7 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
             Transaction tx = session.beginTransaction();
 
             Criteria userCriteria = session.createCriteria(DatabaseUser.class);
-            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getBlogId()));
+            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getId()));
 
             DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
 
@@ -159,7 +159,7 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
             Transaction tx = session.beginTransaction();
 
             Criteria userCriteria = session.createCriteria(DatabaseUser.class);
-            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getBlogId()));
+            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getId()));
 
             DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
 

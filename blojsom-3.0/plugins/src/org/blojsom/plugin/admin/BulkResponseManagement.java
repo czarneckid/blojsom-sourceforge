@@ -60,7 +60,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BulkResponseManagement.java,v 1.4 2006-09-04 17:57:58 czarneckid Exp $
+ * @version $Id: BulkResponseManagement.java,v 1.5 2006-09-26 02:55:20 czarneckid Exp $
  */
 public class BulkResponseManagement extends BaseAdminPlugin {
 
@@ -197,7 +197,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                     String item = markspamComments[i];
                     entityID = Integer.valueOf(item);
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(entityID);
 
                     _fetcher.loadComment(blog, comment);
@@ -222,7 +222,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                     String item = markspamTrackbacks[i];
                     entityID = Integer.valueOf(item);
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(entityID);
 
                     _fetcher.loadTrackback(blog, trackback);
@@ -247,7 +247,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                     String item = markspamPingbacks[i];
                     entityID = Integer.valueOf(item);
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(entityID);
 
                     _fetcher.loadPingback(blog, pingback);
@@ -272,7 +272,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 try {
                     entityID = Integer.valueOf(item);
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(entityID);
 
                     _fetcher.loadComment(blog, comment);
@@ -297,7 +297,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 try {
                     entityID = Integer.valueOf(item);
                     Comment comment = _fetcher.newComment();
-                    comment.setBlogId(blog.getBlogId());
+                    comment.setBlogId(blog.getId());
                     comment.setId(entityID);
 
                     _fetcher.loadComment(blog, comment);
@@ -323,7 +323,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 try {
                     entityID = Integer.valueOf(item);
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(entityID);
 
                     _fetcher.loadTrackback(blog, trackback);
@@ -348,7 +348,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 try {
                     entityID = Integer.valueOf(item);
                     Trackback trackback = _fetcher.newTrackback();
-                    trackback.setBlogId(blog.getBlogId());
+                    trackback.setBlogId(blog.getId());
                     trackback.setId(entityID);
 
                     _fetcher.loadTrackback(blog, trackback);
@@ -374,7 +374,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 try {
                     entityID = Integer.valueOf(item);
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(entityID);
 
                     _fetcher.loadPingback(blog, pingback);
@@ -399,7 +399,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
                 try {
                     entityID = Integer.valueOf(item);
                     Pingback pingback = _fetcher.newPingback();
-                    pingback.setBlogId(blog.getBlogId());
+                    pingback.setBlogId(blog.getId());
                     pingback.setId(entityID);
 
                     _fetcher.loadPingback(blog, pingback);

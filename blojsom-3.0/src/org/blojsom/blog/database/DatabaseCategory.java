@@ -42,13 +42,13 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseCategory.java,v 1.3 2006-05-13 14:09:56 czarneckid Exp $
+ * @version $Id: DatabaseCategory.java,v 1.4 2006-09-26 02:55:21 czarneckid Exp $
  */
 public class DatabaseCategory implements Category, Serializable {
 
     private Integer _id;
     private Integer _parentCategoryId;
-    private String _blogId;
+    private Integer _blogId;
     private Category _parentCategory;
 
     protected String _name;
@@ -102,7 +102,7 @@ public class DatabaseCategory implements Category, Serializable {
      *
      * @return Blog ID
      */
-    public String getBlogId() {
+    public Integer getBlogId() {
         return _blogId;
     }
 
@@ -111,7 +111,7 @@ public class DatabaseCategory implements Category, Serializable {
      *
      * @param blogId Blog ID
      */
-    public void setBlogId(String blogId) {
+    public void setBlogId(Integer blogId) {
         _blogId = blogId;
     }
 

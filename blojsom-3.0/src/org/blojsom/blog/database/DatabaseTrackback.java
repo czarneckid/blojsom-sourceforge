@@ -45,13 +45,13 @@ import java.util.Map;
  * DatabaseTrackback
  *
  * @author David Czarnecki
- * @version $Id: DatabaseTrackback.java,v 1.5 2006-09-05 17:30:26 czarneckid Exp $
+ * @version $Id: DatabaseTrackback.java,v 1.6 2006-09-26 02:55:21 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseTrackback implements Trackback, Serializable {
 
     protected Integer _id;
-    protected String _blogId;
+    protected Integer _blogId;
     protected Integer _blogEntryId;
     protected Entry _entry;
 
@@ -94,7 +94,7 @@ public class DatabaseTrackback implements Trackback, Serializable {
      *
      * @param blogId Blog ID
      */
-    public void setBlogId(String blogId) {
+    public void setBlogId(Integer blogId) {
         _blogId = blogId;
     }
 
@@ -103,7 +103,7 @@ public class DatabaseTrackback implements Trackback, Serializable {
      *
      * @return Blog ID
      */
-    public String getBlogId() {
+    public Integer getBlogId() {
         return _blogId;
     }
 

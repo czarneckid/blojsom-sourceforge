@@ -42,13 +42,14 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: Mailbox.java,v 1.1 2006-03-24 23:48:44 czarneckid Exp $
+ * @version $Id: Mailbox.java,v 1.2 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class Mailbox {
 
     private static final String DEFAULT_FOLDER = "INBOX";
 
+    private Integer _id;
     private String _blogId;
     private String _hostName;
     private String _userId;
@@ -404,6 +405,24 @@ public class Mailbox {
      */
     public void setBlogId(String blogId) {
         _blogId = blogId;
+    }
+
+    /**
+     * Get the ID of the blog
+     *
+     * @return ID of the blog
+     */
+    public Integer getId() {
+        return _id;
+    }
+
+    /**
+     * Set the ID of the blog
+     *
+     * @param id ID of the blog
+     */
+    public void setId(Integer id) {
+        _id = id;
     }
 
     /**

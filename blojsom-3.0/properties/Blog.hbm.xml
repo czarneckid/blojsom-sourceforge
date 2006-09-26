@@ -7,10 +7,15 @@
 
     <class name="org.blojsom.blog.database.DatabaseBlog" table="Blog" lazy="false">
 
-        <id name="blogId">
-            <column name="blog_id" sql-type="string" not-null="true" unique="true"/>
-            <generator class="assigned"/>
+
+        <id name="id">
+            <column name="id" sql-type="integer" not-null="true" unique="true"/>
+            <generator class="identity"/>
         </id>
+
+        <property name="blogId">
+            <column name="blog_id" sql-type="string" not-null="true" unique="true"/>
+        </property>
 
         <map name="templates" table="Template" cascade="all" inverse="false" lazy="false">
             <key column="blog_id" not-null="true"/>

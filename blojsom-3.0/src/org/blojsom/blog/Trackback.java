@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * @author David Czarnecki
- * @version $Id: Trackback.java,v 1.4 2006-09-05 17:30:25 czarneckid Exp $
+ * @version $Id: Trackback.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface Trackback extends Response {
@@ -60,14 +60,14 @@ public interface Trackback extends Response {
      *
      * @param blogId Blog ID
      */
-    void setBlogId(String blogId);
+    void setBlogId(Integer blogId);
 
     /**
      * Get the blog ID
      *
      * @return Blog ID
      */
-    String getBlogId();
+    Integer getBlogId();
 
     /**
      * Get the blog entry ID

@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.29 2006-08-16 23:20:56 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.30 2006-09-26 02:55:24 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -203,8 +203,15 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
         try {
             tx = session.beginTransaction();
-            blog = (Blog) session.load(DatabaseBlog.class, blogId);
+            Criteria blogCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseBlog.class);
+            blogCriteria.add(Restrictions.eq("blogId", blogId));
+            blog = (Blog) blogCriteria.uniqueResult();
+
             tx.commit();
+
+            if (blog == null) {
+                throw new FetcherException("Blog id: " + blogId + " not found");
+            }
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -336,7 +343,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-            permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
                     .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS))
                     .add(Restrictions.lt("date", new Date()));
@@ -346,9 +353,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
             if (permalinkEntryList.size() == 1) {
                 DatabaseEntry entry = (DatabaseEntry) permalinkEntryList.get(0);
                 context.put(BlojsomConstants.BLOJSOM_PERMALINK, entry.getId());
-
                 permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
                         .add(Restrictions.gt("date", entry.getDate()))
                         .add(Restrictions.lt("date", new Date()))
                         .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
@@ -367,7 +373,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 }
 
                 permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                permalinkCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+                permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
                         .add(Restrictions.lt("date", entry.getDate()))
                         .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 permalinkCriteria.addOrder(Order.desc("date"));
@@ -413,7 +419,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 Transaction tx = session.beginTransaction();
 
                 Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+                entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
                 entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
                 entryCriteria.add(Restrictions.lt("date", new Date()));
                 entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
@@ -433,7 +439,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 Transaction tx = session.beginTransaction();
 
                 Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+                entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
                 entryCriteria.add(Restrictions.lt("date", new Date()));
                 entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 entryCriteria.addOrder(Order.desc("date"));
@@ -465,7 +471,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
-            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
             entryCriteria.add(Restrictions.eq("blogCategoryId", categoryId));
             entryCriteria.addOrder(Order.desc("date"));
             entryCriteria.setCacheable(true);
@@ -500,7 +506,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
-            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
             entryCriteria.add(Restrictions.eq("blogCategoryId", categoryId));
             entryCriteria.addOrder(Order.desc("date"));
             entryCriteria.setMaxResults(limit.intValue());
@@ -546,7 +552,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         page *= pageSize;
 
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
         entryCriteria.addOrder(Order.desc("date"));
         entryCriteria.setMaxResults(pageSize);
         entryCriteria.setFirstResult(page);
@@ -573,7 +579,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         Transaction tx = session.beginTransaction();
 
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
         entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE),
                 Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
                 .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
@@ -613,7 +619,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         }
 
         List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value").setCacheable(true)
-                .setString("blogId", blog.getBlogId())
+                .setInteger("blogId", blog.getId().intValue())
                 .setString("metadataKey", metadataKey)
                 .setString("metadataValue", valueSearch).list();
 
@@ -636,7 +642,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         Transaction tx = session.beginTransaction();
 
         List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key").setCacheable(true)
-                .setString("blogId", blog.getBlogId())
+                .setInteger("blogId", blog.getId().intValue())
                 .setString("metadataKey", metadataKey).list();
 
         tx.commit();
@@ -660,7 +666,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
-            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
             entryCriteria.add(Restrictions.between("date", startDate, endDate));
             entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
             entryCriteria.addOrder(Order.desc("date"));
@@ -694,7 +700,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
         entryCriteria.setProjection(Projections.rowCount());
-        entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
         entryCriteria.add(Restrictions.lt("date", new Date()));
         entryCriteria.setCacheable(true);
 
@@ -720,7 +726,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
-            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("id", entryId));
 
             Entry entry = (DatabaseEntry) entryCriteria.uniqueResult();
@@ -753,7 +759,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
-            entryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("postSlug", postSlug));
 
             Entry entry = (DatabaseEntry) entryCriteria.uniqueResult();
@@ -846,7 +852,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             // Get the requested category and put it in the context
             String requestedCategory = getBlogCategory(blog, httpServletRequest);
             Criteria requestedCategoryCriteria = session.createCriteria(DatabaseCategory.class);
-            requestedCategoryCriteria.add(Restrictions.and(Restrictions.eq("name", BlojsomUtils.addSlashes(requestedCategory)), Restrictions.eq("blogId", blog.getBlogId())));
+            requestedCategoryCriteria.add(Restrictions.and(Restrictions.eq("name", BlojsomUtils.addSlashes(requestedCategory)), Restrictions.eq("blogId", blog.getId())));
             DatabaseCategory dbCategory = (DatabaseCategory) requestedCategoryCriteria.uniqueResult();
 
             if (dbCategory != null) {
@@ -855,7 +861,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             // Get all categories and put them in the context
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
-            categoryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+            categoryCriteria.add(Restrictions.eq("blogId", blog.getId()));
             categoryCriteria.addOrder(Order.asc("name"));
 
             List allCategories = categoryCriteria.list();
@@ -889,7 +895,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
-            categoryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+            categoryCriteria.add(Restrictions.eq("blogId", blog.getId()));
             categoryCriteria.addOrder(Order.asc("name"));
 
             List allCategories = categoryCriteria.list();
@@ -921,7 +927,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
-            categoryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            categoryCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("id", categoryId));
 
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
@@ -953,7 +959,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
-            categoryCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            categoryCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("name", name));
 
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
@@ -1015,7 +1021,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             if (entry.getBlogId() == null) {
-                entry.setBlogId(blog.getBlogId());
+                entry.setBlogId(blog.getId());
             }
 
             if (entry.getDate() == null) {
@@ -1065,7 +1071,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             tx.commit();
             session.close();
 
-            if (!blog.getBlogId().equals(entry.getBlogId())) {
+            if (!blog.getId().equals(entry.getBlogId())) {
                 throw new FetcherException("Entry blog ID not associated with blog ID from call");
             }
         } catch (HibernateException e) {
@@ -1089,7 +1095,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this entry");
         }
 
-        if (!blog.getBlogId().equals(entry.getBlogId())) {
+        if (!blog.getId().equals(entry.getBlogId())) {
             throw new FetcherException("Entry blog ID not associated with blog ID from call");
         }
 
@@ -1160,7 +1166,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             tx.commit();
             session.close();
 
-            if (!blog.getBlogId().equals(category.getBlogId())) {
+            if (!blog.getId().equals(category.getBlogId())) {
                 throw new FetcherException("Category blog ID not associated with blog ID from call");
             }
         } catch (HibernateException e) {
@@ -1184,7 +1190,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this category");
         }
 
-        if (!blog.getBlogId().equals(category.getBlogId())) {
+        if (!blog.getId().equals(category.getBlogId())) {
             throw new FetcherException("Category blog ID not associated with blog ID from call");
         }
 
@@ -1306,7 +1312,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
-            commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("status", "approved"))
                     .addOrder(Order.desc("commentDate"));
             commentsCriteria.setCacheable(true);
@@ -1440,7 +1446,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
-            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("status", "approved"))
                     .addOrder(Order.desc("trackbackDate"));
             trackbacksCriteria.setCacheable(true);
@@ -1548,7 +1554,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria pingbackCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
-            pingbackCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            pingbackCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("sourceURI", sourceURI))
                     .add(Restrictions.eq("targetURI", targetURI));
 
@@ -1610,7 +1616,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria pingbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
-            pingbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            pingbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.eq("status", "approved"))
                     .addOrder(Order.desc("trackbackDate"));
             pingbacksCriteria.setCacheable(true);
@@ -1655,7 +1661,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria userCriteria = session.createCriteria(DatabaseUser.class);
-            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getBlogId()));
+            userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getId()));
 
             DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
 
@@ -1687,7 +1693,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         Transaction tx = session.beginTransaction();
 
         Criteria userCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseUser.class);
-        userCriteria.add(Restrictions.eq("blogId", blog.getBlogId()));
+        userCriteria.add(Restrictions.eq("blogId", blog.getId()));
         userCriteria.addOrder(Order.asc("userLogin"));
 
         List userList = userCriteria.list();
@@ -1723,7 +1729,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 Transaction tx = session.beginTransaction();
 
                 User user = (DatabaseUser) session.load(DatabaseUser.class, userID);
-                if (!user.getBlogId().equals(blog.getBlogId())) {
+                if (!user.getBlogId().equals(blog.getId())) {
                     tx.commit();
                     session.close();
 
@@ -1789,7 +1795,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             User userToDelete = (DatabaseUser) session.load(DatabaseUser.class, userID);
-            if (!userToDelete.getBlogId().equals(blog.getBlogId())) {
+            if (!userToDelete.getBlogId().equals(blog.getId())) {
                 tx.commit();
                 session.close();
 
@@ -1825,13 +1831,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
-            commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.in("status", status));
 
             responses.addAll(commentsCriteria.list());
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
-            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.in("status", status));
 
             responses.addAll(trackbacksCriteria.list());
@@ -1866,7 +1872,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Transaction tx = session.beginTransaction();
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
-            commentsCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.disjunction()
                             .add(Restrictions.ilike("author", query, MatchMode.ANYWHERE))
                             .add(Restrictions.ilike("authorURL", query, MatchMode.ANYWHERE))
@@ -1877,7 +1883,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
             responses.addAll(commentsCriteria.list());
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
-            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getBlogId()))
+            trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
                     .add(Restrictions.disjunction()
                             .add(Restrictions.ilike("title", query, MatchMode.ANYWHERE))
                             .add(Restrictions.ilike("excerpt", query, MatchMode.ANYWHERE))

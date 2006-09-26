@@ -37,7 +37,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Category.java,v 1.2 2006-03-21 02:40:40 czarneckid Exp $
+ * @version $Id: Category.java,v 1.3 2006-09-26 02:55:21 czarneckid Exp $
  */
 public interface Category {
 
@@ -74,14 +74,14 @@ public interface Category {
      *
      * @return Blog ID
      */
-    String getBlogId();
+    Integer getBlogId();
 
     /**
      * Set the blog ID
      *
      * @param blogId Blog ID
      */
-    void setBlogId(String blogId);
+    void setBlogId(Integer blogId);
 
     /**
      * Return the category name

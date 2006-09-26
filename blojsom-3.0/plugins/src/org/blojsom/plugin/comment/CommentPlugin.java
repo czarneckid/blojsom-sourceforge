@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.10 2006-08-17 18:25:16 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.11 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -612,7 +612,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                 comment.setAuthorURL(authorURL);
                 comment.setComment(userComment);
                 comment.setCommentDate(new Date());
-                comment.setBlogId(blog.getBlogId());
+                comment.setBlogId(blog.getId());
                 comment.setIp(httpServletRequest.getRemoteAddr());
                 if (commentMetaData.containsKey(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED) &&
                         "true".equals(commentMetaData.get(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED))) {

@@ -45,7 +45,7 @@ import java.util.Map;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.3 2006-05-04 14:07:34 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.4 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPluginUtils {
@@ -63,6 +63,8 @@ public class MoblogPluginUtils {
         Mailbox mailbox = new Mailbox();
         mailbox.setEnabled(false);
 
+        mailbox.setId(blog.getId());
+        
         String blogID = blog.getBlogId();
         mailbox.setBlogId(blogID);
         mailbox.setBlogBaseURL(blog.getBlogBaseURL());

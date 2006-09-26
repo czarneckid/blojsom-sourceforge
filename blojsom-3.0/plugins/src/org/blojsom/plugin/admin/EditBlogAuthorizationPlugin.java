@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.8 2006-08-17 01:01:17 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.9 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -249,7 +249,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     }
 
                     user = new DatabaseUser();
-                    user.setBlogId(blog.getBlogId());
+                    user.setBlogId(blog.getId());
                     user.setUserEmail(blogUserEmail);
                     user.setUserLogin(blogLoginID);
                     user.setUserName(blogUserName);

@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.6 2006-08-17 18:25:46 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.7 2006-09-26 02:55:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
@@ -246,7 +246,7 @@ public class PingbackHandler extends APIHandler {
                 // Record pingback
                 Pingback pingback = _fetcher.newPingback();
                 pingback.setBlogEntryId(entry.getId());
-                pingback.setBlogId(_blog.getBlogId());
+                pingback.setBlogId(_blog.getId());
                 pingback.setEntry(entry);
                 pingback.setIp(_httpServletRequest.getRemoteAddr());
                 pingback.setSourceURI(sourceURI);

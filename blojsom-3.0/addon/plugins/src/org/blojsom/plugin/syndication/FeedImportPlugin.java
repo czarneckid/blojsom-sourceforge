@@ -62,7 +62,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.6 2006-08-18 17:24:11 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.7 2006-09-26 02:55:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -194,7 +194,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                 category = _fetcher.loadCategory(blog, categoryName);
                                 if (category == null) {
                                     category = _fetcher.newCategory();
-                                    category.setBlogId(blog.getBlogId());
+                                    category.setBlogId(blog.getId());
                                     category.setName(categoryName);
                                     category.setDescription(categoryName.replaceAll("/", " "));
                                 }
@@ -203,7 +203,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                     _logger.error(e);
                                 }
 
-                                category.setBlogId(blog.getBlogId());
+                                category.setBlogId(blog.getId());
                                 category.setName(categoryName);
                             }
 
@@ -218,7 +218,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
                             Entry newEntry;
                             newEntry = _fetcher.newEntry();
 
-                            newEntry.setBlogId(blog.getBlogId());
+                            newEntry.setBlogId(blog.getId());
                             newEntry.setTitle(entry.getTitle());
                             newEntry.setBlogCategoryId(category.getId());
                             newEntry.setBlogCategory(category);
@@ -311,7 +311,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                             comment.setCommentDate(simpleComment.getCommentDate());
                                             comment.setIp(simpleComment.getIp());
                                             comment.setStatus(simpleComment.getStatus());
-                                            comment.setBlogId(blog.getBlogId());
+                                            comment.setBlogId(blog.getId());
                                             comment.setBlogEntryId(newEntry.getId());
 
                                             if (simpleComment.getMetadata() != null && simpleComment.getMetadata().size() > 0) {
@@ -346,7 +346,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                             trackback.setTrackbackDate(simpleTrackback.getTrackbackDate());
                                             trackback.setStatus(simpleTrackback.getStatus());
                                             trackback.setBlogEntryId(newEntry.getId());
-                                            trackback.setBlogId(blog.getBlogId());
+                                            trackback.setBlogId(blog.getId());
 
                                             if (simpleTrackback.getMetadata() != null && simpleTrackback.getMetadata().size() > 0) {
                                                 Map metadataForTrackback = trackback.getMetaData();
@@ -382,7 +382,7 @@ public class FeedImportPlugin extends WebAdminPlugin {
                                             pingback.setSourceURI(simplePingback.getSourceURI());
                                             pingback.setTargetURI(simplePingback.getTargetURI());
                                             pingback.setBlogEntryId(newEntry.getId());
-                                            pingback.setBlogId(blog.getBlogId());
+                                            pingback.setBlogId(blog.getId());
 
                                             if (simplePingback.getMetadata() != null && simplePingback.getMetadata().size() > 0) {
                                                 Map metadataForPingback = pingback.getMetaData();
