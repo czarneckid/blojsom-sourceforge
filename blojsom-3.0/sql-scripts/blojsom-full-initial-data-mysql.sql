@@ -147,6 +147,63 @@ LOCK TABLES `CommentMetadata` WRITE;
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `CommentMetadata` ENABLE KEYS */;
 
+
+--
+-- Table structure for table `DBUser`
+--
+
+DROP TABLE IF EXISTS `DBUser`;
+CREATE TABLE `DBUser` (
+  `user_id` int(11) NOT NULL auto_increment,
+  `user_login` varchar(50) NOT NULL,
+  `user_password` varchar(64) NOT NULL,
+  `user_name` varchar(250) NOT NULL,
+  `user_email` varchar(100) NOT NULL,
+  `user_registered` datetime NOT NULL,
+  `user_status` varchar(64) NOT NULL,
+  `blog_id` int(11) NOT NULL,
+  PRIMARY KEY  (`user_id`),
+  KEY `user_blog_blogidfk` (`blog_id`),
+  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `DBUser`
+--
+
+
+/*!40000 ALTER TABLE `DBUser` DISABLE KEYS */;
+LOCK TABLES `DBUser` WRITE;
+INSERT INTO `DBUser` VALUES (1,'default','default','Default User','default_owner@email.com',NOW(),'',1);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `DBUser` ENABLE KEYS */;
+
+--
+-- Table structure for table `DBUserMetadata`
+--
+
+DROP TABLE IF EXISTS `DBUserMetadata`;
+CREATE TABLE `DBUserMetadata` (
+  `user_metadata_id` int(11) NOT NULL auto_increment,
+  `user_id` int(11) NOT NULL,
+  `metadata_key` varchar(255) NOT NULL,
+  `metadata_value` text,
+  PRIMARY KEY  (`user_metadata_id`),
+  KEY `usermetadata_user_useridfk` (`user_id`),
+  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `DBUser` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `DBUserMetadata`
+--
+
+
+/*!40000 ALTER TABLE `DBUserMetadata` DISABLE KEYS */;
+LOCK TABLES `DBUserMetadata` WRITE;
+INSERT INTO `DBUserMetadata` VALUES (1,1,'all_permissions_permission','true');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `DBUserMetadata` ENABLE KEYS */;
+
 --
 -- Table structure for table `Entry`
 --
@@ -386,62 +443,6 @@ CREATE TABLE `TrackbackMetadata` (
 LOCK TABLES `TrackbackMetadata` WRITE;
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `TrackbackMetadata` ENABLE KEYS */;
-
---
--- Table structure for table `DBUser`
---
-
-DROP TABLE IF EXISTS `DBUser`;
-CREATE TABLE `DBUser` (
-  `user_id` int(11) NOT NULL auto_increment,
-  `user_login` varchar(50) NOT NULL,
-  `user_password` varchar(64) NOT NULL,
-  `user_name` varchar(250) NOT NULL,
-  `user_email` varchar(100) NOT NULL,
-  `user_registered` datetime NOT NULL,
-  `user_status` varchar(64) NOT NULL,
-  `blog_id` int(11) NOT NULL,
-  PRIMARY KEY  (`user_id`),
-  KEY `user_blog_blogidfk` (`blog_id`),
-  CONSTRAINT `user_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `DBUser`
---
-
-
-/*!40000 ALTER TABLE `DBUser` DISABLE KEYS */;
-LOCK TABLES `DBUser` WRITE;
-INSERT INTO `DBUser` VALUES (1,'default','default','Default User','default_owner@email.com',NOW(),'',1);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `DBUser` ENABLE KEYS */;
-
---
--- Table structure for table `DBUserMetadata`
---
-
-DROP TABLE IF EXISTS `DBUserMetadata`;
-CREATE TABLE `DBUserMetadata` (
-  `user_metadata_id` int(11) NOT NULL auto_increment,
-  `user_id` int(11) NOT NULL,
-  `metadata_key` varchar(255) NOT NULL,
-  `metadata_value` text,
-  PRIMARY KEY  (`user_metadata_id`),
-  KEY `usermetadata_user_useridfk` (`user_id`),
-  CONSTRAINT `usermetadata_user_useridfk` FOREIGN KEY (`user_id`) REFERENCES `DBUser` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `DBUserMetadata`
---
-
-
-/*!40000 ALTER TABLE `DBUserMetadata` DISABLE KEYS */;
-LOCK TABLES `DBUserMetadata` WRITE;
-INSERT INTO `DBUserMetadata` VALUES (1,1,'all_permissions_permission','true');
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `DBUserMetadata` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
