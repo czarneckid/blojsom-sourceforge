@@ -64,7 +64,7 @@ CREATE TABLE Category (
   category_id SERIAL PRIMARY KEY,
   blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   parent_category_id int default NULL,
-  name text NOT NULL,
+  name varchar(255) NOT NULL,
   description text
 );
 
@@ -81,7 +81,7 @@ INSERT INTO Category VALUES (1,1,NULL,'/uncategorised/','Uncategorised');
 -- DROP TABLE CategoryMetadata;
 CREATE TABLE CategoryMetadata (
   category_id int NOT NULL REFERENCES Category (category_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -98,9 +98,9 @@ CREATE TABLE CategoryMetadata (
 CREATE TABLE Comment (
   comment_id SERIAL PRIMARY KEY,
   entry_id int NOT NULL,
-  author text,
-  author_url text,
-  author_email text,
+  author varchar(250),
+  author_url varchar(250),
+  author_email varchar(100),
   comment text,
   date timestamp NOT NULL,
   ip varchar(100) default NULL,
@@ -121,7 +121,7 @@ CREATE TABLE Comment (
 -- DROP TABLE CommentMetadata;
 CREATE TABLE CommentMetadata (
   comment_id int NOT NULL REFERENCES Comment (comment_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -178,16 +178,16 @@ INSERT INTO DBUserMetadata VALUES (1,1,'all_permissions_permission','true');
 CREATE TABLE Entry (
   entry_id SERIAL PRIMARY KEY,
   blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
-  title text,
+  title varchar(255),
   description text,
   entry_date timestamp NOT NULL,
   blog_category_id int NOT NULL REFERENCES Category (category_id) ON DELETE CASCADE,
-  status text,
-  author text,
+  status varchar(255),
+  author varchar(250),
   allow_comments int default '1',
   allow_trackbacks int default '1',
   allow_pingbacks int default '1',
-  post_slug text NOT NULL,
+  post_slug varchar(255) NOT NULL,
   modified_date timestamp NOT NULL
 );
 
@@ -203,7 +203,7 @@ CREATE TABLE Entry (
 -- DROP TABLE EntryMetadata;
 CREATE TABLE EntryMetadata (
   entry_id int NOT NULL REFERENCES Entry (entry_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -220,16 +220,16 @@ CREATE TABLE EntryMetadata (
 CREATE TABLE Pingback (
   pingback_id SERIAL PRIMARY KEY,
   entry_id int NOT NULL,
-  title text,
-  excerpt text,
-  url text,
-  blog_name text,
+  title varchar(255),
+  excerpt varchar(500),
+  url varchar(255),
+  blog_name varchar(255),
   trackback_date timestamp NOT NULL,
   blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   ip varchar(100) default NULL,
   status varchar(255) default NULL,
-  source_uri text NOT NULL,
-  target_uri text NOT NULL
+  source_uri varchar(255) NOT NULL,
+  target_uri varchar(255) NOT NULL
 );
 
 --
@@ -244,7 +244,7 @@ CREATE TABLE Pingback (
 -- DROP TABLE PingbackMetadata;
 CREATE TABLE PingbackMetadata (
   pingback_id int NOT NULL REFERENCES Pingback (pingback_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -342,10 +342,10 @@ INSERT INTO Template VALUES (1,'admin','org/blojsom/plugin/admin/templates/admin
 CREATE TABLE Trackback (
   trackback_id SERIAL PRIMARY KEY,
   entry_id int NOT NULL,
-  title text,
-  excerpt text,
-  url text,
-  blog_name text,
+  title varchar(255),
+  excerpt varchar(500),
+  url varchar(255),
+  blog_name varchar(255),
   trackback_date timestamp NOT NULL,
   blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   ip varchar(100) default NULL,
@@ -364,7 +364,7 @@ CREATE TABLE Trackback (
 -- DROP TABLE TrackbackMetadata;
 CREATE TABLE TrackbackMetadata (
   trackback_id int NOT NULL REFERENCES Trackback (trackback_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 

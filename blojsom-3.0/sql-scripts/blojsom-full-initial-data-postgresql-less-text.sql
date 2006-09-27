@@ -81,7 +81,7 @@ INSERT INTO Category VALUES (1,1,NULL,'/uncategorised/','Uncategorised');
 -- DROP TABLE CategoryMetadata;
 CREATE TABLE CategoryMetadata (
   category_id int NOT NULL REFERENCES Category (category_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -121,7 +121,7 @@ CREATE TABLE Comment (
 -- DROP TABLE CommentMetadata;
 CREATE TABLE CommentMetadata (
   comment_id int NOT NULL REFERENCES Comment (comment_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -203,7 +203,7 @@ CREATE TABLE Entry (
 -- DROP TABLE EntryMetadata;
 CREATE TABLE EntryMetadata (
   entry_id int NOT NULL REFERENCES Entry (entry_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -244,7 +244,7 @@ CREATE TABLE Pingback (
 -- DROP TABLE PingbackMetadata;
 CREATE TABLE PingbackMetadata (
   pingback_id int NOT NULL REFERENCES Pingback (pingback_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 
@@ -364,7 +364,7 @@ CREATE TABLE Trackback (
 -- DROP TABLE TrackbackMetadata;
 CREATE TABLE TrackbackMetadata (
   trackback_id int NOT NULL REFERENCES Trackback (trackback_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
 

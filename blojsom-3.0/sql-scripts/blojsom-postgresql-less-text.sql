@@ -1,14 +1,4 @@
---
--- Initial database creation
---
-
--- Create the database blojsom and set the owner to the blojsom user prior to
--- running this script.
--- DROP DATABASE blojsom;
--- CREATE DATABASE blojsom OWNER blojsom ENCODING 'UTF8';
--- USE blojsom;
-
--- There is no conditional drop in PostgreSQL.
+﻿-- There is no conditional drop in PostgreSQL.
 -- Commented out for now in case the error from a failed DROP is not handled.
 
 -- Alter tables to drop foreign key constraints
@@ -50,12 +40,6 @@ CREATE TABLE Blog (
 );
 
 --
--- Dumping data for table Blog
---
-
-INSERT INTO Blog VALUES (1,'default');
-
---
 -- Table structure for table Category
 --
 
@@ -69,26 +53,15 @@ CREATE TABLE Category (
 );
 
 --
--- Dumping data for table Category
---
-
-INSERT INTO Category VALUES (1,1,NULL,'/uncategorised/','Uncategorised');
-
---
 -- Table structure for table CategoryMetadata
 --
 
 -- DROP TABLE CategoryMetadata;
 CREATE TABLE CategoryMetadata (
   category_id int NOT NULL REFERENCES Category (category_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
-
---
--- Dumping data for table CategoryMetadata
---
-
 
 --
 -- Table structure for table Comment
@@ -110,25 +83,15 @@ CREATE TABLE Comment (
 );
 
 --
--- Dumping data for table Comment
---
-
-
---
 -- Table structure for table CommentMetadata
 --
 
 -- DROP TABLE CommentMetadata;
 CREATE TABLE CommentMetadata (
   comment_id int NOT NULL REFERENCES Comment (comment_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
-
---
--- Dumping data for table CommentMetadata
---
-
 
 --
 -- Table structure for table DBUser
@@ -147,12 +110,6 @@ CREATE TABLE DBUser (
 );
 
 --
--- Dumping data for table DBUser
---
-
-INSERT INTO DBUser VALUES (1,'default','default','Default User','default_owner@email.com',NOW(),'',1);
-
---
 -- Table structure for table DBUserMetadata
 --
 
@@ -163,12 +120,6 @@ CREATE TABLE DBUserMetadata (
   metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
-
---
--- Dumping data for table DBUserMetadata
---
-
-INSERT INTO DBUserMetadata VALUES (1,1,'all_permissions_permission','true');
 
 --
 -- Table structure for table Entry
@@ -192,25 +143,15 @@ CREATE TABLE Entry (
 );
 
 --
--- Dumping data for table Entry
---
-
-
---
 -- Table structure for table EntryMetadata
 --
 
 -- DROP TABLE EntryMetadata;
 CREATE TABLE EntryMetadata (
   entry_id int NOT NULL REFERENCES Entry (entry_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
-
---
--- Dumping data for table EntryMetadata
---
-
 
 --
 -- Table structure for table Pingback
@@ -233,25 +174,15 @@ CREATE TABLE Pingback (
 );
 
 --
--- Dumping data for table Pingback
---
-
-
---
 -- Table structure for table PingbackMetadata
 --
 
 -- DROP TABLE PingbackMetadata;
 CREATE TABLE PingbackMetadata (
   pingback_id int NOT NULL REFERENCES Pingback (pingback_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
-
---
--- Dumping data for table PingbackMetadata
---
-
 
 --
 -- Table structure for table Plugin
@@ -265,14 +196,6 @@ CREATE TABLE Plugin (
 );
 
 --
--- Dumping data for table Plugin
---
-
-INSERT INTO Plugin VALUES (1,'html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags');
-INSERT INTO Plugin VALUES (1,'default','conditional-get, meta, nofollow, rss-enclosure');
-INSERT INTO Plugin VALUES (1,'admin','admin');
-
---
 -- Table structure for table Properties
 --
 
@@ -280,36 +203,8 @@ INSERT INTO Plugin VALUES (1,'admin','admin');
 CREATE TABLE Properties (
   blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   property_name varchar(255) NOT NULL,
-  property_value text
+  property_value longtext
 );
-
---
--- Dumping data for table Properties
---
-
-INSERT INTO Properties VALUES (1,'blog-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Properties VALUES (1,'blog-admin-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Properties VALUES (1,'blog-base-url','http://localhost:8080/blojsom');
-INSERT INTO Properties VALUES (1,'blog-base-admin-url','http://localhost:8080/blojsom');
-INSERT INTO Properties VALUES (1,'blog-language','en');
-INSERT INTO Properties VALUES (1,'blog-name','NAME YOUR BLOG');
-INSERT INTO Properties VALUES (1,'blog-description','DESCRIBE YOUR BLOG');
-INSERT INTO Properties VALUES (1,'blog-entries-display','15');
-INSERT INTO Properties VALUES (1,'blog-owner','Default Owner');
-INSERT INTO Properties VALUES (1,'blog-owner-email','default_owner@email.com');
-INSERT INTO Properties VALUES (1,'blog-comments-enabled','true');
-INSERT INTO Properties VALUES (1,'blog-trackbacks-enabled','true');
-INSERT INTO Properties VALUES (1,'blog-email-enabled','true');
-INSERT INTO Properties VALUES (1,'blog-default-flavor','html');
-INSERT INTO Properties VALUES (1,'plugin-comment-autoformat','true');
-INSERT INTO Properties VALUES (1,'linear-navigation-enabled','true');
-INSERT INTO Properties VALUES (1,'comment-moderation-enabled','true');
-INSERT INTO Properties VALUES (1,'trackback-moderation-enabled','true');
-INSERT INTO Properties VALUES (1,'pingback-moderation-enabled','true');
-INSERT INTO Properties VALUES (1,'blog-ping-urls','http://rpc.pingomatic.com');
-INSERT INTO Properties VALUES (1,'blojsom-extension-metaweblog-accepted-types','image/jpeg, image/gif, image/png, img');
-INSERT INTO Properties VALUES (1,'xmlrpc-enabled','true');
-INSERT INTO Properties VALUES (1,'blog-pingbacks-enabled','true');
 
 --
 -- Table structure for table Template
@@ -321,18 +216,6 @@ CREATE TABLE Template (
   template_flavor varchar(50) NOT NULL,
   template_value varchar(255) default NULL
 );
-
---
--- Dumping data for table Template
---
-
-INSERT INTO Template VALUES (1,'rss','rss.vm, text/xml;charset=UTF-8');
-INSERT INTO Template VALUES (1,'rsd','rsd.vm, application/rsd+xml;charset=UTF-8');
-INSERT INTO Template VALUES (1,'html','asual.vm, text/html;charset=UTF-8');
-INSERT INTO Template VALUES (1,'atom','atom.vm, application/atom+xml;charset=UTF-8');
-INSERT INTO Template VALUES (1,'rss2','rss2.vm, text/xml;charset=UTF-8');
-INSERT INTO Template VALUES (1,'rdf','rdf.vm, text/xml;charset=UTF-8');
-INSERT INTO Template VALUES (1,'admin','org/blojsom/plugin/admin/templates/admin.vm, text/html;charset=UTF-8');
 
 --
 -- Table structure for table Trackback
@@ -353,21 +236,12 @@ CREATE TABLE Trackback (
 );
 
 --
--- Dumping data for table Trackback
---
-
-
---
 -- Table structure for table TrackbackMetadata
 --
 
 -- DROP TABLE TrackbackMetadata;
 CREATE TABLE TrackbackMetadata (
   trackback_id int NOT NULL REFERENCES Trackback (trackback_id) ON DELETE CASCADE,
-  metadata_key text NOT NULL,
+  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
-
---
--- Dumping data for table TrackbackMetadata
---

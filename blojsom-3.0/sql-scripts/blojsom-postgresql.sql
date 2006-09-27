@@ -1,12 +1,42 @@
+﻿-- There is no conditional drop in PostgreSQL.
+-- Commented out for now in case the error from a failed DROP is not handled.
+
+-- Alter tables to drop foreign key constraints
+-- ALTER TABLE ONLY TrackbackMetadata DROP CONSTRAINT trackbackmetadata_trackback_id_fkey;
+-- ALTER TABLE ONLY Trackback DROP CONSTRAINT trackback_blog_id_fkey;
+-- ALTER TABLE ONLY Template DROP CONSTRAINT template_blog_id_fkey;
+-- ALTER TABLE ONLY Properties DROP CONSTRAINT properties_blog_id_fkey;
+-- ALTER TABLE ONLY Plugin DROP CONSTRAINT plugin_blog_id_fkey;
+-- ALTER TABLE ONLY PingbackMetadata DROP CONSTRAINT pingbackmetadata_pingback_id_fkey;
+-- ALTER TABLE ONLY Pingback DROP CONSTRAINT pingback_blog_id_fkey;
+-- ALTER TABLE ONLY EntryMetadata DROP CONSTRAINT entrymetadata_entry_id_fkey;
+-- ALTER TABLE ONLY Entry DROP CONSTRAINT entry_blog_id_fkey;
+-- ALTER TABLE ONLY Entry DROP CONSTRAINT entry_blog_category_id_fkey;
+-- ALTER TABLE ONLY DBUserMetadata DROP CONSTRAINT dbusermetadata_user_id_fkey;
+-- ALTER TABLE ONLY DBUser DROP CONSTRAINT dbuser_blog_id_fkey;
+-- ALTER TABLE ONLY CommentMetadata DROP CONSTRAINT commentmetadata_comment_id_fkey;
+-- ALTER TABLE ONLY Comment DROP CONSTRAINT comment_blog_id_fkey;
+-- ALTER TABLE ONLY CategoryMetadata DROP CONSTRAINT categorymetadata_category_id_fkey;
+-- ALTER TABLE ONLY Category DROP CONSTRAINT category_blog_id_fkey;
+
+-- Alter tables to drop primary key constraints
+-- ALTER TABLE ONLY Trackback DROP CONSTRAINT trackback_pkey;
+-- ALTER TABLE ONLY Pingback DROP CONSTRAINT pingback_pkey;
+-- ALTER TABLE ONLY Entry DROP CONSTRAINT entry_pkey;
+-- ALTER TABLE ONLY DBUserMetadata DROP CONSTRAINT dbusermetadata_pkey;
+-- ALTER TABLE ONLY DBUser DROP CONSTRAINT dbuser_pkey;
+-- ALTER TABLE ONLY Comment DROP CONSTRAINT comment_pkey;
+-- ALTER TABLE ONLY Category DROP CONSTRAINT category_pkey;
+-- ALTER TABLE ONLY Blog DROP CONSTRAINT blog_pkey;
+
 --
 -- Table structure for table Blog
 --
 
--- There is no conditional drop in PostgreSQL.
--- Commented out for now in case the error from a failed DROP is not handled.
 -- DROP TABLE Blog;
 CREATE TABLE Blog (
-  blog_id varchar(50) PRIMARY KEY
+  id SERIAL PRIMARY KEY,
+  blog_id varchar(50)
 );
 
 --
@@ -16,7 +46,7 @@ CREATE TABLE Blog (
 -- DROP TABLE Category;
 CREATE TABLE Category (
   category_id SERIAL PRIMARY KEY,
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   parent_category_id int default NULL,
   name text NOT NULL,
   description text
@@ -49,7 +79,7 @@ CREATE TABLE Comment (
   ip varchar(100) default NULL,
   status varchar(255) default NULL,
   comment_parent int default NULL,
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE
 );
 
 --
@@ -64,13 +94,41 @@ CREATE TABLE CommentMetadata (
 );
 
 --
+-- Table structure for table DBUser
+--
+
+-- DROP TABLE DBUser;
+CREATE TABLE DBUser (
+  user_id SERIAL PRIMARY KEY,
+  user_login varchar(50) NOT NULL,
+  user_password varchar(64) NOT NULL,
+  user_name varchar(250) NOT NULL,
+  user_email varchar(100) NOT NULL,
+  user_registered timestamp NOT NULL,
+  user_status varchar(64) NOT NULL,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE
+);
+
+--
+-- Table structure for table DBUserMetadata
+--
+
+-- DROP TABLE DBUserMetadata;
+CREATE TABLE DBUserMetadata (
+  user_metadata_id SERIAL PRIMARY KEY,
+  user_id int NOT NULL REFERENCES DBUser (user_id) ON DELETE CASCADE,
+  metadata_key varchar(255) NOT NULL,
+  metadata_value text
+);
+
+--
 -- Table structure for table Entry
 --
 
 -- DROP TABLE Entry;
 CREATE TABLE Entry (
   entry_id SERIAL PRIMARY KEY,
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   title text,
   description text,
   entry_date timestamp NOT NULL,
@@ -108,7 +166,7 @@ CREATE TABLE Pingback (
   url text,
   blog_name text,
   trackback_date timestamp NOT NULL,
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   ip varchar(100) default NULL,
   status varchar(255) default NULL,
   source_uri text NOT NULL,
@@ -132,7 +190,7 @@ CREATE TABLE PingbackMetadata (
 
 -- DROP TABLE Plugin;
 CREATE TABLE Plugin (
-  blog_id varchar(50) NOT NULL REFERENCES blog (Blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   plugin_flavor varchar(50) NOT NULL,
   plugin_value varchar(4096) default NULL
 );
@@ -143,7 +201,7 @@ CREATE TABLE Plugin (
 
 -- DROP TABLE Properties;
 CREATE TABLE Properties (
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   property_name varchar(255) NOT NULL,
   property_value longtext
 );
@@ -154,7 +212,7 @@ CREATE TABLE Properties (
 
 -- DROP TABLE Template;
 CREATE TABLE Template (
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   template_flavor varchar(50) NOT NULL,
   template_value varchar(255) default NULL
 );
@@ -172,7 +230,7 @@ CREATE TABLE Trackback (
   url text,
   blog_name text,
   trackback_date timestamp NOT NULL,
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE,
+  blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   ip varchar(100) default NULL,
   status varchar(255) default NULL
 );
@@ -185,33 +243,5 @@ CREATE TABLE Trackback (
 CREATE TABLE TrackbackMetadata (
   trackback_id int NOT NULL REFERENCES Trackback (trackback_id) ON DELETE CASCADE,
   metadata_key text NOT NULL,
-  metadata_value text
-);
-
---
--- Table structure for table DBUser
---
-
--- DROP TABLE DBUser;
-CREATE TABLE DBUser (
-  user_id SERIAL PRIMARY KEY,
-  user_login varchar(50) NOT NULL,
-  user_password varchar(64) NOT NULL,
-  user_name varchar(250) NOT NULL,
-  user_email varchar(100) NOT NULL,
-  user_registered timestamp NOT NULL,
-  user_status varchar(64) NOT NULL,
-  blog_id varchar(50) NOT NULL REFERENCES Blog (blog_id) ON DELETE CASCADE
-);
-
---
--- Table structure for table DBUserMetadata
---
-
--- DROP TABLE DBUserMetadata;
-CREATE TABLE DBUserMetadata (
-  user_metadata_id SERIAL PRIMARY KEY,
-  user_id int NOT NULL  REFERENCES DBUser (user_id) ON DELETE CASCADE,
-  metadata_key varchar(255) NOT NULL,
   metadata_value text
 );
