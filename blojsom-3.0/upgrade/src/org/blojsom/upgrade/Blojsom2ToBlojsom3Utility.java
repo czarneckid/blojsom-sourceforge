@@ -33,13 +33,19 @@ package org.blojsom.upgrade;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.fetcher.Fetcher;
+import org.blojsom.fetcher.FetcherException;
 import org.blojsom.util.BlojsomConstants;
-import org.blojsom.util.BlojsomUtils;
+//import org.blojsom.util.BlojsomUtils;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.database.DatabaseBlog;
 import org.blojsom2.util.BlojsomProperties;
 import org.blojsom2.blog.BlojsomConfiguration;
 import org.blojsom2.blog.BlojsomConfigurationException;
+import org.blojsom2.blog.BlogUser;
 import org.blojsom2.fetcher.BlojsomFetcher;
 import org.blojsom2.fetcher.BlojsomFetcherException;
+import org.blojsom2.BlojsomException;
+//import org.blojsom2.util.BlojsomUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.InvalidPropertyException;
 
@@ -47,13 +53,17 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Iterator;
+import java.util.HashMap;
 
 /**
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.2 2006-09-27 16:48:04 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.3 2006-09-27 19:40:42 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -61,7 +71,10 @@ public class Blojsom2ToBlojsom3Utility {
 
     private ServletConfig _servletConfig;
     private Fetcher _fetcher;
+
     private BlojsomFetcher _blojsom2Fetcher;
+    private BlojsomConfiguration _blojsomConfiguration;
+    private BlojsomProperties _blojsomProperties;
 
     private String _blojsom2Path;
     private String _blojsom3Path;
@@ -138,15 +151,56 @@ public class Blojsom2ToBlojsom3Utility {
         }
     }
 
+
+    private void loadBlojsom2Configuration() {
+        String blojsomPropertiesPath = _blojsom2Path + "/" + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blojsom.properties";
+        try {
+            _blojsomProperties = new BlojsomProperties();
+            _blojsomProperties.load(new FileInputStream(blojsomPropertiesPath));
+        } catch (IOException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            _blojsomProperties = null;
+        }
+
+        if (_blojsomProperties == null) {
+            throw new FatalBeanException("Unable to load blojsom properties file: " + blojsomPropertiesPath);
+        }
+
+        try {
+            _blojsomConfiguration = new BlojsomConfiguration(_servletConfig, org.blojsom.util.BlojsomUtils.propertiesToMap(_blojsomProperties));
+        } catch (BlojsomConfigurationException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+        }
+
+        if (_blojsomConfiguration == null) {
+            throw new FatalBeanException("Unable to construct blojsom configuration object");
+        }
+
+        try {
+            configureFetcher(_servletConfig, _blojsomConfiguration);
+        } catch (ServletException e) {
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FatalBeanException("Unable to construct blojsom 2 fetcher object", e);
+        }
+    }
+
     /**
      * Upgrade the blojsom 2 instance to blojsom 3
      */
     public void upgrade() {
-        if (BlojsomUtils.checkNullOrBlank(_blojsom2Path)) {
+        if (org.blojsom.util.BlojsomUtils.checkNullOrBlank(_blojsom2Path)) {
             throw new InvalidPropertyException(Blojsom2ToBlojsom3Utility.class, "blojsom2Path", "blojsom2Path property was null or blank");
         }
 
-        if (BlojsomUtils.checkNullOrBlank(_blojsom3Path)) {
+        if (org.blojsom.util.BlojsomUtils.checkNullOrBlank(_blojsom3Path)) {
             throw new InvalidPropertyException(Blojsom2ToBlojsom3Utility.class, "blojsom3Path", "blojsom3Path property was null or blank");
         }
 
@@ -155,44 +209,60 @@ public class Blojsom2ToBlojsom3Utility {
             _logger.debug("blojsom 3 path: " + _blojsom3Path);
         }
 
-        String blojsomPropertiesPath = _blojsom2Path + "/" + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blojsom.properties";
-        BlojsomProperties blojsomProperties = null;
-        try {
-            blojsomProperties = new BlojsomProperties();
-            blojsomProperties.load(new FileInputStream(blojsomPropertiesPath));
-        } catch (IOException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
+        loadBlojsom2Configuration();
+
+        // Migrate each blog
+        String[] blojsom2IDs = _blojsomConfiguration.getBlojsomUsers();
+        for (int i = 0; i < blojsom2IDs.length; i++) {
+            String blojsom2ID = blojsom2IDs[i];
+            Blog blog = null;
+
+            // Try and load the blog in the blojsom 3 installation, otherwise, create a new blog
+            try {
+                blog = _fetcher.loadBlog(blojsom2ID);
+            } catch (FetcherException e) {
+                if (_logger.isInfoEnabled()) {
+                    _logger.info(e);
+                }
+
+                blog = new DatabaseBlog();
+                blog.setBlogId(blojsom2ID);
             }
 
-            blojsomProperties = null;
-        }
+            BlogUser blogUser = null;
+            try {
+                blogUser = _blojsomConfiguration.loadBlog(blojsom2ID);
+            } catch (BlojsomException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error("Unable to load blojsom 2 blog ID: " + blojsom2ID);
+                    _logger.error(e);
+                }
 
-        if (blojsomProperties == null) {
-            throw new FatalBeanException("Unable to load blojsom properties file: " + blojsomPropertiesPath);
-        }
-
-        BlojsomConfiguration blojsomConfiguration = null;
-        try {
-            blojsomConfiguration = new BlojsomConfiguration(_servletConfig, BlojsomUtils.propertiesToMap(blojsomProperties));
-        } catch (BlojsomConfigurationException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
-            }
-        }
-
-        if (blojsomConfiguration == null) {
-            throw new FatalBeanException("Unable to construct blojsom configuration object");
-        }
-
-        try {
-            configureFetcher(_servletConfig, blojsomConfiguration);
-        } catch (ServletException e) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error(e);
+                continue;
             }
 
-            throw new FatalBeanException("Unable to construct blojsom 2 fetcher object", e);
+            // Migrate the properties
+            Map blojsom2BlogProperties = blogUser.getBlog().getBlogProperties();
+            Properties blogProperties = org.blojsom2.util.BlojsomUtils.mapToProperties(blojsom2BlogProperties);
+            blog.setProperties(org.blojsom.util.BlojsomUtils.propertiesToMap(blogProperties));
+            blog.setPlugins(blogUser.getPluginChain());
+            // Convert the flavors
+            Map blojsom2BlogFlavors = blogUser.getFlavors();
+            Map blojsom3FlavorToTemplate = new HashMap();
+            Iterator flavorIterator = blojsom2BlogFlavors.keySet().iterator();
+            while (flavorIterator.hasNext()) {
+                String flavor = (String) flavorIterator.next();
+                blojsom3FlavorToTemplate.put(flavor, blogUser.getFlavorToTemplate().get(flavor).toString() + ", " + blogUser.getFlavorToContentType().get(flavor).toString());
+            }
+            blog.setTemplates(blojsom3FlavorToTemplate);
+
+            try {
+                _fetcher.saveBlog(blog);
+            } catch (FetcherException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+            }
         }
 
         if (_logger.isDebugEnabled()) {
