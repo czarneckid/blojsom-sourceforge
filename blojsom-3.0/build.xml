@@ -16,7 +16,6 @@
     <property name="plugins.src.dir" value="${basedir}/plugins/src"/>
     <property name="extensions.src.dir" value="${basedir}/extensions/src"/>
     <property name="test.src.dir" value="${basedir}/test/src"/>
-    <property name="upgrade.src.dir" value="${basedir}/upgrade/src"/>
     <property name="war.dir" value="${basedir}/war"/>
     <property name="resources.dir" value="${war.dir}/resources"/>
     <property name="webinf.dir" value="${war.dir}/WEB-INF"/>
@@ -43,7 +42,6 @@
     <property name="plugins-templates.jar" value="${webinf.lib.dir}/${name}-plugins-templates-${version}.jar"/>
     <property name="extensions.jar" value="${webinf.lib.dir}/${name}-extensions-${version}.jar"/>
     <property name="templates.jar" value="${webinf.lib.dir}/${name}-templates-${version}.jar"/>
-    <property name="upgrade.jar" value="${webinf.lib.dir}/${name}-upgrade-utility-${version}.jar"/>
     <property name="website.zip" value="${distro.dir}/${name}-website.zip"/>
     <property name="tinymce.dir" value="${war.dir}/administration/tiny_mce"/>
     <property name="default.blog" value="default"/>
@@ -66,6 +64,11 @@
     <property name="addon.extensions.jar" value="${webinf.lib.dir}/${name}-addon-extensions-${version}.jar"/>
     <property name="addon.resources.jar" value="${webinf.lib.dir}/${name}-addon-resources-${version}.jar"/>
 
+    <!-- Upgrade properties -->
+    <property name="upgrade.lib.dir" value="${basedir}/upgrade-lib"/>
+    <property name="upgrade.src.dir" value="${basedir}/upgrade/src"/>
+    <property name="upgrade.jar" value="${webinf.lib.dir}/${name}-upgrade-utility-${version}.jar"/>
+
     <property name="debug" value="on"/>
     <property name="deprecation" value="on"/>
     <property name="optimize" value="on"/>
@@ -81,6 +84,9 @@
             <include name="*.jar"/>
         </fileset>
         <fileset dir="${addon.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${upgrade.lib.dir}">
             <include name="*.jar"/>
         </fileset>
     </path>
