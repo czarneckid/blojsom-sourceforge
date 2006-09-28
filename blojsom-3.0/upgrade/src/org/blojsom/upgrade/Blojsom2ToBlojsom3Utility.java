@@ -37,14 +37,15 @@ import org.blojsom.fetcher.FetcherException;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
 //import org.blojsom.util.BlojsomUtils;
+import org.blojsom.blog.*;
 import org.blojsom.blog.Blog;
-import org.blojsom.blog.Category;
-import org.blojsom.blog.Entry;
-import org.blojsom.blog.Comment;
 import org.blojsom.blog.database.*;
 import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom2.util.BlojsomProperties;
+import org.blojsom2.util.BlojsomUtils;
 import org.blojsom2.blog.*;
+import org.blojsom2.blog.Pingback;
+import org.blojsom2.blog.Trackback;
 import org.blojsom2.fetcher.BlojsomFetcher;
 import org.blojsom2.fetcher.BlojsomFetcherException;
 import org.blojsom2.BlojsomException;
@@ -56,6 +57,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -63,7 +66,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.5 2006-09-28 14:51:39 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.6 2006-09-28 21:10:18 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -151,7 +154,9 @@ public class Blojsom2ToBlojsom3Utility {
         }
     }
 
-
+    /**
+     * Load the blojsom 2 configuration information
+     */
     private void loadBlojsom2Configuration() {
         String blojsomPropertiesPath = _blojsom2Path + "/" + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blojsom.properties";
         try {
@@ -297,6 +302,88 @@ public class Blojsom2ToBlojsom3Utility {
             }
 
             // Migrate the users and permissions for each user
+            String blogPermissionsPath = _blojsom2Path + "/" + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/" + blogUser.getId() + "/permissions.properties";
+            Map blojsom2PermissionsForBlog = new HashMap();
+            try {
+                InputStream is = new FileInputStream(blogPermissionsPath);
+                BlojsomProperties permissions = new BlojsomProperties(true);
+                permissions.load(is);
+                is.close();
+
+                blojsom2PermissionsForBlog = org.blojsom2.util.BlojsomUtils.propertiesToMap(permissions);
+
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Loaded permissions for blojsom 2 blog: " + blogUser.getId());
+                }
+            } catch (IOException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+            }
+
+            Map authorizationMap = blogUser.getBlog().getAuthorization();
+            Iterator blojsom2UserIterator = authorizationMap.keySet().iterator();
+            while (blojsom2UserIterator.hasNext()) {
+                String userID = (String) blojsom2UserIterator.next();
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Migrating blojsom 2 user: " + userID);
+                }
+
+                User blojsom3User = new DatabaseUser();
+
+                blojsom3User.setBlogId(blog.getId());
+                blojsom3User.setUserLogin(userID);
+                blojsom3User.setUserName(userID);
+                blojsom3User.setUserRegistered(new Date());
+                blojsom3User.setUserStatus("new");
+                String[] parsedPasswordAndEmail = BlojsomUtils.parseLastComma((String) authorizationMap.get(userID));
+                blojsom3User.setUserPassword(parsedPasswordAndEmail[0]);
+                if (parsedPasswordAndEmail.length == 2) {
+                    blojsom3User.setUserEmail(parsedPasswordAndEmail[1]);
+                } else {
+                    blojsom3User.setUserEmail(blogUser.getBlog().getBlogOwnerEmail());
+                }
+
+                Map blojsom3UserMetadata = new HashMap();
+
+                if (blojsom2PermissionsForBlog.containsKey(userID)) {
+                    Object permissionsForUser = blojsom2PermissionsForBlog.get(userID);
+
+                    // Check where user has multiple permissions
+                    if (permissionsForUser instanceof List) {
+                        List permissions = (List) permissionsForUser;
+                        for (int j = 0; j < permissions.size(); j++) {
+                            String permission = (String) permissions.get(j);
+                            String updatedPermission;
+
+                            if ("*".equals(permission)) {
+                                updatedPermission = "all_permissions_permission";
+                            } else {
+                                updatedPermission = permission.replaceAll("-", "_");
+                            }
+
+                            blojsom3UserMetadata.put(updatedPermission, "true");
+                        }
+                    // Check where user has only a single permission
+                    } else {
+                        if ("*".equals(permissionsForUser)) {
+                            blojsom3UserMetadata.put("all_permissions_permission", "true");
+                        } else {
+                            blojsom3UserMetadata.put(permissionsForUser.toString().replaceAll("-", "_"), "true");
+                        }
+                    }
+                }
+
+                blojsom3User.setMetaData(blojsom3UserMetadata);
+
+                try {
+                    _fetcher.saveUser(blog, blojsom3User);
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                }
+            }
 
             // Migrate the categories
             Map blojsom2CategoriesMap = new HashMap();
@@ -371,25 +458,27 @@ public class Blojsom2ToBlojsom3Utility {
                         } else {
                             blojsom3Entry.setAllowComments(new Integer(0));
                         }
+
                         blojsom3Entry.setDate(entry.getDate());
                         blojsom3Entry.setDescription(entry.getDescription());
                         blojsom3Entry.setMetaData(entry.getMetaData());
                         blojsom3Entry.setModifiedDate(entry.getDate());
+
                         if (entry.supportsPingbacks()) {
                             blojsom3Entry.setAllowPingbacks(new Integer(1));
                         } else {
                             blojsom3Entry.setAllowPingbacks(new Integer(0));
                         }
-                        //blojsom3Entry.setPingbacks(null);
+
                         blojsom3Entry.setPostSlug(entry.getPermalink());
                         blojsom3Entry.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
                         blojsom3Entry.setTitle(entry.getTitle());
+
                         if (entry.supportsTrackbacks()) {
                             blojsom3Entry.setAllowTrackbacks(new Integer(1));
                         } else {
                             blojsom3Entry.setAllowTrackbacks(new Integer(0));
                         }
-                        //blojsom3Entry.setTrackbacks(null);
 
                         try {
                             _fetcher.saveEntry(blog, blojsom3Entry);
@@ -403,6 +492,7 @@ public class Blojsom2ToBlojsom3Utility {
                         for (int k = 0; k < comments.length; k++) {
                             BlogComment comment = comments[k];
                             Comment blojsom3Comment = new DatabaseComment();
+
                             blojsom3Comment.setAuthor(comment.getAuthor());
                             blojsom3Comment.setAuthorEmail(comment.getAuthorEmail());
                             blojsom3Comment.setAuthorURL(comment.getAuthorURL());
@@ -427,6 +517,7 @@ public class Blojsom2ToBlojsom3Utility {
                         for (int k = 0; k < trackbacks.length; k++) {
                             Trackback trackback = trackbacks[k];
                             DatabaseTrackback blojsom3Trackback = new DatabaseTrackback();
+
                             blojsom3Trackback.setBlogName(trackback.getBlogName());
                             blojsom3Trackback.setExcerpt(trackback.getExcerpt());
                             blojsom3Trackback.setTitle(trackback.getTitle());
@@ -451,6 +542,7 @@ public class Blojsom2ToBlojsom3Utility {
                         for (int k = 0; k < pingbacks.length; k++) {
                             Pingback pingback = pingbacks[k];
                             DatabasePingback blojsom3Pingback = new DatabasePingback();
+
                             blojsom3Pingback.setBlogName(pingback.getBlogName());
                             blojsom3Pingback.setExcerpt(pingback.getExcerpt());
                             blojsom3Pingback.setTitle(pingback.getTitle());
