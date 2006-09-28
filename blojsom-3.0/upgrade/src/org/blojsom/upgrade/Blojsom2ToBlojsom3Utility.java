@@ -32,6 +32,7 @@ package org.blojsom.upgrade;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.io.FileUtils;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.util.BlojsomConstants;
@@ -55,10 +56,7 @@ import org.springframework.beans.InvalidPropertyException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -66,7 +64,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.6 2006-09-28 21:10:18 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.7 2006-09-28 23:24:14 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -225,9 +223,13 @@ public class Blojsom2ToBlojsom3Utility {
             // Try and load the blog in the blojsom 3 installation, otherwise, create a new blog
             try {
                 blog = _fetcher.loadBlog(blojsom2ID);
+
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Updating existing blog: " + blojsom2ID);
+                }
             } catch (FetcherException e) {
-                if (_logger.isInfoEnabled()) {
-                    _logger.info(e);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Creating new blog: " + blojsom2ID);
                 }
 
                 blog = new DatabaseBlog();
@@ -488,6 +490,7 @@ public class Blojsom2ToBlojsom3Utility {
                             }
                         }
 
+                        // Migrate the comments
                         BlogComment[] comments = entry.getCommentsAsArray();
                         for (int k = 0; k < comments.length; k++) {
                             BlogComment comment = comments[k];
@@ -513,6 +516,7 @@ public class Blojsom2ToBlojsom3Utility {
                             }
                         }
 
+                        // Migrate the trackbacks
                         Trackback[] trackbacks = entry.getTrackbacksAsArray();
                         for (int k = 0; k < trackbacks.length; k++) {
                             Trackback trackback = trackbacks[k];
@@ -538,6 +542,7 @@ public class Blojsom2ToBlojsom3Utility {
                             }
                         }
 
+                        // Migrate the pingbacks
                         Pingback[] pingbacks = entry.getPingbacksAsArray();
                         for (int k = 0; k < pingbacks.length; k++) {
                             Pingback pingback = pingbacks[k];
@@ -571,6 +576,35 @@ public class Blojsom2ToBlojsom3Utility {
                     }
 
                     continue;
+                }
+            }
+
+            // Migrate the resources and templates
+            File blojsom2BlogResourcesPath = new File(_blojsom2Path + "/resources/" + blojsom2ID + "/");
+            File blojsom3BlogResourcesPath = new File(_blojsom3Path + "/resources/" + blojsom2ID + "/");
+            try {
+                FileUtils.copyDirectory(blojsom2BlogResourcesPath, blojsom3BlogResourcesPath);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Copied blojsom 2 blog resources from: " + blojsom2BlogResourcesPath.toString() + " to: " +
+                        blojsom3BlogResourcesPath.toString());
+                }
+            } catch (IOException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
+                }
+            }
+
+            File blojsom2BlogPath = new File(_blojsom2Path + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/" + blojsom2ID + "/");
+            File blojsom3BlogPath = new File(_blojsom2Path + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blogs/" + blojsom2ID + "/");
+            try {
+                FileUtils.copyDirectory(blojsom2BlogPath, blojsom3BlogPath);
+                if (_logger.isDebugEnabled()) {
+                    _logger.debug("Copied blojsom 2 blog data from: " + blojsom2BlogPath.toString() + " to: " +
+                        blojsom3BlogPath.toString());
+                }
+            } catch (IOException e) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
                 }
             }
         }
