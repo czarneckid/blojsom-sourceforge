@@ -40,9 +40,9 @@ import org.blojsom.util.BlojsomMetaDataConstants;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Category;
 import org.blojsom.blog.Entry;
-import org.blojsom.blog.database.DatabaseBlog;
-import org.blojsom.blog.database.DatabaseCategory;
-import org.blojsom.blog.database.DatabaseEntry;
+import org.blojsom.blog.Comment;
+import org.blojsom.blog.database.*;
+import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom2.util.BlojsomProperties;
 import org.blojsom2.blog.*;
 import org.blojsom2.fetcher.BlojsomFetcher;
@@ -56,17 +56,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Iterator;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.4 2006-09-28 05:48:53 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.5 2006-09-28 14:51:39 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -368,7 +365,7 @@ public class Blojsom2ToBlojsom3Utility {
                         if (entry.getMetaData().get("blog-entry-author") != null) {
                             blojsom3Entry.setAuthor(entry.getMetaData().get("blog-entry-author").toString());
                         }
-                        //blojsom3Entry.setComments(null);
+
                         if (entry.supportsComments()) {
                             blojsom3Entry.setAllowComments(new Integer(1));
                         } else {
@@ -399,6 +396,80 @@ public class Blojsom2ToBlojsom3Utility {
                         } catch (FetcherException e) {
                             if (_logger.isErrorEnabled()) {
                                 _logger.error(e);
+                            }
+                        }
+
+                        BlogComment[] comments = entry.getCommentsAsArray();
+                        for (int k = 0; k < comments.length; k++) {
+                            BlogComment comment = comments[k];
+                            Comment blojsom3Comment = new DatabaseComment();
+                            blojsom3Comment.setAuthor(comment.getAuthor());
+                            blojsom3Comment.setAuthorEmail(comment.getAuthorEmail());
+                            blojsom3Comment.setAuthorURL(comment.getAuthorURL());
+                            blojsom3Comment.setBlogEntryId(blojsom3Entry.getId());
+                            blojsom3Comment.setBlogId(blog.getId());
+                            blojsom3Comment.setComment(comment.getComment());
+                            blojsom3Comment.setCommentDate(comment.getCommentDate());
+                            blojsom3Comment.setIp((String) comment.getMetaData().get("BLOJSOM_COMMENT_PLUGIN_METADATA_IP"));
+                            blojsom3Comment.setMetaData(comment.getMetaData());
+                            blojsom3Comment.setStatus(ResponseConstants.APPROVED_STATUS);
+
+                            try {
+                                _fetcher.saveComment(blog, blojsom3Comment);
+                            } catch (FetcherException e) {
+                                if (_logger.isErrorEnabled()) {
+                                    _logger.error(e);
+                                }
+                            }
+                        }
+
+                        Trackback[] trackbacks = entry.getTrackbacksAsArray();
+                        for (int k = 0; k < trackbacks.length; k++) {
+                            Trackback trackback = trackbacks[k];
+                            DatabaseTrackback blojsom3Trackback = new DatabaseTrackback();
+                            blojsom3Trackback.setBlogName(trackback.getBlogName());
+                            blojsom3Trackback.setExcerpt(trackback.getExcerpt());
+                            blojsom3Trackback.setTitle(trackback.getTitle());
+                            blojsom3Trackback.setUrl(trackback.getUrl());
+                            blojsom3Trackback.setTrackbackDate(trackback.getTrackbackDate());
+                            blojsom3Trackback.setBlogEntryId(blojsom3Entry.getId());
+                            blojsom3Trackback.setBlogId(blog.getId());
+                            blojsom3Trackback.setIp((String) trackback.getMetaData().get("BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP"));
+                            blojsom3Trackback.setMetaData(trackback.getMetaData());
+                            blojsom3Trackback.setStatus(ResponseConstants.APPROVED_STATUS);
+
+                            try {
+                                _fetcher.saveTrackback(blog, blojsom3Trackback);
+                            } catch (FetcherException e) {
+                                if (_logger.isErrorEnabled()) {
+                                    _logger.error(e);
+                                }
+                            }
+                        }
+
+                        Pingback[] pingbacks = entry.getPingbacksAsArray();
+                        for (int k = 0; k < pingbacks.length; k++) {
+                            Pingback pingback = pingbacks[k];
+                            DatabasePingback blojsom3Pingback = new DatabasePingback();
+                            blojsom3Pingback.setBlogName(pingback.getBlogName());
+                            blojsom3Pingback.setExcerpt(pingback.getExcerpt());
+                            blojsom3Pingback.setTitle(pingback.getTitle());
+                            blojsom3Pingback.setUrl(pingback.getUrl());
+                            blojsom3Pingback.setTrackbackDate(pingback.getTrackbackDate());
+                            blojsom3Pingback.setBlogEntryId(blojsom3Entry.getId());
+                            blojsom3Pingback.setBlogId(blog.getId());
+                            blojsom3Pingback.setIp((String) pingback.getMetaData().get("BLOJSOM_PINGBACK_PLUGIN_METADATA_IP"));
+                            blojsom3Pingback.setMetaData(pingback.getMetaData());
+                            blojsom3Pingback.setStatus(ResponseConstants.APPROVED_STATUS);
+                            blojsom3Pingback.setSourceURI(pingback.getUrl());
+                            blojsom3Pingback.setTargetURI(pingback.getTitle());
+
+                            try {
+                                _fetcher.savePingback(blog, blojsom3Pingback);
+                            } catch (FetcherException e) {
+                                if (_logger.isErrorEnabled()) {
+                                    _logger.error(e);
+                                }
                             }
                         }
                     }
