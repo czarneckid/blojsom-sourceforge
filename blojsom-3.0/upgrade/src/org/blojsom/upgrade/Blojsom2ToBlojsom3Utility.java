@@ -64,7 +64,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.7 2006-09-28 23:24:14 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.8 2006-09-29 01:24:54 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -75,7 +75,6 @@ public class Blojsom2ToBlojsom3Utility {
 
     private BlojsomFetcher _blojsom2Fetcher;
     private BlojsomConfiguration _blojsomConfiguration;
-    private BlojsomProperties _blojsomProperties;
 
     private String _blojsom2Path;
     private String _blojsom3Path;
@@ -157,6 +156,7 @@ public class Blojsom2ToBlojsom3Utility {
      */
     private void loadBlojsom2Configuration() {
         String blojsomPropertiesPath = _blojsom2Path + "/" + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blojsom.properties";
+        BlojsomProperties _blojsomProperties;
         try {
             _blojsomProperties = new BlojsomProperties();
             _blojsomProperties.load(new FileInputStream(blojsomPropertiesPath));
@@ -218,7 +218,7 @@ public class Blojsom2ToBlojsom3Utility {
         String[] blojsom2IDs = _blojsomConfiguration.getBlojsomUsers();
         for (int i = 0; i < blojsom2IDs.length; i++) {
             String blojsom2ID = blojsom2IDs[i];
-            Blog blog = null;
+            Blog blog;
 
             // Try and load the blog in the blojsom 3 installation, otherwise, create a new blog
             try {
@@ -236,7 +236,7 @@ public class Blojsom2ToBlojsom3Utility {
                 blog.setBlogId(blojsom2ID);
             }
 
-            BlogUser blogUser = null;
+            BlogUser blogUser;
             try {
                 blogUser = _blojsomConfiguration.loadBlog(blojsom2ID);
             } catch (BlojsomException e) {
@@ -574,8 +574,6 @@ public class Blojsom2ToBlojsom3Utility {
                     if (_logger.isErrorEnabled()) {
                         _logger.error(e);
                     }
-
-                    continue;
                 }
             }
 
