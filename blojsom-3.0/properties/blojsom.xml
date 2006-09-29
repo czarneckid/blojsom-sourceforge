@@ -127,6 +127,10 @@
 
     <!-- START: Upgrade utility -->
     <!--
+          NOTE: You should only use this bean once and then comment out or remove the bean definition after you have
+                successfully upgraded your blojsom 2 installation to blojsom 3.
+    -->
+    <!--
     <bean id="blojsom2toblojsom3upgrade" class="org.blojsom.upgrade.Blojsom2ToBlojsom3Utility" init-method="upgrade">
         <property name="fetcher">
             <ref bean="fetcher"/>
