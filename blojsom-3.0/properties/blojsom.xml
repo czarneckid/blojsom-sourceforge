@@ -155,7 +155,7 @@
             <ref bean="servletConfigFactoryBean"/>
         </property>
         <property name="blojsom2Path">
-            <value>/path/to/blojsom2/value>
+            <value>/path/to/blojsom2</value>
         </property>
         <property name="blojsom3Path">
             <value>/path/to/blojsom3/</value>
