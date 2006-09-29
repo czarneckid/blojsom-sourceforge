@@ -79,7 +79,7 @@
         <servlet-class>org.blojsom.servlet.BlojsomServlet</servlet-class>
         <init-param>
             <param-name>smtp-server</param-name>
-            <param-value>mail.blojsom.com</param-value>
+            <param-value>localhost</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
