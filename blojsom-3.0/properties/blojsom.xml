@@ -125,4 +125,23 @@
     </bean>
     <!-- END: Dispatchers -->
 
+    <!-- START: Upgrade utility -->
+    <!--
+    <bean id="blojsom2toblojsom3upgrade" class="org.blojsom.upgrade.Blojsom2ToBlojsom3Utility" init-method="upgrade">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="blojsom2Path">
+            <value>/Users/czarnecki/projects/blojsom-2.0/war/</value>
+        </property>
+        <property name="blojsom3Path">
+            <value>/Users/czarnecki/projects/blojsom-3.0/war/</value>
+        </property>
+    </bean>
+    -->
+    <!-- END: Upgrade utility -->
+
 </beans>
