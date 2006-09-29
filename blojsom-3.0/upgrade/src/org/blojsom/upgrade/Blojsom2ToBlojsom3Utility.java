@@ -30,33 +30,34 @@
  */
 package org.blojsom.upgrade;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.io.FileUtils;
+import org.blojsom.blog.Blog;
+import org.blojsom.blog.*;
+import org.blojsom.blog.database.*;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
+import org.blojsom.plugin.common.ResponseConstants;
 import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomMetaDataConstants;
-//import org.blojsom.util.BlojsomUtils;
-import org.blojsom.blog.*;
-import org.blojsom.blog.Blog;
-import org.blojsom.blog.database.*;
-import org.blojsom.plugin.common.ResponseConstants;
-import org.blojsom2.util.BlojsomProperties;
-import org.blojsom2.util.BlojsomUtils;
+import org.blojsom2.BlojsomException;
 import org.blojsom2.blog.*;
 import org.blojsom2.blog.Pingback;
 import org.blojsom2.blog.Trackback;
 import org.blojsom2.fetcher.BlojsomFetcher;
 import org.blojsom2.fetcher.BlojsomFetcherException;
-import org.blojsom2.BlojsomException;
-//import org.blojsom2.util.BlojsomUtils;
+import org.blojsom2.util.BlojsomProperties;
+import org.blojsom2.util.BlojsomUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.InvalidPropertyException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -64,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.8 2006-09-29 01:24:54 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.9 2006-09-29 02:15:42 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
