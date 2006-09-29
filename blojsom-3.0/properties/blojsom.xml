@@ -127,8 +127,24 @@
 
     <!-- START: Upgrade utility -->
     <!--
+
           NOTE: You should only use this bean once and then comment out or remove the bean definition after you have
                 successfully upgraded your blojsom 2 installation to blojsom 3.
+
+    -->
+    <!--
+
+          NOTE: You should use the database creation script in the "dbloader" bean that does not create any initial
+                data in the database. This is controlled by the "dbScript" property of this bean.
+
+                For example, you would change:
+
+        <property name="dbScript" value="/WEB-INF/classes/blojsom-full-initial-data-mysql.sql"/>
+
+                to:
+
+        <property name="dbScript" value="/WEB-INF/classes/blojsom-mysql.sql"/>
+
     -->
     <!--
     <bean id="blojsom2toblojsom3upgrade" class="org.blojsom.upgrade.Blojsom2ToBlojsom3Utility" init-method="upgrade">
