@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.9 2006-09-29 02:15:42 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.10 2006-09-29 15:49:56 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -266,6 +266,20 @@ public class Blojsom2ToBlojsom3Utility {
             blogProperties.remove("blog-directory-filter");
             blogProperties.remove("blog-blacklist-file");
             blog.setProperties(org.blojsom.util.BlojsomUtils.propertiesToMap(blogProperties));
+            // Sanitize some properties
+            String url = blog.getBlogURL();
+            url = org.blojsom.util.BlojsomUtils.removeTrailingSlash(url);
+            blog.setBlogURL(url);
+
+            url = blog.getBlogBaseURL();
+            url = org.blojsom.util.BlojsomUtils.removeTrailingSlash(url);
+            blog.setBlogBaseURL(url);
+
+            blog.setBlogBaseAdminURL(url);
+
+            url = blog.getBlogAdminURL();
+            url = org.blojsom.util.BlojsomUtils.removeTrailingSlash(url);
+            blog.setBlogAdminURL(url);
 
             // Migrate the plugin chains
             Map blojsom2PluginChains = blogUser.getPluginChain();
