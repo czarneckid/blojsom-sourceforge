@@ -546,6 +546,10 @@
                 <include name="templates/"/>
                 <include name="themes/**"/>
 
+                <!-- Upgrade utility directories -->
+                <include name="upgrade/**"/>
+                <include name="upgrade-lib/**"/>
+
                 <!-- WAR directory -->
                 <include name="war/"/>
                 <include name="war/WEB-INF"/>
