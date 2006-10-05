@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.11 2006-10-05 15:03:40 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.12 2006-10-05 21:24:33 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -376,7 +376,7 @@ public class Blojsom2ToBlojsom3Utility {
                             if ("*".equals(permission)) {
                                 updatedPermission = "all_permissions_permission";
                             } else {
-                                updatedPermission = permission.replaceAll("-", "_");
+                                updatedPermission = permission.replaceAll("-", "_") + "_permission";
                             }
 
                             blojsom3UserMetadata.put(updatedPermission, "true");
@@ -386,7 +386,7 @@ public class Blojsom2ToBlojsom3Utility {
                         if ("*".equals(permissionsForUser)) {
                             blojsom3UserMetadata.put("all_permissions_permission", "true");
                         } else {
-                            blojsom3UserMetadata.put(permissionsForUser.toString().replaceAll("-", "_"), "true");
+                            blojsom3UserMetadata.put(permissionsForUser.toString().replaceAll("-", "_") + "_permission", "true");
                         }
                     }
                 }
