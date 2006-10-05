@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.10 2006-09-29 15:49:56 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.11 2006-10-05 15:03:40 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -608,7 +608,7 @@ public class Blojsom2ToBlojsom3Utility {
             }
 
             File blojsom2BlogPath = new File(_blojsom2Path + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/" + blojsom2ID + "/");
-            File blojsom3BlogPath = new File(_blojsom2Path + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blogs/" + blojsom2ID + "/");
+            File blojsom3BlogPath = new File(_blojsom3Path + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + "/blogs/" + blojsom2ID + "/");
             try {
                 FileUtils.copyDirectory(blojsom2BlogPath, blojsom3BlogPath);
                 if (_logger.isDebugEnabled()) {
