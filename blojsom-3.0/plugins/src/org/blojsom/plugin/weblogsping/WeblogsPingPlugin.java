@@ -60,7 +60,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.1 2006-03-20 21:31:09 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.2 2006-10-05 20:11:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeblogsPingPlugin implements Listener, Plugin {
@@ -124,7 +124,7 @@ public class WeblogsPingPlugin implements Listener, Plugin {
     /**
      * Handle an event broadcast from another component
      *
-     * @param event {@link org.blojsom.event.BlojsomEvent} to be handled
+     * @param event {@link Event} to be handled
      */
     public void handleEvent(Event event) {
         if (event instanceof EntryEvent) {
@@ -204,7 +204,7 @@ public class WeblogsPingPlugin implements Listener, Plugin {
     /**
      * Process an event from another component
      *
-     * @param event {@link BlojsomEvent} to be handled
+     * @param event {@link Event} to be handled
      */
     public void processEvent(Event event) {
     }
