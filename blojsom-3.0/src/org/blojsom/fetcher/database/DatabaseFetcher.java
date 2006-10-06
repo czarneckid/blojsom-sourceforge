@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.30 2006-09-26 02:55:24 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.31 2006-10-06 20:08:43 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -137,7 +137,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Return a new {@link org.blojsom.blog.Comment} instance
      *
-     * @return {@link org.blojsom.blog.Comment}
+     * @return {@link org.blojsom.blog.Comment} object
      */
     public Comment newComment() {
         return new DatabaseComment();
@@ -146,7 +146,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Return a new {@link org.blojsom.blog.Trackback} instance
      *
-     * @return {@link org.blojsom.blog.Trackback}
+     * @return {@link org.blojsom.blog.Trackback} object
      */
     public Trackback newTrackback() {
         return new DatabaseTrackback();
@@ -155,7 +155,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Return a new {@link org.blojsom.blog.Pingback} instance
      *
-     * @return {@link org.blojsom.blog.Pingback}
+     * @return {@link org.blojsom.blog.Pingback} object
      */
     public Pingback newPingback() {
         return new DatabasePingback();
@@ -164,7 +164,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Return a new {@link org.blojsom.blog.Category} instance
      *
-     * @return {@link org.blojsom.blog.Category}
+     * @return {@link org.blojsom.blog.Category} object
      */
     public Category newCategory() {
         return new DatabaseCategory();
@@ -173,7 +173,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Return a new {@link org.blojsom.blog.Blog} instance
      *
-     * @return {@link org.blojsom.blog.Blog}
+     * @return {@link org.blojsom.blog.Blog} object
      */
     public Blog newBlog() {
         return new DatabaseBlog();
@@ -182,7 +182,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Return a new {@link org.blojsom.blog.User} instance
      *
-     * @return {@link org.blojsom.blog.User}
+     * @return {@link org.blojsom.blog.User} object
      */
     public User newUser() {
         return new DatabaseUser();
@@ -192,7 +192,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * Load the {@link Blog} given the blog ID
      *
      * @param blogId Blog ID
-     * @return {@link Blog}
+     * @return {@link Blog} object
      * @throws FetcherException If there is an error loading the blog
      */
     public Blog loadBlog(String blogId) throws FetcherException {
@@ -702,6 +702,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
         entryCriteria.setProjection(Projections.rowCount());
         entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
         entryCriteria.add(Restrictions.lt("date", new Date()));
+        entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
         entryCriteria.setCacheable(true);
 
         List entryList = entryCriteria.list();
@@ -717,7 +718,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
      *
      * @param blog {@link Blog}
      * @param entryId Entry ID
-     * @return {@link Entry}
+     * @return {@link Entry} object
      * @throws FetcherException If there is an error loading the entry
      */
     public Entry loadEntry(Blog blog, Integer entryId) throws FetcherException {
@@ -784,8 +785,9 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Determine the blog category based on the request
      *
+     * @param blog {@link Blog}
      * @param httpServletRequest Request
-     * @return {@link BlogCategory} of the requested category
+     * @return {@link Category} of the requested category
      */
     protected String getBlogCategory(Blog blog, HttpServletRequest httpServletRequest) {
         // Determine the user requested category
@@ -1717,7 +1719,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
      *
      * @param blog   {@link Blog}
      * @param userID User ID
-     * @return {@link User}
+     * @return {@link User} object
      * @throws FetcherException If there is an error loading the user
      */
     public User loadUser(Blog blog, Integer userID) throws FetcherException {
@@ -1755,7 +1757,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
      *
      * @param blog {@link Blog}
      * @param user {@link User}
-     * @return {@link User}
+     * @return {@link User} object
      * @throws FetcherException If there is an error saving the user to the blog
      */
     public User saveUser(Blog blog, User user) throws FetcherException {
