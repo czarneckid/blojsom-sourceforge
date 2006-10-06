@@ -201,6 +201,12 @@
             <ref bean="fetcher"/>
         </property>
     </bean>
+    <bean id="skip-filter-helper" class="org.blojsom.plugin.statistics.SkipFilterHelperPlugin" init-method="init"
+        destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>        
+    </bean>
     <bean id="spamphrase-moderation" class="org.blojsom.plugin.moderation.SpamPhraseModerationPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
