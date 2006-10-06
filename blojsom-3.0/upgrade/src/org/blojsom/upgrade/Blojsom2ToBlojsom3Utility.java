@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.12 2006-10-05 21:24:33 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.13 2006-10-06 18:39:39 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -280,6 +280,12 @@ public class Blojsom2ToBlojsom3Utility {
             url = blog.getBlogAdminURL();
             url = org.blojsom.util.BlojsomUtils.removeTrailingSlash(url);
             blog.setBlogAdminURL(url);
+
+            if (BlojsomUtils.checkNullOrBlank(blog.getBlogAdminURL()) || BlojsomUtils.checkNullOrBlank(blog.getBlogBaseAdminURL())
+                    || BlojsomUtils.checkNullOrBlank(blog.getBlogBaseURL())
+                    || BlojsomUtils.checkNullOrBlank(blog.getBlogURL())) {
+                blog.setProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS, "true");
+            }
 
             // Migrate the plugin chains
             Map blojsom2PluginChains = blogUser.getPluginChain();
