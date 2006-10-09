@@ -48,7 +48,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: APIHandler.java,v 1.2 2006-04-05 00:44:02 czarneckid Exp $
+ * @version $Id: APIHandler.java,v 1.3 2006-10-09 19:40:59 czarneckid Exp $
  */
 public abstract class APIHandler {
 
@@ -69,6 +69,8 @@ public abstract class APIHandler {
 
     protected static final int PERMISSION_EXCEPTION = 4000;
     protected static final String PERMISSION_EXCEPTION_MSG = "User does not have permission to use this XML-RPC method";
+
+    protected static final String ALL_XMLRPC_EDIT_PERMISSION = "all_xmlrpc_edit_permission";
 
     protected AuthorizationProvider _authorizationProvider;
     protected Fetcher _fetcher;

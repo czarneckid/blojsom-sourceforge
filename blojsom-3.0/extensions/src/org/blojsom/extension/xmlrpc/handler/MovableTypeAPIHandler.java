@@ -40,6 +40,7 @@ import org.blojsom.blog.Trackback;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.trackback.TrackbackPlugin;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.util.BlojsomMetaDataConstants;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -49,7 +50,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MovableTypeAPIHandler.java,v 1.2 2006-04-27 20:03:00 czarneckid Exp $
+ * @version $Id: MovableTypeAPIHandler.java,v 1.3 2006-10-09 19:40:59 czarneckid Exp $
  */
 public class MovableTypeAPIHandler extends APIHandler {
 
@@ -149,7 +150,7 @@ public class MovableTypeAPIHandler extends APIHandler {
      * @throws Exception If there is an error getting the category list
      */
     public Object getCategoryList(String blogID, String username, String password) throws Exception {
-        _logger.debug("getCategories() Called =====[ SUPPORTED ]=====");
+        _logger.debug("getCategoryList() Called =====[ SUPPORTED ]=====");
         _logger.debug("     BlogId: " + blogID);
         _logger.debug("     UserId: " + username);
         _logger.debug("   Password: *********");
@@ -199,9 +200,10 @@ public class MovableTypeAPIHandler extends APIHandler {
      * @param username Username
      * @param password Password
      * @return An array of structs containing String categoryName, String categoryId, and boolean isPrimary
+     * @throws XmlRpcException If there is an error retrieving the post categories
      */
     public Object getPostCategories(String postID, String username, String password) throws Exception {
-        _logger.debug("getPost() Called =========[ SUPPORTED ]=====");
+        _logger.debug("getPostCategories() Called =========[ SUPPORTED ]=====");
         _logger.debug("     PostId: " + postID);
         _logger.debug("     UserId: " + username);
         _logger.debug("   Password: *********");
@@ -290,6 +292,7 @@ public class MovableTypeAPIHandler extends APIHandler {
         result.add("mt.supportedMethods");
         result.add("mt.supportedTextFilters");
         result.add("mt.getTrackbackPings");
+        result.add("mt.publishPost");
 
         return result;
     }
@@ -364,7 +367,39 @@ public class MovableTypeAPIHandler extends APIHandler {
      * @throws Exception If there is an error publishing the post
      */
     public boolean publishPost(String postID, String username, String password) throws Exception {
-        throw new XmlRpcException(UNSUPPORTED_EXCEPTION, UNSUPPORTED_EXCEPTION_MSG);
-    }
+        _logger.debug("publishPost() Called =========[ SUPPORTED ]=====");
+        _logger.debug("     PostId: " + postID);
+        _logger.debug("     UserId: " + username);
+        _logger.debug("   Password: *********");
 
+        try {
+            _authorizationProvider.authorize(_blog, null, username, password);
+            checkXMLRPCPermission(username, MOVABLETYPE_API_PERMISSION);
+
+            Integer postIDForEntry;
+            try {
+                postIDForEntry = Integer.valueOf(postID);
+            } catch (NumberFormatException e) {
+                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+            }
+
+            try {
+                Entry entry = _fetcher.loadEntry(_blog, postIDForEntry);
+
+                if (!username.equals(entry.getAuthor())) {
+                    checkXMLRPCPermission(username, ALL_XMLRPC_EDIT_PERMISSION);
+                }
+
+                entry.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
+
+                _fetcher.saveEntry(_blog, entry);
+            } catch (FetcherException e) {
+                throw new XmlRpcException(INVALID_POSTID, INVALID_POSTID_MSG);
+            }
+
+            return true;
+        } catch (AuthorizationException e) {
+            throw new XmlRpcException(AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+    }
 }

@@ -52,7 +52,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BloggerAPIHandler.java,v 1.4 2006-09-26 02:55:20 czarneckid Exp $
+ * @version $Id: BloggerAPIHandler.java,v 1.5 2006-10-09 19:40:59 czarneckid Exp $
  */
 public class BloggerAPIHandler extends APIHandler {
 
@@ -156,8 +156,8 @@ public class BloggerAPIHandler extends APIHandler {
      * @param appkey   Unique identifier/passcode of the application sending the post
      * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
-     * @return
-     * @throws org.apache.xmlrpc.XmlRpcException
+     * @return Basic user information (name, email, userid)
+     * @throws org.apache.xmlrpc.XmlRpcException If there is an error 
      *
      */
     public Object getUserInfo(String appkey, String userid, String password) throws Exception {
@@ -377,6 +377,10 @@ public class BloggerAPIHandler extends APIHandler {
             try {
                 Entry entryToEdit = _fetcher.loadEntry(_blog, postID);
 
+                if (!userid.equals(entryToEdit.getAuthor())) {
+                    checkXMLRPCPermission(userid, ALL_XMLRPC_EDIT_PERMISSION);
+                }                
+
                 String title = findTitleInContent(content);
                 if (title != null) {
                     content = BlojsomUtils.replace(content, TITLE_TAG_START + title + TITLE_TAG_END, "");
@@ -467,7 +471,7 @@ public class BloggerAPIHandler extends APIHandler {
      * @param password Password for said username
      * @param publish  Ignored
      * @return <code>true</code> if the entry was delete, <code>false</code> otherwise
-     * @throws XmlRpcException
+     * @throws XmlRpcException If there is an error deleting the post
      */
     public boolean deletePost(String appkey, String postid, String userid, String password, boolean publish) throws Exception {
         _logger.debug("deletePost() Called =====[ SUPPORTED ]=====");
@@ -570,8 +574,8 @@ public class BloggerAPIHandler extends APIHandler {
      * @param password     Password for said username
      * @param template     The text for the new template (usually mostly HTML). Must contain opening and closing <Blogger> tags, since they're needed to publish
      * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
-     * @return
-     * @throws XmlRpcException
+     * @return Not supported
+     * @throws XmlRpcException Not supported
      */
     public boolean setTemplate(String appkey, String blogid, String userid, String password, String template, String templateType) throws Exception {
         _logger.debug("setTemplate() Called =====[ UNSUPPORTED ]=====");
@@ -593,8 +597,8 @@ public class BloggerAPIHandler extends APIHandler {
      * @param userid       Login for a Blogger user who has permission to post to the blog
      * @param password     Password for said username
      * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
-     * @return
-     * @throws XmlRpcException
+     * @return Not supported
+     * @throws XmlRpcException Not supported
      */
     public String getTemplate(String appkey, String blogid, String userid, String password, String templateType) throws Exception {
         _logger.debug("getTemplate() Called =====[ UNSUPPORTED ]=====");

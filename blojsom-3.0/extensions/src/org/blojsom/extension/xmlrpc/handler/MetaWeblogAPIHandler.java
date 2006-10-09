@@ -60,7 +60,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MetaWeblogAPIHandler.java,v 1.5 2006-09-26 02:55:20 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.6 2006-10-09 19:40:59 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends APIHandler {
 
@@ -427,6 +427,10 @@ public class MetaWeblogAPIHandler extends APIHandler {
 
             try {
                 Entry entryToEdit = _fetcher.loadEntry(_blog, postID);
+
+                if (!userid.equals(entryToEdit.getAuthor())) {
+                    checkXMLRPCPermission(userid, ALL_XMLRPC_EDIT_PERMISSION);
+                }
 
                 Hashtable postcontent;
                 postcontent = struct;
