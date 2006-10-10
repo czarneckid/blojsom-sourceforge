@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.13 2006-10-06 18:39:39 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.14 2006-10-10 18:49:58 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -417,7 +417,10 @@ public class Blojsom2ToBlojsom3Utility {
                     BlogCategory blojsom2Category = blojsom2Categories[j];
                     Category blojsom3Category = new DatabaseCategory();
                     blojsom3Category.setBlogId(blog.getId());
-                    if (org.blojsom.util.BlojsomUtils.checkNullOrBlank(blojsom2Category.getDescription())) {
+                    if (!org.blojsom.util.BlojsomUtils.checkNullOrBlank(
+                            (String) blojsom2Category.getMetaData().get(org.blojsom2.util.BlojsomConstants.NAME_KEY))) {
+                        blojsom3Category.setDescription((String) blojsom2Category.getMetaData().get(org.blojsom2.util.BlojsomConstants.NAME_KEY));
+                    } else if (org.blojsom.util.BlojsomUtils.checkNullOrBlank(blojsom2Category.getDescription())) {
                         blojsom3Category.setDescription(blojsom2Category.getEncodedCategory().replaceAll("/", " "));
                     } else {
                         blojsom3Category.setDescription(blojsom2Category.getDescription());
