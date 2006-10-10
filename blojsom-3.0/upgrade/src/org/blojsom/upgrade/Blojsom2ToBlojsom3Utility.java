@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.14 2006-10-10 18:49:58 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.15 2006-10-10 18:56:06 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -427,6 +427,20 @@ public class Blojsom2ToBlojsom3Utility {
                     }
                     blojsom3Category.setName(blojsom2Category.getEncodedCategory());
                     blojsom3Category.setParentCategoryId(null);
+                    try {
+                        String parentCategoryName = blojsom2Category.getParentCategory().getEncodedCategory();
+                        Category blojsom3Categories[] = _fetcher.loadAllCategories(blog);
+                        for (int k = 0; k < blojsom3Categories.length; k++) {
+                            if (parentCategoryName.equals(blojsom3Categories[k].getName())) {
+                                blojsom3Category.setParentCategoryId(blojsom3Categories[k].getId());
+                            }
+                        }
+                    } catch (FetcherException e) {
+                        if (_logger.isErrorEnabled()) {
+                            _logger.error(e);
+                        }
+                    }
+
                     blojsom3Category.setMetaData(blojsom2Category.getMetaData());
 
                     try {
