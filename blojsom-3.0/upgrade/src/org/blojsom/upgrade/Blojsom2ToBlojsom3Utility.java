@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.16 2006-10-11 02:47:07 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.17 2006-10-11 14:54:59 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -426,19 +426,30 @@ public class Blojsom2ToBlojsom3Utility {
                         blojsom3Category.setDescription(blojsom2Category.getDescription());
                     }
                     blojsom3Category.setName(blojsom2Category.getEncodedCategory());
-                    blojsom3Category.setParentCategoryId(null);
-                    try {
-                        String parentCategoryName = blojsom2Category.getParentCategory().getEncodedCategory();
-                        Category blojsom3Categories[] = _fetcher.loadAllCategories(blog);
-                        for (int k = 0; k < blojsom3Categories.length; k++) {
-                            if (parentCategoryName.equals(blojsom3Categories[k].getName())) {
-                                blojsom3Category.setParentCategoryId(blojsom3Categories[k].getId());
+
+                    String parents[] = blojsom2Category.getEncodedCategory().split("/");
+                    if (parents.length > 1) {
+                        // Build the parent's name
+                        String parentCategoryName = "/";
+                        for (int k = 1; k < parents.length - 1; k++) {
+                            parentCategoryName = parentCategoryName + parents[k] + "/";
+                        }
+
+                        try {
+                            // Find the parent's id
+                            Category blojsom3Categories[] = _fetcher.loadAllCategories(blog);
+                            for (int k = 0; k < blojsom3Categories.length; k++) {
+                                if (parentCategoryName.equals(blojsom3Categories[k].getName())) {
+                                    blojsom3Category.setParentCategoryId(blojsom3Categories[k].getId());
+                                }
+                            }
+                        } catch (FetcherException e) {
+                            if (_logger.isErrorEnabled()) {
+                                _logger.error(e);
                             }
                         }
-                    } catch (FetcherException e) {
-                        if (_logger.isErrorEnabled()) {
-                            _logger.error(e);
-                        }
+                    } else {
+                        blojsom3Category.setParentCategoryId(null);
                     }
 
                     blojsom3Category.setMetaData(blojsom2Category.getMetaData());
