@@ -39,7 +39,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Comment.java,v 1.6 2006-09-26 02:55:21 czarneckid Exp $
+ * @version $Id: Comment.java,v 1.7 2006-10-11 02:46:48 czarneckid Exp $
  */
 public interface Comment extends Response {
 
@@ -233,14 +233,14 @@ public interface Comment extends Response {
     /**
      * Retrieve the {@link Entry} associated with this comment
      *
-     * @return {@link Entry}
+     * @return {@link Entry} entry
      */
     Entry getEntry();
 
     /**
      * Set the {@link Entry} associated with this comment
      *
-     * @param blogEntry {@link Entry}
+     * @param entry {@link Entry}
      */
     void setEntry(Entry entry);
 
