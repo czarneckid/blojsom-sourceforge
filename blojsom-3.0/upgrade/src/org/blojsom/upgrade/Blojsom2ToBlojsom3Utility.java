@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.15 2006-10-10 18:56:06 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.16 2006-10-11 02:47:07 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -641,6 +641,56 @@ public class Blojsom2ToBlojsom3Utility {
             } catch (IOException e) {
                 if (_logger.isErrorEnabled()) {
                     _logger.error(e);
+                }
+            }
+
+            // Template method and variable substitution
+            File blojsom3TemplatePath = new File(blojsom3BlogPath, "templates");
+            File[] templates = blojsom3TemplatePath.listFiles();
+            for (int j = 0; j < templates.length; j++) {
+                File template = templates[j];
+                try {
+                    String templateData = FileUtils.readFileToString(template, BlojsomConstants.UTF8);
+
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$BLOJSOM_USER", "$BLOJSOM_BLOG_ID");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$entry.getPermalink()", "$entry.getPostSlug()");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$BLOJSOM_REQUESTED_CATEGORY.getCategory()", "$BLOJSOM_REQUESTED_CATEGORY.getName()");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "#friendlyPermalink($entry)", "#FriendlyPermalink($entry)");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$blogCategory.getCategoryURL()", "#BlogURL()$blogCategory.getName()");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf", "#BlogURL()/feed/rdf/");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss", "#BlogURL()/feed/");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom", "#BlogURL()/feed/atom/");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "?tb=y", "?tb=y&amp;entry_id=$entry.getId()");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "#if($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() " +
+                                    "&& ($entry.getMetaData() " +
+                                    "&& !$entry.getMetaData().containsKey(\"blog-entry-comments-disabled\")))",
+                            "#if ($entry.allowsComments())");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() " +
+                                    "&& ($entry.getMetaData() " +
+                                    "&& !$entry.getMetaData().containsKey(\"blog-entry-trackbacks-disabled\")))",
+                            "#if ($entry.allowsTrackbacks())");
+                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
+                            "<input type=\"hidden\" name=\"comment\" value=\"y\" />",
+                            "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t" +
+                                    "<input type=\"hidden\" name=\"entry_id\" value=\"$entry.getId()\" />\n\t\t\t\t" +
+                                    "<input type=\"hidden\" name=\"redirect_to\" value=\"$permalink\" />");
+
+                    FileUtils.writeStringToFile(template, templateData, BlojsomConstants.UTF8);
+                } catch (IOException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
                 }
             }
         }
