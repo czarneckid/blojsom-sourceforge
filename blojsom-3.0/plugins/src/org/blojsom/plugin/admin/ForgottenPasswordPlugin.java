@@ -60,7 +60,7 @@ import java.util.Random;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: ForgottenPasswordPlugin.java,v 1.2 2006-04-08 22:49:42 czarneckid Exp $
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.3 2006-10-16 18:37:20 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin {
 
@@ -174,7 +174,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param blog                {@link Blog} instance
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
@@ -194,19 +194,22 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin {
                 HtmlEmail email = new HtmlEmail();
                 setupEmail(blog, user, email);
 
+                StringBuffer emailText = new StringBuffer("Here's your password: ");
                 if (blog.getUseEncryptedPasswords().booleanValue()) {
                     // Otherwise we have to create a new password since the password is one-way encrypted with MD5
                     Random random = new Random(new Date().getTime() + System.currentTimeMillis());
                     int password = random.nextInt(Integer.MAX_VALUE);
                     String updatedPassword = Integer.toString(password);
 
-                    user.setUserPassword(updatedPassword);
+                    user.setUserPassword(BlojsomUtils.digestString(updatedPassword));
                     _fetcher.saveUser(blog, user);
+                    emailText.append(updatedPassword);
+                } else {
+                	emailText.append(user.getUserPassword());
                 }
-
-                String emailText = "Here's your password: " + user.getUserPassword();
-                email.setHtmlMsg(emailText);
-                email.setTextMsg(emailText);
+                
+                email.setHtmlMsg(emailText.toString());
+                email.setTextMsg(emailText.toString());
 
                 String to = user.getUserName();
                 if (BlojsomUtils.checkNullOrBlank(to)) {
