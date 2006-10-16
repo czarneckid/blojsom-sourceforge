@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.17 2006-10-11 14:54:59 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.18 2006-10-16 18:37:50 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -521,7 +521,7 @@ public class Blojsom2ToBlojsom3Utility {
                             blojsom3Entry.setAllowPingbacks(new Integer(0));
                         }
 
-                        blojsom3Entry.setPostSlug(entry.getPermalink());
+                        blojsom3Entry.setPostSlug(org.blojsom.util.BlojsomUtils.urlDecode(entry.getPermalink()));
                         blojsom3Entry.setStatus(BlojsomMetaDataConstants.PUBLISHED_STATUS);
                         blojsom3Entry.setTitle(entry.getTitle());
 
@@ -663,8 +663,11 @@ public class Blojsom2ToBlojsom3Utility {
                 try {
                     String templateData = FileUtils.readFileToString(template, BlojsomConstants.UTF8);
 
+                    // Updated context variables
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "$BLOJSOM_USER", "$BLOJSOM_BLOG_ID");
+
+                    // Updated method names
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "$entry.getPermalink()", "$entry.getPostSlug()");
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
@@ -673,12 +676,16 @@ public class Blojsom2ToBlojsom3Utility {
                             "#friendlyPermalink($entry)", "#FriendlyPermalink($entry)");
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "$blogCategory.getCategoryURL()", "#BlogURL()$blogCategory.getName()");
+
+                    // Updated feed URLs
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf", "#BlogURL()/feed/rdf/");
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss", "#BlogURL()/feed/");
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom", "#BlogURL()/feed/atom/");
+
+                    // Updated comment and trackback checks
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
                             "?tb=y", "?tb=y&amp;entry_id=$entry.getId()");
                     templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
