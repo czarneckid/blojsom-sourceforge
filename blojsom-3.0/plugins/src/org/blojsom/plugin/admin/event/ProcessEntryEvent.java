@@ -43,7 +43,7 @@ import java.util.Map;
  * response, and the current plugin execution context.
  *
  * @author David Czarnecki
- * @version $Id: ProcessEntryEvent.java,v 1.1 2006-03-20 21:30:49 czarneckid Exp $
+ * @version $Id: ProcessEntryEvent.java,v 1.2 2006-10-17 16:20:57 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ProcessEntryEvent extends EntryEvent {
@@ -59,8 +59,12 @@ public class ProcessEntryEvent extends EntryEvent {
      * @param timestamp Event timestamp
      * @param entry     {@link Entry}
      * @param blog      {@link Blog}
+     * @param httpServletRequest  Request
+     * @param httpServletResponse Response
+     * @param context             Context     
      */
-    public ProcessEntryEvent(Object source, Date timestamp, Entry entry, Blog blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map context) {
+    public ProcessEntryEvent(Object source, Date timestamp, Entry entry, Blog blog, HttpServletRequest httpServletRequest,
+                             HttpServletResponse httpServletResponse, Map context) {
         super(source, timestamp, entry, blog);
 
         _httpServletRequest = httpServletRequest;
@@ -71,7 +75,7 @@ public class ProcessEntryEvent extends EntryEvent {
     /**
      * Retrieve the servlet request
      *
-     * @return {@link HttpServletRequest}
+     * @return {@link HttpServletRequest} Request
      */
     public HttpServletRequest getHttpServletRequest() {
         return _httpServletRequest;
@@ -80,7 +84,7 @@ public class ProcessEntryEvent extends EntryEvent {
     /**
      * Retrieve the servlet response
      *
-     * @return {@link HttpServletResponse}
+     * @return {@link HttpServletResponse} Response
      */
     public HttpServletResponse getHttpServletResponse() {
         return _httpServletResponse;

@@ -40,7 +40,7 @@ import java.util.Date;
  * EntryEvent
  *
  * @author David Czarnecki
- * @version $Id: EntryEvent.java,v 1.1 2006-03-20 21:30:49 czarneckid Exp $
+ * @version $Id: EntryEvent.java,v 1.2 2006-10-17 16:20:57 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EntryEvent extends Event {
@@ -65,7 +65,7 @@ public class EntryEvent extends Event {
     /**
      * Retrieve the {@link Entry} associated with the event
      *
-     * @return {@link Entry}
+     * @return {@link Entry} associated with event
      */
     public Entry getEntry() {
         return _entry;
@@ -74,7 +74,7 @@ public class EntryEvent extends Event {
     /**
      * Retrieve the {@link Blog} associated with the event
      *
-     * @return {@link Blog}
+     * @return {@link Blog} associated with event
      */
     public Blog getBlog() {
         return _blog;
