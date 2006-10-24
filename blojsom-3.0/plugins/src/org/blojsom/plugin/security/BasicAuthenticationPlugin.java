@@ -41,6 +41,7 @@ import org.blojsom.util.BlojsomConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Map;
@@ -50,7 +51,7 @@ import java.util.Map;
  * before they are able to see any blog entries.
  *
  * @author David Czarnecki
- * @version $Id: BasicAuthenticationPlugin.java,v 1.2 2006-03-20 22:50:58 czarneckid Exp $
+ * @version $Id: BasicAuthenticationPlugin.java,v 1.3 2006-10-24 00:49:32 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BasicAuthenticationPlugin extends BaseAdminPlugin {
@@ -68,7 +69,7 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
     public BasicAuthenticationPlugin() {
     }
 
-   /**
+    /**
      * Set the {@link AuthorizationProvider}
      *
      * @param authorizationProvider {@link AuthorizationProvider}
@@ -111,7 +112,11 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
 
                     try {
                         _authorizationProvider.authorize(blog, null, username, password);
-
+                        HttpSession httpSession = httpServletRequest.getSession();
+                        httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_AUTHENTICATED_KEY, Boolean.TRUE);
+                        httpSession.setAttribute(blog.getBlogAdminURL() + "_" + BLOJSOM_ADMIN_PLUGIN_USERNAME_KEY, username);
+                        httpSession.setAttribute(BLOJSOM_ADMIN_PLUGIN_USERNAME, username);
+                        httpSession.setAttribute(BLOJSOM_USER_AUTHENTICATED, Boolean.TRUE);
                         return true;
                     } catch (AuthorizationException e) {
                         if (_logger.isErrorEnabled()) {
@@ -127,6 +132,12 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
                 }
 
                 return false;
+            }
+        } else {
+            // Check to see if the user is already authenticated through means other than Basic Auth
+            Boolean isAuthenticated = (Boolean) httpServletRequest.getSession().getAttribute(BLOJSOM_USER_AUTHENTICATED);
+            if (isAuthenticated != null) {
+                return isAuthenticated.booleanValue();
             }
         }
 
@@ -149,7 +160,7 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
             setAuthenticationRequired(httpServletResponse, blog);
 
             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, FAILED_AUTHORIZATION_PAGE);
-            
+
             return new Entry[0];
         }
 
