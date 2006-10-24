@@ -34,7 +34,6 @@ import netscape.ldap.*;
 import netscape.ldap.factory.JSSESocketFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.blojsom.BlojsomException;
 import org.blojsom.ConfigurationException;
 import org.blojsom.authorization.AuthorizationException;
 import org.blojsom.authorization.database.DatabaseAuthorizationProvider;
@@ -42,8 +41,8 @@ import org.blojsom.blog.Blog;
 import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.ServletConfig;
-import java.util.Map;
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * LDAPAuthorizationProvider
@@ -70,7 +69,7 @@ import java.util.Enumeration;
  *
  * @author David Czarnecki
  * @author Christopher Bailey
- * @version $Id: LDAPAuthorizationProvider.java,v 1.3 2006-09-19 02:17:42 czarneckid Exp $
+ * @version $Id: LDAPAuthorizationProvider.java,v 1.4 2006-10-24 00:50:25 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
@@ -114,7 +113,7 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
     /**
      * Initialization method for the authorization provider
      *
-     * @throws BlojsomConfigurationException If there is an error initializing the provider
+     * @throws ConfigurationException If there is an error initializing the provider
      */
     public void init() throws ConfigurationException {
         super.init();
@@ -196,7 +195,7 @@ public class LDAPAuthorizationProvider extends DatabaseAuthorizationProvider {
      *                             change depending on the authorization provider. This parameter is not used in this implementation.
      * @param username             Username.  In this implementation, this value must match that of the blog user's ID.
      * @param password             Password
-     * @throws BlojsomException If there is an error authorizing the username and password
+     * @throws AuthorizationException If there is an error authorizing the username and password
      */
     public void authorize(Blog blog, Map authorizationContext, String username, String password) throws AuthorizationException {
         String dn = getDN(username);
