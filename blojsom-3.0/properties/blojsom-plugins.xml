@@ -91,6 +91,7 @@
     </bean>
     <bean id="excerpt" class="org.blojsom.plugin.excerpt.ExcerptPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="footnote" class="org.blojsom.plugin.footnote.FootnotePlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="form-authentication" class="org.blojsom.plugin.security.FormAuthenticationPlugin" parent="basic-authentication" />    
     <bean id="googlehighlight" class="org.blojsom.plugin.highlight.GoogleHighlightPlugin" init-method="init"
           destroy-method="destroy"/>
     <bean id="href-hyperlinks" class="org.blojsom.plugin.hyperlink.HyperlinkURLPlugin" init-method="init"
