@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Entry.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
+ * @version $Id: Entry.java,v 1.6 2006-10-24 18:52:17 czarneckid Exp $
  */
 public interface Entry {
 
@@ -410,6 +410,13 @@ public interface Entry {
      * @return Post slug
      */
     public String getPostSlug();
+
+    /**
+     * Get the post slug encoded as UTF-8
+     *
+     * @return Post slug encoded as UTF-8
+     */
+    public String getEncodedPostSlug();
 
     /**
      * Set the post slug

@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseEntry.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
+ * @version $Id: DatabaseEntry.java,v 1.6 2006-10-24 18:52:18 czarneckid Exp $
  */
 public class DatabaseEntry implements Entry, Serializable {
 
@@ -624,6 +624,16 @@ public class DatabaseEntry implements Entry, Serializable {
      */
     public String getPostSlug() {
         return _postSlug;
+    }
+
+
+    /**
+     * Get the post slug encoded as UTF-8
+     *
+     * @return Post slug encoded as UTF-8
+     */
+    public String getEncodedPostSlug() {
+        return BlojsomUtils.urlEncode(_postSlug);
     }
 
     /**
