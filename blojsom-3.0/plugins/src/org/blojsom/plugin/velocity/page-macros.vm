@@ -516,6 +516,22 @@ $technoratiTag
 #end
 #end
 
+#**
+ * Output the Technorati tag links for a blog entry
+ *
+ * @param $entry Blog entry
+ *#
+#macro(EscapedTechnoratiTags $entry)
+#if ($entry.getMetaData().get("TECHNORATI_TAG_LINKS"))
+#set($technoratiTags = $entry.getMetaData().get("TECHNORATI_TAG_LINKS"))
+&lt;p style="text-align:right;font-size:10px;"&gt;Technorati Tags:
+#foreach($technoratiTag in $technoratiTags)
+$BLOJSOM_PLUGIN_STRING_UTILITIES.escapeString($technoratiTag)
+#end
+&lt;/p&gt;
+#end
+#end
+
 ###############################################
 ## Administrative Macros
 ###############################################
