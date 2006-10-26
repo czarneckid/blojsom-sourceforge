@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * Technorati tags plugin
  *
  * @author David Czarnecki
- * @version $Id: TechnoratiTagsPlugin.java,v 1.2 2006-08-30 13:37:57 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.3 2006-10-26 01:15:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -75,7 +75,7 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Li
     /**
      * Set the {@link org.blojsom.event.EventBroadcaster} event broadcaster
      *
-     * @param blojsomEventBroadcaster {@link org.blojsom.event.EventBroadcaster}
+     * @param eventBroadcaster {@link org.blojsom.event.EventBroadcaster}
      */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
