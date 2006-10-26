@@ -203,7 +203,7 @@ CREATE TABLE Plugin (
 CREATE TABLE Properties (
   blog_id int NOT NULL REFERENCES Blog (id) ON DELETE CASCADE,
   property_name varchar(255) NOT NULL,
-  property_value longtext
+  property_value text
 );
 
 --
