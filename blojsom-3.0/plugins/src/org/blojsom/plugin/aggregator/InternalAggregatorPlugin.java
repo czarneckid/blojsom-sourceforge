@@ -36,6 +36,7 @@ import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.Category;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.util.BlojsomConstants;
 import org.apache.commons.logging.Log;
@@ -51,7 +52,7 @@ import java.util.HashMap;
  * 
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: InternalAggregatorPlugin.java,v 1.2 2006-10-26 01:57:12 czarneckid Exp $
+ * @version $Id: InternalAggregatorPlugin.java,v 1.3 2006-10-26 21:02:50 czarneckid Exp $
  */
 public class InternalAggregatorPlugin implements Plugin {
 
@@ -97,6 +98,8 @@ public class InternalAggregatorPlugin implements Plugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
+        Category category = (Category) context.get(BlojsomConstants.BLOJSOM_REQUESTED_CATEGORY);
+
         String pgNum = BlojsomUtils.getRequestValue(BlojsomConstants.PAGE_NUMBER_PARAM, httpServletRequest);
         int page;
         try {
@@ -113,10 +116,12 @@ public class InternalAggregatorPlugin implements Plugin {
         Map blogs = new HashMap();
 
         try {
-            entries = _fetcher.loadEntries(pageSize, page);
+            entries = _fetcher.loadEntries(pageSize, page, category, _fetcher.loadAllCategories(blog));
             for (int i = 0; i < entries.length; i++) {
                 Entry entry = entries[i];
-                blogs.put(entry.getBlogId(), _fetcher.loadBlog(entry.getBlogId()));
+                if (!blogs.containsKey(entry.getBlogId())) {
+                    blogs.put(entry.getBlogId(), _fetcher.loadBlog(entry.getBlogId()));
+                }
             }
         } catch (FetcherException e) {
             if (_logger.isErrorEnabled()) {

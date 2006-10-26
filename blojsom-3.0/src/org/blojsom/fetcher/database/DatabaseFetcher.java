@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.32 2006-10-26 01:38:34 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.33 2006-10-26 21:02:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -234,7 +234,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * Load the {@link Blog} given the ID
      *
      * @param id ID
-     * @return {@link Blog}
+     * @return {@link Blog} blog
      * @throws FetcherException If there is an error loading the blog
      */
     public Blog loadBlog(Integer id) throws FetcherException {
@@ -614,10 +614,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
      *
      * @param pageSize Page size
      * @param page     Page
+     * @param specificCategory Category
+     * @param defaultCategories Default categories to use for requesting entries from the blogs
      * @return Blog entries
      * @throws FetcherException If there is an error loading the entries
      */
-    public Entry[] loadEntries(int pageSize, int page) throws FetcherException {
+    public Entry[] loadEntries(int pageSize, int page, Category specificCategory, Category[] defaultCategories)
+            throws FetcherException {
         Session session = _sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
@@ -639,6 +642,20 @@ public class DatabaseFetcher implements Fetcher, Listener {
         entryCriteria.setFirstResult(page);
         entryCriteria.setCacheable(true);
 
+        if (specificCategory != null) {
+            entryCriteria.createCriteria("blogCategory").add(Restrictions.eq("name", specificCategory.getName()));
+        } else {            
+            entryCriteria = entryCriteria.createCriteria("blogCategory");
+            
+            ArrayList names = new ArrayList();
+            for (int i = 0; i < defaultCategories.length; i++) {
+                Category defaultCategory = defaultCategories[i];
+                names.add(defaultCategory.getName());
+            }
+
+            entryCriteria.add(Restrictions.in("name", names.toArray()));
+        }
+        
         List entryList = entryCriteria.list();
 
         tx.commit();

@@ -43,7 +43,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.18 2006-10-26 01:38:34 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.19 2006-10-26 21:02:53 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -64,42 +64,42 @@ public interface Fetcher {
     /**
      * Return a new {@link Comment} instance
      *
-     * @return {@link Comment}
+     * @return {@link Comment} comment
      */
     public Comment newComment();
 
     /**
      * Return a new {@link Trackback} instance
      *
-     * @return {@link Trackback}
+     * @return {@link Trackback} trackback
      */
     public Trackback newTrackback();
 
     /**
      * Return a new {@link Pingback} instance
      *
-     * @return {@link Pingback}
+     * @return {@link Pingback} pingback
      */
     public Pingback newPingback();
 
     /**
      * Return a new {@link Category} instance
      *
-     * @return {@link Category}
+     * @return {@link Category} category
      */
     public Category newCategory();
 
     /**
      * Return a new {@link Blog} instance
      *
-     * @return {@link Blog}
+     * @return {@link Blog} blog
      */
     public Blog newBlog();
 
     /**
      * Return a new {@link User} instance
      *
-     * @return {@link User}
+     * @return {@link User} user
      */
     public User newUser();
 
@@ -115,7 +115,7 @@ public interface Fetcher {
      * Load the {@link Blog} given the blog ID
      *
      * @param blogId Blog ID
-     * @return {@link Blog}
+     * @return {@link Blog} blog
      * @throws FetcherException If there is an error loading the blog
      */
     public Blog loadBlog(String blogId) throws FetcherException;
@@ -124,7 +124,7 @@ public interface Fetcher {
      * Load the {@link Blog} given the ID
      *
      * @param id ID
-     * @return {@link Blog}
+     * @return {@link Blog} blog
      * @throws FetcherException If there is an error loading the blog
      */
     public Blog loadBlog(Integer id) throws FetcherException;
@@ -198,11 +198,14 @@ public interface Fetcher {
      * Load a set of entries using a given page size and page in which to retrieve the entries
      *
      * @param pageSize Page size
-     * @param page Page
+     * @param page     Page
+     * @param specificCategory Category
+     * @param defaultCategories Default categories to use for requesting entries from the blogs
      * @return Blog entries
      * @throws FetcherException If there is an error loading the entries
      */
-    public Entry[] loadEntries(int pageSize, int page) throws FetcherException;
+    public Entry[] loadEntries(int pageSize, int page, Category specificCategory, Category[] defaultCategories)
+            throws FetcherException;
 
     /**
      * Find entries which have the search query in their title or description
@@ -263,7 +266,7 @@ public interface Fetcher {
      *
      * @param blog {@link Blog}
      * @param entryId Entry ID
-     * @return {@link Entry}
+     * @return {@link Entry} entry
      * @throws FetcherException If there is an error loading the entry
      */
     public Entry loadEntry(Blog blog, Integer entryId) throws FetcherException;
@@ -409,6 +412,7 @@ public interface Fetcher {
      * Load the recent comments for a blog
      *
      * @param blog {@link Blog}
+     * @return List of recent comment
      * @throws FetcherException If there is an error retrieving the recent comments
      */
     public List loadRecentComments(Blog blog) throws FetcherException;
@@ -444,6 +448,7 @@ public interface Fetcher {
      * Load the recent trackbacks for a blog
      *
      * @param blog {@link Blog}
+     * @return List of recent trackbacks
      * @throws FetcherException If there is an error retrieving the recent trackbacks
      */
     public List loadRecentTrackbacks(Blog blog) throws FetcherException;
@@ -490,6 +495,7 @@ public interface Fetcher {
      * Load the recent pingbacks for a blog
      *
      * @param blog {@link Blog}
+     * @return List of recent pingbacks
      * @throws FetcherException If there is an error retrieving the recent pingbacks
      */
     public List loadRecentPingbacks(Blog blog) throws FetcherException;
@@ -507,6 +513,7 @@ public interface Fetcher {
      *
      * @param blog      {@link Blog}
      * @param userLogin Login ID
+     * @return {@link User} user
      * @throws FetcherException If there is an error loading the {@link User} from the blog
      */
     public User loadUser(Blog blog, String userLogin) throws FetcherException;
@@ -516,7 +523,7 @@ public interface Fetcher {
      *
      * @param blog {@link Blog}
      * @param userID User ID
-     * @return {@link User}
+     * @return {@link User} user
      * @throws FetcherException If there is an error loading the user
      */
     public User loadUser(Blog blog, Integer userID) throws FetcherException;
@@ -526,7 +533,7 @@ public interface Fetcher {
      *
      * @param blog {@link Blog}
      * @param user {@link User}
-     * @return {@link User}
+     * @return {@link User} user
      * @throws FetcherException If there is an error saving the user to the blog
      */
     public User saveUser(Blog blog, User user) throws FetcherException;
