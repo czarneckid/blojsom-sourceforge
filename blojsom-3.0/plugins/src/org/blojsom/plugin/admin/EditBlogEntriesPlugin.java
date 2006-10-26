@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.15 2006-09-26 02:55:20 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.16 2006-10-26 01:42:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -532,7 +532,7 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 Category category = _fetcher.newCategory();
                 category.setBlogId(blog.getId());
                 category.setDescription("Uncategorized");
-                category.setName("uncategorized");
+                category.setName("/uncategorized/");
                 category.setParentCategoryId(null);
 
                 try {
