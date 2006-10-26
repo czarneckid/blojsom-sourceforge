@@ -96,6 +96,12 @@
           destroy-method="destroy"/>
     <bean id="href-hyperlinks" class="org.blojsom.plugin.hyperlink.HyperlinkURLPlugin" init-method="init"
           destroy-method="destroy"/>
+    <bean id="internal-aggregator" class="org.blojsom.plugin.aggregator.InternalAggregatorPlugin" init-method="init"
+        destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="ip-moderation" class="org.blojsom.plugin.moderation.IPAddressModerationPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
