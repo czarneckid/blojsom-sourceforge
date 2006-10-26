@@ -51,7 +51,7 @@ import java.util.HashMap;
  * 
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: InternalAggregatorPlugin.java,v 1.1 2006-10-26 01:42:11 czarneckid Exp $
+ * @version $Id: InternalAggregatorPlugin.java,v 1.2 2006-10-26 01:57:12 czarneckid Exp $
  */
 public class InternalAggregatorPlugin implements Plugin {
 
@@ -101,12 +101,8 @@ public class InternalAggregatorPlugin implements Plugin {
         int page;
         try {
             page = Integer.parseInt(pgNum);
-            page -= 1;
-            if (page < 0) {
-                page = 0;
-            }
         } catch (NumberFormatException e) {
-            page = 0;
+            page = 1;
         }
 
         int pageSize = blog.getBlogDisplayEntries();
