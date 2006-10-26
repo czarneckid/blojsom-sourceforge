@@ -43,7 +43,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.17 2006-05-12 15:09:54 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.18 2006-10-26 01:38:34 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -121,6 +121,15 @@ public interface Fetcher {
     public Blog loadBlog(String blogId) throws FetcherException;
 
     /**
+     * Load the {@link Blog} given the ID
+     *
+     * @param id ID
+     * @return {@link Blog}
+     * @throws FetcherException If there is an error loading the blog
+     */
+    public Blog loadBlog(Integer id) throws FetcherException;
+
+    /**
      * Save a {@link Blog}
      *
      * @param blog {@link Blog}
@@ -184,6 +193,16 @@ public interface Fetcher {
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntries(Blog blog, int pageSize, int page) throws FetcherException;
+
+    /**
+     * Load a set of entries using a given page size and page in which to retrieve the entries
+     *
+     * @param pageSize Page size
+     * @param page Page
+     * @return Blog entries
+     * @throws FetcherException If there is an error loading the entries
+     */
+    public Entry[] loadEntries(int pageSize, int page) throws FetcherException;
 
     /**
      * Find entries which have the search query in their title or description

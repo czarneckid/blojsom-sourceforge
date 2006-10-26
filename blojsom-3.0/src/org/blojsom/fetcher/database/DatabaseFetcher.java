@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.31 2006-10-06 20:08:43 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.32 2006-10-26 01:38:34 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -211,6 +211,48 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             if (blog == null) {
                 throw new FetcherException("Blog id: " + blogId + " not found");
+            }
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            session.close();
+        }
+
+        return blog;
+    }
+
+
+    /**
+     * Load the {@link Blog} given the ID
+     *
+     * @param id ID
+     * @return {@link Blog}
+     * @throws FetcherException If there is an error loading the blog
+     */
+    public Blog loadBlog(Integer id) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
+        Blog blog = null;
+
+        try {
+            tx = session.beginTransaction();
+            Criteria blogCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseBlog.class);
+            blogCriteria.add(Restrictions.eq("id", id));
+            blog = (Blog) blogCriteria.uniqueResult();
+
+            tx.commit();
+
+            if (blog == null) {
+                throw new FetcherException("Blog id: " + id + " not found");
             }
         } catch (HibernateException e) {
             if (tx != null) {
@@ -553,6 +595,45 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
         entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+        entryCriteria.addOrder(Order.desc("date"));
+        entryCriteria.setMaxResults(pageSize);
+        entryCriteria.setFirstResult(page);
+        entryCriteria.setCacheable(true);
+
+        List entryList = entryCriteria.list();
+
+        tx.commit();
+        session.close();
+
+        return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+    }
+
+
+    /**
+     * Load a set of entries using a given page size and page in which to retrieve the entries
+     *
+     * @param pageSize Page size
+     * @param page     Page
+     * @return Blog entries
+     * @throws FetcherException If there is an error loading the entries
+     */
+    public Entry[] loadEntries(int pageSize, int page) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        page -= 1;
+        if (page < 0) {
+            page = 0;
+        }
+
+        if (pageSize < 1) {
+            pageSize = 1;
+        }
+
+        page *= pageSize;
+
+        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+        entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
         entryCriteria.addOrder(Order.desc("date"));
         entryCriteria.setMaxResults(pageSize);
         entryCriteria.setFirstResult(page);
