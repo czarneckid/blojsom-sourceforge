@@ -44,7 +44,7 @@ import java.util.Map;
  * StringUtilities plugin
  *
  * @author David Czarnecki
- * @version $Id: StringUtilitiesPlugin.java,v 1.1 2006-03-20 21:30:54 czarneckid Exp $
+ * @version $Id: StringUtilitiesPlugin.java,v 1.2 2006-10-26 01:14:58 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class StringUtilitiesPlugin implements Plugin {
@@ -121,5 +121,111 @@ public class StringUtilitiesPlugin implements Plugin {
         public String escapeString(String input) {
             return BlojsomUtils.escapeString(input);
         }
+
+        /**
+         * Return an escaped string where &amp;, &lt;, &gt; are converted to their HTML equivalents
+         *
+         * @param input Unescaped string
+         * @return Escaped string containing HTML equivalents for &amp;, &lt;, &gt;
+         */
+        public String escapeStringSimple(String input) {
+            return BlojsomUtils.escapeStringSimple(input);
+        }
+
+        /**
+         * Return an escaped string where &lt;, &gt; are converted to their HTML equivalents
+         *
+         * @param input Unescaped string
+         * @return Escaped string containing HTML equivalents for &lt;, &gt;
+         */
+        public String escapeBrackets(String input) {
+            return BlojsomUtils.escapeBrackets(input);
+        }
+
+
+        /**
+         * Return a UTF-8 encoded string from the input
+         *
+         * @param input Input
+         * @return Input that has been encoded using UTF-8
+         */
+        public String encodeStringUTF8(String input) {
+            return BlojsomUtils.urlEncode(input);
+        }
+
+        /**
+         * Decode a UTF-8 encoded string from the input
+         *
+         * @param input Input
+         * @return Input that has been decoded using UTF-8
+         */
+        public String decodeStringUTF8(String input) {
+            return BlojsomUtils.urlDecode(input);
+        }
+
+        /**
+         * Parse a comma-separated list of values; also parses over internal spaces
+         *
+         * @param commaList Comma-separated list
+         * @return Individual strings from the comma-separated list
+         */
+        public String[] parseCommaList(String commaList) {
+            return BlojsomUtils.parseCommaList(commaList);
+        }
+
+        /**
+         * Parse a comma-separated list of values
+         *
+         * @param commaList Comma-separated list
+         * @return Individual strings from the comma-separated list
+         */
+        public String[] parseOnlyCommaList(String commaList) {
+            return BlojsomUtils.parseOnlyCommaList(commaList);
+        }
+
+        /**
+         * Parse a comma-separated list of values
+         *
+         * @param commaList Comma-separated list
+         * @param trim If the contents of the array should be trimmed
+         * @return Individual strings from the comma-separated list
+         */
+        public String[] parseOnlyCommaList(String commaList, boolean trim) {
+            return BlojsomUtils.parseOnlyCommaList(commaList, trim);
+        }
+
+        /**
+         * Parse a string into two separate strings based on the last comma in the input value
+         *
+         * @param value Input
+         * @return Parsed string
+         */
+        public String[] parseLastComma(String value) {
+            return BlojsomUtils.parseLastComma(value);
+        }
+
+        /**
+         * Parse a delimited list of values
+         *
+         * @param delimitedList Delimited list
+         * @param delimiter     Field Delimiter
+         * @return Individual strings from the comma-separated list
+         */
+        public  String[] parseDelimitedList(String delimitedList, String delimiter) {
+            return BlojsomUtils.parseDelimitedList(delimitedList, delimiter);
+        }
+
+        /**
+         * Parse a delimited list of values
+         *
+         * @param delimitedList Delimited list
+         * @param delimiter     Field Delimiter
+         * @param trim If the contents of the array should be trimmed
+         * @return Individual strings from the comma-separated list
+         */
+        public String[] parseDelimitedList(String delimitedList, String delimiter, boolean trim) {
+            return BlojsomUtils.parseDelimitedList(delimitedList, delimiter, trim);
+        }
+
     }
 }
