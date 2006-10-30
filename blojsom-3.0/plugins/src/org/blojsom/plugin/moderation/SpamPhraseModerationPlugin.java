@@ -65,7 +65,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: SpamPhraseModerationPlugin.java,v 1.2 2006-03-27 14:05:44 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationPlugin.java,v 1.3 2006-10-30 00:07:13 czarneckid Exp $
  */
 public class SpamPhraseModerationPlugin implements Plugin, Listener {
 
@@ -146,7 +146,7 @@ public class SpamPhraseModerationPlugin implements Plugin, Listener {
     /**
      * Load the list of spam phrases from the blog
      *
-     * @param blog {@link blog}
+     * @param blog {@link Blog}
      * @return List of spam phrases
      */
     protected List loadSpamPhrases(Blog blog) {
@@ -183,6 +183,9 @@ public class SpamPhraseModerationPlugin implements Plugin, Listener {
         if (event instanceof ResponseSubmissionEvent) {
             ResponseSubmissionEvent responseSubmissionEvent = (ResponseSubmissionEvent) event;
             String content = responseSubmissionEvent.getContent();
+            String submitter = responseSubmissionEvent.getSubmitter();
+            String submitterItem1 = responseSubmissionEvent.getSubmitterItem1();
+            String submitterItem2 = responseSubmissionEvent.getSubmitterItem2();
 
             if (!BlojsomUtils.checkNullOrBlank(content)) {
                 List spamPhrases = loadSpamPhrases(responseSubmissionEvent.getBlog());
@@ -201,7 +204,10 @@ public class SpamPhraseModerationPlugin implements Plugin, Listener {
                 while (phraseIterator.hasNext()) {
                     phrase = (String) phraseIterator.next();
 
-                    if (content.matches(phrase) || content.indexOf(phrase) != -1) {
+                    if ( ((content != null) && (content.matches(phrase) || content.indexOf(phrase) != -1)) ||
+                            ((submitter != null) && (submitter.matches(phrase) || submitter.indexOf(phrase) != -1)) ||
+                            ((submitterItem1 != null) && (submitterItem1.matches(phrase) || submitterItem1.indexOf(phrase) != -1)) ||
+                            ((submitterItem2 != null) && (submitterItem2.matches(phrase) || submitterItem2.indexOf(phrase) != -1)) ) {
                         phraseSpamFound = true;
                         break;
                     }
