@@ -332,7 +332,7 @@
 #end
 
 #macro(CategoryName $category)$category.getName().replaceAll("/", "")#end
-#macro(CategoryDescription $category)#if (!("" == $category.getDescription()))$category.getDescription()#else$category.getName().replaceAll("/", "")#end#end
+#macro(CategoryDescription $category)#if (!("" == $category.getDescription() && $category.getDescription()) && $category.getDescription())$category.getDescription()#else$category.getName().replaceAll("/", "")#end#end
 
 ###############################################
 ## Template Snippet Macros
