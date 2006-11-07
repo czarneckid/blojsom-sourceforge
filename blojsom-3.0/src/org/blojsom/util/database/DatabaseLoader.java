@@ -51,7 +51,7 @@ import java.util.List;
  * Database loader
  *
  * @author David Czarnecki
- * @version $Id: DatabaseLoader.java,v 1.4 2006-05-05 23:57:03 czarneckid Exp $
+ * @version $Id: DatabaseLoader.java,v 1.5 2006-11-07 20:21:23 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseLoader {
@@ -169,7 +169,11 @@ public class DatabaseLoader {
                         if (!input.endsWith(";")) {
                             sql.append(input).append(" ");
                         } else {
-                            sql.append(input).append("\n");
+                            if(_dbScript.indexOf("oracle") != -1) {
+                                sql.append(input.substring(0, input.length( ) - 1)).append("\n");
+                            } else {
+                                sql.append(input).append("\n");
+                            }
                         }
                     }
                 }
