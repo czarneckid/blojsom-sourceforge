@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.16 2006-10-26 01:42:29 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.17 2006-11-08 13:47:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -1151,6 +1151,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 _fetcher.loadEntry(blog, entry);
 
+                _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
+
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {
@@ -1206,6 +1208,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 }
 
                 _fetcher.loadEntry(blog, entry);
+
+                _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
@@ -1263,6 +1267,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 }
 
                 _fetcher.loadEntry(blog, entry);
+
+                _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
@@ -1322,6 +1328,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 _fetcher.loadEntry(blog, entry);
 
+                _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
+
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {
@@ -1378,6 +1386,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                 }
 
                 _fetcher.loadEntry(blog, entry);
+
+                _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
 
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
@@ -1438,6 +1448,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
 
                 _fetcher.loadEntry(blog, entry);
 
+                _eventBroadcaster.processEvent(new ProcessEntryEvent(this, new Date(), entry, blog, httpServletRequest, httpServletResponse, context));
+                
                 context.put(BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY, entry);
             } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {
