@@ -14,7 +14,7 @@
         #set($isPublished = ("published" == $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getStatus()))
 
         #if ($useRichtextEditor)
-        <script language="javascript" type="text/javascript" src="#BlogBaseURL()/administration/tiny_mce/tiny_mce.js"></script>
+        <script language="javascript" type="text/javascript" src="#BlogBaseAdminURL()/administration/tiny_mce/tiny_mce.js"></script>
         <script language="javascript" type="text/javascript">
         tinyMCE.init({
             theme        : "advanced",
@@ -146,7 +146,7 @@
                             #if (!$useRichtextEditor)
                             <tr><td></td><td>
                                 <div id="quicktags">
-                                Quicktags: <script src="#BlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
+                                Quicktags: <script src="#BlogBaseAdminURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
                                 <script language="JavaScript" type="text/javascript">edToolbar();</script>
                                 </div></td>
                             </tr>

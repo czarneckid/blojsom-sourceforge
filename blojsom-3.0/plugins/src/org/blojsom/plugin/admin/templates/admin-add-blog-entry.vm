@@ -12,7 +12,7 @@
 
         #set($useRichtextEditor = ("true" == $BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor")))
         #if ($useRichtextEditor)
-        <script language="javascript" type="text/javascript" src="#BlogBaseURL()/administration/tiny_mce/tiny_mce.js"></script>
+        <script language="javascript" type="text/javascript" src="#BlogBaseAdminURL()/administration/tiny_mce/tiny_mce.js"></script>
         <script language="javascript" type="text/javascript">
         tinyMCE.init({
             theme        : "advanced",
@@ -77,7 +77,7 @@
                                 <td></td>
                                 <td>
                                     <div id="quicktags">
-                                    Quicktags: <script src="#BlogBaseURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
+                                    Quicktags: <script src="#BlogBaseAdminURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
                                     <script language="JavaScript" type="text/javascript">edToolbar();</script>
                                     </div>
                                 </td>

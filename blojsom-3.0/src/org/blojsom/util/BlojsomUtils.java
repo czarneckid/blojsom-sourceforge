@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.11 2006-09-09 18:37:02 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.12 2006-11-09 02:32:19 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1880,21 +1880,11 @@ public class BlojsomUtils implements BlojsomConstants {
      * @param blogID             Blog ID
      */
     public static void resolveDynamicBaseAndBlogURL(HttpServletRequest httpServletRequest, Blog blog, String blogID) {
-        if (checkNullOrBlank(blog.getBlogBaseURL())) {
-            blog.setBlogBaseURL(constructBaseURL(httpServletRequest));
-        }
+        blog.setBlogBaseURL(constructBaseURL(httpServletRequest));
+        blog.setBlogURL(constructBlogURL(httpServletRequest, blogID));
 
-        if (checkNullOrBlank(blog.getBlogURL())) {
-            blog.setBlogURL(constructBlogURL(httpServletRequest, blogID));
-        }
-
-        if (checkNullOrBlank(blog.getBlogAdminURL())) {
-            blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID));
-        }
-
-        if (checkNullOrBlank(blog.getBlogBaseAdminURL())) {
-            blog.setBlogBaseAdminURL(constructBaseURL(httpServletRequest));
-        }
+        blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID));
+        blog.setBlogBaseAdminURL(constructBaseURL(httpServletRequest));
     }
 
     /**
