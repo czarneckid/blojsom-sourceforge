@@ -55,7 +55,7 @@ import java.util.Properties;
  * EditBlogPropertiesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogPropertiesPlugin.java,v 1.9 2006-09-12 14:52:41 czarneckid Exp $
+ * @version $Id: EditBlogPropertiesPlugin.java,v 1.10 2006-11-09 02:33:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
@@ -195,6 +195,12 @@ public class EditBlogPropertiesPlugin extends BaseAdminPlugin {
             blog.setBlogBaseURL(blogPropertyValue);
             blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.DEFAULT_POST_CATEGORY, httpServletRequest);
             blog.setProperty(BlojsomConstants.DEFAULT_POST_CATEGORY, blogPropertyValue);
+            blogPropertyValue = BlojsomUtils.getRequestValue(BlojsomConstants.USE_DYNAMIC_BLOG_URLS, httpServletRequest);
+            if (!BlojsomUtils.checkNullOrBlank(blogPropertyValue)) {
+                blog.setProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS, "true");
+            } else {
+                blog.setProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS, "false");
+            }            
 
             // Comment plugin properties
             blogPropertyValue = BlojsomUtils.getRequestValue(CommentPlugin.COMMENT_AUTOFORMAT_IP, httpServletRequest);

@@ -40,6 +40,10 @@
                                 <td>#adminResource('blog.base.url.text' '')</td> <td><input name="blog-base-url" type="text" size="50" value="$BLOJSOM_BLOG.getBlogBaseURL()"/></td>
                             </tr>
                             <tr>
+                                <td>#adminResource('use.dynamic.urls.text' '')</td>
+                                <td><input type="checkbox" name="use-dynamic-blog-urls" value="true" #if ($BLOJSOM_BLOG.getProperty("use-dynamic-blog-urls") == "true") CHECKED #end/></td>
+                            </tr>
+                            <tr>
                                 <td>#adminResource('blog.display.entries.text' '')</td> <td><input name="blog-display-entries" type="text" size="50" value="$BLOJSOM_BLOG.getBlogDisplayEntries()"/><br />#adminResource('display.entries.help.text' '')</td>
                             </tr>
                             <tr>
