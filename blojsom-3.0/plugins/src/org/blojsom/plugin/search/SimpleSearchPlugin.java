@@ -38,6 +38,7 @@ import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
+import org.blojsom.util.BlojsomUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +48,7 @@ import java.util.Map;
  * SimpleSearchPlugin
  *
  * @author David Czarnecki
- * @version $Id: SimpleSearchPlugin.java,v 1.4 2006-04-28 17:36:03 czarneckid Exp $
+ * @version $Id: SimpleSearchPlugin.java,v 1.5 2006-11-10 02:26:00 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class SimpleSearchPlugin implements Plugin {
@@ -97,7 +98,7 @@ public class SimpleSearchPlugin implements Plugin {
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         String query = httpServletRequest.getParameter(QUERY_PARAM);
-        if (query == null) {
+        if (BlojsomUtils.checkNullOrBlank(query)) {
             return entries;
         } else {
             query = query.toLowerCase();
