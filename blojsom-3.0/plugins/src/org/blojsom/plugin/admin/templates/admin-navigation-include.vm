@@ -6,7 +6,7 @@
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=page">#adminResource('edit.and.delete.entries.text' '')</a></li>
                 </ul>
             </li>
-            <li><a href="#">#adminResource('manager.page.header' 'Manage')</a>
+            <li><a href="#">#adminResource('manager.page.header' '')</a>
                 <ul>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-categories&action=page">#adminResource('edit.blog.categories.page.header' '')</a></li>
                     <li><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=1">#adminResource('entries.text' '')</a></li>

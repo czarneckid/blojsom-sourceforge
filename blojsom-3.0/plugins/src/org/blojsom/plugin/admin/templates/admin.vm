@@ -19,16 +19,16 @@
                 #showErrorMessage()
 
                 <div class="mainClm">
-                    Use the menus in the navigation bar above to interact with your blog.
+                    #adminResource('administration.welcome.message' '')
                 </div>
             </div>
 
             <div id="sidebar">
-                <h4>Support</h4>
+                <h4>#adminResource('support.text' '')</h4>
 
-                <p>The <a href="http://lists.sourceforge.net/lists/listinfo/blojsom-users">users mailing list</a> is for general discussion about blojsom.</p>
-                <p>The <a href="http://lists.sourceforge.net/lists/listinfo/blojsom-developers">developers mailing list</a> is for software development discussions about blojsom.</p>
-                <p>If you find a bug in the software or would like to request functionality enhancements, please use the <a href="http://jira.blojsom.com/jira/secure/Dashboard.jspa">bug tracking</a> site.</p>
+                <p>#adminResource('blojsom.users.help.text' '')</p>
+                <p>#adminResource('blojsom.developers.help.text' '')</p>
+                <p>#adminResource('jira.help.text' '')</p>
             </div>
         </div>
     </div>
