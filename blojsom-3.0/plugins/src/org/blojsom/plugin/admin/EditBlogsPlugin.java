@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.6 2006-09-26 02:55:20 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.7 2006-11-11 22:59:41 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -352,29 +352,40 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                         httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
 
                         return entries;
-                    } else { // And if they do, initialize the user
-                        // Setup the blog
-                        blogToAdd.setProperties(_defaultBlogProperties);
-                        blogToAdd.setTemplates(_defaultTemplateProperties);
-                        blogToAdd.setPlugins(_defaultPluginProperties);
-
-                        BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blogToAdd, blogID);
-
-                        try {
-                            _fetcher.saveBlog(blogToAdd);
-                        } catch (FetcherException e) {
-                            if (_logger.isErrorEnabled()) {
-                                _logger.error(e);
-                            }
-
-                            return entries;
-                        }
-
+                    } else { // And if they do, initialize the blog and user
                         String blogLoginID = BlojsomUtils.getRequestValue(BLOG_LOGIN_ID, httpServletRequest);
                         String blogUserEmail = BlojsomUtils.getRequestValue(BLOG_USER_EMAIL, httpServletRequest);
                         String blogUserName = BlojsomUtils.getRequestValue(BLOG_USER_NAME, httpServletRequest);
 
                         if (!BlojsomUtils.checkNullOrBlank(blogLoginID) && !BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
+                            // Setup the blog
+                            blogToAdd.setProperties(_defaultBlogProperties);
+                            
+                            if (!BlojsomUtils.checkNullOrBlank(blogUserName)) {
+                                blogToAdd.setBlogOwner(blogUserName);
+                            } else {
+                                blogToAdd.setBlogOwner(blogLoginID);
+                            }
+
+                            if (!BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
+                                blogToAdd.setBlogOwnerEmail(blogUserEmail);
+                            }
+
+                            blogToAdd.setTemplates(_defaultTemplateProperties);
+                            blogToAdd.setPlugins(_defaultPluginProperties);
+
+                            BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blogToAdd, blogID);
+
+                            try {
+                                _fetcher.saveBlog(blogToAdd);
+                            } catch (FetcherException e) {
+                                if (_logger.isErrorEnabled()) {
+                                    _logger.error(e);
+                                }
+
+                                return entries;
+                            }
+
                             User user = _fetcher.newUser();
                             user.setBlogId(blogToAdd.getId());
                             user.setUserEmail(blogUserEmail);
