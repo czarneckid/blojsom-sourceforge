@@ -49,22 +49,25 @@ import java.text.MessageFormat;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.net.URLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  * Twitter notification plugin for the <a href="http://twitter.com/">Twitter</a> service
  *
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: TwitterNotificationPlugin.java,v 1.1 2006-11-21 04:42:58 czarneckid Exp $
+ * @version $Id: TwitterNotificationPlugin.java,v 1.2 2006-11-21 16:15:44 czarneckid Exp $
  */
 public class TwitterNotificationPlugin implements Plugin, Listener {
 
     private Log _logger = LogFactory.getLog(TwitterNotificationPlugin.class);
     
-    private static final String TWITTER_STATUS_UPDATE_URL = "http://twitter.com/statuses/update.xml?status=";
+    private static final String TWITTER_STATUS_UPDATE_URL = "http://twitter.com/statuses/update.xml";
+    private static final String TWITTER_STATUS_PARAMETER = "status";
     private static final String TWITTER_DEFAULT_STATUS_UPDATE_TEXT = "Currently blogging {0}";
     
     private static final String TWITTER_SIGN_IN_IP = "plugin-twitter-sign-in";
@@ -175,18 +178,29 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
                         Authenticator.setDefault(new TwitterAuthenticator(signIn, password));
 
                         try {
-                            URL url = new URL(_twitterUpdateURL + twitterUpdate);
+                            URL url = new URL(_twitterUpdateURL);
+                            URLConnection urlConnection = url.openConnection();
+                            urlConnection.setUseCaches(false);
+                            urlConnection.setDoInput(true);
+                            urlConnection.setDoOutput(true);
+                            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                            String twitterData = TWITTER_STATUS_PARAMETER + "=" + twitterUpdate;
+                            OutputStreamWriter twitterWriter = new OutputStreamWriter(urlConnection.getOutputStream());
+                            twitterWriter.write(twitterData);
+                            twitterWriter.flush();
+                            twitterWriter.close();
 
                             // Read all the text returned by the server
-                            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                            BufferedReader twitterReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                             StringBuffer twitterReply = new StringBuffer();
                             String input;
 
-                            while ((input = in.readLine()) != null) {
+                            while ((input = twitterReader.readLine()) != null) {
                                 twitterReply.append(input);
                             }
 
-                            in.close();
+                            twitterReader.close();
 
                             if (BlojsomUtils.checkNullOrBlank(twitterReply.toString())) {
                                 if (_logger.isErrorEnabled()) {
