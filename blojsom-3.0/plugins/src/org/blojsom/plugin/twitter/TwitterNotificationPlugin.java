@@ -34,6 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.User;
 import org.blojsom.event.Event;
 import org.blojsom.event.EventBroadcaster;
 import org.blojsom.event.Listener;
@@ -41,6 +42,8 @@ import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.admin.event.EntryEvent;
 import org.blojsom.util.BlojsomUtils;
+import org.blojsom.fetcher.Fetcher;
+import org.blojsom.fetcher.FetcherException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +63,7 @@ import java.io.OutputStreamWriter;
  *
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: TwitterNotificationPlugin.java,v 1.2 2006-11-21 16:15:44 czarneckid Exp $
+ * @version $Id: TwitterNotificationPlugin.java,v 1.3 2006-11-21 22:39:18 czarneckid Exp $
  */
 public class TwitterNotificationPlugin implements Plugin, Listener {
 
@@ -77,6 +80,8 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
     private static final String TWITTER_STATUS_UPDATE_TEXT_IP = "plugin-twitter-update-text";
 
     private EventBroadcaster _eventBroadcaster;
+    private Fetcher _fetcher;
+    
     private String _twitterUpdateURL = TWITTER_STATUS_UPDATE_URL;
 
     /**
@@ -92,6 +97,15 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
      */
     public void setEventBroadcaster(EventBroadcaster eventBroadcaster) {
         _eventBroadcaster = eventBroadcaster;
+    }
+
+    /**
+     * Set the {@link Fetcher}
+     *
+     * @param fetcher {@link Fetcher}
+     */
+    public void setFetcher(Fetcher fetcher) {
+        _fetcher = fetcher;
     }
 
     /**
@@ -158,19 +172,32 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
                 EntryEvent entryEvent = (EntryEvent) event;
 
                 Blog blog = entryEvent.getBlog();
+                String author = entryEvent.getEntry().getAuthor();
+                User user;
 
-                if (!BlojsomUtils.checkNullOrBlank(blog.getProperty(TWITTER_SIGN_IN_IP)) &&
-                        !BlojsomUtils.checkNullOrBlank(blog.getProperty(TWITTER_PASSWORD_IP))) {
-                    String signIn = blog.getProperty(TWITTER_SIGN_IN_IP);
-                    String password = blog.getProperty(TWITTER_PASSWORD_IP);
-                    String updateText = blog.getProperty(TWITTER_STATUS_UPDATE_TEXT_IP);
+                try {
+                    user = _fetcher.loadUser(blog, author);
+                } catch (FetcherException e) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error("Error loading User object to retrieve Twitter properties", e);
+                    }
+
+                    return;
+                }
+
+                if (!BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_SIGN_IN_IP)) &&
+                        !BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_PASSWORD_IP))) {
+
+                    String signIn = (String) user.getMetaData().get(TWITTER_SIGN_IN_IP);
+                    String password = (String) user.getMetaData().get(TWITTER_PASSWORD_IP);
+                    String updateText = (String) user.getMetaData().get(TWITTER_STATUS_UPDATE_TEXT_IP);
 
                     if (BlojsomUtils.checkNullOrBlank(updateText)) {
                         updateText = TWITTER_DEFAULT_STATUS_UPDATE_TEXT;
                     }
                     
-                    if (("true".equals(blog.getProperty(TWITTER_UPDATE_ON_ENTRY_ADDED_IP))) ||
-                            ("true".equals(blog.getProperty(TWITTER_UPDATE_ON_ENTRY_UPDATED_IP)))) {
+                    if (("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_ADDED_IP))) ||
+                            ("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_UPDATED_IP)))) {
                         String title = entryEvent.getEntry().getTitle();
                         String twitterUpdate = BlojsomUtils.urlEncode(
                                 BlojsomUtils.escapeString(MessageFormat.format(updateText, new Object[] {title})));

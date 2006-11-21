@@ -258,7 +258,10 @@
     <bean id="twitter" class="org.blojsom.plugin.twitter.TwitterNotificationPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
-        </property>        
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
     </bean>
     <bean id="weather" class="org.blojsom.plugin.weather.WeatherPlugin" init-method="init" destroy-method="destroy">
     </bean>
