@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.10 2006-09-26 02:55:24 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.11 2006-11-22 18:44:13 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -327,6 +327,7 @@ public class BlojsomServlet extends HttpServlet {
                 blogUTCDate = BlojsomUtils.getUTCDate(today);
                 blogDateObject = today;
                 httpServletResponse.addDateHeader(BlojsomConstants.HTTP_LASTMODIFIED, today.getTime());
+                
                 // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
                 httpServletResponse.addHeader(BlojsomConstants.HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
             }
@@ -361,6 +362,7 @@ public class BlojsomServlet extends HttpServlet {
 
             httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unable to retrieve dispatcher for template extension: " + templateExtension);
         }
+        
         dispatcher.dispatch(httpServletRequest, httpServletResponse, blog, context, templateData[0], templateData[1]);
     }
 
