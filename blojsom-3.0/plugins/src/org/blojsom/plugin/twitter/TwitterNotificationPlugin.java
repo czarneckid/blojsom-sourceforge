@@ -41,6 +41,8 @@ import org.blojsom.event.Listener;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.plugin.admin.event.EntryEvent;
+import org.blojsom.plugin.admin.event.EntryAddedEvent;
+import org.blojsom.plugin.admin.event.EntryUpdatedEvent;
 import org.blojsom.util.BlojsomUtils;
 import org.blojsom.fetcher.Fetcher;
 import org.blojsom.fetcher.FetcherException;
@@ -63,7 +65,7 @@ import java.io.OutputStreamWriter;
  *
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: TwitterNotificationPlugin.java,v 1.3 2006-11-21 22:39:18 czarneckid Exp $
+ * @version $Id: TwitterNotificationPlugin.java,v 1.4 2006-11-22 19:15:46 czarneckid Exp $
  */
 public class TwitterNotificationPlugin implements Plugin, Listener {
 
@@ -168,7 +170,7 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
      */
     public void handleEvent(Event event) {
         if (!BlojsomUtils.checkNullOrBlank(_twitterUpdateURL)) {
-            if (event instanceof EntryEvent) {
+            if ((event instanceof EntryAddedEvent) || (event instanceof EntryUpdatedEvent)) {
                 EntryEvent entryEvent = (EntryEvent) event;
 
                 Blog blog = entryEvent.getBlog();
