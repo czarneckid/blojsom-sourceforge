@@ -48,6 +48,8 @@ CREATE TABLE `CategoryMetadata` (
 `category_id` int(11) NOT NULL,
 `metadata_key` text NOT NULL,
 `metadata_value` text,
+`category_metadata_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`category_metadata_id`),
 KEY `categorymetadata_category_categoryidfk` (`category_id`),
 CONSTRAINT `categorymetadata_category_categoryidfk` FOREIGN KEY (`category_id`) REFERENCES `Category` (`category_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -83,6 +85,8 @@ CREATE TABLE `CommentMetadata` (
 `comment_id` int(11) NOT NULL,
 `metadata_key` text NOT NULL,
 `metadata_value` text,
+`comment_metadata_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`comment_metadata_id`),
 KEY `commentmetadata_comment_commentidfk` (`comment_id`),
 CONSTRAINT `commentmetadata_comment_commentidfk` FOREIGN KEY (`comment_id`) REFERENCES `Comment` (`comment_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -155,6 +159,8 @@ CREATE TABLE `EntryMetadata` (
 `entry_id` int(11) NOT NULL,
 `metadata_key` text NOT NULL,
 `metadata_value` text,
+`entry_metadata_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`entry_metadata_id`),
 KEY `entrymetadata_entry_entryidfk` (`entry_id`),
 CONSTRAINT `entrymetadata_entry_entryidfk` FOREIGN KEY (`entry_id`) REFERENCES `Entry` (`entry_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -191,6 +197,8 @@ CREATE TABLE `PingbackMetadata` (
 `pingback_id` int(11) NOT NULL,
 `metadata_key` text NOT NULL,
 `metadata_value` text,
+`pingback_metadata_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`pingback_metadata_id`),
 KEY `pingbackmetadata_pingback_pingbackidfk` (`pingback_id`),
 CONSTRAINT `pingbackmetadata_pingback_pingbackidfk` FOREIGN KEY (`pingback_id`) REFERENCES `Pingback` (`pingback_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -204,6 +212,8 @@ CREATE TABLE `Plugin` (
 `blog_id` int(11) NOT NULL,
 `plugin_flavor` varchar(50) NOT NULL,
 `plugin_value` varchar(4096) default NULL,
+`plugin_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`plugin_id`),
 KEY `plugin_blog_blogidfk` (`blog_id`),
 CONSTRAINT `plugin_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -217,6 +227,8 @@ CREATE TABLE `Properties` (
 `blog_id` int(11) NOT NULL,
 `property_name` varchar(255) NOT NULL,
 `property_value` longtext,
+`property_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`property_id`),
 KEY `properties_blog_blogidfk` (`blog_id`),
 CONSTRAINT `properties_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -230,6 +242,8 @@ CREATE TABLE `Template` (
   `blog_id` int(11) NOT NULL,
   `template_flavor` varchar(50) NOT NULL,
   `template_value` varchar(255) default NULL,
+  `template_id` int(11) NOT NULL auto_increment,
+  PRIMARY KEY(`template_id`),
   KEY `template_blog_blogidfk` (`blog_id`),
   CONSTRAINT `template_blog_blogidfk` FOREIGN KEY (`blog_id`) REFERENCES `Blog` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -264,6 +278,8 @@ CREATE TABLE `TrackbackMetadata` (
 `trackback_id` int(11) NOT NULL,
 `metadata_key` text NOT NULL,
 `metadata_value` text,
+`trackback_metadata_id` int(11) NOT NULL auto_increment,
+PRIMARY KEY(`trackback_metadata_id`),
 KEY `trackbackmetadata_trackback_trackbackidfk` (`trackback_id`),
 CONSTRAINT `trackbackmetadata_trackback_trackbackidfk` FOREIGN KEY (`trackback_id`) REFERENCES `Trackback` (`trackback_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
