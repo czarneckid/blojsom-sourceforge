@@ -54,7 +54,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: JSPDispatcher.java,v 1.2 2006-03-21 16:32:21 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.3 2006-11-22 18:42:04 czarneckid Exp $
  */
 public class JSPDispatcher implements Dispatcher {
 
@@ -93,8 +93,6 @@ public class JSPDispatcher implements Dispatcher {
     /**
      * Initialization method for blojsom dispatchers
      *
-     * @param servletConfig        ServletConfig for obtaining any initialization parameters
-     * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws BlojsomException If there is an error initializing the dispatcher
      */
     public void init() throws BlojsomException {
@@ -146,28 +144,32 @@ public class JSPDispatcher implements Dispatcher {
             permalinkRequest.setPathInfo(null);
         }
 
+        String redirectTo = BlojsomUtils.getRequestValue(BlojsomConstants.REDIRECT_TO_PARAM, httpServletRequest);
+        boolean isRedirect = !BlojsomUtils.checkNullOrBlank(redirectTo);
+
         // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
             String templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
             if (_context.getResource(templateToLoad) != null) {
-                httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
-                httpServletResponse.getWriter().flush();
-
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Dispatched to flavor page template for user: " + templateToLoad);
-                }
-
-            } else {
-                templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + BlojsomUtils.removeInitialSlash(_templatesDirectory) + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
-                if (_context.getResource(templateToLoad) != null) {
-                    // Otherwise, fallback and look for the flavor template with page without including any user information
+                if (!isRedirect) {
                     httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
                     httpServletResponse.getWriter().flush();
 
                     if (_logger.isDebugEnabled()) {
-                        _logger.debug("Dispatched to flavor page template: " + templateToLoad);
+                        _logger.debug("Dispatched to flavor page template for user: " + templateToLoad);
                     }
-
+                }
+            } else {
+                templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + BlojsomUtils.removeInitialSlash(_templatesDirectory) + BlojsomUtils.removeInitialSlash(flavorTemplateForPage);
+                if (_context.getResource(templateToLoad) != null) {
+                    // Otherwise, fallback and look for the flavor template with page without including any user information
+                    if (!isRedirect) {
+                        httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                        httpServletResponse.getWriter().flush();
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Dispatched to flavor page template: " + templateToLoad);
+                        }
+                    }
                 } else {
                     if (_logger.isErrorEnabled()) {
                         _logger.error("Unable to dispatch to flavor page template: " + templateToLoad);
@@ -178,22 +180,25 @@ public class JSPDispatcher implements Dispatcher {
             // Otherwise, fallback and look for the flavor template for the individual user
             String templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory + BlojsomUtils.removeInitialSlash(flavorTemplate);
             if (_context.getResource(templateToLoad) != null) {
-                httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
-                httpServletResponse.getWriter().flush();
+                if (!isRedirect) {
+                    httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                    httpServletResponse.getWriter().flush();
 
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Dispatched to flavor template for user: " + templateToLoad);
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Dispatched to flavor template for user: " + templateToLoad);
+                    }
                 }
-
             } else {
                 templateToLoad = BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + BlojsomUtils.removeInitialSlash(_templatesDirectory) + BlojsomUtils.removeInitialSlash(flavorTemplate);
                 if (_context.getResource(templateToLoad) != null) {
                     // Otherwise, fallback and look for the flavor template without including any user information
-                    httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
-                    httpServletResponse.getWriter().flush();
-                    
-                    if (_logger.isDebugEnabled()) {
-                        _logger.debug("Dispatched to flavor template: " + templateToLoad);
+                    if (!isRedirect) {
+                        httpServletRequest.getRequestDispatcher(templateToLoad).forward(httpServletRequest, httpServletResponse);
+                        httpServletResponse.getWriter().flush();
+
+                        if (_logger.isDebugEnabled()) {
+                            _logger.debug("Dispatched to flavor template: " + templateToLoad);
+                        }
                     }
                 } else {
                     if (_logger.isErrorEnabled()) {
