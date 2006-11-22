@@ -37,11 +37,11 @@ import org.blojsom.plugin.admin.event.EntryEvent;
 import java.util.Date;
 
 /**
- * Comment Event indicates an event dealing with a {@link BlogComment}.
+ * Comment Event indicates an event dealing with a {@link Comment}.
  *
  * @author Mark Lussier
  * @author David Czarnecki
- * @version $Id: CommentEvent.java,v 1.1 2006-03-20 21:30:53 czarneckid Exp $
+ * @version $Id: CommentEvent.java,v 1.2 2006-11-22 19:15:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentEvent extends EntryEvent {
@@ -65,7 +65,7 @@ public class CommentEvent extends EntryEvent {
     /**
      * Retrieve the {@link Comment} associated with the event
      *
-     * @return {@link Comment}
+     * @return {@link Comment} associated with the event
      */
     public Comment getComment() {
         return _comment;
