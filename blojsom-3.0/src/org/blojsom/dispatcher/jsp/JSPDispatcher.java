@@ -54,7 +54,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: JSPDispatcher.java,v 1.3 2006-11-22 18:42:04 czarneckid Exp $
+ * @version $Id: JSPDispatcher.java,v 1.4 2006-11-29 13:59:53 czarneckid Exp $
  */
 public class JSPDispatcher implements Dispatcher {
 
@@ -144,8 +144,8 @@ public class JSPDispatcher implements Dispatcher {
             permalinkRequest.setPathInfo(null);
         }
 
-        String redirectTo = BlojsomUtils.getRequestValue(BlojsomConstants.REDIRECT_TO_PARAM, httpServletRequest);
-        boolean isRedirect = !BlojsomUtils.checkNullOrBlank(redirectTo);
+        Boolean redirectTo = (Boolean) httpServletRequest.getAttribute(BlojsomConstants.IS_IN_REDIRECT);
+        boolean isRedirect = (redirectTo != null && redirectTo.booleanValue());
 
         // Try and look for the original flavor template with page for the individual user
         if (flavorTemplateForPage != null) {
