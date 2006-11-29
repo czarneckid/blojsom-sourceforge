@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.12 2006-11-09 02:32:19 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.13 2006-11-29 13:56:02 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -274,11 +274,13 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a file filter which takes a list of file extensions to look for
      *
-     * @param extensions        List of file extensions
-     * @param returnDirectories Whether or not to return
+     * @param extensions          List of file extensions
+     * @param excludedDirectories List of excluded directories
+     * @param returnDirectories   Whether or not to return
      * @return File filter appropriate for filtering out a set of file extensions
      */
-    public static FileFilter getExtensionsFilter(final String[] extensions, final String[] excludedDirectories, final boolean returnDirectories) {
+    public static FileFilter getExtensionsFilter(final String[] extensions, final String[] excludedDirectories,
+                                                 final boolean returnDirectories) {
         return new FileFilter() {
             public boolean accept(File pathname) {
                 if (pathname.isDirectory() && returnDirectories) {
@@ -749,7 +751,7 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param flavorTemplate Flavor template filename
      * @param page           Requested page
-     * @return
+     * @return Return an appropriate template name for the flavor template and page combination
      */
     public static String getTemplateForPage(String flavorTemplate, String page) {
         int dotIndex = flavorTemplate.lastIndexOf(".");
@@ -1105,10 +1107,10 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
-     * Convert a {@link BlojsomProperties} object to a {@link Map}. If the properties object is <code>null</code>
+     * Convert a {@link Properties} object to a {@link Map}. If the properties object is <code>null</code>
      * an emtpy {@link Map} is returned.
      *
-     * @param properties {@link BlojsomProperties}
+     * @param properties {@link Properties}
      * @return {@link Map} containing keys and values from the properties
      */
     public static Map blojsomPropertiesToMap(Properties properties) {
@@ -1244,11 +1246,7 @@ public class BlojsomUtils implements BlojsomConstants {
             }
         }
 
-        if (removeDirectoryOrFile) {
-            return directoryOrFile.delete();
-        }
-
-        return true;
+        return !removeDirectoryOrFile || directoryOrFile.delete();
     }
 
     /**
@@ -1375,15 +1373,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Returns <code>true</code> if and only if the map and key are not null and the map contains the key.
      */
     public static boolean checkMapForKey(Map map, String key) {
-        if (map == null) {
-            return false;
-        }
-
-        if (key == null) {
-            return false;
-        }
-
-        return map.containsKey(key);
+        return map != null && (key != null && map.containsKey(key));
     }
 
     /**
@@ -1587,7 +1577,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Return a digested string of some content
      *
      * @param content Content from which to generate a hashed digest
-     * @return {@link BlojsomUtils#digestString(String)}
+     * @return {@link BlojsomUtils#digestString(String)} Digested string
      */
     public static String getHashableContent(String content) {
         String hashable = content;
