@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.18 2006-10-06 18:38:50 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.19 2006-11-29 13:56:39 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -277,6 +277,8 @@ public interface BlojsomConstants {
      * truncated to this size. NOTE: This only truncates for hash.
      */
     public static final int MAX_HASHABLE_LENGTH = 300;
+
+    public static final String IS_IN_REDIRECT = "IS_IN_REDIRECT";
 
     /**
      * Line separator for the system
