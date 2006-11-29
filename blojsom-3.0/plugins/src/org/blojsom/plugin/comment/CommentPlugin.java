@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.11 2006-09-26 02:55:20 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.12 2006-11-29 13:59:00 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -576,13 +576,14 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                     CookieUtils.addCookie(httpServletResponse, _cookieExpiration, COOKIE_REMEMBER_ME, "true");
                     context.put(BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME, "true");
                 }
+            }
 
-                String redirectTo = BlojsomUtils.getRequestValue(BlojsomConstants.REDIRECT_TO_PARAM, httpServletRequest);
-                if (!BlojsomUtils.checkNullOrBlank(redirectTo)) {
-                    try {
-                        httpServletResponse.sendRedirect(redirectTo);
-                    } catch (IOException e) {                        
-                    }
+            String redirectTo = BlojsomUtils.getRequestValue(BlojsomConstants.REDIRECT_TO_PARAM, httpServletRequest);
+            if (!BlojsomUtils.checkNullOrBlank(redirectTo)) {
+                try {
+                    httpServletResponse.sendRedirect(redirectTo);
+                    httpServletRequest.setAttribute(BlojsomConstants.IS_IN_REDIRECT, Boolean.TRUE);
+                } catch (IOException e) {
                 }
             }
         }
@@ -597,9 +598,16 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
      * @param authorEmail Comment author e-mail
      * @param authorURL   Comment author URL
      * @param userComment Comment
+     * @param blogCommentsEnabled If comments are enabled or not
+     * @param commentMetaData Metadata for the comment
+     * @param blog {@link Blog}
+     * @param entry {@link Entry}
+     * @param httpServletRequest {@link HttpServletRequest}
      * @return BlogComment Entry
      */
-    private Comment addBlogComment(String author, String authorEmail, String authorURL, String userComment, boolean blogCommentsEnabled, Map commentMetaData, Blog blog, Entry entry, HttpServletRequest httpServletRequest) {
+    private Comment addBlogComment(String author, String authorEmail, String authorURL, String userComment,
+                                   boolean blogCommentsEnabled, Map commentMetaData, Blog blog, Entry entry,
+                                   HttpServletRequest httpServletRequest) {
         Comment comment = null;
 
         if (blogCommentsEnabled) {
@@ -667,6 +675,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
      * Setup the comment e-mail
      *
      * @param blog  {@link Blog} information
+     * @param entry {@link Entry}
      * @param email Email message
      * @throws EmailException If there is an error preparing the e-mail message
      */
