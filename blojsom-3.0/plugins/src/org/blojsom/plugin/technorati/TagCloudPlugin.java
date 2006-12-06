@@ -51,7 +51,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TagCloudPlugin.java,v 1.4 2006-04-30 21:57:05 czarneckid Exp $
+ * @version $Id: TagCloudPlugin.java,v 1.5 2006-12-06 02:41:59 czarneckid Exp $
  */
 public class TagCloudPlugin implements Plugin {
 
@@ -113,7 +113,6 @@ public class TagCloudPlugin implements Plugin {
                     _logger.debug("Entries matching tag: " + entriesMatchingTag.length);
                 }
             } catch (FetcherException e) {
-                e.printStackTrace();
                 if (_logger.isErrorEnabled()) {
                     _logger.error(e);
                 }

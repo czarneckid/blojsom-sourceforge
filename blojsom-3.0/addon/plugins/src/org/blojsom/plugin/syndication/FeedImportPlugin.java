@@ -62,7 +62,7 @@ import java.util.Map;
  * Feed import plugin
  *
  * @author David Czarnecki
- * @version $Id: FeedImportPlugin.java,v 1.7 2006-09-26 02:55:19 czarneckid Exp $
+ * @version $Id: FeedImportPlugin.java,v 1.8 2006-12-06 02:41:58 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FeedImportPlugin extends WebAdminPlugin {
@@ -418,16 +418,18 @@ public class FeedImportPlugin extends WebAdminPlugin {
 
                     addOperationResultMessage(context, status);
                 } catch (FeedException e) {
-                    e.printStackTrace();
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
 
                     addOperationResultMessage(context, formatAdminResource(FAILED_FEED_IMPORT_ERROR_KEY, FAILED_FEED_IMPORT_ERROR_KEY, blog.getBlogAdministrationLocale(), new Object[]{e.getMessage()}));
                 } catch (IOException e) {
-                    _logger.error(e);
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
 
                     addOperationResultMessage(context, formatAdminResource(FAILED_FEED_IMPORT_IO_KEY, FAILED_FEED_IMPORT_IO_KEY, blog.getBlogAdministrationLocale(), new Object[]{e.getMessage()}));
                 } catch (RuntimeException e) {
-                    e.printStackTrace();
                 }
             }
         }
