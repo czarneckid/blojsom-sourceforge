@@ -32,6 +32,8 @@ package org.blojsom.plugin.emoticons;
 
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
+import org.blojsom.blog.Response;
+import org.blojsom.blog.Comment;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomUtils;
@@ -48,7 +50,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jan Wessely
- * @version $Id: EnhancedEmoticonsPlugin.java,v 1.2 2006-03-26 20:29:11 czarneckid Exp $
+ * @version $Id: EnhancedEmoticonsPlugin.java,v 1.3 2006-12-07 19:41:39 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EnhancedEmoticonsPlugin implements Plugin {
@@ -64,6 +66,7 @@ public class EnhancedEmoticonsPlugin implements Plugin {
     private static final String EMOTICONS_CLASS = " class=\"emoticons\" ";
 
     private Map _emoticons;
+    private boolean _parseComments = false;
 
     /**
      * Default constructor
@@ -78,6 +81,15 @@ public class EnhancedEmoticonsPlugin implements Plugin {
      */
     public void setEmoticons(Map emoticons) {
         _emoticons = emoticons;
+    }
+
+    /**
+     * Set whether or not to parse comments for emoticons
+     *
+     * @param parseComments Parse comments
+     */
+    public void setParseComments(boolean parseComments) {
+        _parseComments = parseComments;
     }
 
     /**
@@ -112,13 +124,14 @@ public class EnhancedEmoticonsPlugin implements Plugin {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link org.blojsom.blog.BlogUser}instance
-     * @param context             Context
+     * @param blog                {@link Blog} instance
+     * @param context             Contextblojsom
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
      * @throws PluginException If there is an error processing the blog entries
      */
-    public org.blojsom.blog.Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, org.blojsom.blog.Entry[] entries) throws PluginException {
+    public org.blojsom.blog.Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                                            Blog blog, Map context, org.blojsom.blog.Entry[] entries) throws PluginException {
         if (_emoticons == null) {
             return entries;
         }
@@ -139,6 +152,23 @@ public class EnhancedEmoticonsPlugin implements Plugin {
                 }
 
                 entry.setDescription(updatedDescription);
+
+                if (_parseComments) {
+                    Comment comments[] = entry.getCommentsAsArray();
+                    for (int j = 0; j < comments.length; j++) {
+                        Comment comment = comments[j];
+
+                        String updatedCommentText = comment.getComment();
+                        iter = availableEmoticons.iterator();
+
+                        while (iter.hasNext()) {
+                            String emoticon = (String) iter.next();
+                            updatedCommentText = replaceEmoticon(updatedDescription, emoticon, blogBaseUrl);
+                        }
+
+                        comment.setComment(updatedCommentText);
+                    }
+                }
             }
         }
 
