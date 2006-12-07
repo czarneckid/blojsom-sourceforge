@@ -60,7 +60,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.2 2006-10-05 20:11:17 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.3 2006-12-07 19:45:18 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeblogsPingPlugin implements Listener, Plugin {
@@ -143,7 +143,7 @@ public class WeblogsPingPlugin implements Listener, Plugin {
             if (BlojsomUtils.checkNullOrBlank(preferredSyndicationFlavor)) {
                 preferredSyndicationFlavor = DEFAULT_PREFERRED_SYNDICATION_FLAVOR;
             }
-            syndicationURL = syndicationURL + "?flavor=" + preferredSyndicationFlavor;
+            syndicationURL = syndicationURL + "/feed/" + preferredSyndicationFlavor + "/";
 
             // If they are provided, loop through that list of URLs to ping
             String pingURLsIP = blog.getProperty(BLOG_PING_URLS_IP);
@@ -159,7 +159,7 @@ public class WeblogsPingPlugin implements Listener, Plugin {
                 extendedParams.add(syndicationURL);
 
                 for (int i = 0; i < pingURLs.length; i++) {
-                    String pingURL = pingURLs[i];
+                    String pingURL = pingURLs[i].trim();
                     try {
                         XmlRpcClient weblogsPingClient = new XmlRpcClient(pingURL);
                         // Try sending an extended weblogs ping first followed by the normal weblogs ping if failed
