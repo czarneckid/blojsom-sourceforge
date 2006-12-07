@@ -50,7 +50,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CalendarFilterPlugin.java,v 1.5 2006-07-07 01:37:01 czarneckid Exp $
+ * @version $Id: CalendarFilterPlugin.java,v 1.6 2006-12-07 01:37:52 czarneckid Exp $
  */
 public class CalendarFilterPlugin extends AbstractCalendarPlugin {
 
@@ -61,7 +61,7 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link BlogUser} instance
+     * @param blog                {@link Blog} instance
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
@@ -93,6 +93,8 @@ public class CalendarFilterPlugin extends AbstractCalendarPlugin {
                         _logger.error(e);
                     }
                 }
+            } else if (startDate.after(now)) {
+                entries = new Entry[0];
             }
         }
 
