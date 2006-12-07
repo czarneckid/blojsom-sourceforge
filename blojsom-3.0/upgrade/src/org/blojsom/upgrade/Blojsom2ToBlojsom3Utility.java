@@ -64,8 +64,8 @@ import java.util.*;
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.19 2006-12-07 01:45:27 czarneckid Exp $
  * @since blojsom 3
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.18 2006-10-16 18:37:50 czarneckid Exp $
  */
 public class Blojsom2ToBlojsom3Utility {
 
@@ -126,7 +126,7 @@ public class Blojsom2ToBlojsom3Utility {
      * Configure the {@link BlojsomFetcher} that will be used to fetch categories and
      * entries
      *
-     * @param servletConfig Servlet configuration information
+     * @param servletConfig        Servlet configuration information
      * @param blojsomConfiguration blojsom properties
      * @throws javax.servlet.ServletException If the {@link BlojsomFetcher} class could not be loaded and/or initialized
      */
@@ -281,9 +281,7 @@ public class Blojsom2ToBlojsom3Utility {
             url = org.blojsom.util.BlojsomUtils.removeTrailingSlash(url);
             blog.setBlogAdminURL(url);
 
-            if (BlojsomUtils.checkNullOrBlank(blog.getBlogAdminURL()) || BlojsomUtils.checkNullOrBlank(blog.getBlogBaseAdminURL())
-                    || BlojsomUtils.checkNullOrBlank(blog.getBlogBaseURL())
-                    || BlojsomUtils.checkNullOrBlank(blog.getBlogURL())) {
+            if (BlojsomUtils.checkNullOrBlank(blog.getBlogAdminURL()) || BlojsomUtils.checkNullOrBlank(blog.getBlogBaseAdminURL()) || BlojsomUtils.checkNullOrBlank(blog.getBlogBaseURL()) || BlojsomUtils.checkNullOrBlank(blog.getBlogURL())) {
                 blog.setProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS, "true");
             }
 
@@ -387,7 +385,7 @@ public class Blojsom2ToBlojsom3Utility {
 
                             blojsom3UserMetadata.put(updatedPermission, "true");
                         }
-                    // Check where user has only a single permission
+                        // Check where user has only a single permission
                     } else {
                         if ("*".equals(permissionsForUser)) {
                             blojsom3UserMetadata.put("all_permissions_permission", "true");
@@ -417,8 +415,7 @@ public class Blojsom2ToBlojsom3Utility {
                     BlogCategory blojsom2Category = blojsom2Categories[j];
                     Category blojsom3Category = new DatabaseCategory();
                     blojsom3Category.setBlogId(blog.getId());
-                    if (!org.blojsom.util.BlojsomUtils.checkNullOrBlank(
-                            (String) blojsom2Category.getMetaData().get(org.blojsom2.util.BlojsomConstants.NAME_KEY))) {
+                    if (!org.blojsom.util.BlojsomUtils.checkNullOrBlank((String) blojsom2Category.getMetaData().get(org.blojsom2.util.BlojsomConstants.NAME_KEY))) {
                         blojsom3Category.setDescription((String) blojsom2Category.getMetaData().get(org.blojsom2.util.BlojsomConstants.NAME_KEY));
                     } else if (org.blojsom.util.BlojsomUtils.checkNullOrBlank(blojsom2Category.getDescription())) {
                         blojsom3Category.setDescription(blojsom2Category.getEncodedCategory().replaceAll("/", " "));
@@ -632,8 +629,7 @@ public class Blojsom2ToBlojsom3Utility {
             try {
                 FileUtils.copyDirectory(blojsom2BlogResourcesPath, blojsom3BlogResourcesPath);
                 if (_logger.isDebugEnabled()) {
-                    _logger.debug("Copied blojsom 2 blog resources from: " + blojsom2BlogResourcesPath.toString() + " to: " +
-                        blojsom3BlogResourcesPath.toString());
+                    _logger.debug("Copied blojsom 2 blog resources from: " + blojsom2BlogResourcesPath.toString() + " to: " + blojsom3BlogResourcesPath.toString());
                 }
             } catch (IOException e) {
                 if (_logger.isErrorEnabled()) {
@@ -646,8 +642,7 @@ public class Blojsom2ToBlojsom3Utility {
             try {
                 FileUtils.copyDirectory(blojsom2BlogPath, blojsom3BlogPath);
                 if (_logger.isDebugEnabled()) {
-                    _logger.debug("Copied blojsom 2 blog data from: " + blojsom2BlogPath.toString() + " to: " +
-                        blojsom3BlogPath.toString());
+                    _logger.debug("Copied blojsom 2 blog data from: " + blojsom2BlogPath.toString() + " to: " + blojsom3BlogPath.toString());
                 }
             } catch (IOException e) {
                 if (_logger.isErrorEnabled()) {
@@ -664,46 +659,54 @@ public class Blojsom2ToBlojsom3Utility {
                     String templateData = FileUtils.readFileToString(template, BlojsomConstants.UTF8);
 
                     // Updated context variables
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$BLOJSOM_USER", "$BLOJSOM_BLOG_ID");
+                    // "$BLOJSOM_USER" -> "$BLOJSOM_BLOG_ID"
+                    templateData = templateData.replaceAll("\\$BLOJSOM_USER", "\\$BLOJSOM_BLOG_ID");
 
                     // Updated method names
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$entry.getPermalink()", "$entry.getPostSlug()");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$BLOJSOM_REQUESTED_CATEGORY.getCategory()", "$BLOJSOM_REQUESTED_CATEGORY.getName()");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "#friendlyPermalink($entry)", "#FriendlyPermalink($entry)");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$blogCategory.getCategoryURL()", "#BlogURL()$blogCategory.getName()");
+                    // "$entry.getPermalink()" -> "$entry.getPostSlug()"
+                    templateData = templateData.replaceAll("\\$entry\\.getPermalink\\(\\s*\\)", "\\$entry.getPostSlug()");
+                    // "$BLOJSOM_REQUESTED_CATEGORY.getCategory()" -> "$BLOJSOM_REQUESTED_CATEGORY.getName()"
+                    templateData = templateData.replaceAll("\\$BLOJSOM_REQUESTED_CATEGORY\\.getCategory\\(\\s*\\)", "\\$BLOJSOM_REQUESTED_CATEGORY.getName()");
+                    // "#friendlyPermalink(" -> "#FriendlyPermalink("
+                    templateData = templateData.replaceAll("#friendlyPermalink\\(", "#FriendlyPermalink(");
+                    // "$blogCategory.getCategoryURL()" -> "#BlogURL()$blogCategory.getName()"
+                    templateData = templateData.replaceAll("\\$blogCategory\\.getCategoryURL\\(\\s*\\)", "#BlogURL()\\$blogCategory.getName()");
+
+                    // Update category conventions
+                    // "#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end" -> "#CategoryDescription($entry.getBlogCategory())"
+                    templateData = templateData.replaceAll("#if\\s*\\(\\s*\\$entry\\.getBlogCategory\\(\\s*\\)\\.getName\\(\\s*\\)\\s*\\)\\s*\\$entry\\.getBlogCategory\\(\\s*\\)\\.getName\\(\\s*\\)\\s*#else\\s*\\$entry\\.getBlogCategory\\(\\s*\\)\\.getCategory\\(\\s*\\)\\s*#end", "#CategoryDescription(\\$entry.getBlogCategory())");
+                    // "#if ($blogCategory.getName())\n\t\t\t\t#multilineLink($blogCategory.getName().split(\" \"))\n\t\t\t#else\n\t\t\t\t#multilineLink($blogCategory.getCategory().split(\" \"))\n\t\t\t#end" -> "#CategoryDescription($blogCategory).split(" ")"
+                    templateData = templateData.replaceAll("#if\\s*\\(\\s*\\$blogCategory.getName\\(\\s*\\)\\s*\\)\\s*#multilineLink\\(\\s*\\$blogCategory\\.getName\\(\\s*\\)\\.split\\(\\s*\" \"\\s*\\)\\s*\\)\\s*#else\\s*#multilineLink\\(\\s*\\$blogCategory\\.getCategory\\(\\s*\\)\\.split\\(\\s*\" \"\\s*\\)\\s*\\)\\s*#end", "#if (\\$blogCategory.getDescription())#multilineLink(\\$blogCategory.getDescription().split(\" \"))#else#multilineLink(\\$blogCategory.getName().split(\" \"))#end");
+                    // "#if ($blogCategory.getName())$blogCategory.getName()#else$blogCategory.getCategory()#end" -> "#CategoryDescription($blogCategory)"
+                    templateData = templateData.replaceAll("#if\\s*\\(\\s*\\$blogCategory.getName\\(\\s*\\)\\s*\\)\\s*\\$blogCategory\\.getName\\(\\s*\\)\\s*#else\\s*\\$blogCategory\\.getCategory\\(\\s*\\)\\s*#end", "#CategoryDescription(\\$blogCategory)");
+                    // "$entry.getBlogCategory().getCategoryURL()" -> "#BlogURL()$entry.getCategory()"
+                    templateData = templateData.replaceAll("\\$entry\\.getBlogCategory\\(\\s*\\)\\.getCategoryURL\\(\\s*\\)", "#BlogURL()\\$entry.getCategory()");
+
+                    // Update link conventions
+                    // "$entry.getLink()" -> "#FriendlyPermalink($entry)\n$entryLink\n"
+                    templateData = templateData.replaceAll("\\$entry\\.getLink\\(\\s*\\)(&amp;)?&?", "#FriendlyPermalink(\\$entry)\\$entryLink?");
+                    // "page=comments" -> ""
+                    //templateData = templateData.replaceAll("page=comments", "");
 
                     // Updated feed URLs
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf", "#BlogURL()/feed/rdf/");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss", "#BlogURL()/feed/");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom", "#BlogURL()/feed/atom/");
+                    // "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf" -> "#BlogURL()/feed/rdf/"
+                    templateData = templateData.replaceAll("\\$BLOJSOM_REQUESTED_CATEGORY\\.getCategoryURL\\(\\s*\\)\\?flavor=rdf", "#BlogURL()/feed/rdf/");
+                    // "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss" -> "#BlogURL()/feed/"
+                    templateData = templateData.replaceAll("\\$BLOJSOM_REQUESTED_CATEGORY\\.getCategoryURL\\(\\s*\\)\\?flavor=rss", "#BlogURL()/feed/");
+                    // "$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom", "#BlogURL()/feed/atom/"
+                    templateData = templateData.replaceAll("\\$BLOJSOM_REQUESTED_CATEGORY\\.getCategoryURL\\(\\s*\\)\\?flavor=atom", "#BlogURL()/feed/atom/");
 
                     // Updated comment and trackback checks
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "?tb=y", "?tb=y&amp;entry_id=$entry.getId()");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "#if($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() " +
-                                    "&& ($entry.getMetaData() " +
-                                    "&& !$entry.getMetaData().containsKey(\"blog-entry-comments-disabled\")))",
-                            "#if ($entry.allowsComments())");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() " +
-                                    "&& ($entry.getMetaData() " +
-                                    "&& !$entry.getMetaData().containsKey(\"blog-entry-trackbacks-disabled\")))",
-                            "#if ($entry.allowsTrackbacks())");
-                    templateData = org.blojsom.util.BlojsomUtils.replace(templateData,
-                            "<input type=\"hidden\" name=\"comment\" value=\"y\" />",
-                            "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t" +
-                                    "<input type=\"hidden\" name=\"entry_id\" value=\"$entry.getId()\" />\n\t\t\t\t" +
-                                    "<input type=\"hidden\" name=\"redirect_to\" value=\"$permalink\" />");
-
+                    // "?tb=y" -> "?tb=y&amp;entry_id=$entry.getId()"
+                    templateData = templateData.replaceAll("\\?tb=y", "?tb=y&amp;entry_id=\\$entry.getId()");
+                    // "#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())" -> "#if ($entry.allowsComments())"
+                    // "#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey(\"blog-entry-comments-disabled\")))" -> "#if ($entry.allowsComments())"
+                    templateData = templateData.replaceAll("#if\\s*\\(\\s*\\$BLOJSOM_COMMENTS_ENABLED\\.booleanValue\\(\\s*\\)\\s*&&\\s*\\$entry\\.supportsComments\\(\\s*\\)\\s*\\)?(&&\\s*\\(\\$entry\\.getMetaData\\(\\s*\\)\\s*&&\\s*!\\$entry\\.getMetaData\\(\\s*\\)\\.containsKey\\(\\s*\"blog-entry-comments-disabled\"\\s*\\)\\s*\\)\\s*\\))?", "#if (\\$entry.allowsComments())");
+                    // "#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey(\"blog-entry-trackbacks-disabled\")))" -> "#if ($entry.allowsTrackbacks())"
+                    templateData = templateData.replaceAll("#if\\s*\\(\\s*\\$BLOJSOM_TRACKBACK_PLUGIN_ENABLED\\.booleanValue\\(\\s*\\)\\s*&&\\s*\\$entry\\.supportsTrackbacks\\(\\s*\\)\\s*&&\\s*\\(\\s*\\$entry\\.getMetaData\\(\\s*\\)\\s*&&\\s*!\\$entry\\.getMetaData\\(\\s*\\)\\.containsKey\\(\\s*\"blog-entry-trackbacks-disabled\"\\s*\\)\\s*\\)\\s*\\)", "#if (\\$entry.allowsTrackbacks())");
+                    // "<input type=\"hidden\" name=\"comment\" value=\"y\" />" -> "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t<input type=\"hidden\" name=\"entry_id\" value=\"$entry.getId()\" />\n\t\t\t\t<input type=\"hidden\" name=\"redirect_to\" value=\"#FriendlyPermalink($entry)$entryLink\" />"
+                    templateData = templateData.replaceAll("<input type=\"hidden\" name=\"comment\" value=\"y\"\\s*/?>", "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t<input type=\"hidden\" name=\"entry_id\" value=\"\\$entry.getId()\" />\n\t\t\t\t<input type=\"hidden\" name=\"redirect_to\" value=\"#FriendlyPermalink(\\$entry)\\$entryLink\" />");
+                    
                     FileUtils.writeStringToFile(template, templateData, BlojsomConstants.UTF8);
                 } catch (IOException e) {
                     if (_logger.isErrorEnabled()) {
