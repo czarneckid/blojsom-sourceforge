@@ -14,7 +14,7 @@
         </property>
     </bean>
     -->
-
+    <bean id="array-tool" class="org.blojsom.plugin.tools.ArrayToolPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="basic-authentication" class="org.blojsom.plugin.security.BasicAuthenticationPlugin" init-method="init"
           destroy-method="destroy">
         <property name="servletConfig">
@@ -88,6 +88,7 @@
                 <entry key="wink" value="/images/emoticons/mozilla_wink.gif"/>
             </map>
         </property>
+        <property name="parseComments" value="false"/>
     </bean>
     <bean id="excerpt" class="org.blojsom.plugin.excerpt.ExcerptPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="footnote" class="org.blojsom.plugin.footnote.FootnotePlugin" init-method="init" destroy-method="destroy"/>
@@ -208,7 +209,7 @@
             <ref bean="fetcher"/>
         </property>
     </bean>
-    <bean id="skip-filter-helper" class="org.blojsom.plugin.statistics.SkipFilterHelperPlugin" init-method="init"
+    <bean id="skip-filter-helper" class="org.blojsom.plugin.skip.SkipFilterHelperPlugin" init-method="init"
         destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>

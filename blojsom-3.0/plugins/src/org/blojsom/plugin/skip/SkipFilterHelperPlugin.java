@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.blojsom.plugin.statistics;
+package org.blojsom.plugin.skip;
 
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: SkipFilterHelperPlugin.java,v 1.1 2006-10-06 20:08:24 czarneckid Exp $
+ * @version $Id: SkipFilterHelperPlugin.java,v 1.1 2006-12-15 19:21:02 czarneckid Exp $
  */
 public class SkipFilterHelperPlugin implements Plugin {
 
