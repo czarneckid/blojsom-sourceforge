@@ -65,7 +65,7 @@ import java.util.Properties;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.2 2006-03-24 19:04:41 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.3 2006-12-16 00:04:00 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
 
@@ -131,7 +131,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
             return null;
         }
 
-        if (blog.getProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS) != null) {
+        if ("true".equals(blog.getProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS))) {
             BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, blogId);
         }
 
