@@ -52,7 +52,7 @@ import java.util.Iterator;
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.3 2006-08-22 18:56:06 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.4 2006-12-18 16:28:59 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin implements Listener {
@@ -295,14 +295,16 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
                         context,
                         new Entry[] {commentResponseSubmissionEvent.getEntry()});
 
-                // Grab the comment metadata and populate the metadata for the current submission
-                Map operationMetadata = (Map) context.get(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA);
-                Map commentMetadata = commentResponseSubmissionEvent.getMetaData();
+                if (context.containsKey(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA)) {
+                    // Grab the comment metadata and populate the metadata for the current submission
+                    Map operationMetadata = (Map) context.get(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA);
+                    Map commentMetadata = commentResponseSubmissionEvent.getMetaData();
 
-                Iterator keys = operationMetadata.keySet().iterator();
-                while (keys.hasNext()) {
-                    Object key = keys.next();
-                    commentMetadata.put(key.toString(), operationMetadata.get(key).toString());
+                    Iterator keys = operationMetadata.keySet().iterator();
+                    while (keys.hasNext()) {
+                        Object key = keys.next();
+                        commentMetadata.put(key.toString(), operationMetadata.get(key).toString());
+                    }
                 }
             } catch (PluginException e) {
                 if (_logger.isErrorEnabled()) {
