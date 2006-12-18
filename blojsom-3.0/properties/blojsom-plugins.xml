@@ -14,7 +14,6 @@
         </property>
     </bean>
     -->
-    <bean id="array-tool" class="org.blojsom.plugin.tools.ArrayToolPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="basic-authentication" class="org.blojsom.plugin.security.BasicAuthenticationPlugin" init-method="init"
           destroy-method="destroy">
         <property name="servletConfig">
