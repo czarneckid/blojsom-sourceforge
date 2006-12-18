@@ -60,7 +60,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.3 2006-12-07 19:45:18 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.4 2006-12-18 17:23:54 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeblogsPingPlugin implements Listener, Plugin {
@@ -73,6 +73,7 @@ public class WeblogsPingPlugin implements Listener, Plugin {
 
     public static final String BLOG_PING_URLS_IP = "blog-ping-urls";
     public static final String NO_PING_WEBLOGS_METADATA = "no-ping-weblogs";
+    public static final String PLUGIN_SYNDICATION_FEED_URL_IP = "plugin-syndication-feed-url";
 
     private EventBroadcaster _eventBroadcaster;
 
@@ -138,12 +139,17 @@ public class WeblogsPingPlugin implements Listener, Plugin {
                 return;
             }
 
-            // Check to see if there is a particular flavor the user wants to send with the extended ping
-            String preferredSyndicationFlavor = blog.getProperty(BlojsomConstants.PREFERRED_SYNDICATION_FLAVOR);
-            if (BlojsomUtils.checkNullOrBlank(preferredSyndicationFlavor)) {
-                preferredSyndicationFlavor = DEFAULT_PREFERRED_SYNDICATION_FLAVOR;
+            // Check to see if there is a particular feed or flavor the user wants to send with the extended ping           
+            if (!BlojsomUtils.checkNullOrBlank(blog.getProperty(PLUGIN_SYNDICATION_FEED_URL_IP))) {
+                syndicationURL = blog.getProperty(PLUGIN_SYNDICATION_FEED_URL_IP);
+            } else {
+                String preferredSyndicationFlavor = blog.getProperty(BlojsomConstants.PREFERRED_SYNDICATION_FLAVOR);
+                if (BlojsomUtils.checkNullOrBlank(preferredSyndicationFlavor)) {
+                    preferredSyndicationFlavor = DEFAULT_PREFERRED_SYNDICATION_FLAVOR;
+                }
+                
+                syndicationURL = syndicationURL + "/feed/" + preferredSyndicationFlavor + "/";
             }
-            syndicationURL = syndicationURL + "/feed/" + preferredSyndicationFlavor + "/";
 
             // If they are provided, loop through that list of URLs to ping
             String pingURLsIP = blog.getProperty(BLOG_PING_URLS_IP);
