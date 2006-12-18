@@ -65,7 +65,7 @@ import java.util.Properties;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.3 2006-12-16 00:04:00 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.4 2006-12-18 16:58:31 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
 
@@ -119,6 +119,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
         XmlRpcServer xmlRpcServer = new XmlRpcServer();
 
         Fetcher fetcher = (Fetcher) _classPathXmlApplicationContext.getBean("fetcher");
+        Properties defaultProperties = (Properties) _classPathXmlApplicationContext.getBean("defaultProperties");
 
         Blog blog;
         try {
@@ -132,7 +133,12 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
         }
 
         if ("true".equals(blog.getProperty(BlojsomConstants.USE_DYNAMIC_BLOG_URLS))) {
-            BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, blogId);
+            String servletPath = defaultProperties.getProperty(BlojsomXMLRPCConstants.SERVLET_PATH_IP);
+            if (BlojsomUtils.checkNullOrBlank(servletPath)) {
+                servletPath = BlojsomXMLRPCConstants.DEFAULT_SERVLET_PATH;
+            }
+            
+            BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, blogId, servletPath);
         }
 
         // Check to see if XML-RPC is enabled for the blog
@@ -152,7 +158,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
         while (handlerIterator.hasNext()) {
             String handlerName = (String) handlerIterator.next();
             APIHandler apiHandler = (APIHandler) _classPathXmlApplicationContext.getBean(handlerName);
-            apiHandler.setProperties((Properties) _classPathXmlApplicationContext.getBean("defaultProperties"));
+            apiHandler.setProperties(defaultProperties);
             apiHandler.setHttpServletRequest(httpServletRequest);
             apiHandler.setHttpServletResponse(httpServletResponse);
             apiHandler.setBlog(blog);

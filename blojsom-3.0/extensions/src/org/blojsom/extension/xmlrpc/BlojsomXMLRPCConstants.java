@@ -35,7 +35,7 @@ package org.blojsom.extension.xmlrpc;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCConstants.java,v 1.1 2006-03-20 21:30:34 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCConstants.java,v 1.2 2006-12-18 16:58:31 czarneckid Exp $
  */
 public interface BlojsomXMLRPCConstants {
 
@@ -43,4 +43,8 @@ public interface BlojsomXMLRPCConstants {
      * Default XML-RPC handler key for the Apache XML-RPC library
      */
     public static final String DEFAULT_XMLRPC_HANDLER_KEY = "$default";
+    
+    public static final String DEFAULT_SERVLET_PATH = "blog";
+
+    public static final String SERVLET_PATH_IP = "servlet-path";
 }

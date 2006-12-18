@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.13 2006-11-29 13:56:02 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.14 2006-12-18 16:58:31 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -1574,6 +1574,22 @@ public class BlojsomUtils implements BlojsomConstants {
     }
 
     /**
+     * Construct a blog URL from the request
+     *
+     * @param httpServletRequest Request
+     * @param blogID             Blog ID
+     * @param servletPath        Servlet path
+     * @return URL of the form <code>http://server:port/context_path/servlet_path/blog_id/</code>
+     */
+    public static String constructBlogURL(HttpServletRequest httpServletRequest, String blogID, String servletPath) {
+        StringBuffer result = new StringBuffer(constructBaseURL(httpServletRequest));
+
+        result.append("/").append(servletPath).append("/").append(blogID);
+
+        return result.toString();
+    }
+
+    /**
      * Return a digested string of some content
      *
      * @param content Content from which to generate a hashed digest
@@ -1873,8 +1889,26 @@ public class BlojsomUtils implements BlojsomConstants {
         blog.setBlogBaseURL(constructBaseURL(httpServletRequest));
         blog.setBlogURL(constructBlogURL(httpServletRequest, blogID));
 
-        blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID));
         blog.setBlogBaseAdminURL(constructBaseURL(httpServletRequest));
+        blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID));
+    }
+
+    /**
+     * Check to see if the blog base URL or blog URL are present. If not, construct them dynamically by calling
+     * {@link #constructBaseURL(javax.servlet.http.HttpServletRequest)} and {@link #constructBlogURL(javax.servlet.http.HttpServletRequest, String)}.
+     *
+     * @param httpServletRequest Request
+     * @param blog               {@link org.blojsom.blog.Blog}
+     * @param blogID             Blog ID
+     * @param servletPath        Custom servlet path
+     */
+    public static void resolveDynamicBaseAndBlogURL(HttpServletRequest httpServletRequest, Blog blog, String blogID,
+                                                    String servletPath) {
+        blog.setBlogBaseURL(constructBaseURL(httpServletRequest));
+        blog.setBlogURL(constructBlogURL(httpServletRequest, blogID, servletPath));
+
+        blog.setBlogBaseAdminURL(constructBaseURL(httpServletRequest));
+        blog.setBlogAdminURL(constructBlogURL(httpServletRequest, blogID, servletPath));
     }
 
     /**

@@ -13,6 +13,7 @@
         <property name="properties">
             <props>
                 <prop key="resources-directory">/resources/</prop>
+                <prop key="servlet-path">blog</prop>
             </props>
         </property>
     </bean>
