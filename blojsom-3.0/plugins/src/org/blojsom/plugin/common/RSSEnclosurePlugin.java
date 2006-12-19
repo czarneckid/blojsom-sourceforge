@@ -61,7 +61,7 @@ import java.util.Properties;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.3 2006-08-30 13:37:57 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.4 2006-12-19 00:06:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class RSSEnclosurePlugin implements Plugin, Listener {
@@ -90,7 +90,7 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
     protected ServletConfig _servletConfig;
     protected Properties _blojsomProperties;
 
-    protected String _resourcesDirectory;
+    protected String _enclosuresDirectory;
 
     /**
      * Default constructor
@@ -126,6 +126,15 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
     }
 
     /**
+     * Set the directory for enclosures
+     *
+     * @param enclosuresDirectory Enclosures directory
+     */
+    public void setEnclosuresDirectory(String enclosuresDirectory) {
+        _enclosuresDirectory = enclosuresDirectory;
+    }
+
+    /**
      * Initialize this plugin. This method only called when the plugin is
      * instantiated.
      *
@@ -133,9 +142,12 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
      *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        _resourcesDirectory = _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP, BlojsomConstants.DEFAULT_RESOURCES_DIRECTORY);
         _eventBroadcaster.addListener(this);
 
+        if (BlojsomUtils.checkNullOrBlank(_enclosuresDirectory)) {
+            _enclosuresDirectory = _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP, BlojsomConstants.DEFAULT_RESOURCES_DIRECTORY);
+        }
+        
         _logger.debug("Initialized RSS enclosures plugin");
     }
 
@@ -188,7 +200,7 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
             } else {
                 if (BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RSS_ENCLOSURE)) {
                     String enclosureName = BlojsomUtils.getFilenameFromPath((String) entry.getMetaData().get(METADATA_RSS_ENCLOSURE));
-                    File enclosure = new File(servletContext.getRealPath("/") + _resourcesDirectory + blog.getBlogId() + "/" + enclosureName);
+                    File enclosure = new File(servletContext.getRealPath("/") + _enclosuresDirectory + blog.getBlogId() + "/" + enclosureName);
                     if (enclosure.exists()) {
                         if (_logger.isDebugEnabled()) {
                             _logger.debug("Adding enclosure to entry for file: " + enclosureName);
@@ -199,7 +211,7 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
                         String type = mimetypesFileTypeMap.getContentType(enclosure);
 
                         StringBuffer enclosureElement = new StringBuffer();
-                        String url = blog.getBlogBaseURL() + _resourcesDirectory + blog.getBlogId() + "/" + enclosure.getName();
+                        String url = blog.getBlogBaseURL() + _enclosuresDirectory + blog.getBlogId() + "/" + enclosure.getName();
                         url = BlojsomUtils.escapeBrackets(url);
                         enclosureElement.append("<enclosure url=\"");
                         enclosureElement.append(url);
@@ -275,7 +287,7 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
             processBlogEntryEvent.getContext().put("BLOJSOM_TEMPLATE_ADDITIONS", templateAdditions);
 
             // Create a list of files in the user's resource directory
-            File resourceDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + _resourcesDirectory + blogId + "/");
+            File resourceDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + _enclosuresDirectory + blogId + "/");
             Map resourceFilesMap = null;
             if (resourceDirectory.exists()) {
                 File[] resourceFiles = resourceDirectory.listFiles();
