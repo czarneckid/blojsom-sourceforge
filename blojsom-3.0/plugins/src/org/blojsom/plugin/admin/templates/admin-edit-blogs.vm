@@ -27,7 +27,7 @@
                                 <td><input type="text" size="15" name="blog-id"/></td>
                             </tr>
                             <tr>
-                                <td>Fill in the information below to create a new user for the new blog</td>
+                                <td>#adminResource('user.add.help.text' '')</td>
                             </tr>
                             <tr>
                                 <td>#adminResource('authorized.user.id.text' 'Preferred login ID')</td>

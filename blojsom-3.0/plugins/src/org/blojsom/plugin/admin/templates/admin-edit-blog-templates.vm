@@ -19,7 +19,7 @@
                 #DeleteConfirmationPrompt($specificType $confirmationText)
 
                 <div class="mainClm">
-                    <h3>#adminResource('templates.text' 'Templates') (<a href="#addblogtemplate">#adminResource('add.blog.template.text' '')</a> or <a href="#modifydirectories">#adminResource('modify.template.directories.text' '')</a>)</h3>
+                    <h3>#adminResource('templates.text' 'Templates') (<a href="#addblogtemplate">#adminResource('add.blog.template.text' '')</a> #adminResource('or.text' '') <a href="#modifydirectories">#adminResource('modify.template.directories.text' '')</a>)</h3>
                     <table border=".5">
                         <tr>
                             <th>#adminResource('template.name.text' '')</th> <th colspan="2">#adminResource('actions.text' '')</th>

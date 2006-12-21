@@ -36,15 +36,15 @@
                         <input type="hidden" name="flavor" value="admin" />
                         <input type="hidden" name="action" value="bulk-response-management" />
                         <input type="hidden" name="plugins" value="bulk-response-management" />
-                        <h3>Search responses #if ($query) for "$query" #end <input type="text" name="query" #if ($query) value="$query"#end size="20" /> <input type="submit" name="submit" value="#adminResource('submit.text' '')" /> <br />(#adminResource('bulk.search.help.text' ''))</h3>
+                        <h3>#adminResource('search.responses.text' '') #if ($query) #adminResource('for.text' '') "$query" #end <input type="text" name="query" #if ($query) value="$query"#end size="20" /> <input type="submit" name="submit" value="#adminResource('submit.text' '')" /> <br />(#adminResource('bulk.search.help.text' ''))</h3>
                     </form>
 
                     #set ($responseCounter = 1)
                     <form name="brm" id="brm" action="." method="post" accept-charset="UTF-8">
 
                         <p align="right">
-                            You may select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);checkAll(document.getElementById('brm'),'delete',true);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',true);checkAll(document.getElementById('brm'),'delete',false);">approval</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',true);">spam</a><br/>
-                            Or you may un-select all responses for <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'delete',false);">deletion</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);">approval</a> or <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',false);">spam</a>
+                            #adminResource('select.all.responses.text' '') <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);checkAll(document.getElementById('brm'),'delete',true);">#adminResource('deletion.text' '')</a> #adminResource('or.text' '') <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',true);checkAll(document.getElementById('brm'),'delete',false);">#adminResource('approval.text' '')</a> #adminResource('or.text' '') <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',true);">#adminResource('spam.text' '')</a><br/>
+                            #adminResource('unselect.all.responses.text' '') <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'delete',false);">#adminResource('deletion.text' '')</a> #adminResource('or.text' '') <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'approve',false);">#adminResource('approval.text' '')</a> #adminResource('or.text' '') <a href="javascript:;" onclick="checkAll(document.getElementById('brm'),'mark_spam',false);">#adminResource('spam.text' '')</a>
                         </p>
                         <p>
                             <input type="submit" name="submit" value="#adminResource('submit.text' '')"/> <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>

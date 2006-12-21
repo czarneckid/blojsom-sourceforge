@@ -21,7 +21,7 @@
                 <!-- Existing Flavor Maps -->
                 <div class="mainClm">
                     <h3>#adminResource('existing.blog.flavor.text' '') (<a href="#addblogflavor">#adminResource('add.blog.flavor.text' '')</a>)</h3>
-                    <p>The default flavor for your blog is shown in bold below.</p>
+                    <p>#adminResource('default.flavor.selected.text' '')</p>
                     <table border=".5">
                         <tr>
                             <th>#adminResource('flavor.text' '')</th> <th>#adminResource('page.mime.characterset.text' '')</th> <th colspan="2">#adminResource('actions.text' '')</th>

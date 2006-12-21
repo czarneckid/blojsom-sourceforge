@@ -27,7 +27,7 @@
                         <input type="hidden" name="flavor" value="admin" />
                         <input type="hidden" name="action" value="edit-entries-list" />
                         <input type="hidden" name="plugins" value="edit-blog-entries" />
-                        <h3>Search posts #if ($query) for "$query" #end <input type="text" name="query" #if ($query) value="$query"#end size="20" /> <input type="submit" name="submit" value="#adminResource('submit.text' '')" /></h3>
+                        <h3>#adminResource('search.posts.text' '') #if ($query) #adminResource('for.text' '') "$query" #end <input type="text" name="query" #if ($query) value="$query"#end size="20" /> <input type="submit" name="submit" value="#adminResource('submit.text' '')" /></h3>
                     </form>
                     <table border=".5">
                         <tr>
