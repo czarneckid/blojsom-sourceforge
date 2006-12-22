@@ -47,7 +47,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.4 2006-05-13 14:08:53 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.5 2006-12-22 15:08:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
@@ -215,7 +215,7 @@ public class EditBlogTemplatesPlugin extends BaseAdminPlugin {
      *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param user                {@link org.blojsom.blog.BlogUser} instance
+     * @param blog                {@link Blog} instance
      * @param context             Context
      * @param entries             Blog entries retrieved for the particular request
      * @return Modified set of blog entries
