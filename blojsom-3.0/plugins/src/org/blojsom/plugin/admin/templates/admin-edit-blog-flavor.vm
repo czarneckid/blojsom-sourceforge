@@ -41,7 +41,7 @@
                                 <td>
                                     <select name="blog-template">
                                     #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES)
-                                        <option value="$blogTemplate" #if ($blogTemplate.equals($FLAVOR_TEMPLATE_EDIT))SELECTED#end>$blogTemplate</option>
+                                        <option value="$blogTemplate" #if ($FLAVOR_TEMPLATE_EDIT.equals($blogTemplate.getName()))SELECTED#end>$blogTemplate</option>
                                     #end
                                     </select>
                                 </td>

@@ -49,7 +49,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.5 2006-05-02 12:57:53 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.6 2006-12-22 15:08:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -123,7 +123,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     /**
      * Set the default blojsom properties
      *
-     * @param defaultProperties Default blojsom properties
+     * @param blojsomProperties Default blojsom properties
      */
     public void setBlojsomProperties(Properties blojsomProperties) {
         _blojsomProperties = blojsomProperties;
@@ -132,7 +132,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @throws If there is an error initializing the plugin
+     * @throws PluginException If there is an error initializing the plugin
      */
     public void init() throws PluginException {
         super.init();
@@ -152,18 +152,14 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
         File templatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _blogsDirectory + blog.getBlogId() + _templatesDirectory);
         _logger.debug("Looking for templates in directory: " + templatesDirectory.toString());
 
-        File[] templates = templatesDirectory.listFiles();
-        ArrayList templatesList = new ArrayList(templates.length);
-        for (int i = 0; i < templates.length; i++) {
-            File template = templates[i];
-            if (template.isFile()) {
-                templatesList.add(template.getName());
-            }
-        }
+        List templateFiles = new ArrayList();
+        BlojsomUtils.listFilesInSubdirectories(templatesDirectory, templatesDirectory.getAbsolutePath(), templateFiles);
+        File[] templates = (File[]) templateFiles.toArray(new File[templateFiles.size()]);
+        Arrays.sort(templates);
 
         // Put the available flavors in the context for the edit flavors template
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS, new TreeMap(blog.getTemplates()));
-        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES, templatesList);
+        context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES, templates);
         context.put(BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_EXISTING, new TreeMap(blog.getTemplates()));
     }
 
