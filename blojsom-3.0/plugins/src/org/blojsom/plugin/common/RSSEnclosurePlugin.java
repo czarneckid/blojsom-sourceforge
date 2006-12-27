@@ -52,16 +52,15 @@ import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Properties;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.4 2006-12-19 00:06:53 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.5 2006-12-27 15:59:15 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class RSSEnclosurePlugin implements Plugin, Listener {
@@ -184,8 +183,9 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
 
                 long rssEnclosureLength = -1;
                 try {
-                    rssEnclosureLength = Long.parseLong((String) entry.getMetaData().get(RSS_ENCLOSURE_LENGTH));
-                } catch (NumberFormatException e) {
+                    NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+                    rssEnclosureLength = numberFormat.parse((String) entry.getMetaData().get(RSS_ENCLOSURE_LENGTH)).longValue();
+                } catch (ParseException e) {
                 }
                 String rssEnclosureType = (String) entry.getMetaData().get(RSS_ENCLOSURE_TYPE);
 
