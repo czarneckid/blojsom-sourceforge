@@ -46,7 +46,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
+ * @version $Id: DatabaseBlog.java,v 1.6 2006-12-29 02:02:22 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
@@ -662,4 +662,16 @@ public class DatabaseBlog implements Blog, Serializable {
             _properties.put(name, value);
         }
     }
+
+    /**
+     * Remove a property from the blog
+     *
+     * @param name Property name
+     */
+    public void removeProperty(String name) {
+        if (!BlojsomUtils.checkNullOrBlank(name)) {
+            _properties.remove(name);
+        }
+    }
 }
+

@@ -38,7 +38,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.5 2006-09-26 02:55:21 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.6 2006-12-29 02:02:18 czarneckid Exp $
  */
 public interface Blog {
 
@@ -466,4 +466,11 @@ public interface Blog {
      * @param value Property value
      */
     void setProperty(String name, String value);
+
+    /**
+     * Remove a property from the blog
+     *
+     * @param name Property name
+     */
+    void removeProperty(String name);
 }
