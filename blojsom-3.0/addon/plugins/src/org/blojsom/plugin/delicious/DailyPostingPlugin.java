@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ import java.util.*;
  * Plugin to post links from your <a href="http://del.icio.us">del.icio.us</a> account to your blog.
  *
  * @author David Czarnecki
- * @version $Id: DailyPostingPlugin.java,v 1.2 2006-09-26 02:55:18 czarneckid Exp $
+ * @version $Id: DailyPostingPlugin.java,v 1.3 2007-01-17 02:35:06 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DailyPostingPlugin extends StandaloneVelocityPlugin {

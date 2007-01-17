@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ package org.blojsom.util;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.19 2006-11-29 13:56:39 czarneckid Exp $
+ * @version $Id: BlojsomConstants.java,v 1.20 2007-01-17 02:35:18 czarneckid Exp $
  */
 public interface BlojsomConstants {
 

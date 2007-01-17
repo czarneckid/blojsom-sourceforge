@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.6 2006-12-29 02:02:18 czarneckid Exp $
+ * @version $Id: Blog.java,v 1.7 2007-01-17 02:35:16 czarneckid Exp $
  */
 public interface Blog {
 

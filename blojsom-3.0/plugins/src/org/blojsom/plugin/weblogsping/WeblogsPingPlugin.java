@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ import java.util.Vector;
  * WeblogsPingPlugin
  *
  * @author David Czarnecki
- * @version $Id: WeblogsPingPlugin.java,v 1.5 2006-12-18 17:24:56 czarneckid Exp $
+ * @version $Id: WeblogsPingPlugin.java,v 1.6 2007-01-17 02:35:15 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class WeblogsPingPlugin implements Listener, Plugin {

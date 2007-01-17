@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.14 2006-12-18 16:58:31 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.15 2007-01-17 02:35:18 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 

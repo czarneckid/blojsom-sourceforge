@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ import java.util.Map;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: TextilePlugin.java,v 1.2 2006-03-20 22:51:04 czarneckid Exp $
+ * @version $Id: TextilePlugin.java,v 1.3 2007-01-17 02:35:14 czarneckid Exp $
  */
 public class TextilePlugin implements Plugin {
 

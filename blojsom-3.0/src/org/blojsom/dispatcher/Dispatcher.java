@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Dispatcher.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: Dispatcher.java,v 1.2 2007-01-17 02:35:16 czarneckid Exp $
  */
 public interface Dispatcher {
 

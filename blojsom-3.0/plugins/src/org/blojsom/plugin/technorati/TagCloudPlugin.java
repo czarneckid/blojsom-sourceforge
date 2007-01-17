@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ import java.util.TreeMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TagCloudPlugin.java,v 1.5 2006-12-06 02:41:59 czarneckid Exp $
+ * @version $Id: TagCloudPlugin.java,v 1.6 2007-01-17 02:35:14 czarneckid Exp $
  */
 public class TagCloudPlugin implements Plugin {
 

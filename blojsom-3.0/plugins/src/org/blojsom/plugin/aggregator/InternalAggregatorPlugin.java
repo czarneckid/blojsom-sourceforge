@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.HashMap;
  * 
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: InternalAggregatorPlugin.java,v 1.3 2006-10-26 21:02:50 czarneckid Exp $
+ * @version $Id: InternalAggregatorPlugin.java,v 1.4 2007-01-17 02:35:08 czarneckid Exp $
  */
 public class InternalAggregatorPlugin implements Plugin {
 

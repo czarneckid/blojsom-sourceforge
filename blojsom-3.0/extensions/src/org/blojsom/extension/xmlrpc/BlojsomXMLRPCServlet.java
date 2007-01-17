@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ import java.util.Properties;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.4 2006-12-18 16:58:31 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.5 2007-01-17 02:35:07 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
 

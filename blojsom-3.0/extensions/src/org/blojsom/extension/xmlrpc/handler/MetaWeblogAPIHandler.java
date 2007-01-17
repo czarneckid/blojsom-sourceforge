@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ import java.util.Vector;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: MetaWeblogAPIHandler.java,v 1.6 2006-10-09 19:40:59 czarneckid Exp $
+ * @version $Id: MetaWeblogAPIHandler.java,v 1.7 2007-01-17 02:35:07 czarneckid Exp $
  */
 public class MetaWeblogAPIHandler extends APIHandler {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ import java.util.Date;
  * Pingback approved event indicates an event where a {@link Pingback} has been approved in the system.
  *
  * @author David Czarnecki
- * @version $Id: PingbackApprovedEvent.java,v 1.1 2006-03-20 21:30:57 czarneckid Exp $
+ * @version $Id: PingbackApprovedEvent.java,v 1.2 2007-01-17 02:35:13 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackApprovedEvent extends PingbackEvent {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ import java.util.List;
  * Database loader
  *
  * @author David Czarnecki
- * @version $Id: DatabaseLoader.java,v 1.5 2006-11-07 20:21:23 czarneckid Exp $
+ * @version $Id: DatabaseLoader.java,v 1.6 2007-01-17 02:35:18 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseLoader {

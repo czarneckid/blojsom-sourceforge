@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * ResourceBundleResourceManager
  *
  * @author David Czarnecki
- * @version $Id: ResourceBundleResourceManager.java,v 1.2 2006-03-21 03:11:09 czarneckid Exp $
+ * @version $Id: ResourceBundleResourceManager.java,v 1.3 2007-01-17 02:35:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ResourceBundleResourceManager implements ResourceManager {

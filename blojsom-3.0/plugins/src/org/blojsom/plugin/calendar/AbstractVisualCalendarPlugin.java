@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: AbstractVisualCalendarPlugin.java,v 1.4 2006-07-07 01:37:01 czarneckid Exp $
+ * @version $Id: AbstractVisualCalendarPlugin.java,v 1.5 2007-01-17 02:35:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public abstract class AbstractVisualCalendarPlugin extends AbstractCalendarPlugin {

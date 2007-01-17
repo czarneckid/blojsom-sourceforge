@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BulkResponseManagement.java,v 1.5 2006-09-26 02:55:20 czarneckid Exp $
+ * @version $Id: BulkResponseManagement.java,v 1.6 2007-01-17 02:35:04 czarneckid Exp $
  */
 public class BulkResponseManagement extends BaseAdminPlugin {
 

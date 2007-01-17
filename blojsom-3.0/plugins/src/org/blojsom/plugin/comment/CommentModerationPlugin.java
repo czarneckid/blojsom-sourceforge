@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import java.util.Map;
  * Comment moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: CommentModerationPlugin.java,v 1.2 2006-03-20 22:32:40 czarneckid Exp $
+ * @version $Id: CommentModerationPlugin.java,v 1.3 2007-01-17 02:35:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentModerationPlugin implements Plugin {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ import java.util.Map;
 
 /**
  * @author David Czarnecki
- * @version $Id: EditBlogPreferencesPlugin.java,v 1.2 2006-09-18 18:30:53 czarneckid Exp $
+ * @version $Id: EditBlogPreferencesPlugin.java,v 1.3 2007-01-17 02:35:05 czarneckid Exp $
  */
 public class EditBlogPreferencesPlugin extends BaseAdminPlugin {
 

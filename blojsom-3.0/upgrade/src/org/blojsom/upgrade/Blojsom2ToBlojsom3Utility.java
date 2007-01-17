@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ import java.util.*;
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.19 2006-12-07 01:45:27 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.20 2007-01-17 02:35:21 czarneckid Exp $
  * @since blojsom 3
  */
 public class Blojsom2ToBlojsom3Utility {

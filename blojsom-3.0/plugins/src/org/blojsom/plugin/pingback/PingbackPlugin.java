@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,7 +80,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.7 2006-06-23 18:45:51 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.8 2007-01-17 02:35:13 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, Listener {

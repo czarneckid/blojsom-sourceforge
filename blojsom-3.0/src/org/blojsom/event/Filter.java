@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ package org.blojsom.event;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Filter.java,v 1.1 2006-03-20 21:31:13 czarneckid Exp $
+ * @version $Id: Filter.java,v 1.2 2007-01-17 02:35:17 czarneckid Exp $
  */
 public interface Filter {
 

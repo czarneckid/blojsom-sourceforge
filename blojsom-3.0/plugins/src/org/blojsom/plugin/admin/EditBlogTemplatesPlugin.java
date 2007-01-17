@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ import java.util.*;
  * EditBlogTemplatesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogTemplatesPlugin.java,v 1.5 2006-12-22 15:08:26 czarneckid Exp $
+ * @version $Id: EditBlogTemplatesPlugin.java,v 1.6 2007-01-17 02:35:05 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogTemplatesPlugin extends BaseAdminPlugin {

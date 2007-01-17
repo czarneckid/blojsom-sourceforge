@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ import java.util.Locale;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Comment.java,v 1.7 2006-10-11 02:46:48 czarneckid Exp $
+ * @version $Id: Comment.java,v 1.8 2007-01-17 02:35:16 czarneckid Exp $
  */
 public interface Comment extends Response {
 

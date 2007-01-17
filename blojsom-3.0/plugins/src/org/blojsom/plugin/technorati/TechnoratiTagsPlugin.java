@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * Technorati tags plugin
  *
  * @author David Czarnecki
- * @version $Id: TechnoratiTagsPlugin.java,v 1.3 2006-10-26 01:15:19 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.4 2007-01-17 02:35:14 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Listener {

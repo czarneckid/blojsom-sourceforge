@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.12 2006-11-29 13:59:00 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.13 2007-01-17 02:35:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.Map;
  * <a href="http://daringfireball.net/projects/markdown/">John Gruber's Markdown site</a>.
  *
  * @author David Czarnecki
- * @version $Id: MarkdownPlugin.java,v 1.2 2006-03-20 22:50:45 czarneckid Exp $
+ * @version $Id: MarkdownPlugin.java,v 1.3 2007-01-17 02:35:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MarkdownPlugin implements Plugin {

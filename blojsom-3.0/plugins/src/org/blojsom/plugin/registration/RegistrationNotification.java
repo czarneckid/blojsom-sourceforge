@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import java.util.*;
  * RegistrationNotification
  *
  * @author Eric Broyles
- * @version $Id: RegistrationNotification.java,v 1.1 2007-01-17 02:31:20 czarneckid Exp $
+ * @version $Id: RegistrationNotification.java,v 1.2 2007-01-17 02:35:05 czarneckid Exp $
  */
 public class RegistrationNotification extends AbstractVelocityEmailNotification {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: SkipFilterHelperPlugin.java,v 1.1 2006-12-15 19:21:02 czarneckid Exp $
+ * @version $Id: SkipFilterHelperPlugin.java,v 1.2 2007-01-17 02:35:13 czarneckid Exp $
  */
 public class SkipFilterHelperPlugin implements Plugin {
 
