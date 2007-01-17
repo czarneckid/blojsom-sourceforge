@@ -52,10 +52,24 @@ INSERT INTO Blojsom_Category VALUES (Blojsom_category_id_Seq.nextval,Blojsom_id_
 
 -- DROP TABLE Blojsom_CategoryMetadata CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_CategoryMetadata (
+  category_metadata_id int PRIMARY KEY,
   category_id int NOT NULL REFERENCES Blojsom_Category (category_id) ON DELETE CASCADE,
   metadata_key varchar2(4000) NOT NULL,
   metadata_value varchar2(4000)
 );
+
+-- DROP SEQUENCE Blojsom_category_md_id_Seq;
+CREATE SEQUENCE Blojsom_category_md_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP SEQUENCE Blojsom_category_md_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_category_md_id_auto
+BEFORE INSERT ON Blojsom_CategoryMetadata FOR EACH ROW
+BEGIN
+	IF :new.category_metadata_id IS NULL THEN
+		SELECT Blojsom_category_md_id_Seq.nextval INTO :new.category_metadata_id FROM DUAL;
+	END IF;
+END;
+/
 
 --
 -- Dumping data for table Blojsom_CategoryMetadata
@@ -95,10 +109,24 @@ CREATE SEQUENCE Blojsom_comment_id_Seq START WITH 1 INCREMENT BY 1;
 
 -- DROP TABLE Blojsom_CommentMetadata CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_CommentMetadata (
+  comment_metadata_id int PRIMARY KEY,
   comment_id int NOT NULL REFERENCES Blojsom_Comment (comment_id) ON DELETE CASCADE,
   metadata_key varchar2(4000) NOT NULL,
   metadata_value varchar2(4000)
 );
+
+-- DROP SEQUENCE Blojsom_comment_md_id_Seq;
+CREATE SEQUENCE Blojsom_comment_md_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blosjom_comment_md_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_comment_md_id_auto
+BEFORE INSERT ON Blojsom_CommentMetadata FOR EACH ROW
+BEGIN
+	IF :new.comment_metadata_id IS NULL THEN
+		select Blojsom_comment_md_id_Seq.nextval INTO :new.comment_metadata_id FROM DUAL;
+	END IF;
+END;
+/
 
 --
 -- Dumping data for table Blojsom_CommentMetadata
@@ -142,14 +170,14 @@ CREATE TABLE Blojsom_DBUserMetadata (
   metadata_value varchar2(4000)
 );
 
--- DROP SEQUENCE Blojsom_user_metadata_id_Seq;
-CREATE SEQUENCE Blojsom_user_metadata_id_Seq START WITH 1 INCREMENT BY 1;
+-- DROP SEQUENCE Blojsom_user_md_id_Seq;
+CREATE SEQUENCE Blojsom_user_md_id_Seq START WITH 1 INCREMENT BY 1;
 
 --
 -- Dumping data for table Blojsom_DBUserMetadata
 --
 
-INSERT INTO Blojsom_DBUserMetadata VALUES (Blojsom_user_metadata_id_Seq.nextval,Blojsom_user_id_Seq.currval,'all_permissions_permission','true');
+INSERT INTO Blojsom_DBUserMetadata VALUES (Blojsom_user_md_id_Seq.nextval,Blojsom_user_id_Seq.currval,'all_permissions_permission','true');
 
 --
 -- Table structure for table Blojsom_Entry
@@ -186,10 +214,24 @@ CREATE SEQUENCE Blojsom_entry_id_Seq START WITH 1 INCREMENT BY 1;
 
 -- DROP TABLE Blojsom_EntryMetadata CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_EntryMetadata (
+  entry_metadata_id int PRIMARY KEY,
   entry_id int NOT NULL REFERENCES Blojsom_Entry (entry_id) ON DELETE CASCADE,
   metadata_key varchar2(4000) NOT NULL,
   metadata_value varchar2(4000)
 );
+
+-- DROP SEQUENCE Blojsom_entry_md_id_Seq;
+CREATE SEQUENCE Blojsom_entry_md_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blojsom_entry_md_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_entry_md_id_auto
+BEFORE INSERT ON Blojsom_EntryMetadata FOR EACH ROW
+BEGIN
+	IF :new.entry_metadata_id IS NULL THEN
+		select Blojsom_entry_md_id_Seq.nextval INTO :new.entry_metadata_id FROM DUAL;
+	END IF;
+END;
+/
 
 --
 -- Dumping data for table Blojsom_EntryMetadata
@@ -230,10 +272,24 @@ CREATE SEQUENCE Blojsom_pingback_id_Seq START WITH 1 INCREMENT BY 1;
 
 -- DROP TABLE Blojsom_PingbackMetadata CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_PingbackMetadata (
+  pingback_metadata_id int PRIMARY KEY,
   pingback_id int NOT NULL REFERENCES Blojsom_Pingback (pingback_id) ON DELETE CASCADE,
   metadata_key varchar2(4000) NOT NULL,
   metadata_value varchar2(4000)
 );
+
+-- DROP SEQUENCE Blojsom_pingback_md_id_Seq;
+CREATE SEQUENCE Blojsom_pingback_md_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blojsom_pingback_md_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_pingback_md_id_auto
+BEFORE INSERT ON Blojsom_PingbackMetadata FOR EACH ROW
+BEGIN
+	IF :new.pingback_metadata_id IS NULL THEN
+		select Blojsom_pingback_md_id_Seq.nextval INTO :new.pingback_metadata_id FROM DUAL;
+	END IF;
+END;
+/
 
 --
 -- Dumping data for table Blojsom_PingbackMetadata
@@ -246,18 +302,32 @@ CREATE TABLE Blojsom_PingbackMetadata (
 
 -- DROP TABLE Blojsom_Plugin CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_Plugin (
+  plugin_id int PRIMARY KEY,
   blog_id int NOT NULL REFERENCES Blojsom_Blog (id) ON DELETE CASCADE,
   plugin_flavor varchar2(50) NOT NULL,
   plugin_value varchar2(4000) default NULL
 );
 
+-- DROP SEQUENCE Blojsom_plugin_id_Seq;
+CREATE SEQUENCE Blojsom_plugin_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blojsom_plugin_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_plugin_id_auto
+BEFORE INSERT ON Blojsom_Plugin FOR EACH ROW
+BEGIN
+	IF :new.plugin_id IS NULL THEN
+		select Blojsom_plugin_id_Seq.nextval INTO :new.plugin_id FROM DUAL;
+	END IF;
+END;
+/
+
 --
 -- Dumping data for table Blojsom_Plugin
 --
 
-INSERT INTO Blojsom_Plugin VALUES (Blojsom_id_Seq.currval,'html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags');
-INSERT INTO Blojsom_Plugin VALUES (Blojsom_id_Seq.currval,'default','conditional-get, meta, nofollow, rss-enclosure');
-INSERT INTO Blojsom_Plugin VALUES (Blojsom_id_Seq.currval,'admin','admin');
+INSERT INTO Blojsom_Plugin VALUES (Blojsom_plugin_id_Seq.nextval, Blojsom_id_Seq.currval,'html','meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags');
+INSERT INTO Blojsom_Plugin VALUES (Blojsom_plugin_id_Seq.nextval, Blojsom_id_Seq.currval,'default','conditional-get, meta, nofollow, rss-enclosure');
+INSERT INTO Blojsom_Plugin VALUES (Blojsom_plugin_id_Seq.nextval, Blojsom_id_Seq.currval,'admin','admin');
 
 --
 -- Table structure for table Properties
@@ -265,38 +335,52 @@ INSERT INTO Blojsom_Plugin VALUES (Blojsom_id_Seq.currval,'admin','admin');
 
 -- DROP TABLE Blojsom_Properties CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_Properties (
+  property_id int PRIMARY KEY,
   blog_id int NOT NULL REFERENCES Blojsom_Blog (id) ON DELETE CASCADE,
   property_name varchar2(255) NOT NULL,
   property_value clob
 );
 
+-- DROP SEQUENCE Blojsom_property_id_Seq;
+CREATE SEQUENCE Blojsom_property_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blojsom_property_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_property_id_auto
+BEFORE INSERT ON Blojsom_Properties FOR EACH ROW
+BEGIN
+	IF :new.property_id IS NULL THEN
+		select Blojsom_property_id_Seq.nextval INTO :new.property_id FROM DUAL;
+	END IF;
+END;
+/
+
 --
 -- Dumping data for table Blojsom_Properties
 --
 
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-admin-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-base-url','http://localhost:8080/blojsom');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-base-admin-url','http://localhost:8080/blojsom');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-language','en');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-name','NAME YOUR BLOG');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-description','DESCRIBE YOUR BLOG');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-entries-display','15');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-owner','Default Owner');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-owner-email','default_owner@email.com');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-comments-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-trackbacks-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-email-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-default-flavor','html');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'plugin-comment-autoformat','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'linear-navigation-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'comment-moderation-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'trackback-moderation-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'pingback-moderation-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-ping-urls','http://rpc.pingomatic.com');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blojsom-extension-metaweblog-accepted-types','image/jpeg, image/gif, image/png, img');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'xmlrpc-enabled','true');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-pingbacks-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-url','http://localhost:8080/blojsom/blog/default');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-admin-url','http://localhost:8080/blojsom/blog/default');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-base-url','http://localhost:8080/blojsom');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-base-admin-url','http://localhost:8080/blojsom');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-language','en');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-name','NAME YOUR BLOG');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-description','DESCRIBE YOUR BLOG');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-entries-display','15');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-owner','Default Owner');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-owner-email','default_owner@email.com');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-comments-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-trackbacks-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-email-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-default-flavor','html');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'plugin-comment-autoformat','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'linear-navigation-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'comment-moderation-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'trackback-moderation-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'pingback-moderation-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-ping-urls','http://rpc.pingomatic.com');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blojsom-extension-metaweblog-accepted-types','image/jpeg, image/gif, image/png, img');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'xmlrpc-enabled','true');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-pingbacks-enabled','true');
 
 --
 -- Table structure for table Blojsom_Template
@@ -304,22 +388,36 @@ INSERT INTO Blojsom_Properties VALUES (Blojsom_id_Seq.currval,'blog-pingbacks-en
 
 -- DROP TABLE Blojsom_Template CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_Template (
+  template_id int PRIMARY KEY,
   blog_id int NOT NULL REFERENCES Blojsom_Blog (id) ON DELETE CASCADE,
   template_flavor varchar2(50) NOT NULL,
   template_value varchar2(255) default NULL
 );
 
+-- DROP SEQUENCE Blojsom_template_id_Seq;
+CREATE SEQUENCE Blojsom_template_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blojsom_template_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_template_id_auto
+BEFORE INSERT ON Blojsom_Template FOR EACH ROW
+BEGIN
+	IF :new.template_id IS NULL THEN
+		select Blojsom_template_id_Seq.nextval INTO :new.template_id FROM DUAL;
+	END IF;
+END;
+/
+
 --
 -- Dumping data for table Blojsom_Template
 --
 
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'rss','rss.vm, text/xml;charset=UTF-8');
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'rsd','rsd.vm, application/rsd+xml;charset=UTF-8');
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'html','asual.vm, text/html;charset=UTF-8');
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'atom','atom.vm, application/atom+xml;charset=UTF-8');
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'rss2','rss2.vm, text/xml;charset=UTF-8');
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'rdf','rdf.vm, text/xml;charset=UTF-8');
-INSERT INTO Blojsom_Template VALUES (Blojsom_id_Seq.currval,'admin','org/blojsom/plugin/admin/templates/admin.vm, text/html;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'rss','rss.vm, text/xml;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'rsd','rsd.vm, application/rsd+xml;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'html','asual.vm, text/html;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'atom','atom.vm, application/atom+xml;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'rss2','rss2.vm, text/xml;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'rdf','rdf.vm, text/xml;charset=UTF-8');
+INSERT INTO Blojsom_Template VALUES (Blojsom_template_id_Seq.nextval, Blojsom_id_Seq.currval,'admin','org/blojsom/plugin/admin/templates/admin.vm, text/html;charset=UTF-8');
 
 --
 -- Table structure for table Blojsom_Trackback
@@ -353,11 +451,24 @@ CREATE SEQUENCE Blojsom_trackback_id_Seq START WITH 1 INCREMENT BY 1;
 
 -- DROP TABLE Blojsom_TrackbackMetadata CASCADE CONSTRAINTS;
 CREATE TABLE Blojsom_TrackbackMetadata (
+  trackback_metadata_id int PRIMARY KEY,
   trackback_id int NOT NULL REFERENCES Blojsom_Trackback (trackback_id) ON DELETE CASCADE,
   metadata_key varchar2(4000) NOT NULL,
   metadata_value varchar2(4000)
 );
 
+-- DROP SEQUENCE Blojsom_trackback_md_id_Seq;
+CREATE SEQUENCE Blojsom_trackback_md_id_Seq START WITH 1 INCREMENT BY 1;
+
+-- DROP TRIGGER Blojsom_trackback_md_id_auto;
+CREATE OR REPLACE TRIGGER Blojsom_trackback_md_id_auto
+BEFORE INSERT ON Blojsom_TrackbackMetadata FOR EACH ROW
+BEGIN
+	IF :new.trackback_metadata_id IS NULL THEN
+		select Blojsom_trackback_md_id_Seq.nextval INTO :new.trackback_metadata_id FROM DUAL;
+	END IF;
+END;
+/
 --
 -- Dumping data for table Blojsom_TrackbackMetadata
 --
