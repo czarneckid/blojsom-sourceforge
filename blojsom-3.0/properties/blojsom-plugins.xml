@@ -740,4 +740,17 @@
         </property>        
     </bean>
 
+    <bean id="view-user-properties" class="org.blojsom.plugin.admin.ViewBlogUserPropertiesPlugin" init-method="init"
+          destroy-method="destroy">
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
+    
 </beans>

@@ -19,7 +19,7 @@
                 #DeleteConfirmationPrompt($specificType $confirmationText)
 
                 <div class="mainClm">
-                    <h3>#adminResource('users.text' '') (<a href="#adduser">#adminResource('add.new.user.text' '')</a>)</h3>
+                    <h3>#adminResource('users.text' '') (<a href="#adduser">#adminResource('add.new.user.text' '')</a> | <a href="#BlogAdminURL()/?flavor=admin&plugins=view-user-properties&action=page">#adminResource('view.user.properties.text' '')</a>)</h3>
                     <table border=".5">
                         <tr>
                             <th>#adminResource('authorized.user.id.text' '')</th> <th colspan="2">#adminResource('actions.text' '')</th>
