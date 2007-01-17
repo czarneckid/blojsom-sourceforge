@@ -304,6 +304,17 @@
     #set ($entryLink = "$blog.getBlogURL()$categoryForEntry$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPostSlug()")
 #end
 
+#**
+ * Sets a page variable, $entryLink, with a friendly permalink in $BLOG_URL/yyyy/MM/dd/permalink format
+ *
+ * $entry Blog entry
+ *#
+#macro(SimpleInternalAggregatorFriendlyPermalink $entry)
+    #set ($blog = $BLOJSOM_PLUGIN_AGGREGATOR_BLOGS.get($entry.getBlogId()))
+    #set ($entryLink = "$blog.getBlogURL()/$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPostSlug()")
+#end
+
+
 ###############################################
 ## Comment/Trackback Macros
 ###############################################
