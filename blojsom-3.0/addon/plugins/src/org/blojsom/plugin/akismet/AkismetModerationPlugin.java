@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.7 2006-06-21 20:42:24 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.8 2007-01-17 01:15:46 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
