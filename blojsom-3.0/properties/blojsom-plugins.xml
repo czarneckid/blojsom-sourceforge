@@ -90,6 +90,19 @@
         <property name="parseComments" value="false"/>
     </bean>
     <bean id="excerpt" class="org.blojsom.plugin.excerpt.ExcerptPlugin" init-method="init" destroy-method="destroy"/>
+    <!--
+    <bean id="file-attachment" class="org.blojsom.plugin.common.FileAttachmentPlugin" init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+        <property name="blojsomProperties">
+            <ref bean="defaultProperties"/>
+        </property>
+    </bean>
+     -->
     <bean id="footnote" class="org.blojsom.plugin.footnote.FootnotePlugin" init-method="init" destroy-method="destroy"/>
     <bean id="form-authentication" class="org.blojsom.plugin.security.FormAuthenticationPlugin" parent="basic-authentication" />    
     <bean id="googlehighlight" class="org.blojsom.plugin.highlight.GoogleHighlightPlugin" init-method="init"

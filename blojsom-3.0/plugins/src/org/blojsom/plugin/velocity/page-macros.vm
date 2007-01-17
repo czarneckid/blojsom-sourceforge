@@ -552,6 +552,19 @@ $BLOJSOM_PLUGIN_STRING_UTILITIES.escapeString($technoratiTag)
 #end
 #end
 
+#**
+ * Output the File Attachment for an entry
+ *
+ * @param $entry Blog entry
+ *#
+#macro(FileAttachment $entry) $!entry.getMetaData().get("file-attachment")#end
+
+#macro(DisplayFileAttachment $entry)
+#if($entry.getMetaData() && $entry.getMetaData().get("file-attachment"))
+    <strong>| Attachment: </strong> $entry.getMetaData().get("file-attachment")
+#end
+#end
+        
 ###############################################
 ## Administrative Macros
 ###############################################
