@@ -285,6 +285,15 @@
 #end
 
 #**
+ * Sets a page variable, $entryLink, with a friendly permalink in $BLOG_URL/yyyy/MM/dd/permalink format
+ *
+ * $entry Blog entry
+ *#
+#macro(SimpleFriendlyPermalink $entry)
+    #set ($entryLink = "$BLOJSOM_BLOG.getBlogURL()/$entry.getDateAsFormat('yyyy')/$entry.getDateAsFormat('MM')/$entry.getDateAsFormat('dd')/$entry.getPostSlug()")
+#end
+
+#**
  * Sets a page variable, $entryLink, with a friendly permalink in $BLOG_URL/$category/yyyy/MM/dd/permalink format
  *
  * $entry Blog entry
