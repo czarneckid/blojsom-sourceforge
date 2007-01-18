@@ -18,7 +18,7 @@
 		<pubDate>$BLOJSOM_DATE</pubDate>
 
         #foreach ($entry in $BLOJSOM_ENTRIES)
-        #FriendlyPermalink($entry)
+        #SimpleFriendlyPermalink($entry)
         <item>
             <title>$entry.getEscapedTitle()</title>
             <link>$entryLink</link>

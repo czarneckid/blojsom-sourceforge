@@ -16,7 +16,7 @@
     </generator>
     #foreach ($entry in $BLOJSOM_ENTRIES)
     <entry>
-        #FriendlyPermalink($entry)
+        #SimpleFriendlyPermalink($entry)
         <title>$entry.getTitle()</title>
         <link rel="alternate" type="text/html" href="$entryLink"/>
         <id>$entryLink</id>

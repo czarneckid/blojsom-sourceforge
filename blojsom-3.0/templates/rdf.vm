@@ -17,7 +17,7 @@
         <items>
         <rdf:Seq>
         #foreach ($entry in $BLOJSOM_ENTRIES)
-            #FriendlyPermalink($entry)
+            #SimpleFriendlyPermalink($entry)
             <rdf:li rdf:resource="$entryLink" />
         #end
         </rdf:Seq>
@@ -25,7 +25,7 @@
     </channel>
 
     #foreach ($entry in $BLOJSOM_ENTRIES)
-    #FriendlyPermalink($entry)
+    #SimpleFriendlyPermalink($entry)
     <item rdf:about="$entryLink">
 	    <title>$entry.getEscapedTitle()</title>
 	    <link>$entryLink</link>

@@ -3,7 +3,7 @@
 <rss version="2.0">
     <channel>
         #foreach ($entry in $BLOJSOM_ENTRIES)
-        #FriendlyPermalink($entry)
+        #SimpleFriendlyPermalink($entry)
         <title>$entry.getEscapedTitle()</title>
         <link>$entryLink</link>
         <description>$entry.getEscapedDescription()</description>
