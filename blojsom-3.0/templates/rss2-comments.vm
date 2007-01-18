@@ -15,13 +15,24 @@
         <managingEditor>#BlogOwnerEmail()</managingEditor>
         <webMaster>#BlogOwnerEmail()</webMaster>
 
-        #foreach ($entryComment in $entry.getComments())
+        #set($approvedResponses = $entry.getResponsesMatchingStatus("approved"))
+        #foreach ($response in $approvedResponses)
         <item>
-           <title>$entry.getEscapedTitle()</title>
-           <link>$entryLink</link>
-           <description>$entryComment.getEscapedComment()</description>
-           <pubDate>$entryComment.getRFC822Date()</pubDate>
-           <author>$entryComment.getAuthorEmail()</author>
+            <title>$entry.getEscapedTitle()</title>
+            <link>$entryLink</link>
+            #if ($response.getType().equals("comment"))
+            <description>$response.getEscapedComment()</description>
+            <pubDate>$response.getRFC822Date()</pubDate>
+            <author>$response.getAuthorEmail()</author>
+            #elseif ($response.getType().equals("trackback"))
+            <description>$!response.getEscapedExcerpt()</description>
+            <pubDate>$!response.getDateAsFormat("EEE, d MMM yyyy HH:mm:ss Z")</pubDate>
+            <author>$!response.getEscapedBlogName()</author>
+            #elseif ($response.getType().equals("pingback"))
+            <description>$!response.getEscapedExcerpt()</description>
+            <pubDate>$!response.getDateAsFormat("EEE, d MMM yyyy HH:mm:ss Z")</pubDate>
+            <author>$!response.getEscapedBlogName()</author>
+            #end
         </item>
         #end
 
