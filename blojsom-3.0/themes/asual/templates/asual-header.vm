@@ -1,8 +1,8 @@
 
 			<div id="header">
 				<div id="name">
-					<h1><a href="#BlogURL()/" title="#BlogName()">#BlogName()</a></h1>
-					<h2>#BlogDescription()</h2>
+					<h3><a href="#BlogURL()/" title="#BlogName()">#BlogName()</a></h3>
+					<h4>#BlogDescription()</h4>
 
 				</div>
 				<div id="controls">

@@ -14,6 +14,9 @@
 		<link rel="stylesheet" rev="stylesheet" href="#Resource('asual.css')" type="text/css" media="screen" />
 		<link rel="stylesheet" rev="stylesheet" href="#Resource('asual-fixed.css')" title="fixed" type="text/css" media="screen" />
 		<link rel="stylesheet" rev="stylesheet" href="#Resource('asual-elastic.css')" title="elastic" type="text/css" media="screen" />
+        <!--[if IE 7]>
+        <link rel="stylesheet" rev="stylesheet" href="#Resource('asual-ie7.css')" type="text/css" media="screen" />
+        <![endif]-->
 		<script type="text/javascript" src="#Resource('asual.js')"></script>
 
         #if ($BLOJSOM_PERMALINK)

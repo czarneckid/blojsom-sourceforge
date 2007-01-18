@@ -1,13 +1,16 @@
-
-                            #FriendlyPermalink($entry)
+                            
+                            #SimpleFriendlyPermalink($entry)
                             #set($approvedResponses = $entry.getResponsesMatchingStatus("approved"))
                             #set($permalink = $entryLink)
                             <div class="entry">
-                                #if($entryDate != $entry.getDateAsFormat('dd MM yyyy'))<h3>$entry.getDateAsFormat('EEEE, d MMMM yyyy')</h3>
-                                #set($entryDate = $entry.getDateAsFormat('dd MM yyyy'))#end
-                            
-                                <h4><a href="$permalink" title="Permalink of &quot;$entry.getTitle()&quot;">$entry.getTitle()</a></h4>
-                                #if($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #FriendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY)<a href="$entryLink">&laquo;&nbsp;$!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">Main</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #FriendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle()&nbsp;&raquo;</a>#end#end
+                                #if($entryDate != $entry.getDateAsFormat('dd MM yyyy'))
+                                #set($entryDate = $entry.getDateAsFormat('dd MM yyyy'))
+                                <h2 class="date">$entry.getDateAsFormat('EEEE, d MMMM yyyy')</h2>
+                                #end
+                                #set($nqTitle = $entry.getTitle().replace('"', ''))
+
+                                <h1 class="title"><a href="$permalink" title="Permalink of &quot;$nqTitle&quot;">$entry.getTitle()</a></h1>
+                                #if($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #SimpleFriendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY)<a href="$entryLink">&laquo;&nbsp;$!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">Main</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #SimpleFriendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle()&nbsp;&raquo;</a>#end#end
 
                                 <div class="post">
                                     $entry.getDescription()
