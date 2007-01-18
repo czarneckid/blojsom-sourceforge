@@ -32,11 +32,12 @@ a:hover {
 	float: left; 
 	margin-right: -24em;
 }
-#name h1 {
+#name h3 {
 	font-size: 200%;
 	margin: 26px 0 6px 43px;
+	text-shadow: #ECF1F7 0 0 3px;    
 }
-#name h2 {
+#name h4 {
 	font-size: 120%;
 	font-weight: normal;
 	margin-left: 43px;
@@ -45,7 +46,6 @@ a:hover {
 #name a {
 	text-decoration: none;
 	color: #285090;
-	margin-left: -1px;
 }
 #controls {
 	float: right;
@@ -78,13 +78,12 @@ a:hover {
 	font-size: 84%;
 	text-decoration: none;
 	color: #000000;
-	background: #FAFCFD;
 	padding: 0;
-	border-top: 1px solid #FAFCFD;
-	border-bottom: 1px solid #FAFCFD;
+	border-top: 1px solid #F6FAFD;
+	border-bottom: 1px solid #FAFCFD;    
 }
 #switcher a span {
-	border-top: 1px solid #FAFCFD;
+	border-top: 1px solid #F6FAFD;
 	border-bottom: 1px solid #FAFCFD;
 	height: 100%;
 	margin: -1px 1px;
@@ -289,14 +288,14 @@ a:hover {
 #links h5 {
 	font-size: 100%;
 	font-weight: bold;
-	margin: 1.8em 2px .4em;
+	margin: 1.8em 2px .6em;
 	clear: both;
 }
 #links ul {
 	list-style: none;
 }
 #links li {
-	margin-bottom: .8em;
+	margin-bottom: .6em;
 }
 #blojsom {
 	display: block;
@@ -307,46 +306,74 @@ a:hover {
 }
 div.entry {
 	padding: 0;
-	margin: 0 18em 6em 0;
+	margin: 0 18em 4em 0;
 }
 div.entry div, div.entry p {
 	margin-bottom: 1.2em;
 }
-div.entry h3 {
+div.entry h2.date {
 	font-size: 100%;
 	font-weight: bold;
 	color: #285090;
 	margin-top: -.2em;
 }
-div.entry h4 {
+div.entry h1.title {
 	font-size: 130%;
 	font-weight: normal;
 	padding-bottom: .2em;
 	border-bottom: 1px solid #839ABF;
 }
-div.entry h4 a, div.entry h4 a:visited {
+div.entry h1.title a, div.entry h1.title a:visited {
 	color: #A30000;
 	text-decoration: none;
 }
-div.entry h4 a:hover {
+div.entry h1.title a:hover {
 	color: #000000;
+}
+div.entry h1 {
+	font-size: 150%;
+}
+div.entry h2 {
+	font-size: 140%;
+}
+div.entry h3 {
+	font-size: 130%;
+}
+div.entry h4 {
+	font-size: 120%;
+}
+div.entry h5 {
+	font-size: 110%;
+}
+div.entry h6 {
+	font-size: 100%;
 }
 div.entry ul, div.entry ol, div.entry dl {
 	margin: 10px 0;
 	padding: 0;
 }
-div.entry li {
+div.entry ul li {
 	margin-left: 10px;
 	padding: 0 0 .4em 12px;
 	list-style: none;
 	background: url(asual-disc.jpg) no-repeat 0 .6em;
+}
+div.entry ol li {
+	margin-left: 30px;
+	padding: 0 0 .4em 0;
+}
+div.entry dl dt {
+    font-weight: bold;
+}
+div.entry dl dd {
+	margin: 0 0 .4em 0;
 }
 div.entry blockquote {
 	margin: 10px;
 	padding-left: 20px;
 	background: url(asual-blockquote.jpg) no-repeat;	
 }
-div.entry tt {
+div.entry tt, div.entry pre {
 	font-size: 120%;
 	font-weight: bold;
 	color: #333333;
@@ -366,6 +393,7 @@ div.entry .info a:hover {
 }
 div.entry .links {
 	color: #000000;
+	height: 2em;
 }
 div.entry .links a, div.entry .links a:visited {
 	color: #285090;
@@ -375,7 +403,7 @@ div.entry .links a:hover {
 }
 div.entry .commentslink a {
 	float: left;
-	margin: 0 6px 1.8em -4px;
+	margin: 0 6px 0 -4px;
 	padding: 1px;
 }
 div.entry .commentslink a span {
@@ -391,7 +419,7 @@ div.entry .commentslink a:hover span {
 }
 div.entry .trackbackslink a {
 	float: left;
-	margin: 0 0 1.8em 4px;
+	margin: 0 0 0 4px;
 	padding: 1px;
 }
 div.entry .trackbackslink a span {
@@ -512,4 +540,5 @@ img.emoticons {
 .clear {
 	clear: both;
 	height: 0;
+    overflow: hidden;
 }
