@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.15 2007-01-17 02:35:18 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.16 2007-01-21 15:42:48 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -907,6 +907,8 @@ public class BlojsomUtils implements BlojsomConstants {
             String result = URLEncoder.encode(input, UTF8);
             result = replace(result, "%2F", "/");
             result = replace(result, "%20", "+");
+            result = replace(result, "%3A", ":");
+            result = replace(result, "%3a", ":");
             return result;
         } catch (UnsupportedEncodingException e) {
             return input;

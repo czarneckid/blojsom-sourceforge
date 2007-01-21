@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.13 2007-01-17 02:35:08 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.14 2007-01-21 15:42:47 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -581,7 +581,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
             String redirectTo = BlojsomUtils.getRequestValue(BlojsomConstants.REDIRECT_TO_PARAM, httpServletRequest);
             if (!BlojsomUtils.checkNullOrBlank(redirectTo)) {
                 try {
-                    httpServletResponse.sendRedirect(redirectTo);
+                    httpServletResponse.sendRedirect(BlojsomUtils.urlEncodeForLink(redirectTo));
                     httpServletRequest.setAttribute(BlojsomConstants.IS_IN_REDIRECT, Boolean.TRUE);
                 } catch (IOException e) {
                 }
