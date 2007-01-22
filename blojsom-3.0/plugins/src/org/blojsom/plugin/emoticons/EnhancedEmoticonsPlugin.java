@@ -31,9 +31,8 @@
 package org.blojsom.plugin.emoticons;
 
 import org.blojsom.blog.Blog;
-import org.blojsom.blog.Entry;
-import org.blojsom.blog.Response;
 import org.blojsom.blog.Comment;
+import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
 import org.blojsom.util.BlojsomUtils;
@@ -50,7 +49,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jan Wessely
- * @version $Id: EnhancedEmoticonsPlugin.java,v 1.5 2007-01-22 14:23:20 czarneckid Exp $
+ * @version $Id: EnhancedEmoticonsPlugin.java,v 1.6 2007-01-22 14:45:07 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EnhancedEmoticonsPlugin implements Plugin {
