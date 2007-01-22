@@ -50,7 +50,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jan Wessely
- * @version $Id: EnhancedEmoticonsPlugin.java,v 1.4 2007-01-17 02:35:09 czarneckid Exp $
+ * @version $Id: EnhancedEmoticonsPlugin.java,v 1.5 2007-01-22 14:23:20 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EnhancedEmoticonsPlugin implements Plugin {
@@ -163,7 +163,7 @@ public class EnhancedEmoticonsPlugin implements Plugin {
 
                         while (iter.hasNext()) {
                             String emoticon = (String) iter.next();
-                            updatedCommentText = replaceEmoticon(updatedDescription, emoticon, blogBaseUrl);
+                            updatedCommentText = replaceEmoticon(updatedCommentText, emoticon, blogBaseUrl);
                         }
 
                         comment.setComment(updatedCommentText);
