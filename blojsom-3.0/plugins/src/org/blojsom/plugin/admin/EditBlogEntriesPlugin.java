@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.18 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.19 2007-01-24 17:00:36 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -1478,7 +1478,8 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
         StringBuffer trackbackPingURLParameters = new StringBuffer();
         try {
             StringBuffer entryLink = new StringBuffer(blog.getBlogURL()).append(entry.getBlogCategory().getName()).append(entry.getPostSlug());
-            trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(entryLink);
+
+            trackbackPingURLParameters.append(TrackbackPlugin.TRACKBACK_URL_PARAM).append("=").append(BlojsomUtils.urlEncodeForLink(entryLink.toString()));
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_TITLE_PARAM).append("=").append(URLEncoder.encode(entry.getTitle(), BlojsomConstants.UTF8));
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_BLOG_NAME_PARAM).append("=").append(URLEncoder.encode(blog.getBlogName(), BlojsomConstants.UTF8));
 
