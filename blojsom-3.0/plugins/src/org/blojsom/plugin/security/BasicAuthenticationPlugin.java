@@ -32,7 +32,6 @@ package org.blojsom.plugin.security;
 
 import org.apache.commons.codec.binary.Base64;
 import org.blojsom.authorization.AuthorizationException;
-import org.blojsom.authorization.AuthorizationProvider;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.plugin.PluginException;
@@ -51,7 +50,7 @@ import java.util.Map;
  * before they are able to see any blog entries.
  *
  * @author David Czarnecki
- * @version $Id: BasicAuthenticationPlugin.java,v 1.4 2007-01-17 02:35:13 czarneckid Exp $
+ * @version $Id: BasicAuthenticationPlugin.java,v 1.5 2007-01-25 22:47:58 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BasicAuthenticationPlugin extends BaseAdminPlugin {
@@ -61,21 +60,10 @@ public class BasicAuthenticationPlugin extends BaseAdminPlugin {
     private static final String BASIC_REALM_HEADER = "Basic realm=\"{0}\"";
     private static final String FAILED_AUTHORIZATION_PAGE = "/org/blojsom/plugin/security/templates/failed-authorization";
 
-    private AuthorizationProvider _authorizationProvider;
-
     /**
      * Construct a new instance of the Basic Authentication plugin
      */
     public BasicAuthenticationPlugin() {
-    }
-
-    /**
-     * Set the {@link AuthorizationProvider}
-     *
-     * @param authorizationProvider {@link AuthorizationProvider}
-     */
-    public void setAuthorizationProvider(AuthorizationProvider authorizationProvider) {
-        _authorizationProvider = authorizationProvider;
     }
 
     /**
