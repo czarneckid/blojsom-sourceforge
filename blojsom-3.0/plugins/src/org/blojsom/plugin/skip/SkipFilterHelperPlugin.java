@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @since blojsom 3.1
- * @version $Id: SkipFilterHelperPlugin.java,v 1.2 2007-01-17 02:35:13 czarneckid Exp $
+ * @version $Id: SkipFilterHelperPlugin.java,v 1.3 2007-01-29 15:30:51 czarneckid Exp $
  */
 public class SkipFilterHelperPlugin implements Plugin {
 
@@ -111,7 +111,7 @@ public class SkipFilterHelperPlugin implements Plugin {
                 page = 0;
             }
 
-            int totalPages = totalEntries.intValue() / blog.getBlogDisplayEntries();
+            int totalPages = new Double(Math.ceil(totalEntries.doubleValue() / blog.getBlogDisplayEntries())).intValue();
 
             context.put(BLOJSOM_CURRENT_PAGE, new Integer(page + 1));
             context.put(BLOJSOM_TOTAL_PAGES, new Integer(totalPages));
