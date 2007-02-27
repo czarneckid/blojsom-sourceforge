@@ -64,7 +64,7 @@ import java.util.Map;
  * trackback metadata.
  *
  * @author David Czarnecki
- * @version $Id: OpenProxyModerationPlugin.java,v 1.2 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: OpenProxyModerationPlugin.java,v 1.3 2007-02-27 16:42:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class OpenProxyModerationPlugin implements Plugin, Listener {
@@ -134,6 +134,7 @@ public class OpenProxyModerationPlugin implements Plugin, Listener {
 
             String remoteIP = responseSubmissionEvent.getHttpServletRequest().getRemoteAddr();
             String[] ipAddress = remoteIP.split("\\.");
+            
             StringBuffer reversedAddress = new StringBuffer();
             reversedAddress.append(ipAddress[3]).append(".").append(ipAddress[2]).append(".").append(ipAddress[1]).append(".").append(ipAddress[0]);
 

@@ -54,7 +54,7 @@ import java.util.Map;
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.3 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.4 2007-02-27 16:42:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
@@ -84,7 +84,7 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
     private static final String DELETE_SPAM_PHRASE_ACTION = "delete-spam-phrase";
 
     // Permissions
-    private static final String SPAM_PHRASE_MODERATION_PERMISSION = "spam_phrase_moderation";
+    private static final String SPAM_PHRASE_MODERATION_PERMISSION = "spam_phrase_moderation_permission";
 
     private Fetcher _fetcher;
 

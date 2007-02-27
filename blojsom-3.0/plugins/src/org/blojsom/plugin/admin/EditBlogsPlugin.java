@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.8 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.9 2007-02-27 16:42:52 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -96,8 +96,8 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
     private static final String BLOG_USER_PASSWORD_CHECK = "blog-user-password-check";
 
     // Permissions
-    private static final String ADD_BLOG_PERMISSION = "add_blog";
-    private static final String DELETE_BLOG_PERMISSION = "delete_blog";
+    private static final String ADD_BLOG_PERMISSION = "add_blog_permission";
+    private static final String DELETE_BLOG_PERMISSION = "delete_blog_permission";
 
     private Fetcher _fetcher;
     private Map _defaultBlogProperties;

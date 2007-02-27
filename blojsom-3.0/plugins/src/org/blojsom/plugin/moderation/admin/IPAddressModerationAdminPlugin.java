@@ -54,7 +54,7 @@ import java.util.Map;
  * IP address moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: IPAddressModerationAdminPlugin.java,v 1.2 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: IPAddressModerationAdminPlugin.java,v 1.3 2007-02-27 16:42:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
@@ -91,7 +91,7 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
     private static final String DELETE_IP_ADDRESS_ACTION = "delete-ip-address";
 
     // Permissions
-    private static final String IP_MODERATION_PERMISSION = "ip_moderation";
+    private static final String IP_MODERATION_PERMISSION = "ip_moderation_permission";
 
     private Fetcher _fetcher;
 

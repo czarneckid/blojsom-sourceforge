@@ -51,7 +51,7 @@ import java.util.Map;
  * Moblog Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MoblogAdminPlugin.java,v 1.2 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: MoblogAdminPlugin.java,v 1.3 2007-02-27 16:42:53 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogAdminPlugin extends WebAdminPlugin {
@@ -88,7 +88,7 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
     private static final String ADD_AUTHORIZED_ADDRESS_ACTION = "add-authorized-address";
     private static final String DELETE_AUTHORIZED_ADDRESS_ACTION = "delete-authorized-address";
 
-    private static final String MOBLOG_ADMIN_PERMISSION = "moblog_admin";
+    private static final String MOBLOG_ADMIN_PERMISSION = "moblog_admin_permission";
 
     private static final String BLOJSOM_PLUGIN_MOBLOG_MAILBOX = "BLOJSOM_PLUGIN_MOBLOG_MAILBOX";
 
