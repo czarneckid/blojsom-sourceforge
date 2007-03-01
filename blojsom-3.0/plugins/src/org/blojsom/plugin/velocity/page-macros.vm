@@ -426,14 +426,14 @@
  *
  * @param $homeText Text to display to go back to the main blog URL
  *#
-#macro(NavigationLinks $homeText)#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) <a href="$entryLink">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">$homeText</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end#end#end
+#macro(NavigationLinks $homeText)#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) <a href="$entryLink">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()/">$homeText</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end#end#end
 
 #**
  * Display the search box
  *#
 #macro(SearchBox)
 <div id="searchbox">
-    <form method="post" action="$BLOJSOM_BLOG.getBlogURL()">
+    <form method="post" action="$BLOJSOM_BLOG.getBlogURL()/">
         <p id="searchlabel"><label for="query">Search:</label></p>
         <p id="searchfield"><input type="text" name="query" value="" /></p>
         <p id="searchimg"><input type="image" src="$BLOJSOM_BLOG.getBlogBaseURL()/search.png" value="submit" alt="Search" /></p>
@@ -472,7 +472,7 @@
         #end
         #foreach ($month in [$totalMonths..$monthIndex])
             #set ($calMonth = $month - 1)
-    <li><a href="#BlogURL()$year/#if($month < 10)$padding#end$month/">$BLOJSOM_CALENDAR.getMonthName($calMonth) $year</a></li>
+    <li><a href="#BlogURL()/$year/#if($month < 10)$padding#end$month/">$BLOJSOM_CALENDAR.getMonthName($calMonth) $year</a></li>
         #end
     #end
 </ul>
