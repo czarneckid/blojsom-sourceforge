@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.9 2007-01-17 02:35:14 czarneckid Exp $
+ * @version $Id: TrackbackPlugin.java,v 1.10 2007-03-01 18:36:47 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -191,7 +191,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
     }
 
     /**
-     * Set the {@link oEventBroadcaster} event broadcaster
+     * Set the {@link EventBroadcaster} event broadcaster
      *
      * @param eventBroadcaster {@link EventBroadcaster}
      */
@@ -385,21 +385,29 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
                     _logger.debug("Loaded entry for trackback: " + entryId.toString());
                 }
 
-                // Check for a trackback where the number of days between trackback auto-expiration has passed
-                String trackbackDaysExpiration = blog.getProperty(TRACKBACK_DAYS_EXPIRATION_IP);
-                if (!BlojsomUtils.checkNullOrBlank(trackbackDaysExpiration)) {
-                    try {
-                        int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
-                        int daysBetweenDates = BlojsomUtils.daysBetweenDates(entryForTrackback.getDate(), new Date());
-                        if ((daysExpiration > 0) && (daysBetweenDates >= daysExpiration)) {
-                            if (_logger.isDebugEnabled()) {
-                                _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days. Difference in days: " + daysBetweenDates);
-                            }
+                if (entryForTrackback.allowsTrackbacks().booleanValue()) {
+                    // Check for a trackback where the number of days between trackback auto-expiration has passed
+                    String trackbackDaysExpiration = blog.getProperty(TRACKBACK_DAYS_EXPIRATION_IP);
+                    if (!BlojsomUtils.checkNullOrBlank(trackbackDaysExpiration)) {
+                        try {
+                            int daysExpiration = Integer.parseInt(trackbackDaysExpiration);
+                            int daysBetweenDates = BlojsomUtils.daysBetweenDates(entryForTrackback.getDate(), new Date());
+                            if ((daysExpiration > 0) && (daysBetweenDates >= daysExpiration)) {
+                                if (_logger.isDebugEnabled()) {
+                                    _logger.debug("Trackback period for this entry has expired. Expiration period set at " + daysExpiration + " days. Difference in days: " + daysBetweenDates);
+                                }
 
-                            return entries;
+                                return entries;
+                            }
+                        } catch (NumberFormatException e) {
                         }
-                    } catch (NumberFormatException e) {
                     }
+                }  else {
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Trackbacks have been disabled for blog entry: " + entryForTrackback.getId());
+                    }
+
+                    return entries;
                 }
             } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {
@@ -534,6 +542,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
      * Setup the comment e-mail
      *
      * @param blog  {@link Blog} information
+     * @param entry {@link Entry}
      * @param email Email message
      * @throws EmailException If there is an error preparing the e-mail message
      */
