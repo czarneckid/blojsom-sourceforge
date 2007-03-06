@@ -138,9 +138,9 @@
                             <tr>
                                 <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
                                 #if (!$useRichtextEditor)
-                                <td><textarea rows="10" cols="120" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
+                                <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
                                 #else
-                                <td><textarea cols="120" name="blog-entry-description" id="blog-entry-description">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
+                                <td><textarea cols="80" name="blog-entry-description" id="blog-entry-description">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
                                 #end
                             </tr>
                             #if (!$useRichtextEditor)

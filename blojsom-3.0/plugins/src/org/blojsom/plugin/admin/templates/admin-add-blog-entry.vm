@@ -67,9 +67,9 @@
                             <tr>
                                 <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
                                 #if (!$useRichtextEditor)
-                                <td><textarea rows="10" cols="120" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();"></textarea></td>
+                                <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();"></textarea></td>
                                 #else
-                                <td><textarea cols="120" name="blog-entry-description" id="blog-entry-description"></textarea></td>
+                                <td><textarea cols="80" name="blog-entry-description" id="blog-entry-description"></textarea></td>
                                 #end
                             </tr>
                             #if (!$useRichtextEditor)
