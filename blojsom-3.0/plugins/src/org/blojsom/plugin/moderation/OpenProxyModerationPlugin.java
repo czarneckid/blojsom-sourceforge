@@ -64,7 +64,7 @@ import java.util.Map;
  * trackback metadata.
  *
  * @author David Czarnecki
- * @version $Id: OpenProxyModerationPlugin.java,v 1.3 2007-02-27 16:42:53 czarneckid Exp $
+ * @version $Id: OpenProxyModerationPlugin.java,v 1.4 2007-03-06 20:18:51 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class OpenProxyModerationPlugin implements Plugin, Listener {
@@ -134,40 +134,50 @@ public class OpenProxyModerationPlugin implements Plugin, Listener {
 
             String remoteIP = responseSubmissionEvent.getHttpServletRequest().getRemoteAddr();
             String[] ipAddress = remoteIP.split("\\.");
-            
-            StringBuffer reversedAddress = new StringBuffer();
-            reversedAddress.append(ipAddress[3]).append(".").append(ipAddress[2]).append(".").append(ipAddress[1]).append(".").append(ipAddress[0]);
+            Map metaData = responseSubmissionEvent.getMetaData();
 
-            try {
-                InetAddress inetAddress = InetAddress.getByName(reversedAddress + ".list.dsbl.org");
-                Map metaData = responseSubmissionEvent.getMetaData();
+            if (ipAddress != null && ipAddress.length == 4) {
+                StringBuffer reversedAddress = new StringBuffer();
+                reversedAddress.append(ipAddress[3]).append(".").append(ipAddress[2]).append(".").append(ipAddress[1]).append(".").append(ipAddress[0]);
 
-                String deleteOpenProxySpamPropertyValue = responseSubmissionEvent.getBlog().getProperty(DELETE_OPENPROXY_SPAM_IP);
-                boolean deleteOpenProxySpam = Boolean.valueOf(deleteOpenProxySpamPropertyValue).booleanValue();
+                try {
+                    InetAddress inetAddress = InetAddress.getByName(reversedAddress + ".list.dsbl.org");
 
+                    String deleteOpenProxySpamPropertyValue = responseSubmissionEvent.getBlog().getProperty(DELETE_OPENPROXY_SPAM_IP);
+                    boolean deleteOpenProxySpam = Boolean.valueOf(deleteOpenProxySpamPropertyValue).booleanValue();
+
+                    if (responseSubmissionEvent instanceof CommentResponseSubmissionEvent) {
+                        if (!deleteOpenProxySpam) {
+                            metaData.put(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
+                        } else {
+                            metaData.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY, Boolean.TRUE);
+                        }
+                    } else if (responseSubmissionEvent instanceof TrackbackResponseSubmissionEvent) {
+                        if (!deleteOpenProxySpam) {
+                            metaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
+                        } else {
+                            metaData.put(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY, Boolean.TRUE);
+                        }
+                    } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
+                        if (deleteOpenProxySpam) {
+                            metaData.put(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY, Boolean.TRUE);
+                        }
+                    }
+
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Failed open proxy check for response submission for IP: " + inetAddress.getHostAddress() + "/" + inetAddress.getHostName());
+                    }
+                } catch (UnknownHostException e) {
+                    // The IP address is unknown to the DSBL server
+                }
+            } else {
                 if (responseSubmissionEvent instanceof CommentResponseSubmissionEvent) {
-                    if (!deleteOpenProxySpam) {
-                        metaData.put(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
-                    } else {
-                        metaData.put(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY, Boolean.TRUE);
-                    }
+                    metaData.put(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
                 } else if (responseSubmissionEvent instanceof TrackbackResponseSubmissionEvent) {
-                    if (!deleteOpenProxySpam) {
-                        metaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
-                    } else {
-                        metaData.put(TrackbackPlugin.BLOJSOM_PLUGIN_TRACKBACK_METADATA_DESTROY, Boolean.TRUE);
-                    }
+                    metaData.put(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED, Boolean.FALSE.toString());
                 } else if (responseSubmissionEvent instanceof PingbackResponseSubmissionEvent) {
-                    if (deleteOpenProxySpam) {
-                        metaData.put(PingbackPlugin.BLOJSOM_PLUGIN_PINGBACK_METADATA_DESTROY, Boolean.TRUE);
-                    }
+                    metaData.put(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED, Boolean.FALSE.toString());
                 }
-
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Failed open proxy check for response submission for IP: " + inetAddress.getHostAddress() + "/" + inetAddress.getHostName());
-                }
-            } catch (UnknownHostException e) {
-                // The IP address is unknown to the DSBL server
             }
         }
     }
