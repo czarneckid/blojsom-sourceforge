@@ -1,7 +1,7 @@
         #set($title = $BLOJSOM_BLOG.getBlogName())
         #set($separator = "&raquo;")
         #if($BLOJSOM_PERMALINK)
-        #foreach($entry in $BLOJSOM_ENTRIES)#set($title = "$title $separator $entry")#end
+        #foreach($entry in $BLOJSOM_ENTRIES)#set($title = "$title $separator $entry.getTitle()")#end
         #end
 
         <title>$title</title>
