@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: ExcerptPlugin.java,v 1.3 2007-01-17 02:35:10 czarneckid Exp $
+ * @version $Id: ExcerptPlugin.java,v 1.4 2007-03-12 16:09:19 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ExcerptPlugin implements Plugin {
@@ -97,7 +97,7 @@ public class ExcerptPlugin implements Plugin {
      * Process entries
      *
      * @param blog {@link Blog}
-     * @param entries Array of {@link BlogEntry} objects
+     * @param entries Array of {@link Entry} objects
      */
     private void processEntries(Blog blog, Entry[] entries) {
         Pattern p = Pattern.compile(EXCERPT_EXPRESSION, Pattern.DOTALL);

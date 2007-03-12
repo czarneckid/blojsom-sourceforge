@@ -42,7 +42,7 @@ import java.util.HashMap;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseCategory.java,v 1.5 2007-01-17 02:35:16 czarneckid Exp $
+ * @version $Id: DatabaseCategory.java,v 1.6 2007-03-12 16:09:14 czarneckid Exp $
  */
 public class DatabaseCategory implements Category, Serializable {
 
@@ -145,7 +145,7 @@ public class DatabaseCategory implements Category, Serializable {
     /**
      * Sets the description of this category
      *
-     * @param desc The new description of the category
+     * @param description The new description of the category
      */
     public void setDescription(String description) {
         _description = description;
@@ -194,7 +194,7 @@ public class DatabaseCategory implements Category, Serializable {
     /**
      * Sets the parent category of this category
      *
-     * @param cateogry {@link Category} that represents the parent category
+     * @param parentCategory {@link Category} that represents the parent category
      */
     public void setParentCategory(Category parentCategory) {
         _parentCategory = parentCategory;
