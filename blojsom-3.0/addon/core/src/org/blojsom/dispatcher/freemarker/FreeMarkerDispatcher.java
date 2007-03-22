@@ -40,6 +40,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.util.EnumerationIterator;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.Blog;
 import org.blojsom.dispatcher.Dispatcher;
@@ -51,6 +52,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
@@ -61,7 +63,7 @@ import java.util.Properties;
  * FreeMarkerDispatcher
  * 
  * @author Dsvid Czarnecki
- * @version $Id: FreeMarkerDispatcher.java,v 1.2 2007-01-17 01:15:46 czarneckid Exp $
+ * @version $Id: FreeMarkerDispatcher.java,v 1.3 2007-03-22 00:43:07 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FreeMarkerDispatcher implements Dispatcher {
@@ -111,8 +113,6 @@ public class FreeMarkerDispatcher implements Dispatcher {
     /**
      * Initialization method for blojsom dispatchers
      * 
-     * @param servletConfig        ServletConfig for obtaining any initialization parameters
-     * @param blojsomConfiguration BlojsomConfiguration for blojsom-specific configuration information
      * @throws org.blojsom.BlojsomException If there is an error initializing the dispatcher
      */
     public void init() throws BlojsomException {
@@ -124,7 +124,7 @@ public class FreeMarkerDispatcher implements Dispatcher {
      * Set paths appropriate for loading FreeMarker templates
      * 
      * @param blogID Blog ID
-     * @param freemarkerConfiguration
+     * @param freemarkerConfiguration Freemarker configuration
      */
     private void setTemplatePath(String blogID, Configuration freemarkerConfiguration) {
         ServletContext servletContext = _servletConfig.getServletContext();
@@ -160,6 +160,31 @@ public class FreeMarkerDispatcher implements Dispatcher {
     }
 
     /**
+     * Populate the context with the request and session attributes
+     *
+     * @param httpServletRequest Request
+     * @param context            Context
+     */
+    private void populateContext(HttpServletRequest httpServletRequest, Map context) {
+        EnumerationIterator iterator = new EnumerationIterator(httpServletRequest.getAttributeNames());
+        while (iterator.hasNext()) {
+            Object key = iterator.next();
+            Object value = httpServletRequest.getAttribute(key.toString());
+            context.put(key, value);
+        }
+
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        if (httpSession != null) {
+            iterator = new EnumerationIterator(httpSession.getAttributeNames());
+            while (iterator.hasNext()) {
+                Object key = iterator.next();
+                Object value = httpSession.getAttribute(key.toString());
+                context.put(key, value);
+            }
+        }
+    }    
+
+    /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
      * any required information for use by the dispatcher. The dispatcher is also
      * provided with the template for the requested flavor along with the content type for the
@@ -189,6 +214,8 @@ public class FreeMarkerDispatcher implements Dispatcher {
             }
         }
 
+        populateContext(httpServletRequest, context);
+        
         setTemplatePath(blog.getBlogId(), freemarkerConfiguration);
 
         BeansWrapper wrapper = new BeansWrapper();

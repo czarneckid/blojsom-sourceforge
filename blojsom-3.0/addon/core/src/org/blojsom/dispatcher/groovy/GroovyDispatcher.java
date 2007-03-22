@@ -35,6 +35,7 @@ import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.util.EnumerationIterator;
 import org.blojsom.BlojsomException;
 import org.blojsom.blog.Blog;
 import org.blojsom.dispatcher.Dispatcher;
@@ -47,6 +48,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
@@ -59,7 +61,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: GroovyDispatcher.java,v 1.2 2007-01-17 01:15:46 czarneckid Exp $
+ * @version $Id: GroovyDispatcher.java,v 1.3 2007-03-22 00:43:07 czarneckid Exp $
  */
 public class GroovyDispatcher implements Dispatcher {
 
@@ -106,6 +108,31 @@ public class GroovyDispatcher implements Dispatcher {
     }
 
     /**
+     * Populate the context with the request and session attributes
+     *
+     * @param httpServletRequest Request
+     * @param context            Context
+     */
+    private void populateContext(HttpServletRequest httpServletRequest, Map context) {
+        EnumerationIterator iterator = new EnumerationIterator(httpServletRequest.getAttributeNames());
+        while (iterator.hasNext()) {
+            Object key = iterator.next();
+            Object value = httpServletRequest.getAttribute(key.toString());
+            context.put(key, value);
+        }
+
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        if (httpSession != null) {
+            iterator = new EnumerationIterator(httpSession.getAttributeNames());
+            while (iterator.hasNext()) {
+                Object key = iterator.next();
+                Object value = httpSession.getAttribute(key.toString());
+                context.put(key, value);
+            }
+        }
+    }
+    
+    /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
      * any required information for use by the dispatcher. The dispatcher is also
      * provided with the template for the requested flavor along with the content type for the
@@ -142,6 +169,7 @@ public class GroovyDispatcher implements Dispatcher {
         Binding binding = new Binding();
 
         // Populate the script context with context attributes from the blog
+        populateContext(httpServletRequest, context);        
         Iterator contextIterator = context.keySet().iterator();
         String contextKey;
         while (contextIterator.hasNext()) {
