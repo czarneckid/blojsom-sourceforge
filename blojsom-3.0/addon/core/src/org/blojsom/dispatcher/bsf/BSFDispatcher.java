@@ -57,7 +57,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.2
- * @version $Id: BSFDispatcher.java,v 1.1 2007-03-21 22:54:47 czarneckid Exp $
+ * @version $Id: BSFDispatcher.java,v 1.2 2007-03-22 14:06:57 czarneckid Exp $
  */
 public class BSFDispatcher implements Dispatcher {
 
@@ -219,8 +219,7 @@ public class BSFDispatcher implements Dispatcher {
         try {
             while (contextIterator.hasNext()) {
                 contextKey = (String) contextIterator.next();
-                    manager.declareBean(contextKey, context.get(contextKey), context.get(contextKey).getClass());
-
+                manager.declareBean(contextKey, context.get(contextKey), context.get(contextKey).getClass());
             }
 
             manager.declareBean("out", responseWriter, Writer.class);
