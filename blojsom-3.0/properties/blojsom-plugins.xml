@@ -214,6 +214,22 @@
             <ref bean="defaultProperties"/>
         </property>
     </bean>
+    <bean id="show-me-more" class="org.blojsom.plugin.showmore.ShowMeMorePlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="show-me-more-admin" class="org.blojsom.plugin.showmore.admin.ShowMeMoreAdminPlugin"
+          init-method="init" destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="simple-obfuscation" class="org.blojsom.plugin.obfuscation.SimpleObfuscationPlugin" init-method="init"
           destroy-method="destroy"/>
     <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init" destroy-method="destroy">
