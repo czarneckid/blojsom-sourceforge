@@ -55,4 +55,4 @@
     </div>
 </body>
 
-#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")
+#AdministrationFooter()
