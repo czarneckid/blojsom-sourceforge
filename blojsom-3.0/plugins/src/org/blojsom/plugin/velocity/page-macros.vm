@@ -575,6 +575,10 @@ $BLOJSOM_PLUGIN_STRING_UTILITIES.escapeString($technoratiTag)
     <strong>| Attachment: </strong> $entry.getMetaData().get("file-attachment")
 #end
 #end
+
+#macro(DisplayWidgetTemplates)#foreach($widgetTemplate in $!BLOJSOM_WIDGET_TEMPLATES)<p>$widgetTemplate</p>#end#end
+
+#macro(DisplayWidgetTemplate $widget)$!BLOJSOM_WIDGET_TEMPLATES_BY_WIDGET.get($widget)#end
         
 ###############################################
 ## Administrative Macros

@@ -306,6 +306,37 @@
         </property>
     </bean>
 
+    <!-- START: Widgets -->
+    <bean id="widgets" class="org.blojsom.plugin.widget.WidgetPlugin" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    <bean id="widgets-administration" class="org.blojsom.plugin.widget.admin.WidgetAdministrationPlugin" init-method="init"
+        destroy-method="destroy">
+        <property name="servletConfig">
+            <ref bean="servletConfigFactoryBean"/>
+        </property>
+        <property name="authorizationProvider">
+            <ref bean="authorizationProvider"/>
+        </property>
+        <property name="resourceManager">
+            <ref bean="resourceManager"/>
+        </property>
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>        
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>
+    </bean>
+    <bean id="ip-widget" class="org.blojsom.plugin.widget.ip.IPAddressWidget" init-method="init" destroy-method="destroy">
+        <property name="eventBroadcaster">
+            <ref bean="eventBroadcaster"/>
+        </property>        
+    </bean>
+    <!-- END: Widgets -->
+
     <!-- Comment plugins -->
     <bean id="comment" class="org.blojsom.plugin.comment.CommentPlugin" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
