@@ -46,7 +46,7 @@
             </div>
 
             <div id="sidebar">
-                <h4>#adminResource('available.plugins.text' '')</h4>
+                <h4>#adminResource('available.widgets.text' '')</h4>
                 #foreach ($widget in $BLOJSOM_PLUGIN_EDIT_BLOG_WIDGETS_AVAILABLE_WIDGETS.keySet())
                    <a href="javascript:;" title="$widget">$widget&nbsp;</a><br/>
                 #end
