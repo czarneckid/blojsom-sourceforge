@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2006, David A. Czarnecki
+ * Copyright (c) 2003-2007, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@ import java.util.Properties;
  *
  * @author David Czarnecki
  * @since blojsom 3.2
- * @version $Id: BSFDispatcher.java,v 1.2 2007-03-22 14:06:57 czarneckid Exp $
+ * @version $Id: BSFDispatcher.java,v 1.3 2007-04-02 23:45:56 czarneckid Exp $
  */
 public class BSFDispatcher implements Dispatcher {
 
