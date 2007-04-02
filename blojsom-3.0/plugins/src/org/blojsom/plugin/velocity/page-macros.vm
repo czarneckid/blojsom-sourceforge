@@ -579,7 +579,82 @@ $BLOJSOM_PLUGIN_STRING_UTILITIES.escapeString($technoratiTag)
 #macro(DisplayWidgetTemplates)#foreach($widgetTemplate in $!BLOJSOM_WIDGET_TEMPLATES)<p>$widgetTemplate</p>#end#end
 
 #macro(DisplayWidgetTemplate $widget)$!BLOJSOM_WIDGET_TEMPLATES_BY_WIDGET.get($widget)#end
-        
+
+#**
+ * Display page navigation for Skip Filter Helper Plugin
+ *#
+#macro(PageNavigation)
+  #######################################################
+  ## set initial values
+  #set ( $first = "&laquo;&nbsp;First" )
+  #set ( $prev = "&laquo;&nbsp;Prev" )
+  #set ( $next = "Next&nbsp;&raquo;" )
+  #set ( $last = "Last&nbsp;&raquo;" )
+  #set ( $maxLinks = 5 )
+
+  #set ( $maxIndex = $BLOJSOM_TOTAL_PAGES )
+  #set ( $pageNum = $BLOJSOM_CURRENT_PAGE )
+  #set ( $pageSize = $BLOJSOM_BLOG.getBlogDisplayEntries() )
+
+
+  #######################################################
+  ## determine index boundaries
+
+  #set ( $startIndex = $pageNum - (($maxLinks - 1) / 2) )
+  #if ($startIndex < 1)
+    #set ( $startIndex = 1 )
+  #end
+
+  #set ( $endIndex = $startIndex + $maxLinks - 1 )
+  #if ($endIndex > $maxIndex)
+    #set ( $endIndex = $maxIndex )
+    #if ($endIndex - $startIndex < $maxLinks - 1 && $endIndex - $maxLinks + 1 >= 1)
+      #set ( $startIndex = $endIndex - $maxLinks + 1 )
+    #end
+  #end
+
+  #######################################################
+  ## Setup first and prev links
+
+  #if ($pageNum > 1)
+    #set ( $textFirst = "<a href=#BlogURL()/skip/1/>$first</a>" )
+    #set ( $prevParam = $pageNum - 1 )
+    #set ( $textPrev = "<a href=#BlogURL()/skip/$prevParam/>$prev</a>" )
+  #else
+    #set ( $textFirst = $first )
+    #set ( $textPrev = $prev )
+  #end
+
+  #######################################################
+  #set ( $indices = [$startIndex..$endIndex] )
+  #set ( $textLinks = "" )
+  #foreach( $i in $indices )
+    #if ( $i != $pageNum )
+      #set ( $textLinks = "$textLinks <a href=#BlogURL()/skip/$i/>$i</a>" )
+    #else
+      #set ( $textLinks = "$textLinks $i" )
+    #end
+    #set ( $textLinks = "$textLinks " )
+  #end
+
+  #######################################################
+  ## Setup next and last links
+
+  #if ( $pageNum < $maxIndex )
+    #set ( $nextParam = $pageNum + 1 )
+    #set ( $textNext = "<a href=#BlogURL()/skip/$nextParam/>$next</a>" )
+    #set ( $textLast = "<a href=#BlogURL()/skip/$maxIndex/>$last</a>" )
+  #else
+    #set ( $textNext = $next )
+    #set ( $textLast = $last )
+  #end
+
+  #######################################################
+  ## Display the final navigation links
+
+  $textFirst&nbsp;&nbsp;$textPrev&nbsp;&nbsp;$textLinks&nbsp;&nbsp;$textNext&nbsp;&nbsp;$textLast
+#end
+
 ###############################################
 ## Administrative Macros
 ###############################################
