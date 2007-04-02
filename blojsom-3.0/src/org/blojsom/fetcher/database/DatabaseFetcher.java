@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.34 2007-01-17 02:35:17 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.35 2007-04-02 16:30:50 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -454,7 +454,12 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 page = 0;
             }
 
-            page *= blog.getBlogDisplayEntries();
+            int blogEntriesDisplaySize = blog.getBlogDisplayEntries();
+            if (blogEntriesDisplaySize < 0) {
+                blogEntriesDisplaySize = BlojsomConstants.BLOG_ENTRIES_DISPLAY_DEFAULT;
+            }
+
+            page *= blogEntriesDisplaySize;
 
             if (category != null && !"/".equals(category.getName())) {
                 Session session = _sessionFactory.openSession();
@@ -466,7 +471,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.add(Restrictions.lt("date", new Date()));
                 entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 entryCriteria.addOrder(Order.desc("date"));
-                entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
+                entryCriteria.setMaxResults(blogEntriesDisplaySize);
                 entryCriteria.setFirstResult(page);
                 entryCriteria.setCacheable(true);
 
@@ -485,7 +490,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 entryCriteria.add(Restrictions.lt("date", new Date()));
                 entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                 entryCriteria.addOrder(Order.desc("date"));
-                entryCriteria.setMaxResults(blog.getBlogDisplayEntries());
+                entryCriteria.setMaxResults(blogEntriesDisplaySize);
                 entryCriteria.setFirstResult(page);
                 entryCriteria.setCacheable(true);
 
