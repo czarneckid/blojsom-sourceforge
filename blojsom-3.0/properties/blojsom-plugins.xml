@@ -203,6 +203,11 @@
         </property>
     </bean>
     <bean id="preview" class="org.blojsom.plugin.limiter.PreviewPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="previous-entries" class="org.blojsom.plugin.previous.PreviousEntriesPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>        
+    </bean>
     <bean id="rss-enclosure" class="org.blojsom.plugin.common.RSSEnclosurePlugin" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>

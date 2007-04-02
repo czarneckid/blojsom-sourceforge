@@ -43,7 +43,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.20 2007-01-17 02:35:17 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.21 2007-04-02 23:46:28 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -251,6 +251,17 @@ public interface Fetcher {
      * @throws FetcherException If there is an error searching for entries between the dates
      */
     public Entry[] findEntriesBetweenDates(Blog blog, Date startDate, Date endDate) throws FetcherException;
+
+    /**
+     * Loads the previous entries of a specified entry
+     *
+     * @param blog {@link Blog}
+     * @param entry {@link Entry}
+     * @param numPreviousEntries Number of previous entries to retrieve
+     * @return Array of entries before the given entry
+     * @throws FetcherException If there is an error retrieving previous entries
+     */
+    public Entry[] loadPreviousEntries(Blog blog, Entry entry, int numPreviousEntries) throws FetcherException;
 
     /**
      * Count the number of entries for a blog

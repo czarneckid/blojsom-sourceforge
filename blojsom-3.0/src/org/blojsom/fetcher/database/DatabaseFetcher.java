@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.35 2007-04-02 16:30:50 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.36 2007-04-02 23:46:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -788,6 +788,44 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         }
+    }
+
+
+    /**
+     * Loads the previous entries of a specified entry
+     *
+     * @param blog               {@link Blog}
+     * @param entry              {@link Entry}
+     * @param numPreviousEntries Number of previous entries to retrieve
+     * @return Array of entries before the given entry
+     * @throws FetcherException If there is an error retrieving previous entries
+     */
+    public Entry[] loadPreviousEntries(Blog blog, Entry entry, int numPreviousEntries) throws FetcherException {
+         try {
+             Session session = _sessionFactory.openSession();
+             Transaction tx = session.beginTransaction();
+
+             Criteria previousEntriesCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+             previousEntriesCriteria.add(Restrictions.eq("blogId", blog.getId()));
+             previousEntriesCriteria.add(Restrictions.lt("date", entry.getDate()));
+             previousEntriesCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+             previousEntriesCriteria.addOrder(Order.desc("date"));
+             previousEntriesCriteria.setCacheable(true);
+             previousEntriesCriteria.setMaxResults(numPreviousEntries);
+
+             List previousEntries = previousEntriesCriteria.list();
+
+             tx.commit();
+             session.close();
+
+             return (Entry[]) previousEntries.toArray(new DatabaseEntry[previousEntries.size()]);
+         } catch (HibernateException e) {
+             if (_logger.isErrorEnabled()) {
+                 _logger.error(e);
+             }
+
+             throw new FetcherException(e);
+         }
     }
 
     /**
