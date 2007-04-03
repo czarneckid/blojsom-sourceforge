@@ -89,6 +89,11 @@
         </property>
         <property name="parseComments" value="false"/>
     </bean>
+    <bean id="entries-per-category" class="org.blojsom.plugin.common.CountEntriesForCategoryPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>
+    </bean>
     <bean id="excerpt" class="org.blojsom.plugin.excerpt.ExcerptPlugin" init-method="init" destroy-method="destroy"/>
     <!--
     <bean id="file-attachment" class="org.blojsom.plugin.common.FileAttachmentPlugin" init-method="init" destroy-method="destroy">

@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.36 2007-04-02 23:46:29 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.37 2007-04-03 16:41:00 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -842,6 +842,35 @@ public class DatabaseFetcher implements Fetcher, Listener {
         Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
         entryCriteria.setProjection(Projections.rowCount());
         entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+        entryCriteria.add(Restrictions.lt("date", new Date()));
+        entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+        entryCriteria.setCacheable(true);
+
+        List entryList = entryCriteria.list();
+
+        tx.commit();
+        session.close();
+
+        return (Integer) entryList.get(0);
+    }
+
+
+    /**
+     * Count the number of entries for a blog category
+     *
+     * @param blog     {@link Blog}
+     * @param category {@link Category}
+     * @return Number of entries
+     * @throws FetcherException If there is an error counting the blog entries in the category
+     */
+    public Integer countEntriesForCategory(Blog blog, Category category) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+        entryCriteria.setProjection(Projections.rowCount());
+        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+        entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
         entryCriteria.add(Restrictions.lt("date", new Date()));
         entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
         entryCriteria.setCacheable(true);

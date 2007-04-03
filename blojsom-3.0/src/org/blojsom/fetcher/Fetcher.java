@@ -43,7 +43,7 @@ import java.util.Date;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.21 2007-04-02 23:46:28 czarneckid Exp $
+ * @version $Id: Fetcher.java,v 1.22 2007-04-03 16:40:59 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -271,6 +271,16 @@ public interface Fetcher {
      * @throws FetcherException If there is an error counting the blog entries
      */
     public Integer countEntries(Blog blog) throws FetcherException;
+
+    /**
+     * Count the number of entries for a blog category
+     *
+     * @param blog {@link Blog}
+     * @param category {@link Category}
+     * @return Number of entries
+     * @throws FetcherException If there is an error counting the blog entries in the category
+     */
+    public Integer countEntriesForCategory(Blog blog, Category category) throws FetcherException;
 
     /**
      * Load an {@link Entry} for a given entry ID
