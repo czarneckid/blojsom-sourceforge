@@ -52,7 +52,7 @@ import java.util.Map;
  * Show Me More administration plugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreAdminPlugin.java,v 1.1 2007-03-23 15:31:32 czarneckid Exp $
+ * @version $Id: ShowMeMoreAdminPlugin.java,v 1.2 2007-04-05 01:19:39 czarneckid Exp $
  * @since blojsom 3.2
  */
 public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
@@ -74,7 +74,7 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
     private static final String SHOWMEMORE_CONFIGURATION = "SHOWMEMORE_CONFIGURATION";
 
     // Permissions
-    private static final String SHOWMEMORE_ADMIN_PERMISSION = "showmemore_admin";
+    private static final String SHOWMEMORE_ADMIN_PERMISSION = "showmemore_admin_permission";
 
     private Fetcher _fetcher;
 
