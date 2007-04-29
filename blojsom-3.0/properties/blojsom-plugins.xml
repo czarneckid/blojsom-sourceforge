@@ -340,7 +340,7 @@
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="ip-widget" class="org.blojsom.plugin.widget.ip.IPAddressWidget" init-method="init" destroy-method="destroy">
+    <bean id="ip-widget" class="org.blojsom.plugin.widget.ip.IPAddressWidget" init-method="init">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>        
