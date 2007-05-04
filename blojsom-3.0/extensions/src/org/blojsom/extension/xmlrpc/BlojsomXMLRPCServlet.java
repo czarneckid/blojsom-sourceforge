@@ -65,7 +65,7 @@ import java.util.Properties;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.5 2007-01-17 02:35:07 czarneckid Exp $
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.6 2007-05-04 16:42:21 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
 
@@ -206,7 +206,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
             // Determine the appropriate blog from the URL
             String blogId = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
             if (BlojsomUtils.checkNullOrBlank(blogId) || "/".equals(blogId)) {
-                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + blogId);
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID");
 
                 return;
             }
@@ -214,7 +214,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
             // Make sure that the blog exists in the system
             XmlRpcServer xmlRpcServer = configureXMLRPCServer(httpServletRequest, httpServletResponse, blogId);
             if (xmlRpcServer == null) {
-                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog: " + blogId);
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID");
 
                 return;
             }

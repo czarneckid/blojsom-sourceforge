@@ -78,7 +78,7 @@ import java.util.HashMap;
  * @author David Czarnecki
  * @author Mark Lussier
  * @since blojsom 3.0
- * @version $Id: CommentAPIServlet.java,v 1.4 2007-01-17 02:35:07 czarneckid Exp $
+ * @version $Id: CommentAPIServlet.java,v 1.5 2007-05-04 16:42:16 czarneckid Exp $
  */
 public class CommentAPIServlet extends HttpServlet {
 
@@ -178,7 +178,7 @@ public class CommentAPIServlet extends HttpServlet {
         // Determine the appropriate user from the URL
         String blogId = BlojsomUtils.getBlogFromPath(httpServletRequest.getPathInfo());
         if (BlojsomUtils.checkNullOrBlank(blogId) || "/".equals(blogId)) {
-            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested blog not found: " + blogId);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to load blog ID");
 
             return;
         }
@@ -311,8 +311,10 @@ public class CommentAPIServlet extends HttpServlet {
 
                 // Create a new blog comment
                 Comment comment = fetcher.newComment();
+                Entry entry;
+
                 try {
-                    Entry entry = fetcher.loadEntry(blog, permalink);
+                    entry = fetcher.loadEntry(blog, permalink);
 
                     HashMap commentMetaData = new HashMap();
                     commentMetaData.put(COMMENTAPI_TITLE_METADATA, commentTitle);
@@ -338,7 +340,7 @@ public class CommentAPIServlet extends HttpServlet {
                 } catch (FetcherException e) {
                     _logger.error(e);
 
-                    httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find blog entry: " + permalink);
+                    httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find requested blog entry");
                 }
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "No comment text available");
