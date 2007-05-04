@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.13 2007-05-04 16:42:22 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.14 2007-05-04 19:18:22 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -352,9 +352,9 @@ public class BlojsomServlet extends HttpServlet {
         String[] templateData = BlojsomUtils.parseOnlyCommaList(templateAndType, true);
         String templateExtension = BlojsomUtils.getFileExtension(templateData[0]);
        
-        Dispatcher dispatcher = null;
         try {
-            dispatcher = (org.blojsom.dispatcher.Dispatcher) _classPathXmlApplicationContext.getBean(templateExtension);
+            Dispatcher dispatcher = (org.blojsom.dispatcher.Dispatcher) _classPathXmlApplicationContext.getBean(templateExtension);
+            dispatcher.dispatch(httpServletRequest, httpServletResponse, blog, context, templateData[0], templateData[1]);
         } catch (BeansException e) {
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
@@ -362,8 +362,6 @@ public class BlojsomServlet extends HttpServlet {
 
             httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unable to retrieve dispatcher for template extension: " + templateExtension);
         }
-        
-        dispatcher.dispatch(httpServletRequest, httpServletResponse, blog, context, templateData[0], templateData[1]);
     }
 
     /**
