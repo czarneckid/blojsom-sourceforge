@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * CookieUtils
  *
  * @author David Czarnecki
- * @version $Id: CookieUtils.java,v 1.4 2007-01-17 02:35:18 czarneckid Exp $
+ * @version $Id: CookieUtils.java,v 1.5 2007-05-04 16:48:06 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CookieUtils {
@@ -76,7 +76,7 @@ public class CookieUtils {
      * @param cookieValue         Cookie value
      */
     public static void addCookie(HttpServletResponse httpServletResponse, int cookieExpiration, String cookieKey, String cookieValue) {
-        Cookie cookie = new Cookie(cookieKey, cookieValue);
+        Cookie cookie = new Cookie(cookieKey, BlojsomUtils.urlEncode(cookieValue));
         cookie.setMaxAge(cookieExpiration);
         httpServletResponse.addCookie(cookie);
     }
