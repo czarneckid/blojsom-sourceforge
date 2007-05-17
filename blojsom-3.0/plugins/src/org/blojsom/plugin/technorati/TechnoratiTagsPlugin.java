@@ -52,7 +52,7 @@ import java.util.TreeMap;
  * Technorati tags plugin
  *
  * @author David Czarnecki
- * @version $Id: TechnoratiTagsPlugin.java,v 1.4 2007-01-17 02:35:14 czarneckid Exp $
+ * @version $Id: TechnoratiTagsPlugin.java,v 1.5 2007-05-17 15:25:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -177,7 +177,11 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Li
                     }
                 }
 
-                processBlogEntryEvent.getEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
+                if ("".equals(technoratiTags)) {
+                    processBlogEntryEvent.getEntry().getMetaData().remove(METADATA_TECHNORATI_TAGS);
+                } else {
+                    processBlogEntryEvent.getEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
+                }
             }
 
             Map context = processBlogEntryEvent.getContext();
@@ -191,10 +195,6 @@ public class TechnoratiTagsPlugin extends StandaloneVelocityPlugin implements Li
             processBlogEntryEvent.getContext().put("BLOJSOM_TEMPLATE_ADDITIONS", templateAdditions);
 
             context.put(TECHNORATI_TAGS, technoratiTags);
-
-            if (processBlogEntryEvent.getEntry() != null) {
-                processBlogEntryEvent.getEntry().getMetaData().put(METADATA_TECHNORATI_TAGS, technoratiTags);
-            }
 
             processBlogEntryEvent.getContext().put(TECHNORATI_TAGS, technoratiTags);
         }
