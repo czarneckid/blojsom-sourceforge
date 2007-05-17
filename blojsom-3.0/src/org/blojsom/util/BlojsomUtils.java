@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.16 2007-01-21 15:42:48 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.17 2007-05-17 19:11:04 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -103,41 +103,6 @@ public class BlojsomUtils implements BlojsomConstants {
     };
 
     /**
-     * RFC-822 format
-     * SimpleDateFormats are not threadsafe, but we should not need more than one per
-     * thread.
-     */
-    private static final ThreadLocal RFC_822_DATE_FORMAT_OBJECT = new ThreadLocal() {
-        protected Object initialValue() {
-            return new SimpleDateFormat(RFC_822_DATE_FORMAT, Locale.US);
-        }
-    };
-
-    /**
-     * ISO-8601 format
-     * SimpleDateFormats are not threadsafe, but we should not need more than one per
-     * thread.
-     */
-    private static final ThreadLocal ISO_8601_DATE_FORMAT_OBJECT = new ThreadLocal() {
-        protected Object initialValue() {
-            SimpleDateFormat sdf = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
-            sdf.getTimeZone().setID("+00:00");
-            return sdf;
-        }
-    };
-
-    /**
-     * UTC format
-     * SimpleDateFormats are not threadsafe, but we should not need more than one per
-     * thread.
-     */
-    private static final ThreadLocal UTC_DATE_FORMAT_OBJECT = new ThreadLocal() {
-        protected Object initialValue() {
-            return new SimpleDateFormat(UTC_DATE_FORMAT);
-        }
-    };
-
-    /**
      * Return a file filter which only returns directories
      *
      * @return File filter appropriate for filtering only directories
@@ -182,7 +147,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Date formatted as RFC 822
      */
     public static String getRFC822Date(Date date) {
-        return ((SimpleDateFormat) RFC_822_DATE_FORMAT_OBJECT.get()).format(date);
+        SimpleDateFormat rfc822DateFormat = new SimpleDateFormat(RFC_822_DATE_FORMAT, Locale.US);
+        return rfc822DateFormat.format(date);
     }
 
     /**
@@ -206,7 +172,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Date formatted as ISO 8601
      */
     public static String getISO8601Date(Date date) {
-        return ((SimpleDateFormat) ISO_8601_DATE_FORMAT_OBJECT.get()).format(date).replaceAll("GMT", "");
+        SimpleDateFormat iso8601DateFormat = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+        iso8601DateFormat.getTimeZone().setID("+00:00");
+        return iso8601DateFormat.format(date).replaceAll("GMT", "");
     }
 
     /**
@@ -216,7 +184,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * @return Date formatted as ISO 8601
      */
     public static String getUTCDate(Date date) {
-        return ((SimpleDateFormat) UTC_DATE_FORMAT_OBJECT.get()).format(date);
+        SimpleDateFormat utcDateFormat = new SimpleDateFormat(UTC_DATE_FORMAT);
+        return utcDateFormat.format(date);
     }
 
     /**
