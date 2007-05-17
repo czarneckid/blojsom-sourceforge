@@ -302,6 +302,11 @@
             <ref bean="fetcher"/>
         </property>
     </bean>
+    <bean id="user-lookup" class="org.blojsom.plugin.user.UserLookupPlugin" init-method="init" destroy-method="destroy">
+        <property name="fetcher">
+            <ref bean="fetcher"/>
+        </property>        
+    </bean>
     <bean id="weather" class="org.blojsom.plugin.weather.WeatherPlugin" init-method="init" destroy-method="destroy">
     </bean>
     <bean id="weblogs-ping" class="org.blojsom.plugin.weblogsping.WeblogsPingPlugin" init-method="init" destroy-method="destroy">
