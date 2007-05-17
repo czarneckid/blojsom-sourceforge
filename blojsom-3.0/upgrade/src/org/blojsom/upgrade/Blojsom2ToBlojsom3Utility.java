@@ -64,7 +64,7 @@ import java.util.*;
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.20 2007-01-17 02:35:21 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.21 2007-05-17 14:55:06 czarneckid Exp $
  * @since blojsom 3
  */
 public class Blojsom2ToBlojsom3Utility {
@@ -706,6 +706,10 @@ public class Blojsom2ToBlojsom3Utility {
                     templateData = templateData.replaceAll("#if\\s*\\(\\s*\\$BLOJSOM_TRACKBACK_PLUGIN_ENABLED\\.booleanValue\\(\\s*\\)\\s*&&\\s*\\$entry\\.supportsTrackbacks\\(\\s*\\)\\s*&&\\s*\\(\\s*\\$entry\\.getMetaData\\(\\s*\\)\\s*&&\\s*!\\$entry\\.getMetaData\\(\\s*\\)\\.containsKey\\(\\s*\"blog-entry-trackbacks-disabled\"\\s*\\)\\s*\\)\\s*\\)", "#if (\\$entry.allowsTrackbacks())");
                     // "<input type=\"hidden\" name=\"comment\" value=\"y\" />" -> "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t<input type=\"hidden\" name=\"entry_id\" value=\"$entry.getId()\" />\n\t\t\t\t<input type=\"hidden\" name=\"redirect_to\" value=\"#FriendlyPermalink($entry)$entryLink\" />"
                     templateData = templateData.replaceAll("<input type=\"hidden\" name=\"comment\" value=\"y\"\\s*/?>", "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t<input type=\"hidden\" name=\"entry_id\" value=\"\\$entry.getId()\" />\n\t\t\t\t<input type=\"hidden\" name=\"redirect_to\" value=\"#FriendlyPermalink(\\$entry)\\$entryLink\" />");
+
+                    // Updated miscellaneous fields
+                    // "$entry.getMetaData().get("blog-entry-author")" -> "$entry.getAuthor()"
+                    templateData = templateData.replaceAll("\\$entry\\.getMetaData\\(\\s*\\)\\.get\\(\\s*\"blog-entry-author\"\\s*\\)", "\\$entry.getAuthor()");
                     
                     FileUtils.writeStringToFile(template, templateData, BlojsomConstants.UTF8);
                 } catch (IOException e) {
