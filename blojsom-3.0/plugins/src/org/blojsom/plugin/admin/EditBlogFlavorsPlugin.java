@@ -49,7 +49,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.7 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.8 2007-05-18 01:07:46 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -213,6 +213,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             _logger.debug("User requested add blog flavor action");
 
             String flavorName = BlojsomUtils.getRequestValue(FLAVOR_NAME, httpServletRequest);
+            flavorName = (flavorName != null) ? (flavorName.replaceAll("\\W", "")) : null;
             if (BlojsomUtils.checkNullOrBlank(flavorName)) {
                 _logger.debug("No flavor name specified");
                 addOperationResultMessage(context, getAdminResource(NO_FLAVOR_SPECIFIED_KEY, NO_FLAVOR_SPECIFIED_KEY, blog.getBlogAdministrationLocale()));
