@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.14 2007-05-04 19:18:22 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.15 2007-05-25 02:28:30 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -293,7 +293,7 @@ public class BlojsomServlet extends HttpServlet {
                         _logger.debug("Adding last-modified header for most recent entry comment");
                     }
                 } else {
-                    _lastmodified = _entry.getDate().getTime();
+                    _lastmodified = _entry.getModifiedDate().getTime();
                     if (_logger.isDebugEnabled()) {
                         _logger.debug("Adding last-modified header for most recent blog entry");
                     }
@@ -312,10 +312,10 @@ public class BlojsomServlet extends HttpServlet {
                 httpServletResponse.addHeader(BlojsomConstants.HTTP_ETAG, "\"" + BlojsomUtils.digestString(etagLastModified) + "\"");
 
                 httpServletResponse.addDateHeader(BlojsomConstants.HTTP_LASTMODIFIED, _lastmodified);
-                blogdate = entries[0].getRFC822Date();
-                blogISO8601Date = entries[0].getISO8601Date();
-                blogDateObject = entries[0].getDate();
-                blogUTCDate = BlojsomUtils.getUTCDate(entries[0].getDate());
+                blogdate = BlojsomUtils.getRFC822Date(entries[0].getModifiedDate());
+                blogISO8601Date = BlojsomUtils.getISO8601Date(entries[0].getModifiedDate());
+                blogDateObject = entries[0].getModifiedDate();
+                blogUTCDate = BlojsomUtils.getUTCDate(entries[0].getModifiedDate());
             } else {
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Adding last-modified header for current date");

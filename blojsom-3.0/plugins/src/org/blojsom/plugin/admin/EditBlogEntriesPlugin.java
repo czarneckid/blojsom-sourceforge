@@ -71,7 +71,7 @@ import java.io.UnsupportedEncodingException;
  * EditBlogEntriesPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogEntriesPlugin.java,v 1.19 2007-01-24 17:00:36 czarneckid Exp $
+ * @version $Id: EditBlogEntriesPlugin.java,v 1.20 2007-05-25 02:28:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogEntriesPlugin extends BaseAdminPlugin {
@@ -428,12 +428,11 @@ public class EditBlogEntriesPlugin extends BaseAdminPlugin {
                     try {
                         Date publishDateTime = simpleDateFormat.parse(entryPublishDateTime);
                         entryToUpdate.setDate(publishDateTime);
-                        entryToUpdate.setModifiedDate(publishDateTime);
                     } catch (ParseException e) {
                     }
-                } else {
-                    entryToUpdate.setModifiedDate(new Date());
                 }
+
+                entryToUpdate.setModifiedDate(new Date());                
 
                 if (BlojsomUtils.checkNullOrBlank(status)) {
                     status = BlojsomMetaDataConstants.DRAFT_STATUS;
