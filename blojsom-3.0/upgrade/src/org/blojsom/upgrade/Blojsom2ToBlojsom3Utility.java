@@ -64,7 +64,7 @@ import java.util.*;
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.22 2007-05-25 02:33:04 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.23 2007-05-25 18:14:25 czarneckid Exp $
  * @since blojsom 3
  */
 public class Blojsom2ToBlojsom3Utility {
@@ -449,8 +449,11 @@ public class Blojsom2ToBlojsom3Utility {
                         blojsom3Category.setParentCategoryId(null);
                     }
 
-                    blojsom3Category.setMetaData(blojsom2Category.getMetaData());
-
+                    // Remove duplicate category data in blojsom 3
+                    Map categoryMetaData = blojsom2Category.getMetaData();
+                    categoryMetaData.remove("blojsom.name");
+                    blojsom3Category.setMetaData(categoryMetaData);
+                    
                     try {
                         _fetcher.saveCategory(blog, blojsom3Category);
                         if (_logger.isDebugEnabled()) {
@@ -509,7 +512,11 @@ public class Blojsom2ToBlojsom3Utility {
 
                         blojsom3Entry.setDate(entry.getDate());
                         blojsom3Entry.setDescription(entry.getDescription());
-                        blojsom3Entry.setMetaData(entry.getMetaData());
+                        // Remove duplicate entry data in blojsom 3
+                        Map entryMetaData = entry.getMetaData();
+                        entryMetaData.remove("blog-entry-metadata-timestamp");
+                        entryMetaData.remove("blog-entry-author");
+                        blojsom3Entry.setMetaData(entryMetaData);
                         blojsom3Entry.setModifiedDate(entry.getDate());
 
                         if (entry.supportsPingbacks()) {
@@ -550,8 +557,18 @@ public class Blojsom2ToBlojsom3Utility {
                             blojsom3Comment.setComment(comment.getComment());
                             blojsom3Comment.setCommentDate(comment.getCommentDate());
                             blojsom3Comment.setIp((String) comment.getMetaData().get("BLOJSOM_COMMENT_PLUGIN_METADATA_IP"));
-                            blojsom3Comment.setMetaData(comment.getMetaData());
                             blojsom3Comment.setStatus(ResponseConstants.APPROVED_STATUS);
+                            // Remove duplicate comment data in blojsom 3
+                            Map commentMetaData = comment.getMetaData();
+                            commentMetaData.remove("BLOJSOM_COMMENT_PLUGIN_METADATA_IP");
+                            commentMetaData.remove("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED");
+                            blojsom3Comment.setMetaData(commentMetaData);
+                            if ("false".equals(comment.getMetaData().get("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED"))) {
+                                blojsom3Comment.setStatus(ResponseConstants.NEW_STATUS);
+                            }
+                            else {
+                                blojsom3Comment.setStatus(ResponseConstants.APPROVED_STATUS);
+                            }
 
                             try {
                                 _fetcher.saveComment(blog, blojsom3Comment);
@@ -576,8 +593,17 @@ public class Blojsom2ToBlojsom3Utility {
                             blojsom3Trackback.setBlogEntryId(blojsom3Entry.getId());
                             blojsom3Trackback.setBlogId(blog.getId());
                             blojsom3Trackback.setIp((String) trackback.getMetaData().get("BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP"));
-                            blojsom3Trackback.setMetaData(trackback.getMetaData());
                             blojsom3Trackback.setStatus(ResponseConstants.APPROVED_STATUS);
+                            // Remove duplicate trackback data in blojsom 3
+                            Map trackbackMetaData = trackback.getMetaData();
+                            trackbackMetaData.remove("BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP");
+                            trackbackMetaData.remove("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED");
+                            blojsom3Trackback.setMetaData(trackbackMetaData);
+                            if ("false".equals(trackback.getMetaData().get("BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED"))) {
+                                blojsom3Trackback.setStatus(ResponseConstants.NEW_STATUS);
+                            } else {
+                                blojsom3Trackback.setStatus(ResponseConstants.APPROVED_STATUS);
+                            }
 
                             try {
                                 _fetcher.saveTrackback(blog, blojsom3Trackback);
@@ -602,10 +628,19 @@ public class Blojsom2ToBlojsom3Utility {
                             blojsom3Pingback.setBlogEntryId(blojsom3Entry.getId());
                             blojsom3Pingback.setBlogId(blog.getId());
                             blojsom3Pingback.setIp((String) pingback.getMetaData().get("BLOJSOM_PINGBACK_PLUGIN_METADATA_IP"));
-                            blojsom3Pingback.setMetaData(pingback.getMetaData());
                             blojsom3Pingback.setStatus(ResponseConstants.APPROVED_STATUS);
                             blojsom3Pingback.setSourceURI(pingback.getUrl());
                             blojsom3Pingback.setTargetURI(pingback.getTitle());
+                            // Remove duplicate pingback data in blojsom 3
+                            Map pingbackMetaData = pingback.getMetaData();
+                            pingbackMetaData.remove("BLOJSOM_PINGBACK_PLUGIN_METADATA_IP");
+                            pingbackMetaData.remove("BLOJSOM_PINGBACK_MODERATION_PLUGIN_APPROVED");
+                            blojsom3Pingback.setMetaData(pingbackMetaData);
+                            if ("false".equals(pingback.getMetaData().get("BLOJSOM_PINGBACK_MODERATION_PLUGIN_APPROVED"))) {
+                                blojsom3Pingback.setStatus(ResponseConstants.NEW_STATUS);
+                            } else {
+                                blojsom3Pingback.setStatus(ResponseConstants.APPROVED_STATUS);
+                            }
 
                             try {
                                 _fetcher.savePingback(blog, blojsom3Pingback);
