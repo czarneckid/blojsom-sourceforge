@@ -44,6 +44,7 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +54,7 @@ import java.util.regex.Pattern;
  * @author Mark Lussier
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: FootnotePlugin.java,v 1.3 2007-01-17 02:35:10 czarneckid Exp $
+ * @version $Id: FootnotePlugin.java,v 1.4 2007-06-20 00:58:39 czarneckid Exp $
  */
 public class FootnotePlugin implements Plugin {
 
@@ -92,8 +93,8 @@ public class FootnotePlugin implements Plugin {
             String content = entry.getDescription();
             Matcher matcher = footnotePattern.matcher(content);
             StringBuffer modifiedContent = new StringBuffer();
-            Map footnotes = new TreeMap();
-
+            Map footnotes = new TreeMap(new FootnotePlugin.FootnoteComparator());
+            
             while (matcher.find()) {
                 int footnoteIndex;
 
@@ -158,4 +159,24 @@ public class FootnotePlugin implements Plugin {
     public void destroy() throws PluginException {
     }
 
+    /**
+     * Provides a Comparator for numerically sorting footnotes
+     */
+    private class FootnoteComparator implements Comparator {
+
+        /**
+         * Standard implementation of the compare method for Integer keys
+         *
+         * @param element1 first Object to be compared
+         * @param element2 second Object to be compared
+         * @return a negative integer, zero, or a positive integer as the first
+         *         argument is less than, equal to, or greater than the second.
+         */
+        public int compare(Object element1, Object element2) {
+            Integer next = Integer.decode((String) element1);
+            Integer previous = Integer.decode((String) element2);
+            
+            return next.compareTo(previous);
+        }
+     }
 }
