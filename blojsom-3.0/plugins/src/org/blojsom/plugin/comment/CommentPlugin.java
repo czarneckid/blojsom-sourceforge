@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.14 2007-01-21 15:42:47 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.15 2007-06-20 00:51:39 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -206,6 +206,8 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME = "BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME";
 
+    public static final String BLOJSOM_COMMENT_PLUGIN_COMMENT_TEXT = "BLOJSOM_COMMENT_PLUGIN_COMMENT_TEXT";
+
     /**
      * IP address meta-data
      */
@@ -220,6 +222,9 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
      * Key under which the blog comment will be placed for merging the comment e-mail
      */
     public static final String BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT = "BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT";
+
+    public static final String BLOJSOM_COMMENT_PLUGIN_STATUS = "BLOJSOM_COMMENT_PLUGIN_STATUS";
+    public static final String BLOJSOM_COMMENT_PLUGIN_STATUS_ERROR = "error";
 
     public static final String BLOJSOM_PLUGIN_COMMENT_METADATA = "BLOJSOM_PLUGIN_COMMENT_METADATA";
     public static final String BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY = "BLOJSOM_PLUGIN_COMMENT_METADATA_DESTROY";
@@ -549,6 +554,8 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                     context.put(BlojsomConstants.BLOJSOM_LAST_MODIFIED, new Long(new Date().getTime()));
 
                     if (comment != null) {
+                        context.put(BLOJSOM_COMMENT_PLUGIN_STATUS, comment.getStatus());
+                        
                         try {
                             _fetcher.loadEntry(blog, entries[0]);
                             _fetcher.loadEntry(blog, entryForComment);
@@ -558,10 +565,23 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                                 _logger.error(e);
                             }
                         }
+                    } else {
+                        context.put(BLOJSOM_COMMENT_PLUGIN_STATUS, BLOJSOM_COMMENT_PLUGIN_STATUS_ERROR);
                     }
                 } else {
                     if (_logger.isDebugEnabled()) {
                         _logger.debug("Comment meta-data contained destroy key. Comment was not saved");
+                    }
+
+                    context.put(BLOJSOM_COMMENT_PLUGIN_STATUS, ResponseConstants.DELETED_STATUS);
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR, author);
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL, authorEmail);
+                    context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
+                    if (autoformatComments) {
+                        context.put(BLOJSOM_COMMENT_PLUGIN_COMMENT_TEXT,
+                                BlojsomUtils.escapeStringSimple(BlojsomUtils.replace(commentText, "<br />", "\n")));
+                    } else {
+                        context.put(BLOJSOM_COMMENT_PLUGIN_COMMENT_TEXT, BlojsomUtils.escapeStringSimple(commentText));
                     }
                 }
 

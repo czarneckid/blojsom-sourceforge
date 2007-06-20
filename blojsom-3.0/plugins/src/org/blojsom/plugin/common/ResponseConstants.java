@@ -35,11 +35,13 @@ package org.blojsom.plugin.common;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: ResponseConstants.java,v 1.2 2007-01-17 02:35:09 czarneckid Exp $
+ * @version $Id: ResponseConstants.java,v 1.3 2007-06-20 00:51:40 czarneckid Exp $
  */
 public class ResponseConstants {
 
     public static final String APPROVED_STATUS = "approved";
     public static final String NEW_STATUS = "new";
     public static final String SPAM_STATUS = "spam";
+    public static final String DELETED_STATUS = "deleted";
+    
 }
