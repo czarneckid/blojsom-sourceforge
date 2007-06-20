@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.37 2007-04-03 16:41:00 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.38 2007-06-20 01:04:56 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -1167,11 +1167,12 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
         int postSlugTag = 1;
         boolean postSlugOK = false;
+        String originalSlug = postSlug;
 
         while (!postSlugOK) {
             try {
                 loadEntry(blog, postSlug);
-                postSlug += ("-" + postSlugTag++);
+                postSlug = (originalSlug + "-" + postSlugTag++);
             } catch (FetcherException e) {
                 postSlugOK = true;
             }
