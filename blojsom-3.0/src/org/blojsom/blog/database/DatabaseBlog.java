@@ -46,7 +46,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author David Czarnecki
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.7 2007-01-17 02:35:16 czarneckid Exp $
+ * @version $Id: DatabaseBlog.java,v 1.8 2007-06-20 00:47:58 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
@@ -104,7 +104,7 @@ public class DatabaseBlog implements Blog, Serializable {
      * @return Map of the templates
      */
     public Map getTemplates() {
-        return Collections.unmodifiableMap(_templates);
+        return _templates;
     }
 
     /**
@@ -122,7 +122,7 @@ public class DatabaseBlog implements Blog, Serializable {
      * @return Map of the plugins
      */
     public Map getPlugins() {
-        return Collections.unmodifiableMap(_plugins);
+        return _plugins;
     }
 
     /**
