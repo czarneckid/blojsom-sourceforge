@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.38 2007-06-20 01:04:56 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.39 2007-10-13 19:48:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -214,7 +214,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
         } catch (HibernateException e) {
             if (tx != null) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
             }
 
             if (_logger.isErrorEnabled()) {
@@ -223,9 +229,15 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         } finally {
-            session.close();
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
-
+        
         return blog;
     }
 
@@ -256,7 +268,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
         } catch (HibernateException e) {
             if (tx != null) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
             }
 
             if (_logger.isErrorEnabled()) {
@@ -265,7 +283,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             throw new FetcherException(e);
         } finally {
-            session.close();
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return blog;
@@ -278,20 +302,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the blog
      */
     public void saveBlog(Blog blog) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.saveOrUpdate(blog);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException("Unable to save blog inforamtion: " + blog.getBlogId(), e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -302,20 +345,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error deleting the blog
      */
     public void deleteBlog(Blog blog) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.delete(blog);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException("Unable to delete blog inforamtion: " + blog.getBlogId(), e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -328,23 +390,41 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public String[] loadBlogIDs() throws FetcherException {
         String[] blogIDs;
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
 
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             List blogIDList = session.getNamedQuery("blog.id.list").list();
 
             tx.commit();
-            session.close();
 
             blogIDs = (String[]) blogIDList.toArray(new String[blogIDList.size()]);
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException("Unable to load blog IDs", e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return blogIDs;
@@ -381,65 +461,96 @@ public class DatabaseFetcher implements Fetcher, Listener {
         }
 
         if (permalink != null) {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            List permalinkEntryList = null;
+            Session session = null;
+            Transaction tx = null;
+            
+            try {
+                session = _sessionFactory.openSession();
+                tx = session.beginTransaction();
 
-            Criteria permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-            permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
-                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS))
-                    .add(Restrictions.lt("date", new Date()));
-
-            List permalinkEntryList = permalinkCriteria.list();
-
-            if (permalinkEntryList.size() == 1) {
-                DatabaseEntry entry = (DatabaseEntry) permalinkEntryList.get(0);
-                context.put(BlojsomConstants.BLOJSOM_PERMALINK, entry.getId());
-                permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+                Criteria permalinkCriteria = session.createCriteria(DatabaseEntry.class);
                 permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                        .add(Restrictions.gt("date", entry.getDate()))
-                        .add(Restrictions.lt("date", new Date()))
-                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-                permalinkCriteria.addOrder(Order.asc("date"));
-                permalinkCriteria.setMaxResults(1);
+                        .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
+                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS))
+                        .add(Restrictions.lt("date", new Date()));
 
-                List nextList = permalinkCriteria.list();
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Total entries after permalink: " + nextList.size());
+                permalinkEntryList = permalinkCriteria.list();
+
+                if (permalinkEntryList.size() == 1) {
+                    DatabaseEntry entry = (DatabaseEntry) permalinkEntryList.get(0);
+                    context.put(BlojsomConstants.BLOJSOM_PERMALINK, entry.getId());
+                    permalinkCriteria = session.createCriteria(DatabaseEntry.class);
+                    permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
+                            .add(Restrictions.gt("date", entry.getDate()))
+                            .add(Restrictions.lt("date", new Date()))
+                            .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                    permalinkCriteria.addOrder(Order.asc("date"));
+                    permalinkCriteria.setMaxResults(1);
+
+                    List nextList = permalinkCriteria.list();
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Total entries after permalink: " + nextList.size());
+                    }
+
+                    if (nextList.size() == 1) {
+                        context.put(BlojsomConstants.BLOJSOM_PERMALINK_NEXT_ENTRY, nextList.get(0));
+                    } else {
+                        context.put(BlojsomConstants.BLOJSOM_PERMALINK_NEXT_ENTRY, null);
+                    }
+
+                    permalinkCriteria = session.createCriteria(DatabaseEntry.class);
+                    permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
+                            .add(Restrictions.lt("date", entry.getDate()))
+                            .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                    permalinkCriteria.addOrder(Order.desc("date"));
+                    permalinkCriteria.setMaxResults(1);
+
+                    List prevList = permalinkCriteria.list();
+                    if (_logger.isDebugEnabled()) {
+                        _logger.debug("Total entries before permalink: " + prevList.size());
+                    }
+
+                    if (prevList.size() == 1) {
+                        context.put(BlojsomConstants.BLOJSOM_PERMALINK_PREVIOUS_ENTRY, prevList.get(0));
+                    } else {
+                        context.put(BlojsomConstants.BLOJSOM_PERMALINK_PREVIOUS_ENTRY, null);
+                    }
                 }
 
-                if (nextList.size() == 1) {
-                    context.put(BlojsomConstants.BLOJSOM_PERMALINK_NEXT_ENTRY, nextList.get(0));
-                } else {
-                    context.put(BlojsomConstants.BLOJSOM_PERMALINK_NEXT_ENTRY, null);
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    try {
+                        tx.rollback();
+                    } catch (HibernateException e1) {
+                        if (_logger.isErrorEnabled()) {
+                            _logger.error(e1);
+                        }
+                    }
                 }
 
-                permalinkCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                        .add(Restrictions.lt("date", entry.getDate()))
-                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-                permalinkCriteria.addOrder(Order.desc("date"));
-                permalinkCriteria.setMaxResults(1);
-
-                List prevList = permalinkCriteria.list();
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Total entries before permalink: " + prevList.size());
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e);
                 }
-
-                if (prevList.size() == 1) {
-                    context.put(BlojsomConstants.BLOJSOM_PERMALINK_PREVIOUS_ENTRY, prevList.get(0));
-                } else {
-                    context.put(BlojsomConstants.BLOJSOM_PERMALINK_PREVIOUS_ENTRY, null);
+            } finally {
+                try {
+                    session.close();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
                 }
             }
 
-            tx.commit();
-            session.close();
-
-            if (permalinkEntryList.size() > 0) {
-                return new Entry[]{(Entry) permalinkEntryList.get(0)};
+            if (permalinkEntryList != null) {
+                if (permalinkEntryList.size() > 0) {
+                    return new Entry[]{(Entry) permalinkEntryList.get(0)};
+                } else {
+                    return (Entry[]) permalinkEntryList.toArray(new DatabaseEntry[permalinkEntryList.size()]);
+                }
             } else {
-                return (Entry[]) permalinkEntryList.toArray(new DatabaseEntry[permalinkEntryList.size()]);
+                return new Entry[0];
             }
         } else {
             String pgNum = BlojsomUtils.getRequestValue(BlojsomConstants.PAGE_NUMBER_PARAM, httpServletRequest);
@@ -462,44 +573,100 @@ public class DatabaseFetcher implements Fetcher, Listener {
             page *= blogEntriesDisplaySize;
 
             if (category != null && !"/".equals(category.getName())) {
-                Session session = _sessionFactory.openSession();
-                Transaction tx = session.beginTransaction();
+                Session session = null;
+                Transaction tx = null;
 
-                Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
-                entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
-                entryCriteria.add(Restrictions.lt("date", new Date()));
-                entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-                entryCriteria.addOrder(Order.desc("date"));
-                entryCriteria.setMaxResults(blogEntriesDisplaySize);
-                entryCriteria.setFirstResult(page);
-                entryCriteria.setCacheable(true);
+                try {
+                    session = _sessionFactory.openSession();
+                    tx = session.beginTransaction();
 
-                List entryList = entryCriteria.list();
+                    Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+                    entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+                    entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
+                    entryCriteria.add(Restrictions.lt("date", new Date()));
+                    entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                    entryCriteria.addOrder(Order.desc("date"));
+                    entryCriteria.setMaxResults(blogEntriesDisplaySize);
+                    entryCriteria.setFirstResult(page);
+                    entryCriteria.setCacheable(true);
 
-                tx.commit();
-                session.close();
+                    List entryList = entryCriteria.list();
 
-                return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+                    tx.commit();
+
+                    return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+                } catch (HibernateException e) {
+                    if (tx != null) {
+                        try {
+                            tx.rollback();
+                        } catch (HibernateException e1) {
+                            if (_logger.isErrorEnabled()) {
+                                _logger.error(e1);
+                            }
+                        }
+                    }
+
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                } finally {
+                    try {
+                        session.close();
+                    } catch (HibernateException e1) {
+                        if (_logger.isErrorEnabled()) {
+                            _logger.error(e1);
+                        }
+                    }
+                }
+
+                return new Entry[0];
             } else {
-                Session session = _sessionFactory.openSession();
-                Transaction tx = session.beginTransaction();
+                Session session = null;
+                Transaction tx = null;
 
-                Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-                entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
-                entryCriteria.add(Restrictions.lt("date", new Date()));
-                entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-                entryCriteria.addOrder(Order.desc("date"));
-                entryCriteria.setMaxResults(blogEntriesDisplaySize);
-                entryCriteria.setFirstResult(page);
-                entryCriteria.setCacheable(true);
+                try {
+                    session = _sessionFactory.openSession();
+                    tx = session.beginTransaction();
 
-                List entryList = entryCriteria.list();
+                    Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+                    entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+                    entryCriteria.add(Restrictions.lt("date", new Date()));
+                    entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                    entryCriteria.addOrder(Order.desc("date"));
+                    entryCriteria.setMaxResults(blogEntriesDisplaySize);
+                    entryCriteria.setFirstResult(page);
+                    entryCriteria.setCacheable(true);
 
-                tx.commit();
-                session.close();
+                    List entryList = entryCriteria.list();
 
-                return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+                    tx.commit();
+
+                    return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+                } catch (HibernateException e) {
+                    if (tx != null) {
+                        try {
+                            tx.rollback();
+                        } catch (HibernateException e1) {
+                            if (_logger.isErrorEnabled()) {
+                                _logger.error(e1);
+                            }
+                        }
+                    }
+
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e);
+                    }
+                } finally {
+                    try {
+                        session.close();
+                    } catch (HibernateException e1) {
+                        if (_logger.isErrorEnabled()) {
+                            _logger.error(e1);
+                        }
+                    }
+                }
+
+                return new Entry[0];
             }
         }
     }
@@ -513,9 +680,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadAllEntriesForCategory(Blog blog, Integer categoryId) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
@@ -526,15 +695,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             List entryList = entryCriteria.list();
 
             tx.commit();
-            session.close();
 
             return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -548,9 +734,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntriesForCategory(Blog blog, Integer categoryId, Integer limit) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
@@ -562,15 +750,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             List entryList = entryCriteria.list();
 
             tx.commit();
-            session.close();
 
             return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -585,32 +790,59 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Entry[] loadEntries(Blog blog, int pageSize, int page) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        page -= 1;
-        if (page < 0) {
-            page = 0;
+        try {
+            tx = session.beginTransaction();
+
+            page -= 1;
+            if (page < 0) {
+                page = 0;
+            }
+
+            if (pageSize < 1) {
+                pageSize = 1;
+            }
+
+            page *= pageSize;
+
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+            entryCriteria.addOrder(Order.desc("date"));
+            entryCriteria.setMaxResults(pageSize);
+            entryCriteria.setFirstResult(page);
+            entryCriteria.setCacheable(true);
+
+            List entryList = entryCriteria.list();
+
+            tx.commit();
+
+            return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+            
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
-
-        if (pageSize < 1) {
-            pageSize = 1;
-        }
-
-        page *= pageSize;
-
-        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
-        entryCriteria.addOrder(Order.desc("date"));
-        entryCriteria.setMaxResults(pageSize);
-        entryCriteria.setFirstResult(page);
-        entryCriteria.setCacheable(true);
-
-        List entryList = entryCriteria.list();
-
-        tx.commit();
-        session.close();
-
-        return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
     }
 
 
@@ -627,46 +859,73 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public Entry[] loadEntries(int pageSize, int page, Category specificCategory, Category[] defaultCategories)
             throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        page -= 1;
-        if (page < 0) {
-            page = 0;
-        }
+        try {
+            tx = session.beginTransaction();
 
-        if (pageSize < 1) {
-            pageSize = 1;
-        }
-
-        page *= pageSize;
-
-        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-        entryCriteria.addOrder(Order.desc("date"));
-        entryCriteria.setMaxResults(pageSize);
-        entryCriteria.setFirstResult(page);
-        entryCriteria.setCacheable(true);
-
-        if (specificCategory != null) {
-            entryCriteria.createCriteria("blogCategory").add(Restrictions.eq("name", specificCategory.getName()));
-        } else {            
-            entryCriteria = entryCriteria.createCriteria("blogCategory");
-            
-            ArrayList names = new ArrayList();
-            for (int i = 0; i < defaultCategories.length; i++) {
-                Category defaultCategory = defaultCategories[i];
-                names.add(defaultCategory.getName());
+            page -= 1;
+            if (page < 0) {
+                page = 0;
             }
 
-            entryCriteria.add(Restrictions.in("name", names.toArray()));
+            if (pageSize < 1) {
+                pageSize = 1;
+            }
+
+            page *= pageSize;
+
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+            entryCriteria.addOrder(Order.desc("date"));
+            entryCriteria.setMaxResults(pageSize);
+            entryCriteria.setFirstResult(page);
+            entryCriteria.setCacheable(true);
+
+            if (specificCategory != null) {
+                entryCriteria.createCriteria("blogCategory").add(Restrictions.eq("name", specificCategory.getName()));
+            } else {
+                entryCriteria = entryCriteria.createCriteria("blogCategory");
+
+                ArrayList names = new ArrayList();
+                for (int i = 0; i < defaultCategories.length; i++) {
+                    Category defaultCategory = defaultCategories[i];
+                    names.add(defaultCategory.getName());
+                }
+
+                entryCriteria.add(Restrictions.in("name", names.toArray()));
+            }
+
+            List entryList = entryCriteria.list();
+
+            tx.commit();
+
+            return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
-        
-        List entryList = entryCriteria.list();
-
-        tx.commit();
-        session.close();
-
-        return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
     }
 
     /**
@@ -679,22 +938,49 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Entry[] findEntries(Blog blog, String query) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
-        entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE),
-                Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
-                .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-        entryCriteria.addOrder(Order.desc("date"));
-        entryCriteria.setCacheable(true);
+        try {
+            tx = session.beginTransaction();
 
-        List entryList = entryCriteria.list();
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+            entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE),
+                    Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
+                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+            entryCriteria.addOrder(Order.desc("date"));
+            entryCriteria.setCacheable(true);
 
-        tx.commit();
-        session.close();
+            List entryList = entryCriteria.list();
 
-        return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+            tx.commit();
+
+            return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
+        }
     }
 
     /**
@@ -711,25 +997,52 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public Entry[] findEntriesByMetadataKeyValue(Blog blog, String metadataKey, String metadataValue,
                                                  boolean pre, boolean post) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        String valueSearch = metadataValue;
-        if (pre) {
-            valueSearch = "%" + valueSearch;
+        try {
+            tx = session.beginTransaction();
+
+            String valueSearch = metadataValue;
+            if (pre) {
+                valueSearch = "%" + valueSearch;
+            }
+            if (post) {
+                valueSearch = valueSearch + "%";
+            }
+
+            List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value").setCacheable(true)
+                    .setInteger("blogId", blog.getId().intValue())
+                    .setString("metadataKey", metadataKey)
+                    .setString("metadataValue", valueSearch).list();
+
+            tx.commit();
+
+            return (DatabaseEntry[]) entriesMatchingMetadataKeyValue.toArray(new DatabaseEntry[entriesMatchingMetadataKeyValue.size()]);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
-        if (post) {
-            valueSearch = valueSearch + "%";
-        }
-
-        List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value").setCacheable(true)
-                .setInteger("blogId", blog.getId().intValue())
-                .setString("metadataKey", metadataKey)
-                .setString("metadataValue", valueSearch).list();
-
-        tx.commit();
-        session.close();
-
-        return (DatabaseEntry[]) entriesMatchingMetadataKeyValue.toArray(new DatabaseEntry[entriesMatchingMetadataKeyValue.size()]);
     }
 
     /**
@@ -742,16 +1055,43 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Entry[] findEntriesWithMetadataKey(Blog blog, String metadataKey) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key").setCacheable(true)
-                .setInteger("blogId", blog.getId().intValue())
-                .setString("metadataKey", metadataKey).list();
+        try {
+            tx = session.beginTransaction();
 
-        tx.commit();
-        session.close();
+            List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key").setCacheable(true)
+                    .setInteger("blogId", blog.getId().intValue())
+                    .setString("metadataKey", metadataKey).list();
 
-        return (DatabaseEntry[]) entriesMatchingMetadata.toArray(new DatabaseEntry[entriesMatchingMetadata.size()]);
+            tx.commit();
+
+            return (DatabaseEntry[]) entriesMatchingMetadata.toArray(new DatabaseEntry[entriesMatchingMetadata.size()]);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
+        }
     }
 
     /**
@@ -764,9 +1104,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error searching for entries between the dates
      */
     public Entry[] findEntriesBetweenDates(Blog blog, Date startDate, Date endDate) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
@@ -778,15 +1120,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             List entryList = entryCriteria.list();
 
             tx.commit();
-            session.close();
 
             return (DatabaseEntry[]) entryList.toArray(new DatabaseEntry[entryList.size()]);
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -801,31 +1160,50 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error retrieving previous entries
      */
     public Entry[] loadPreviousEntries(Blog blog, Entry entry, int numPreviousEntries) throws FetcherException {
-         try {
-             Session session = _sessionFactory.openSession();
-             Transaction tx = session.beginTransaction();
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
 
-             Criteria previousEntriesCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-             previousEntriesCriteria.add(Restrictions.eq("blogId", blog.getId()));
-             previousEntriesCriteria.add(Restrictions.lt("date", entry.getDate()));
-             previousEntriesCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-             previousEntriesCriteria.addOrder(Order.desc("date"));
-             previousEntriesCriteria.setCacheable(true);
-             previousEntriesCriteria.setMaxResults(numPreviousEntries);
+        try {
+            tx = session.beginTransaction();
 
-             List previousEntries = previousEntriesCriteria.list();
+            Criteria previousEntriesCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
+            previousEntriesCriteria.add(Restrictions.eq("blogId", blog.getId()));
+            previousEntriesCriteria.add(Restrictions.lt("date", entry.getDate()));
+            previousEntriesCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+            previousEntriesCriteria.addOrder(Order.desc("date"));
+            previousEntriesCriteria.setCacheable(true);
+            previousEntriesCriteria.setMaxResults(numPreviousEntries);
 
-             tx.commit();
-             session.close();
+            List previousEntries = previousEntriesCriteria.list();
 
-             return (Entry[]) previousEntries.toArray(new DatabaseEntry[previousEntries.size()]);
-         } catch (HibernateException e) {
-             if (_logger.isErrorEnabled()) {
-                 _logger.error(e);
-             }
+            tx.commit();
 
-             throw new FetcherException(e);
-         }
+            return (Entry[]) previousEntries.toArray(new DatabaseEntry[previousEntries.size()]);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
+        }
     }
 
     /**
@@ -837,21 +1215,48 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Integer countEntries(Blog blog) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.setProjection(Projections.rowCount());
-        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
-        entryCriteria.add(Restrictions.lt("date", new Date()));
-        entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-        entryCriteria.setCacheable(true);
+        try {
+            tx = session.beginTransaction();
 
-        List entryList = entryCriteria.list();
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.setProjection(Projections.rowCount());
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+            entryCriteria.add(Restrictions.lt("date", new Date()));
+            entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+            entryCriteria.setCacheable(true);
 
-        tx.commit();
-        session.close();
+            List entryList = entryCriteria.list();
 
-        return (Integer) entryList.get(0);
+            tx.commit();
+
+            return (Integer) entryList.get(0);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
+        }
     }
 
 
@@ -865,22 +1270,49 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Integer countEntriesForCategory(Blog blog, Category category) throws FetcherException {
         Session session = _sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = null;
 
-        Criteria entryCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseEntry.class);
-        entryCriteria.setProjection(Projections.rowCount());
-        entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
-        entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
-        entryCriteria.add(Restrictions.lt("date", new Date()));
-        entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
-        entryCriteria.setCacheable(true);
+        try {
+            tx = session.beginTransaction();
 
-        List entryList = entryCriteria.list();
+            Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
+            entryCriteria.setProjection(Projections.rowCount());
+            entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
+            entryCriteria.add(Restrictions.eq("blogCategoryId", category.getId()));
+            entryCriteria.add(Restrictions.lt("date", new Date()));
+            entryCriteria.add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+            entryCriteria.setCacheable(true);
 
-        tx.commit();
-        session.close();
+            List entryList = entryCriteria.list();
 
-        return (Integer) entryList.get(0);
+            tx.commit();
+
+            return (Integer) entryList.get(0);
+        } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
+            if (_logger.isErrorEnabled()) {
+                _logger.error(e);
+            }
+
+            throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
+        }
     }
 
     /**
@@ -892,9 +1324,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the entry
      */
     public Entry loadEntry(Blog blog, Integer entryId) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -907,11 +1341,29 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             return entry;
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -925,9 +1377,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      *          If an entry for the blog and post slug cannot be found
      */
     public Entry loadEntry(Blog blog, String postSlug) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -944,11 +1398,29 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             return entry;
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1016,10 +1488,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      */
     public Category[] fetchCategories(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, String flavor, Map context) throws FetcherException {
         Category[] allCategoriesArray;
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
 
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             // Get the requested category and put it in the context
             String requestedCategory = getBlogCategory(blog, httpServletRequest);
@@ -1042,13 +1515,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             context.put(BlojsomConstants.BLOJSOM_ALL_CATEGORIES, allCategoriesArray);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return allCategoriesArray;
@@ -1062,9 +1552,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the categories
      */
     public Category[] loadAllCategories(Blog blog) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
             categoryCriteria.add(Restrictions.eq("blogId", blog.getId()));
@@ -1073,15 +1565,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             List allCategories = categoryCriteria.list();
 
             tx.commit();
-            session.close();
 
             return (DatabaseCategory[]) allCategories.toArray(new DatabaseCategory[allCategories.size()]);
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1094,9 +1603,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the category
      */
     public Category loadCategory(Blog blog, Integer categoryId) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
             categoryCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -1105,15 +1616,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
 
             tx.commit();
-            session.close();
 
             return category;
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1126,9 +1654,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the category
      */
     public Category loadCategory(Blog blog, String name) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
             categoryCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -1137,15 +1667,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
 
             tx.commit();
-            session.close();
 
             return category;
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1189,9 +1736,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the entry
      */
     public void saveEntry(Blog blog, Entry entry) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             if (entry.getBlogId() == null) {
                 entry.setBlogId(blog.getId());
@@ -1213,13 +1762,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1235,24 +1801,43 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this entry");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.load(entry, entry.getId());
 
             tx.commit();
-            session.close();
 
             if (!blog.getId().equals(entry.getBlogId())) {
                 throw new FetcherException("Entry blog ID not associated with blog ID from call");
             }
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1272,20 +1857,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("Entry blog ID not associated with blog ID from call");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.delete(entry);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1297,9 +1901,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the category
      */
     public void saveCategory(Blog blog, Category category) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             if (category.getId() == null) {
                 session.save(category);
@@ -1308,13 +1914,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1330,24 +1953,43 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this category");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.load(category, category.getId());
 
             tx.commit();
-            session.close();
 
             if (!blog.getId().equals(category.getBlogId())) {
                 throw new FetcherException("Category blog ID not associated with blog ID from call");
             }
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1367,20 +2009,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("Category blog ID not associated with blog ID from call");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.delete(category);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1392,9 +2053,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the comment
      */
     public void saveComment(Blog blog, Comment comment) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             if (comment.getId() == null) {
                 session.save(comment);
@@ -1403,13 +2066,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1425,20 +2105,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this comment");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.load(comment, comment.getId());
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1454,20 +2153,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this comment");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.delete(comment);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1480,9 +2198,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public List loadRecentComments(Blog blog) throws FetcherException {
         List recentComments;
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
             commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -1505,13 +2225,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             recentComments = commentsCriteria.list();
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return recentComments;
@@ -1525,9 +2262,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the trackback
      */
     public void saveTrackback(Blog blog, Trackback trackback) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             if (trackback.getId() == null) {
                 session.save(trackback);
@@ -1536,13 +2275,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1558,21 +2314,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this trackback");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.load(trackback, trackback.getId());
 
             tx.commit();
-
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1588,20 +2362,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this trackback");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.delete(trackback);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1614,9 +2407,10 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public List loadRecentTrackbacks(Blog blog) throws FetcherException {
         List recentTrackbacks;
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
             trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -1639,13 +2433,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             recentTrackbacks = trackbacksCriteria.list();
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return recentTrackbacks;
@@ -1659,9 +2470,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the pingback
      */
     public void savePingback(Blog blog, Pingback pingback) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             if (pingback.getId() == null) {
                 session.save(pingback);
@@ -1670,13 +2483,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1692,21 +2522,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this pingback");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.load(pingback, pingback.getId());
 
             tx.commit();
-
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1722,9 +2570,10 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public Pingback loadPingback(Blog blog, String sourceURI, String targetURI) throws FetcherException {
         Pingback pingback;
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria pingbackCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
             pingbackCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -1734,13 +2583,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             pingback = (Pingback) pingbackCriteria.uniqueResult();
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return pingback;
@@ -1758,20 +2624,39 @@ public class DatabaseFetcher implements Fetcher, Listener {
             throw new FetcherException("No ID associated with this pingback");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             session.delete(pingback);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1784,9 +2669,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public List loadRecentPingbacks(Blog blog) throws FetcherException {
         List recentPingbacks;
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria pingbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
             pingbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -1809,13 +2696,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             recentPingbacks = pingbacksCriteria.list();
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         return recentPingbacks;
@@ -1829,9 +2733,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error loading the {@link User} from the blog
      */
     public User loadUser(Blog blog, String userLogin) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria userCriteria = session.createCriteria(DatabaseUser.class);
             userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getId()));
@@ -1839,7 +2745,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
             DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
 
             tx.commit();
-            session.close();
 
             if (user == null) {
                 throw new FetcherException("Unable to load user login: " + userLogin + " for blog: " + blog.getBlogId());
@@ -1847,11 +2752,29 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             return user;
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1904,7 +2827,6 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 User user = (DatabaseUser) session.load(DatabaseUser.class, userID);
                 if (!user.getBlogId().equals(blog.getId())) {
                     tx.commit();
-                    session.close();
 
                     throw new FetcherException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
                 }
@@ -1932,9 +2854,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error saving the user to the blog
      */
     public User saveUser(Blog blog, User user) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             if (user.getId() == null) {
                 session.save(user);
@@ -1943,15 +2867,32 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             tx.commit();
-            session.close();
 
             return user;
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException("Unable to save user login: " + user.getUserLogin() + " to blog: " + blog.getBlogId(), e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1963,14 +2904,15 @@ public class DatabaseFetcher implements Fetcher, Listener {
      * @throws FetcherException If there is an error deleting the user from the blog
      */
     public void deleteUser(Blog blog, Integer userID) throws FetcherException {
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             User userToDelete = (DatabaseUser) session.load(DatabaseUser.class, userID);
             if (!userToDelete.getBlogId().equals(blog.getId())) {
                 tx.commit();
-                session.close();
 
                 throw new FetcherException("User ID: " + userID + " not from current blog: " + blog.getBlogId());
             }
@@ -1978,13 +2920,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             session.delete(userToDelete);
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException("Unable to delete user ID: " + userID + " from blog: " + blog.getBlogId(), e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -1999,9 +2958,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public List findResponsesByStatus(Blog blog, String[] status) throws FetcherException {
         List responses = new ArrayList();
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
             commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -2016,13 +2977,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             responses.addAll(trackbacksCriteria.list());
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         Collections.sort(responses, BlojsomUtils.RESPONSE_COMPARATOR);
@@ -2040,9 +3018,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     public List findResponsesByQuery(Blog blog, String query) throws FetcherException {
         List responses = new ArrayList();
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
             commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
@@ -2067,13 +3047,30 @@ public class DatabaseFetcher implements Fetcher, Listener {
             responses.addAll(trackbacksCriteria.list());
 
             tx.commit();
-            session.close();
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new FetcherException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
 
         Collections.sort(responses, BlojsomUtils.RESPONSE_COMPARATOR);

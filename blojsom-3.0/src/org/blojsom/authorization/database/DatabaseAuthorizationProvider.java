@@ -47,7 +47,7 @@ import java.util.Map;
  * Database authorization provider
  *
  * @author David Czarnecki
- * @version $Id: DatabaseAuthorizationProvider.java,v 1.7 2007-01-17 02:35:16 czarneckid Exp $
+ * @version $Id: DatabaseAuthorizationProvider.java,v 1.8 2007-10-13 19:48:44 czarneckid Exp $
  * @since blojsom. 3.0
  */
 public class DatabaseAuthorizationProvider implements AuthorizationProvider {
@@ -100,9 +100,11 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
             throw new AuthorizationException("Password was null");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria userCriteria = session.createCriteria(DatabaseUser.class);
             userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getId()));
@@ -111,13 +113,11 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
 
             if (user == null) {
                 tx.commit();
-                session.close();
 
                 throw new AuthorizationException("User login not found");
             }
 
             tx.commit();
-            session.close();
 
             if (blog.getUseEncryptedPasswords().booleanValue()) {
                 password = BlojsomUtils.digestString(password, blog.getDigestAlgorithm());
@@ -127,11 +127,29 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
                 throw new AuthorizationException("Password authorization failure");
             }
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+            
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new AuthorizationException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 
@@ -154,9 +172,11 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
             throw new AuthorizationException("Password was null");
         }
 
+        Session session = _sessionFactory.openSession();
+        Transaction tx = null;
+
         try {
-            Session session = _sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria userCriteria = session.createCriteria(DatabaseUser.class);
             userCriteria.add(Restrictions.eq("userLogin", userLogin)).add(Restrictions.eq("blogId", blog.getId()));
@@ -164,7 +184,6 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
             DatabaseUser user = (DatabaseUser) userCriteria.uniqueResult();
 
             tx.commit();
-            session.close();
 
             if (!user.getMetaData().containsKey(ALL_PERMISSIONS_PERMISSION)) {
                 if (!user.getMetaData().containsKey(permission)) {
@@ -172,11 +191,29 @@ public class DatabaseAuthorizationProvider implements AuthorizationProvider {
                 }
             }
         } catch (HibernateException e) {
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (HibernateException e1) {
+                    if (_logger.isErrorEnabled()) {
+                        _logger.error(e1);
+                    }
+                }
+            }
+            
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
 
             throw new AuthorizationException(e);
+        } finally {
+            try {
+                session.close();
+            } catch (HibernateException e1) {
+                if (_logger.isErrorEnabled()) {
+                    _logger.error(e1);
+                }
+            }
         }
     }
 }
