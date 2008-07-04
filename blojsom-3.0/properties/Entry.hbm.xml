@@ -39,17 +39,17 @@
             <element column="metadata_value" type="string"/>
         </map>
 
-        <bag name="comments" table="Comment" lazy="false" cascade="all">
+        <bag name="comments" table="Comment" lazy="false" inverse="true" cascade="all">
             <key column="entry_id"/>
             <one-to-many class="org.blojsom.blog.database.DatabaseComment"/>
         </bag>
 
-        <bag name="trackbacks" table="Trackback" lazy="false" cascade="all">
+        <bag name="trackbacks" table="Trackback" lazy="false" inverse="true" cascade="all">
             <key column="entry_id"/>
             <one-to-many class="org.blojsom.blog.database.DatabaseTrackback"/>
         </bag>
 
-        <bag name="pingbacks" table="Pingback" lazy="false" cascade="all">
+        <bag name="pingbacks" table="Pingback" lazy="false" inverse="true" cascade="all">
             <key column="entry_id"/>
             <one-to-many class="org.blojsom.blog.database.DatabasePingback"/>
         </bag>

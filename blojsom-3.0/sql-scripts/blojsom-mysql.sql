@@ -291,3 +291,14 @@ CONSTRAINT `trackbackmetadata_trackback_trackbackidfk` FOREIGN KEY (`trackback_i
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+ALTER TABLE `blojsom`.`Comment` ADD CONSTRAINT `comment_entry_entryidfk` FOREIGN KEY (`entry_id`)
+    REFERENCES `Entry` (`entry_id`)
+    ON DELETE CASCADE;
+
+ALTER TABLE `blojsom`.`Pingback` ADD CONSTRAINT `pingback_entry_entryidfk` FOREIGN KEY (`entry_id`)
+    REFERENCES `Entry` (`entry_id`)
+    ON DELETE CASCADE;
+
+ALTER TABLE `blojsom`.`Trackback` ADD CONSTRAINT `trackback_entry_entryidfk` FOREIGN KEY (`entry_id`)
+    REFERENCES `Entry` (`entry_id`)
+    ON DELETE CASCADE;
