@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,19 +30,17 @@
  */
 package org.blojsom.plugin.markdown;
 
+import com.petebevin.markdown.MarkdownProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.blojsom.blog.Blog;
 import org.blojsom.blog.Entry;
 import org.blojsom.plugin.Plugin;
 import org.blojsom.plugin.PluginException;
-import org.blojsom.util.BlojsomConstants;
 import org.blojsom.util.BlojsomUtils;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.Map;
 
 /**
@@ -52,7 +50,7 @@ import java.util.Map;
  * <a href="http://daringfireball.net/projects/markdown/">John Gruber's Markdown site</a>.
  *
  * @author David Czarnecki
- * @version $Id: MarkdownPlugin.java,v 1.3 2007-01-17 02:35:11 czarneckid Exp $
+ * @version $Id: MarkdownPlugin.java,v 1.3 2007/01/17 02:35:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MarkdownPlugin implements Plugin {
@@ -70,35 +68,11 @@ public class MarkdownPlugin implements Plugin {
     private static final String MARKDOWN_EXTENSION = ".markdown";
 
     /**
-     * Initialization parameter for the command to start a Markdown session
-     */
-    private static final String PLUGIN_MARKDOWN_EXECUTION_IP = "plugin-markdown-execution";
-
-    private String _markdownExecution;
-    private ServletConfig _servletConfig;
-
-    /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
      * @throws PluginException If there is an error initializing the plugin
      */
     public void init() throws PluginException {
-        _markdownExecution = _servletConfig.getInitParameter(PLUGIN_MARKDOWN_EXECUTION_IP);
-
-        if (BlojsomUtils.checkNullOrBlank(_markdownExecution)) {
-            if (_logger.isErrorEnabled()) {
-                _logger.error("No Markdown execution string provided. Use initialization parameter: " + PLUGIN_MARKDOWN_EXECUTION_IP);
-            }
-        }
-    }
-
-    /**
-     * Set the {@link ServletConfig}
-     *
-     * @param servletConfig {@link ServletConfig}
-     */
-    public void setServletConfig(ServletConfig servletConfig) {
-        _servletConfig = servletConfig;
     }
 
     /**
@@ -113,33 +87,13 @@ public class MarkdownPlugin implements Plugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
-        if (!BlojsomUtils.checkNullOrBlank(_markdownExecution)) {
-            for (int i = 0; i < entries.length; i++) {
-                Entry entry = entries[i];
+        for (int i = 0; i < entries.length; i++) {
+            Entry entry = entries[i];
 
-                if ((entry.getPostSlug().endsWith(MARKDOWN_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_MARKDOWN)))
-                {
-                    try {
-                        Process process = Runtime.getRuntime().exec(_markdownExecution);
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), BlojsomConstants.UTF8));
-                        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), BlojsomConstants.UTF8));
-                        bw.write(entry.getDescription());
-                        bw.close();
-                        String input;
-                        StringBuffer collectedDescription = new StringBuffer();
-
-                        while ((input = br.readLine()) != null) {
-                            collectedDescription.append(input).append(BlojsomConstants.LINE_SEPARATOR);
-                        }
-
-                        entry.setDescription(collectedDescription.toString());
-                        br.close();
-                    } catch (IOException e) {
-                        if (_logger.isErrorEnabled()) {
-                            _logger.error(e);
-                        }
-                    }
-                }
+            if ((entry.getPostSlug().endsWith(MARKDOWN_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_MARKDOWN))) {
+                String originalDescription = entry.getDescription();
+                String convertedDescription = new MarkdownProcessor().markdown(originalDescription);
+                entry.setDescription(convertedDescription);
             }
         }
 
