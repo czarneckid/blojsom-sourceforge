@@ -106,7 +106,8 @@
     <!-- =================================================================== -->
     <!-- Prepares the build process                                          -->
     <!-- =================================================================== -->
-    <target name="prepare" description="Prepares the build by creating necessary directories and copying necessary files">
+    <target name="prepare"
+            description="Prepares the build by creating necessary directories and copying necessary files">
         <tstamp/>
         <mkdir dir="${compile.dir}"/>
         <mkdir dir="${build.dir}"/>
@@ -210,12 +211,12 @@
     <target name="compile" depends="prepare" description="Compiles the core, plugin, and extensions">
         <!-- Core -->
         <javac srcdir="${src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${core.jar}" basedir="${compile.dir}"/>
@@ -224,12 +225,12 @@
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
         <javac srcdir="${plugins.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${plugins.jar}" basedir="${compile.dir}"/>
@@ -241,13 +242,13 @@
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
         <javac srcdir="${extensions.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            excludes="**/Test*"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               excludes="**/Test*"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${extensions.jar}" basedir="${compile.dir}"/>
@@ -281,30 +282,30 @@
     <target name="compile-for-testing" depends="prepare" description="Compiles the class files">
         <!-- Core -->
         <javac srcdir="${src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <javac srcdir="${plugins.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <javac srcdir="${extensions.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <!--
@@ -319,21 +320,21 @@
         </javac>
         -->
         <javac srcdir="${addon.core.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <javac srcdir="${addon.plugins.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
     </target>
@@ -346,12 +347,12 @@
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
         <javac srcdir="${addon.core.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${addon.core.jar}" basedir="${compile.dir}"/>
@@ -361,17 +362,17 @@
         <delete dir="${compile.dir}"/>
         <mkdir dir="${compile.dir}"/>
         <javac srcdir="${addon.plugins.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <copy todir="${compile.dir}">
             <fileset dir="${addon.plugins.src.dir}" includes="**/*.vm"/>
-        </copy> 
+        </copy>
         <jar file="${addon.plugins.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
 
@@ -469,19 +470,19 @@
     <target name="javadoc" description="Creates the API documentation">
         <mkdir dir="${javadoc.dir}"/>
         <javadoc packagenames="org.*"
-            destdir="${javadoc.dir}"
-            author="true"
-            version="true"
-            use="true"
-            windowtitle="${name} ${version} API"
-            doctitle="${name} ${version} API">
+                 destdir="${javadoc.dir}"
+                 author="true"
+                 version="true"
+                 use="true"
+                 windowtitle="${name} ${version} API"
+                 doctitle="${name} ${version} API">
             <group
-                packages="org.*:org.blojsom.authorization.*:org.blojsom.blog.*:org.blojsom.dispatcher.*:org.blojsom.event.*:org.blojsom.fetcher.*:org.blojsom.filter.*:org.blojsom.servlet.*:org.blojsom.util.*:org.blojsom.util.resources.*"
-                title="blojsom core"/>
+                    packages="org.*:org.blojsom.authorization.*:org.blojsom.blog.*:org.blojsom.dispatcher.*:org.blojsom.event.*:org.blojsom.fetcher.*:org.blojsom.filter.*:org.blojsom.servlet.*:org.blojsom.util.*:org.blojsom.util.resources.*"
+                    title="blojsom core"/>
             <group packages="org.blojsom.extension.*"
-                title="blojsom extensions"/>
+                   title="blojsom extensions"/>
             <group packages="org.blojsom.plugin.*"
-                title="blojsom plugins"/>
+                   title="blojsom plugins"/>
             <classpath refid="build.classpath"/>
             <sourcepath refid="source.path"/>
         </javadoc>
@@ -500,7 +501,8 @@
     <!-- ========================================================================= -->
     <!-- Creates a ZIP of the Velocity macro documentation for the blojsom website -->
     <!-- ========================================================================= -->
-    <target name="velocidoc-archive" depends="velocidoc" description="Creates a ZIP of the Velocity macro documentation for the blojsom website">
+    <target name="velocidoc-archive" depends="velocidoc"
+            description="Creates a ZIP of the Velocity macro documentation for the blojsom website">
         <mkdir dir="${distro.dir}"/>
         <zip zipfile="${velocidoc.zip}" basedir="${velocidoc.dir}"/>
     </target>
@@ -516,7 +518,8 @@
     <!-- =================================================================== -->
     <!-- Create a source distribution                                        -->
     <!-- =================================================================== -->
-    <target name="create-source-distribution" depends="clean-with-templates" description="Creates the source distribution">
+    <target name="create-source-distribution" depends="clean-with-templates"
+            description="Creates the source distribution">
         <tstamp/>
         <mkdir dir="${compile.dir}"/>
         <mkdir dir="${build.dir}"/>
@@ -554,7 +557,7 @@
                 <include name="war/"/>
                 <include name="war/WEB-INF"/>
                 <include name="war/WEB-INF/lib"/>
-                <exclude name="war/WEB-INF/lib/blojsom*.jar"/> 
+                <exclude name="war/WEB-INF/lib/blojsom*.jar"/>
             </zipfileset>
         </zip>
     </target>
@@ -562,8 +565,9 @@
     <!-- =================================================================== -->
     <!-- Create a distribution (add-ons, themes, templates, source)          -->
     <!-- =================================================================== -->
-    <target name="create-distribution" depends="clean-with-templates, create-addon-bundle, create-source-distribution, create-themes-bundle, create-templates-bundle"
-        description="Create the add-on bundle, themes and templates packages, and source distribution">
+    <target name="create-distribution"
+            depends="clean-with-templates, create-addon-bundle, create-source-distribution, create-themes-bundle, create-templates-bundle"
+            description="Create the add-on bundle, themes and templates packages, and source distribution">
     </target>
 
     <!-- =================================================================== -->
@@ -573,12 +577,12 @@
         <mkdir dir="${compile.dir}"/>
         <!-- Upgrade -->
         <javac srcdir="${upgrade.src.dir}"
-            destdir="${compile.dir}"
-            debug="${debug}"
-            deprecation="${deprecation}"
-            optimize="${optimize}"
-            source="${source.version}"
-            target="${target.version}">
+               destdir="${compile.dir}"
+               debug="${debug}"
+               deprecation="${deprecation}"
+               optimize="${optimize}"
+               source="${source.version}"
+               target="${target.version}">
             <classpath refid="build.classpath"/>
         </javac>
         <jar file="${upgrade.jar}" basedir="${compile.dir}"/>
