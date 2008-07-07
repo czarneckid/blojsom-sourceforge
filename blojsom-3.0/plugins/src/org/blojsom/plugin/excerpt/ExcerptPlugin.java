@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: ExcerptPlugin.java,v 1.4 2007-03-12 16:09:19 czarneckid Exp $
+ * @version $Id: ExcerptPlugin.java,v 1.5 2008-07-07 19:54:10 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ExcerptPlugin implements Plugin {
@@ -96,7 +96,7 @@ public class ExcerptPlugin implements Plugin {
     /**
      * Process entries
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param entries Array of {@link Entry} objects
      */
     private void processEntries(Blog blog, Entry[] entries) {

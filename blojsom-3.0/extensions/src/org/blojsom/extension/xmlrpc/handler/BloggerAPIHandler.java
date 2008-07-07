@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,8 +51,8 @@ import java.util.*;
  * Blogger API handler
  *
  * @author David Czarnecki
+ * @version $Id: BloggerAPIHandler.java,v 1.7 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: BloggerAPIHandler.java,v 1.6 2007-01-17 02:35:07 czarneckid Exp $
  */
 public class BloggerAPIHandler extends APIHandler {
 
@@ -157,8 +157,8 @@ public class BloggerAPIHandler extends APIHandler {
      * @param userid   Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
      * @return Basic user information (name, email, userid)
-     * @throws org.apache.xmlrpc.XmlRpcException If there is an error 
-     *
+     * @throws org.apache.xmlrpc.XmlRpcException
+     *          If there is an error
      */
     public Object getUserInfo(String appkey, String userid, String password) throws Exception {
         _logger.debug("getUserInfo() Called =====[ SUPPORTED ]=======");
@@ -379,7 +379,7 @@ public class BloggerAPIHandler extends APIHandler {
 
                 if (!userid.equals(entryToEdit.getAuthor())) {
                     checkXMLRPCPermission(userid, ALL_XMLRPC_EDIT_PERMISSION);
-                }                
+                }
 
                 String title = findTitleInContent(content);
                 if (title != null) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,8 +47,8 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: MacroExpansionPlugin.java,v 1.3 2008-07-07 19:54:23 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: MacroExpansionPlugin.java,v 1.2 2007-01-17 02:35:11 czarneckid Exp $
  */
 public class MacroExpansionPlugin implements Plugin {
 
@@ -109,10 +109,10 @@ public class MacroExpansionPlugin implements Plugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               Blog blog,
-                               Map context,
-                               Entry[] entries) throws PluginException {
+                           HttpServletResponse httpServletResponse,
+                           Blog blog,
+                           Map context,
+                           Entry[] entries) throws PluginException {
         Map macros = MacroExpansionUtilities.readMacros(blog);
 
         for (int i = 0; i < entries.length; i++) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,8 +47,8 @@ import java.util.Properties;
  * API Handler
  *
  * @author David Czarnecki
+ * @version $Id: APIHandler.java,v 1.5 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: APIHandler.java,v 1.4 2007-01-17 02:35:07 czarneckid Exp $
  */
 public abstract class APIHandler {
 
@@ -163,9 +163,10 @@ public abstract class APIHandler {
     /**
      * Check XML-RPC permissions for a given username
      *
-     * @param username Username
+     * @param username   Username
      * @param permission Permisison to check
-     * @throws org.apache.xmlrpc.XmlRpcException If the username does not have the required permission
+     * @throws org.apache.xmlrpc.XmlRpcException
+     *          If the username does not have the required permission
      */
     protected void checkXMLRPCPermission(String username, String permission) throws XmlRpcException {
         try {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ import java.util.*;
  * EditBlogFlavorsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogFlavorsPlugin.java,v 1.8 2007-05-18 01:07:46 czarneckid Exp $
+ * @version $Id: EditBlogFlavorsPlugin.java,v 1.9 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
@@ -144,7 +144,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
     /**
      * Add flavor information to the context
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param context Context
      */
     protected void addFlavorInformationToContext(Blog blog, Map context) {
@@ -251,7 +251,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
             try {
                 _fetcher.saveBlog(blog);
-                addOperationResultMessage(context, formatAdminResource(SUCCESSFULLY_ADDED_FLAVOR_KEY, SUCCESSFULLY_ADDED_FLAVOR_KEY, blog.getBlogAdministrationLocale(), new Object[] {flavorName, blogTemplate, flavorMimeType, flavorCharacterSet}));
+                addOperationResultMessage(context, formatAdminResource(SUCCESSFULLY_ADDED_FLAVOR_KEY, SUCCESSFULLY_ADDED_FLAVOR_KEY, blog.getBlogAdministrationLocale(), new Object[]{flavorName, blogTemplate, flavorMimeType, flavorCharacterSet}));
                 _logger.debug("Successfully wrote flavor configuration file for blog: " + blog.getBlogId());
 
                 addFlavorInformationToContext(blog, context);
@@ -283,7 +283,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
 
             if (protectedFlavors.indexOf(flavorName) != -1) {
                 _logger.debug("Cannot delete protected flavor: " + flavorName);
-                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_PROTECTED_FLAVOR_KEY, FAILED_DELETE_PROTECTED_FLAVOR_KEY, blog.getBlogAdministrationLocale(), new Object[] {flavorName}));
+                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_PROTECTED_FLAVOR_KEY, FAILED_DELETE_PROTECTED_FLAVOR_KEY, blog.getBlogAdministrationLocale(), new Object[]{flavorName}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_FLAVORS_PAGE);
 
                 return entries;
@@ -302,7 +302,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             try {
                 _fetcher.saveBlog(blog);
                 _logger.debug("Successfully wrote flavor configuration file for blog: " + blog.getBlogId());
-                addOperationResultMessage(context, formatAdminResource(SUCCESSFULLY_DELETED_FLAVOR_KEY, SUCCESSFULLY_DELETED_FLAVOR_KEY, blog.getBlogAdministrationLocale(), new Object[] {flavorName}));
+                addOperationResultMessage(context, formatAdminResource(SUCCESSFULLY_DELETED_FLAVOR_KEY, SUCCESSFULLY_DELETED_FLAVOR_KEY, blog.getBlogAdministrationLocale(), new Object[]{flavorName}));
 
                 addFlavorInformationToContext(blog, context);
             } catch (FetcherException e) {
@@ -323,7 +323,7 @@ public class EditBlogFlavorsPlugin extends BaseAdminPlugin {
             if (templateType.length == 2) {
                 typeAndCharacterSet = BlojsomUtils.parseDelimitedList(templateType[1], ";", true);
             } else {
-                typeAndCharacterSet = new String[] {"text/html"};
+                typeAndCharacterSet = new String[]{"text/html"};
             }
 
             context.put(FLAVOR_TYPE_EDIT, typeAndCharacterSet[0]);

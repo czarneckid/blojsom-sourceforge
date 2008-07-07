@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,10 @@ package org.blojsom.plugin.registration;
 import org.blojsom.plugin.PluginException;
 
 /**
- * Exception indicating that a required parameter is missing. 
+ * Exception indicating that a required parameter is missing.
  *
  * @author Eric Broyles
- * @version $Id: MissingParameterException.java,v 1.2 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: MissingParameterException.java,v 1.3 2008-07-07 19:54:18 czarneckid Exp $
  */
 public class MissingParameterException extends PluginException {
 

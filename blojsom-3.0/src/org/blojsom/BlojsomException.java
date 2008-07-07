@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,8 @@ package org.blojsom;
  * BlojsomException
  *
  * @author David Czarnecki
+ * @version $Id: BlojsomException.java,v 1.3 2008-07-07 19:55:08 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: BlojsomException.java,v 1.2 2007-01-17 02:35:15 czarneckid Exp $
  */
 public class BlojsomException extends Exception {
 
@@ -52,8 +52,8 @@ public class BlojsomException extends Exception {
      * cause is not initialized, and may subsequently be initialized by
      * a call to {@link #initCause}.
      *
-     * @param   message   the detail message. The detail message is saved for
-     *          later retrieval by the {@link #getMessage()} method.
+     * @param message the detail message. The detail message is saved for
+     *                later retrieval by the {@link #getMessage()} method.
      */
     public BlojsomException(String message) {
         super(message);
@@ -65,12 +65,12 @@ public class BlojsomException extends Exception {
      * <code>cause</code> is <i>not</i> automatically incorporated in
      * this exception's detail message.
      *
-     * @param  message the detail message (which is saved for later retrieval
-     *         by the {@link #getMessage()} method).
-     * @param  cause the cause (which is saved for later retrieval by the
-     *         {@link #getCause()} method).  (A <tt>null</tt> value is
-     *         permitted, and indicates that the cause is nonexistent or
-     *         unknown.)
+     * @param message the detail message (which is saved for later retrieval
+     *                by the {@link #getMessage()} method).
+     * @param cause   the cause (which is saved for later retrieval by the
+     *                {@link #getCause()} method).  (A <tt>null</tt> value is
+     *                permitted, and indicates that the cause is nonexistent or
+     *                unknown.)
      */
     public BlojsomException(String message, Throwable cause) {
         super(message, cause);
@@ -84,10 +84,10 @@ public class BlojsomException extends Exception {
      * wrappers for other throwables (for example, {@link
      * java.security.PrivilegedActionException}).
      *
-     * @param  cause the cause (which is saved for later retrieval by the
-     *         {@link #getCause()} method).  (A <tt>null</tt> value is
-     *         permitted, and indicates that the cause is nonexistent or
-     *         unknown.)
+     * @param cause the cause (which is saved for later retrieval by the
+     *              {@link #getCause()} method).  (A <tt>null</tt> value is
+     *              permitted, and indicates that the cause is nonexistent or
+     *              unknown.)
      */
     public BlojsomException(Throwable cause) {
         super(cause);

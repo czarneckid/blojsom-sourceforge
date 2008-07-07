@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,7 +58,7 @@ import java.util.Iterator;
  * WidgetAdministrationPlugin
  *
  * @author David Czarnecki
- * @version $Id: WidgetAdministrationPlugin.java,v 1.1 2007-03-26 18:17:19 czarneckid Exp $
+ * @version $Id: WidgetAdministrationPlugin.java,v 1.2 2008-07-07 19:54:22 czarneckid Exp $
  * @since blojsom 3.2
  */
 public class WidgetAdministrationPlugin extends WebAdminPlugin implements Listener {
@@ -102,7 +102,7 @@ public class WidgetAdministrationPlugin extends WebAdminPlugin implements Listen
     public void setFetcher(Fetcher fetcher) {
         _fetcher = fetcher;
     }
-    
+
     /**
      * Set the {@link EventBroadcaster}
      *
@@ -188,7 +188,7 @@ public class WidgetAdministrationPlugin extends WebAdminPlugin implements Listen
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_WIDGETS_MAP, widgetChain);
 
             context.put(BLOJSOM_PLUGIN_EDIT_BLOG_WIDGETS_AVAILABLE_WIDGETS, _widgets);
-            
+
             if (UPDATE_WIDGETS_ACTION.equals(action)) {
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("User requested modify widgets action");
@@ -202,7 +202,7 @@ public class WidgetAdministrationPlugin extends WebAdminPlugin implements Listen
                     if (BlojsomUtils.checkNullOrBlank(widgetsToRun)) {
                         widgetsToRun = "";
                     }
-                    
+
                     blog.setProperty(WidgetPlugin.PLUGIN_WIDGETS + "-" + flavor, widgetsToRun);
                     widgetChain.put(flavor, widgetsToRun);
                 }
@@ -257,7 +257,7 @@ public class WidgetAdministrationPlugin extends WebAdminPlugin implements Listen
 
         if (_logger.isDebugEnabled()) {
             _logger.debug("Registered widget: " + registerWidgetEvent.getWidget() +
-                    "with display name: " + registerWidgetEvent.getDisplayName());
+                "with display name: " + registerWidgetEvent.getDisplayName());
         }
     }
 

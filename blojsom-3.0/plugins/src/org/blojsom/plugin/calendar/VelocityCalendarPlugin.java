@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,8 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: VelocityCalendarPlugin.java,v 1.3 2008-07-07 19:54:09 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: VelocityCalendarPlugin.java,v 1.2 2007-01-17 02:35:08 czarneckid Exp $
  */
 public class VelocityCalendarPlugin extends AbstractVisualCalendarPlugin {
 
@@ -60,13 +60,13 @@ public class VelocityCalendarPlugin extends AbstractVisualCalendarPlugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               Blog blog,
-                               Map context,
-                               Entry[] entries) throws PluginException {
+                           HttpServletResponse httpServletResponse,
+                           Blog blog,
+                           Map context,
+                           Entry[] entries) throws PluginException {
         entries = super.process(httpServletRequest, httpServletResponse, blog, context, entries);
 
-        BlogCalendar blogCalendar = (BlogCalendar)context.get(BLOJSOM_CALENDAR);
+        BlogCalendar blogCalendar = (BlogCalendar) context.get(BLOJSOM_CALENDAR);
 
         VelocityHelper vtlhelper = new VelocityHelper(blogCalendar);
         vtlhelper.buildCalendar();

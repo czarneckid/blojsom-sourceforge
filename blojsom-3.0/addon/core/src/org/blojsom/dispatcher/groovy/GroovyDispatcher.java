@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,8 +60,8 @@ import java.util.Properties;
  * GroovyDispatcher
  *
  * @author David Czarnecki
+ * @version $Id: GroovyDispatcher.java,v 1.4 2008-07-07 19:54:27 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: GroovyDispatcher.java,v 1.3 2007-03-22 00:43:07 czarneckid Exp $
  */
 public class GroovyDispatcher implements Dispatcher {
 
@@ -131,7 +131,7 @@ public class GroovyDispatcher implements Dispatcher {
             }
         }
     }
-    
+
     /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
      * any required information for use by the dispatcher. The dispatcher is also
@@ -169,7 +169,7 @@ public class GroovyDispatcher implements Dispatcher {
         Binding binding = new Binding();
 
         // Populate the script context with context attributes from the blog
-        populateContext(httpServletRequest, context);        
+        populateContext(httpServletRequest, context);
         Iterator contextIterator = context.keySet().iterator();
         String contextKey;
         while (contextIterator.hasNext()) {

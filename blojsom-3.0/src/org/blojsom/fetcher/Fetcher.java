@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,8 +42,8 @@ import java.util.Date;
  * Fetcher
  *
  * @author David Czarnecki
+ * @version $Id: Fetcher.java,v 1.23 2008-07-07 19:55:09 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: Fetcher.java,v 1.22 2007-04-03 16:40:59 czarneckid Exp $
  */
 public interface Fetcher {
 
@@ -148,11 +148,11 @@ public interface Fetcher {
     /**
      * Fetch a set of {@link Entry} objects.
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param blog {@link Blog} instance
-     * @param flavor Flavor
-     * @param context Context
+     * @param blog                {@link Blog} instance
+     * @param flavor              Flavor
+     * @param context             Context
      * @return Blog entries retrieved for the particular request
      * @throws FetcherException If there is an error retrieving the blog entries for the request
      */
@@ -165,7 +165,7 @@ public interface Fetcher {
     /**
      * Load all the entries for a given category
      *
-     * @param blog {@link Blog}
+     * @param blog       {@link Blog}
      * @param categoryId Category ID
      * @return Blog entries for a given category
      * @throws FetcherException If there is an error loading the entries
@@ -175,9 +175,9 @@ public interface Fetcher {
     /**
      * Load all the entries for a given category
      *
-     * @param blog {@link Blog}
+     * @param blog       {@link Blog}
      * @param categoryId Category ID
-     * @param limit Limit on number of entries to return
+     * @param limit      Limit on number of entries to return
      * @return Blog entries for a given category
      * @throws FetcherException If there is an error loading the entries
      */
@@ -186,9 +186,9 @@ public interface Fetcher {
     /**
      * Load a set of entries using a given page size and page in which to retrieve the entries
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pageSize Page size
-     * @param page Page
+     * @param page     Page
      * @return Blog entries
      * @throws FetcherException If there is an error loading the entries
      */
@@ -197,20 +197,20 @@ public interface Fetcher {
     /**
      * Load a set of entries using a given page size and page in which to retrieve the entries
      *
-     * @param pageSize Page size
-     * @param page     Page
-     * @param specificCategory Category
+     * @param pageSize          Page size
+     * @param page              Page
+     * @param specificCategory  Category
      * @param defaultCategories Default categories to use for requesting entries from the blogs
      * @return Blog entries
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntries(int pageSize, int page, Category specificCategory, Category[] defaultCategories)
-            throws FetcherException;
+        throws FetcherException;
 
     /**
      * Find entries which have the search query in their title or description
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param query Search query
      * @return Blog entries which have the search query in their title or descirption
      * @throws FetcherException If there is an error searching through entries
@@ -220,11 +220,11 @@ public interface Fetcher {
     /**
      * Find entries by a metadata key/value pair
      *
-     * @param blog {@link Blog}
-     * @param metadataKey Metadata key
+     * @param blog          {@link Blog}
+     * @param metadataKey   Metadata key
      * @param metadataValue Metadata value
-     * @param pre If the search should use % before the metadata value (match anything before)
-     * @param post If the search should use % after the metadata value (match antthing after)
+     * @param pre           If the search should use % before the metadata value (match anything before)
+     * @param post          If the search should use % after the metadata value (match antthing after)
      * @return Entries matching metadata key and value using LIKE syntax for metadata value
      * @throws FetcherException If there is an error searching through entries
      */
@@ -234,7 +234,7 @@ public interface Fetcher {
     /**
      * Find entries with a given metadata key
      *
-     * @param blog {@link Blog}
+     * @param blog        {@link Blog}
      * @param metadataKey Metadata key
      * @return Entries with the given metadata key
      * @throws FetcherException If there is an error searching through entries
@@ -244,9 +244,9 @@ public interface Fetcher {
     /**
      * Find entries between a start and end date
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param startDate Start date
-     * @param endDate End date
+     * @param endDate   End date
      * @return Entries between a start and end date
      * @throws FetcherException If there is an error searching for entries between the dates
      */
@@ -255,8 +255,8 @@ public interface Fetcher {
     /**
      * Loads the previous entries of a specified entry
      *
-     * @param blog {@link Blog}
-     * @param entry {@link Entry}
+     * @param blog               {@link Blog}
+     * @param entry              {@link Entry}
      * @param numPreviousEntries Number of previous entries to retrieve
      * @return Array of entries before the given entry
      * @throws FetcherException If there is an error retrieving previous entries
@@ -275,7 +275,7 @@ public interface Fetcher {
     /**
      * Count the number of entries for a blog category
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category}
      * @return Number of entries
      * @throws FetcherException If there is an error counting the blog entries in the category
@@ -285,7 +285,7 @@ public interface Fetcher {
     /**
      * Load an {@link Entry} for a given entry ID
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param entryId Entry ID
      * @return {@link Entry} entry
      * @throws FetcherException If there is an error loading the entry
@@ -295,7 +295,7 @@ public interface Fetcher {
     /**
      * Load an {@link Entry} given a post slug
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param postSlug Post slug
      * @return {@link Entry} for the given post slug
      * @throws FetcherException If an entry for the blog and post slug cannot be found
@@ -305,11 +305,11 @@ public interface Fetcher {
     /**
      * Fetch a set of {@link Category} objects
      *
-     * @param httpServletRequest Request
+     * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param blog {@link Blog} instance
-     * @param flavor Flavor
-     * @param context Context
+     * @param blog                {@link Blog} instance
+     * @param flavor              Flavor
+     * @param context             Context
      * @return Blog categories retrieved for the particular request
      * @throws FetcherException If there is an error retrieving the blog categories for the request
      */
@@ -331,7 +331,7 @@ public interface Fetcher {
     /**
      * Load the {@link Category} for a given category ID
      *
-     * @param blog {@link Blog}
+     * @param blog       {@link Blog}
      * @param categoryId Category ID
      * @return {@link Category} for the given category ID
      * @throws FetcherException If there is an error loading the category
@@ -351,7 +351,7 @@ public interface Fetcher {
     /**
      * Save a given {@link Entry}
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry} to save
      * @throws FetcherException If there is an error saving the entry
      */
@@ -360,7 +360,7 @@ public interface Fetcher {
     /**
      * Load a given {@link Entry}
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry} to load
      * @throws FetcherException If there is an error loading the entry
      */
@@ -369,7 +369,7 @@ public interface Fetcher {
     /**
      * Delete a given {@link Entry}
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry} to delete
      * @throws FetcherException If there is an error deleting the entry
      */
@@ -378,7 +378,7 @@ public interface Fetcher {
     /**
      * Save a given {@link Category}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category} to save
      * @throws FetcherException If there is an error saving the category
      */
@@ -387,7 +387,7 @@ public interface Fetcher {
     /**
      * Load a given {@link Category}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category} to load
      * @throws FetcherException If there is an loading saving the category
      */
@@ -396,7 +396,7 @@ public interface Fetcher {
     /**
      * Delete a given {@link Category}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category} to delete
      * @throws FetcherException If there is an error deleting the category
      */
@@ -405,7 +405,7 @@ public interface Fetcher {
     /**
      * Save a given {@link Comment}
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param comment {@link Comment} to save
      * @throws FetcherException If there is an error saving the comment
      */
@@ -414,7 +414,7 @@ public interface Fetcher {
     /**
      * Load a given {@link Comment}
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param comment {@link Comment} to load
      * @throws FetcherException If there is an error loading the comment
      */
@@ -423,7 +423,7 @@ public interface Fetcher {
     /**
      * Delete a given {@link Comment}
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param comment {@link Comment} to delete
      * @throws FetcherException If there is an error deleting the comment
      */
@@ -441,7 +441,7 @@ public interface Fetcher {
     /**
      * Save a given {@link Trackback}
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param trackback {@link Trackback} to save
      * @throws FetcherException If there is an error saving the trackback
      */
@@ -450,7 +450,7 @@ public interface Fetcher {
     /**
      * Load a given {@link Trackback}
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param trackback {@link Trackback} to load
      * @throws FetcherException If there is an error loading the trackback
      */
@@ -459,7 +459,7 @@ public interface Fetcher {
     /**
      * Delete a given {@link Trackback}
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param trackback {@link Trackback} to delete
      * @throws FetcherException If there is an error deleting the trackback
      */
@@ -477,7 +477,7 @@ public interface Fetcher {
     /**
      * Save a given {@link Pingback}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pingback {@link Pingback} to save
      * @throws FetcherException If there is an error saving the pingback
      */
@@ -486,7 +486,7 @@ public interface Fetcher {
     /**
      * Load a given {@link Pingback}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pingback {@link Pingback} to load
      * @throws FetcherException If there is an error loading the pingback
      */
@@ -495,7 +495,7 @@ public interface Fetcher {
     /**
      * Load a pingback given the source URI and target URI
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param sourceURI Source URI
      * @param targetURI Target URI
      * @return {@link Pingback} given the source and target URIs or <code>null</code> if not found
@@ -506,7 +506,7 @@ public interface Fetcher {
     /**
      * Delete a given {@link Pingback}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pingback {@link Pingback} to delete
      * @throws FetcherException If there is an error deleting the pingback
      */
@@ -542,7 +542,7 @@ public interface Fetcher {
     /**
      * Load a given {@link User} from a blog given their ID
      *
-     * @param blog {@link Blog}
+     * @param blog   {@link Blog}
      * @param userID User ID
      * @return {@link User} user
      * @throws FetcherException If there is an error loading the user
@@ -562,7 +562,7 @@ public interface Fetcher {
     /**
      * Delete a given user from a blog
      *
-     * @param blog {@link Blog}
+     * @param blog   {@link Blog}
      * @param userID User ID
      * @throws FetcherException If there is an error deleting the user from the blog
      */
@@ -571,7 +571,7 @@ public interface Fetcher {
     /**
      * Find the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
      *
-     * @param blog {@link Blog}
+     * @param blog   {@link Blog}
      * @param status List of status codes to search
      * @return List of responses (comments, trackbacks, pingbacks) matching one of a set of status codes
      * @throws FetcherException If there is an error loading the responses
@@ -581,7 +581,7 @@ public interface Fetcher {
     /**
      * Find the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching some query
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param query Query which will match on various items such as commenter name, e-mail, IP address, etc.
      * @return List of responses (comments, trackbacks, pingbacks) matching query
      * @throws FetcherException If there is an error loading the responses

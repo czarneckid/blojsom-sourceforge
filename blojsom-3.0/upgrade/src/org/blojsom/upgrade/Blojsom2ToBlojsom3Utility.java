@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ import java.util.*;
  * Utility class to migrate from blojsom 2 to blojsom 3
  *
  * @author David Czarnecki
- * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.23 2007-05-25 18:14:25 czarneckid Exp $
+ * @version $Id: Blojsom2ToBlojsom3Utility.java,v 1.24 2008-07-07 19:55:12 czarneckid Exp $
  * @since blojsom 3
  */
 public class Blojsom2ToBlojsom3Utility {
@@ -453,7 +453,7 @@ public class Blojsom2ToBlojsom3Utility {
                     Map categoryMetaData = blojsom2Category.getMetaData();
                     categoryMetaData.remove("blojsom.name");
                     blojsom3Category.setMetaData(categoryMetaData);
-                    
+
                     try {
                         _fetcher.saveCategory(blog, blojsom3Category);
                         if (_logger.isDebugEnabled()) {
@@ -565,8 +565,7 @@ public class Blojsom2ToBlojsom3Utility {
                             blojsom3Comment.setMetaData(commentMetaData);
                             if ("false".equals(comment.getMetaData().get("BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED"))) {
                                 blojsom3Comment.setStatus(ResponseConstants.NEW_STATUS);
-                            }
-                            else {
+                            } else {
                                 blojsom3Comment.setStatus(ResponseConstants.APPROVED_STATUS);
                             }
 
@@ -742,14 +741,14 @@ public class Blojsom2ToBlojsom3Utility {
                     // "<input type=\"hidden\" name=\"comment\" value=\"y\" />" -> "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t<input type=\"hidden\" name=\"entry_id\" value=\"$entry.getId()\" />\n\t\t\t\t<input type=\"hidden\" name=\"redirect_to\" value=\"#FriendlyPermalink($entry)$entryLink\" />"
                     templateData = templateData.replaceAll("<input type=\"hidden\" name=\"comment\" value=\"y\"\\s*/?>", "<input type=\"hidden\" name=\"comment\" value=\"y\" />\n\t\t\t\t<input type=\"hidden\" name=\"entry_id\" value=\"\\$entry.getId()\" />\n\t\t\t\t<input type=\"hidden\" name=\"redirect_to\" value=\"#FriendlyPermalink(\\$entry)\\$entryLink\" />");
                     // $entry.getComments() -> $entry.getResponsesMatchingStatus("approved")
-                    templateData = templateData.replaceAll("\\$entry\\.getComments\\(\\s*\\)", "\\$entry\\.getResponsesMatchingStatus\\(\\s*\"approved\"\\s*\\)");                    
+                    templateData = templateData.replaceAll("\\$entry\\.getComments\\(\\s*\\)", "\\$entry\\.getResponsesMatchingStatus\\(\\s*\"approved\"\\s*\\)");
                     // $entry.getMetaData().get("blog-entry-author") -> $entry.getAuthor()
                     templateData = templateData.replaceAll("\\$entry\\.getMetaData\\(\\s*\\)\\.get\\(\\s*\"blog-entry-author\"\\s*\\)", "\\$entry\\.getAuthor\\(\\s*\\)");
 
                     // Updated miscellaneous fields
                     // "$entry.getMetaData().get("blog-entry-author")" -> "$entry.getAuthor()"
                     templateData = templateData.replaceAll("\\$entry\\.getMetaData\\(\\s*\\)\\.get\\(\\s*\"blog-entry-author\"\\s*\\)", "\\$entry.getAuthor()");
-                    
+
                     FileUtils.writeStringToFile(template, templateData, BlojsomConstants.UTF8);
                 } catch (IOException e) {
                     if (_logger.isErrorEnabled()) {

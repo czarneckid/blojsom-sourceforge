@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,8 +50,8 @@ import java.util.TreeMap;
  * Tag Cloud plugin
  *
  * @author David Czarnecki
+ * @version $Id: TagCloudPlugin.java,v 1.7 2008-07-07 19:54:16 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: TagCloudPlugin.java,v 1.6 2007-01-17 02:35:14 czarneckid Exp $
  */
 public class TagCloudPlugin implements Plugin {
 
@@ -108,7 +108,7 @@ public class TagCloudPlugin implements Plugin {
         if (!BlojsomUtils.checkNullOrBlank(tagQuery)) {
             try {
                 entriesMatchingTag = _fetcher.findEntriesByMetadataKeyValue(blog, TechnoratiTagsPlugin.METADATA_TECHNORATI_TAGS,
-                        tagQuery, true, true);
+                    tagQuery, true, true);
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Entries matching tag: " + entriesMatchingTag.length);
                 }
@@ -178,7 +178,7 @@ public class TagCloudPlugin implements Plugin {
     /**
      * Calculate a scaled ranking for a given tag count and number of entries
      *
-     * @param tagCount Total count for a given tag
+     * @param tagCount    Total count for a given tag
      * @param minTagCount Minimum number of tags
      * @param maxTagCount Maximum number of tags
      * @return Ranked distribution between 1 and TAG_DISTRIBUTION_MAX

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ import java.util.TimeZone;
  * DateFormatPlugin
  *
  * @author David Czarnecki
- * @version $Id: DateFormatPlugin.java,v 1.5 2007-01-17 02:35:09 czarneckid Exp $
+ * @version $Id: DateFormatPlugin.java,v 1.6 2008-07-07 19:54:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DateFormatPlugin implements Plugin {
@@ -139,7 +139,7 @@ public class DateFormatPlugin implements Plugin {
         }
 
         context.put(BLOJSOM_DATE_FORMAT, _blogDateFormat);
-        
+
         return entries;
     }
 

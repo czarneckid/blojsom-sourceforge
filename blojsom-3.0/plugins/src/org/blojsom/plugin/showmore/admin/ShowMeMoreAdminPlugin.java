@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.Map;
  * Show Me More administration plugin
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreAdminPlugin.java,v 1.2 2007-04-05 01:19:39 czarneckid Exp $
+ * @version $Id: ShowMeMoreAdminPlugin.java,v 1.3 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.2
  */
 public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
@@ -92,7 +92,7 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
     public void setFetcher(Fetcher fetcher) {
         _fetcher = fetcher;
     }
-    
+
     /**
      * Return the display name for the plugin
      *
@@ -165,14 +165,14 @@ public class ShowMeMoreAdminPlugin extends WebAdminPlugin {
                     _fetcher.saveBlog(blog);
 
                     addOperationResultMessage(context, getAdminResource(SAVED_SHOWMEMORE_CONFIGURATION_KEY,
-                            SAVED_SHOWMEMORE_CONFIGURATION_KEY, blog.getBlogAdministrationLocale()));
+                        SAVED_SHOWMEMORE_CONFIGURATION_KEY, blog.getBlogAdministrationLocale()));
                 } catch (FetcherException e) {
                     if (_logger.isErrorEnabled()) {
                         _logger.error(e);
                     }
 
                     addOperationResultMessage(context, getAdminResource(FAILED_SHOWMEMORE_CONFIGURATION_SAVE_KEY,
-                            FAILED_SHOWMEMORE_CONFIGURATION_SAVE_KEY, blog.getBlogAdministrationLocale()));
+                        FAILED_SHOWMEMORE_CONFIGURATION_SAVE_KEY, blog.getBlogAdministrationLocale()));
                 }
             }
 

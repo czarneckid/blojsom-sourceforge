@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ import java.util.Map;
  * Moblog Admin Plugin
  *
  * @author David Czarnecki
- * @version $Id: MoblogAdminPlugin.java,v 1.3 2007-02-27 16:42:53 czarneckid Exp $
+ * @version $Id: MoblogAdminPlugin.java,v 1.4 2008-07-07 19:54:25 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogAdminPlugin extends WebAdminPlugin {
@@ -213,7 +213,7 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
 
                     try {
                         _fetcher.saveBlog(blog);
-                        addOperationResultMessage(context, formatAdminResource(ADDED_AUTHORIZED_EMAIL_KEY, ADDED_AUTHORIZED_EMAIL_KEY, blog.getBlogAdministrationLocale(), new Object[] {addressToAdd}));
+                        addOperationResultMessage(context, formatAdminResource(ADDED_AUTHORIZED_EMAIL_KEY, ADDED_AUTHORIZED_EMAIL_KEY, blog.getBlogAdministrationLocale(), new Object[]{addressToAdd}));
                     } catch (FetcherException e) {
                         _logger.error(e);
                         addOperationResultMessage(context, getAdminResource(FAILED_ADD_EMAIL_KEY, FAILED_ADD_EMAIL_KEY, blog.getBlogAdministrationLocale()));
@@ -234,11 +234,11 @@ public class MoblogAdminPlugin extends WebAdminPlugin {
                         updatedAddresses = BlojsomUtils.getKeysAsStringList(addresses);
                     }
 
-                    blog.setProperty(MoblogPlugin. PLUGIN_MOBLOG_AUTHORIZED_ADDRESSES, updatedAddresses);
+                    blog.setProperty(MoblogPlugin.PLUGIN_MOBLOG_AUTHORIZED_ADDRESSES, updatedAddresses);
 
                     try {
                         _fetcher.saveBlog(blog);
-                        addOperationResultMessage(context, formatAdminResource(REMOVED_AUTHORIZED_EMAIL_KEY, REMOVED_AUTHORIZED_EMAIL_KEY, blog.getBlogAdministrationLocale(), new Object[] {addressToDelete}));
+                        addOperationResultMessage(context, formatAdminResource(REMOVED_AUTHORIZED_EMAIL_KEY, REMOVED_AUTHORIZED_EMAIL_KEY, blog.getBlogAdministrationLocale(), new Object[]{addressToDelete}));
                     } catch (FetcherException e) {
                         _logger.error(e);
                         addOperationResultMessage(context, getAdminResource(FAILED_DELETE_EMAIL_KEY, FAILED_DELETE_EMAIL_KEY, blog.getBlogAdministrationLocale()));

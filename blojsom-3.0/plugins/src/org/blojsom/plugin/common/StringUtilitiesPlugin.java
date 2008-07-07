@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ import java.util.Map;
  * StringUtilities plugin
  *
  * @author David Czarnecki
- * @version $Id: StringUtilitiesPlugin.java,v 1.3 2007-01-17 02:35:09 czarneckid Exp $
+ * @version $Id: StringUtilitiesPlugin.java,v 1.4 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class StringUtilitiesPlugin implements Plugin {
@@ -187,7 +187,7 @@ public class StringUtilitiesPlugin implements Plugin {
          * Parse a comma-separated list of values
          *
          * @param commaList Comma-separated list
-         * @param trim If the contents of the array should be trimmed
+         * @param trim      If the contents of the array should be trimmed
          * @return Individual strings from the comma-separated list
          */
         public String[] parseOnlyCommaList(String commaList, boolean trim) {
@@ -211,7 +211,7 @@ public class StringUtilitiesPlugin implements Plugin {
          * @param delimiter     Field Delimiter
          * @return Individual strings from the comma-separated list
          */
-        public  String[] parseDelimitedList(String delimitedList, String delimiter) {
+        public String[] parseDelimitedList(String delimitedList, String delimiter) {
             return BlojsomUtils.parseDelimitedList(delimitedList, delimiter);
         }
 
@@ -220,7 +220,7 @@ public class StringUtilitiesPlugin implements Plugin {
          *
          * @param delimitedList Delimited list
          * @param delimiter     Field Delimiter
-         * @param trim If the contents of the array should be trimmed
+         * @param trim          If the contents of the array should be trimmed
          * @return Individual strings from the comma-separated list
          */
         public String[] parseDelimitedList(String delimitedList, String delimiter, boolean trim) {

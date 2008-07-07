@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,8 @@ package org.blojsom.plugin.common;
  * Response constasnts
  *
  * @author David Czarnecki
+ * @version $Id: ResponseConstants.java,v 1.4 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: ResponseConstants.java,v 1.3 2007-06-20 00:51:40 czarneckid Exp $
  */
 public class ResponseConstants {
 
@@ -43,5 +43,5 @@ public class ResponseConstants {
     public static final String NEW_STATUS = "new";
     public static final String SPAM_STATUS = "spam";
     public static final String DELETED_STATUS = "deleted";
-    
+
 }

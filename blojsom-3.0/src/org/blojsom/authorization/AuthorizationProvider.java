@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ import java.util.Map;
  * AuthorizationProvider
  *
  * @author David Czarnecki
- * @version $Id: AuthorizationProvider.java,v 1.5 2007-01-17 02:35:16 czarneckid Exp $
+ * @version $Id: AuthorizationProvider.java,v 1.6 2008-07-07 19:55:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface AuthorizationProvider {
@@ -51,7 +51,7 @@ public interface AuthorizationProvider {
      * @throws ConfigurationException If there is an error initializing the provider
      */
     public void init() throws ConfigurationException;
-    
+
     /**
      * Authorize a username and password for the given {@link Blog}
      *

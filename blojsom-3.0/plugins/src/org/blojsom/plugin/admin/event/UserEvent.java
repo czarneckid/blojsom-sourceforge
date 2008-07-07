@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,8 @@ import java.util.Date;
  * UserEvent
  *
  * @author David Czarnecki
+ * @version $Id: UserEvent.java,v 1.3 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.1
- * @version $Id: UserEvent.java,v 1.2 2007-01-17 02:35:08 czarneckid Exp $
  */
 public class UserEvent extends Event {
 
@@ -53,8 +53,8 @@ public class UserEvent extends Event {
      *
      * @param source    Source of the event
      * @param timestamp Event timestamp
-     * @param user {@link User}
-     * @param blog {@link Blog}
+     * @param user      {@link User}
+     * @param blog      {@link Blog}
      */
     public UserEvent(Object source, Date timestamp, User user, Blog blog) {
         super(source, timestamp);

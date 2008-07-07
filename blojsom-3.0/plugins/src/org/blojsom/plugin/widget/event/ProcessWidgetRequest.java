@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,8 +42,8 @@ import java.util.Date;
  * ProcessWidgetRequest
  *
  * @author David Czarnecki
+ * @version $Id: ProcessWidgetRequest.java,v 1.2 2008-07-07 19:54:26 czarneckid Exp $
  * @since blojsom 3.2
- * @version $Id: ProcessWidgetRequest.java,v 1.1 2007-03-26 18:17:20 czarneckid Exp $
  */
 public class ProcessWidgetRequest extends Event {
 
@@ -57,19 +57,19 @@ public class ProcessWidgetRequest extends Event {
     /**
      * ProcessWidgetRequest
      *
-     * @param source Source
-     * @param timestamp Timestamp
-     * @param widget Widget
-     * @param request {@link HttpServletRequest}
-     * @param response {@link HttpServletResponse}
-     * @param blog {@link Blog}
-     * @param context Context
+     * @param source         Source
+     * @param timestamp      Timestamp
+     * @param widget         Widget
+     * @param request        {@link HttpServletRequest}
+     * @param response       {@link HttpServletResponse}
+     * @param blog           {@link Blog}
+     * @param context        Context
      * @param widgetTemplate Initial template
      */
     public ProcessWidgetRequest(Object source, Date timestamp, String widget, HttpServletRequest request, HttpServletResponse response,
                                 Blog blog, Map context, String widgetTemplate) {
         super(source, timestamp);
-        
+
         _widget = widget;
         _request = request;
         _response = response;

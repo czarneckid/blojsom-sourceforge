@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ import java.util.Locale;
  * ResourceManager
  *
  * @author David Czarnecki
- * @version $Id: ResourceManager.java,v 1.2 2007-01-17 02:35:21 czarneckid Exp $
+ * @version $Id: ResourceManager.java,v 1.3 2008-07-07 19:55:09 czarneckid Exp $
  * @since blojsom 3.0
  */
 public interface ResourceManager {
@@ -65,7 +65,7 @@ public interface ResourceManager {
      * @param language   Language code
      * @return <code>resourceID</code> from resource bundle <code>resource</code> or <code>fallback</code> if the given resource ID cannot be found
      */
-    public String getString(String resourceID, String resource, String fallback, String language);    
+    public String getString(String resourceID, String resource, String fallback, String language);
 
     /**
      * Retrieve a string from a given resource bundle for the particular language and country locale.

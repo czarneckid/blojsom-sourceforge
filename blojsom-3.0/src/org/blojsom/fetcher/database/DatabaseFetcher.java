@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@ import java.util.*;
  * Database fetcher
  *
  * @author David Czarnecki
- * @version $Id: DatabaseFetcher.java,v 1.39 2007-10-13 19:48:17 czarneckid Exp $
+ * @version $Id: DatabaseFetcher.java,v 1.40 2008-07-07 19:55:10 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DatabaseFetcher implements Fetcher, Listener {
@@ -237,7 +237,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                 }
             }
         }
-        
+
         return blog;
     }
 
@@ -464,16 +464,16 @@ public class DatabaseFetcher implements Fetcher, Listener {
             List permalinkEntryList = null;
             Session session = null;
             Transaction tx = null;
-            
+
             try {
                 session = _sessionFactory.openSession();
                 tx = session.beginTransaction();
 
                 Criteria permalinkCriteria = session.createCriteria(DatabaseEntry.class);
                 permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                        .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
-                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS))
-                        .add(Restrictions.lt("date", new Date()));
+                    .add(Restrictions.eq("postSlug", BlojsomUtils.removeSlashes(permalink)))
+                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS))
+                    .add(Restrictions.lt("date", new Date()));
 
                 permalinkEntryList = permalinkCriteria.list();
 
@@ -482,9 +482,9 @@ public class DatabaseFetcher implements Fetcher, Listener {
                     context.put(BlojsomConstants.BLOJSOM_PERMALINK, entry.getId());
                     permalinkCriteria = session.createCriteria(DatabaseEntry.class);
                     permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                            .add(Restrictions.gt("date", entry.getDate()))
-                            .add(Restrictions.lt("date", new Date()))
-                            .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                        .add(Restrictions.gt("date", entry.getDate()))
+                        .add(Restrictions.lt("date", new Date()))
+                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                     permalinkCriteria.addOrder(Order.asc("date"));
                     permalinkCriteria.setMaxResults(1);
 
@@ -501,8 +501,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
                     permalinkCriteria = session.createCriteria(DatabaseEntry.class);
                     permalinkCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                            .add(Restrictions.lt("date", entry.getDate()))
-                            .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                        .add(Restrictions.lt("date", entry.getDate()))
+                        .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
                     permalinkCriteria.addOrder(Order.desc("date"));
                     permalinkCriteria.setMaxResults(1);
 
@@ -674,7 +674,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load all the entries for a given category
      *
-     * @param blog {@link Blog}
+     * @param blog       {@link Blog}
      * @param categoryId Category ID
      * @return Blog entries for a given category
      * @throws FetcherException If there is an error loading the entries
@@ -727,9 +727,9 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load all the entries for a given category
      *
-     * @param blog {@link Blog}
+     * @param blog       {@link Blog}
      * @param categoryId Category ID
-     * @param limit Limit on number of entries to return
+     * @param limit      Limit on number of entries to return
      * @return Blog entries for a given category
      * @throws FetcherException If there is an error loading the entries
      */
@@ -828,7 +828,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
                     }
                 }
             }
-            
+
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
@@ -849,15 +849,15 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a set of entries using a given page size and page in which to retrieve the entries
      *
-     * @param pageSize Page size
-     * @param page     Page
-     * @param specificCategory Category
+     * @param pageSize          Page size
+     * @param page              Page
+     * @param specificCategory  Category
      * @param defaultCategories Default categories to use for requesting entries from the blogs
      * @return Blog entries
      * @throws FetcherException If there is an error loading the entries
      */
     public Entry[] loadEntries(int pageSize, int page, Category specificCategory, Category[] defaultCategories)
-            throws FetcherException {
+        throws FetcherException {
         Session session = _sessionFactory.openSession();
         Transaction tx = null;
 
@@ -946,8 +946,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()));
             entryCriteria.add(Restrictions.or(Restrictions.ilike("title", query, MatchMode.ANYWHERE),
-                    Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
-                    .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
+                Restrictions.ilike("description", query, MatchMode.ANYWHERE)))
+                .add(Restrictions.eq("status", BlojsomMetaDataConstants.PUBLISHED_STATUS));
             entryCriteria.addOrder(Order.desc("date"));
             entryCriteria.setCacheable(true);
 
@@ -986,11 +986,11 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Find entries by a metadata key/value pair
      *
-     * @param blog {@link Blog}
-     * @param metadataKey Metadata key
+     * @param blog          {@link Blog}
+     * @param metadataKey   Metadata key
      * @param metadataValue Metadata value
-     * @param pre If the search should use % before the metadata value (match anything before)
-     * @param post If the search should use % after the metadata value (match antthing after)
+     * @param pre           If the search should use % before the metadata value (match anything before)
+     * @param post          If the search should use % after the metadata value (match antthing after)
      * @return Entries matching metadata key and value using LIKE syntax for metadata value
      * @throws FetcherException If there is an error searching through entries
      */
@@ -1011,9 +1011,9 @@ public class DatabaseFetcher implements Fetcher, Listener {
             }
 
             List entriesMatchingMetadataKeyValue = session.getNamedQuery("entry.by.metadata.key.value").setCacheable(true)
-                    .setInteger("blogId", blog.getId().intValue())
-                    .setString("metadataKey", metadataKey)
-                    .setString("metadataValue", valueSearch).list();
+                .setInteger("blogId", blog.getId().intValue())
+                .setString("metadataKey", metadataKey)
+                .setString("metadataValue", valueSearch).list();
 
             tx.commit();
 
@@ -1061,8 +1061,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
             tx = session.beginTransaction();
 
             List entriesMatchingMetadata = session.getNamedQuery("entry.by.metadata.key").setCacheable(true)
-                    .setInteger("blogId", blog.getId().intValue())
-                    .setString("metadataKey", metadataKey).list();
+                .setInteger("blogId", blog.getId().intValue())
+                .setString("metadataKey", metadataKey).list();
 
             tx.commit();
 
@@ -1318,7 +1318,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load an {@link Entry} for a given entry ID
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param entryId Entry ID
      * @return {@link Entry} object
      * @throws FetcherException If there is an error loading the entry
@@ -1332,7 +1332,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("id", entryId));
+                .add(Restrictions.eq("id", entryId));
 
             Entry entry = (DatabaseEntry) entryCriteria.uniqueResult();
 
@@ -1385,7 +1385,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria entryCriteria = session.createCriteria(DatabaseEntry.class);
             entryCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("postSlug", postSlug));
+                .add(Restrictions.eq("postSlug", postSlug));
 
             Entry entry = (DatabaseEntry) entryCriteria.uniqueResult();
 
@@ -1427,7 +1427,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Determine the blog category based on the request
      *
-     * @param blog {@link Blog}
+     * @param blog               {@link Blog}
      * @param httpServletRequest Request
      * @return {@link Category} of the requested category
      */
@@ -1597,7 +1597,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load the {@link Category} for a given category ID
      *
-     * @param blog {@link Blog}
+     * @param blog       {@link Blog}
      * @param categoryId Category ID
      * @return {@link Category} for the given category ID
      * @throws FetcherException If there is an error loading the category
@@ -1611,7 +1611,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
             categoryCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("id", categoryId));
+                .add(Restrictions.eq("id", categoryId));
 
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
 
@@ -1662,7 +1662,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria categoryCriteria = session.createCriteria(DatabaseCategory.class);
             categoryCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("name", name));
+                .add(Restrictions.eq("name", name));
 
             Category category = (DatabaseCategory) categoryCriteria.uniqueResult();
 
@@ -1699,7 +1699,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Create a unique post slug
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry}
      * @return Unique post slug
      */
@@ -1731,7 +1731,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Save a given {@link Entry}
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry} to save
      * @throws FetcherException If there is an error saving the entry
      */
@@ -1792,7 +1792,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a given {@link Entry}
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry} to load
      * @throws FetcherException If there is an error loading the entry
      */
@@ -1844,7 +1844,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Delete a given {@link Entry}
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param entry {@link Entry} to delete
      * @throws FetcherException If there is an error deleting the entry
      */
@@ -1896,7 +1896,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Save a given {@link Category}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category} to save
      * @throws FetcherException If there is an error saving the category
      */
@@ -1944,7 +1944,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a given {@link Category}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category} to load
      * @throws FetcherException If there is an loading saving the category
      */
@@ -1996,7 +1996,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Delete a given {@link Category}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param category {@link Category} to delete
      * @throws FetcherException If there is an error deleting the category
      */
@@ -2048,7 +2048,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Save a given {@link Comment}
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param comment {@link Comment} to save
      * @throws FetcherException If there is an error saving the comment
      */
@@ -2096,7 +2096,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a given {@link Comment}
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param comment {@link Comment} to load
      * @throws FetcherException If there is an error loading the comment
      */
@@ -2144,7 +2144,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Delete a given {@link Comment}
      *
-     * @param blog {@link Blog}
+     * @param blog    {@link Blog}
      * @param comment {@link Comment} to delete
      * @throws FetcherException If there is an error deleting the comment
      */
@@ -2192,7 +2192,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load the recent comments for a blog
      *
-     * @param blog  {@link Blog}
+     * @param blog {@link Blog}
      * @throws FetcherException If there is an error retrieving the recent comments
      */
     public List loadRecentComments(Blog blog) throws FetcherException {
@@ -2206,8 +2206,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
             commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("status", "approved"))
-                    .addOrder(Order.desc("commentDate"));
+                .add(Restrictions.eq("status", "approved"))
+                .addOrder(Order.desc("commentDate"));
             commentsCriteria.setCacheable(true);
 
             String recentCommentsCount = blog.getProperty(BlojsomConstants.RECENT_COMMENTS_COUNT);
@@ -2257,7 +2257,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Save a given {@link Trackback}
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param trackback {@link Trackback} to save
      * @throws FetcherException If there is an error saving the trackback
      */
@@ -2305,7 +2305,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a given {@link Trackback}
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param trackback {@link Trackback} to load
      * @throws FetcherException If there is an error loading the trackback
      */
@@ -2353,7 +2353,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Delete a given {@link Trackback}
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param trackback {@link Trackback} to delete
      * @throws FetcherException If there is an error deleting the trackback
      */
@@ -2414,8 +2414,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
             trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("status", "approved"))
-                    .addOrder(Order.desc("trackbackDate"));
+                .add(Restrictions.eq("status", "approved"))
+                .addOrder(Order.desc("trackbackDate"));
             trackbacksCriteria.setCacheable(true);
 
             String recentTrackbacksCount = blog.getProperty(BlojsomConstants.RECENT_TRACKBACKS_COUNT);
@@ -2465,7 +2465,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Save a given {@link Pingback}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pingback {@link Pingback} to save
      * @throws FetcherException If there is an error saving the pingback
      */
@@ -2513,7 +2513,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a given {@link Pingback}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pingback {@link Pingback} to load
      * @throws FetcherException If there is an error loading the pingback
      */
@@ -2561,7 +2561,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load a pingback given the source URI and target URI
      *
-     * @param blog {@link Blog}
+     * @param blog      {@link Blog}
      * @param sourceURI Source URI
      * @param targetURI Target URI
      * @return {@link Pingback} given the source and target URIs or <code>null</code> if not found
@@ -2577,8 +2577,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria pingbackCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
             pingbackCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("sourceURI", sourceURI))
-                    .add(Restrictions.eq("targetURI", targetURI));
+                .add(Restrictions.eq("sourceURI", sourceURI))
+                .add(Restrictions.eq("targetURI", targetURI));
 
             pingback = (Pingback) pingbackCriteria.uniqueResult();
 
@@ -2615,7 +2615,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Delete a given {@link Pingback}
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param pingback {@link Pingback} to delete
      * @throws FetcherException If there is an error deleting the pingback
      */
@@ -2677,8 +2677,8 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria pingbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabasePingback.class);
             pingbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.eq("status", "approved"))
-                    .addOrder(Order.desc("trackbackDate"));
+                .add(Restrictions.eq("status", "approved"))
+                .addOrder(Order.desc("trackbackDate"));
             pingbacksCriteria.setCacheable(true);
 
             String recentPingbacksCount = blog.getProperty(BlojsomConstants.RECENT_PINGBACKS_COUNT);
@@ -2950,7 +2950,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Load the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching one of a set of status codes
      *
-     * @param blog {@link Blog}
+     * @param blog   {@link Blog}
      * @param status List of status codes to load
      * @return List of responses (comments, trackbacks, pingbacks) matching one of a set of status codes
      * @throws FetcherException If there is an error loading the responses
@@ -2966,13 +2966,13 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
             commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.in("status", status));
+                .add(Restrictions.in("status", status));
 
             responses.addAll(commentsCriteria.list());
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
             trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.in("status", status));
+                .add(Restrictions.in("status", status));
 
             responses.addAll(trackbacksCriteria.list());
 
@@ -3010,7 +3010,7 @@ public class DatabaseFetcher implements Fetcher, Listener {
     /**
      * Find the responses (comments, trackbacks, pingbacks) for a given {@link Blog} matching some query
      *
-     * @param blog {@link Blog}
+     * @param blog  {@link Blog}
      * @param query Query which will match on various items such as commenter name, e-mail, IP address, etc.
      * @return List of responses (comments, trackbacks, pingbacks) matching query
      * @throws FetcherException If there is an error loading the responses
@@ -3026,23 +3026,23 @@ public class DatabaseFetcher implements Fetcher, Listener {
 
             Criteria commentsCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseComment.class);
             commentsCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.disjunction()
-                            .add(Restrictions.ilike("author", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("authorURL", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("authorEmail", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("comment", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("ip", query, MatchMode.ANYWHERE)));
+                .add(Restrictions.disjunction()
+                    .add(Restrictions.ilike("author", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("authorURL", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("authorEmail", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("comment", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("ip", query, MatchMode.ANYWHERE)));
 
             responses.addAll(commentsCriteria.list());
 
             Criteria trackbacksCriteria = session.createCriteria(org.blojsom.blog.database.DatabaseTrackback.class);
             trackbacksCriteria.add(Restrictions.eq("blogId", blog.getId()))
-                    .add(Restrictions.disjunction()
-                            .add(Restrictions.ilike("title", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("excerpt", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("url", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("blogName", query, MatchMode.ANYWHERE))
-                            .add(Restrictions.ilike("ip", query, MatchMode.ANYWHERE)));
+                .add(Restrictions.disjunction()
+                    .add(Restrictions.ilike("title", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("excerpt", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("url", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("blogName", query, MatchMode.ANYWHERE))
+                    .add(Restrictions.ilike("ip", query, MatchMode.ANYWHERE)));
 
             responses.addAll(trackbacksCriteria.list());
 

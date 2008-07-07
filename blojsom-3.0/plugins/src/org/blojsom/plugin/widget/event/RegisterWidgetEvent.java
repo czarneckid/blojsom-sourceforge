@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,8 @@ import java.util.Date;
  * RegisterWidgetEvent
  *
  * @author David Czarnecki
+ * @version $Id: RegisterWidgetEvent.java,v 1.2 2008-07-07 19:54:26 czarneckid Exp $
  * @since blojsom 3.2
- * @version $Id: RegisterWidgetEvent.java,v 1.1 2007-03-26 18:17:20 czarneckid Exp $
  */
 public class RegisterWidgetEvent extends Event {
 
@@ -49,9 +49,9 @@ public class RegisterWidgetEvent extends Event {
     /**
      * Register a widget event
      *
-     * @param source Source
+     * @param source    Source
      * @param timestamp Timestamp
-     * @param widget Widget Widget display name
+     * @param widget    Widget Widget display name
      */
     public RegisterWidgetEvent(Object source, Date timestamp, String widget, String displayName) {
         super(source, timestamp);

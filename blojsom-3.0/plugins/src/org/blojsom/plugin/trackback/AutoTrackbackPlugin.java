@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,8 +54,8 @@ import java.util.regex.Pattern;
  * AutoTrackbackPlugin
  *
  * @author David Czarnecki
+ * @version $Id: AutoTrackbackPlugin.java,v 1.4 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: AutoTrackbackPlugin.java,v 1.3 2007-01-17 02:35:14 czarneckid Exp $
  */
 public class AutoTrackbackPlugin implements Plugin {
 
@@ -71,7 +71,8 @@ public class AutoTrackbackPlugin implements Plugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @throws org.blojsom.plugin.PluginException If there is an error initializing the plugin
+     * @throws org.blojsom.plugin.PluginException
+     *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
     }
@@ -79,7 +80,7 @@ public class AutoTrackbackPlugin implements Plugin {
     /**
      * Perform the trackback autodiscovery process
      *
-     * @param blog Blog information
+     * @param blog      Blog information
      * @param blogEntry Blog entry
      */
     private void trackbackAutodiscovery(Blog blog, Entry blogEntry) {
@@ -96,7 +97,7 @@ public class AutoTrackbackPlugin implements Plugin {
                 excerpt += "...";
             }
             trackbackPingURLParameters.append("&").append(TrackbackPlugin.TRACKBACK_EXCERPT_PARAM).append("=").append(URLEncoder.encode(excerpt, BlojsomConstants.UTF8));
-            
+
             // Extract all the HREF links from the blog description
             Matcher hrefMatcher = HREF_PATTERN.matcher(blogEntry.getDescription());
             while (hrefMatcher.find()) {

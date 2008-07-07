@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,18 +58,18 @@ import java.util.*;
  *         <param-value>false</param-value>
  *     </init-param>
  * </filter>
- *
+ * <p/>
  * <filter-mapping>
  *     <filter-name>PageFilter</filter-name></pre>
- *     <servlet-name>blojsom</servlet-name>
+ * <servlet-name>blojsom</servlet-name>
  * </filter-mapping>
  * </pre>
- *
+ * <p/>
  * For the page filter to be used, it must be mapped before the permalink filter.
  *
  * @author David Czarnecki
- * @since blojsom 3.0
  * @version PageFilter.java,v 1.1 2005/12/19 20:04:29 czarneckid Exp
+ * @since blojsom 3.0
  */
 public class PageFilter implements Filter {
 

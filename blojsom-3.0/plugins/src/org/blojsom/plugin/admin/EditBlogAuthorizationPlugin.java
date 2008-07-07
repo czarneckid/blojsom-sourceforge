@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ import java.util.Map;
  * EditBlogAuthorizationPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogAuthorizationPlugin.java,v 1.10 2007-01-17 02:35:04 czarneckid Exp $
+ * @version $Id: EditBlogAuthorizationPlugin.java,v 1.11 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
@@ -195,8 +195,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
                 boolean modifyingPassword = true;
 
-                if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action) && (BlojsomUtils.checkNullOrBlank(blogUserPassword) || BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)))
-                {
+                if (ADD_BLOG_AUTHORIZATION_ACTION.equals(action) && (BlojsomUtils.checkNullOrBlank(blogUserPassword) || BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck))) {
                     addOperationResultMessage(context, getAdminResource(MISSING_PARAMETERS_KEY, MISSING_PARAMETERS_KEY, blog.getBlogAdministrationLocale()));
                     _logger.debug("Missing parameters from the request to complete add/modify authorization action");
 
@@ -204,9 +203,11 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                     context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));
 
                     return entries;
-                } else if (MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action) && BlojsomUtils.checkNullOrBlank(blogUserPassword) && BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
+                } else
+                if (MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action) && BlojsomUtils.checkNullOrBlank(blogUserPassword) && BlojsomUtils.checkNullOrBlank(blogUserPasswordCheck)) {
                     modifyingPassword = false;
-                } else if (MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action) && !blogUserPassword.equals(blogUserPasswordCheck)) {
+                } else
+                if (MODIFY_BLOG_AUTHORIZATION_ACTION.equals(action) && !blogUserPassword.equals(blogUserPasswordCheck)) {
                     addOperationResultMessage(context, getAdminResource(PASSWORD_CHECK_FAILED_KEY, PASSWORD_CHECK_FAILED_KEY, blog.getBlogAdministrationLocale()));
                     _logger.debug("Password and password check not equal for add/modify authorization action");
 
@@ -260,8 +261,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
                         Map userMetaData = new HashMap();
                         for (int i = 0; i < permissions.length; i++) {
                             String permission = permissions[i];
-                            if (permission.endsWith(BlojsomConstants.PERMISSION_SUFFIX) && checkPermission(blog, null, username, ADD_BLOG_AUTHORIZATION_PERMISSIONS_PERMISSION))
-                            {
+                            if (permission.endsWith(BlojsomConstants.PERMISSION_SUFFIX) && checkPermission(blog, null, username, ADD_BLOG_AUTHORIZATION_PERMISSIONS_PERMISSION)) {
                                 userMetaData.put(permission, Boolean.TRUE.toString());
                             }
                         }
@@ -327,8 +327,7 @@ public class EditBlogAuthorizationPlugin extends BaseAdminPlugin {
 
             String blogUserID = BlojsomUtils.getRequestValue(BLOG_USER_ID, httpServletRequest);
             if (!BlojsomUtils.checkNullOrBlank(blogUserID)) {
-                if ((authorizedUserID.equals(blogUserID)) || !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION))
-                {
+                if ((authorizedUserID.equals(blogUserID)) || !checkPermission(blog, null, username, EDIT_OTHER_USERS_AUTHORIZATION_PERMISSION)) {
                     httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_AUTHORIZATIONS_PAGE);
                     addOperationResultMessage(context, getAdminResource(FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, FAILED_OTHER_AUTHORIZATION_PERMISSION_KEY, blog.getBlogAdministrationLocale()));
                     context.put(BLOJSOM_PLUGIN_EDIT_BLOG_USERS, _fetcher.getUsers(blog));

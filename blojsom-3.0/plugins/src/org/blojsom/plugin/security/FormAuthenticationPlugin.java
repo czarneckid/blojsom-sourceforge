@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author Eric Broyles
  * @author David Czarnecki
- * @version $Id: FormAuthenticationPlugin.java,v 1.2 2007-01-17 02:35:13 czarneckid Exp $
+ * @version $Id: FormAuthenticationPlugin.java,v 1.3 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.1
  */
 public class FormAuthenticationPlugin extends BaseAdminPlugin {
@@ -105,7 +105,7 @@ public class FormAuthenticationPlugin extends BaseAdminPlugin {
         _ignoreParams.put("submit", "submit");
         _ignoreParams.put("reset", "reset");
     }
-    
+
     /**
      * Process the blog entries
      *

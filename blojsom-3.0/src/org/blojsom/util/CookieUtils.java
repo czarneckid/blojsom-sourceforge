@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * CookieUtils
  *
  * @author David Czarnecki
- * @version $Id: CookieUtils.java,v 1.5 2007-05-04 16:48:06 czarneckid Exp $
+ * @version $Id: CookieUtils.java,v 1.6 2008-07-07 19:55:06 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CookieUtils {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,8 +48,8 @@ import java.util.regex.Pattern;
  * ShowMeMorePlugin
  *
  * @author David Czarnecki
+ * @version $Id: ShowMeMorePlugin.java,v 1.2 2008-07-07 19:54:21 czarneckid Exp $
  * @since blojsom 3.2
- * @version $Id: ShowMeMorePlugin.java,v 1.1 2007-03-23 15:31:32 czarneckid Exp $
  */
 public class ShowMeMorePlugin implements Plugin {
 
@@ -91,16 +91,16 @@ public class ShowMeMorePlugin implements Plugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               Blog blog,
-                               Map context,
-                               Entry[] entries) throws PluginException {
+                           HttpServletResponse httpServletResponse,
+                           Blog blog,
+                           Map context,
+                           Entry[] entries) throws PluginException {
         String wantsToSeeMore = httpServletRequest.getParameter(SHOW_ME_MORE_PARAM);
         if ("y".equalsIgnoreCase(wantsToSeeMore)) {
             return entries;
         } else {
             ShowMeMoreConfiguration showMeMoreConfiguration;
-            showMeMoreConfiguration = ShowMeMoreUtilities.loadConfiguration(blog);           
+            showMeMoreConfiguration = ShowMeMoreUtilities.loadConfiguration(blog);
 
             int cutoff = showMeMoreConfiguration.getCutoff();
             String textCutoff = showMeMoreConfiguration.getTextCutoff();

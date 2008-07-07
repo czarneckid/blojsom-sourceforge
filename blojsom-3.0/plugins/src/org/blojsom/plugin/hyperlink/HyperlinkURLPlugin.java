@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,8 @@ import java.util.Map;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: HyperlinkURLPlugin.java,v 1.4 2008-07-07 19:54:29 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: HyperlinkURLPlugin.java,v 1.3 2007-01-17 02:35:10 czarneckid Exp $
  */
 public class HyperlinkURLPlugin implements Plugin {
 
@@ -57,7 +57,7 @@ public class HyperlinkURLPlugin implements Plugin {
      * Regular expression to identify URLs in the entry
      */
     private static final String URL_REGEX = "(^|[\t\r\n ])" + URL_PROTOCOLS
-            + ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
+        + ":[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+)";
 
     /**
      * The resulting replace string for formatting the href
@@ -84,10 +84,10 @@ public class HyperlinkURLPlugin implements Plugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               Blog blog,
-                               Map context,
-                               Entry[] entries) throws PluginException {
+                           HttpServletResponse httpServletResponse,
+                           Blog blog,
+                           Map context,
+                           Entry[] entries) throws PluginException {
         for (int i = 0; i < entries.length; i++) {
             Entry entry = entries[i];
 

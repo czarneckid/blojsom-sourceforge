@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,8 +64,8 @@ import java.util.Map;
  * Spam phrase moderation plugin
  *
  * @author David Czarnecki
+ * @version $Id: SpamPhraseModerationPlugin.java,v 1.5 2008-07-07 19:54:17 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: SpamPhraseModerationPlugin.java,v 1.4 2007-01-17 02:35:12 czarneckid Exp $
  */
 public class SpamPhraseModerationPlugin implements Plugin, Listener {
 
@@ -204,10 +204,10 @@ public class SpamPhraseModerationPlugin implements Plugin, Listener {
                 while (phraseIterator.hasNext()) {
                     phrase = (String) phraseIterator.next();
 
-                    if ( ((content != null) && (content.matches(phrase) || content.indexOf(phrase) != -1)) ||
-                            ((submitter != null) && (submitter.matches(phrase) || submitter.indexOf(phrase) != -1)) ||
-                            ((submitterItem1 != null) && (submitterItem1.matches(phrase) || submitterItem1.indexOf(phrase) != -1)) ||
-                            ((submitterItem2 != null) && (submitterItem2.matches(phrase) || submitterItem2.indexOf(phrase) != -1)) ) {
+                    if (((content != null) && (content.matches(phrase) || content.indexOf(phrase) != -1)) ||
+                        ((submitter != null) && (submitter.matches(phrase) || submitter.indexOf(phrase) != -1)) ||
+                        ((submitterItem1 != null) && (submitterItem1.matches(phrase) || submitterItem1.indexOf(phrase) != -1)) ||
+                        ((submitterItem2 != null) && (submitterItem2.matches(phrase) || submitterItem2.indexOf(phrase) != -1))) {
                         phraseSpamFound = true;
                         break;
                     }
@@ -218,7 +218,7 @@ public class SpamPhraseModerationPlugin implements Plugin, Listener {
                         if (_logger.isDebugEnabled()) {
                             _logger.debug("Marking response for moderation");
                         }
-                    } else{
+                    } else {
                         if (_logger.isDebugEnabled()) {
                             _logger.debug("Marking response for automatic deletion");
                         }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ package org.blojsom.plugin.showmore;
  * Internal class to hold Show Me More plugin configuration properties
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreConfiguration.java,v 1.1 2007-03-23 15:31:32 czarneckid Exp $
+ * @version $Id: ShowMeMoreConfiguration.java,v 1.2 2008-07-07 19:54:21 czarneckid Exp $
  * @since blojsom 3.2
  */
 public class ShowMeMoreConfiguration {

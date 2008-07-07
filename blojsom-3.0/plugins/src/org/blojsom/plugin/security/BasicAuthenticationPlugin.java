@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ import java.util.Map;
  * before they are able to see any blog entries.
  *
  * @author David Czarnecki
- * @version $Id: BasicAuthenticationPlugin.java,v 1.5 2007-01-25 22:47:58 czarneckid Exp $
+ * @version $Id: BasicAuthenticationPlugin.java,v 1.6 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BasicAuthenticationPlugin extends BaseAdminPlugin {

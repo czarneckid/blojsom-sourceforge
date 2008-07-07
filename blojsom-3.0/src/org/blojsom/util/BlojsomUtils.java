@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,8 +52,8 @@ import java.util.regex.Matcher;
  * BlojsomUtils
  *
  * @author David Czarnecki
+ * @version $Id: BlojsomUtils.java,v 1.18 2008-07-07 19:55:06 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: BlojsomUtils.java,v 1.17 2007-05-17 19:11:04 czarneckid Exp $
  */
 public class BlojsomUtils implements BlojsomConstants {
 
@@ -311,7 +311,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Parse a comma-separated list of values
      *
      * @param commaList Comma-separated list
-     * @param trim If the contents of the array should be trimmed
+     * @param trim      If the contents of the array should be trimmed
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseOnlyCommaList(String commaList, boolean trim) {
@@ -354,7 +354,7 @@ public class BlojsomUtils implements BlojsomConstants {
      *
      * @param delimitedList Delimited list
      * @param delimiter     Field Delimiter
-     * @param trim If the contents of the array should be trimmed
+     * @param trim          If the contents of the array should be trimmed
      * @return Individual strings from the comma-separated list
      */
     public static String[] parseDelimitedList(String delimitedList, String delimiter, boolean trim) {
@@ -405,7 +405,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Convert the request parameters to a string
      *
-     * @param request Servlet request
+     * @param request      Servlet request
      * @param ignoreParams Parameters to ignore when converting the request
      * @return Request parameters in the form &amp;name=value
      */
@@ -783,7 +783,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Get request values for a given key and if not available, returns and empty <code>String[]</code>
      *
-     * @param key Parameter to retrieve
+     * @param key                Parameter to retrieve
      * @param httpServletRequest Request
      * @return Request values for the key as a <code>String[]</code>
      */
@@ -930,7 +930,7 @@ public class BlojsomUtils implements BlojsomConstants {
             if (day < 10) {
                 dateurl.append("0");
             }
-            
+
             dateurl.append(day).append("/");
         }
 
@@ -1401,7 +1401,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Strip line terminator characters from an input string
      *
-     * @param input Input string
+     * @param input       Input string
      * @param replacement Replacement string
      * @return Input with line terminator characters stripped or <code>null</code> if the input was <code>null</code>
      */
@@ -1761,9 +1761,9 @@ public class BlojsomUtils implements BlojsomConstants {
         }
 
         Matcher m = STRIP_HTML_PATTERN.matcher(text);
-        
+
         return m.replaceAll("");
-   }
+    }
 
     /**
      * Convert a <code>String[]</code> to a <code>List</code>
@@ -1885,7 +1885,7 @@ public class BlojsomUtils implements BlojsomConstants {
     /**
      * Return a {@link List} as a string
      *
-     * @param values {@link List} of values
+     * @param values    {@link List} of values
      * @param separator Separator in-between values
      * @return {@link List} as a string where each item is separated by the <code>separator</code>
      */
@@ -1926,7 +1926,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Find the first date of a year
      *
      * @param locale Locale
-     * @param year Year
+     * @param year   Year
      * @return First date of the requested year
      */
     public static Date getFirstDateOfYear(Locale locale, int year) {
@@ -1947,7 +1947,7 @@ public class BlojsomUtils implements BlojsomConstants {
      * Find the last date of a year
      *
      * @param locale Locale
-     * @param year Year
+     * @param year   Year
      * @return Last date of the requested year
      */
     public static Date getLastDateOfYear(Locale locale, int year) {
@@ -1968,8 +1968,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * Find the first date of a year/month
      *
      * @param locale Locale
-     * @param year Year
-     * @param month Month
+     * @param year   Year
+     * @param month  Month
      * @return FIrst date of the requested year/month
      */
     public static Date getFirstDateOfYearMonth(Locale locale, int year, int month) {
@@ -1990,8 +1990,8 @@ public class BlojsomUtils implements BlojsomConstants {
      * Find the last date of a year/month
      *
      * @param locale Locale
-     * @param year Year
-     * @param month Month
+     * @param year   Year
+     * @param month  Month
      * @return Last date of the requested year/month
      */
     public static Date getLastDateOfYearMonth(Locale locale, int year, int month) {
@@ -2012,9 +2012,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * Get the first date of a year/month/day
      *
      * @param locale Locale
-     * @param year Year
-     * @param month Month
-     * @param day Day
+     * @param year   Year
+     * @param month  Month
+     * @param day    Day
      * @return First date of the requested year/month/day
      */
     public static Date getFirstDateOfYearMonthDay(Locale locale, int year, int month, int day) {
@@ -2039,9 +2039,9 @@ public class BlojsomUtils implements BlojsomConstants {
      * Get the last date of a year/month/day
      *
      * @param locale Locale
-     * @param year Year
-     * @param month Month
-     * @param day Day
+     * @param year   Year
+     * @param month  Month
+     * @param day    Day
      * @return Last date of the requested year/month/day
      */
     public static Date getLastDateOfYearMonthDay(Locale locale, int year, int month, int day) {

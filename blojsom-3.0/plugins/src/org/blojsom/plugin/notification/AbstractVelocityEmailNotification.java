@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ public abstract class AbstractVelocityEmailNotification extends AbstractNotifica
     /**
      * Construct a new abstract velocity e-mail notification
      *
-     * @param email E-mail message
+     * @param email         E-mail message
      * @param emailTemplate E-mail template
      * @throws MessagingException If there is an error constructing the e-mail notification
      */
@@ -78,9 +78,9 @@ public abstract class AbstractVelocityEmailNotification extends AbstractNotifica
      * Construct a new abstract velocity e-mail notification
      *
      * @param emailTemplate E-mail template
-     * @param charEncoding Character encoding
-     * @param mailServer Mail server
-     * @param contentType Content type
+     * @param charEncoding  Character encoding
+     * @param mailServer    Mail server
+     * @param contentType   Content type
      * @throws Exception If there is an error constructing the e-mail notification
      */
     public AbstractVelocityEmailNotification(URL emailTemplate, String charEncoding, String mailServer, String contentType) throws Exception {
@@ -94,9 +94,9 @@ public abstract class AbstractVelocityEmailNotification extends AbstractNotifica
      * Construct a new abstract velocity e-mail notification
      *
      * @param emailTemplate E-mail template
-     * @param charEncoding Character encoding
-     * @param mailServer Mail server
-     * @param contentType Content type
+     * @param charEncoding  Character encoding
+     * @param mailServer    Mail server
+     * @param contentType   Content type
      * @param velocityProps Velocity properties
      * @throws Exception If there is an error constructing the e-mail notification
      */
@@ -110,10 +110,10 @@ public abstract class AbstractVelocityEmailNotification extends AbstractNotifica
     /**
      * Construct a new abstract velocity e-mail notification
      *
-     * @param emailTemplate E-mail template
-     * @param charEncoding Character encoding
-     * @param mailServer Mail server
-     * @param contentType Content type
+     * @param emailTemplate     E-mail template
+     * @param charEncoding      Character encoding
+     * @param mailServer        Mail server
+     * @param contentType       Content type
      * @param velocityPropsPath Velocity properties path
      * @throws Exception If there is an error constructing the e-mail notification
      */
@@ -146,7 +146,7 @@ public abstract class AbstractVelocityEmailNotification extends AbstractNotifica
     /**
      * Put a name and value in the context
      *
-     * @param name Name
+     * @param name  Name
      * @param value Value
      */
     public void put(String name, Object value) {
@@ -161,7 +161,7 @@ public abstract class AbstractVelocityEmailNotification extends AbstractNotifica
     public void putAll(Map values) {
         java.util.Map.Entry entry;
         for (Iterator itr = values.entrySet().iterator(); itr.hasNext(); context.put(entry.getKey()
-                .toString(), entry.getValue()))
+            .toString(), entry.getValue()))
             entry = (java.util.Map.Entry) itr.next();
 
     }

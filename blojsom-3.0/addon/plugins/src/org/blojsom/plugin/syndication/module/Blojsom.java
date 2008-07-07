@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,40 +38,50 @@ import java.util.List;
  * Module for parsing blojsom-specific information using ROME
  *
  * @author David Czarnecki
+ * @version $Id: Blojsom.java,v 1.5 2008-07-07 19:54:15 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: Blojsom.java,v 1.4 2007-01-17 02:35:06 czarneckid Exp $
  */
 public interface Blojsom extends Module {
 
     public static final String BLOJSOM_URI = "http://rome.dev.java.net/module/blojsom/1.0";
 
     public String getAuthor();
+
     public void setAuthor(String author);
 
     public String getPostSlug();
+
     public void setPostSlug(String postSlug);
 
     public String getTechnoratiTags();
+
     public void setTechnoratiTags(String technoratiTags);
 
     public boolean getAllowsComments();
+
     public void setAllowsComments(boolean allowsComments);
 
     public boolean getAllowsTrackbacks();
+
     public void setAllowsTrackbacks(boolean allowsTrackbacks);
 
     public boolean getAllowsPingbacks();
+
     public void setAllowsPingbacks(boolean allowsPingbacks);
 
     public List getComments();
+
     public void setComments(List comments);
 
     public List getTrackbacks();
+
     public void setTrackbacks(List trackbacks);
 
     public List getPingbacks();
+
     public void setPingbacks(List pingbacks);
 
     public List getMetadata();
+
     public void setMetadata(List metadata);
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ import java.util.Map;
  * trackback metadata.
  *
  * @author David Czarnecki
- * @version $Id: OpenProxyModerationPlugin.java,v 1.4 2007-03-06 20:18:51 czarneckid Exp $
+ * @version $Id: OpenProxyModerationPlugin.java,v 1.5 2008-07-07 19:54:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class OpenProxyModerationPlugin implements Plugin, Listener {

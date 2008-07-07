@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,8 +53,8 @@ import java.util.regex.Pattern;
  *
  * @author Mark Lussier
  * @author David Czarnecki
+ * @version $Id: FootnotePlugin.java,v 1.5 2008-07-07 19:54:32 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: FootnotePlugin.java,v 1.4 2007-06-20 00:58:39 czarneckid Exp $
  */
 public class FootnotePlugin implements Plugin {
 
@@ -94,7 +94,7 @@ public class FootnotePlugin implements Plugin {
             Matcher matcher = footnotePattern.matcher(content);
             StringBuffer modifiedContent = new StringBuffer();
             Map footnotes = new TreeMap(new FootnotePlugin.FootnoteComparator());
-            
+
             while (matcher.find()) {
                 int footnoteIndex;
 
@@ -120,11 +120,11 @@ public class FootnotePlugin implements Plugin {
                 modifiedContent.append("<hr/>");
                 modifiedContent.append("<ol>");
                 Iterator footnotesIterator = footnotes.keySet().iterator();
-                
+
                 while (footnotesIterator.hasNext()) {
                     String footnoteIndex = (String) footnotesIterator.next();
                     modifiedContent.append("<li id=\"footnote-").append(footnoteIndex).append("\"><p>");
-                    modifiedContent.append(MessageFormat.format(FOOTNOTE_LINKAGE_FORMAT, new Object[] {footnoteIndex, entry.getMetaData().get(FOOTNOTE_METADATA + "-" + footnoteIndex)}));
+                    modifiedContent.append(MessageFormat.format(FOOTNOTE_LINKAGE_FORMAT, new Object[]{footnoteIndex, entry.getMetaData().get(FOOTNOTE_METADATA + "-" + footnoteIndex)}));
                     modifiedContent.append("<a href=\"#footnoteref-").append(footnoteIndex).append("\" class=\"footnoteBackLink\" title=\"Jump back to footnote ").append(footnoteIndex).append(" in the text.\">");
                     modifiedContent.append("&#8617;</a></p></li>");
                 }
@@ -175,8 +175,8 @@ public class FootnotePlugin implements Plugin {
         public int compare(Object element1, Object element2) {
             Integer next = Integer.decode((String) element1);
             Integer previous = Integer.decode((String) element2);
-            
+
             return next.compareTo(previous);
         }
-     }
+    }
 }

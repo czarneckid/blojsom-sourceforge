@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * XSSFilterPlugin
  *
  * @author David Czarnecki
- * @version $Id: XSSFilterPlugin.java,v 1.5 2007-01-17 02:35:10 czarneckid Exp $
+ * @version $Id: XSSFilterPlugin.java,v 1.6 2008-07-07 19:54:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class XSSFilterPlugin implements Plugin, Listener {
@@ -61,8 +61,8 @@ public class XSSFilterPlugin implements Plugin, Listener {
     private Log _logger = LogFactory.getLog(XSSFilterPlugin.class);
 
     // Default set of balanced and unbalanced tags
-    private static final String [] DEFAULT_ALLOWED_BALANCED_TAGS = {"b", "strong", "i", "em", "u", "s", "blockquote", "pre", "ul", "li", "ol"};
-    private static final String [] DEFAULT_ALLOWED_UNBALANCED_TAGS = {"br", "img"};
+    private static final String[] DEFAULT_ALLOWED_BALANCED_TAGS = {"b", "strong", "i", "em", "u", "s", "blockquote", "pre", "ul", "li", "ol"};
+    private static final String[] DEFAULT_ALLOWED_UNBALANCED_TAGS = {"br", "img"};
 
     // Initialization parameters
     private static final String XSS_FILTER_ALLOWED_BALANCED_TAGS_IP = "plugin-xss-filter-allowed-balanced-tags";

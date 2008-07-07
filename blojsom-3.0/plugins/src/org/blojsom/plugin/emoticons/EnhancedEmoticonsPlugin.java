@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ import java.util.*;
  *
  * @author David Czarnecki
  * @author Jan Wessely
- * @version $Id: EnhancedEmoticonsPlugin.java,v 1.6 2007-01-22 14:45:07 czarneckid Exp $
+ * @version $Id: EnhancedEmoticonsPlugin.java,v 1.7 2008-07-07 19:54:23 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EnhancedEmoticonsPlugin implements Plugin {

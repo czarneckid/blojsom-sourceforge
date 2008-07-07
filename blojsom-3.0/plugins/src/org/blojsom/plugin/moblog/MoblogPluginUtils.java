@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ import java.util.Map;
  * Moblog Plugin Utils
  *
  * @author David Czarnecki
- * @version $Id: MoblogPluginUtils.java,v 1.5 2007-01-17 02:35:11 czarneckid Exp $
+ * @version $Id: MoblogPluginUtils.java,v 1.6 2008-07-07 19:54:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPluginUtils {
@@ -64,7 +64,7 @@ public class MoblogPluginUtils {
         mailbox.setEnabled(false);
 
         mailbox.setId(blog.getId());
-        
+
         String blogID = blog.getBlogId();
         mailbox.setBlogId(blogID);
         mailbox.setBlogBaseURL(blog.getBlogBaseURL());
@@ -87,7 +87,7 @@ public class MoblogPluginUtils {
         if (!BlojsomUtils.checkNullOrBlank(password)) {
             mailbox.setPassword(password);
         } else {
-            mailbox.setEnabled(false);            
+            mailbox.setEnabled(false);
         }
 
         mailbox.setUrlPrefix(BlojsomConstants.DEFAULT_RESOURCES_DIRECTORY + blogID + "/");

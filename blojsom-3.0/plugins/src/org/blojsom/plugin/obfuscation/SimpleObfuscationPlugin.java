@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,8 +46,8 @@ import java.util.Map;
  * SimpleObfuscationPlugin
  *
  * @author David Czarnecki
+ * @version $Id: SimpleObfuscationPlugin.java,v 1.3 2008-07-07 19:54:28 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: SimpleObfuscationPlugin.java,v 1.2 2007-01-17 02:35:12 czarneckid Exp $
  */
 public class SimpleObfuscationPlugin implements Plugin {
 
@@ -56,7 +56,8 @@ public class SimpleObfuscationPlugin implements Plugin {
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *
-     * @throws org.blojsom.plugin.PluginException If there is an error initializing the plugin
+     * @throws org.blojsom.plugin.PluginException
+     *          If there is an error initializing the plugin
      */
     public void init() throws PluginException {
     }

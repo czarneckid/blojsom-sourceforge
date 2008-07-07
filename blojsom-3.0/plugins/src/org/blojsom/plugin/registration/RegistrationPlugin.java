@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,9 +61,9 @@ import java.util.*;
  * This plugin allows users to register for an account on the blog. Can be
  * combined with various authorization plugins to force users to login before
  * they can access the blog.
- * 
+ *
  * @author Eric Broyles
- * @version $Id: RegistrationPlugin.java,v 1.2 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: RegistrationPlugin.java,v 1.3 2008-07-07 19:54:18 czarneckid Exp $
  */
 public class RegistrationPlugin extends BaseAdminPlugin {
     private Log _logger;
@@ -145,8 +145,8 @@ public class RegistrationPlugin extends BaseAdminPlugin {
                 _mailServerUsername = _servletConfig.getServletContext().getInitParameter("smtp-server-username");
                 _mailServerPassword = _servletConfig.getServletContext().getInitParameter("smtp-server-password");
             }
-        } else
-        if (_logger.isErrorEnabled()) _logger.error("Missing SMTP servername servlet initialization parameter: smtp-server");
+        } else if (_logger.isErrorEnabled())
+            _logger.error("Missing SMTP servername servlet initialization parameter: smtp-server");
     }
 
     /**
@@ -154,15 +154,16 @@ public class RegistrationPlugin extends BaseAdminPlugin {
      * email address and the blog's name.  Sets the to address to the user's email address
      * and the blog owner's email address.
      *
-     * @param blog {@link Blog}
-     * @param user {@link User}
+     * @param blog  {@link Blog}
+     * @param user  {@link User}
      * @param email E-mail message
      * @throws EmailException If there is an error setting e-mail attributes
      */
     protected void setupEmail(Blog blog, User user, Email email) throws EmailException {
         email.setCharset("UTF-8");
         if (_session != null) email.setMailSession(_session);
-        else if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword)) {
+        else
+        if (!BlojsomUtils.checkNullOrBlank(_mailServerUsername) && !BlojsomUtils.checkNullOrBlank(_mailServerPassword)) {
             email.setHostName(_mailServer);
             email.setAuthentication(_mailServerUsername, _mailServerPassword);
         } else {
@@ -198,7 +199,7 @@ public class RegistrationPlugin extends BaseAdminPlugin {
                 return entries;
             }
             addOperationResultMessage(context, formatRegistrationResource(REGISTRATION_ACTIVATION_SUCCESS_KEY, REGISTRATION_ACTIVATION_SUCCESS_KEY, blog
-                    .getBlogLocale(), new Object[]{user.getUserName(), user.getUserLogin()}));
+                .getBlogLocale(), new Object[]{user.getUserName(), user.getUserLogin()}));
             httpServletRequest.setAttribute("page", REGISTRATION_PAGE);
             return entries;
         }
@@ -222,12 +223,12 @@ public class RegistrationPlugin extends BaseAdminPlugin {
                 user.setUserStatus(REGISTERED_STATUS);
                 try {
                     addUserMetaData(httpServletRequest, blog, context, user, blog
-                            .getProperty(REGISTRATION_USER_REQUIRED_METADATA_KEYS), true);
+                        .getProperty(REGISTRATION_USER_REQUIRED_METADATA_KEYS), true);
                 } catch (MissingParameterException e) {
                     return entries;
                 }
                 addUserMetaData(httpServletRequest, blog, context, user, blog
-                        .getProperty(REGISTRATION_USER_OPTIONAL_METADATA_KEYS), false);
+                    .getProperty(REGISTRATION_USER_OPTIONAL_METADATA_KEYS), false);
                 Random random = new Random(now.getTime() + System.currentTimeMillis());
                 int password = random.nextInt(0x7fffffff);
                 String updatedPassword = Integer.toString(password);
@@ -245,7 +246,7 @@ public class RegistrationPlugin extends BaseAdminPlugin {
                 }
 
                 Notification notification = constructEmail(blog, user, httpServletRequest
-                        .getParameter("flavor"));
+                    .getParameter("flavor"));
                 notification.send();
 
                 if (_logger.isDebugEnabled()) {
@@ -290,7 +291,7 @@ public class RegistrationPlugin extends BaseAdminPlugin {
      * @param context              Context
      * @param user                 the user who's registering
      * @param metaDataPropertyKeys the keys used to access the metadata values from the context
-     * @param isRequired If the metadata is required
+     * @param isRequired           If the metadata is required
      * @throws MissingParameterException when a required parameter is missing
      */
     protected void addUserMetaData(HttpServletRequest httpServletRequest, Blog blog, Map context, User user, String metaDataPropertyKeys, boolean isRequired) throws MissingParameterException {
@@ -310,7 +311,7 @@ public class RegistrationPlugin extends BaseAdminPlugin {
                         }
                     } catch (NullPointerException e) {
                         if (_logger.isErrorEnabled()) _logger.error((new StringBuffer()).append("Property ").append(key)
-                                .append(" was null").toString(), e);
+                            .append(" was null").toString(), e);
                     }
                 }
 
@@ -334,11 +335,11 @@ public class RegistrationPlugin extends BaseAdminPlugin {
     /**
      * Construct an email notification to the user with their registration details.
      *
-     * @param blog {@link Blog}
-     * @param user {@link User}
+     * @param blog   {@link Blog}
+     * @param user   {@link User}
      * @param flavor Flavor
      * @return the Notification
-     * @throws EmailException If there is an error setting e-mail attributes
+     * @throws EmailException     If there is an error setting e-mail attributes
      * @throws MessagingException If there is an error sending the e-mail
      */
     protected Notification constructEmail(Blog blog, User user, String flavor) throws EmailException, MessagingException {
@@ -349,9 +350,9 @@ public class RegistrationPlugin extends BaseAdminPlugin {
             to = user.getUserLogin();
         }
         email.setSubject((new StringBuffer()).append("Registration details for ").append(to)
-                .toString());
+            .toString());
         String templatePath = (new StringBuffer()).append("/WEB-INF/themes/").append(flavor)
-                .append("/templates/").append(flavor).append("-registration-email.vm").toString();
+            .append("/templates/").append(flavor).append("-registration-email.vm").toString();
         java.net.URL emailTemplate;
         try {
             emailTemplate = _servletConfig.getServletContext().getResource(templatePath);
@@ -420,9 +421,9 @@ public class RegistrationPlugin extends BaseAdminPlugin {
     protected void notifyOfFailedRegistration(String username, Map context, Blog blog, HttpServletRequest httpServletRequest) {
 
         addOperationResultMessage(context, formatRegistrationResource(FAILED_REGISTRATION_KEY, FAILED_REGISTRATION_KEY, blog.getBlogLocale(),
-				new Object[] { username }));
-		httpServletRequest.setAttribute(PAGE_ACTION, REGISTRATION_PAGE);
-		
-	}
+            new Object[]{username}));
+        httpServletRequest.setAttribute(PAGE_ACTION, REGISTRATION_PAGE);
+
+    }
 
 }

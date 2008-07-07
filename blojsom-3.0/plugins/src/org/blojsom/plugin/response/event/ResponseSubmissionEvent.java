@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,8 @@ import java.util.Map;
  * Response submission event
  *
  * @author David Czarnecki
+ * @version $Id: ResponseSubmissionEvent.java,v 1.4 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: ResponseSubmissionEvent.java,v 1.3 2007-01-17 02:35:13 czarneckid Exp $
  */
 public class ResponseSubmissionEvent extends Event {
 
@@ -61,17 +61,17 @@ public class ResponseSubmissionEvent extends Event {
     /**
      * Create a new instance of the response submission event
      *
-     * @param source Source of event
-     * @param timestamp Time of event
-     * @param blog {@link Blog}
-     * @param httpServletRequest {@link HttpServletRequest}
+     * @param source              Source of event
+     * @param timestamp           Time of event
+     * @param blog                {@link Blog}
+     * @param httpServletRequest  {@link HttpServletRequest}
      * @param httpServletResponse {@link HttpServletResponse}
-     * @param submitter Submitter
-     * @param submitterItem1 Submitter data item 1
-     * @param submitterItem2 Submitter data item 2
-     * @param content Content to be evaluated
-     * @param entry {@link Entry}
-     * @param metaData Meta-data
+     * @param submitter           Submitter
+     * @param submitterItem1      Submitter data item 1
+     * @param submitterItem2      Submitter data item 2
+     * @param content             Content to be evaluated
+     * @param entry               {@link Entry}
+     * @param metaData            Meta-data
      */
     public ResponseSubmissionEvent(Object source, Date timestamp, Blog blog, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String submitter, String submitterItem1, String submitterItem2, String content, Entry entry, Map metaData) {
         super(source, timestamp);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ import java.io.IOException;
  * CommentPlugin
  *
  * @author David Czarnecki
- * @version $Id: CommentPlugin.java,v 1.15 2007-06-20 00:51:39 czarneckid Exp $
+ * @version $Id: CommentPlugin.java,v 1.16 2008-07-07 19:54:16 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class CommentPlugin extends StandaloneVelocityPlugin implements Listener {
@@ -555,7 +555,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
 
                     if (comment != null) {
                         context.put(BLOJSOM_COMMENT_PLUGIN_STATUS, comment.getStatus());
-                        
+
                         try {
                             _fetcher.loadEntry(blog, entries[0]);
                             _fetcher.loadEntry(blog, entryForComment);
@@ -579,7 +579,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                     context.put(BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL, authorURL);
                     if (autoformatComments) {
                         context.put(BLOJSOM_COMMENT_PLUGIN_COMMENT_TEXT,
-                                BlojsomUtils.escapeStringSimple(BlojsomUtils.replace(commentText, "<br />", "\n")));
+                            BlojsomUtils.escapeStringSimple(BlojsomUtils.replace(commentText, "<br />", "\n")));
                     } else {
                         context.put(BLOJSOM_COMMENT_PLUGIN_COMMENT_TEXT, BlojsomUtils.escapeStringSimple(commentText));
                     }
@@ -614,15 +614,15 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
     /**
      * Add a comment to a particular blog entry
      *
-     * @param author      Comment author
-     * @param authorEmail Comment author e-mail
-     * @param authorURL   Comment author URL
-     * @param userComment Comment
+     * @param author              Comment author
+     * @param authorEmail         Comment author e-mail
+     * @param authorURL           Comment author URL
+     * @param userComment         Comment
      * @param blogCommentsEnabled If comments are enabled or not
-     * @param commentMetaData Metadata for the comment
-     * @param blog {@link Blog}
-     * @param entry {@link Entry}
-     * @param httpServletRequest {@link HttpServletRequest}
+     * @param commentMetaData     Metadata for the comment
+     * @param blog                {@link Blog}
+     * @param entry               {@link Entry}
+     * @param httpServletRequest  {@link HttpServletRequest}
      * @return BlogComment Entry
      */
     private Comment addBlogComment(String author, String authorEmail, String authorURL, String userComment,
@@ -643,7 +643,7 @@ public class CommentPlugin extends StandaloneVelocityPlugin implements Listener 
                 comment.setBlogId(blog.getId());
                 comment.setIp(httpServletRequest.getRemoteAddr());
                 if (commentMetaData.containsKey(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED) &&
-                        "true".equals(commentMetaData.get(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED))) {
+                    "true".equals(commentMetaData.get(CommentModerationPlugin.BLOJSOM_COMMENT_MODERATION_PLUGIN_APPROVED))) {
                     comment.setStatus(ResponseConstants.APPROVED_STATUS);
                 } else {
                     if ("true".equals(blog.getProperty(CommentModerationPlugin.COMMENT_MODERATION_ENABLED))) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackHandler.java,v 1.8 2007-01-17 02:35:07 czarneckid Exp $
+ * @version $Id: PingbackHandler.java,v 1.9 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackHandler extends APIHandler {
@@ -224,14 +224,14 @@ public class PingbackHandler extends APIHandler {
 
         String permalink = BlojsomUtils.getRequestValue(BlojsomConstants.PERMALINK_PARAM, _httpServletRequest);
         if (BlojsomUtils.checkNullOrBlank(permalink)) {
-            _logger.error("Permalink is null or blank: " +  permalink);
+            _logger.error("Permalink is null or blank: " + permalink);
             throw new XmlRpcException(PINGBACK_GENERIC_FAULT_CODE, "Unable to retrieve target URI");
         }
 
         // Check that the resource hasn't already been registered
         try {
             Pingback pingback = _fetcher.loadPingback(_blog, sourceURI, targetURI);
-            
+
             if (pingback != null) {
                 throw new XmlRpcException(PINGBACK_ALREADY_REGISTERED_CODE, "Pingback already registered");
             }
@@ -261,7 +261,7 @@ public class PingbackHandler extends APIHandler {
 
                     pingback.setMetaData(pingbackMetaData);
                     if (pingbackMetaData.containsKey(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED)
-                            && "true".equals(pingbackMetaData.get(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED))) {
+                        && "true".equals(pingbackMetaData.get(PingbackPlugin.BLOJSOM_PINGBACK_PLUGIN_APPROVED))) {
                         pingback.setStatus(ResponseConstants.APPROVED_STATUS);
                     } else {
                         if ("true".equals(_blog.getProperty(PingbackPlugin.PINGBACK_MODERATION_ENABLED))) {
@@ -341,7 +341,7 @@ public class PingbackHandler extends APIHandler {
             if (_logger.isErrorEnabled()) {
                 _logger.error(e);
             }
-            
+
             if (e.getCause() instanceof XmlRpcException) {
                 throw (XmlRpcException) e.getCause();
             }

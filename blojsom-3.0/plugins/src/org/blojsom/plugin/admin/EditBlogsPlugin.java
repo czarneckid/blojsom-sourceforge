@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ import java.util.Properties;
  * EditBlogsPlugin
  *
  * @author David Czarnecki
- * @version $Id: EditBlogsPlugin.java,v 1.9 2007-02-27 16:42:52 czarneckid Exp $
+ * @version $Id: EditBlogsPlugin.java,v 1.10 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class EditBlogsPlugin extends BaseAdminPlugin {
@@ -225,7 +225,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                 return entries;
             } else if (_protectedBlogs.containsKey(blogID)) {
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
-                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_PROTECTED_BLOG_KEY, FAILED_DELETE_PROTECTED_BLOG_KEY, blog.getBlogAdministrationLocale(), new Object[] {blogID}));
+                addOperationResultMessage(context, formatAdminResource(FAILED_DELETE_PROTECTED_BLOG_KEY, FAILED_DELETE_PROTECTED_BLOG_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogID}));
 
                 return entries;
             } else {
@@ -328,8 +328,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                 blogToAdd.setBlogId(blogID);
 
                 File blogDirectory = new File(_servletConfig.getServletContext().getRealPath("/") + BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + blogID);
-                if (blogDirectory.exists())
-                { // Make sure that the blog user ID does not conflict with a directory underneath the installation directory
+                if (blogDirectory.exists()) { // Make sure that the blog user ID does not conflict with a directory underneath the installation directory
                     if (_logger.isDebugEnabled()) {
                         _logger.debug("Blog directory already exists for blog ID: " + blogID);
                     }
@@ -360,7 +359,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                         if (!BlojsomUtils.checkNullOrBlank(blogLoginID) && !BlojsomUtils.checkNullOrBlank(blogUserEmail)) {
                             // Setup the blog
                             blogToAdd.setProperties(_defaultBlogProperties);
-                            
+
                             if (!BlojsomUtils.checkNullOrBlank(blogUserName)) {
                                 blogToAdd.setBlogOwner(blogUserName);
                             } else {
@@ -453,7 +452,7 @@ public class EditBlogsPlugin extends BaseAdminPlugin {
                             } catch (FetcherException e) {
                                 _logger.error(e);
                             }
-                            
+
                             addOperationResultMessage(context, formatAdminResource(ADDED_NEW_WEBLOG_KEY, ADDED_NEW_WEBLOG_KEY, blog.getBlogAdministrationLocale(), new Object[]{blogID}));
                             httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, EDIT_BLOG_USERS_PAGE);
                         } else {

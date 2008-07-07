@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,8 +59,8 @@ import java.util.Random;
  * Forgotten password plugin
  *
  * @author David Czarnecki
+ * @version $Id: ForgottenPasswordPlugin.java,v 1.5 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: ForgottenPasswordPlugin.java,v 1.4 2007-01-17 02:35:05 czarneckid Exp $
  */
 public class ForgottenPasswordPlugin extends BaseAdminPlugin {
 
@@ -205,9 +205,9 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin {
                     _fetcher.saveUser(blog, user);
                     emailText.append(updatedPassword);
                 } else {
-                	emailText.append(user.getUserPassword());
+                    emailText.append(user.getUserPassword());
                 }
-                
+
                 email.setHtmlMsg(emailText.toString());
                 email.setTextMsg(emailText.toString());
 
@@ -224,14 +224,14 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin {
 
                 email.send();
 
-                addOperationResultMessage(context, formatAdminResource(CONSTRUCTED_PASSWORD_EMAIL_KEY, CONSTRUCTED_PASSWORD_EMAIL_KEY, blog.getBlogAdministrationLocale(), new Object[] {to}));
+                addOperationResultMessage(context, formatAdminResource(CONSTRUCTED_PASSWORD_EMAIL_KEY, CONSTRUCTED_PASSWORD_EMAIL_KEY, blog.getBlogAdministrationLocale(), new Object[]{to}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_LOGIN_PAGE);
             } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {
                     _logger.error(e);
                 }
 
-                addOperationResultMessage(context, formatAdminResource(FAILED_PASSWORD_CHANGE_KEY, FAILED_PASSWORD_CHANGE_KEY, blog.getBlogAdministrationLocale(), new Object[] {username}));
+                addOperationResultMessage(context, formatAdminResource(FAILED_PASSWORD_CHANGE_KEY, FAILED_PASSWORD_CHANGE_KEY, blog.getBlogAdministrationLocale(), new Object[]{username}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
                 return entries;
@@ -240,7 +240,7 @@ public class ForgottenPasswordPlugin extends BaseAdminPlugin {
                     _logger.error(e);
                 }
 
-                addOperationResultMessage(context, formatAdminResource(FAILED_PASSWORD_CHANGE_KEY, FAILED_PASSWORD_CHANGE_KEY, blog.getBlogAdministrationLocale(), new Object[] {username}));
+                addOperationResultMessage(context, formatAdminResource(FAILED_PASSWORD_CHANGE_KEY, FAILED_PASSWORD_CHANGE_KEY, blog.getBlogAdministrationLocale(), new Object[]{username}));
                 httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, ADMIN_LOGIN_PAGE);
 
                 return entries;

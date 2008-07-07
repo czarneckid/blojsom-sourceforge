@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,8 +39,8 @@ import java.util.Calendar;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: VelocityHelper.java,v 1.3 2008-07-07 19:54:09 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: VelocityHelper.java,v 1.2 2007-01-17 02:35:08 czarneckid Exp $
  */
 public class VelocityHelper {
 
@@ -63,7 +63,7 @@ public class VelocityHelper {
 
     /**
      * Public Constructor
-     * 
+     *
      * @param calendar BlogCalendar to render
      */
     public VelocityHelper(BlogCalendar calendar) {
@@ -72,7 +72,7 @@ public class VelocityHelper {
 
     /**
      * Sets the BlogCalendar to render
-     * 
+     *
      * @param calendar BlogCalendar
      */
     public void setCalendar(BlogCalendar calendar) {
@@ -123,7 +123,7 @@ public class VelocityHelper {
      * Get the visual content for a given calendar row. If <code>clazz</code> is null, no <code>class</code> attribute
      * will be included in the &lt;td&gt; tag.
      *
-     * @param row   the row
+     * @param row the row
      * @return the visual calendar row
      */
     public String getCalendarRow(int row) {
@@ -132,8 +132,8 @@ public class VelocityHelper {
 
     /**
      * Get the visual content for a given calendar row. If <code>clazz</code> is null, no <code>class</code> attribute
-     * will be included in the &lt;td&gt; tag.  
-     * 
+     * will be included in the &lt;td&gt; tag.
+     *
      * @param row   the row
      * @param clazz the css style apply
      * @return the visual calendar row
@@ -154,7 +154,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to Today
-     * 
+     *
      * @return the today navigation control
      */
     public String getToday() {
@@ -165,7 +165,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to the previous month
-     * 
+     *
      * @return the previous month navigation control
      */
     public String getPreviousMonth() {
@@ -173,8 +173,8 @@ public class VelocityHelper {
         _calendar.getCalendar().add(Calendar.MONTH, -1);
         result.append(HREF_PREFIX);
         String prevurl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                -1, _calendar.getCalendar().get(Calendar.YEAR));
+            (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+            -1, _calendar.getCalendar().get(Calendar.YEAR));
         result.append(prevurl);
         result.append("\"> &lt;").append(VTL_SPACER).append(VTL_SPACER);
         result.append(_calendar.getShortMonthName(_calendar.getCalendar().get(Calendar.MONTH)));
@@ -185,7 +185,7 @@ public class VelocityHelper {
 
     /**
      * Get the visual control for navigating to the next month
-     * 
+     *
      * @return the next month navigation control
      */
     public String getNextMonth() {
@@ -194,8 +194,8 @@ public class VelocityHelper {
 
         result.append(HREF_PREFIX);
         String nexturl = BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                -1, _calendar.getCalendar().get(Calendar.YEAR));
+            (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+            -1, _calendar.getCalendar().get(Calendar.YEAR));
 
         result.append(nexturl);
         result.append("\"> ");
@@ -217,9 +217,9 @@ public class VelocityHelper {
         _calendar.getCalendar().add(Calendar.MONTH, -1);
 
         String prevurl =
-                BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                        (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                        -1, _calendar.getCalendar().get(Calendar.YEAR));
+            BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                -1, _calendar.getCalendar().get(Calendar.YEAR));
 
         result.append(prevurl);
         _calendar.getCalendar().add(Calendar.MONTH, 1);
@@ -280,9 +280,9 @@ public class VelocityHelper {
         _calendar.getCalendar().add(Calendar.MONTH, 1);
 
         String nexturl =
-                BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
-                        (_calendar.getCalendar().get(Calendar.MONTH) + 1),
-                        -1, _calendar.getCalendar().get(Calendar.YEAR));
+            BlojsomUtils.getCalendarNavigationUrl(_calendar.getCalendarUrl(),
+                (_calendar.getCalendar().get(Calendar.MONTH) + 1),
+                -1, _calendar.getCalendar().get(Calendar.YEAR));
 
         result.append(nexturl);
         _calendar.getCalendar().add(Calendar.MONTH, -1);

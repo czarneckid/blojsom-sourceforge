@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ import java.util.Map;
  * Permission Checker plugin
  *
  * @author David Czarnecki
- * @version $Id: PermissionChecker.java,v 1.2 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: PermissionChecker.java,v 1.3 2008-07-07 19:54:15 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PermissionChecker {
@@ -52,9 +52,9 @@ public class PermissionChecker {
     /**
      * Create a new permission checker for a given blog
      *
-     * @param blogUser {@link Blog}
+     * @param blogUser              {@link Blog}
      * @param authorizationProvider {@link AuthorizationProvider}
-     * @param permissionContext Context for permissions to be evaulated in (not-used)
+     * @param permissionContext     Context for permissions to be evaulated in (not-used)
      */
     public PermissionChecker(Blog blog, AuthorizationProvider authorizationProvider, Map permissionContext) {
         _blog = blog;
@@ -65,7 +65,7 @@ public class PermissionChecker {
     /**
      * Check permission for a given username and permission
      *
-     * @param username Username
+     * @param username   Username
      * @param permission Permission to check
      * @return <code>true</code> if <code>username</code> has given <code>permission</code>, <code>false</code> otherwise
      */

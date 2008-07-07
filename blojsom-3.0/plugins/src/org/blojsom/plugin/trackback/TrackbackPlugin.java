@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,8 +66,8 @@ import java.util.*;
  * TrackbackPlugin
  *
  * @author David Czarnecki
+ * @version $Id: TrackbackPlugin.java,v 1.11 2008-07-07 19:54:23 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: TrackbackPlugin.java,v 1.10 2007-03-01 18:36:47 czarneckid Exp $
  */
 public class TrackbackPlugin extends StandaloneVelocityPlugin implements BlojsomMetaDataConstants, Listener, EmailConstants {
 
@@ -402,7 +402,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
                         } catch (NumberFormatException e) {
                         }
                     }
-                }  else {
+                } else {
                     if (_logger.isDebugEnabled()) {
                         _logger.debug("Trackbacks have been disabled for blog entry: " + entryForTrackback.getId());
                     }
@@ -475,14 +475,14 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
     /**
      * Add a trackback
      *
-     * @param title Title
-     * @param excerpt Excerpt
-     * @param url URL
-     * @param blogName Blog name
-     * @param trackbackMetaData Trackback meta-data
-     * @param trackback {@link Trackback}
-     * @param blog {@link Blog}
-     * @param context Context
+     * @param title              Title
+     * @param excerpt            Excerpt
+     * @param url                URL
+     * @param blogName           Blog name
+     * @param trackbackMetaData  Trackback meta-data
+     * @param trackback          {@link Trackback}
+     * @param blog               {@link Blog}
+     * @param context            Context
      * @param httpServletRequest {@link HttpServletRequest}
      * @return <code>0</code> if adding the trackback was successful, <code>1</code> if there was an error
      */
@@ -498,7 +498,7 @@ public class TrackbackPlugin extends StandaloneVelocityPlugin implements Blojsom
             trackback.setIp(httpServletRequest.getRemoteAddr());
             trackback.setMetaData(trackbackMetaData);
             if (trackbackMetaData.containsKey(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED)
-                    && "true".equals(trackbackMetaData.get(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED))) {
+                && "true".equals(trackbackMetaData.get(TrackbackModerationPlugin.BLOJSOM_TRACKBACK_MODERATION_PLUGIN_APPROVED))) {
                 trackback.setStatus(ResponseConstants.APPROVED_STATUS);
             } else {
                 if ("true".equals(blog.getProperty(TrackbackModerationPlugin.TRACKBACK_MODERATION_ENABLED))) {

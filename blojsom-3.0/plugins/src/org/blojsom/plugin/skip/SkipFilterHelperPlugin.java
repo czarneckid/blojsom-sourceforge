@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,13 +49,13 @@ import java.util.Map;
  * Skip Filter Helper plugin
  *
  * @author David Czarnecki
+ * @version $Id: SkipFilterHelperPlugin.java,v 1.5 2008-07-07 19:54:25 czarneckid Exp $
  * @since blojsom 3.1
- * @version $Id: SkipFilterHelperPlugin.java,v 1.4 2007-04-02 16:30:48 czarneckid Exp $
  */
 public class SkipFilterHelperPlugin implements Plugin {
 
     private Log _logger = LogFactory.getLog(SkipFilterHelperPlugin.class);
-    
+
     private static final String BLOJSOM_CURRENT_PAGE = "BLOJSOM_CURRENT_PAGE";
     private static final String BLOJSOM_TOTAL_PAGES = "BLOJSOM_TOTAL_PAGES";
 

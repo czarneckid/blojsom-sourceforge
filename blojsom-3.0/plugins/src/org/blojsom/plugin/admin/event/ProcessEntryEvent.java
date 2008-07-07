@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ import java.util.Map;
  * response, and the current plugin execution context.
  *
  * @author David Czarnecki
- * @version $Id: ProcessEntryEvent.java,v 1.3 2007-01-17 02:35:08 czarneckid Exp $
+ * @version $Id: ProcessEntryEvent.java,v 1.4 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ProcessEntryEvent extends EntryEvent {
@@ -55,13 +55,13 @@ public class ProcessEntryEvent extends EntryEvent {
     /**
      * Create a new event indicating something happened with an entry in the system.
      *
-     * @param source    Source of the event
-     * @param timestamp Event timestamp
-     * @param entry     {@link Entry}
-     * @param blog      {@link Blog}
+     * @param source              Source of the event
+     * @param timestamp           Event timestamp
+     * @param entry               {@link Entry}
+     * @param blog                {@link Blog}
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
-     * @param context             Context     
+     * @param context             Context
      */
     public ProcessEntryEvent(Object source, Date timestamp, Entry entry, Blog blog, HttpServletRequest httpServletRequest,
                              HttpServletResponse httpServletResponse, Map context) {

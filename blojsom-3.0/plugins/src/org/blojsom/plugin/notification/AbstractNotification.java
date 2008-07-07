@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,9 +55,9 @@ public abstract class AbstractNotification implements Notification {
      * Create a new abstract notification
      *
      * @param emailTemplate E-mail template
-     * @param charEncoding Character encoding
-     * @param mailServer Mail server name
-     * @param contentType Content type
+     * @param charEncoding  Character encoding
+     * @param mailServer    Mail server name
+     * @param contentType   Content type
      */
     public AbstractNotification(URL emailTemplate, String charEncoding, String mailServer, String contentType) {
         _logger = LogFactory.getLog(AbstractNotification.class);
@@ -82,21 +82,21 @@ public abstract class AbstractNotification implements Notification {
             if (getRecipients() != null) {
                 String recipient;
                 for (Iterator iter = getRecipients().iterator(); iter.hasNext(); mail
-                        .addTo(recipient))
+                    .addTo(recipient))
                     recipient = (String) iter.next();
 
             }
             if (getCarbonCopyRecipients() != null) {
                 String cc;
                 for (Iterator iter = getCarbonCopyRecipients().iterator(); iter.hasNext(); mail
-                        .addHeader("Cc", cc))
+                    .addHeader("Cc", cc))
                     cc = (String) iter.next();
 
             }
             if (getBlindCarbonCopyRecipients() != null) {
                 String bcc;
                 for (Iterator iter = getBlindCarbonCopyRecipients().iterator(); iter.hasNext(); mail
-                        .addHeader("Bcc", bcc))
+                    .addHeader("Bcc", bcc))
                     bcc = (String) iter.next();
 
             }
@@ -143,7 +143,7 @@ public abstract class AbstractNotification implements Notification {
     /**
      * Retrieve the list of CC recipients
      *
-     * @return List of CC recipients 
+     * @return List of CC recipients
      */
     protected abstract List getCarbonCopyRecipients();
 

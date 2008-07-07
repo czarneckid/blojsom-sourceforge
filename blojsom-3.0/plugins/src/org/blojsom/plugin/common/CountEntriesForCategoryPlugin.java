@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,8 +50,8 @@ import java.util.HashMap;
  * Count entries for category plugin
  *
  * @author David Czarnecki
+ * @version $Id: CountEntriesForCategoryPlugin.java,v 1.2 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.2
- * @version $Id: CountEntriesForCategoryPlugin.java,v 1.1 2007-04-03 16:41:00 czarneckid Exp $
  */
 public class CountEntriesForCategoryPlugin implements Plugin {
 
@@ -75,7 +75,7 @@ public class CountEntriesForCategoryPlugin implements Plugin {
     public void setFetcher(Fetcher fetcher) {
         _fetcher = fetcher;
     }
-    
+
     /**
      * Initialize this plugin. This method only called when the plugin is instantiated.
      *

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ import java.util.Map;
  * IP address moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: IPAddressModerationPlugin.java,v 1.2 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: IPAddressModerationPlugin.java,v 1.3 2008-07-07 19:54:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class IPAddressModerationPlugin implements Plugin, Listener {
@@ -147,7 +147,7 @@ public class IPAddressModerationPlugin implements Plugin, Listener {
     /**
      * Load the list of IP addresses from whitelist or blacklist from the blog properties
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param property Whitelist or Blacklist property
      * @return List of IP addresses
      */

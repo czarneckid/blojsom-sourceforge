@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ import java.util.Map;
  * Akismet moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: AkismetModerationPlugin.java,v 1.8 2007-01-17 01:15:46 czarneckid Exp $
+ * @version $Id: AkismetModerationPlugin.java,v 1.9 2008-07-07 19:54:25 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class AkismetModerationPlugin implements Plugin, Listener {
@@ -181,21 +181,21 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 Map metaData = responseSubmissionEvent.getMetaData();
 
                 StringBuffer entryLink = new StringBuffer().append(blog.getBlogURL())
-                        .append(responseSubmissionEvent.getEntry().getCategory())
-                        .append(responseSubmissionEvent.getEntry().getPostSlug());
+                    .append(responseSubmissionEvent.getEntry().getCategory())
+                    .append(responseSubmissionEvent.getEntry().getPostSlug());
 
                 boolean isSpam = akismet.commentCheck(httpServletRequest.getRemoteAddr(),
-                        httpServletRequest.getHeader("User-Agent"),
-                        httpServletRequest.getHeader("Referer"),
-                        entryLink.toString(),
-                        responseType,
-                        responseSubmissionEvent.getSubmitter(),
-                        responseSubmissionEvent.getSubmitterItem1(),
-                        responseSubmissionEvent.getSubmitterItem2(),
-                        responseSubmissionEvent.getContent(), null);
+                    httpServletRequest.getHeader("User-Agent"),
+                    httpServletRequest.getHeader("Referer"),
+                    entryLink.toString(),
+                    responseType,
+                    responseSubmissionEvent.getSubmitter(),
+                    responseSubmissionEvent.getSubmitterItem1(),
+                    responseSubmissionEvent.getSubmitterItem2(),
+                    responseSubmissionEvent.getContent(), null);
 
                 metaData.put(AKISMET_PLUGIN_RESPONSE, Boolean.toString(isSpam));
-                
+
                 // If Akismet identifies the content as spam, process for moderation or deletion accordingly
                 if (isSpam) {
                     boolean deleteSpam = DELETE_SPAM_DEFAULT;
@@ -269,14 +269,14 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 String responseType = Akismet.COMMENT_TYPE_COMMENT;
                 StringBuffer permalink = new StringBuffer();
                 permalink.append(blog.getBlogURL()).append("/")
-                        .append(commentMarkedSpamEvent.getEntry().getBlogCategory().getName())
-                        .append(commentMarkedSpamEvent.getEntry().getPostSlug());
+                    .append(commentMarkedSpamEvent.getEntry().getBlogCategory().getName())
+                    .append(commentMarkedSpamEvent.getEntry().getPostSlug());
 
                 akismet.submitSpam(commentMarkedSpamEvent.getComment().getIp(),
-                        null, null, permalink.toString(), responseType, commentMarkedSpamEvent.getComment().getAuthor(),
-                        commentMarkedSpamEvent.getComment().getAuthorEmail(),
-                        commentMarkedSpamEvent.getComment().getAuthorURL(),
-                        commentMarkedSpamEvent.getComment().getComment(), null);
+                    null, null, permalink.toString(), responseType, commentMarkedSpamEvent.getComment().getAuthor(),
+                    commentMarkedSpamEvent.getComment().getAuthorEmail(),
+                    commentMarkedSpamEvent.getComment().getAuthorURL(),
+                    commentMarkedSpamEvent.getComment().getComment(), null);
             }
         } else if (event instanceof CommentUnmarkedSpamEvent) {
             CommentUnmarkedSpamEvent commentUnmarkedSpamEvent = (CommentUnmarkedSpamEvent) event;
@@ -292,14 +292,14 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 String responseType = Akismet.COMMENT_TYPE_COMMENT;
                 StringBuffer permalink = new StringBuffer();
                 permalink.append(blog.getBlogURL()).append("/")
-                        .append(commentUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
-                        .append(commentUnmarkedSpamEvent.getEntry().getPostSlug());
+                    .append(commentUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
+                    .append(commentUnmarkedSpamEvent.getEntry().getPostSlug());
 
                 akismet.submitHam(commentUnmarkedSpamEvent.getComment().getIp(),
-                        null, null, permalink.toString(), responseType, commentUnmarkedSpamEvent.getComment().getAuthor(),
-                        commentUnmarkedSpamEvent.getComment().getAuthorEmail(),
-                        commentUnmarkedSpamEvent.getComment().getAuthorURL(),
-                        commentUnmarkedSpamEvent.getComment().getComment(), null);
+                    null, null, permalink.toString(), responseType, commentUnmarkedSpamEvent.getComment().getAuthor(),
+                    commentUnmarkedSpamEvent.getComment().getAuthorEmail(),
+                    commentUnmarkedSpamEvent.getComment().getAuthorURL(),
+                    commentUnmarkedSpamEvent.getComment().getComment(), null);
             }
         } else if (event instanceof TrackbackMarkedSpamEvent) {
             TrackbackMarkedSpamEvent trackbackMarkedSpamEvent = (TrackbackMarkedSpamEvent) event;
@@ -315,14 +315,14 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 String responseType = Akismet.COMMENT_TYPE_TRACKBACK;
                 StringBuffer permalink = new StringBuffer();
                 permalink.append(blog.getBlogURL()).append("/")
-                        .append(trackbackMarkedSpamEvent.getEntry().getBlogCategory().getName())
-                        .append(trackbackMarkedSpamEvent.getEntry().getPostSlug());
+                    .append(trackbackMarkedSpamEvent.getEntry().getBlogCategory().getName())
+                    .append(trackbackMarkedSpamEvent.getEntry().getPostSlug());
 
                 akismet.submitSpam(trackbackMarkedSpamEvent.getTrackback().getIp(),
-                        null, null, permalink.toString(), responseType, trackbackMarkedSpamEvent.getTrackback().getTitle(),
-                        trackbackMarkedSpamEvent.getTrackback().getBlogName(),
-                        trackbackMarkedSpamEvent.getTrackback().getUrl(),
-                        trackbackMarkedSpamEvent.getTrackback().getExcerpt(), null);
+                    null, null, permalink.toString(), responseType, trackbackMarkedSpamEvent.getTrackback().getTitle(),
+                    trackbackMarkedSpamEvent.getTrackback().getBlogName(),
+                    trackbackMarkedSpamEvent.getTrackback().getUrl(),
+                    trackbackMarkedSpamEvent.getTrackback().getExcerpt(), null);
             }
         } else if (event instanceof TrackbackUnmarkedSpamEvent) {
             TrackbackUnmarkedSpamEvent trackbackUnmarkedSpamEvent = (TrackbackUnmarkedSpamEvent) event;
@@ -338,14 +338,14 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 String responseType = Akismet.COMMENT_TYPE_TRACKBACK;
                 StringBuffer permalink = new StringBuffer();
                 permalink.append(blog.getBlogURL()).append("/")
-                        .append(trackbackUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
-                        .append(trackbackUnmarkedSpamEvent.getEntry().getPostSlug());
+                    .append(trackbackUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
+                    .append(trackbackUnmarkedSpamEvent.getEntry().getPostSlug());
 
                 akismet.submitHam(trackbackUnmarkedSpamEvent.getTrackback().getIp(),
-                        null, null, permalink.toString(), responseType, trackbackUnmarkedSpamEvent.getTrackback().getTitle(),
-                        trackbackUnmarkedSpamEvent.getTrackback().getBlogName(),
-                        trackbackUnmarkedSpamEvent.getTrackback().getUrl(),
-                        trackbackUnmarkedSpamEvent.getTrackback().getExcerpt(), null);
+                    null, null, permalink.toString(), responseType, trackbackUnmarkedSpamEvent.getTrackback().getTitle(),
+                    trackbackUnmarkedSpamEvent.getTrackback().getBlogName(),
+                    trackbackUnmarkedSpamEvent.getTrackback().getUrl(),
+                    trackbackUnmarkedSpamEvent.getTrackback().getExcerpt(), null);
             }
         } else if (event instanceof PingbackMarkedSpamEvent) {
             PingbackMarkedSpamEvent pingbackMarkedSpamEvent = (PingbackMarkedSpamEvent) event;
@@ -361,14 +361,14 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 String responseType = Akismet.COMMENT_TYPE_PINGBACK;
                 StringBuffer permalink = new StringBuffer();
                 permalink.append(blog.getBlogURL()).append("/")
-                        .append(pingbackMarkedSpamEvent.getEntry().getBlogCategory().getName())
-                        .append(pingbackMarkedSpamEvent.getEntry().getPostSlug());
+                    .append(pingbackMarkedSpamEvent.getEntry().getBlogCategory().getName())
+                    .append(pingbackMarkedSpamEvent.getEntry().getPostSlug());
 
                 akismet.submitSpam(pingbackMarkedSpamEvent.getPingback().getIp(),
-                        null, null, permalink.toString(), responseType, pingbackMarkedSpamEvent.getPingback().getTitle(),
-                        pingbackMarkedSpamEvent.getPingback().getBlogName(),
-                        pingbackMarkedSpamEvent.getPingback().getUrl(),
-                        pingbackMarkedSpamEvent.getPingback().getExcerpt(), null);
+                    null, null, permalink.toString(), responseType, pingbackMarkedSpamEvent.getPingback().getTitle(),
+                    pingbackMarkedSpamEvent.getPingback().getBlogName(),
+                    pingbackMarkedSpamEvent.getPingback().getUrl(),
+                    pingbackMarkedSpamEvent.getPingback().getExcerpt(), null);
             }
         } else if (event instanceof PingbackUnmarkedSpamEvent) {
             PingbackUnmarkedSpamEvent pingbackUnmarkedSpamEvent = (PingbackUnmarkedSpamEvent) event;
@@ -384,14 +384,14 @@ public class AkismetModerationPlugin implements Plugin, Listener {
                 String responseType = Akismet.COMMENT_TYPE_PINGBACK;
                 StringBuffer permalink = new StringBuffer();
                 permalink.append(blog.getBlogURL()).append("/")
-                        .append(pingbackUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
-                        .append(pingbackUnmarkedSpamEvent.getEntry().getPostSlug());
+                    .append(pingbackUnmarkedSpamEvent.getEntry().getBlogCategory().getName())
+                    .append(pingbackUnmarkedSpamEvent.getEntry().getPostSlug());
 
                 akismet.submitHam(pingbackUnmarkedSpamEvent.getPingback().getIp(),
-                        null, null, permalink.toString(), responseType, pingbackUnmarkedSpamEvent.getPingback().getTitle(),
-                        pingbackUnmarkedSpamEvent.getPingback().getBlogName(),
-                        pingbackUnmarkedSpamEvent.getPingback().getUrl(),
-                        pingbackUnmarkedSpamEvent.getPingback().getExcerpt(), null);
+                    null, null, permalink.toString(), responseType, pingbackUnmarkedSpamEvent.getPingback().getTitle(),
+                    pingbackUnmarkedSpamEvent.getPingback().getBlogName(),
+                    pingbackUnmarkedSpamEvent.getPingback().getUrl(),
+                    pingbackUnmarkedSpamEvent.getPingback().getExcerpt(), null);
             }
         }
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ import java.util.Map;
  * IP address moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: IPAddressModerationAdminPlugin.java,v 1.3 2007-02-27 16:42:53 czarneckid Exp $
+ * @version $Id: IPAddressModerationAdminPlugin.java,v 1.4 2008-07-07 19:54:22 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
@@ -184,9 +184,9 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
                                 _logger.error(e);
                             }
                         }
-                        addOperationResultMessage(context, formatAdminResource(ADDED_IP_TO_BLACKLIST_KEY, ADDED_IP_TO_BLACKLIST_KEY, blog.getBlogAdministrationLocale(), new Object[] {ipAddress}));
+                        addOperationResultMessage(context, formatAdminResource(ADDED_IP_TO_BLACKLIST_KEY, ADDED_IP_TO_BLACKLIST_KEY, blog.getBlogAdministrationLocale(), new Object[]{ipAddress}));
                     } else {
-                        addOperationResultMessage(context, formatAdminResource(IP_ALREADY_ADDED_TO_BLACKLIST_KEY, IP_ALREADY_ADDED_TO_BLACKLIST_KEY, blog.getBlogAdministrationLocale(), new Object[] {ipAddress}));
+                        addOperationResultMessage(context, formatAdminResource(IP_ALREADY_ADDED_TO_BLACKLIST_KEY, IP_ALREADY_ADDED_TO_BLACKLIST_KEY, blog.getBlogAdministrationLocale(), new Object[]{ipAddress}));
                     }
                 } else {
                     if (!ipAddressesFromWhitelist.contains(ipAddress)) {
@@ -199,9 +199,9 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
                                 _logger.error(e);
                             }
                         }
-                        addOperationResultMessage(context, formatAdminResource(ADDED_IP_TO_WHITELIST_KEY, ADDED_IP_TO_WHITELIST_KEY, blog.getBlogAdministrationLocale(), new Object[] {ipAddress}));
+                        addOperationResultMessage(context, formatAdminResource(ADDED_IP_TO_WHITELIST_KEY, ADDED_IP_TO_WHITELIST_KEY, blog.getBlogAdministrationLocale(), new Object[]{ipAddress}));
                     } else {
-                        addOperationResultMessage(context, formatAdminResource(IP_ALREADY_ADDED_TO_WHITELIST_KEY, IP_ALREADY_ADDED_TO_WHITELIST_KEY, blog.getBlogAdministrationLocale(), new Object[] {ipAddress}));
+                        addOperationResultMessage(context, formatAdminResource(IP_ALREADY_ADDED_TO_WHITELIST_KEY, IP_ALREADY_ADDED_TO_WHITELIST_KEY, blog.getBlogAdministrationLocale(), new Object[]{ipAddress}));
                     }
                 }
             } else if (DELETE_IP_ADDRESS_ACTION.equals(action)) {
@@ -222,7 +222,7 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
                                 _logger.error(e);
                             }
                         }
-                        addOperationResultMessage(context, formatAdminResource(DELETED_IP_ADDRESSES_BLACKLIST_KEY, DELETED_IP_ADDRESSES_BLACKLIST_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(ipAddressesToDelete.length)}));
+                        addOperationResultMessage(context, formatAdminResource(DELETED_IP_ADDRESSES_BLACKLIST_KEY, DELETED_IP_ADDRESSES_BLACKLIST_KEY, blog.getBlogAdministrationLocale(), new Object[]{new Integer(ipAddressesToDelete.length)}));
                     } else {
                         for (int i = 0; i < ipAddressesToDelete.length; i++) {
                             ipAddressesFromWhitelist.set(Integer.parseInt(ipAddressesToDelete[i]), null);
@@ -237,7 +237,7 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
                                 _logger.error(e);
                             }
                         }
-                        addOperationResultMessage(context, formatAdminResource(DELETED_IP_ADDRESSES_WHITELIST_KEY, DELETED_IP_ADDRESSES_WHITELIST_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(ipAddressesToDelete.length)}));
+                        addOperationResultMessage(context, formatAdminResource(DELETED_IP_ADDRESSES_WHITELIST_KEY, DELETED_IP_ADDRESSES_WHITELIST_KEY, blog.getBlogAdministrationLocale(), new Object[]{new Integer(ipAddressesToDelete.length)}));
                     }
                 } else {
                     addOperationResultMessage(context, getAdminResource(NO_IP_ADDRESSES_SELECTED_KEY, NO_IP_ADDRESSES_SELECTED_KEY, blog.getBlogAdministrationLocale()));
@@ -254,7 +254,7 @@ public class IPAddressModerationAdminPlugin extends WebAdminPlugin {
     /**
      * Load the list of IP addresses from whitelist or blacklist from the blog properties
      *
-     * @param blog {@link Blog}
+     * @param blog     {@link Blog}
      * @param property Whitelist or Blacklist property
      * @return List of IP addresses
      */

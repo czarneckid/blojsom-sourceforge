@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,10 +32,10 @@ package org.blojsom.blog;
 
 /**
  * Pingback
- * 
+ *
  * @author David Czarnecki
+ * @version $Id: Pingback.java,v 1.5 2008-07-07 19:55:08 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: Pingback.java,v 1.4 2007-01-17 02:35:16 czarneckid Exp $
  */
 public interface Pingback extends Trackback {
 

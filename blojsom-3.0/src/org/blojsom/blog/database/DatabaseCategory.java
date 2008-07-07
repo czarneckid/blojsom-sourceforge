@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,8 @@ import java.util.HashMap;
  * DatabaseCategory
  *
  * @author David Czarnecki
+ * @version $Id: DatabaseCategory.java,v 1.7 2008-07-07 19:55:05 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: DatabaseCategory.java,v 1.6 2007-03-12 16:09:14 czarneckid Exp $
  */
 public class DatabaseCategory implements Category, Serializable {
 

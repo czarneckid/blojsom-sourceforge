@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ import java.util.regex.Pattern;
  * Link spam moderation plugin
  *
  * @author David Czarnecki
- * @version $Id: LinkSpamModerationPlugin.java,v 1.3 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: LinkSpamModerationPlugin.java,v 1.4 2008-07-07 19:54:17 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class LinkSpamModerationPlugin implements Plugin, Listener {

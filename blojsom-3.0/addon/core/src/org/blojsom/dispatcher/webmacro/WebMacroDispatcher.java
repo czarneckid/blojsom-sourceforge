@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,8 +53,8 @@ import java.util.Properties;
  * WebMacro dispatcher
  *
  * @author David Czarnecki
+ * @version $Id: WebMacroDispatcher.java,v 1.3 2008-07-07 19:54:16 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: WebMacroDispatcher.java,v 1.2 2007-01-17 01:15:46 czarneckid Exp $
  */
 public class WebMacroDispatcher implements Dispatcher {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ import org.blojsom.blog.Blog;
  * Show Me More Utilities
  *
  * @author David Czarnecki
- * @version $Id: ShowMeMoreUtilities.java,v 1.1 2007-03-23 15:31:32 czarneckid Exp $
+ * @version $Id: ShowMeMoreUtilities.java,v 1.2 2008-07-07 19:54:20 czarneckid Exp $
  * @since blojsom 3.2
  */
 public class ShowMeMoreUtilities {

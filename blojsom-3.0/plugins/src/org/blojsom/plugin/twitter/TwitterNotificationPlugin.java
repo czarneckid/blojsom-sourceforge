@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,17 +64,17 @@ import java.io.OutputStreamWriter;
  * Twitter notification plugin for the <a href="http://twitter.com/">Twitter</a> service
  *
  * @author David Czarnecki
+ * @version $Id: TwitterNotificationPlugin.java,v 1.6 2008-07-07 19:54:22 czarneckid Exp $
  * @since blojsom 3.1
- * @version $Id: TwitterNotificationPlugin.java,v 1.5 2007-01-17 02:35:15 czarneckid Exp $
  */
 public class TwitterNotificationPlugin implements Plugin, Listener {
 
     private Log _logger = LogFactory.getLog(TwitterNotificationPlugin.class);
-    
+
     private static final String TWITTER_STATUS_UPDATE_URL = "http://twitter.com/statuses/update.xml";
     private static final String TWITTER_STATUS_PARAMETER = "status";
     private static final String TWITTER_DEFAULT_STATUS_UPDATE_TEXT = "Currently blogging {0}";
-    
+
     private static final String TWITTER_SIGN_IN_IP = "plugin-twitter-sign-in";
     private static final String TWITTER_PASSWORD_IP = "plugin-twitter-password";
     private static final String TWITTER_UPDATE_ON_ENTRY_ADDED_IP = "plugin-twitter-update-on-entry-added";
@@ -83,7 +83,7 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
 
     private EventBroadcaster _eventBroadcaster;
     private Fetcher _fetcher;
-    
+
     private String _twitterUpdateURL = TWITTER_STATUS_UPDATE_URL;
 
     /**
@@ -188,7 +188,7 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
                 }
 
                 if (!BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_SIGN_IN_IP)) &&
-                        !BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_PASSWORD_IP))) {
+                    !BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_PASSWORD_IP))) {
 
                     String signIn = (String) user.getMetaData().get(TWITTER_SIGN_IN_IP);
                     String password = (String) user.getMetaData().get(TWITTER_PASSWORD_IP);
@@ -197,12 +197,12 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
                     if (BlojsomUtils.checkNullOrBlank(updateText)) {
                         updateText = TWITTER_DEFAULT_STATUS_UPDATE_TEXT;
                     }
-                    
+
                     if (("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_ADDED_IP))) ||
-                            ("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_UPDATED_IP)))) {
+                        ("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_UPDATED_IP)))) {
                         String title = entryEvent.getEntry().getTitle();
                         String twitterUpdate = BlojsomUtils.urlEncode(
-                                BlojsomUtils.escapeString(MessageFormat.format(updateText, new Object[] {title})));
+                            BlojsomUtils.escapeString(MessageFormat.format(updateText, new Object[]{title})));
 
                         Authenticator.setDefault(new TwitterAuthenticator(signIn, password));
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,8 @@ import java.util.Iterator;
  * Macro expansion utilities
  *
  * @author David Czarnecki
+ * @version $Id: MacroExpansionUtilities.java,v 1.3 2008-07-07 19:54:23 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: MacroExpansionUtilities.java,v 1.2 2007-01-17 02:35:11 czarneckid Exp $
  */
 public class MacroExpansionUtilities {
 

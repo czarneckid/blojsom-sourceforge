@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,8 +35,8 @@ package org.blojsom.util;
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: BlojsomConstants.java,v 1.23 2008-07-07 19:55:06 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: BlojsomConstants.java,v 1.22 2007-05-17 19:10:46 czarneckid Exp $
  */
 public interface BlojsomConstants {
 
@@ -237,7 +237,7 @@ public interface BlojsomConstants {
     public static final String BLOG_DEFAULT_TIMEZONE = "America/New_York";
 
     /**
-     * Default number of blog entries to display 
+     * Default number of blog entries to display
      */
     public static final int BLOG_ENTRIES_DISPLAY_DEFAULT = 15;
 
@@ -326,7 +326,7 @@ public interface BlojsomConstants {
     public static final String BLOG_COUNTRY_IP = "blog-country";
     public static final String BLOG_DESCRIPTION_IP = "blog-description";
     public static final String BLOG_URL_IP = "blog-url";
-    public static final String BLOG_ADMIN_URL_IP = "blog-admin-url"; 
+    public static final String BLOG_ADMIN_URL_IP = "blog-admin-url";
     public static final String BLOG_BASE_URL_IP = "blog-base-url";
     public static final String BLOG_BASE_ADMIN_URL_IP = "blog-base-admin-url";
     public static final String BLOG_ENTRIES_DISPLAY_IP = "blog-entries-display";
@@ -335,7 +335,7 @@ public interface BlojsomConstants {
     public static final String BLOG_OWNER_EMAIL = "blog-owner-email";
     public static final String BLOG_COMMENTS_ENABLED_IP = "blog-comments-enabled";
     public static final String BLOG_TRACKBACKS_ENABLED_IP = "blog-trackbacks-enabled";
-    public static final String BLOG_PINGBACKS_ENABLED_IP = "blog-pingbacks-enabled"; 
+    public static final String BLOG_PINGBACKS_ENABLED_IP = "blog-pingbacks-enabled";
     public static final String BLOG_EMAIL_ENABLED_IP = "blog-email-enabled";
     public static final String BLOJSOM_PLUGIN_CHAIN = "blojsom-plugin-chain";
     public static final String BLOG_DEFAULT_FLAVOR_IP = "blog-default-flavor";

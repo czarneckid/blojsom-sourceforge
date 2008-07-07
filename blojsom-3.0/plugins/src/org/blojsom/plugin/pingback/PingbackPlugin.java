@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,7 +80,7 @@ import java.util.regex.Pattern;
  * <a href="http://www.hixie.ch/specs/pingback/pingback">Pingback 1.0</a> specification.
  *
  * @author David Czarnecki
- * @version $Id: PingbackPlugin.java,v 1.8 2007-01-17 02:35:13 czarneckid Exp $
+ * @version $Id: PingbackPlugin.java,v 1.9 2008-07-07 19:54:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, Listener {
@@ -275,8 +275,7 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
             EntryEvent entryEvent = (EntryEvent) event;
 
             String text = entryEvent.getEntry().getDescription();
-            if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(entryEvent.getEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS))
-            {
+            if (!BlojsomUtils.checkNullOrBlank(text) && BlojsomUtils.checkMapForKey(entryEvent.getEntry().getMetaData(), PINGBACK_PLUGIN_METADATA_SEND_PINGBACKS)) {
                 String pingbackURL;
                 StringBuffer sourceURI = new StringBuffer().append(entryEvent.getBlog().getBlogURL()).append(entryEvent.getEntry().getBlogCategory().getName()).append(entryEvent.getEntry().getPostSlug());
                 String targetURI;
@@ -325,7 +324,7 @@ public class PingbackPlugin extends StandaloneVelocityPlugin implements Plugin, 
                                 if (_logger.isDebugEnabled()) {
                                     _logger.debug("Sending pingback to: " + pingbackURL + " sourceURI: " + sourceURI + " targetURI: " + targetURI);
                                 }
-                               
+
                                 XmlRpcClient xmlRpcClient = new XmlRpcClient(pingbackURL);
                                 xmlRpcClient.executeAsync(PINGBACK_METHOD, parameters, _callbackHandler);
                             } catch (MalformedURLException e) {

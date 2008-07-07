@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,8 @@ import java.util.Date;
  * IP Address widget
  *
  * @author David Czarnecki
+ * @version $Id: IPAddressWidget.java,v 1.2 2008-07-07 19:54:16 czarneckid Exp $
  * @since blojsom 3.2
- * @version $Id: IPAddressWidget.java,v 1.1 2007-03-26 18:17:20 czarneckid Exp $
  */
 public class IPAddressWidget implements Listener {
 

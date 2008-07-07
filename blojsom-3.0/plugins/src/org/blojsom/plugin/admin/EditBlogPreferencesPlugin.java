@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ import java.util.Map;
 
 /**
  * @author David Czarnecki
- * @version $Id: EditBlogPreferencesPlugin.java,v 1.3 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: EditBlogPreferencesPlugin.java,v 1.4 2008-07-07 19:54:12 czarneckid Exp $
  */
 public class EditBlogPreferencesPlugin extends BaseAdminPlugin {
 
@@ -65,7 +65,7 @@ public class EditBlogPreferencesPlugin extends BaseAdminPlugin {
     private static final String EDIT_BLOG_PREFERENCES_ACTION = "edit-blog-preferences";
 
     private static final String BLOJSOM_USER_OBJECT = "BLOJSOM_USER_OBJECT";
-    
+
     private Fetcher _fetcher;
 
     /**

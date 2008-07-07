@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.*;
  * ThemeSwitcherPlugin
  *
  * @author David Czarnecki
- * @version $Id: ThemeSwitcherPlugin.java,v 1.3 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: ThemeSwitcherPlugin.java,v 1.4 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class ThemeSwitcherPlugin extends WebAdminPlugin {
@@ -238,8 +238,8 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 }
 
                 File copyFromTemplatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") +
-                        BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _themesDirectory + theme +
-                        "/" + _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP));
+                    BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _themesDirectory + theme +
+                    "/" + _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP));
 
                 File[] templateFiles = copyFromTemplatesDirectory.listFiles();
                 String mainTemplate = null;
@@ -256,9 +256,9 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 }
 
                 File copyToTemplatesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") +
-                        BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY +
-                        _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP) + blog.getBlogId() +
-                        "/" + _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP));
+                    BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY +
+                    _blojsomProperties.getProperty(BlojsomConstants.BLOGS_DIRECTORY_IP) + blog.getBlogId() +
+                    "/" + _blojsomProperties.getProperty(BlojsomConstants.TEMPLATES_DIRECTORY_IP));
 
                 try {
                     BlojsomUtils.copyDirectory(copyFromTemplatesDirectory, copyToTemplatesDirectory);
@@ -268,10 +268,10 @@ public class ThemeSwitcherPlugin extends WebAdminPlugin {
                 }
 
                 File copyFromResourcesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") +
-                        BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _themesDirectory + theme + "/" +
-                        _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP));
+                    BlojsomConstants.DEFAULT_CONFIGURATION_BASE_DIRECTORY + _themesDirectory + theme + "/" +
+                    _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP));
                 File copyToResourcesDirectory = new File(_servletConfig.getServletContext().getRealPath("/") +
-                        _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP) + blog.getBlogId() + "/");
+                    _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP) + blog.getBlogId() + "/");
 
                 try {
                     BlojsomUtils.copyDirectory(copyFromResourcesDirectory, copyToResourcesDirectory);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,8 @@ import java.util.Locale;
  * Blog
  *
  * @author David Czarnecki
+ * @version $Id: Blog.java,v 1.8 2008-07-07 19:55:08 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: Blog.java,v 1.7 2007-01-17 02:35:16 czarneckid Exp $
  */
 public interface Blog {
 
@@ -298,8 +298,8 @@ public interface Blog {
     /**
      * Get a named property from the blog
      *
-     * @param property Name
-     * @param fallback Fallback value
+     * @param property       Name
+     * @param fallback       Fallback value
      * @param allowNullBlank Use the fallback property if <code>allowNullBlank</code> is <code>false</code>
      * @return Value of the property
      */
@@ -462,7 +462,7 @@ public interface Blog {
     /**
      * Set a property for the blog
      *
-     * @param name Property name
+     * @param name  Property name
      * @param value Property value
      */
     void setProperty(String name, String value);

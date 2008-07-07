@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ public class EmailNotificationFailedException extends Exception {
      */
     protected Object[] getMessageArguments() {
         if (cause != null) return (new String[]{(new StringBuffer()).append(cause.toString()).append(": ")
-                .append(cause.getMessage()).toString()});
+            .append(cause.getMessage()).toString()});
         else return (new String[]{"Unknown"});
     }
 }

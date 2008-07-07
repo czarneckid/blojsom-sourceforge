@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,8 +64,8 @@ import java.util.Properties;
  *
  * @author Mark Lussier
  * @author David Czarnecki
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.7 2008-07-07 19:54:27 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: BlojsomXMLRPCServlet.java,v 1.6 2007-05-04 16:42:21 czarneckid Exp $
  */
 public class BlojsomXMLRPCServlet extends HttpServlet {
 
@@ -110,9 +110,9 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
     /**
      * Configure the XML-RPC server for the given blog
      *
-     * @param httpServletRequest {@link HttpServletRequest}
+     * @param httpServletRequest  {@link HttpServletRequest}
      * @param httpServletResponse {@link HttpServletResponse}
-     * @param blogId Blog ID
+     * @param blogId              Blog ID
      * @return {@link XmlRpcServer} instance with handlers configured for the given blog
      */
     protected XmlRpcServer configureXMLRPCServer(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String blogId) {
@@ -137,7 +137,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
             if (BlojsomUtils.checkNullOrBlank(servletPath)) {
                 servletPath = BlojsomXMLRPCConstants.DEFAULT_SERVLET_PATH;
             }
-            
+
             BlojsomUtils.resolveDynamicBaseAndBlogURL(httpServletRequest, blog, blogId, servletPath);
         }
 
@@ -194,7 +194,7 @@ public class BlojsomXMLRPCServlet extends HttpServlet {
         } catch (UnsupportedEncodingException e) {
             _logger.error(e);
         }
-        
+
         if (!"post".equalsIgnoreCase(httpServletRequest.getMethod())) {
             httpServletResponse.setContentType("text/html; charset=UTF-8");
             httpServletResponse.setContentLength(XMLRPC_ACCEPTS_ONLY_POSTS_MESSAGE.length());

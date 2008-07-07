@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * to comments and trackbacks.
  *
  * @author David Czarnecki
- * @version $Id: NoFollowPlugin.java,v 1.3 2007-01-17 02:35:12 czarneckid Exp $
+ * @version $Id: NoFollowPlugin.java,v 1.4 2008-07-07 19:54:29 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class NoFollowPlugin implements Plugin {
@@ -91,7 +91,7 @@ public class NoFollowPlugin implements Plugin {
         if (BlojsomUtils.checkNullOrBlank(text)) {
             return text;
         }
-        
+
         StringBuffer updatedText = new StringBuffer();
 
         Pattern hyperlinkPattern = Pattern.compile(HYPERLINK_REGEX, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.DOTALL);

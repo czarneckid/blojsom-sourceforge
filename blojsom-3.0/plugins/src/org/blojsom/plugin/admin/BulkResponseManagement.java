@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,8 +59,8 @@ import java.util.Map;
  * Bulk Response Management plugin
  *
  * @author David Czarnecki
+ * @version $Id: BulkResponseManagement.java,v 1.7 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: BulkResponseManagement.java,v 1.6 2007-01-17 02:35:04 czarneckid Exp $
  */
 public class BulkResponseManagement extends BaseAdminPlugin {
 
@@ -69,7 +69,7 @@ public class BulkResponseManagement extends BaseAdminPlugin {
     private static final String BULK_RESPONSE_MANAGEMENT_PERMISSION = "bulk_response_management_permission";
     private static final String BLOJSOM_USER_OBJECT = "BLOJSOM_USER_OBJECT";
 
-    private String [] DEFAULT_RESPONSE_STATUS_LIST = {ResponseConstants.NEW_STATUS, ResponseConstants.SPAM_STATUS};
+    private String[] DEFAULT_RESPONSE_STATUS_LIST = {ResponseConstants.NEW_STATUS, ResponseConstants.SPAM_STATUS};
 
     // Localization constants
     private static final String FAILED_BULK_PERMISSION_KEY = "failed.bulk.permission.text";
@@ -420,12 +420,12 @@ public class BulkResponseManagement extends BaseAdminPlugin {
             }
 
             if (commentsApproved > 0 || commentsDeleted > 0 || trackbacksApproved > 0 || trackbacksDeleted > 0
-                    || pingbacksApproved > 0 || pingbacksDeleted > 0) {
+                || pingbacksApproved > 0 || pingbacksDeleted > 0) {
                 addOperationResultMessage(context, formatAdminResource(SUCCESFUL_BULK_PROCESSING_KEY, SUCCESFUL_BULK_PROCESSING_KEY,
                     blog.getBlogAdministrationLocale(),
-                    new Object[] {new Integer(commentsApproved), new Integer(commentsDeleted),
-                            new Integer(trackbacksApproved), new Integer(trackbacksDeleted),
-                            new Integer(pingbacksApproved), new Integer(pingbacksDeleted)}));
+                    new Object[]{new Integer(commentsApproved), new Integer(commentsDeleted),
+                        new Integer(trackbacksApproved), new Integer(trackbacksDeleted),
+                        new Integer(pingbacksApproved), new Integer(pingbacksDeleted)}));
             }
         }
 

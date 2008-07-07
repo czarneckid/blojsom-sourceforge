@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,8 +52,8 @@ import java.util.HashMap;
  * Widget plugin
  *
  * @author David Czarnecki
+ * @version $Id: WidgetPlugin.java,v 1.2 2008-07-07 19:54:28 czarneckid Exp $
  * @since blojsom 3.2
- * @version $Id: WidgetPlugin.java,v 1.1 2007-03-26 18:17:18 czarneckid Exp $
  */
 public class WidgetPlugin implements Plugin {
 
@@ -120,9 +120,9 @@ public class WidgetPlugin implements Plugin {
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Sending process widget request for widget: " + widget);
                 }
-                
+
                 ProcessWidgetRequest processWidgetRequest = new ProcessWidgetRequest(this, new Date(), widget,
-                        httpServletRequest, httpServletResponse, blog, context, "");
+                    httpServletRequest, httpServletResponse, blog, context, "");
 
                 _eventBroadcaster.processEvent(processWidgetRequest);
 

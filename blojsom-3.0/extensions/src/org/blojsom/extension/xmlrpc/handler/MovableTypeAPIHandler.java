@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,8 +49,8 @@ import java.util.Vector;
  * MovableType API handler
  *
  * @author David Czarnecki
+ * @version $Id: MovableTypeAPIHandler.java,v 1.5 2008-07-07 19:54:24 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: MovableTypeAPIHandler.java,v 1.4 2007-01-17 02:35:07 czarneckid Exp $
  */
 public class MovableTypeAPIHandler extends APIHandler {
 
@@ -341,8 +341,7 @@ public class MovableTypeAPIHandler extends APIHandler {
 
                 trackbackInformation.put(MEMBER_PING_TITLE, trackbacks[i].getTitle());
                 trackbackInformation.put(MEMBER_PING_URL, trackbacks[i].getUrl());
-                if (BlojsomUtils.checkMapForKey(trackbacks[i].getMetaData(), TrackbackPlugin.BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP))
-                {
+                if (BlojsomUtils.checkMapForKey(trackbacks[i].getMetaData(), TrackbackPlugin.BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP)) {
                     trackbackInformation.put(MEMBER_PING_IP, trackbacks[i].getMetaData().get(TrackbackPlugin.BLOJSOM_TRACKBACK_PLUGIN_METADATA_IP));
                 } else {
                     trackbackInformation.put(MEMBER_PING_IP, "");

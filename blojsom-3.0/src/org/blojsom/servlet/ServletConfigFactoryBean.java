@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,8 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
  * Factory bean to return an instance of a {@link ServletConfig} object
  *
  * @author David Czarnecki
+ * @version $Id: ServletConfigFactoryBean.java,v 1.3 2008-07-07 19:55:08 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: ServletConfigFactoryBean.java,v 1.2 2007-01-17 02:35:18 czarneckid Exp $
  */
 public class ServletConfigFactoryBean extends AbstractFactoryBean {
 
@@ -83,7 +83,7 @@ public class ServletConfigFactoryBean extends AbstractFactoryBean {
     protected final void verifyState() throws IllegalStateException {
         if (servletConfig == null) {
             throw new IllegalStateException("You invoke the ServletConfigFactoryBean.setServletConfig() " +
-                    "method prior to attempting to get the ServletConfig.");
+                "method prior to attempting to get the ServletConfig.");
         }
     }
 }

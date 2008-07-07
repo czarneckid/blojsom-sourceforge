@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,8 +45,8 @@ import java.security.NoSuchAlgorithmException;
  * DatabaseBlog
  *
  * @author David Czarnecki
+ * @version $Id: DatabaseBlog.java,v 1.9 2008-07-07 19:55:05 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: DatabaseBlog.java,v 1.8 2007-06-20 00:47:58 czarneckid Exp $
  */
 public class DatabaseBlog implements Blog, Serializable {
 
@@ -165,8 +165,8 @@ public class DatabaseBlog implements Blog, Serializable {
     /**
      * Get a named property from the blog
      *
-     * @param property Name
-     * @param fallback Fallback value
+     * @param property       Name
+     * @param fallback       Fallback value
      * @param allowNullBlank Use the fallback property if <code>allowNullBlank</code> is <code>false</code>
      * @return Value of the property
      */
@@ -654,7 +654,7 @@ public class DatabaseBlog implements Blog, Serializable {
     /**
      * Set a property for the blog
      *
-     * @param name Property name
+     * @param name  Property name
      * @param value Property value
      */
     public void setProperty(String name, String value) {

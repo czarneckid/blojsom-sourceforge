@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ import java.util.*;
  * RSSEnclosurePlugin
  *
  * @author David Czarnecki
- * @version $Id: RSSEnclosurePlugin.java,v 1.6 2007-01-17 02:35:09 czarneckid Exp $
+ * @version $Id: RSSEnclosurePlugin.java,v 1.7 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class RSSEnclosurePlugin implements Plugin, Listener {
@@ -146,7 +146,7 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
         if (BlojsomUtils.checkNullOrBlank(_enclosuresDirectory)) {
             _enclosuresDirectory = _blojsomProperties.getProperty(BlojsomConstants.RESOURCES_DIRECTORY_IP, BlojsomConstants.DEFAULT_RESOURCES_DIRECTORY);
         }
-        
+
         _logger.debug("Initialized RSS enclosures plugin");
     }
 
@@ -176,8 +176,7 @@ public class RSSEnclosurePlugin implements Plugin, Listener {
 
         for (int i = 0; i < entries.length; i++) {
             Entry entry = entries[i];
-            if (BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_URL) && BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_LENGTH) && BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_TYPE))
-            {
+            if (BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_URL) && BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_LENGTH) && BlojsomUtils.checkMapForKey(entry.getMetaData(), RSS_ENCLOSURE_TYPE)) {
                 String rssEnclosureURL = (String) entry.getMetaData().get(RSS_ENCLOSURE_URL);
                 rssEnclosureURL = BlojsomUtils.escapeBrackets(rssEnclosureURL);
 

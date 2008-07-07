@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,12 +46,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *  * View custom properties for a Blog user. Useful for collecting various
+ * * View custom properties for a Blog user. Useful for collecting various
  * information from a user upon registration.
  * </p>
  *
  * @author Eric Broyles
- * @version $Id: ViewBlogUserPropertiesPlugin.java,v 1.2 2007-01-17 02:35:04 czarneckid Exp $
+ * @version $Id: ViewBlogUserPropertiesPlugin.java,v 1.3 2008-07-07 19:54:12 czarneckid Exp $
  */
 public class ViewBlogUserPropertiesPlugin extends BaseAdminPlugin {
 
@@ -127,7 +127,7 @@ public class ViewBlogUserPropertiesPlugin extends BaseAdminPlugin {
         }
 
         context.put(BLOJSOM_PLUGIN_VIEW_USER_PROPERTIES_USER_MAP, Collections
-                .unmodifiableMap(userIDs));
+            .unmodifiableMap(userIDs));
     }
 
     /**
@@ -160,5 +160,5 @@ public class ViewBlogUserPropertiesPlugin extends BaseAdminPlugin {
         httpServletRequest.setAttribute(BlojsomConstants.PAGE_PARAM, VIEW_USER_PROPERTIES_PAGE);
 
         return entries;
-	}
+    }
 }

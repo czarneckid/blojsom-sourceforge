@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,13 +45,13 @@ import java.util.Map;
 
 /**
  * Textile Plugin
- *
+ * <p/>
  * An implementation of the Textism's Textile. See http://www.textism.com/tools/textile
  *
  * @author David Czarnecki
  * @author Mark Lussier
+ * @version $Id: TextilePlugin.java,v 1.4 2008-07-07 19:54:11 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: TextilePlugin.java,v 1.3 2007-01-17 02:35:14 czarneckid Exp $
  */
 public class TextilePlugin implements Plugin {
 
@@ -98,14 +98,14 @@ public class TextilePlugin implements Plugin {
      * @throws PluginException If there is an error processing the blog entries
      */
     public Entry[] process(HttpServletRequest httpServletRequest,
-                               HttpServletResponse httpServletResponse,
-                               Blog blog,
-                               Map context,
-                               Entry[] entries) throws PluginException {
+                           HttpServletResponse httpServletResponse,
+                           Blog blog,
+                           Map context,
+                           Entry[] entries) throws PluginException {
         for (int x = 0; x < entries.length; x++) {
             Entry entry = entries[x];
             if (entry.getPostSlug().endsWith(TEXTILE_EXTENSION) || BlojsomUtils.checkMapForKey(entry.getMetaData(), METADATA_RUN_TEXTILE)
-                    || Boolean.valueOf(blog.getProperty(PLUGIN_TEXTILE_PROCESS_ALL_ENTRIES)).booleanValue()) {
+                || Boolean.valueOf(blog.getProperty(PLUGIN_TEXTILE_PROCESS_ALL_ENTRIES)).booleanValue()) {
                 if (_logger.isDebugEnabled()) {
                     _logger.debug("Textile processing: " + entry.getId());
                 }

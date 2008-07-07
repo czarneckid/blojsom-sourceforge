@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,9 +61,9 @@ import java.util.Properties;
 
 /**
  * FreeMarkerDispatcher
- * 
+ *
  * @author Dsvid Czarnecki
- * @version $Id: FreeMarkerDispatcher.java,v 1.3 2007-03-22 00:43:07 czarneckid Exp $
+ * @version $Id: FreeMarkerDispatcher.java,v 1.4 2008-07-07 19:54:22 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FreeMarkerDispatcher implements Dispatcher {
@@ -112,7 +112,7 @@ public class FreeMarkerDispatcher implements Dispatcher {
 
     /**
      * Initialization method for blojsom dispatchers
-     * 
+     *
      * @throws org.blojsom.BlojsomException If there is an error initializing the dispatcher
      */
     public void init() throws BlojsomException {
@@ -122,8 +122,8 @@ public class FreeMarkerDispatcher implements Dispatcher {
 
     /**
      * Set paths appropriate for loading FreeMarker templates
-     * 
-     * @param blogID Blog ID
+     *
+     * @param blogID                  Blog ID
      * @param freemarkerConfiguration Freemarker configuration
      */
     private void setTemplatePath(String blogID, Configuration freemarkerConfiguration) {
@@ -144,10 +144,10 @@ public class FreeMarkerDispatcher implements Dispatcher {
             TemplateLoader[] loaders;
             if (globalTemplateDirectory.exists()) {
                 FileTemplateLoader fileTemplateLoaderGlobal = new FileTemplateLoader(globalTemplateDirectory);
-                loaders = new TemplateLoader[] {fileTemplateLoaderUser, fileTemplateLoaderGlobal,
-                                                classTemplateLoader};
+                loaders = new TemplateLoader[]{fileTemplateLoaderUser, fileTemplateLoaderGlobal,
+                    classTemplateLoader};
             } else {
-                loaders = new TemplateLoader[] {fileTemplateLoaderUser, classTemplateLoader};
+                loaders = new TemplateLoader[]{fileTemplateLoaderUser, classTemplateLoader};
             }
 
             MultiTemplateLoader multiTemplateLoader = new MultiTemplateLoader(loaders);
@@ -182,7 +182,7 @@ public class FreeMarkerDispatcher implements Dispatcher {
                 context.put(key, value);
             }
         }
-    }    
+    }
 
     /**
      * Dispatch a request and response. A context map is provided for the BlojsomServlet to pass
@@ -215,7 +215,7 @@ public class FreeMarkerDispatcher implements Dispatcher {
         }
 
         populateContext(httpServletRequest, context);
-        
+
         setTemplatePath(blog.getBlogId(), freemarkerConfiguration);
 
         BeansWrapper wrapper = new BeansWrapper();

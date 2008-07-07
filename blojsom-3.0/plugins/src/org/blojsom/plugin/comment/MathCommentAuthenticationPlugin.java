@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ import java.util.Iterator;
  * Math comment authenticator plugin
  *
  * @author David Czarnecki
- * @version $Id: MathCommentAuthenticationPlugin.java,v 1.5 2007-01-17 02:35:08 czarneckid Exp $
+ * @version $Id: MathCommentAuthenticationPlugin.java,v 1.6 2008-07-07 19:54:16 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MathCommentAuthenticationPlugin extends CommentModerationPlugin implements Listener {
@@ -157,6 +157,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
     /**
      * Simple check to see if comment moderation is enabled
      * <p/>
+     *
      * @param httpServletRequest  Request
      * @param httpServletResponse Response
      * @param blog                {@link Blog} instance
@@ -167,7 +168,7 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
      */
     protected void moderateComment(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Blog blog, Map context, Entry[] entries) throws PluginException {
         if ("true".equalsIgnoreCase(blog.getProperty(COMMENT_MODERATION_ENABLED)) &&
-                "true".equalsIgnoreCase(blog.getProperty(MATH_COMMENT_MODERATION_ENABLED))) {
+            "true".equalsIgnoreCase(blog.getProperty(MATH_COMMENT_MODERATION_ENABLED))) {
             HttpSession httpSession = httpServletRequest.getSession();
 
             if ("y".equalsIgnoreCase(httpServletRequest.getParameter(CommentPlugin.COMMENT_PARAM)) && blog.getBlogCommentsEnabled().booleanValue()) {
@@ -211,8 +212,8 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
     /**
      * Return the result from the specified operation where 0 = addition, 1 = subtraction, 2 = multiplication
      *
-     * @param value1 Value 1
-     * @param value2 Value 2
+     * @param value1    Value 1
+     * @param value2    Value 2
      * @param operation Operation where 0 = addition, 1 = subtraction, 2 = multiplication
      * @return Value of operation
      */
@@ -220,25 +221,21 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
         int answer;
 
         switch (operation) {
-            case 0:
-                {
-                    answer = value1 + value2;
-                    break;
-                }
-            case 1:
-                {
-                    answer = value1 - value2;
-                    break;
-                }
-            case 2:
-                {
-                    answer = value1 * value2;
-                    break;
-                }
-            default:
-                {
-                    answer = value1 + value2;
-                }
+            case 0: {
+                answer = value1 + value2;
+                break;
+            }
+            case 1: {
+                answer = value1 - value2;
+                break;
+            }
+            case 2: {
+                answer = value1 * value2;
+                break;
+            }
+            default: {
+                answer = value1 + value2;
+            }
         }
 
         return answer;
@@ -252,22 +249,18 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
      */
     protected String getOperatorForOperation(int operation) {
         switch (operation) {
-            case 0:
-                {
-                    return "+";
-                }
-            case 1:
-                {
-                    return "-";
-                }
-            case 2:
-                {
-                    return "*";
-                }
-            default:
-                {
-                    return "+";
-                }
+            case 0: {
+                return "+";
+            }
+            case 1: {
+                return "-";
+            }
+            case 2: {
+                return "*";
+            }
+            default: {
+                return "+";
+            }
         }
     }
 
@@ -291,9 +284,9 @@ public class MathCommentAuthenticationPlugin extends CommentModerationPlugin imp
             try {
                 HashMap context = new HashMap();
                 moderateComment(commentResponseSubmissionEvent.getHttpServletRequest(),
-                        commentResponseSubmissionEvent.getHttpServletResponse(), commentResponseSubmissionEvent.getBlog(),
-                        context,
-                        new Entry[] {commentResponseSubmissionEvent.getEntry()});
+                    commentResponseSubmissionEvent.getHttpServletResponse(), commentResponseSubmissionEvent.getBlog(),
+                    context,
+                    new Entry[]{commentResponseSubmissionEvent.getEntry()});
 
                 if (context.containsKey(CommentPlugin.BLOJSOM_PLUGIN_COMMENT_METADATA)) {
                     // Grab the comment metadata and populate the metadata for the current submission

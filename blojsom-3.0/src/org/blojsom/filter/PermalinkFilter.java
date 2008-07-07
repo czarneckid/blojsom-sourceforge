@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,8 +47,8 @@ import java.util.regex.Pattern;
  * PermalinkFilter
  *
  * @author David Czarnecki
+ * @version $Id: PermalinkFilter.java,v 1.3 2008-07-07 19:55:12 czarneckid Exp $
  * @since blojsom 3.0
- * @version $Id: PermalinkFilter.java,v 1.2 2007-01-17 02:35:17 czarneckid Exp $
  */
 public class PermalinkFilter implements Filter {
 
@@ -95,16 +95,16 @@ public class PermalinkFilter implements Filter {
      * <li>/YYYY/</li>
      * </ul>
      *
-     * @param request {@link ServletRequest}
+     * @param request  {@link ServletRequest}
      * @param response {@link ServletResponse}
-     * @param chain {@link FilterChain} to execute
-     * @throws IOException If there is an error executing the filter
+     * @param chain    {@link FilterChain} to execute
+     * @throws IOException      If there is an error executing the filter
      * @throws ServletException If there is an error executing the filter
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         request.setCharacterEncoding(BlojsomConstants.UTF8);
-        
+
         HttpServletRequest hreq = (HttpServletRequest) request;
         String uri = hreq.getRequestURI();
         StringBuffer url = hreq.getRequestURL();
@@ -188,7 +188,7 @@ public class PermalinkFilter implements Filter {
             String permalinkSubstring = "/";
             int permalinkIndex = pathInfo.substring(1).lastIndexOf(permalinkSubstring);
             if (permalinkIndex != -1 && permalinkIndex < pathInfo.length() - 1) {
-                extraParameters = new HashMap();              
+                extraParameters = new HashMap();
                 if (request.getParameter("permalink") == null) {
                     if (!"/".equals(pathInfo.substring(permalinkIndex + 1))) {
                         extraParameters.put("permalink", new String[]{pathInfo.substring(permalinkIndex + 1)});
@@ -221,10 +221,10 @@ public class PermalinkFilter implements Filter {
          * Construct a new permalink request
          *
          * @param httpServletRequest {@link HttpServletRequest}
-         * @param params Parameters pulled from the URL
-         * @param uri URI
-         * @param url URL
-         * @param pathInfo Path information
+         * @param params             Parameters pulled from the URL
+         * @param uri                URI
+         * @param url                URL
+         * @param pathInfo           Path information
          */
         public PermalinkRequest(HttpServletRequest httpServletRequest, Map params, String uri, String url, String pathInfo) {
             super(httpServletRequest);

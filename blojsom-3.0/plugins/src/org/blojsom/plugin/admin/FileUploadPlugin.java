@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ import java.util.*;
  * FileUploadPlugin
  *
  * @author David Czarnecki
- * @version $Id: FileUploadPlugin.java,v 1.3 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: FileUploadPlugin.java,v 1.4 2008-07-07 19:54:12 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class FileUploadPlugin extends BaseAdminPlugin {
@@ -405,7 +405,7 @@ public class FileUploadPlugin extends BaseAdminPlugin {
         context.put(PLUGIN_ADMIN_FILE_UPLOAD_FILES, resourceFilesMap);
         context.put(ACCEPTED_FILE_TYPES, new TreeMap(_acceptedFileTypes));
         context.put(INVALID_FILE_EXTENSIONS, new TreeMap(BlojsomUtils.listToMap(BlojsomUtils.arrayToList(_invalidFileExtensions))));
-        
+
         return entries;
     }
 }

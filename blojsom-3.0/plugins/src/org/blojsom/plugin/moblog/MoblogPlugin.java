@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  *
  * @author David Czarnecki
  * @author Mark Lussier
- * @version $Id: MoblogPlugin.java,v 1.6 2007-01-17 02:35:11 czarneckid Exp $
+ * @version $Id: MoblogPlugin.java,v 1.7 2008-07-07 19:54:26 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class MoblogPlugin extends StandaloneVelocityPlugin {
@@ -544,8 +544,7 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                                             moblogAttachmentInformation.put(MOBLOG_ATTACHMENT_URL, baseurl + mailbox.getUrlPrefix() + outputFilename + "." + extension);
                                             moblogAttachments.add(moblogAttachmentInformation);
                                         } else if (textMimeTypes.containsKey(type)) {
-                                            if ((isMultipartAlternative && (TEXT_HTML_MIME_TYPE.equals(type))) || !isMultipartAlternative)
-                                            {
+                                            if ((isMultipartAlternative && (TEXT_HTML_MIME_TYPE.equals(type))) || !isMultipartAlternative) {
                                                 if (_logger.isDebugEnabled()) {
                                                     _logger.debug("Using text part of type: " + type);
                                                 }
@@ -740,7 +739,7 @@ public class MoblogPlugin extends StandaloneVelocityPlugin {
                         String blogID = blogIDs[i];
                         Blog blog = _fetcher.loadBlog(blogID);
 
-                        Mailbox mailbox = MoblogPluginUtils.readMailboxSettingsForBlog( _servletConfig, blog);
+                        Mailbox mailbox = MoblogPluginUtils.readMailboxSettingsForBlog(_servletConfig, blog);
                         if (mailbox != null) {
                             if (mailbox.isEnabled()) {
                                 if (_logger.isDebugEnabled()) {

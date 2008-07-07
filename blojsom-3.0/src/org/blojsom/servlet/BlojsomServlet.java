@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,7 @@ import java.util.Properties;
  * BlojsomServlet
  *
  * @author David Czarnecki
- * @version $Id: BlojsomServlet.java,v 1.15 2007-05-25 02:28:30 czarneckid Exp $
+ * @version $Id: BlojsomServlet.java,v 1.16 2008-07-07 19:55:08 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomServlet extends HttpServlet {
@@ -327,7 +327,7 @@ public class BlojsomServlet extends HttpServlet {
                 blogUTCDate = BlojsomUtils.getUTCDate(today);
                 blogDateObject = today;
                 httpServletResponse.addDateHeader(BlojsomConstants.HTTP_LASTMODIFIED, today.getTime());
-                
+
                 // Generates an ETag header based on the string value of LastModified as an ISO8601 Format
                 httpServletResponse.addHeader(BlojsomConstants.HTTP_ETAG, "\"" + BlojsomUtils.digestString(blogISO8601Date) + "\"");
             }
@@ -351,7 +351,7 @@ public class BlojsomServlet extends HttpServlet {
         String templateAndType = (String) blog.getTemplates().get(flavor);
         String[] templateData = BlojsomUtils.parseOnlyCommaList(templateAndType, true);
         String templateExtension = BlojsomUtils.getFileExtension(templateData[0]);
-       
+
         try {
             Dispatcher dispatcher = (org.blojsom.dispatcher.Dispatcher) _classPathXmlApplicationContext.getBean(templateExtension);
             dispatcher.dispatch(httpServletRequest, httpServletResponse, blog, context, templateData[0], templateData[1]);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ import java.util.*;
  * Plugin to post links from your <a href="http://del.icio.us">del.icio.us</a> account to your blog.
  *
  * @author David Czarnecki
- * @version $Id: DailyPostingPlugin.java,v 1.3 2007-01-17 02:35:06 czarneckid Exp $
+ * @version $Id: DailyPostingPlugin.java,v 1.4 2008-07-07 19:54:10 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class DailyPostingPlugin extends StandaloneVelocityPlugin {
@@ -208,7 +208,7 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
          * form <code>"Thread-"+</code><i>n</i>, where <i>n</i> is an integer.
          *
          * @see Thread#Thread(ThreadGroup,
-                *      Runnable, String)
+         *      Runnable, String)
          */
         public DeliciousChecker() {
             super();
@@ -225,7 +225,7 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
          * @see Thread#start()
          * @see Thread#stop()
          * @see Thread#Thread(ThreadGroup,
-                *      Runnable, String)
+         *      Runnable, String)
          * @see Runnable#run()
          */
         public void run() {
@@ -254,9 +254,9 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                             }
 
                             if (BlojsomUtils.checkNullOrBlank(postingCategory) ||
-                                    BlojsomUtils.checkNullOrBlank(deliciousPassword) ||
-                                    BlojsomUtils.checkNullOrBlank(deliciousUsername) ||
-                                    BlojsomUtils.checkNullOrBlank(postingHour)) {
+                                BlojsomUtils.checkNullOrBlank(deliciousPassword) ||
+                                BlojsomUtils.checkNullOrBlank(deliciousUsername) ||
+                                BlojsomUtils.checkNullOrBlank(postingHour)) {
                             } else {
                                 Date now = new Date();
                                 Calendar calendar = Calendar.getInstance();
@@ -324,7 +324,7 @@ public class DailyPostingPlugin extends StandaloneVelocityPlugin {
                 if (_logger.isErrorEnabled()) {
                     _logger.error(e);
                 }
-            }  catch (FetcherException e) {
+            } catch (FetcherException e) {
                 if (_logger.isErrorEnabled()) {
                     _logger.error(e);
                 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ import java.util.Map;
  * Spam phrase moderation administration plugin
  *
  * @author David Czarnecki
- * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.4 2007-02-27 16:42:53 czarneckid Exp $
+ * @version $Id: SpamPhraseModerationAdminPlugin.java,v 1.5 2008-07-07 19:54:22 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
@@ -175,9 +175,9 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
                         }
                     }
 
-                    addOperationResultMessage(context, formatAdminResource(ADDED_SPAM_PHRASE_KEY, ADDED_SPAM_PHRASE_KEY, blog.getBlogAdministrationLocale(), new Object[] {spamPhrase}));
+                    addOperationResultMessage(context, formatAdminResource(ADDED_SPAM_PHRASE_KEY, ADDED_SPAM_PHRASE_KEY, blog.getBlogAdministrationLocale(), new Object[]{spamPhrase}));
                 } else {
-                    addOperationResultMessage(context, formatAdminResource(SPAM_PHRASE_ALREADY_ADDED_KEY, SPAM_PHRASE_ALREADY_ADDED_KEY, blog.getBlogAdministrationLocale(), new Object[] {spamPhrase}));
+                    addOperationResultMessage(context, formatAdminResource(SPAM_PHRASE_ALREADY_ADDED_KEY, SPAM_PHRASE_ALREADY_ADDED_KEY, blog.getBlogAdministrationLocale(), new Object[]{spamPhrase}));
                 }
             } else if (DELETE_SPAM_PHRASE_ACTION.equals(action)) {
                 String[] spamPhrasesToDelete = httpServletRequest.getParameterValues(SPAM_PHRASE);
@@ -197,7 +197,7 @@ public class SpamPhraseModerationAdminPlugin extends WebAdminPlugin {
                         }
                     }
 
-                    addOperationResultMessage(context, formatAdminResource(DELETED_SPAM_PHRASE_KEY, DELETED_SPAM_PHRASE_KEY, blog.getBlogAdministrationLocale(), new Object[] {new Integer(spamPhrasesToDelete.length)}));
+                    addOperationResultMessage(context, formatAdminResource(DELETED_SPAM_PHRASE_KEY, DELETED_SPAM_PHRASE_KEY, blog.getBlogAdministrationLocale(), new Object[]{new Integer(spamPhrasesToDelete.length)}));
                 } else {
                     addOperationResultMessage(context, getAdminResource(NO_SPAM_PHRASES_TO_DELETE_KEY, NO_SPAM_PHRASES_TO_DELETE_KEY, blog.getBlogAdministrationLocale()));
                 }

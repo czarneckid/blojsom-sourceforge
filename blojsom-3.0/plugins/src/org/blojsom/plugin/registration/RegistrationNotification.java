@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2003-2007, David A. Czarnecki
+ * Copyright (c) 2003-2008, David A. Czarnecki
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import java.util.*;
  * RegistrationNotification
  *
  * @author Eric Broyles
- * @version $Id: RegistrationNotification.java,v 1.2 2007-01-17 02:35:05 czarneckid Exp $
+ * @version $Id: RegistrationNotification.java,v 1.3 2008-07-07 19:54:18 czarneckid Exp $
  */
 public class RegistrationNotification extends AbstractVelocityEmailNotification {
 
@@ -55,10 +55,10 @@ public class RegistrationNotification extends AbstractVelocityEmailNotification 
     /**
      * Create a new registration notification
      *
-     * @param email E-mail message
+     * @param email         E-mail message
      * @param emailTemplate URL for template
-     * @param user {@link User}
-     * @param blog {@link Blog}
+     * @param user          {@link User}
+     * @param blog          {@link Blog}
      * @throws MessagingException If there is an error setting the e-mail content
      */
     public RegistrationNotification(Email email, URL emailTemplate, User user, Blog blog) throws MessagingException {
@@ -74,7 +74,7 @@ public class RegistrationNotification extends AbstractVelocityEmailNotification 
         put("privacyUrl", blog.getProperty("privacy-policy-url", (new StringBuffer()).append(blog.getBlogURL()).append("/privacy.html").toString(), false));
         put("blogOwner", blog.getBlogOwner());
         put("activationUrl", (new StringBuffer()).append(blog.getBlogURL()).append("?plugins=registration&action=activate&username=").append(user.getUserLogin())
-                .toString());
+            .toString());
         try {
             email.setContent(getMessage(), "text/html");
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class RegistrationNotification extends AbstractVelocityEmailNotification 
     }
 
     /**
-     * @see AbstractNotification#getBlindCarbonCopyRecipients() 
+     * @see AbstractNotification#getBlindCarbonCopyRecipients()
      */
     protected List getCarbonCopyRecipients() {
         try {
@@ -107,7 +107,7 @@ public class RegistrationNotification extends AbstractVelocityEmailNotification 
     }
 
     /**
-     * @see AbstractNotification#getRecipients() 
+     * @see AbstractNotification#getRecipients()
      */
     protected List getRecipients() {
         try {
@@ -176,7 +176,7 @@ public class RegistrationNotification extends AbstractVelocityEmailNotification 
             List stringList = new ArrayList(addressList.size());
             Address address;
             for (Iterator iter = addressList.iterator(); iter.hasNext(); stringList.add(address
-                    .toString()))
+                .toString()))
                 address = (Address) iter.next();
 
             return stringList;
