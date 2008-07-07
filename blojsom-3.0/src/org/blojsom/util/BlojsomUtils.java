@@ -52,7 +52,7 @@ import java.util.regex.Matcher;
  * BlojsomUtils
  *
  * @author David Czarnecki
- * @version $Id: BlojsomUtils.java,v 1.18 2008-07-07 19:55:06 czarneckid Exp $
+ * @version $Id: BlojsomUtils.java,v 1.19 2008-07-07 21:41:14 czarneckid Exp $
  * @since blojsom 3.0
  */
 public class BlojsomUtils implements BlojsomConstants {
@@ -1592,6 +1592,14 @@ public class BlojsomUtils implements BlojsomConstants {
             slug = slug.replaceAll("\\p{Punct}", "_");
             slug = slug.replaceAll("_{2,}", "_");
             slug = slug.replaceAll("_", "-");
+            slug = slug.replaceAll("\\u0022", "");
+            slug = slug.replaceAll("\\u0027", "");
+            slug = slug.replaceAll("\\u0060", "");
+            slug = slug.replaceAll("\\u00B4", "");
+            slug = slug.replaceAll("\\u2018", "");
+            slug = slug.replaceAll("\\u2019", "");
+            slug = slug.replaceAll("\\u201C", "");
+            slug = slug.replaceAll("\\u201D", "");
             String backup = slug;
             slug = slug.replaceAll("^-{1,}", "");
             slug = slug.replaceAll("-{1,}$", "");
