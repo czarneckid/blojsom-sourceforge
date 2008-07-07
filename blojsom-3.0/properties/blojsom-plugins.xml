@@ -45,14 +45,16 @@
           destroy-method="destroy"/>
     <bean id="convert-line-breaks" class="org.blojsom.plugin.common.ConvertLineBreaksPlugin" init-method="init"
           destroy-method="destroy"/>
-    <bean id="date-format" class="org.blojsom.plugin.date.DateFormatPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="date-format" class="org.blojsom.plugin.date.DateFormatPlugin" init-method="init"
+          destroy-method="destroy"/>
     <bean id="days-since-posted" class="org.blojsom.plugin.statistics.DaysSincePostedPlugin" init-method="init"
           destroy-method="destroy"/>
     <bean id="emoticons" class="org.blojsom.plugin.emoticons.EnhancedEmoticonsPlugin" init-method="init"
           destroy-method="destroy">
         <property name="emoticons">
             <map>
-                <entry key="emoticons" value="angry, blush, confused, cool, cry, devil, grin, happy, laugh, love, mischief, plain, sad, shocked, silly, wink"/>
+                <entry key="emoticons"
+                       value="angry, blush, confused, cool, cry, devil, grin, happy, laugh, love, mischief, plain, sad, shocked, silly, wink"/>
                 <entry key="angry.pattern" value="&gt;("/>
                 <entry key="angry" value="/images/emoticons/mozilla_yell.gif"/>
                 <entry key="blush.pattern" value="*^_^*"/>
@@ -89,7 +91,8 @@
         </property>
         <property name="parseComments" value="false"/>
     </bean>
-    <bean id="entries-per-category" class="org.blojsom.plugin.common.CountEntriesForCategoryPlugin" init-method="init" destroy-method="destroy">
+    <bean id="entries-per-category" class="org.blojsom.plugin.common.CountEntriesForCategoryPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
@@ -109,24 +112,27 @@
     </bean>
      -->
     <bean id="footnote" class="org.blojsom.plugin.footnote.FootnotePlugin" init-method="init" destroy-method="destroy"/>
-    <bean id="form-authentication" class="org.blojsom.plugin.security.FormAuthenticationPlugin" parent="basic-authentication" />    
+    <bean id="form-authentication" class="org.blojsom.plugin.security.FormAuthenticationPlugin"
+          parent="basic-authentication"/>
     <bean id="googlehighlight" class="org.blojsom.plugin.highlight.GoogleHighlightPlugin" init-method="init"
           destroy-method="destroy"/>
     <bean id="href-hyperlinks" class="org.blojsom.plugin.hyperlink.HyperlinkURLPlugin" init-method="init"
           destroy-method="destroy"/>
     <bean id="internal-aggregator" class="org.blojsom.plugin.aggregator.InternalAggregatorPlugin" init-method="init"
-        destroy-method="destroy">
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
     </bean>
-    <bean id="ip-moderation" class="org.blojsom.plugin.moderation.IPAddressModerationPlugin" init-method="init" destroy-method="destroy">
+    <bean id="ip-moderation" class="org.blojsom.plugin.moderation.IPAddressModerationPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="ip-moderation-admin" class="org.blojsom.plugin.moderation.admin.IPAddressModerationAdminPlugin" init-method="init"
-        destroy-method="destroy">
+    <bean id="ip-moderation-admin" class="org.blojsom.plugin.moderation.admin.IPAddressModerationAdminPlugin"
+          init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -146,14 +152,17 @@
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="linkspam" class="org.blojsom.plugin.moderation.LinkSpamModerationPlugin" init-method="init" destroy-method="destroy">
+    <bean id="linkspam" class="org.blojsom.plugin.moderation.LinkSpamModerationPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="macro-expansion" class="org.blojsom.plugin.macro.MacroExpansionPlugin" init-method="init" destroy-method="destroy">
+    <bean id="macro-expansion" class="org.blojsom.plugin.macro.MacroExpansionPlugin" init-method="init"
+          destroy-method="destroy">
     </bean>
-    <bean id="macro-expansion-admin" class="org.blojsom.plugin.macro.admin.MacroExpansionAdminPlugin" init-method="init" destroy-method="destroy">
+    <bean id="macro-expansion-admin" class="org.blojsom.plugin.macro.admin.MacroExpansionAdminPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -162,16 +171,19 @@
         </property>
         <property name="resourceManager">
             <ref bean="resourceManager"/>
-        </property>        
+        </property>
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
     </bean>
+    <!-- Add-on plugin -->
+    <!--
     <bean id="markdown" class="org.blojsom.plugin.markdown.MarkdownPlugin" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
     </bean>
+    -->    
     <bean id="meta" class="org.blojsom.plugin.meta.MetaPlugin" init-method="init" destroy-method="destroy"/>
     <bean id="moblog" class="org.blojsom.plugin.moblog.MoblogPlugin" init-method="init" destroy-method="destroy">
         <property name="servletConfig">
@@ -187,7 +199,8 @@
             <ref bean="defaultVelocityProperties"/>
         </property>
     </bean>
-    <bean id="moblog-admin" class="org.blojsom.plugin.moblog.admin.MoblogAdminPlugin" init-method="init" destroy-method="destroy">
+    <bean id="moblog-admin" class="org.blojsom.plugin.moblog.admin.MoblogAdminPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -202,18 +215,21 @@
         </property>
     </bean>
     <bean id="nofollow" class="org.blojsom.plugin.nofollow.NoFollowPlugin" init-method="init" destroy-method="destroy"/>
-    <bean id="openproxy" class="org.blojsom.plugin.moderation.OpenProxyModerationPlugin" init-method="init" destroy-method="destroy">
+    <bean id="openproxy" class="org.blojsom.plugin.moderation.OpenProxyModerationPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
     <bean id="preview" class="org.blojsom.plugin.limiter.PreviewPlugin" init-method="init" destroy-method="destroy"/>
-    <bean id="previous-entries" class="org.blojsom.plugin.previous.PreviousEntriesPlugin" init-method="init" destroy-method="destroy">
+    <bean id="previous-entries" class="org.blojsom.plugin.previous.PreviousEntriesPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
-        </property>        
+        </property>
     </bean>
-    <bean id="rss-enclosure" class="org.blojsom.plugin.common.RSSEnclosurePlugin" init-method="init" destroy-method="destroy">
+    <bean id="rss-enclosure" class="org.blojsom.plugin.common.RSSEnclosurePlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -224,7 +240,8 @@
             <ref bean="defaultProperties"/>
         </property>
     </bean>
-    <bean id="show-me-more" class="org.blojsom.plugin.showmore.ShowMeMorePlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="show-me-more" class="org.blojsom.plugin.showmore.ShowMeMorePlugin" init-method="init"
+          destroy-method="destroy"/>
     <bean id="show-me-more-admin" class="org.blojsom.plugin.showmore.admin.ShowMeMoreAdminPlugin"
           init-method="init" destroy-method="destroy">
         <property name="servletConfig">
@@ -242,24 +259,27 @@
     </bean>
     <bean id="simple-obfuscation" class="org.blojsom.plugin.obfuscation.SimpleObfuscationPlugin" init-method="init"
           destroy-method="destroy"/>
-    <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init" destroy-method="destroy">
+    <bean id="simple-search" class="org.blojsom.plugin.search.SimpleSearchPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
     </bean>
     <bean id="skip-filter-helper" class="org.blojsom.plugin.skip.SkipFilterHelperPlugin" init-method="init"
-        destroy-method="destroy">
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
-        </property>        
+        </property>
     </bean>
-    <bean id="spamphrase-moderation" class="org.blojsom.plugin.moderation.SpamPhraseModerationPlugin" init-method="init" destroy-method="destroy">
+    <bean id="spamphrase-moderation" class="org.blojsom.plugin.moderation.SpamPhraseModerationPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="spamphrase-moderation-admin" class="org.blojsom.plugin.moderation.admin.SpamPhraseModerationAdminPlugin" init-method="init"
-        destroy-method="destroy">
+    <bean id="spamphrase-moderation-admin" class="org.blojsom.plugin.moderation.admin.SpamPhraseModerationAdminPlugin"
+          init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -275,7 +295,8 @@
     </bean>
     <bean id="string-utilities" class="org.blojsom.plugin.common.StringUtilitiesPlugin" init-method="init"
           destroy-method="destroy"/>
-    <bean id="tag-cloud" class="org.blojsom.plugin.technorati.TagCloudPlugin" init-method="init" destroy-method="destroy">
+    <bean id="tag-cloud" class="org.blojsom.plugin.technorati.TagCloudPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
@@ -292,9 +313,10 @@
             <ref bean="defaultVelocityProperties"/>
         </property>
     </bean>
-    <bean id="textile" class="org.blojsom.plugin.textile.TextilePlugin" init-method="init" destroy-method="destroy">        
+    <bean id="textile" class="org.blojsom.plugin.textile.TextilePlugin" init-method="init" destroy-method="destroy">
     </bean>
-    <bean id="twitter" class="org.blojsom.plugin.twitter.TwitterNotificationPlugin" init-method="init" destroy-method="destroy">
+    <bean id="twitter" class="org.blojsom.plugin.twitter.TwitterNotificationPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
@@ -305,16 +327,18 @@
     <bean id="user-lookup" class="org.blojsom.plugin.user.UserLookupPlugin" init-method="init" destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
-        </property>        
+        </property>
     </bean>
     <bean id="weather" class="org.blojsom.plugin.weather.WeatherPlugin" init-method="init" destroy-method="destroy">
     </bean>
-    <bean id="weblogs-ping" class="org.blojsom.plugin.weblogsping.WeblogsPingPlugin" init-method="init" destroy-method="destroy">
+    <bean id="weblogs-ping" class="org.blojsom.plugin.weblogsping.WeblogsPingPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="word-count" class="org.blojsom.plugin.statistics.WordCountPlugin" init-method="init" destroy-method="destroy"/>
+    <bean id="word-count" class="org.blojsom.plugin.statistics.WordCountPlugin" init-method="init"
+          destroy-method="destroy"/>
     <bean id="xss-filter" class="org.blojsom.plugin.filter.XSSFilterPlugin" init-method="init" destroy-method="destroy">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
@@ -327,8 +351,9 @@
             <ref bean="eventBroadcaster"/>
         </property>
     </bean>
-    <bean id="widgets-administration" class="org.blojsom.plugin.widget.admin.WidgetAdministrationPlugin" init-method="init"
-        destroy-method="destroy">
+    <bean id="widgets-administration" class="org.blojsom.plugin.widget.admin.WidgetAdministrationPlugin"
+          init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -340,7 +365,7 @@
         </property>
         <property name="fetcher">
             <ref bean="fetcher"/>
-        </property>        
+        </property>
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
         </property>
@@ -348,7 +373,7 @@
     <bean id="ip-widget" class="org.blojsom.plugin.widget.ip.IPAddressWidget" init-method="init">
         <property name="eventBroadcaster">
             <ref bean="eventBroadcaster"/>
-        </property>        
+        </property>
     </bean>
     <!-- END: Widgets -->
 
@@ -379,14 +404,16 @@
     </bean>
     -->
 
-    <bean id="recent-comments" class="org.blojsom.plugin.comment.RecentCommentsPlugin" init-method="init" destroy-method="destroy">
+    <bean id="recent-comments" class="org.blojsom.plugin.comment.RecentCommentsPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
     </bean>
 
     <!-- Trackback plugins -->
-    <bean id="trackback" class="org.blojsom.plugin.trackback.TrackbackPlugin" init-method="init" destroy-method="destroy">
+    <bean id="trackback" class="org.blojsom.plugin.trackback.TrackbackPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -402,7 +429,8 @@
     </bean>
     <bean id="auto-trackback" class="org.blojsom.plugin.trackback.AutoTrackbackPlugin" init-method="init"
           destroy-method="destroy"/>
-    <bean id="recent-trackbacks" class="org.blojsom.plugin.trackback.RecentTrackbacksPlugin" init-method="init" destroy-method="destroy">
+    <bean id="recent-trackbacks" class="org.blojsom.plugin.trackback.RecentTrackbacksPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
@@ -425,7 +453,8 @@
             <ref bean="defaultVelocityProperties"/>
         </property>
     </bean>
-    <bean id="recent-pingbacks" class="org.blojsom.plugin.pingback.RecentPingbacksPlugin" init-method="init" destroy-method="destroy">
+    <bean id="recent-pingbacks" class="org.blojsom.plugin.pingback.RecentPingbacksPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="fetcher">
             <ref bean="fetcher"/>
         </property>
@@ -456,7 +485,8 @@
         </property>
     </bean>
 
-    <bean id="bulk-response-management" class="org.blojsom.plugin.admin.BulkResponseManagement" init-method="init" destroy-method="destroy">
+    <bean id="bulk-response-management" class="org.blojsom.plugin.admin.BulkResponseManagement" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -658,7 +688,8 @@
                 <entry key="admin" value="admin"/>
                 <entry key="atom" value=""/>
                 <entry key="default" value="conditional-get, meta, limiter, nofollow, rss-enclosure"/>
-                <entry key="html" value="meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, limiter, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags"/>
+                <entry key="html"
+                       value="meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, limiter, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags"/>
                 <entry key="rdf" value=""/>
                 <entry key="rsd" value=""/>
                 <entry key="rss" value=""/>
@@ -738,13 +769,15 @@
                 <prop key="maximum-memory-size">50000</prop>
                 <prop key="accepted-file-types">image/jpeg, image/gif, image/png, video/x-msvideo, video/x-ms-asf,
                     audio/x-mpegurl, audio/x-midi, video/quicktime, audio/mpeg, audio/x-mpeg, audio/wav, video/mpeg,
-                    application/vnd.rn-realmedia</prop>
+                    application/vnd.rn-realmedia
+                </prop>
                 <prop key="invalid-file-extensions">.jsp, .jspf, .jspi, .jspx, .php, .cgi</prop>
                 <prop key="resources-directory">/resources/</prop>
             </props>
         </property>
     </bean>
-    <bean id="file-upload" class="org.blojsom.plugin.admin.FileUploadPlugin" init-method="init" destroy-method="destroy">
+    <bean id="file-upload" class="org.blojsom.plugin.admin.FileUploadPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -759,7 +792,8 @@
         </property>
     </bean>
 
-    <bean id="forgotten-password" class="org.blojsom.plugin.admin.ForgottenPasswordPlugin" init-method="init" destroy-method="destroy">
+    <bean id="forgotten-password" class="org.blojsom.plugin.admin.ForgottenPasswordPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -794,7 +828,8 @@
         </property>
     </bean>
 
-    <bean id="theme-switcher" class="org.blojsom.plugin.admin.ThemeSwitcherPlugin" init-method="init" destroy-method="destroy">
+    <bean id="theme-switcher" class="org.blojsom.plugin.admin.ThemeSwitcherPlugin" init-method="init"
+          destroy-method="destroy">
         <property name="servletConfig">
             <ref bean="servletConfigFactoryBean"/>
         </property>
@@ -812,7 +847,7 @@
         </property>
         <property name="blojsomProperties">
             <ref bean="defaultProperties"/>
-        </property>        
+        </property>
     </bean>
 
     <bean id="view-user-properties" class="org.blojsom.plugin.admin.ViewBlogUserPropertiesPlugin" init-method="init"
@@ -827,5 +862,5 @@
             <ref bean="fetcher"/>
         </property>
     </bean>
-    
+
 </beans>
