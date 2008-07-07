@@ -358,10 +358,10 @@ END;
 -- Dumping data for table Blojsom_Properties
 --
 
-INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-admin-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-base-url','http://localhost:8080/blojsom');
-INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-base-admin-url','http://localhost:8080/blojsom');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-url','/blojsom/blog/default');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-admin-url','/blojsom/blog/default');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-base-url','/blojsom');
+INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-base-admin-url','/blojsom');
 INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-language','en');
 INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-name','NAME YOUR BLOG');
 INSERT INTO Blojsom_Properties VALUES (Blojsom_property_id_Seq.nextval, Blojsom_id_Seq.currval,'blog-description','DESCRIBE YOUR BLOG');

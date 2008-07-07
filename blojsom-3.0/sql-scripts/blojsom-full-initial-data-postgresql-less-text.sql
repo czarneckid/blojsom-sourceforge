@@ -287,10 +287,10 @@ CREATE TABLE Properties (
 -- Dumping data for table Properties
 --
 
-INSERT INTO Properties VALUES (1,'blog-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Properties VALUES (1,'blog-admin-url','http://localhost:8080/blojsom/blog/default');
-INSERT INTO Properties VALUES (1,'blog-base-url','http://localhost:8080/blojsom');
-INSERT INTO Properties VALUES (1,'blog-base-admin-url','http://localhost:8080/blojsom');
+INSERT INTO Properties VALUES (1,'blog-url','/blojsom/blog/default');
+INSERT INTO Properties VALUES (1,'blog-admin-url','/blojsom/blog/default');
+INSERT INTO Properties VALUES (1,'blog-base-url','/blojsom');
+INSERT INTO Properties VALUES (1,'blog-base-admin-url','/blojsom');
 INSERT INTO Properties VALUES (1,'blog-language','en');
 INSERT INTO Properties VALUES (1,'blog-name','NAME YOUR BLOG');
 INSERT INTO Properties VALUES (1,'blog-description','DESCRIBE YOUR BLOG');
