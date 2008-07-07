@@ -217,7 +217,7 @@ CREATE TABLE `Entry` (
   `entry_id` int(11) NOT NULL auto_increment,
   `blog_id` int(11) NOT NULL,
   `title` text,
-  `description` text,
+  `description` mediumtext,
   `entry_date` datetime NOT NULL,
   `blog_category_id` int(11) NOT NULL,
   `status` text,

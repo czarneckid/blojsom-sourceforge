@@ -14,3 +14,5 @@ ALTER TABLE `blojsom`.`Category` ADD CONSTRAINT `category_subcategory_categoryid
     REFERENCES `Category` (`category_id`)
     ON DELETE CASCADE;
     
+ALTER TABLE `blojsom`.`Entry` MODIFY COLUMN `description` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci
+    DEFAULT NULL; 
