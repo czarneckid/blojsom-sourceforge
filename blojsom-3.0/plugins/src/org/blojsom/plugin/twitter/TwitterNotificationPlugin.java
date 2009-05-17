@@ -71,7 +71,7 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
 
     private Log _logger = LogFactory.getLog(TwitterNotificationPlugin.class);
 
-    private static final String TWITTER_STATUS_UPDATE_URL = "http://twitter.com/statuses/update.xml";
+    private static final String TWITTER_STATUS_UPDATE_URL = "https://twitter.com/statuses/update.xml";
     private static final String TWITTER_STATUS_PARAMETER = "status";
     private static final String TWITTER_DEFAULT_STATUS_UPDATE_TEXT = "Currently blogging {0}";
 
@@ -187,19 +187,19 @@ public class TwitterNotificationPlugin implements Plugin, Listener {
                     return;
                 }
 
-                if (!BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_SIGN_IN_IP)) &&
-                    !BlojsomUtils.checkNullOrBlank((String) user.getMetaData().get(TWITTER_PASSWORD_IP))) {
+                if (!BlojsomUtils.checkNullOrBlank((String) blog.getProperty(TWITTER_SIGN_IN_IP)) &&
+                    !BlojsomUtils.checkNullOrBlank((String) blog.getProperty(TWITTER_PASSWORD_IP))) {
 
-                    String signIn = (String) user.getMetaData().get(TWITTER_SIGN_IN_IP);
-                    String password = (String) user.getMetaData().get(TWITTER_PASSWORD_IP);
-                    String updateText = (String) user.getMetaData().get(TWITTER_STATUS_UPDATE_TEXT_IP);
+                    String signIn = (String)  blog.getProperty(TWITTER_SIGN_IN_IP);
+                    String password = (String)  blog.getProperty(TWITTER_PASSWORD_IP);
+                    String updateText = (String)  blog.getProperty(TWITTER_STATUS_UPDATE_TEXT_IP);
 
                     if (BlojsomUtils.checkNullOrBlank(updateText)) {
                         updateText = TWITTER_DEFAULT_STATUS_UPDATE_TEXT;
                     }
 
-                    if (("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_ADDED_IP))) ||
-                        ("true".equals(user.getMetaData().get(TWITTER_UPDATE_ON_ENTRY_UPDATED_IP)))) {
+                    if (("true".equals( blog.getProperty(TWITTER_UPDATE_ON_ENTRY_ADDED_IP))) ||
+                        ("true".equals( blog.getProperty(TWITTER_UPDATE_ON_ENTRY_UPDATED_IP)))) {
                         String title = entryEvent.getEntry().getTitle();
                         String twitterUpdate = BlojsomUtils.urlEncode(
                             BlojsomUtils.escapeString(MessageFormat.format(updateText, new Object[]{title})));
