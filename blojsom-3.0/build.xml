@@ -52,6 +52,13 @@
     <property name="source.version" value="1.4"/>
     <property name="target.version" value="1.4"/>
 
+    <!-- Tomcat deployment target properties -->
+    <property name="manager.url" value="http://localhost:8080/manager"/>
+    <property name="manager.username" value="username"/>
+    <property name="manager.password" value="password"/>
+    <property name="app.path" value="/${name}"/>
+    <property name="build.home" value="${war.dir}"/>
+
     <!-- Add-on properties -->
     <property name="addon.lib.dir" value="${basedir}/addon-lib"/>
 
@@ -179,6 +186,7 @@
         <delete dir="${build.dir}"/>
         <delete>
             <fileset dir="${webinf.lib.dir}" includes="${name}-*.jar"/>
+            <fileset dir="${webinf.lib.dir}" includes="hsqldb.jar"/>
         </delete>
         <delete file="${war.file}"/>
         <delete dir="${webinf.dir}/themes"/>
@@ -405,6 +413,35 @@
         <!-- Uncomment this if you want to JAR up the templates for running blojsom from a WAR file (i.e. a packed WAR) -->
         <!-- <jar jarfile="${templates.jar}" basedir="${templates.dir}"/> -->
 
+        <jar jarfile="${war.file}" basedir="${war.dir}">
+            <exclude name="**/quickrstart"/>
+        </jar>
+        
+        <delete dir="${war.dir}/WEB-INF/default/templates"/>
+        <delete dir="${war.dir}/themes"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Create the "quicker" start bundle                                 -->
+    <!-- =================================================================== -->
+    <target name="quickrstart" depends="clean-with-templates, compile" description="Create a deployable WAR file">
+        <copy todir="${war.dir}/WEB-INF/themes">
+            <fileset dir="${themes.dir}"/>
+        </copy>
+
+        <!--
+            quickrstart properties needs to go into WEB-INF/classes
+            quickrstart lib        needs to go into WEB-INF/lib
+        -->
+
+        <copy todir="${war.dir}/WEB-INF/classes" overwrite="true">
+            <fileset dir="${basedir}/quickrstart/properties"/>
+        </copy>
+
+        <copy todir="${war.dir}/WEB-INF/lib">
+            <fileset dir="${basedir}/quickrstart/lib"/>
+        </copy>
+
         <jar jarfile="${war.file}" basedir="${war.dir}"/>
         <delete dir="${war.dir}/WEB-INF/default/templates"/>
         <delete dir="${war.dir}/themes"/>
@@ -588,6 +625,148 @@
         <jar file="${upgrade.jar}" basedir="${compile.dir}"/>
         <delete dir="${compile.dir}"/>
     </target>
+
+<!-- ================== Custom Ant Task Definitions ======================= -->
+
+
+<!--
+
+  These properties define custom tasks for the Ant build tool that interact
+  with the "/manager" web application installed with Tomcat 6.  Before they
+  can be successfully utilized, you must perform the following steps:
+
+  - Copy the file "lib/catalina-ant.jar" from your Tomcat 6
+    installation into the "lib" directory of your Ant installation.
+
+  - Create a "build.properties" file in your application's top-level
+    source directory (or your user login home directory) that defines
+    appropriate values for the "manager.password", "manager.url", and
+    "manager.username" properties described above.
+
+  For more information about the Manager web application, and the functionality
+  of these tasks, see <http://localhost:8080/tomcat-docs/manager-howto.html>.
+
+-->
+
+<taskdef name="list" classname="org.apache.catalina.ant.ListTask"/>
+<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask"/>
+<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask"/>
+<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask"/>
+
+<!-- ==================== Install Target ================================== -->
+
+<!--
+
+  The "install" target tells the specified Tomcat 6 installation to dynamically
+  install this web application and make it available for execution.  It does
+  *not* cause the existence of this web application to be remembered across
+  Tomcat restarts; if you restart the server, you will need to re-install all
+  this web application.
+
+  If you have already installed this application, and simply want Tomcat to
+  recognize that you have updated Java classes (or the web.xml file), use the
+  "reload" target instead.
+
+  NOTE:  This target will only succeed if it is run from the same server that
+  Tomcat is running on.
+
+  NOTE:  This is the logical opposite of the "remove" target.
+
+-->
+
+    <target name="install" depends="compile"
+   description="Install application to servlet container">
+
+        <deploy url="${manager.url}"
+       username="${manager.username}"
+       password="${manager.password}"
+           path="${app.path}"
+       localWar="file://${build.home}"/>
+
+    </target>
+
+    <target name="install-war"
+   description="Install distro build to servlet container">
+
+        <deploy url="${manager.url}"
+       username="${manager.username}"
+       password="${manager.password}"
+           path="${app.path}"
+       localWar="file://${war.file}"/>
+
+    </target>
+
+
+<!-- ====================== List Target =================================== -->
+
+<!--
+
+  The "list" target asks the specified Tomcat 6 installation to list the
+  currently running web applications, either loaded at startup time or
+  installed dynamically.  It is useful to determine whether or not the
+  application you are currently developing has been installed.
+
+-->
+
+    <target name="list"
+   description="List installed applications on servlet container">
+
+        <list    url="${manager.url}"
+        username="${manager.username}"
+        password="${manager.password}"/>
+
+    </target>
+
+<!-- ==================== Reload Target =================================== -->
+
+<!--
+
+  The "reload" signals the specified application Tomcat 6 to shut itself down
+  and reload. This can be useful when the web application context is not
+  reloadable and you have updated classes or property files in the
+  /WEB-INF/classes directory or when you have added or updated jar files in the
+  /WEB-INF/lib directory.
+
+  NOTE: The /WEB-INF/web.xml web application configuration file is not reread
+  on a reload. If you have made changes to your web.xml file you must stop
+  then start the web application.
+
+-->
+
+  <target name="reload" depends="compile"
+   description="Reload application on servlet container">
+
+    <reload url="${manager.url}"
+       username="${manager.username}"
+       password="${manager.password}"
+           path="${app.path}"/>
+
+  </target>
+
+
+
+<!-- ==================== Remove Target =================================== -->
+
+<!--
+
+  The "remove" target tells the specified Tomcat 6 installation to dynamically
+  remove this web application from service.
+
+  NOTE:  This is the logical opposite of the "install" target.
+
+-->
+
+    <target name="remove"
+   description="Remove application on servlet container">
+
+        <undeploy url="${manager.url}"
+         username="${manager.username}"
+         password="${manager.password}"
+             path="${app.path}"/>
+
+    </target>
+
+
 
 </project>
 
