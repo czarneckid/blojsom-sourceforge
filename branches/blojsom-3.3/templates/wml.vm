@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">
+
+<wml>
+    <card title="Welcome">
+    <p><big><b>#BlogName()</b><br/>
+    #BlogDescription()<br/>
+    ----------------</big><br/>
+    
+    <a href="http://blojsom.sf.net/">Powered by Blojsom</a><br/></p>
+
+    <p>
+    <input size="8" name="query" /> : 
+    <anchor>
+    <go href="#BlogURL()/?flavor=$BLOJSOM_REQUESTED_FLAVOR" method="post">
+    <postfield name="query" value="$(query)" />
+    <postfield name="site" value="search"/>
+    </go>Search</anchor>
+    </p>
+
+<p align="center"><b>Latest blog entries <br/>and search results</b></p>
+
+#set ($counter = 0)
+#foreach ($entry in $BLOJSOM_ENTRIES)
+<p> * <a href="#card$counter">$entry.getTitle()</a></p>
+#set ($counter = $counter + 1)
+#end
+
+<p align="center"><b> - . - </b></p>
+<p align="center"><b>Categories:</b></p>   
+
+#foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+<p><a href="#BlogURL()$blogCategory.getName()/?flavor=wml">#CategoryName($blogCategory)</a></p>
+#end
+<p align="center"><b> - . - </b></p>
+</card>
+
+#set ($totalEntries = 0)
+#foreach ($entry in $BLOJSOM_ENTRIES)
+    <card id="card$totalEntries" title="$entry.getTitle()">
+    <p><b>$entry.getTitle()</b><br/>
+    <i>Posted on</i> $entry.getDate()<br/>
+    $entry.getDescription()</p>
+    <p align="center"><b><a href="#Welcome">Back to blog</a></b></p>
+    </card>
+
+#set ($totalEntries = $totalEntries + 1)
+#end
+</wml>

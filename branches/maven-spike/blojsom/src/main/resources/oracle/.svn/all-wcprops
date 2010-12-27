@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle
+END
+Category-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/Category-oracle.hbm.xml
+END
+blojsom.xml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/blojsom.xml
+END
+Pingback-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/Pingback-oracle.hbm.xml
+END
+User-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/User-oracle.hbm.xml
+END
+blojsom-xmlrpc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/blojsom-xmlrpc.xml
+END
+Entry-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/Entry-oracle.hbm.xml
+END
+Comment-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/Comment-oracle.hbm.xml
+END
+Blog-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/Blog-oracle.hbm.xml
+END
+blojsom-helper-beans-oracle-include.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/blojsom-helper-beans-oracle-include.xml
+END
+Trackback-oracle.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/Trackback-oracle.hbm.xml
+END
+blojsom-commentapi.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/oracle/blojsom-commentapi.xml
+END

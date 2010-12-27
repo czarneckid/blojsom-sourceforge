@@ -1,0 +1,88 @@
+#AdminPageTitle('edit.blog.categories.page.header' 'Categories')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                #set($confirmationText = "#adminResource('delete.category.confirmation.text' '')")
+                #set($specificType = 'Category')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
+                <div class="mainClm">
+                    <h3>#adminResource('categories.text' 'Categories') (<a href="#addblogcategory">#adminResource('add.blog.category.text' 'Add a new blog category')</a>)</h3>
+                    <table border=".5">
+                        <tr>
+                            <th>#adminResource('id.text' '')</th> <th>#adminResource('name.text' '')</th> <th>#adminResource('description.text' '')</th> <th>#adminResource('parent.text' '')</th> <th colspan="2">#adminResource('actions.text' '')</th>
+                        </tr>
+                        #foreach ($blogCategory in $BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES)
+                        <tr>
+                            <td>$blogCategory.getId()</td>
+                            <td>#CategoryName($blogCategory)</td>
+                            <td>#CategoryDescription($blogCategory)</td>
+                            <td>#if ($blogCategory.getParentCategory())#CategoryDescription($blogCategory.getParentCategory()) #else &nbsp; #end</td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-categories&action=edit-blog-category&blog-category-id=$blogCategory.getId()">#adminResource('edit.text' '')</a></td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-categories&action=delete-blog-category&blog-category-id=$blogCategory.getId()" onclick="return confirmCategoryDelete()">#adminResource('delete.text' '')</a></td>
+                        </tr>
+                        #end
+                    </table>
+                </div>
+
+                <!-- Add blog category form -->
+                <a name="addblogcategory"/>
+                <div class="mainClm">
+
+                    <h3>#adminResource('add.blog.category.text' 'Add a new blog category')</h3>
+                    <table>
+                        <form name="add-blog-category" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="add-blog-category"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-categories"/>
+                            <tr>
+                                <td>#adminResource('category.name.text' 'Category name')</td>
+                                <td><input type="text" size="50" name="blog-category-name"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('category.description.text' 'Category description')</td>
+                                <td><input type="text" size="50" name="blog-category-description"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('category.metadata.text' 'Category meta-data')</td>
+                                <td><textarea rows="10" cols="60" name="blog-category-meta-data"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('category.parent.text' 'Category parent')</td>
+                                <td>
+                                    <select name="blog-category-parent-id">
+                                        <option value="">None</option>
+                                    #foreach ($blogCategory in $BLOJSOM_PLUGIN_EDIT_BLOG_CATEGORIES_ALL_CATEGORIES)
+                                        <option value="$blogCategory.getId()">#CategoryDescription($blogCategory)</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.category.text' 'Reset')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

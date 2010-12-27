@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/handlers
+END
+BlojsomBloggerAPIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/handlers/BlojsomBloggerAPIHandler.java
+END
+AbstractBlojsomAPIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/handlers/AbstractBlojsomAPIHandler.java
+END
+MetaWeblogAPIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/handlers/MetaWeblogAPIHandler.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/handlers/package.html
+END

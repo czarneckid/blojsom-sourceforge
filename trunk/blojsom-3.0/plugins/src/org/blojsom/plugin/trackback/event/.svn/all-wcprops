@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event
+END
+TrackbackUnmarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackUnmarkedSpamEvent.java
+END
+TrackbackResponseSubmissionEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackResponseSubmissionEvent.java
+END
+TrackbackEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackEvent.java
+END
+TrackbackApprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackApprovedEvent.java
+END
+TrackbackAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackAddedEvent.java
+END
+TrackbackUnapprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackUnapprovedEvent.java
+END
+TrackbackMarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackMarkedSpamEvent.java
+END
+TrackbackDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/TrackbackDeletedEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3135/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/event/package.html
+END

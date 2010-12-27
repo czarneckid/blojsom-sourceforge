@@ -1,0 +1,5 @@
+blojsom-users=default
+blojsom-default-user=default
+blojsom-configuration-base-directory=/WEB-INF/
+blojsom-fetcher=org.blojsom.fetcher.StandardFetcher
+blojsom-templates-directory=/templates/

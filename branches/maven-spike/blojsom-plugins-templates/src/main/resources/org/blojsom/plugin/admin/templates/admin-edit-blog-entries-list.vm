@@ -1,0 +1,88 @@
+#AdminPageTitle('edit.blog.entries.page.header' 'Edit Blog Entries')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+                    <div class="yui-g stdotcom">
+                        <h3>#CategoryDescription($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY)</h3>
+                        <form name="edit-blog-entry" action="." method="post" accept-charset="UTF-8">
+                            <div style="display:none">
+                                <input type="hidden" name="action" value="edit-blog-entry">
+                                <input type="hidden" name="flavor" value="admin">
+                                <input type="hidden" name="plugins" value="edit-blog-entries">
+                                <input type="hidden" name="blog-category-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY.getId()">
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>#adminResource('blog.entry.text' 'Blog entry')</td>
+                                    <td>
+                                        <select name="blog-entry-id">
+                                        #foreach ($blogEntry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
+                                            <option value="$blogEntry.getId()">$blogEntry.getTitle()</option>
+                                        #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="submit" name="submit" value="#adminResource('edit.blog.entry.text' 'Edit blog entry')">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+
+#set($confirmationText = "#adminResource('delete.blog.entry.confirmation.text' '')")
+#DeleteConfirmationPrompt('' $confirmationText)
+
+                    <div class="yui-g stdotcom">
+                        <!-- Delete blog entries form -->
+                        <h3>#CategoryDescription($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY)</h3>
+                        <form name="delete-blog-entry" action="." method="post" accept-charset="UTF-8" #OnSubmitDeletePrompt('')>
+                            <div style="display:none">
+                                <input type="hidden" name="action" value="delete-blog-entry">
+                                <input type="hidden" name="flavor" value="admin">
+                                <input type="hidden" name="plugins" value="edit-blog-entries">
+                                <input type="hidden" name="blog-category-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY.getId()">
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>#adminResource('blog.entry.text' 'Blog entry')</td>
+                                    <td>
+                                        <select name="blog-entry-id">
+                                        #foreach ($blogEntry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
+                                            <option value="$blogEntry.getId()">$blogEntry.getTitle()</option>
+                                        #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="submit" name="submit" value="#adminResource('delete.blog.entry.text' 'Delete blog entry')">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="yui-b">
+            </div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

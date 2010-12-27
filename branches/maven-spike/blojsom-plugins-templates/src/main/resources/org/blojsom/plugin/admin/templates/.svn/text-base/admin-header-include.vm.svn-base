@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>#BlogName() - $page</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="SHORTCUT ICON" href="#BlogBaseAdminURL()/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/javascript/yui/assets/skins/sam/skin.css">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/javascript/yui/reset-fonts-grids/reset-fonts-grids.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/javascript/yui/base/base-min.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/javascript/yui/button/assets/skins/sam/button.css">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/javascript/yui/container/assets/skins/sam/container.css">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/javascript/yui/menu/assets/skins/sam/menu.css">
+        <link rel="stylesheet" type="text/css" href="#BlogBaseAdminURL()/administration/blojsom-administration.css" media="screen">
+        <style type="text/css">
+            /* inline overrides */
+            td { vertical-align: top; }
+
+            div.admin {
+                padding: 0 2.3em;
+            }
+
+            .yui-skin-sam .yuimenubar {
+                border: none;
+                background: none;
+                font-size: 85%;
+                line-height: 2.7;
+            }
+
+            .yui-skin-sam .yuimenuitem {
+                height: 28px;
+                line-height: 2.5;
+            }
+
+            .yui-skin-sam .yuimenubaritemlabel {
+                border: none;
+            }
+
+            .yui-skin-sam .yuimenubaritemlabel-selected {
+                border: none;
+                color: #ffffff;
+            }
+
+            .yui-skin-sam .yuimenubaritem-selected {
+                background: #2d5879;
+            }
+
+            .yui-skin-sam .yuimenubarnav .yuimenubaritem {
+                height: 28px;
+            }
+
+            .yui-skin-sam .yuimenubarnav .yuimenubaritemlabel-selected {
+                margin-left: 0;
+            }
+
+            ul#userproperties {
+                margin-top: 0;
+            }
+
+        </style>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/animation/animation-min.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/element/element-min.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/button/button-min.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/cookie/cookie-min.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/yui/editor/editor-min.js"></script>
+        <script type="text/javascript">
+            var Y = YAHOO, E = YAHOO.util.Event, Dom = YAHOO.util.Dom, Button = YAHOO.widget.Button;
+            Y.namespace("blojsom");
+
+            E.onContentReady("entry-options", function() {
+                var pingBlogURLsCheckbox = new Button("ping-blog-urls", {label:"#adminResource('blog.entry.pingURLs.text' 'Ping blog notification URLs?')"});
+                var sendPingbacksCheckbox = new Button("send-pingbacks", {label:"#adminResource('blog.entry.send.pingbacks.text' 'Send pingbacks to URLs?')"});
+                var disableComments = new Button("blog-entry-comments-disabled", {label:"#adminResource('blog.disable.comments.text' 'Disable comments?')"});
+                var disableTrackbacks = new Button("blog-entry-trackbacks-disabled", {label:"#adminResource('blog.disable.trackbacks.text' 'Disable trackbacks?')"});
+                var disablePingbacks = new Button("blog-entry-pingbacks-disabled", {label:"#adminResource('blog.disable.pingbacks.text' 'Disable pingbacks?')"});
+#if($!params.action.get(0) != "new-blog-entry")
+#if (!$!BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.allowsComments())
+                disableComments.set("checked", true, true);
+#end
+#if (!$!BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.allowsTrackbacks())
+                disableTrackbacks.set("checked", true, true);
+#end
+#if (!$!BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.allowsPingbacks())
+                disablePingbacks.set("checked", true, true);
+#end
+#end
+            });
+
+            Y.blojsom.init = function() {
+                var navmenu = new Y.widget.MenuBar("navmenu", { autosubmenudisplay: true, shadow:false });
+                navmenu.render();
+
+                var login = new Button("submit-login");
+                var editEntriesInCategory = new Button("editEntriesInCategory");
+                var addEntryToCategory = new Button("addEntryToCategory");
+
+                var entryEditor = new YAHOO.widget.Editor('blog-entry-description', {
+                    height: '300px',
+                    width: '522px',
+                    dompath: true,
+                    animate: true,
+                    handleSubmit: true
+                });
+                entryEditor.render();
+            };
+            E.onDOMReady(Y.blojsom.init);
+
+        </script>
+    </head>

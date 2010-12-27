@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3875/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/moderation/admin
+END
+IPAddressModerationAdminPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svnroot/blojsom/!svn/ver/3875/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/moderation/admin/IPAddressModerationAdminPlugin.java
+END
+SpamPhraseModerationAdminPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svnroot/blojsom/!svn/ver/3875/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/moderation/admin/SpamPhraseModerationAdminPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/moderation/admin/package.html
+END

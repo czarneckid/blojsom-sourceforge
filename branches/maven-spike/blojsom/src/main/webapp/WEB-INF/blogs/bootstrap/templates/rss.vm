@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name="generator" content="$BLOJSOM_VERSION" -->
+<rss version="0.92">
+    <channel>
+        <title>#EscapedBlogName()</title>
+        <link>#BlogURL()/</link>
+        <description>#EscapedBlogDescription()</description>
+        <language>#BlogLanguage()</language>
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        #SimpleFriendlyPermalink($entry)
+        <item>
+            <title>$entry.getEscapedTitle()</title>
+            <link>$entryLink</link>
+            <description>$entry.getEscapedDescription()</description>
+        </item>
+        #end
+    </channel>
+</rss>

@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF
+END
+macros.properties
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/macros.properties
+END
+blojsom.properties
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/blojsom.properties
+END
+showmemore.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/showmemore.properties
+END
+dispatcher.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/dispatcher.properties
+END
+blojsom-xmlrpc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/blojsom-xmlrpc.properties
+END
+flavor.properties
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/flavor.properties
+END
+plugin.properties
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/plugin.properties
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/velocity.properties
+END
+authorization.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/authorization.properties
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/blojsom/!svn/ver/357/tags/blosjom-1_5/blojsom/war/WEB-INF/web.xml
+END

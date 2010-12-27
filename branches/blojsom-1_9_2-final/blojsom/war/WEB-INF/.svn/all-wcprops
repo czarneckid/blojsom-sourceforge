@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF
+END
+blacklist.filters
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/blacklist.filters
+END
+macros.properties
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/macros.properties
+END
+blojsom.properties
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/blojsom.properties
+END
+showmemore.properties
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/showmemore.properties
+END
+dispatcher.properties
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/dispatcher.properties
+END
+blojsom-xmlrpc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/blojsom-xmlrpc.properties
+END
+flavor.properties
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/flavor.properties
+END
+referer.properties
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/referer.properties
+END
+plugin.properties
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/plugin.properties
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/velocity.properties
+END
+authorization.properties
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/authorization.properties
+END
+emoticons.properties
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/emoticons.properties
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/1053/branches/blojsom-1_9_2-final/blojsom/war/WEB-INF/web.xml
+END

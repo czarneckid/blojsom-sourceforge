@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/textile
+END
+TextileConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/textile/TextileConstants.java
+END
+TextilePlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/textile/TextilePlugin.java
+END
+Textile.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/textile/Textile.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/textile/package.html
+END

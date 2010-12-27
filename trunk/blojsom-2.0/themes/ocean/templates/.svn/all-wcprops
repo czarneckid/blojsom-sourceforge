@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/blojsom/!svn/ver/2990/trunk/blojsom-2.0/themes/ocean/templates
+END
+ocean-column.vm
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/2788/trunk/blojsom-2.0/themes/ocean/templates/ocean-column.vm
+END
+ocean-footer.vm
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/2552/trunk/blojsom-2.0/themes/ocean/templates/ocean-footer.vm
+END
+ocean-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/blojsom/!svn/ver/2990/trunk/blojsom-2.0/themes/ocean/templates/ocean-entry.vm
+END
+ocean-head.vm
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/2552/trunk/blojsom-2.0/themes/ocean/templates/ocean-head.vm
+END
+ocean.vm
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/blojsom/!svn/ver/2568/trunk/blojsom-2.0/themes/ocean/templates/ocean.vm
+END
+ocean-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/2788/trunk/blojsom-2.0/themes/ocean/templates/ocean-comments.vm
+END
+ocean-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/2844/trunk/blojsom-2.0/themes/ocean/templates/ocean-trackback.vm
+END
+ocean-header.vm
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/2788/trunk/blojsom-2.0/themes/ocean/templates/ocean-header.vm
+END

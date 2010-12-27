@@ -1,0 +1,35 @@
+#AdminPageTitle('administer.plugins.page.header' 'Configurable Available Plugins')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+                    <div class="yui-g stdotcom">
+                        <h3>#adminResource('administer.plugins.page.header' '')</h3>
+                        <p>#adminResource('configure.plugins.help.text' '')</p>
+                        #if ($BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST)
+                        <ul>
+                        #foreach ($plugin in $BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST.keySet())
+                        <li><a href="#BlogAdminURL()/?flavor=admin&amp;plugins=$plugin">$BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST.get($plugin).getDisplayName()</a></li>
+                        #end
+                        </ul>
+                        #end
+                    </div>
+                </div>
+            </div>
+            <div class="yui-b"></div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

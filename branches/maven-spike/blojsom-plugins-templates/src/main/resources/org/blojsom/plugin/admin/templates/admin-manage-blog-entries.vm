@@ -1,0 +1,90 @@
+#AdminPageTitle('manage.entries.header' 'Manage Entries')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b stdotcom">
+                    #set($confirmationText = "#adminResource('delete.blog.entry.confirmation.text' '')")
+                    #DeleteConfirmationPrompt('' $confirmationText)
+
+                    #set($page_number = $pg_num.intValue())
+                    #set($total_pages = $BLOJSOM_PLUGIN_TOTAL_ENTRIES_PAGES.intValue())
+                    #set($next_page = $page_number + 1)
+                    #set($previous_page = $page_number - 1)
+
+                    <h3>#adminResource('latest.entries.text' '') (<a href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=new-blog-entry">#adminResource('add.new.entry.text' '')</a>)</h3>
+                    <table width="100%">
+                        <tr>
+                            <th>#adminResource('id.text' '')</th>
+                            <th>#adminResource('posted.on.text' '')</th>
+                            <th>#adminResource('title.text' '')</th>
+                            <th>#adminResource('category.text' '')</th>
+                            <th>#adminResource('responses.text' '')</th>
+                            <th>#adminResource('author.text' '')</th>
+                            <th>#adminResource('status.text' '')</th>
+                            <th>#adminResource('actions.text' '')</th>
+                        </tr>
+                        #foreach ($entry in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_LIST)
+                            #set($stripe = 'on')
+                            #if(($velocityCount % 2) == 0)#set($stripe = 'off')#end
+                        <tr class="$stripe">
+                            <td>$entry.getId()</td>
+                            <td>$!entry.getDateAsFormat("yyyy-M-d @ h:mm a", $BLOJSOM_BLOG.getBlogAdministrationLocale())</td>
+                            <td>$!entry.getEscapedTitle()</td>
+                            <td>#CategoryDescription($entry.getBlogCategory())</td>
+                            <td>$entry.getResponses().size()</td>
+                            <td>$!entry.getAuthor()</td>
+                            #if($!entry.getStatus() == "published")
+                            <td><img src="#BlogBaseAdminURL()/administration/images/page_white_world.png" alt="$!entry.getStatus()"></td>
+                            #else
+                            <td><img src="#BlogBaseAdminURL()/administration/images/page_white_edit.png" alt="$!entry.getStatus()"></td>
+                            #end
+                            <td>
+                                <a href="#BlogURL()$entry.getBlogCategory().getName()$entry.getPostSlug()">View</a>&nbsp;
+                                <a href="#BlogAdminURL()/?flavor=admin&amp;action=edit-blog-entry&amp;plugins=edit-blog-entries&amp;blog-category-id=$entry.getBlogCategory().getId()&amp;blog-entry-id=$entry.getId()">Edit</a>&nbsp;
+                                <a href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=edit-entries-list&amp;subaction=delete-blog-entry-list&amp;pg_num=$page_number&amp;blog-entry-id=$entry.getId()" #OnClickDeletePrompt('')>Delete</a>
+                            </td>
+                        </tr>
+                        #end
+                    </table>
+
+                    #if ($page_number > 1)
+                    <a href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=edit-entries-list&amp;pg_num=$previous_page">&laquo; #adminResource('previous.page.text' '')</a>
+                    #end
+                    #if ($page_number < $total_pages)
+                    <a href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=edit-entries-list&amp;pg_num=$next_page">#adminResource('next.page.text' '') &raquo;</a>
+                    #end
+                </div>
+            </div>
+            <div class="yui-b">
+                <div id="sidebar">
+                    <form name="search-blog-entries" action="." method="post" accept-charset="UTF-8">
+                        <div style="display:none">
+                            <input type="hidden" name="flavor" value="admin">
+                            <input type="hidden" name="action" value="edit-entries-list">
+                            <input type="hidden" name="plugins" value="edit-blog-entries">
+                        </div>
+                        <div>
+                            <input type="text" name="query" id="searchquery"  value="#if ($query) $query #else #adminResource('search.posts.text' '')&#8230;" #end size="20"> <input type="submit" name="submitsearch" value="#adminResource('submit.text' '')" >
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        Y.blojsom.query = Dom.get("searchquery");
+        E.on(Y.blojsom.query, "focus", function() { Y.blojsom.query.value = ""; });
+    </script>
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

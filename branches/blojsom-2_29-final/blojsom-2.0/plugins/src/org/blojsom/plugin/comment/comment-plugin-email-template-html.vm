@@ -1,0 +1,31 @@
+<html>
+    <head></head>
+
+    <body>
+        <p>
+            <strong>Comment Details</strong>
+            <br />
+            <br />
+            Comment on: <a href="$BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getLink()&amp;page=comments">$BLOJSOM_COMMENT_PLUGIN_BLOG_ENTRY.getTitle()</a>
+            <br />
+            Comment by: <a href="mailto:$!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthorEmail()">$!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthor()</a> - $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getAuthorURL()
+            <br />
+            Left on: $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getCommentDate()
+            <br />
+            IP Address: $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getMetaData().get("BLOJSOM_COMMENT_PLUGIN_METADATA_IP")
+        </p>
+        <p>
+            <strong>Comment Administration</strong>
+            <br />
+            <br />
+            <a href="#BlogAdminURL()?flavor=admin&amp;action=approve-blog-comments&amp;plugins=edit-blog-entries&amp;blog-category-name=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getBlogEntry().getEncodedCategory()&amp;blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getBlogEntry().getPermalink()&amp;blog-comment-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getId()">Approve</a> this comment <br  />
+            <a href="#BlogAdminURL()?flavor=admin&amp;action=delete-blog-comments&amp;plugins=edit-blog-entries&amp;blog-category-name=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getBlogEntry().getEncodedCategory()&amp;blog-entry-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getBlogEntry().getPermalink()&amp;blog-comment-id=$BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getId()">Delete</a> comment <br />
+        </p>
+        <p>
+            <strong>Comment</strong>
+            <br />
+            <br />
+            $!BLOJSOM_COMMENT_PLUGIN_BLOG_COMMENT.getComment()
+        </p>
+    </body>
+</html>

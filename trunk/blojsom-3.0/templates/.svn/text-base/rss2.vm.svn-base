@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name="generator" content="$BLOJSOM_VERSION" -->
+<rss version="2.0" xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+    <channel>
+        <title>#EscapedBlogName()</title>
+        <link>#BlogURL()</link>
+        <description>#EscapedBlogDescription()</description>
+        <language>#BlogLanguage()</language>
+        <image>
+            <url>#BlogBaseURL()/favicon.ico</url>
+            <title>#EscapedBlogName()</title>
+            <link>#BlogURL()</link>
+        </image>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<generator>$BLOJSOM_VERSION</generator>
+		<managingEditor>#BlogOwnerEmail()</managingEditor>
+		<webMaster>#BlogOwnerEmail()</webMaster>
+		<pubDate>$BLOJSOM_DATE</pubDate>
+
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        #SimpleFriendlyPermalink($entry)
+        <item>
+            <title>$entry.getEscapedTitle()</title>
+            <link>$entryLink</link>
+            <description>$entry.getEscapedDescription()</description>
+            <guid>$entryLink</guid>
+			<pubDate>$entry.getRFC822Date()</pubDate>
+            <category>$entry.getEncodedCategory()</category>
+            #if ($entry.allowsComments())
+            #XMLRPCLink($entry 'commentapi')
+            <wfw:comment>$xmlrpcLink</wfw:comment>
+            <wfw:commentRss>$entryLink?page=comments&amp;flavor=rss2</wfw:commentRss>
+            #end
+            #RSSEnclosure($entry)
+        </item>
+        #end
+    </channel>
+</rss>

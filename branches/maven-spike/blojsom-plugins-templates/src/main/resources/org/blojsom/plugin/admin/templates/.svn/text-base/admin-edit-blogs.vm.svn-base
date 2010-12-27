@@ -1,0 +1,106 @@
+#AdminPageTitle('edit.blogs.page.header' 'Blog Administration')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+                    <div class="yui-g stdotcom">
+
+                    <h3>#adminResource('add.blog.user.text' 'Add blog user')</h3>
+                    <form name="add-blog-user" action="." method="post" accept-charset="UTF-8">
+                        <div style="display:none">
+                            <input type="hidden" name="action" value="add-blog-user">
+                            <input type="hidden" name="flavor" value="admin">
+                            <input type="hidden" name="plugins" value="edit-blogs">
+                        </div>
+                        <table>
+                            <tr>
+                                <td>#adminResource('blog.user.id.text' 'Blog ID')</td>
+                                <td><input type="text" size="15" name="blog-id"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">#adminResource('user.add.help.text' '')</td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.id.text' 'Preferred login ID')</td>
+                                <td><input type="text" size="15" name="blog-login-id"></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.name.text' 'Name')</td>
+                                <td><input type="text" size="15" name="blog-user-name"></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.password.text' 'Password')</td>
+                                <td><input type="password" size="15" name="blog-user-password"></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.password.check.text' 'Password (check)')</td>
+                                <td><input type="password" size="15" name="blog-user-password-check"></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('authorized.user.email.text' 'E-mail address')</td>
+                                <td><input type="text" size="25" name="blog-user-email"></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.blog.user.text' 'Add blog user')">
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    </div>
+
+                #set($confirmationText = "#adminResource('delete.blog.confirmation.text' '')")
+                #set($specificType = 'Blog')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
+                    <div class="yui-g stdotcom">
+                        <!-- Delete blog -->
+                        <h3>#adminResource('delete.blog.user.text' 'Delete blog user')</h3>
+                        <form name="delete-blog-user" action="." method="post" accept-charset="UTF-8">
+                            <div style="display:none">
+                                <input type="hidden" name="action" value="delete-blog-user">
+                                <input type="hidden" name="flavor" value="admin">
+                                <input type="hidden" name="plugins" value="edit-blogs">
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>#adminResource('blog.user.id.text' 'Blog user ID')</td>
+                                    <td>
+                                        <select name="blog-id">
+                                        #foreach ($blogID in $BLOJSOM_PLUGIN_EDIT_BLOGS)
+                                            <option value="$blogID">$blogID</option>
+                                        #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="submit" name="submit" value="#adminResource('delete.blog.user.text' 'Delete blog')" #OnClickDeletePrompt($specificType) >
+                                        <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="yui-b"></div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

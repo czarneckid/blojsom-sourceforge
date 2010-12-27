@@ -1,0 +1,24 @@
+K 10
+svn:ignore
+V 133
+*.jar
+*.jpg
+*.ipr
+*.iws
+*.iml
+*.DS_Store
+api
+archives
+blog
+config
+distro
+lib
+Agitar
+agitar
+Results
+testing
+build
+.classpath
+.project
+
+END

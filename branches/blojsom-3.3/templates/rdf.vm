@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name="generator" content="$BLOJSOM_VERSION" -->
+<rdf:RDF xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns="http://purl.org/rss/1.0/">
+
+	<channel rdf:about="$BLOJSOM_BLOG.getBlogURL()">
+		<title>#EscapedBlogName()</title>
+		<link>#BlogURL()/</link>
+		<description>#EscapedBlogDescription()</description>
+		<dc:publisher>#BlogOwner()</dc:publisher>
+		<dc:creator>#BlogOwnerEmail()</dc:creator>
+		<dc:date>$BLOJSOM_DATE_ISO8601</dc:date>
+		<dc:language>#BlogLanguage()</dc:language>
+
+        <items>
+        <rdf:Seq>
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+            #SimpleFriendlyPermalink($entry)
+            <rdf:li rdf:resource="$entryLink" />
+        #end
+        </rdf:Seq>
+        </items>
+    </channel>
+
+    #foreach ($entry in $BLOJSOM_ENTRIES)
+    #SimpleFriendlyPermalink($entry)
+    <item rdf:about="$entryLink">
+	    <title>$entry.getEscapedTitle()</title>
+	    <link>$entryLink</link>
+        <description>$entry.getEscapedDescription()</description>
+	    <dc:date>$entry.getISO8601Date()</dc:date>
+	    #if ($entry.allowsComments())
+            #XMLRPCLink($entry 'commentapi')
+            <wfw:comment>$xmlrpcLink</wfw:comment>
+            <wfw:commentRss>$entryLink?page=comments&amp;flavor=rss2</wfw:commentRss>
+        #end
+    </item>
+    #end
+
+</rdf:RDF>

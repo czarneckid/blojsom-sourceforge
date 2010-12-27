@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates
+END
+wml.vm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/wml.vm
+END
+atom.vm
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/atom.vm
+END
+mobile-xhtml.vm
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/mobile-xhtml.vm
+END
+atom.css
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/atom.css
+END
+rss.vm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/rss.vm
+END
+rsd.vm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/rsd.vm
+END
+rss2.vm
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/rss2.vm
+END
+rss-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/rss-comments.vm
+END
+trackback-failure.vm
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/trackback-failure.vm
+END
+rdf.vm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/rdf.vm
+END
+trackback-success.vm
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/trackback-success.vm
+END
+rss2-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/templates/rss2-comments.vm
+END

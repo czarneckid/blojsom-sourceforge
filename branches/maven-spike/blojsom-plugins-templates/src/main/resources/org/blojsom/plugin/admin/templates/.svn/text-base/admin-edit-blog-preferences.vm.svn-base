@@ -1,0 +1,69 @@
+#AdminPageTitle('blog.preferences.page.header' 'User Preferences')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b stdotcom">
+                    <h3>#adminResource('blog.preferences.page.header' '')</h3>
+                    <form name="edit-blog-preferences" action="." method="post" accept-charset="UTF-8">
+                        <div style="display:none">
+                            <input type="hidden" name="action" value="edit-blog-preferences">
+                            <input type="hidden" name="flavor" value="admin">
+                            <input type="hidden" name="plugins" value="edit-blog-preferences">
+                        </div>
+                        <table width="100%">
+                            <!-- Response preferences -->
+                            <tr>
+                                <th colspan="2">#adminResource('response.preferences.text' '')</th>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('display.response.text' '')</td>
+                                <td>
+                                    #set ($selectListName = "display-response-text")
+                                    #yesNoSelectList($selectListName $!BLOJSOM_USER_OBJECT.getMetaData().get("display-response-text"))
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+
+                            <!-- Write preferences -->
+                            <tr>
+                                <th colspan="2">#adminResource('write.preferences.text' '')</th>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('use.richtext.editor.text' '')</td>
+                                <td>
+                                    #set ($selectListName = "use-richtext-editor")
+                                    #yesNoSelectList($selectListName $!BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor"))
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('update.properties.text' '')">
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                 </div>
+            </div>
+            <div class="yui-b"></div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

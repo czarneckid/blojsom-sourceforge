@@ -1,0 +1,5 @@
+#
+# Authorization file used for blojsom XML-RPC support
+# format is <userid>=<password>
+#
+#admin=admin

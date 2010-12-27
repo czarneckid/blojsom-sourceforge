@@ -1,0 +1,65 @@
+/* -------------------------------------- */
+/* Mobile CSS v1                          */
+/* 2005-04-07                             */ 
+/* Adam Burt a.burt@rave.ac.uk            */
+/* -------------------------------------- */
+
+/* Body css starts here */
+
+body
+{
+background-color: #E6E6E6;
+}
+
+
+/* text css starts here */
+
+a 
+{
+color: #3399cc;
+}
+
+
+/* text css class starts here */
+
+
+b.heading
+{
+color: #003366;
+}
+
+small.date
+{
+color: #336699;
+}
+
+
+p.post-body
+{
+border: 1px #336699 solid;
+background: #ffffff;
+font-size: medium;
+padding: 8px;
+margin-top: 12px;
+margin-right: 2px;
+margin-left: 2px;
+}
+
+
+/* div tags starts here */
+
+#blog_title_box
+{
+margin-top: -7px;
+}
+
+#new_post_list
+{
+border: 1px #336699 solid;
+background: #ffffff;
+font-size: medium;
+padding: 8px;
+margin-top: 12px;
+margin-right: 2px;
+margin-left: 2px;
+}

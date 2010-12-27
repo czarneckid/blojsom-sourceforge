@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
+	<head>
+		#parse( "asual-head.vm" )
+	</head>
+	<body>
+		<div id="main">
+			<!-- Header -->
+			#parse( "asual-header.vm" )
+			<!-- Content -->
+			<div id="contentHeadLeft"><div id="contentHeadRight"><div id="contentHeadCenter"></div></div></div>
+			<div id="contentBodyLeft">
+				<div id="contentBodyRight">
+					<div id="contentBodyCenter">
+						<div id="content">
+							<!-- Entries -->
+							<div id="entries">
+								#set ( $entryDate = "" )
+								#set( $totalEntries = 0)
+								#foreach ($entry in $BLOJSOM_ENTRIES)
+								#parse( "asual-entry.vm" )
+
+								<p id="trackback">[<a href="$permalink?tb=y" title="Trackback">Trackback</a>]</p>
+								<div>
+									#foreach ($entryTrackback in $entry.getTrackbacks())
+										<div class="trackback">
+											<div class="info">Left by <span class="author"><a href="$entryTrackback.getUrl()">#if ($entryTrackback.getBlogName())$entryTrackback.getBlogName()#else$entryTrackback.getUrl()#end</a></span> at $entryTrackback.getDateAsFormat("EEE, d MMM h:mm a")</div>
+											#if ($entryTrackback.getExcerpt())<p class="post">#if($entryTrackback.getTitle())<strong>$entryTrackback.getTitle()</strong><br />#end$entryTrackback.getExcerpt()</p>#end
+
+										</div>
+									#end
+
+								</div>
+								#end
+
+							</div>
+							<div id="column">
+								#parse( "asual-column.vm" )
+							</div>
+						</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+				</div>
+			</div>
+			<div id="contentFootLeft"><div id="contentFootRight"><div id="contentFootCenter"></div></div></div>
+			<!-- Footer-->
+			#parse("asual-footer.vm")
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates
+END
+autumn-header.vm
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-header.vm
+END
+autumn-sidebar.vm
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-sidebar.vm
+END
+autumn-footer.vm
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-footer.vm
+END
+autumn-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-entry.vm
+END
+autumn-head.vm
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-head.vm
+END
+autumn.vm
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn.vm
+END
+autumn-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-comments.vm
+END
+autumn-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3074/branches/blojsom-2_29-final/blojsom-2.0/themes/autumn/templates/autumn-trackback.vm
+END

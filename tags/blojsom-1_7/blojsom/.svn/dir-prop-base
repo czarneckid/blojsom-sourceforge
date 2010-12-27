@@ -1,0 +1,16 @@
+K 10
+svn:ignore
+V 71
+*.jar
+*.jpg
+*.ipr
+*.iws
+*.DS_Store
+api
+archives
+blog
+config
+distro
+lib
+
+END

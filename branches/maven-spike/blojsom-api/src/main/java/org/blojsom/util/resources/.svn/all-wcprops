@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/util/resources
+END
+ResourceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/util/resources/ResourceManager.java
+END
+ResourceException.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/util/resources/ResourceException.java
+END
+package-info.html
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/util/resources/package-info.html
+END

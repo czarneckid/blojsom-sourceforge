@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/3751/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/technorati/templates
+END
+admin-technorati-tags.vm
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svnroot/blojsom/!svn/ver/3751/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/technorati/templates/admin-technorati-tags.vm
+END
+technorati-tag-link.vm
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/technorati/templates/technorati-tag-link.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/technorati/templates/package.html
+END

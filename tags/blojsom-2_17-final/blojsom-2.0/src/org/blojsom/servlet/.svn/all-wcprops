@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/2230/tags/blojsom-2_17-final/blojsom-2.0/src/org/blojsom/servlet
+END
+BlojsomBaseServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/2230/tags/blojsom-2_17-final/blojsom-2.0/src/org/blojsom/servlet/BlojsomBaseServlet.java
+END
+BlojsomServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/2230/tags/blojsom-2_17-final/blojsom-2.0/src/org/blojsom/servlet/BlojsomServlet.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/2230/tags/blojsom-2_17-final/blojsom-2.0/src/org/blojsom/servlet/package.html
+END

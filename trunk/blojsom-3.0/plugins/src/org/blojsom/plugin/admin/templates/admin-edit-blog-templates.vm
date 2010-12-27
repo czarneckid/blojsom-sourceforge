@@ -1,0 +1,146 @@
+#AdminPageTitle('templates.page.header' 'Templates')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                #set($confirmationText = "#adminResource('delete.template.confirmation.text' '')")
+                #set($specificType = 'Template')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
+                <div class="mainClm">
+                    <h3>#adminResource('templates.text' 'Templates') (<a href="#addblogtemplate">#adminResource('add.blog.template.text' '')</a> #adminResource('or.text' '') <a href="#modifydirectories">#adminResource('modify.template.directories.text' '')</a>)</h3>
+                    <table border=".5">
+                        <tr>
+                            <th>#adminResource('template.name.text' '')</th> <th colspan="2">#adminResource('actions.text' '')</th>
+                        </tr>
+                        #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_TEMPLATE_FILES)
+                        <tr>
+                            <td>$blogTemplate</td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-templates&action=edit-blog-template&blog-template=$blogTemplate">#adminResource('edit.text' '')</a></td>
+                            <td><a href="#BlogAdminURL()/?flavor=admin&plugins=edit-blog-templates&action=delete-blog-template&blog-template=$blogTemplate" #OnClickDeletePrompt($specificType)>#adminResource('delete.text' '')</a></td>
+                        </tr>
+                        #end
+                    </table>
+                </div>
+
+                <a name="addblogtemplate" />
+                <!-- Add blog template form -->
+                <div class="mainClm">
+                    <h3>#adminResource('add.blog.template.text' '')</h3>
+                    <table>
+                        <form name="edit-blog-template" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="add-blog-template"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-templates"/>
+                            <tr>
+                                <td>#adminResource('template.name.text' '')</td>
+                                <td><input type="text" size="25" name="blog-template"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.template.directory.text' '')</td>
+                                <td>
+                                    <select name="blog-template-directory">
+                                    #foreach ($directory in $BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES)
+                                        <option value="$directory">$directory</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.blog.template.text' '')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                <a name="modifydirectories" />
+                <!-- Add blog template directory form -->
+                <div class="mainClm">
+                    <h3>#adminResource('add.template.directory.text' '')</h3>
+                    <table>
+                        <form name="add-template-directory" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="add-template-directory"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-templates"/>
+                            <tr>
+                                <td>#adminResource('directory.to.add.text' '')</td>
+                                <td><input type="text" size="25" name="template-directory-to-add"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('parent.blog.template.directory.text' '')</td>
+                                <td>
+                                    <select name="blog-template-directory">
+                                    #foreach ($directory in $BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES)
+                                        <option value="$directory">$directory</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.template.directory.text' '')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                #set($confirmationText = "#adminResource('delete.template.directory.confirmation.text' '')")
+                #set($specificType = 'TemplateDirectory')
+                #DeleteConfirmationPrompt($specificType $confirmationText)
+
+                <!-- Delete blog template directory form -->
+                <div class="mainClm">
+                    <h3>#adminResource('delete.template.directory.text' '')</h3>
+                    <p>#adminResource('directory.delete.help.text' '')</p>
+                    <table>
+                        <form name="delete-template-directory" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="delete-template-directory"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-templates"/>
+                            <tr>
+                                <td>#adminResource('blog.template.directory.text' '')</td>
+                                <td>
+                                    <select name="blog-template-directory">
+                                        <option value="">-- Select a directory --</option>
+                                    #foreach ($directory in $BLOJSOM_PLUGIN_EDIT_BLOG_TEMPLATES_DIRECTORIES)
+                                        #if ($directory.getName().length() > 0)
+                                        <option value="$directory">$directory</option>
+                                        #end
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('delete.template.directory.text' '')" #OnClickDeletePrompt($specificType) />
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

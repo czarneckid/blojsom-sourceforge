@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event
+END
+PingbackEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackEvent.java
+END
+PingbackApprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackApprovedEvent.java
+END
+PingbackAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackAddedEvent.java
+END
+PingbackUnapprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackUnapprovedEvent.java
+END
+PingbackMarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackMarkedSpamEvent.java
+END
+PingbackDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackDeletedEvent.java
+END
+PingbackUnmarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackUnmarkedSpamEvent.java
+END
+PingbackResponseSubmissionEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/PingbackResponseSubmissionEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/pingback/event/package.html
+END

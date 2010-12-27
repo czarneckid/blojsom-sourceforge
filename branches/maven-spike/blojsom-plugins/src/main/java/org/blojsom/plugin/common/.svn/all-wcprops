@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common
+END
+ConvertLineBreaksPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/ConvertLineBreaksPlugin.java
+END
+StringUtilitiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/StringUtilitiesPlugin.java
+END
+CollectionUtilitiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/CollectionUtilitiesPlugin.java
+END
+CountEntriesForCategoryPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/CountEntriesForCategoryPlugin.java
+END
+RSSEnclosurePlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/RSSEnclosurePlugin.java
+END
+FileAttachmentPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/FileAttachmentPlugin.java
+END
+ResponseConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/ResponseConstants.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/common/package.html
+END

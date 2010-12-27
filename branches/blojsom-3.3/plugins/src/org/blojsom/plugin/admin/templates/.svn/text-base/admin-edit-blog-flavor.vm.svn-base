@@ -1,0 +1,64 @@
+#AdminPageTitle('edit.flavors.page.header' 'Edit Flavors')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <!-- Modify blog flavor form -->
+                <div class="mainClm">
+                    <h3>#adminResource('modify.blog.flavor.text' 'Modify blog flavor')</h3>
+                    <table>
+                        <form name="modify-blog-flavor" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="modify-blog-flavor"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-flavors"/>
+                            <tr>
+                                <td>#adminResource('flavor.name.text' 'Flavor name')</td>
+                                <td>
+                                    <input type="text" size="50" name="flavor-name" value="$FLAVOR_NAME_EDIT"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('flavor.mime.type.text' 'Flavor MIME type (defaults to text/html if not specified)')</td>
+                                <td><input type="text" size="50" name="flavor-mime-type" value="$FLAVOR_TYPE_EDIT"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('flavor.character.set.text' 'Flavor character set (defaults to UTF-8 if not specified)')</td>
+                                <td><input type="text" size="50" name="flavor-character-set" value="$FLAVOR_CHARACTER_SET_EDIT"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.template.for.flavor.text' 'Blog template for flavor')</td>
+                                <td>
+                                    <select name="blog-template">
+                                    #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES)
+                                        <option value="$blogTemplate" #if ($FLAVOR_TEMPLATE_EDIT.equals($blogTemplate.getName()))SELECTED#end>$blogTemplate</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('modify.blog.flavor.text' '')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

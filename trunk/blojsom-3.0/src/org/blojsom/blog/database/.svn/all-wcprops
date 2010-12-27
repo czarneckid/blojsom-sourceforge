@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database
+END
+DatabaseCategory.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabaseCategory.java
+END
+DatabasePingback.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabasePingback.java
+END
+DatabaseUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabaseUser.java
+END
+DatabaseEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabaseEntry.java
+END
+DatabaseComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabaseComment.java
+END
+DatabaseBlog.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabaseBlog.java
+END
+DatabaseTrackback.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/blog/database/DatabaseTrackback.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/3272/trunk/blojsom-3.0/src/org/blojsom/blog/database/package.html
+END

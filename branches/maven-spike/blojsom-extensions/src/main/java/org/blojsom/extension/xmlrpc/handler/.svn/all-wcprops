@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3829/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler
+END
+MovableTypeAPIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svnroot/blojsom/!svn/ver/3726/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler/MovableTypeAPIHandler.java
+END
+APIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/3726/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler/APIHandler.java
+END
+BloggerAPIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3829/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler/BloggerAPIHandler.java
+END
+PingbackHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/3726/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler/PingbackHandler.java
+END
+MetaWeblogAPIHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svnroot/blojsom/!svn/ver/3726/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler/MetaWeblogAPIHandler.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3726/branches/maven-spike/blojsom-extensions/src/main/java/org/blojsom/extension/xmlrpc/handler/package.html
+END

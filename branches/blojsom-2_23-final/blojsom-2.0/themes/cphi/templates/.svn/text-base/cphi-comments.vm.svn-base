@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<title>$BLOJSOM_BLOG.getBlogName() (Comments)</title>
+		
+		#parse("cphi-header1.inc.vm")
+		
+		<!-- Enable Comment Preview -->
+		<script type="text/javascript">
+		function reloadPreviewDiv() {
+			var previewString = document.getElementById('commentText').value;
+			document.getElementById('commentPreview').innerHTML = previewString;
+		}
+		</script>
+
+	</head>
+
+	<body> 
+		<div id="wrapper"> 
+			<div id="header"> 
+				<h1>$BLOJSOM_BLOG.getBlogName()<br />
+				<span>$BLOJSOM_BLOG.getBlogDescription()</span></h1>
+			</div>
+			
+			<!-- SITE NAVIGATION -->
+			#parse("cphi-sitenav.inc.vm")
+			
+			<!-- START CONTENT -->
+			<div id="content"> 
+				<div id="main">
+					
+					<!-- ENTRIES -->
+					#set( $totalEntries = 0)
+					
+					#foreach ($entry in $BLOJSOM_ENTRIES)
+						<link rel="service.comment" type="text/xml" href="$BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()" title="Comment Interface"/>
+						#parse("cphi-blog-entries.inc.vm")
+						
+						<!-- COMMENTS -->						
+						#if ($entry.getNumComments() > 0)
+							<h3>Comments on this entry:</h3>
+							#foreach ($entryComment in $entry.getComments())
+								<div id="comment">
+									<p>$entryComment.getComment()</p>
+									<p>
+									<span class="datestamp">$entryComment.getCommentDate()</span>&nbsp;
+									<span class="person"> 
+										#if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) 
+											<a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> 
+										#else $entryComment.getAuthor() 
+										#end -
+											<a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a></span>
+									
+									</p>
+								</div>
+							#end
+						#else
+							<p>No comments exist.</p>
+						#end
+						
+						<p>&nbsp;</p>
+						
+						#set( $totalEntries = $totalEntries + 1)
+						
+						<h3>Leave a comment</h3>
+						#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+							<table>
+								<form name="commentform" method="post" action=".">
+									<input type="hidden" name="comment" value="y"/>
+									<input type="hidden" name="page" value="comments"/>
+									<input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()"/><br />
+									<input type="hidden" name="permalink" value="$entry.getPermalink()"/> <br />
+									<tr>
+										<td><span class="required">*</span>Author:</td>
+										<td><input type="text" name="author" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end"/></td>
+									</tr>
+									<tr>
+										<td>E-mail:</td>
+										<td><input type="text" name="authorEmail" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end"/></td>
+									</tr>
+									<tr>
+										<td>URL: </td>
+										<td><input type="text" name="authorURL" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end"/></td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span>Comment:</td>
+										<td><textarea name="commentText" id="commentText" value="" rows="5" cols="40" onKeyUp="reloadPreviewDiv();"></textarea></td>
+									</tr>
+									<tr>
+										<td>Remember me?</td> 
+										<td><input type="checkbox" name="remember" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)CHECKED#end/></td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<input type="submit" name="submit" value="Submit Comment"/>
+											<input type="reset" name="reset" value="Reset"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p>&nbsp;</p>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2"><h3>Live Comment Preview</h3></td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div id="commentPreview">
+											</div>
+										</td>
+									</tr>
+								</form>
+							</table>
+						#end
+						
+						#parse("cphi-autotrkbck.inc.vm")
+					#end
+				</div> 
+				
+				<!-- SIDEBAR LINKS -->
+				#parse("cphi-blog-sidebar.inc.vm")
+				
+			</div> 
+			<!-- END CONTENT -->
+			
+			<!-- FOOTER -->
+			#parse("cphi-footer.inc.vm")
+		</div> 
+	</body>
+</html>

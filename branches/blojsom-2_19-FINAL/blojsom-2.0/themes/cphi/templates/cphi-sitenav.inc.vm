@@ -1,0 +1,9 @@
+			<div id="nav" class="clearfix"> 
+				<ul> 
+					<li><a href="$BLOJSOM_BLOG.getBlogURL()" title="$BLOJSOM_BLOG.getBlogDescription()">Home</a></li>
+					<!-- Add other links here for which you've developed .vm templates.  See cphi-html.vm for more detail. -->
+				</ul> 
+				<div id="search">
+				  <form action="." method="post"><fieldset id="s">Search:&nbsp;<input size="15" type="text" name="query" value="" />&nbsp;<input type="submit" value="Go" /></fieldset></form>
+				</div> 
+			</div> 

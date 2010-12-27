@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/blojsom/!svn/ver/3087/trunk/blojsom-2.0/src/org/blojsom/filter
+END
+SimpleCompressionFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/filter/SimpleCompressionFilter.java
+END
+PageFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/3087/trunk/blojsom-2.0/src/org/blojsom/filter/PageFilter.java
+END
+GZIPResponseStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/filter/GZIPResponseStream.java
+END
+CompressionFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/filter/CompressionFilter.java
+END
+PermalinkFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/filter/PermalinkFilter.java
+END
+FeedFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/3065/trunk/blojsom-2.0/src/org/blojsom/filter/FeedFilter.java
+END
+GZIPResponseWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/filter/GZIPResponseWrapper.java
+END
+CharArrayWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/filter/CharArrayWrapper.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/1476/trunk/blojsom-2.0/src/org/blojsom/filter/package.html
+END

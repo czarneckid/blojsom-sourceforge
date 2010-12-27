@@ -1,0 +1,43 @@
+#AdminPageTitle('login.header' 'Login')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t7">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+        <div id="bd">
+            <div class="yui-g login">
+                <h3>#adminResource('login.header' 'Login')</h3>
+                <form name="blojsom-login" action="#BlogAdminURL()/?flavor=admin" method="post">
+                <div>
+                    <ul>
+                        <li><label for="username">#adminResource('username.text' 'Username')</label><input id="username" name="username" type="text" size="25"></li>
+                        <li><label for="password">#adminResource('password.text' 'Password')</label><input id="password" name="password" type="password" size="25"></li>
+                    </ul>
+                    <p>
+                        <input id="submit-login" type="submit" name="login" value="#adminResource('login.text' 'Login')">&nbsp;<span class="metalink">or <a href="#BlogURL()/" title="Back to $BLOJSOM_BLOG.getBlogName()">Cancel</a></span>
+                    </p>
+                    <p class="metalink">
+                        <a href="#BlogAdminURL()/?flavor=admin&amp;plugins=forgotten-password&amp;action=page">#adminResource('forget.your.password.text' 'Forget your password?')</a>
+                    </p>
+                </div>
+                </form>
+
+            </div>
+        </div>
+        <div id="ft">
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function() {
+            Y.blojsom.un = Dom.get("username") || null;
+            if(Y.blojsom.un !== null) {
+                Y.blojsom.un.focus();
+            }
+        })();
+    </script>
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

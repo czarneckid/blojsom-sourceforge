@@ -1,0 +1,6 @@
+
+			<div id="footer">
+				<p id="copyright">&copy; $BLOJSOM_BLOG.getBlogName()</p>
+				<p id="info">Theme by <a href="http://www.asual.com">Asual</a>. Valid <a href="http://validator.w3.org/check/referer">XHTML</a> &amp; <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>.</p>
+			</div>
+

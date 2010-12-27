@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/authorization
+END
+AuthorizationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/authorization/AuthorizationException.java
+END
+package-info.html
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/authorization/package-info.html
+END
+AuthorizationProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/authorization/AuthorizationProvider.java
+END

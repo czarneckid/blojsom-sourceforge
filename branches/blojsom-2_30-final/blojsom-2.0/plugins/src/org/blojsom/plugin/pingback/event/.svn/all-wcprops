@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3134/branches/blojsom-2_30-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/event
+END
+PingbackEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svnroot/blojsom/!svn/ver/3134/branches/blojsom-2_30-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackEvent.java
+END
+PingbackApprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/3134/branches/blojsom-2_30-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackApprovedEvent.java
+END
+PingbackAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/3134/branches/blojsom-2_30-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackAddedEvent.java
+END
+PingbackDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/3134/branches/blojsom-2_30-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackDeletedEvent.java
+END
+PingbackResponseSubmissionEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svnroot/blojsom/!svn/ver/3134/branches/blojsom-2_30-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackResponseSubmissionEvent.java
+END

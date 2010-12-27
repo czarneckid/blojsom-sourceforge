@@ -1,0 +1,35 @@
+
+							#friendlyPermalink($entry)
+                            #set($permalink = $entryLink)
+
+							<div class="entry">
+								#if($entryDate != $entry.getDateAsFormat('dd MM yyyy'))<h3>$entry.getDateAsFormat('EEEE, d MMMM yyyy')</h3>
+								#set($entryDate = $entry.getDateAsFormat('dd MM yyyy'))#end
+
+								<h4><a href="$permalink" title="Permalink of &quot;$entry.getTitle()&quot;">$entry.getTitle()</a></h4>
+								#if($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY) #friendlyPermalink($BLOJSOM_PERMALINK_PREVIOUS_ENTRY)<a href="$entryLink">&laquo;&nbsp;$!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">Main</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | #friendlyPermalink($BLOJSOM_PERMALINK_NEXT_ENTRY) <a href="$entryLink">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle()&nbsp;&raquo;</a>#end#end
+
+								<div class="post">
+									$entry.getDescription()
+
+								</div>
+								<div class="info">
+									#if($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))Posted by <span class="author">$entry.getMetaData().get("blog-entry-author")</span> at $entry.getDateAsFormat("h:mm a") in <a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#if($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end</a>#end
+
+								</div>
+								<div class="links">
+									#if($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))<span class="commentslink"><a href="$permalink?page=comments" title="Click here to see the comments on &quot;$entry.getTitle()&quot;"><span></span>Comments ($entry.getNumComments())</a></span>#end #if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))<span class="trackbackslink"><a href="$permalink?page=trackback" title="Click here to see the trackbacks of &quot;$entry.getTitle()&quot;"><span></span>Trackbacks ($entry.getNumTrackbacks())</a></span>#end
+
+								</div>
+								<!-- Trackback Auto Discovery -->
+								#set( $totalEntries = $totalEntries + 1)
+								#if ($BLOJSOM_PERMALINK)
+									#set( $blogDescription = $entry.getEscapedDescription() )
+									#if($blogDescription.length() > 255 )
+										#set( $ellipses = "..." )
+										#set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
+									#end
+								#end
+
+							</div>
+							<div class="clear"></div>

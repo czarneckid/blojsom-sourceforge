@@ -1,0 +1,37 @@
+#AdminPageTitle('console.header' '')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="header">
+            <h2>Welcome to the <a href="http://blojsom.sourceforge.net">blojsom</a> administration console.</h2>
+        </div>
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <div class="mainClm">
+                    #adminResource('administration.welcome.message' '')
+                </div>
+            </div>
+
+            <div id="sidebar">
+                <h4>#adminResource('support.text' '')</h4>
+
+                <p>#adminResource('blojsom.users.help.text' '')</p>
+                <p>#adminResource('blojsom.developers.help.text' '')</p>
+                <p>#adminResource('jira.help.text' '')</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

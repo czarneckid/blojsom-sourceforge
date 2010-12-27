@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default
+END
+blacklist.filters
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/blacklist.filters
+END
+macros.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/macros.properties
+END
+showmemore.properties
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/showmemore.properties
+END
+flavor.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/flavor.properties
+END
+referer.properties
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/referer.properties
+END
+plugin.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/plugin.properties
+END
+authorization.properties
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/authorization.properties
+END
+emoticons.properties
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/emoticons.properties
+END
+blog.properties
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/1441/branches/blojsom-2_02-final/blojsom-2.0/war/WEB-INF/default/blog.properties
+END

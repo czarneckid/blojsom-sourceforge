@@ -1,0 +1,84 @@
+#AdminPageTitle('theme.switcher.settings.text' 'Theme Switcher Settings')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+                    <!-- Switch theme -->
+                    <div class="yui-g stdotcom">
+                        <h3>#adminResource('switch.theme.text' 'Switch theme')</h3>
+                        <form name="switch-theme" action="." method="post" accept-charset="UTF-8">
+                            <div style="display:none">
+                                <input type="hidden" name="action" value="switch-theme">
+                                <input type="hidden" name="flavor" value="admin">
+                                <input type="hidden" name="plugins" value="theme-switcher">
+                            </div>
+                            <table width="100%">
+                                <tr>
+                                    <td>#adminResource('current.html.theme' 'Current html theme')</td>
+                                    <td><strong>$CURRENT_HTML_THEME</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>#adminResource('available.themes.text' 'Available themes')</td>
+                                    <td>
+                                        #if($THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES.size() > 0)
+                                        <select name="theme">
+                                        #foreach ($theme in $THEME_SWITCHER_PLUGIN_AVAILABLE_THEMES)
+                                            #set ($selected="")
+                                            #set ($mark="")
+                                            #if ($CURRENT_HTML_THEME.equals($theme))
+                                                #set ($selected="SELECTED")
+                                                #set ($mark=" (current)")
+                                            #end
+                                            <option value="$theme" $selected>$theme $mark</option>
+                                        #end
+                                        </select>
+                                        #else
+                                        <p>No additional themes available.</p>
+                                        #end
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#adminResource('modify.theme.for.flavor.text' 'Modify theme for flavor?')</td>
+                                    <td>
+                                        <select name="flavor-name">
+                                        #foreach ($flavor in $THEME_SWITCHER_PLUGIN_FLAVORS.keySet())
+                                            #if (!$flavor.equals("admin"))
+                                            <option value="$flavor"#if ($THEME_SWITCHER_PLUGIN_DEFAULT_FLAVOR.equals($flavor)) SELECTED#end>$flavor</option>
+                                            #end
+                                        #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="submit" name="submit" value="#adminResource('switch.theme.text' 'Switch theme')">
+                                        <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="yui-g stdotcom">
+                        <!-- Template Additions -->
+                        #DisplayTemplateAdditions()
+                    </div>
+                </div>
+            </div>
+            <div class="yui-b"></div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

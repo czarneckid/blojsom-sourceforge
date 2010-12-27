@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/comment
+END
+CommentPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/comment/CommentPlugin.java
+END
+CommentModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/comment/CommentModerationPlugin.java
+END
+RecentCommentsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/comment/RecentCommentsPlugin.java
+END
+MathCommentAuthenticationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/comment/MathCommentAuthenticationPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/comment/package.html
+END

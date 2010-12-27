@@ -1,0 +1,58 @@
+#AdminPageTitle('configure.plugin.mappings.text' '')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+                <div class="mainClm">
+                    <h3>#adminResource('configure.plugin.mappings.text' '')</h3>
+                    <p>#adminResource('plugins.help.text' '')</p>
+                    <table border=".5">
+                        <tr>
+                            <th align="center">#adminResource('flavor.text' '')</th>
+                            <th align="center">#adminResource('plugins.text' '')</th>
+                        </tr>
+                        <form name="edit-blog-plugins" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="modify-plugin-chains"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-plugins"/>
+                                #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP.keySet())
+                            <tr>
+                                <td>#if ($flavor.equals("default")) <strong>$flavor</strong> #else $flavor #end</td>
+                                <td>
+                                    <input name="${flavor}.blojsom-plugin-chain" type="text" size="80" value="$BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_MAP.get($flavor)"/>
+                                </td>
+                            </tr>
+                                #end
+                            <tr>
+                                <td></td>
+                                <td colspan="2">
+                                    <input type="submit" name="submit" value="#adminResource('submit.text' '')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' '')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+
+            <div id="sidebar">
+                <h4>#adminResource('available.plugins.text' '')</h4>
+                #foreach ($plugin in $BLOJSOM_PLUGIN_EDIT_BLOG_PLUGINS_AVAILABLE_PLUGINS.keySet())
+                   <a href="javascript:;" title="$plugin">$plugin&nbsp;</a><br/>
+                #end
+            </div>
+        </div>
+    </div>
+</body>
+
+#AdministrationFooter()

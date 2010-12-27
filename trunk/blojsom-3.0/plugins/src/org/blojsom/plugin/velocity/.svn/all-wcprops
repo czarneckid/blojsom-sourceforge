@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/velocity
+END
+page-macros.vm
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/3699/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/velocity/page-macros.vm
+END
+StandaloneVelocityPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/velocity/StandaloneVelocityPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3135/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/velocity/package.html
+END

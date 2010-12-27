@@ -1,0 +1,80 @@
+#AdminPageTitle('update.macro.expansion.page.header' 'Update Macro Expansion Plugin Configuration')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+ 
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <!-- Add macro form -->
+                <div class="mainClm">
+                    <h3>#adminResource('add.macro.expansion.text' 'Add macro expansion')</h3>
+                    <table>
+                        <form name="add-macro-expansion-settings" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="add-macro"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="macro-expansion-admin"/>
+                            <tr>
+                                <td>#adminResource('macro.short.name.text' 'Macro short name')</td>
+                                <td><input type="text" size="30" name="macro-short-name"/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('macro.expansion.text' 'Macro expansion')</td>
+                                <td><input type="text" size="60" name="macro-expansion"/></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.macro.text' 'Add macro expansion')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                <!-- Delete selected macros form -->
+                <div class="mainClm">
+                    <h3>#adminResource('delete.macro.expansion.text' 'Delete macros (multiple selection allowed)')</h3>
+                    <table>
+                        <form name="delete-macro-expansion-settings" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="delete-selected-macros"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="macro-expansion-admin"/>
+                            <tr>
+                                <td>#adminResource('macros.text' 'Macros')</td>
+                                <td>
+                                    <select name="macros" size="5" multiple>
+                                        #if ($BLOJSOM_PLUGIN_EDIT_MACRO_EXPANSION_MACROS)
+                                            #foreach ($macro in $BLOJSOM_PLUGIN_EDIT_MACRO_EXPANSION_MACROS.keySet())
+                                            <option value="$macro">$macro ($BLOJSOM_PLUGIN_EDIT_MACRO_EXPANSION_MACROS.get($macro))</option>
+                                            #end
+                                        #end
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('delete.selected.macros.text' 'Delete selected macros')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#AdministrationFooter()

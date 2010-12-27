@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+  "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Welcome</title>
+        <link rel="stylesheet" href="#Resource('mobile-xhtml.css')" type="text/css"/>
+    </head>
+
+ <body>
+   <!-- TOP of page -->
+
+   <!-- Page header -->
+    <div id="blog_name">
+      <p><a id="backtotop"> </a>
+        <b class="blog">#BlogName()</b><br/>
+        <small>#BlogDescription()</small><br/>
+      </p>
+    </div>
+    <div id="blog_title_box">
+
+    <!-- Search form -->
+        <form method="post" action="#BlogURL()/?flavor=$BLOJSOM_REQUESTED_FLAVOR">
+            <p>
+            <label id="searchlabel" for="searchfield"><small><b>Search:</b></small></label>
+            <input id="searchfield" type="text" name="query" size="10" value="" />
+            <input type="submit" value="Search"/><br/>
+            <br/>
+            </p>
+        </form>
+    <!-- End Search form -->
+
+      <p>
+         <img  src="#Resource('mobile-xhtml-post.png')" alt="Post icon" /> To see the list of new posts to the blog, or to see search results - <a href="#new_post">click here</a>. <br/>
+         <br/>
+         <img  src="#Resource('mobile-xhtml-folder.png')" alt="Folder icon" /> To see the list of what categories are on this blog - <a href="#categories">click here</a>. <br/><br/>
+         <a href="http://blojsom.sf.net"><img  src="#Resource('mobile-xhtml-poweredby.jpg')" alt="Powered by blojsom" /></a><br/>
+         <br/>
+         <br/>
+      </p>
+   </div>
+
+
+   <!-- List of new posts list -->
+   <div id="new_post_list">
+      <p class="center">
+        <a id="new_post"></a><b>Latest posts &amp; <br/> search results:</b>
+      </p>
+        #set ($counter = 0)
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+      <p>
+        <img  src="#Resource('mobile-xhtml-post.png')" alt="Post icon" /> <a href="#post$counter">$entry.getTitle()</a>
+      </p>
+        #set ($counter = $counter + 1)
+        #end
+   </div>
+
+
+   <!-- List of all Categories -->
+   <div id="categories_list">
+      <p class="center">
+        <b>Categories:</b><a id="categories"></a>
+      </p>
+      #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+      <p>
+        <img  src="#Resource('mobile-xhtml-folder.png')" alt="Folder icon" /> <a href="#BlogURL()$blogCategory.getName()/?flavor=xhtml">#CategoryName($blogCategory)</a>
+     </p>
+        #end
+    </div>
+
+
+   <!-- Posts in full -->
+      #set ($totalEntries = 0)
+      #foreach ($entry in $BLOJSOM_ENTRIES)
+      <p class="post-boody">
+        <a id="post$totalEntries"></a><b class="heading">$entry.getTitle()</b> <img  src="#Resource('mobile-xhtml-post.png')" alt="Post icon" /><br/>
+      <small class="date">Posted on - $entry.getDate()</small><br/>
+        $entry.getDescription()</p>
+     <p class ="center">
+       <b><a href="#backtotop">Back to blog</a></b>
+     </p>
+       #set ($totalEntries = $totalEntries + 1)
+       #end
+
+
+ </body>
+</html>

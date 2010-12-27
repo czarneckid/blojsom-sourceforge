@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<!-- name="generator" content="blojsom v1.9.2" -->
+<rss version="0.92">
+    <channel>
+        <title>$BLOJSOM_BLOG.getBlogName()</title>
+        <link>$BLOJSOM_BLOG.getBlogURL()</link>
+        <description>$BLOJSOM_BLOG.getBlogDescription()</description>
+        <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        <item>
+            <title>$entry.getEscapedTitle()</title>
+            <link>$entry.getEscapedLink()</link>
+            <description>$entry.getEscapedDescription()</description>
+	        <wfw:comment xmlns:wfw="http://wellformedweb.org/CommentAPI/">
+              $BLOJSOM_BLOG.getBlogBaseURL()/commentapi/$entry.getId()
+            </wfw:comment>
+        </item>
+        #end
+    </channel>
+</rss>

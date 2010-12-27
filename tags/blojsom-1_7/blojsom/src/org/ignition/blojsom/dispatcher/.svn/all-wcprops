@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/652/tags/blojsom-1_7/blojsom/src/org/ignition/blojsom/dispatcher
+END
+GenericDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/652/tags/blojsom-1_7/blojsom/src/org/ignition/blojsom/dispatcher/GenericDispatcher.java
+END
+JSPDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/652/tags/blojsom-1_7/blojsom/src/org/ignition/blojsom/dispatcher/JSPDispatcher.java
+END
+VelocityDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/652/tags/blojsom-1_7/blojsom/src/org/ignition/blojsom/dispatcher/VelocityDispatcher.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/652/tags/blojsom-1_7/blojsom/src/org/ignition/blojsom/dispatcher/package.html
+END

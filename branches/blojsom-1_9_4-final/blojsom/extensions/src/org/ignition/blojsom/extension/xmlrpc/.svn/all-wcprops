@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/1176/branches/blojsom-1_9_4-final/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc
+END
+BlojsomXMLRPCServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/1176/branches/blojsom-1_9_4-final/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/BlojsomXMLRPCServlet.java
+END
+BlojsomXMLRPCConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svnroot/blojsom/!svn/ver/1176/branches/blojsom-1_9_4-final/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/BlojsomXMLRPCConstants.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/1176/branches/blojsom-1_9_4-final/blojsom/extensions/src/org/ignition/blojsom/extension/xmlrpc/package.html
+END

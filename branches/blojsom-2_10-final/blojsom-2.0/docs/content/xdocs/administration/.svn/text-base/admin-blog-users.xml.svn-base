@@ -1,0 +1,19 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+<document>
+    <header>
+        <title>Users Administation Plugin</title>
+    </header>
+
+    <body>
+        <section>
+            <title>Description</title>
+            <p>
+                 The Users Administration plugin allows you to add and delete new blog users dynamically from your
+                 installation of blojsom.
+            </p>
+        </section>
+        
+    </body>
+</document>
+

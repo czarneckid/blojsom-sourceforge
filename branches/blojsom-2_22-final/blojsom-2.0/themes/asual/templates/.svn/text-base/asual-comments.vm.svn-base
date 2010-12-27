@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="#BlogLanguage()">
+	<head>
+		#parse( "asual-head.vm" )
+		<script type="text/javascript">
+			function reloadPreviewDiv() {
+				var previewString = document.getElementById("commentText").value;
+				document.getElementById("commentPreview").innerHTML = previewString;
+			}
+		</script>
+	</head>
+	<body>
+		<div id="main">
+			<!-- Header -->
+			#parse( "asual-header.vm" )
+			<!-- Content -->
+			<div id="content">
+				<div id="chead"></div>
+				<div id="cbody">
+					#parse( "asual-nav.vm" )
+					<!-- Entries -->
+					<div id="entries">
+					#set( $totalEntries = 0)
+					#foreach ($entry in $BLOJSOM_ENTRIES)
+						#parse( "asual-entry.vm" )
+						<div id="comments">
+							#if ($entry.getComments())<h3>Comments on this entry:</h3>#end
+							#foreach ($entryComment in $entry.getComments())
+
+								<div class="comment">
+									<p class="blue">
+										Left on $entryComment.getDateAsFormat('EEE, d MMM yyyy HH:mm') by #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end #if ($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0) (<a href="$entryComment.getAuthorURL()">$entryComment.getAuthorURL()</a>) #end
+									</p>
+									<p>
+										$entryComment.getComment()
+									</p>
+								</div>
+
+							#end
+
+                            #CommentsAllowed($entry)
+							#if ($commentsAllowed)
+                                #CommentFormWithPreview($entry)
+                            #end
+					</div>
+					#end
+
+					</div>
+					<div id="column">
+						#parse( "asual-column.vm" )
+					</div>
+				</div>
+				<div id="cfoot"></div>
+			</div>
+			<!-- Footer -->
+			#parse( "asual-footer.vm" )
+		</div>
+	</body>
+</html>
+

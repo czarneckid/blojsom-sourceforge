@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svnroot/blojsom/!svn/ver/4/tags/blojsom_1_0/blojsom/war/WEB-INF/lib
+END
+commons-collections-2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/4/tags/blojsom_1_0/blojsom/war/WEB-INF/lib/commons-collections-2.1.jar
+END
+commons-logging-1.0.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/4/tags/blojsom_1_0/blojsom/war/WEB-INF/lib/commons-logging-1.0.2.jar
+END
+xerces-1.4.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/4/tags/blojsom_1_0/blojsom/war/WEB-INF/lib/xerces-1.4.4.jar
+END
+velocity-1.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/4/tags/blojsom_1_0/blojsom/war/WEB-INF/lib/velocity-1.3.jar
+END
+log4j-1.2.7.jar
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/4/tags/blojsom_1_0/blojsom/war/WEB-INF/lib/log4j-1.2.7.jar
+END

@@ -1,0 +1,40 @@
+#AdminPageTitle('console.header' '')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b admin">
+                    <div class="yui-g">
+                        <h2>Welcome to the <a href="http://blojsom.sourceforge.net">blojsom</a> administration console.</h2>
+                    </div>
+                    #DisplayTemplateAdditions()
+                </div>
+            </div>
+
+            <div class="yui-b">
+                <div id="sidebar">
+                <h4>#adminResource('support.text' '')</h4>
+                <p>#adminResource('blojsom.users.help.text' '')</p>
+                <p>#adminResource('blojsom.developers.help.text' '')</p>
+                <p>#adminResource('jira.help.text' '')</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="ft">
+
+        </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

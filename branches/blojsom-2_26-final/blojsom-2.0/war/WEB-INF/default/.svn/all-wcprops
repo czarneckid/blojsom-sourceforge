@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default
+END
+blacklist.filters
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/blacklist.filters
+END
+macros.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/macros.properties
+END
+showmemore.properties
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/showmemore.properties
+END
+flavor.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/flavor.properties
+END
+referer.properties
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/referer.properties
+END
+permissions.properties
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/permissions.properties
+END
+moblog-authorization.properties
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/moblog-authorization.properties
+END
+plugin.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/plugin.properties
+END
+crosspost.properties
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/crosspost.properties
+END
+moblog.properties
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/moblog.properties
+END
+authorization.properties
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/authorization.properties
+END
+emoticons.properties
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/emoticons.properties
+END
+blog.properties
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/war/WEB-INF/default/blog.properties
+END

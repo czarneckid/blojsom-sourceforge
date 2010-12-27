@@ -1,0 +1,41 @@
+#AdminPageTitle('user.properties.page.header' 'Properties')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <!-- Current user properties -->
+                <div class="mainClm">
+                    <h3>#adminResource('current.user.properties.text' 'Current user properties')</h3>
+
+                    #foreach ($blogUserID in $BLOJSOM_PLUGIN_VIEW_USER_PROPERTIES_USER_MAP.keySet())
+                    #set ($propertyList = $BLOJSOM_PLUGIN_VIEW_USER_PROPERTIES_USER_MAP.get($blogUserID))
+                    <table border=".5">
+                        <tr><td>$blogUserID</td>
+                        	<td>
+                        		<table border="0">
+		                        	#foreach ($key in $propertyList.keySet())
+                        			<tr><td>$key:</td><td>$propertyList.get($key)</td></tr>	
+		                        	#end
+                        		</table>                        		
+                        	</td>
+                    	</tr>
+                    </table>
+                	#end
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

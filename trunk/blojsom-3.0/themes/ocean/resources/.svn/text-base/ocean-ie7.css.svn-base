@@ -1,0 +1,10 @@
+#content {
+	height: auto;
+	padding-bottom: 300px;
+}
+#contentBodyLeft {
+	background-color: #D5DEED;
+}
+#contentBodyCenter {
+	background: none;
+}

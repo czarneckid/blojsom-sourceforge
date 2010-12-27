@@ -1,0 +1,5 @@
+			<div id="footer"> 
+				<p>&copy;2004 <a href="mailto:$BLOJSOM_BLOG.getBlogOwnerEmail()">$BLOJSOM_BLOG.getBlogOwner()</a> &#8226; Validate <a href="http://validator.w3.org/check/referer">XHTML</a>, <a href="http://jigsaw.w3.org/css-validator/validator?uri=$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/cphi.css">CSS</a>, <a href="http://bobby.watchfire.com/bobby/bobbyServlet?URL=$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()&amp;output=Submit&amp;gl=sec508&amp;test=#bobbyReportText">508</a> &#8226; Syndication <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom">Atom</a>, <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss">RSS</a>, 
+			<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2">RSS2</a>, 
+			<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf">RDF</a> &#8226; <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin" title="For site administrator's use only!">Admin</a></p>
+			</div> 

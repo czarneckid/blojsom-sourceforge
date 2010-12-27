@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- The Basics -->
+    <groupId>${parent.groupId}</groupId>
+    <artifactId>blojsom-api</artifactId>
+    <version>${parent.version}</version>
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <parent>
+        <groupId>org.blojsom</groupId>
+        <artifactId>blojsom-library</artifactId>
+        <version>3.5-SNAPSHOT</version>
+        <relativePath>../blojsom-library/pom.xml</relativePath>
+    </parent>
+    <properties>
+        <metrics.exclude>false</metrics.exclude>
+    </properties>
+    <!-- More Project Information -->
+    <name>blojsom API</name>
+    <description>The core API of the blojsom platform.</description>
+</project>

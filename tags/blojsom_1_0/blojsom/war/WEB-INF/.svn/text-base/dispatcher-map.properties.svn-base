@@ -1,0 +1,2 @@
+jsp=org.ignition.blojsom.dispatcher.JSPDispatcher
+vm=org.ignition.blojsom.dispatcher.VelocityDispatcher

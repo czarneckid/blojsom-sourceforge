@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/registration
+END
+RegistrationNotification.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/registration/RegistrationNotification.java
+END
+messages.properties
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/registration/messages.properties
+END
+MissingParameterException.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/registration/MissingParameterException.java
+END
+RegistrationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/registration/RegistrationPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/registration/package.html
+END

@@ -1,0 +1,23 @@
+<html>
+
+<head>
+<title>$BLOJSOM_BLOG.getBlogName()</title>
+</head>
+
+<link rel="stylesheet" href="http://localhost:8080/blojsom/main.css" />
+
+<h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
+<h3>$BLOJSOM_BLOG.getBlogDescription()</h3>
+
+<body>
+#foreach ($entry in $BLOJSOM_ENTRIES)
+    <p class="weblogtitle">$entry.getTitle()</p><p class="weblogdateline">$entry.getDate() [<a href="$BLOJSOM_BLOG.getBlogURL()$entry.getCategory()">/$entry.getCategory()</a>]</p>
+    <p>$entry.getDescription()</p>
+    <p class="weblogbottomline"><a href="$entry.getLink()">Permalink</a></p>
+#end
+#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+    <a href="$blogCategory">$blogCategory</a><br />
+#end
+</body>
+
+</html>

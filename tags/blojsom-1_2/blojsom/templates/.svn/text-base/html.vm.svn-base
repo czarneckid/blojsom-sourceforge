@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<title>$BLOJSOM_BLOG.getBlogName()</title>
+</head>
+
+<link rel="stylesheet" href="$BLOJSOM_SITE_URL/main.css" />
+
+<h1><a href="$BLOJSOM_BLOG.getBlogURL()">$BLOJSOM_BLOG.getBlogName()</a></h1>
+<h3>$BLOJSOM_BLOG.getBlogDescription()</h3>
+
+Available categories:
+#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+    [<i><a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a></i>]
+#end
+
+<body>
+#foreach ($entry in $BLOJSOM_ENTRIES)
+    <div class="entrystyle">
+    <p class="weblogtitle">$entry.getTitle() <span class="smalltext">[<a href="$entry.getLink()">Permalink</a>]</span> </p>
+    <p class="weblogdateline">$entry.getDate() [<a href="$BLOJSOM_BLOG.getBlogURL()$entry.getCategory()">/$entry.getCategory()</a>]</p>
+    <p>$entry.getDescription()</p>
+    </div>
+    <p class="weblogbottomline"></p>
+#end
+
+#if (!$BLOJSOM_ENTRIES)
+    Available categories:
+    #foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+        [<i><a href="$blogCategory.getCategoryURL()">$blogCategory.getCategory()</a></i>]
+    #end
+#end
+
+<p />
+<img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" border="0" />
+
+</body>
+
+</html>

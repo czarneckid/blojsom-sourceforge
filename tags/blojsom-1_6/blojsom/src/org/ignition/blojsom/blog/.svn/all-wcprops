@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog
+END
+BlogCategory.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/BlogCategory.java
+END
+Blog.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/Blog.java
+END
+BlogEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/BlogEntry.java
+END
+Trackback.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/Trackback.java
+END
+BlogComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/BlogComment.java
+END
+BlojsomConfigurationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/BlojsomConfigurationException.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/446/tags/blojsom-1_6/blojsom/src/org/ignition/blojsom/blog/package.html
+END

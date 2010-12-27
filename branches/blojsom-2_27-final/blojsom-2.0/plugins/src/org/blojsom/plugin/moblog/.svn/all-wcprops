@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2984/branches/blojsom-2_27-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moblog
+END
+MoblogPluginUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/2984/branches/blojsom-2_27-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moblog/MoblogPluginUtils.java
+END
+moblog-plugin-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/2984/branches/blojsom-2_27-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moblog/moblog-plugin-template.vm
+END
+Mailbox.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/2984/branches/blojsom-2_27-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moblog/Mailbox.java
+END
+MoblogPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/2984/branches/blojsom-2_27-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moblog/MoblogPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/2984/branches/blojsom-2_27-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moblog/package.html
+END

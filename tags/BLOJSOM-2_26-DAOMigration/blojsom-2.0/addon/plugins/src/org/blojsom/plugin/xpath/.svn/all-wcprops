@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/xpath
+END
+XPathPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/xpath/XPathPlugin.java
+END
+BlogEntryWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/xpath/BlogEntryWrapper.java
+END
+XPathSearchPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/xpath/XPathSearchPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/xpath/package.html
+END

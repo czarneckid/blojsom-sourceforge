@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/war/WEB-INF
+END
+blojsom.properties
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/war/WEB-INF/blojsom.properties
+END
+dispatcher.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/war/WEB-INF/dispatcher.properties
+END
+flavor.properties
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/war/WEB-INF/flavor.properties
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/war/WEB-INF/velocity.properties
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/war/WEB-INF/web.xml
+END

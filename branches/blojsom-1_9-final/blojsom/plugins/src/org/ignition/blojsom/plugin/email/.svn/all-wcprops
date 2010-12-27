@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/email
+END
+SendEmailPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/email/SendEmailPlugin.java
+END
+EmailUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/email/EmailUtils.java
+END
+EmailMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/email/EmailMessage.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/plugins/src/org/ignition/blojsom/plugin/email/package.html
+END

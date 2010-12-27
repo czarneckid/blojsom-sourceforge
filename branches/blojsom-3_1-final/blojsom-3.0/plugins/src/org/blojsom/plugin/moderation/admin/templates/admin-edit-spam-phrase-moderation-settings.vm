@@ -1,0 +1,85 @@
+#AdminPageTitle('spam.phrase.moderation.page.header' 'Spam Phrase Moderation Settings')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <!-- Add spam phrase form -->
+                <div class="mainClm">
+                    <h3>#adminResource('add.spam.phrase.text' 'Add a spam phrase (regular expressions allowed)')</h3>
+                    <table>
+                        <form name="add-spam-phrase" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="add-spam-phrase"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="spamphrase-moderation-admin"/>
+                            <tr>
+                                <td>#adminResource('spam.phrase.text' 'Spam phrase')</td>
+                                <td><input type="text" size="25" name="spam-phrase"/></td>
+                            </tr>
+                            <tr />
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('add.spam.phrase.short.text' 'Add spam phrase')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                <!-- Delete spam phrase form -->
+                <div class="mainClm">
+                    <h3>#adminResource('delete.spam.phrase.text' 'Delete a spam phrase (multiple selections allowed)')</h3>
+                    <table>
+                        <form name="delete-spam-phrase" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="delete-spam-phrase"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="spamphrase-moderation-admin"/>
+                            <tr>
+                                <td>#adminResource('spam.phrase.text' 'Spam phrase')</td>
+                                <td>
+                                    #set ($counter = 0)
+                                    <select name="spam-phrase" multiple>
+                                        #foreach ($spamPhrase in $BLOJSOM_PLUGIN_SPAM_PHRASES)
+                                        <option value="$counter">$spamPhrase</option>
+                                        #set($counter = $counter + 1)
+                                        #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr />
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('delete.spam.phrase.short.text' 'Delete spam phrase(s)')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Current spam phrase moderation settings -->
+            <div id="sidebar">
+                <h4>#adminResource('current.spam.phrase.moderation.settings.text' 'Current spam phrase moderation settings')</h4>
+                #foreach ($spamPhrase in $BLOJSOM_PLUGIN_SPAM_PHRASES)
+                   <a href="#">$spamPhrase&nbsp;</a><br/>
+                #end
+            </div>
+        </div>
+    </div>
+</body>
+
+#AdministrationFooter()

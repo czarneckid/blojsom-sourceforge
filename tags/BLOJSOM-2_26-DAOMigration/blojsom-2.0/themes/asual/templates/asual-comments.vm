@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
+	<head>
+		#parse( "asual-head.vm" )
+	</head>
+	<body>
+		<div id="main">
+			<!-- Header -->
+			#parse( "asual-header.vm" )
+			<!-- Content -->
+			<div id="contentHeadLeft"><div id="contentHeadRight"><div id="contentHeadCenter"></div></div></div>
+			<div id="contentBodyLeft">
+				<div id="contentBodyRight">
+					<div id="contentBodyCenter">
+						<div id="content">
+							<!-- Entries -->
+							<div id="entries">
+
+								#set ( $entryDate = "" )
+								#foreach ($entry in $BLOJSOM_ENTRIES)
+									#parse( "asual-entry.vm" )
+
+									<div id="comments">
+										#set( $totalComments = 0 )
+										#foreach ($entryComment in $entry.getComments())
+											#if ($totalComments == 0)
+											<h3>Comments on this entry:</h3>
+											#end
+
+											<div class="comment">
+												<div class="info">Left by <span class="author">#if($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0)<a href="$entryComment.getAuthorURL()">$entryComment.getAuthor()</a>#else$entryComment.getAuthor()#end</span> at $entryComment.getDateAsFormat("EEE, d MMM h:mm a")</div>
+												<p class="post">$entryComment.getComment()</p>
+											</div>
+											#set( $totalComments = $totalComments + 1)
+										#end
+										#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+
+											<h3>Your comment:</h3>
+											<form id="commentform" method="post" action=".">
+												<div>
+													<input type="hidden" name="comment" value="y" />
+													<input type="hidden" name="page" value="comments" />
+													<input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()" />
+													<input type="hidden" name="permalink" value="$entry.getPermalink()" />
+												</div>
+												<div class="label"><label for="author">Author (<span class="red">*</span>):</label></div>
+												<div class="input"><input id="author" name="author" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end" class="fixed" /></div>
+
+												<div class="label"><label for="authorEmail">E-mail:</label></div>
+												<div class="input"><input id="authorEmail" name="authorEmail" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end" class="fixed" /><span>(not displayed)</span></div>
+
+												<div class="label"><label for="authorURL">URL:</label></div>
+												<div class="input"><input id="authorURL" name="authorURL" type="text" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end" class="fixed" /></div>
+
+												<div class="label"><label for="commentText">Comment (<span class="red">*</span>):</label></div>
+												<div class="input"><textarea name="commentText" id="commentText" rows="7" cols="55" onkeyup="reloadPreviewDiv();" class="fixed"></textarea></div>
+
+												<div class="label">&nbsp;</div>
+												<div class="input"><label for="remember"><input id="remember" name="remember" type="checkbox" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)checked="true" #end /> Remember me?</label></div>
+
+												<div class="clear"></div>
+
+												<div class="label">&nbsp;</div>
+												<div class="input"><input type="submit" name="submit" value="Comment" class="button" /><input type="reset" name="reset" value="Reset" class="button" /></div>
+
+												<div class="clear"></div>
+
+												<div class="label">&nbsp;</div>
+												<div class="input">
+													<h4>Live Comment Preview:</h4>
+													<div id="commentPreview">&nbsp;</div>
+												</div>
+											</form>
+										#end
+
+									</div>
+								#end
+
+							</div>
+							<div id="column">
+								#parse( "asual-column.vm" )
+							</div>
+						</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+				</div>
+			</div>
+			<div id="contentFootLeft"><div id="contentFootRight"><div id="contentFootCenter"></div></div></div>
+			<!-- Footer-->
+			#parse("asual-footer.vm")
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0     http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- The Basics -->
+    <groupId>org.blojsom</groupId>
+    <artifactId>blojsom-maven</artifactId>
+    <version>3.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>blojsom-metrics</module>
+        <module>blojsom-library</module>
+        <module>blojsom-plugins-templates</module>
+        <module>blojsom-resources</module>
+        <module>blojsom</module>
+        <module>quickrstart</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <targetJdk>1.6</targetJdk>
+    </properties>
+    <!-- Build Settings -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <source>${targetJdk}</source>
+                        <target>${targetJdk}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <!-- More Project Information -->
+    <name>blojsom Maven Parent POM</name>
+    <description>A full-featured, multi-user, multi-blog platform.</description>
+    <url>http://wiki.blojsom.com/wiki/display/BLOJSOM/Home</url>
+    <inceptionYear>2003</inceptionYear>
+    <licenses>
+        <license>
+            <name>Berkeley Software Distribution (BSD) License</name>
+            <url>http://www.opensource.org/licenses/bsd-license.php</url>
+            <distribution>repo</distribution>
+            <comments>
+                The BSD License is considered the most liberal OSS license.
+            </comments>
+        </license>
+    </licenses>
+    <organization>
+        <name>blojsom</name>
+        <url>http://www.sourceforge.net/projects/blojsom/</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>czarneckid</id>
+            <name>David A. Czarnecki</name>
+            <email>czarneckid@users.sourceforge.net</email>
+            <url>http://www.blojsom.com/</url>
+            <organization>blojsom</organization>
+            <organizationUrl>http://sourceforge.net/projects/blojsom/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+        <developer>
+            <id>intabulas</id>
+            <name>Mark Lussier</name>
+            <email>intabulas@users.sourceforge.net</email>
+            <organization>blojsom</organization>
+            <organizationUrl>http://sourceforge.net/projects/blojsom/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>gefahrmaus</id>
+            <name>Timothy Stone</name>
+            <email>gefahrmaus@users.sourceforge.net</email>
+            <url>http://www.code-henge.com/</url>
+            <organization>blojsom</organization>
+            <organizationUrl>http://sourceforge.net/projects/blojsom/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+        <developer>
+            <id>owenfarrell</id>
+            <name>Owen Farrell</name>
+            <email>owenfarrell@users.sourceforge.net</email>
+            <url>http://owenfarrell.users.sourceforge.net/</url>
+            <organization>blojsom</organization>
+            <organizationUrl>http://sourceforge.net/projects/blojsom/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+    <!-- Environment Settings -->
+    <!-- TODO insert JIRA details -->
+    <!-- TODO insert CI details -->
+    <mailingLists>
+        <mailingList>
+            <name>blojsom-developers</name>
+            <post>blojsom-developers@lists.sourceforge.net</post>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=blojsom-developers</archive>
+        </mailingList>
+        <mailingList>
+            <name>blojsom-users</name>
+            <post>blojsom-users@lists.sourceforge.net</post>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=blojsom-users</archive>
+        </mailingList>
+    </mailingLists>
+    <scm>
+        <connection>scm:svn:https://blojsom.svn.sourceforge.net/svnroot/blojsom/branches/maven-spike</connection>
+        <developerConnection>scm:svn:https://blojsom.svn.sourceforge.net/svnroot/blojsom/branches/maven-spike</developerConnection>
+        <url>http://blojsom.svn.sourceforge.net/viewvc/blojsom/branches/maven-spike</url>
+    </scm>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Apache Maven central repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <tagBase>https://blojsom.svn.sourceforge.net/svnroot/blojsom/</tagBase>
+                            <mavenExecutorId>forked-path</mavenExecutorId>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

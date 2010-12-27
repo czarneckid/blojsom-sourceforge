@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - Add blog flavor</title>
+    </head>
+
+    <body>
+        <center>
+            <h3>$BLOJSOM_BLOG.getBlogName() - Add blog flavor</h3>
+        </center>
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
+        <p />
+
+        <!-- Add blog flavor form -->
+        <center>
+            <h3>Add a blog flavor</h3>
+            <table border="1">
+                <form name="add-blog-flavor" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="add-blog-flavor"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-flavors"/>
+                    <tr>
+                        <td>Flavor name</td>
+                        <td><input type="text" size="50" name="flavor-name"/></td>
+                    </tr>
+                    <tr>
+                        <td>Flavor MIME type (defaults to text/html if not specified)</td>
+                        <td><input type="text" size="50" name="flavor-mime-type"/></td>
+                    </tr>
+                    <tr>
+                        <td>Flavor character set (defaults to UTF-8 if not specified)</td>
+                        <td><input type="text" size="50" name="flavor-character-set"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog template for flavor</td>
+                        <td>
+                            <select name="blog-template">
+                            #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES)
+                                <option value="$blogTemplate">$blogTemplate</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Add blog flavor"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+
+        <!-- Modify blog flavor form -->
+        <center>
+            <h3>Modify a blog flavor</h3>
+            <table border="1">
+                <form name="modify-blog-flavor" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="modify-blog-flavor"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-flavors"/>
+                    <tr>
+                        <td>Flavor name</td>
+                        <td>
+                            <select name="flavor-name">
+                            #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS)
+                                <option value="$flavor">$flavor</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Flavor MIME type (defaults to text/html if not specified)</td>
+                        <td><input type="text" size="50" name="flavor-mime-type"/></td>
+                    </tr>
+                    <tr>
+                        <td>Flavor character set (defaults to UTF-8 if not specified)</td>
+                        <td><input type="text" size="50" name="flavor-character-set"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog template for flavor</td>
+                        <td>
+                            <select name="blog-template">
+                            #foreach ($blogTemplate in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_TEMPLATE_FILES)
+                                <option value="$blogTemplate">$blogTemplate</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Modify blog flavor"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+
+        <!-- Delete blog flavor form -->
+        <center>
+            <h3>Delete a blog flavor</h3>
+            <table border="1">
+                <form name="delete-blog-flavor" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="delete-blog-flavor"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-flavors"/>
+                    <tr>
+                        <td>Flavor name</td>
+                        <td>
+                            <select name="flavor-name">
+                            #foreach ($flavor in $BLOJSOM_PLUGIN_EDIT_BLOG_FLAVORS_FLAVORS)
+                                <option value="$flavor">$flavor</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Delete blog flavor"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+    </body>
+</html>

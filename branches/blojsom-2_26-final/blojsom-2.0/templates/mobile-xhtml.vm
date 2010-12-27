@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+  "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Welcome</title>
+        <link rel="stylesheet" href="#Resource('mobile-xhtml.css')" type="text/css"/>
+    </head>
+
+    <body>
+        <!-- Top of page -->
+        <a id="top" name="top"></a>
+
+        <!-- Page header -->
+        <div id="blog_title_box">
+            <p>
+                To see the list of new posts to the blog - <a href="#new_post">click here</a>.
+                <br/>
+                To see the list of what categories are on this blog - <a href="#categories">click here</a>.
+                <br/>
+                <br/>
+                <a href="http://blojsom.sf.net">
+                    <img src="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/asual-poweredby.jpg" alt="Powered by blojsom"/>
+                </a>
+            </p>
+        </div>
+
+        <!-- List of new posts list -->
+        <div id="new_post_list">
+            <p align="center">
+                <a id="new_post" name="new_post"></a>
+                <b>Latest posts:</b>
+            </p>
+      #set ($counter = 0)
+      #foreach ($entry in $BLOJSOM_ENTRIES)
+            <p>
+                <a href="#$counter">$entry.getTitle()</a>
+            </p>
+      #set ($counter = $counter + 1)
+      #end
+        </div>
+
+        <!-- List of all categories -->
+        <div id="new_post_list">
+            <p align="center">
+                <a id="categories" name="categories"></a>
+                <b>Categories:</b>
+            </p>
+      #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+            <p>
+                <a href="$blogCategory.getCategoryURL()?flavor=mobile-xhtml">#CategoryName($blogCategory)</a>
+            </p>
+      #end
+        </div>
+
+        <!-- Posts in full -->
+      #set ($totalEntries = 0)
+      #foreach ($entry in $BLOJSOM_ENTRIES)
+        <a id="$totalEntries" name="$entry.getTitle()"></a>
+        <p class="post-body">
+            <b class="heading">$entry.getTitle()</b>
+            <br/>
+            <small class="date">Posted on - $entry.getDate()</small>
+            <br/>
+      $entry.getDescription()
+        </p>
+        <p align="center">
+            <b>
+                <a href="#top">Back to blog</a>
+            </b>
+        </p>
+     #set ($totalEntries = $totalEntries + 1)
+     #end
+
+    </body>
+</html>

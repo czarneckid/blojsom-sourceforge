@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools
+END
+IteratorToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/IteratorToolPlugin.java
+END
+MathToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/MathToolPlugin.java
+END
+ImportToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/ImportToolPlugin.java
+END
+ListToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/ListToolPlugin.java
+END
+ExtendedListToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/ExtendedListToolPlugin.java
+END
+DateToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/DateToolPlugin.java
+END
+ArrayToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/ArrayToolPlugin.java
+END
+RenderToolPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/RenderToolPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/tools/package.html
+END

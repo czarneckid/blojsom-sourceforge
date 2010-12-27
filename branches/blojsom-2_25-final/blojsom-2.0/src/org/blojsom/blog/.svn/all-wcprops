@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog
+END
+FileBackedBlogEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/FileBackedBlogEntry.java
+END
+BlogCategory.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/BlogCategory.java
+END
+BlogUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/BlogUser.java
+END
+Blog.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/Blog.java
+END
+BlogEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/BlogEntry.java
+END
+Trackback.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/Trackback.java
+END
+BlogComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/BlogComment.java
+END
+FileBackedBlogCategory.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/FileBackedBlogCategory.java
+END
+BlojsomConfigurationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/BlojsomConfigurationException.java
+END
+BlojsomConfiguration.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/BlojsomConfiguration.java
+END
+Pingback.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/Pingback.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/2854/branches/blojsom-2_25-final/blojsom-2.0/src/org/blojsom/blog/package.html
+END

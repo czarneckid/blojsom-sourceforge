@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3340/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/moderation/admin/templates
+END
+admin-edit-ip-moderation-settings.vm
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/3340/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/moderation/admin/templates/admin-edit-ip-moderation-settings.vm
+END
+admin-edit-spam-phrase-moderation-settings.vm
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svnroot/blojsom/!svn/ver/3267/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/moderation/admin/templates/admin-edit-spam-phrase-moderation-settings.vm
+END

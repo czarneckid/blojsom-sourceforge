@@ -1,0 +1,161 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib
+END
+xmlrpc-1.2-b1-blojsom.jar
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/xmlrpc-1.2-b1-blojsom.jar
+END
+c3p0-0.9.0.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/c3p0-0.9.0.4.jar
+END
+asm-attrs.jar
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/asm-attrs.jar
+END
+commons-io-1.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-io-1.1.jar
+END
+dom4j-1.6.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/dom4j-1.6.1.jar
+END
+commons-dbcp-1.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-dbcp-1.2.1.jar
+END
+jta.jar
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/jta.jar
+END
+ehcache-1.2.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/ehcache-1.2.3.jar
+END
+cglib-2.1.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/cglib-2.1.3.jar
+END
+commons-pool-1.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-pool-1.2.jar
+END
+asm.jar
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/asm.jar
+END
+mail-1.3.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/mail-1.3.1.jar
+END
+smtp-1.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/smtp-1.3.jar
+END
+log4j-1.2.8.jar
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/log4j-1.2.8.jar
+END
+spring-hibernate3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/spring-hibernate3.jar
+END
+commons-codec-1.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-codec-1.3.jar
+END
+commons-collections-3.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-collections-3.1.jar
+END
+commons-fileupload-1.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-fileupload-1.1.jar
+END
+textile4j-1.20.jar
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/textile4j-1.20.jar
+END
+commons-email-1.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-email-1.0.jar
+END
+commons-logging-1.0.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/commons-logging-1.0.4.jar
+END
+activation-1.0.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/activation-1.0.2.jar
+END
+antlr-2.7.6rc1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/antlr-2.7.6rc1.jar
+END
+velocity-1.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/velocity-1.4.jar
+END
+spring-2.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/spring-2.0.jar
+END
+hibernate-3.1.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/war/WEB-INF/lib/hibernate-3.1.3.jar
+END

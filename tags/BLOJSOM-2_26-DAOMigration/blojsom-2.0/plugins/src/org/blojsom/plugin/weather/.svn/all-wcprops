@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather
+END
+Weather.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather/Weather.java
+END
+WeatherPluginUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather/WeatherPluginUtils.java
+END
+WeatherFetcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather/WeatherFetcher.java
+END
+WeatherConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather/WeatherConstants.java
+END
+WeatherPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather/WeatherPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/weather/package.html
+END

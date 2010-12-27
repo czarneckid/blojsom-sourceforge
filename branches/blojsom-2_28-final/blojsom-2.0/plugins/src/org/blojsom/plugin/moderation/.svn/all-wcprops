@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/3014/branches/blojsom-2_28-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moderation
+END
+IPAddressModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/3014/branches/blojsom-2_28-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moderation/IPAddressModerationPlugin.java
+END
+LinkSpamModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/3014/branches/blojsom-2_28-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moderation/LinkSpamModerationPlugin.java
+END
+OpenProxyModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/3014/branches/blojsom-2_28-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moderation/OpenProxyModerationPlugin.java
+END
+SpamPhraseModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3014/branches/blojsom-2_28-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moderation/SpamPhraseModerationPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3014/branches/blojsom-2_28-final/blojsom-2.0/plugins/src/org/blojsom/plugin/moderation/package.html
+END

@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates
+END
+text.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/text.jsp
+END
+html-trackback.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html-trackback.jsp
+END
+html-comments.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html-comments.jsp
+END
+rsd.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/rsd.jsp
+END
+rss2.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/rss2.jsp
+END
+rss-comments.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/rss-comments.jsp
+END
+html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html.vm
+END
+trackback-success.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/trackback-success.jsp
+END
+atom.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/atom.jsp
+END
+html.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html.jsp
+END
+html-referers.vm
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html-referers.vm
+END
+rss.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/rss.jsp
+END
+trackback-failure.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/trackback-failure.jsp
+END
+rdf.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/rdf.jsp
+END
+rss2-comments.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/rss2-comments.jsp
+END
+html-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html-trackback.vm
+END
+html-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html-comments.vm
+END
+html-referers.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/archives/templates/html-referers.jsp
+END

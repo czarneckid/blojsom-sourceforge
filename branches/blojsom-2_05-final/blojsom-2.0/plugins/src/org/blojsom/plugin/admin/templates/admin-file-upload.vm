@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - File upload</title>
+    </head>
+
+    <body>
+        <center>
+            <h3>$BLOJSOM_BLOG.getBlogName() - File upload</h3>
+        </center>
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
+        <p />
+
+        <!-- File upload form -->
+        <center>
+            <h3>Upload a file</h3>
+            <table border="1">
+                <form name="upload-file" action=".?flavor=admin&plugins=file-upload" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    <tr>
+                        <td>File to upload</td>
+                        <td><input type="file" size="50" name="upload-file"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Upload file"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+    </body>
+</html>

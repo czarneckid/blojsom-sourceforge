@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/comment
+END
+CommentPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/CommentPlugin.java
+END
+CommentUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/CommentUtils.java
+END
+comment-plugin-email-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/comment-plugin-email-template.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/package.html
+END

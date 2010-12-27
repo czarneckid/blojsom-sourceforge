@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/3346/trunk/blojsom-2.0/addon/core/src/org/blojsom/authorization
+END
+LDAPAuthorizationProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3346/trunk/blojsom-2.0/addon/core/src/org/blojsom/authorization/LDAPAuthorizationProvider.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/2640/trunk/blojsom-2.0/addon/core/src/org/blojsom/authorization/package.html
+END

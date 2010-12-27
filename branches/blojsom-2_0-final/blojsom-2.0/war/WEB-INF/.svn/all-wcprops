@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF
+END
+blojsom.properties
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF/blojsom.properties
+END
+xmlrpc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF/xmlrpc.properties
+END
+dispatcher.properties
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF/dispatcher.properties
+END
+plugin.properties
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF/plugin.properties
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF/velocity.properties
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/1324/branches/blojsom-2_0-final/blojsom-2.0/war/WEB-INF/web.xml
+END

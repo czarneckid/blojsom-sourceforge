@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svnroot/blojsom/!svn/ver/3751/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/common/templates
+END
+admin-rss-enclosure-attachment.vm
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/svnroot/blojsom/!svn/ver/3751/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/common/templates/admin-rss-enclosure-attachment.vm
+END
+admin-file-attachment.vm
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/common/templates/admin-file-attachment.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/common/templates/package.html
+END

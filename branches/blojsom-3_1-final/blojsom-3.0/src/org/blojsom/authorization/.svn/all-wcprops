@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/src/org/blojsom/authorization
+END
+AuthorizationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/src/org/blojsom/authorization/AuthorizationException.java
+END
+AuthorizationProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/src/org/blojsom/authorization/AuthorizationProvider.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/src/org/blojsom/authorization/package.html
+END

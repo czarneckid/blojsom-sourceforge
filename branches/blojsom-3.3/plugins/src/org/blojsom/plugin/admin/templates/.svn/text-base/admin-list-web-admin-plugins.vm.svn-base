@@ -1,0 +1,30 @@
+#AdminPageTitle('administer.plugins.page.header' 'Configurable Available Plugins')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+                <div class="mainClm">
+                    <h3>#adminResource('administer.plugins.page.header' '')</h3>
+                    <p>#adminResource('configure.plugins.help.text' '')</p>
+                    #if ($BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST)
+                    #foreach ($plugin in $BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST.keySet())
+                    <p><a href="#BlogAdminURL()/?flavor=admin&plugins=$plugin">$BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST.get($plugin).getDisplayName()</a></p>
+                    #end
+                    #end
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

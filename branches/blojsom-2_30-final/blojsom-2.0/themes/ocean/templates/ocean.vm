@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()">
+	<head>
+		#parse("ocean-head.vm")
+	</head>
+	<body>
+		<div id="main">
+			<!-- Header -->
+			#parse("ocean-header.vm")
+			<!-- Content -->
+			<div id="contentHeadLeft"><div id="contentHeadRight"><div id="contentHeadCenter"></div></div></div>
+			<div id="contentBodyLeft">
+				<div id="contentBodyRight">
+					<div id="contentBodyCenter">
+						<div id="content">
+							<!-- Entries -->
+							<div id="entries">
+								#set($entryDate = "")
+								#set($totalEntries = 0)
+								#foreach($entry in $BLOJSOM_ENTRIES)
+									#parse("ocean-entry.vm")
+								#end
+
+							</div>
+							<div id="column">
+								#parse("ocean-column.vm")
+							</div>
+						</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+				</div>
+			</div>
+			<div id="contentFootLeft"><div id="contentFootRight"><div id="contentFootCenter"></div></div></div>
+			<!-- Footer-->
+			#parse("ocean-footer.vm")
+		</div>
+	</body>
+</html>
+

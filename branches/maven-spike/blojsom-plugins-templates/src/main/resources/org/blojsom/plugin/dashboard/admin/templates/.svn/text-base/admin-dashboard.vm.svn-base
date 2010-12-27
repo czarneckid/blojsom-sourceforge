@@ -1,0 +1,43 @@
+                    <div class="yui-gb">
+                        <div class="yui-u first">
+                            <h3>New Entry</h3>
+                            <p>Add a new entry in:</p>
+                            <ul>
+#foreach($cat in $BLOJSOM_ALL_CATEGORIES)
+                                <li><a href="?action=new-blog-entry&amp;flavor=admin&amp;plugins=edit-blog-entries&blog-category-id=$cat.getId()">#CategoryDescription($cat)</a></li>
+#end
+                                <li>More&#8230;</li>
+                            </ul>
+                        </div>
+                        <div class="yui-u">
+                            <h3>Manage Responses</h3>
+#set($numOfNewResponses = $ADMIN_RECENT_RESPONSES.size())
+                            <p>There #if ($numOfNewResponses == 1) is #else are #end $ADMIN_RECENT_RESPONSES.size() new #if ($numOfNewResponses == 1) response #else responses #end :</p>
+                            <ul>
+#foreach($res in $ADMIN_RECENT_RESPONSES)
+    #set($type = $res.getType())
+    #if($type == "comment")
+                                <li>$type from $res.getAuthor()</li>
+    #end
+    #if($type == "trackback")
+                                <li>$type from $res.getBlogName()</li>
+    #end
+    #if($type == "pingback")
+                                <li>$type from $res.getEscapedSourceURI()</li>
+    #end
+#end
+
+                                <li><a href="?flavor=admin&plugins=bulk-response-management&action=page">More&#8230;</a></li>
+                            </ul>
+                        </div>
+                        <div class="yui-u">
+                            <h3>Manage Entries</h3>
+                            <p>Recent entries include:</p>
+                            <ul>
+#foreach($entry in $ADMIN_RECENT_ENTRIES)
+                                <li><a href="?flavor=admin&action=edit-blog-entry&plugins=edit-blog-entries&blog-category-id=$entry.getBlogCategoryId()&blog-entry-id=$entry.getId()">$entry.getEscapedTitle()</a></li>
+#end
+                                <li><a href="?flavor=admin&plugins=edit-blog-entries&action=edit-entries-list&pg_num=1">More&#8230;</a></li>
+                            </ul>
+                        </div>
+                    </div>

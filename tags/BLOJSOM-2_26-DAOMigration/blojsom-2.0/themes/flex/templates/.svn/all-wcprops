@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates
+END
+flex.vm
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex.vm
+END
+flex-inc-referers.vm
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-referers.vm
+END
+flex-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-comments.vm
+END
+flex-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-trackback.vm
+END
+flex-inc-post-entry-summary.vm
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-post-entry-summary.vm
+END
+flex-inc-trackback-auto-discovery.vm
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-trackback-auto-discovery.vm
+END
+flex-inc-main.vm
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-main.vm
+END
+flex-referers.vm
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-referers.vm
+END
+flex-inc-post-entry-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-post-entry-comments.vm
+END
+flex-inc-post-entry-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-post-entry-trackback.vm
+END
+flex-inc-entries.vm
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/themes/flex/templates/flex-inc-entries.vm
+END

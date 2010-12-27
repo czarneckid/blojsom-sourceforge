@@ -1,0 +1,35 @@
+#macro(adminPageHeader $page)
+    <html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - $page</title>
+        <link rel="stylesheet" href="$BLOJSOM_SITE_URL/blojsom-admin.css" />
+        <link rel="SHORTCUT ICON" href="$BLOJSOM_SITE_URL/favicon.ico" />
+    </head>
+
+    <body>
+        <div id="header">
+            <h1>$page</h1>
+            <p id="description">#showErrorMessage()</p>
+        </div>
+#end
+
+#macro(adminPageFooter)
+        </body>
+    </html>
+#end
+
+#macro(showErrorMessage)
+    #if ($BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT)
+        <font color="red">Status</font>: $BLOJSOM_ADMIN_PLUGIN_OPERATION_RESULT
+    #end
+#end
+
+#macro(trueFalseSelectList $selectListName $selectedValue)
+    <select name="$selectListName" size="2">
+        #if ($selectedValue == true || $selectedValue == "true")<option value="true" selected>True</option> #else <option value="true">True</option>#end
+        #if ($selectedValue == false || $selectedValue == "false")<option value="false" selected>False</option> #else <option value="false">False</option>#end
+    </select>
+#end
+
+#macro( adminResource $resourceID $fallback )$!BLOJSOM_RESOURCE_MANAGER.getString($resourceID, "org.blojsom.plugin.admin.resources.messages", $fallback, $BLOJSOM_BLOG.getBlogLanguage(), $BLOJSOM_BLOG.getBlogCountry())#end

@@ -1,0 +1,44 @@
+#AdminPageTitle('syndication.feed.import.header' '')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blosjom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        <div id="main">
+            <div id="contents">
+                #showErrorMessage()
+
+                <!-- Import syndication feed form -->
+                <div class="mainClm">
+                    <h3>#adminResource('import.syndication.feed.text' 'Import a syndication feed')</h3>
+                    <table>
+                        <form name="import-syndication-feed" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="feed-import"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="feed-import"/>
+                            <tr>
+                                <td>#adminResource('syndication.feed.url.text' 'URL of syndication feed to import')</td>
+                                <td><input type="text" size="60" name="import-url" /></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="submit" name="submit" value="#adminResource('import.text' 'Import')"/>
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

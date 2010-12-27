@@ -1,0 +1,60 @@
+<div id="navmenu" class="yuimenubar yuimenubarnav">
+    <div class="bd">
+        <ul class="first-of-type">
+            <li class="yuimenubaritem first-of-type">
+                <a class="yuimenubaritemlabel" href="#BlogAdminURL()/?flavor=admin">#adminResource('administration.text' '')</a>
+            </li>
+            <li class="yuimenubaritem first-of-type">
+                <a class="yuimenubaritemlabel" href="#">#adminResource('entries.page.header' '')</a>
+                <div id="entries">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=new-blog-entry">#adminResource('add.entry.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=page">#adminResource('edit.and.delete.entries.text' '')</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="yuimenubaritem first-of-type">
+                <a href="#">#adminResource('manager.page.header' '')</a>
+                <div id="manager">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-categories&amp;action=page">#adminResource('edit.blog.categories.page.header' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-entries&amp;action=edit-entries-list&amp;pg_num=1">#adminResource('entries.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=bulk-response-management&amp;action=page">#adminResource('responses.text' '')</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="yuimenubaritem first-of-type">
+                <a href="#">#adminResource('weblog.settings.text' '')</a>
+                <div id="weblog">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blogs&amp;action=page">#adminResource('blogs.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=file-upload&amp;action=page">#adminResource('files.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-flavors&amp;action=page">#adminResource('flavors.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-permissions&amp;action=page">#adminResource('permissions.page.header' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-preferences&amp;action=page">#adminResource('preferences.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-properties&amp;action=page">#adminResource('properties.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-templates&amp;action=page">#adminResource('templates.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-authorization&amp;action=page">#adminResource('users.text' '')</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="yuimenubaritem first-of-type">
+                <a href="#">#adminResource('plugin.settings.text' '')</a>
+                <div id="plugin">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=list-web-admin-plugins">#adminResource('configure.available.plugins.text' '')</a></li>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#BlogAdminURL()/?flavor=admin&amp;plugins=edit-blog-plugins&amp;action=page">#adminResource('configure.plugin.mappings.text' '')</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

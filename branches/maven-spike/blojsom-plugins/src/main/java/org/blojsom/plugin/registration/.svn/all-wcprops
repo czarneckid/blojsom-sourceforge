@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/registration
+END
+RegistrationNotification.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/registration/RegistrationNotification.java
+END
+MissingParameterException.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/registration/MissingParameterException.java
+END
+RegistrationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/3828/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/registration/RegistrationPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/registration/package.html
+END

@@ -1,0 +1,169 @@
+10
+
+dir
+3878
+https://blojsom.svn.sourceforge.net/svnroot/blojsom/branches/blojsom-2_30-final/blojsom-2.0
+https://blojsom.svn.sourceforge.net/svnroot/blojsom
+
+
+
+2006-03-15T02:28:10.000000Z
+3133
+czarneckid
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+28e03f91-8513-0410-9821-a6140ff45be5
+
+test
+dir
+
+plugins
+dir
+
+LICENSE
+file
+
+
+
+
+2010-12-27T19:49:17.000000Z
+38342ac33a23a380df538c7ec13a40d7
+2006-01-04T16:24:24.000000Z
+3044
+czarneckid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1746
+
+themes
+dir
+
+addon
+dir
+
+ant-lib
+dir
+
+src
+dir
+
+war
+dir
+
+addon-lib
+dir
+
+properties
+dir
+
+README
+file
+
+
+
+
+2010-12-27T19:49:17.000000Z
+5a4a624e8c1984c10e4cdc2f42656a32
+2006-01-04T16:24:24.000000Z
+3044
+czarneckid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3845
+
+templates
+dir
+
+build.xml
+file
+
+
+
+
+2010-12-27T19:49:17.000000Z
+984db79377991a13e5a9d9114cee57b2
+2006-03-02T15:43:31.000000Z
+3128
+czarneckid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+24526
+
+extensions
+dir
+
+archives
+dir
+
+lib
+dir
+

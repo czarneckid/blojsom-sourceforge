@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event
+END
+PingbackEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackEvent.java
+END
+PingbackApprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackApprovedEvent.java
+END
+PingbackAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackAddedEvent.java
+END
+PingbackUnapprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackUnapprovedEvent.java
+END
+PingbackMarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackMarkedSpamEvent.java
+END
+PingbackDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackDeletedEvent.java
+END
+PingbackUnmarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackUnmarkedSpamEvent.java
+END
+PingbackResponseSubmissionEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/PingbackResponseSubmissionEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/pingback/event/package.html
+END

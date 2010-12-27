@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/2671/branches/blojsom-2_23-final/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event
+END
+CommentEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/2671/branches/blojsom-2_23-final/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentEvent.java
+END
+CommentAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2671/branches/blojsom-2_23-final/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentAddedEvent.java
+END
+CommentDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/2671/branches/blojsom-2_23-final/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentDeletedEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/2671/branches/blojsom-2_23-final/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/package.html
+END

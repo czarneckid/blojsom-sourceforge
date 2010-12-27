@@ -1,0 +1,49 @@
+#macro(multilineLink $textArray)
+     #set($count = 0)
+     #foreach($word in $textArray)
+         #set($count = $count + 1)
+     #end
+     #if ($count > 1)
+          #set($words = "")
+          #set($multilineText = "")
+          #foreach($word in $textArray)
+               #set($words = "$words $word")
+               #if($words.length() > 20)
+                  #if($multilineText == "")
+                  #set($multilineText = "<span>$word</span><span class='break'>&nbsp;</span><br /><span>")
+                  #else
+                  #set($multilineText = "$multilineText</span><span class='break'>&nbsp;</span><br /><span>$word")
+                  #end
+                 #set($words = "")
+              #else
+                 #if($multilineText == "")
+                 #set($multilineText = "<span>$word")
+                 #else
+                 #set($multilineText = "$multilineText $word")
+                 #end
+             #end
+          #end
+          #set($multilineText = "$multilineText</span>")
+      #else
+         #foreach($word in $textArray)
+             #set($multilineText = "<span>$word</span>")
+         #end
+      #end
+  #end
+
+
+
+<p>
+	
+
+#foreach($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+     #if ($blogCategory.getName())
+          #multilineLink($blogCategory.getName().split(" "))
+     #else
+         #multilineLink($blogCategory.getCategory().split(" "))
+     #end
+
+     [<em><a href="#BlogURL()$blogCategory.getName()" title="Click here to view the entire contents of the category" class="rounded">$multilineText</a></em>]
+#end
+
+</p>

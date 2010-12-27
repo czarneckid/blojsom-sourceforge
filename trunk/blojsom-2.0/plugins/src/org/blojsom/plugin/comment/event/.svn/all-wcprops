@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3055/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event
+END
+CommentResponseSubmissionEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/3055/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentResponseSubmissionEvent.java
+END
+CommentEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentEvent.java
+END
+CommentApprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentApprovedEvent.java
+END
+CommentAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentAddedEvent.java
+END
+CommentDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3047/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/CommentDeletedEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/2652/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/event/package.html
+END

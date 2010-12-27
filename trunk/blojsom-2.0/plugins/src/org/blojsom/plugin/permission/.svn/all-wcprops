@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/permission
+END
+PermissionCheckPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/permission/PermissionCheckPlugin.java
+END
+PermissionChecker.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/permission/PermissionChecker.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/3010/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/permission/package.html
+END

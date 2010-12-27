@@ -1,0 +1,10 @@
+<html>
+    <head>
+        <title>#BlogName() - $page</title>
+        <!-- CSS -->
+        <link rel="SHORTCUT ICON" href="#BlogBaseAdminURL()/favicon.ico" />
+        <link rel="stylesheet" media="screen" type="text/css" href="#BlogBaseAdminURL()/administration/blojsom-administration.css"  />
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/blojsom-menu.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/prototype.js"></script>
+        <script type="text/javascript" src="#BlogBaseAdminURL()/administration/javascript/scriptaculous.js"></script>
+    </head>

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates
+END
+autumn-header.vm
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates/autumn-header.vm
+END
+autumn-sidebar.vm
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates/autumn-sidebar.vm
+END
+autumn-footer.vm
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates/autumn-footer.vm
+END
+autumn-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates/autumn-entry.vm
+END
+autumn-head.vm
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates/autumn-head.vm
+END
+autumn.vm
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/autumn/templates/autumn.vm
+END

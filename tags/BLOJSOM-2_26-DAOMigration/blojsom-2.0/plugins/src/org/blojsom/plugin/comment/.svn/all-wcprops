@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment
+END
+CommentPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/CommentPlugin.java
+END
+CommentModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/CommentModerationPlugin.java
+END
+CommentUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/CommentUtils.java
+END
+RecentCommentsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/RecentCommentsPlugin.java
+END
+MathCommentAuthenticationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/MathCommentAuthenticationPlugin.java
+END
+comment-plugin-email-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/comment-plugin-email-template.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/comment/package.html
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/blojsom/!svn/ver/3862/branches/maven-spike/blojsom-metrics/src/main/resources
+END
+blojsom-checkstyle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3862/branches/maven-spike/blojsom-metrics/src/main/resources/blojsom-checkstyle.xml
+END
+blojsom-pmd.xml
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3843/branches/maven-spike/blojsom-metrics/src/main/resources/blojsom-pmd.xml
+END
+checkstyle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3843/branches/maven-spike/blojsom-metrics/src/main/resources/checkstyle.xml
+END

@@ -1,0 +1,26 @@
+                        #friendlyPermalink($entry)
+
+						<div class="entry">
+
+							<h3><a href="$entryLink" title="$entry.getTitle()">$entry.getTitle()</a></h3>
+							<p class="links">
+								[<a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#CategoryName($entry.getBlogCategory())</a>] [<a href="$entryLink" title="Permalink">Permalink</a>]
+							</p>
+							<div>
+								$entry.getDescription()
+							</div>
+							<p>
+								<span class="blue">Posted on #FormatDate($entry 'EEE, d MMM yyyy HH:mm') by #Author($entry) (#DaysSincePosted($entry) day(s) old)</span>
+
+                                #CommentsAllowed($entry)
+								#if ($commentsAllowed)<span>Comments [<a href="$entryLink?page=comments">$entry.getNumComments()</a>]</span>#end
+
+                                #TrackbacksAllowed($entry)
+								#if ($trackbacksAllowed)<span>Trackbacks [<a href="$entryLink?page=trackback">$entry.getNumTrackbacks()</a>]</span>#end
+
+							</p>
+
+							#TrackbackAutoDiscovery($entry false)
+						</div>
+
+

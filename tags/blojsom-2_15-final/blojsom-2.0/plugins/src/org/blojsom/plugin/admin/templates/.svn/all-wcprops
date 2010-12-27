@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates
+END
+admin-login.vm
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-login.vm
+END
+admin-add-blog-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-add-blog-entry.vm
+END
+admin-edit-blog-entries.vm
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-entries.vm
+END
+admin-edit-blog-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-template.vm
+END
+admin-edit-blog-flavors.vm
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-flavors.vm
+END
+admin-edit-blog-category.vm
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-category.vm
+END
+admin-macros.vm
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-macros.vm
+END
+admin-edit-blog-plugins.vm
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-plugins.vm
+END
+admin-edit-blog-entries-list.vm
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-entries-list.vm
+END
+admin-edit-blog-categories.vm
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-categories.vm
+END
+admin-edit-blog-properties.vm
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-properties.vm
+END
+admin-file-upload.vm
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-file-upload.vm
+END
+admin-edit-blog-templates.vm
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-templates.vm
+END
+admin.vm
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin.vm
+END
+admin-edit-blog-authorization.vm
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-authorization.vm
+END
+admin-edit-blog-users.vm
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-users.vm
+END
+admin-edit-blog-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-edit-blog-entry.vm
+END
+admin-forgotten-password.vm
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/templates/admin-forgotten-password.vm
+END

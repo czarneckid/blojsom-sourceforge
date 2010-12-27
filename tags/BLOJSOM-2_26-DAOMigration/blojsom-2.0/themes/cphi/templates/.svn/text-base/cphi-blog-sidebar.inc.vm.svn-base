@@ -1,0 +1,62 @@
+<div id="sidebar"> 
+	<h1>Blog</h1>
+	
+	<dl>
+		<!-- LIST OF CATEGORIES -->
+		#parse("cphi-blog-category-list.inc.vm")
+		
+		<!-- RECENT ENTRIES -->
+		<dt>Recently</dt>
+		#foreach ($entry in $BLOJSOM_ENTRIES)
+        	#set ($categoryForEntry = $entry.getBlogCategory().getCategory())
+			#if ($categoryForEntry == "/") #set($categoryForEntry = "") #end
+            #friendlyPermalink($entry)
+			<dd><a href="$entryLink">$entry.getTitle()</a></dd>
+		#end
+	</dl>
+	
+	<!-- ARCHIVES -->
+	
+	<p>&nbsp;</p>
+	<!-- FAVORITES -->
+	<h1>Favorites</h1>
+		
+	<dl>
+		<dt>Friends</dt>
+		<dd><a href="" title=""></a></dd>
+		
+		<dt>Local</dt>
+		<dd><a href="" title=""></a></dd>
+
+		<dt>Open Source</dt>
+		<dd><a href="http://www.eclipse.org" title="My IDE of choice">Eclipse</a></dd>
+		<dd><a href="http://jakarta.apache.org/" title="Some fine solutions for the Java platform">Jakarta</a></dd>
+		<dd><a href="http://www.sourceforge.net">Sourceforge</a></dd>
+		
+		<dt>Tech News</dt>
+		<dd><a href="http://arstechnica.com/">Ars Technica</a></dd>
+		<dd><a href="http://www.engadget.com" title="Updates on the coolest tech gear">Engadget</a> </dd>
+		<dd><a href="http://www.eweek.com/" title="Enterprise technology news">eWeek</a></dd>
+		<dd><a href="http://www.informationweek.com">Information Week</a></dd>
+		<dd><a href="http://www.linuxworld" title="Showcasing Linux">Linux World</a></dd>
+		<dd><a href="http://www.slashdot.org" title="Obligatory reading">Slashdot</a></dd>
+		<dd><a href="http://www.wired.com" title="Biz Buzz">Wired</a></dd>
+		
+		<dt>Web Design/Standards</dt>
+		<dd><a href="http://www.alistapart.com" title="For people who make websites">A List Apart</a></dd>
+		<dd><a href="http://www.cssbeauty.com">CSS Beauty</a></dd>
+		<dd><a href="http://www.stopdesign.com" title="Beautiful, sensible design">Douglas Bowman</a></dd>
+		<dd><a href="http://www.meyerweb.com" title="Excellent study and practice of standards">Meyer Web</a></dd>
+		<dd><a href="http://www.simplebits.com" title="Dan Cederholm's weblog">Simple Bits</a></dd>
+		<dd><a href="http://www.stylegala.com">Style Gala</a></dd>
+		<dd><a href="http://www.webstandards.org">Web Standards Project</a></dd>
+		<dd><a href="http://www.zeldman.com" title="The source for what ails you">Zeldman</a></dd>
+
+	</dl>
+
+	<!-- Referer Statistics -->
+	<a href="$BLOJSOM_BLOG.getBlogURL()?&amp;page=referers" title="Referer History"><img src="$BLOJSOM_SITE_URL/images/blog-statistics.gif" alt="Who's visited"/></a>
+	
+	<!-- Powered By -->
+	<a href="http://blojsom.sf.net" title="blojsom"><img src="$BLOJSOM_SITE_URL/powered-by-blojsom.gif" alt="powered by blojsom"/></a>
+</div> 

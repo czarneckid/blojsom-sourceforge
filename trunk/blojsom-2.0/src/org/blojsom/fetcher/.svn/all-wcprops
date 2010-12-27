@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/fetcher
+END
+StandardFetcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/fetcher/StandardFetcher.java
+END
+BlojsomFetcherException.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/fetcher/BlojsomFetcherException.java
+END
+BlojsomFetcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/3046/trunk/blojsom-2.0/src/org/blojsom/fetcher/BlojsomFetcher.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/src/org/blojsom/fetcher/package.html
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/src/org/blojsom/filter
+END
+GZIPResponseStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/src/org/blojsom/filter/GZIPResponseStream.java
+END
+CompressionFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/src/org/blojsom/filter/CompressionFilter.java
+END
+GZIPResponseWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/src/org/blojsom/filter/GZIPResponseWrapper.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/2132/tags/blojsom-2_15-final/blojsom-2.0/src/org/blojsom/filter/package.html
+END

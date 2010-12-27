@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util
+END
+BlojsomConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/BlojsomConstants.java
+END
+BlojsomProperties.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/BlojsomProperties.java
+END
+BlojsomMetaDataConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/BlojsomMetaDataConstants.java
+END
+BlojsomSimpleLog4JSystem.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/BlojsomSimpleLog4JSystem.java
+END
+BlojsomUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/BlojsomUtils.java
+END
+CookieUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/CookieUtils.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/src/org/blojsom/util/package.html
+END

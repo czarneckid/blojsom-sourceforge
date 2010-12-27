@@ -1,0 +1,27 @@
+## Autumn Theme by Cliffano Subagio - http://mbledug.com
+#friendlyPermalink($entry)
+#set($permalink = $permalink)
+<div class="entry">
+
+	<h3><a href="$permalink" title="$entry.getTitle()">$entry.getTitle()</a></h3>
+	<p>
+		$entry.getDescription()
+	</p>
+	<p class="info">
+		<span>Posted by #Author($entry) on #FormatDate($entry 'EEE, d MMM yyyy HH:mm')</span>
+		<br/>
+		<a href="$permalink" title="Permalink">Permalink</a>
+		-
+		Category <a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#CategoryName($entry.getBlogCategory())</a>
+		
+        #CommentsAllowed($entry)
+		#if ($commentsAllowed)- <span><a href="$permalink?page=comments">$entry.getNumComments()</a> Comments</span>#end
+
+        #TrackbacksAllowed($entry)
+		#if ($trackbacksAllowed)- <span><a href="$permalink?page=trackback">$entry.getNumTrackbacks()</a> Trackbacks</span>#end
+
+	</p>
+
+	#TrackbackAutoDiscovery($entry false)
+</div>
+<hr/>

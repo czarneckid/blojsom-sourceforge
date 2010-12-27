@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+#adminPageHeader("#adminResource('administer.plugins.page.header' 'Configurable Available Plugins')")
+
+    <div id="sideBar">
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">#adminResource('administration.text' 'Administration')</a> #adminResource('console.text' 'console').
+    </div>
+
+    <div id="mainClm">
+        <ul>
+            #if ($BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST)
+            #foreach ($plugin in $BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST.keySet())
+            <li><a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin&plugins=$plugin">$BLOJSOM_PLUGIN_WEB_ADMIN_PLUGINS_LIST.get($plugin)</a></li>
+            #end
+            #end
+        </ul>
+    </div>
+
+#adminPageFooter()

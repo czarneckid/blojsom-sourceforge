@@ -1,0 +1,101 @@
+								#macro(multilineLink $textArray)
+									#set($count = 0)
+									#foreach($word in $textArray)
+										#set($count = $count + 1)
+									#end
+									#if ($count > 1)
+										#set($words = "")
+										#set($multilineText = "")
+										#foreach($word in $textArray)
+											#set($words = "$words $word")
+											#if($words.length() > 20)
+												#if($multilineText == "")
+													#set($multilineText = "<span>$word</span><span class='break'></span><br /><span>")
+												#else
+													#set($multilineText = "$multilineText</span><span class='break'></span><br /><span>$word")
+												#end
+												#set($words = "")
+											#else
+												#if($multilineText == "")
+													#set($multilineText = "<span>$word")
+												#else
+													#set($multilineText = "$multilineText $word")
+												#end
+											#end
+										#end
+										#set($multilineText = "$multilineText</span>")
+									#else
+										#foreach($word in $textArray)
+											#set($multilineText = "<span>$word</span>")
+										#end
+									#end
+
+								#end
+
+								<div id="calendar">
+									<table cellspacing="0">
+										<caption>
+											<a href="$BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonthLink()" title="Click here to see $BLOJSOM_CALENDAR_VTLHELPER.getPreviousMonthName() posts">&laquo;</a>
+											$BLOJSOM_CALENDAR_VTLHELPER.getCurrentMonthName()
+											<a href="$BLOJSOM_CALENDAR_VTLHELPER.getNextMonthLink()"  title="Click here to see $BLOJSOM_CALENDAR_VTLHELPER.getNextMonthName() posts">&raquo;</a>
+										</caption>
+										<thead>
+											<tr>#foreach($downame in $BLOJSOM_CALENDAR.getShortDayOfWeekNames())#if($downame)<th>$downame</th>#end#end</tr>
+										</thead>
+										<tbody>
+											#foreach($number in [1..6])<tr>$BLOJSOM_CALENDAR_VTLHELPER.getCalendarRow($number)</tr>#end
+
+										</tbody>
+									</table>
+								</div>
+
+								<div id="links">
+									<div>
+										<h5>About:</h5>
+										<p><a href="mailto:$BLOJSOM_PLUGIN_SIMPLE_OBFUSCATION.obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())" title="Click here to contact the author of this blog" class="rounded"><span>$BLOJSOM_BLOG.getBlogOwner()</span></a></p>
+									</div>
+
+									<div>
+										<h5>Categories:</h5>
+										<ul>
+										#foreach($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+											#if ($blogCategory.getName())
+												#multilineLink($blogCategory.getName().split(" "))
+											#else
+												#multilineLink($blogCategory.getCategory().split(" "))
+											#end
+
+											<li><a href="$blogCategory.getCategoryURL()" title="Click here to view the entire contents of the category" class="rounded">$multilineText</a></li>
+										#end
+
+										</ul>
+									</div>
+
+									#set($entryCount = 0)
+									#foreach($entry in $BLOJSOM_ENTRIES)#set($entryCount = $entryCount + 1)#end
+									#if (!$BLOJSOM_PERMALINK && $entryCount > 0)
+									<div>
+										<h5>Recently:</h5>
+										<ul>
+										#foreach($entry in $BLOJSOM_ENTRIES)
+											#friendlyPermalink($entry)
+											#multilineLink($entry.getTitle().split(" "))
+
+											<li><a href="$entryLink" title="Click here to view the whole post" class="rounded">$multilineText</a></li>
+										#end
+
+										</ul>
+									</div>
+									#end
+
+									<div>
+										<h5>Syndication:</h5>
+										<p><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf" title="Click here to view the XML feed of this blog" class="rounded"><span>XML</span></a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2" title="Click here to view the RSS feed of this blog" class="rounded"><span>RSS</span></a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom" title="Click here to view the Atom feed of this blog" class="rounded"><span>ATOM</span></a></p>
+									</div>
+
+									<div id="blojsom">
+										<p><a href="http://blojsom.sf.net" title="Click here to visit the homepage of the blojsom project"><img src="$BLOJSOM_BLOG.getBlogBaseURL()/resources/$BLOJSOM_USER/asual-poweredby.jpg" alt="Powered by blojsom" /></a></p>
+									</div>
+
+								</div>
+

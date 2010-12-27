@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email
+END
+SendEmailPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email/SendEmailPlugin.java
+END
+EmailConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email/EmailConstants.java
+END
+SimpleAuthenticator.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email/SimpleAuthenticator.java
+END
+EmailUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email/EmailUtils.java
+END
+EmailMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email/EmailMessage.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/email/package.html
+END

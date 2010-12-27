@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin
+END
+EditBlogEntriesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogEntriesPlugin.java
+END
+BaseAdminPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/BaseAdminPlugin.java
+END
+ListWebAdminPluginsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/ListWebAdminPluginsPlugin.java
+END
+FileUploadPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/FileUploadPlugin.java
+END
+EditBlogPermissionsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogPermissionsPlugin.java
+END
+EditBlogFlavorsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogFlavorsPlugin.java
+END
+WebAdminPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/WebAdminPlugin.java
+END
+ForgottenPasswordPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/ForgottenPasswordPlugin.java
+END
+BulkResponseManagement.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/BulkResponseManagement.java
+END
+ViewBlogUserPropertiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/ViewBlogUserPropertiesPlugin.java
+END
+EditBlogPluginsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogPluginsPlugin.java
+END
+EditBlogCategoriesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogCategoriesPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/package.html
+END
+PermissionedPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/PermissionedPlugin.java
+END
+EditBlogPropertiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogPropertiesPlugin.java
+END
+EditBlogTemplatesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogTemplatesPlugin.java
+END
+EditBlogAuthorizationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogAuthorizationPlugin.java
+END
+EditBlogPreferencesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogPreferencesPlugin.java
+END
+ThemeSwitcherPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/ThemeSwitcherPlugin.java
+END
+EditBlogsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/plugins/src/org/blojsom/plugin/admin/EditBlogsPlugin.java
+END

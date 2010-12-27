@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event
+END
+CategoryAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/CategoryAddedEvent.java
+END
+ProcessEntryEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/ProcessEntryEvent.java
+END
+AuthorizationEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/AuthorizationEvent.java
+END
+EntryEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/EntryEvent.java
+END
+CategoryDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/CategoryDeletedEvent.java
+END
+EntryUpdatedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/EntryUpdatedEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/package.html
+END
+ProcessUserEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/ProcessUserEvent.java
+END
+CategoryEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/CategoryEvent.java
+END
+UserEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/UserEvent.java
+END
+AuthorizationAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/AuthorizationAddedEvent.java
+END
+EntryAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/EntryAddedEvent.java
+END
+CategoryUpdatedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/CategoryUpdatedEvent.java
+END
+ProcessRequestEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/ProcessRequestEvent.java
+END
+AuthorizationDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/AuthorizationDeletedEvent.java
+END
+EntryDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/admin/event/EntryDeletedEvent.java
+END

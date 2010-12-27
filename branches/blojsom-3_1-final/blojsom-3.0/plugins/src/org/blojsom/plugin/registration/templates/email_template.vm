@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>$subject
+    </title>
+    <!--
+         Your email client cannot read HTML.
+         -->
+    <style type="text/css">
+        body {
+            font-family: Arial, Helvetica, Sans-serif;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<p>Dear $name:
+</p>
+
+<p>Thank you for registering for $blogName.
+</p>
+
+<p>Your username is $username and your password is $password. Please activate
+    your account by
+    <a href="$activationUrl">clicking here
+    </a>. If you are not using HTML email you may copy and paste the following
+    link into your browser to activate your account.
+</p>
+
+<div>
+    <pre>$activationUrl</pre>
+</div>
+<p>Once you have activated
+    your account you may login at any time at
+    <a href="$blogUrl">$blogUrl
+    </a>.
+    You may change your password at any time after you login to the site.
+</p>
+
+<p>We respect your privacy. Any information you submit will be used in accordance with our
+    <a href="$privacyUrl">Privacy Policy
+    </a>. We look forward to your participation.
+</p>
+
+<p>Sincerely,
+    <br/>
+    $blogOwner
+</p>
+</body>
+</html>

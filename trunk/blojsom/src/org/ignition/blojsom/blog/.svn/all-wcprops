@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/blojsom/!svn/ver/1261/trunk/blojsom/src/org/ignition/blojsom/blog
+END
+FileBackedBlogEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/1256/trunk/blojsom/src/org/ignition/blojsom/blog/FileBackedBlogEntry.java
+END
+BlogCategory.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/1261/trunk/blojsom/src/org/ignition/blojsom/blog/BlogCategory.java
+END
+Blog.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/1257/trunk/blojsom/src/org/ignition/blojsom/blog/Blog.java
+END
+BlogEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/1261/trunk/blojsom/src/org/ignition/blojsom/blog/BlogEntry.java
+END
+Trackback.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/438/trunk/blojsom/src/org/ignition/blojsom/blog/Trackback.java
+END
+BlogComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/438/trunk/blojsom/src/org/ignition/blojsom/blog/BlogComment.java
+END
+FileBackedBlogCategory.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/1256/trunk/blojsom/src/org/ignition/blojsom/blog/FileBackedBlogCategory.java
+END
+BlojsomConfigurationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/904/trunk/blojsom/src/org/ignition/blojsom/blog/BlojsomConfigurationException.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/3/trunk/blojsom/src/org/ignition/blojsom/blog/package.html
+END

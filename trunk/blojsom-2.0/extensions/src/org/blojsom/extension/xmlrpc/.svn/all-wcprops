@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/3133/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/xmlrpc
+END
+BlojsomXMLRPCServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3131/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/xmlrpc/BlojsomXMLRPCServlet.java
+END
+BlojsomXMLRPCConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3044/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/xmlrpc/BlojsomXMLRPCConstants.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/xmlrpc/package.html
+END

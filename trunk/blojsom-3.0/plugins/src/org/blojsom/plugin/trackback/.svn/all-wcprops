@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback
+END
+trackback-plugin-email-template-html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/3434/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/trackback-plugin-email-template-html.vm
+END
+trackback-plugin-email-template-text.vm
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/3434/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/trackback-plugin-email-template-text.vm
+END
+TrackbackPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/TrackbackPlugin.java
+END
+TrackbackModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/TrackbackModerationPlugin.java
+END
+RecentTrackbacksPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/RecentTrackbacksPlugin.java
+END
+AutoTrackbackPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/AutoTrackbackPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3135/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/trackback/package.html
+END

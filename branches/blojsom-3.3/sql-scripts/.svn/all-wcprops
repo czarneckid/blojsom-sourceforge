@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/blojsom/!svn/ver/3693/branches/blojsom-3.3/sql-scripts
+END
+blojsom-3_0-blojsom-3_1-upgrade-mssql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-3_0-blojsom-3_1-upgrade-mssql.sql
+END
+blojsom-full-initial-data-postgresql-less-text.sql
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-postgresql-less-text.sql
+END
+blojsom-postgresql-less-text.sql
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-postgresql-less-text.sql
+END
+blojsom-full-initial-data-derby-embedded.sql
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-derby-embedded.sql
+END
+blojsom-3_0-blojsom-3_1-upgrade-postgresql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-3_0-blojsom-3_1-upgrade-postgresql.sql
+END
+blojsom-full-initial-data-postgresql-lite.sql
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-postgresql-lite.sql
+END
+blojsom-3_0-blojsom-3_1-upgrade-oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-3_0-blojsom-3_1-upgrade-oracle.sql
+END
+blojsom-3_0-blojsom-3_1-upgrade-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-3_0-blojsom-3_1-upgrade-mysql.sql
+END
+blojsom-full-initial-data-mssql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-mssql.sql
+END
+blojsom-postgresql-lite.sql
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-postgresql-lite.sql
+END
+blojsom-mssql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-mssql.sql
+END
+blojsom-3_2-blojsom-3_3-upgrade-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-3_2-blojsom-3_3-upgrade-mysql.sql
+END
+blojsom-full-initial-data-postgresql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-postgresql.sql
+END
+blojsom-full-initial-data-oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-oracle.sql
+END
+blojsom-full-initial-data-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-mysql.sql
+END
+blojsom-postgresql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-postgresql.sql
+END
+blojsom-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-mysql.sql
+END
+blojsom-full-initial-data-h2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-h2.sql
+END
+blojsom-h2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/sql-scripts/blojsom-h2.sql
+END
+blojsom-full-initial-data-hsqldb.sql
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3693/branches/blojsom-3.3/sql-scripts/blojsom-full-initial-data-hsqldb.sql
+END

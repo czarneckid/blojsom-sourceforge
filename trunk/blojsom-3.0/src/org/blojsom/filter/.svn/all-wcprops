@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/filter
+END
+PageFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/filter/PageFilter.java
+END
+SkipEntriesFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/filter/SkipEntriesFilter.java
+END
+PermalinkFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/filter/PermalinkFilter.java
+END
+FeedFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/src/org/blojsom/filter/FeedFilter.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/blojsom/!svn/ver/3135/trunk/blojsom-3.0/src/org/blojsom/filter/package.html
+END

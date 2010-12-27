@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event
+END
+BlojsomEventBroadcaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event/BlojsomEventBroadcaster.java
+END
+BlojsomEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event/BlojsomEvent.java
+END
+BlojsomFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event/BlojsomFilter.java
+END
+BlojsomListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event/BlojsomListener.java
+END
+SimpleBlojsomEventBroadcaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event/SimpleBlojsomEventBroadcaster.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/2300/tags/blojsom-2_18-FINAL/blojsom-2.0/src/org/blojsom/event/package.html
+END

@@ -1,0 +1,80 @@
+## Autumn Theme by Cliffano Subagio - http://mbledug.com
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="#BlogLanguage()">
+	<head>
+		#parse( "autumn-head.vm" )
+	</head>
+	<body>
+		<div id="canvas">
+			<div id="header">
+				#parse( "autumn-header.vm" )
+			</div>
+			<div id="body" style="background: url(#Resource('autumn-body.gif')) repeat-y;">
+				<div id="leftColumn">
+					<div id="content">
+						#set( $totalEntries = 0)
+						#foreach ($entry in $BLOJSOM_ENTRIES)
+							#parse( "autumn-entry.vm" )
+							#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments())
+								#if ($entry.getComments())
+									<h3>Comments:</h3>
+								#end
+								#foreach ($entryComment in $entry.getComments())
+									<div class="comment">
+										<p>
+											Left on $entryComment.getDateAsFormat('EEE, d MMM yyyy HH:mm') by #if ($entryComment.getAuthorEmail() && $entryComment.getAuthorEmail().length() > 0) <a href="mailto:$entryComment.getAuthorEmail()">$entryComment.getAuthor()</a> #else $entryComment.getAuthor() #end #if ($entryComment.getAuthorURL() && $entryComment.getAuthorURL().length() > 0) &nbsp;[<a href="$entryComment.getAuthorURL()" rel="nofollow">$entryComment.getAuthorURL()</a>] #end
+										</p>
+										<p>
+											$entryComment.getComment()
+										</p>
+									</div>
+									<br/>
+								#end
+								<form id="commentform" method="post" action=".">
+									<p>
+										<input type="hidden" name="comment" value="y" />
+										<input type="hidden" name="page" value="comments" />
+										<input type="hidden" name="category" value="$BLOJSOM_REQUESTED_CATEGORY.getCategory()" />
+										<input type="hidden" name="permalink" value="$entry.getPermalink()" />
+									</p>
+									<p>
+										<span class="section">Author:</span> (<span class="mandatory">*</span>)
+										<br/>
+										<input type="text" name="author" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR)$BLOJSOM_COMMENT_PLUGIN_AUTHOR#end" class="fixed" />
+									</p>
+									<p>
+										<span class="section">E-mail:</span>
+										<br/>
+										<input type="text" name="authorEmail" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_EMAIL#end" class="fixed" />
+									</p>
+									<p>
+										<span class="section">URL:</span>
+										<br/>
+										<input type="text" name="authorURL" value="#if ($BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL)$BLOJSOM_COMMENT_PLUGIN_AUTHOR_URL#end" class="fixed" />
+									</p>
+									<p>
+										<span class="section">Comment:</span> (<span class="mandatory">*</span>)
+										<br/>
+										<textarea name="commentText" id="commentText" rows="7" cols="40" onkeyup="reloadPreviewDiv();" class="fixed"></textarea>
+									</p>
+									<p>
+										<input type="checkbox" name="remember" #if ($BLOJSOM_COMMENT_PLUGIN_REMEMBER_ME)checked #end /> Remember me?
+									</p>
+									<p>
+										<input type="submit" name="submit" value="Comment" class="button" /><input type="reset" name="reset" value="Reset" class="button" />
+									</p>
+								</form>
+							#end
+						#end
+					</div>
+					<div id="footer">
+						#parse( "autumn-footer.vm" )
+					</div>
+				</div>
+				<div id="rightColumn">
+					#parse( "autumn-sidebar.vm" )
+				</div>
+			</div>
+		</div>
+	</body>
+</html>	

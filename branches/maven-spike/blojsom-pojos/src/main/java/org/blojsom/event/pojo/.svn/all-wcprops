@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3877/branches/maven-spike/blojsom-pojos/src/main/java/org/blojsom/event/pojo
+END
+BasicEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3866/branches/maven-spike/blojsom-pojos/src/main/java/org/blojsom/event/pojo/BasicEvent.java
+END
+BasicFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3871/branches/maven-spike/blojsom-pojos/src/main/java/org/blojsom/event/pojo/BasicFilter.java
+END
+BasicListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3872/branches/maven-spike/blojsom-pojos/src/main/java/org/blojsom/event/pojo/BasicListener.java
+END
+BasicEventBroadcaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/3876/branches/maven-spike/blojsom-pojos/src/main/java/org/blojsom/event/pojo/BasicEventBroadcaster.java
+END

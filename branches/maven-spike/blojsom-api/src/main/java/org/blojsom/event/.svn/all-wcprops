@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/event
+END
+Event.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/event/Event.java
+END
+Filter.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/event/Filter.java
+END
+Listener.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/event/Listener.java
+END
+package-info.html
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/event/package-info.html
+END
+EventBroadcaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/event/EventBroadcaster.java
+END

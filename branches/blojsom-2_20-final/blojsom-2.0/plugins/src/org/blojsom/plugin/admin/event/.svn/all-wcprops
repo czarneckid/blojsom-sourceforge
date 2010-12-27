@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/2416/branches/blojsom-2_20-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/event
+END
+AddBlogEntryEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/2416/branches/blojsom-2_20-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/event/AddBlogEntryEvent.java
+END
+DeletedBlogEntryEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/2416/branches/blojsom-2_20-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/event/DeletedBlogEntryEvent.java
+END
+UpdatedBlogEntryEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/2416/branches/blojsom-2_20-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/event/UpdatedBlogEntryEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/2416/branches/blojsom-2_20-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/event/package.html
+END

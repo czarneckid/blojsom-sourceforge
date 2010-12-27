@@ -1,0 +1,22 @@
+						<dt>Topics</dt>
+						<dd>
+							<form method="post" action=".">
+							<fieldset id="topics">
+								<select name="url" onchange="if (this.selectedIndex > 0) location.href=this[this.selectedIndex].value;">
+									<option value="#" selected="selected">--Pick one--</option>
+									#foreach ($blogCategory in $BLOJSOM_CATEGORIES)
+										<option value="$blogCategory.getCategoryURL()">
+										#if ($blogCategory.getName())
+											$blogCategory.getName()
+										#else 
+											$blogCategory.getCategory()
+										#end
+										</option>
+									#end
+								</select>
+								</fieldset>
+								<noscript><fieldset id="nojsbutton"><input type="submit" value="Go" /></fieldset></noscript>
+							</form>
+						</dd>
+						
+					

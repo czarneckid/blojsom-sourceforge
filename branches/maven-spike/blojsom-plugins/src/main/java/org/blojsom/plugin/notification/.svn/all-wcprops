@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/notification
+END
+AbstractVelocityEmailNotification.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/notification/AbstractVelocityEmailNotification.java
+END
+EmailNotificationFailedException.java
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/notification/EmailNotificationFailedException.java
+END
+Notification.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/notification/Notification.java
+END
+AbstractNotification.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/notification/AbstractNotification.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/notification/package.html
+END

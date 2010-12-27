@@ -1,0 +1,218 @@
+/**
+ * Copyright (c) 2003, David A. Czarnecki
+ * All rights reserved.
+ *
+ * Portions Copyright (c) 2003 by Mark Lussier
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the "David A. Czarnecki" and "blojsom" nor the names of
+ * its contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * Products derived from this software may not be called "blojsom",
+ * nor may "blojsom" appear in their name, without prior written permission of
+ * David A. Czarnecki.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.ignition.blojsom.extension.xmlrpc;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.xmlrpc.XmlRpcServer;
+import org.ignition.blojsom.blog.Blog;
+import org.ignition.blojsom.blog.BlojsomConfigurationException;
+import org.ignition.blojsom.extension.xmlrpc.handlers.AbstractBlojsomAPIHandler;
+import org.ignition.blojsom.util.BlojsomConstants;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Map;
+import java.util.HashMap;
+
+
+/**
+ * Blojsom XML-RPC Servlet
+ *
+ * This servlet uses the Jakarta XML-RPC Library (http://ws.apache.org/xmlrpc)
+ *
+ * @author Mark Lussier
+ * @version $Id: BlojsomXMLRPCServlet.java,v 1.7 2003-04-02 16:56:20 intabulas Exp $
+ */
+public class BlojsomXMLRPCServlet extends HttpServlet implements BlojsomConstants {
+    private static final String BLOG_CONFIGURATION_IP = "blog-configuration";
+    private static final String DEFAULT_BLOJSOM_CONFIGURATION = "/WEB-INF/blojsom.properties";
+    private static final String BLOG_XMLRPC_CONFIGURATION_IP = "blog-xmlrpc-configuration";
+
+    private Log _logger = LogFactory.getLog(BlojsomXMLRPCServlet.class);
+
+    protected Blog _blog = null;
+
+    XmlRpcServer _xmlrpc;
+
+    /**
+     * Construct a new Blojsom XML-RPC servlet instance
+     */
+    public BlojsomXMLRPCServlet() {
+    }
+
+    /**
+     * Configure the XML-RPC API Handlers
+     *
+     * @param servletConfig Servlet configuration information
+     */
+    private void configureAPIHandlers(ServletConfig servletConfig) {
+        String templateConfiguration = servletConfig.getInitParameter(BLOG_XMLRPC_CONFIGURATION_IP);
+        Properties handlerMapProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(templateConfiguration);
+        try {
+            handlerMapProperties.load(is);
+            is.close();
+            Iterator handlerIterator = handlerMapProperties.keySet().iterator();
+            while (handlerIterator.hasNext()) {
+                String handlerName = (String) handlerIterator.next();
+                String handlerClassName = handlerMapProperties.getProperty(handlerName);
+                Class handlerClass = Class.forName(handlerClassName);
+                AbstractBlojsomAPIHandler handler = (AbstractBlojsomAPIHandler) handlerClass.newInstance();
+                handler.setBlog(_blog);
+                _xmlrpc.addHandler(handler.getName(), handler);
+                _logger.debug("Added [" + handler.getName() + "] API Handler : " + handlerClass);
+            }
+        } catch (InstantiationException e) {
+            _logger.error(e);
+        } catch (IllegalAccessException e) {
+            _logger.error(e);
+        } catch (ClassNotFoundException e) {
+            _logger.error(e);
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+    }
+
+    /**
+     * Configure the authorization table blog (user id's and and passwords)
+     *
+     * @param servletConfig Servlet configuration information
+     */
+    private void configureAuthorization(ServletConfig servletConfig) {
+        Map _authorization = new HashMap();
+
+        String authConfiguration = servletConfig.getInitParameter(BLOG_AUTHORIZATION_IP);
+        Properties authProperties = new Properties();
+        InputStream is = servletConfig.getServletContext().getResourceAsStream(authConfiguration);
+        try {
+            authProperties.load(is);
+            is.close();
+            Iterator authIterator = authProperties.keySet().iterator();
+            while (authIterator.hasNext()) {
+                String userid = (String) authIterator.next();
+                String password = authProperties.getProperty(userid);
+                _authorization.put(userid, password);
+            }
+
+            if (!_blog.setAuthorization(_authorization)) {
+                _logger.error("Authorization table could not be assigned");
+            }
+
+        } catch (IOException e) {
+            _logger.error(e);
+        }
+    }
+
+    /**
+     * Load blojsom configuration information
+     *
+     * @param context Servlet context
+     * @param filename blojsom configuration file to be loaded
+     */
+    public void processBlojsomCongfiguration(ServletContext context, String filename) {
+        Properties _configuration = new Properties();
+        InputStream _cis = context.getResourceAsStream(filename);
+
+        try {
+            _configuration.load(_cis);
+            _cis.close();
+            _blog = new Blog(_configuration);
+        } catch (IOException e) {
+            _logger.error(e);
+        } catch (BlojsomConfigurationException e) {
+            _logger.error(e);
+        }
+    }
+
+    /**
+     * Initialize the blojsom XML-RPC servlet
+     *
+     * @param servletConfig Servlet configuration information
+     * @throws ServletException If there is an error initializing the servlet
+     */
+    public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+        String _cfgfile = servletConfig.getInitParameter(BLOG_CONFIGURATION_IP);
+
+        if (_cfgfile == null || _cfgfile.equals("")) {
+            _logger.info("blojsom configuration not specified, using " + DEFAULT_BLOJSOM_CONFIGURATION);
+            _cfgfile = DEFAULT_BLOJSOM_CONFIGURATION;
+        }
+
+        processBlojsomCongfiguration(servletConfig.getServletContext(), _cfgfile);
+        configureAuthorization(servletConfig);
+
+        _logger.info("Blojsom home is [" + _blog.getBlogHome() + "]");
+        _xmlrpc = new XmlRpcServer();
+
+        configureAPIHandlers(servletConfig);
+    }
+
+    /**
+     * Service an XML-RPC request by passing the request to the proper handler
+     *
+     * @param httpServletRequest Request
+     * @param httpServletResponse Response
+     * @throws ServletException If there is an error processing the request
+     * @throws IOException If there is an error during I/O
+     */
+    protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        byte[] result = _xmlrpc.execute(httpServletRequest.getInputStream());
+        String content = new String(result);
+        httpServletResponse.setContentType("text/xml");
+        httpServletResponse.setContentLength(content.length());
+        OutputStreamWriter osw = new OutputStreamWriter(httpServletResponse.getOutputStream(), "UTF-8");
+        osw.write(content);
+        osw.flush();
+
+    }
+
+    /**
+     * Called when removing the servlet from the servlet container
+     */
+    public void destroy() {
+    }
+}

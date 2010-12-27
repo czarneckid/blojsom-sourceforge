@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+<document>
+    <header>
+        <title>preview plugin</title>
+    </header>
+
+    <body>
+        <section>
+            <title>description</title>
+            <p>
+                The preview plugin allows you to hide "preview" entries from normal display. Preview entries
+                are identified with a configurable prefix at the start of the title of the blog entry. By default,
+                the preview plugin uses the prefix of "PREVIEW" to indicate that an entry is preview only.
+
+            </p>
+        </section>
+        <section>
+            <title>installation and setup</title>
+            <p>
+                In your
+                <em>plugin.properties</em> file, add the following line:
+            </p>
+            <source>
+                preview=org.ignition.blojsom.plugin.limiter.PreviewPlugin
+            </source>
+            <p>
+
+                You may then add "preview" to one of the flavor-based plugin chains. For example:
+            </p>
+            <source>
+                html.blojsom-plugin-chain=preview
+            </source>
+            <p>
+
+                The preview plugin can use its own configuration file,
+                <em>preview.properties</em>,
+                that is referenced in
+                <em>web.xml</em>.
+            </p>
+            <source>
+                &lt;init-param&gt;
+                &lt;param-name&gt;plugin-preview&lt;/param-name&gt;
+                &lt;param-value&gt;/WEB-INF/preview.properties&lt;/param-value&gt;
+                &lt;/init-param&gt;
+            </source>
+            <p>
+
+                The
+                <em>preview.properties</em> contains 2 configurable parameters:
+            </p>
+            <source>
+                TITLE_PREFIX=PREVIEW
+                PREVIEW_PASSWORD=true
+            </source>
+            <p>
+                <em>TITLE_PREFIX</em> controls the prefix that indicates an entry is a preview-only entry
+                <br/>
+                <em>PREVIEW_PASSWORD</em> is the password that must be supplied for the "preview" URL parameter
+                to have preview entries displayed
+                <br/>
+
+            </p>
+        </section>
+        <section>
+            <title>usage and URL parameters</title>
+        </section>
+        <section>
+            <title>usage</title>
+            <p>
+                To mark an entry as preview, use the configured prefix at the beginning of the title of your blog entry.
+
+            </p>
+        </section>
+        <section>
+            <title>URL parameters</title>
+            <p>The following table describes the URL parameters that affect the output of the preview plugin.
+            </p>
+            <table>
+                <tr>
+                    <th>URL parameter</th>
+                    <th>Accepted values</th>
+                    <th>Usage</th>
+                </tr>
+                <tr>
+                    <td>preview</td>
+                    <td>By default, the preview plugin uses the value of
+                        "true" to indicate that preview entries should be displayed. However, if you have
+                        configured the preview plugin to use a different value to indicate that preview entries
+                        should be displayed, then you will need to use that value for the "preview" parameter.</td>
+                    <td>/blog/?preview=true</td>
+                </tr>
+            </table>
+
+
+        </section>
+    </body>
+</document>
+

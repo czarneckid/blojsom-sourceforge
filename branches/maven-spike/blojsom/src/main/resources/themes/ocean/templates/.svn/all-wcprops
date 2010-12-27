@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates
+END
+ocean-column.vm
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates/ocean-column.vm
+END
+ocean-footer.vm
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates/ocean-footer.vm
+END
+ocean-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates/ocean-entry.vm
+END
+ocean-head.vm
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates/ocean-head.vm
+END
+ocean.vm
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates/ocean.vm
+END
+ocean-header.vm
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/themes/ocean/templates/ocean-header.vm
+END

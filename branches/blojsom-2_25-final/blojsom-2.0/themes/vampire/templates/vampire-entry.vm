@@ -1,0 +1,33 @@
+                        #friendlyPermalink($entry)
+                        #set($permalink = $entryLink)
+
+						<div class="entry">
+
+							<h3><a href="$permalink" title="$entry.getTitle()">$entry.getTitle()</a></h3>
+							<p class="links">
+								[<a href="$entry.getBlogCategory().getCategoryURL()" title="$entry.getBlogCategory().getCategory()">#if ($entry.getBlogCategory().getName())$entry.getBlogCategory().getName()#else$entry.getBlogCategory().getCategory()#end </a>] [<a href="$permalink" title="Permalink">Permalink</a>]
+							</p>
+							<div class="post">
+								$entry.getDescription()
+							</div>
+							<p>
+								#if ($entry.getMetaData() && $entry.getMetaData().get("blog-entry-author"))<span class="blue">Posted on $entry.getDateAsFormat('EEE, d MMM yyyy HH:mm') by $entry.getMetaData().get("blog-entry-author") ($!entry.getMetaData().get("blojsom-plugin-days-since-posted") day(s) old)</span>#end
+
+								#if ($BLOJSOM_COMMENTS_ENABLED.booleanValue() && $entry.supportsComments() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-comments-disabled")))<span>Comments [<a href="$permalink?page=comments">$entry.getNumComments()</a>]</span>#end
+
+								#if ($BLOJSOM_TRACKBACK_PLUGIN_ENABLED.booleanValue() && $entry.supportsTrackbacks() && ($entry.getMetaData() && !$entry.getMetaData().containsKey("blog-entry-trackbacks-disabled")))<span>Trackbacks [<a href="$permalink?page=trackback">$entry.getNumTrackbacks()</a>]</span>#end
+
+							</p>
+							<!-- Trackback Auto Discovery -->
+							#set( $totalEntries = $totalEntries + 1)
+							#if ($BLOJSOM_PERMALINK)
+								#set( $blogDescription = $entry.getEscapedDescription() )
+								#if ($blogDescription.length() > 255 )
+									#set( $ellipses = "..." )
+									#set( $blogDescription = "$blogDescription.substring(0,252)$ellipses" )
+								#end
+							#end
+
+						</div>
+
+

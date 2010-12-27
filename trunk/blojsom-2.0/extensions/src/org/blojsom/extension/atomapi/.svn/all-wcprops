@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3044/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/atomapi
+END
+AtomAPIServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3044/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/atomapi/AtomAPIServlet.java
+END
+AtomUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3044/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/atomapi/AtomUtils.java
+END
+AtomAPIConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3044/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/atomapi/AtomAPIConstants.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/1337/trunk/blojsom-2.0/extensions/src/org/blojsom/extension/atomapi/package.html
+END

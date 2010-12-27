@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/widget/event
+END
+RegisterWidgetEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/widget/event/RegisterWidgetEvent.java
+END
+ProcessWidgetRequest.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/widget/event/ProcessWidgetRequest.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/plugins/src/org/blojsom/plugin/widget/event/package.html
+END

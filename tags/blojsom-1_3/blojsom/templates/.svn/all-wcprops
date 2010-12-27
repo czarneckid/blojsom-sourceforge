@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/templates
+END
+html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/templates/html.vm
+END
+rss.vm
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/templates/rss.vm
+END
+rss2.vm
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/templates/rss2.vm
+END
+rdf.vm
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/blojsom/!svn/ver/173/tags/blojsom-1_3/blojsom/templates/rdf.vm
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/src/org/ignition/blojsom/util
+END
+BlojsomConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/src/org/ignition/blojsom/util/BlojsomConstants.java
+END
+BlojsomUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/src/org/ignition/blojsom/util/BlojsomUtils.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/994/branches/blojsom-1_9-final/blojsom/src/org/ignition/blojsom/util/package.html
+END

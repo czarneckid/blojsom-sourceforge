@@ -1,0 +1,3 @@
+						#if ($BLOJSOM_PERMALINK)
+							#TrackbackAutoDiscovery($entry true)
+						#end

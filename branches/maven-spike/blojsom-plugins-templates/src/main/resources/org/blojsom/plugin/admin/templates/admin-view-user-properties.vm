@@ -1,0 +1,45 @@
+#AdminPageTitle('user.properties.page.header' 'Properties')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+
+                    <!-- Current user properties -->
+                    <div class="yui-g stdotcom">
+                        <h3>#adminResource('current.user.properties.text' 'Current user properties')</h3>
+
+                        #foreach ($blogUserID in $BLOJSOM_PLUGIN_VIEW_USER_PROPERTIES_USER_MAP.keySet())
+                        #set ($propertyList = $BLOJSOM_PLUGIN_VIEW_USER_PROPERTIES_USER_MAP.get($blogUserID))
+                        <table width="100%">
+                            <tr>
+                                <td>$blogUserID</td>
+                                <td>
+                                    <ul id="userproperties">
+                                        #foreach ($key in $propertyList.keySet())
+                                        <li>$key: $propertyList.get($key)</li>
+                                        #end
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                        #end
+                    </div>
+                </div>
+            </div>
+            <div class="yui-b"></div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

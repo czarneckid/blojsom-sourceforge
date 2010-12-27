@@ -1,0 +1,30 @@
+
+		<title>#BlogName()</title>
+		<!-- Meta Information -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="MSSmartTagsPreventParsing" content="true"/>
+		<meta name="generator" content="$BLOJSOM_VERSION"/>
+		<!-- Site Feed Autodiscovery-->
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="#BlogURL()/feed/"/>
+		<!-- Atom API Posting Autodiscovery -->
+		<link rel="service.post" type="application/atom+xml" title="#BlogName()" href="#BlogBaseURL()/atomapi/$BLOJSOM_BLOG_ID/"/>
+		<!-- Blogger API Autodiscovery -->
+		<link rel="EditURI" type="application/rsd+xml" title="RSD" href="#BlogURL()/feed/rsd/"/>
+		<link rel="shortcut icon" href="#BlogBaseURL()/favicon.ico" />
+		<link rel="stylesheet" rev="stylesheet" href="#Resource('asual.css')" type="text/css" media="screen" />
+		<link rel="stylesheet" rev="stylesheet" href="#Resource('asual-fixed.css')" title="fixed" type="text/css" media="screen" />
+		<link rel="stylesheet" rev="stylesheet" href="#Resource('asual-elastic.css')" title="elastic" type="text/css" media="screen" />
+        <!--[if IE 7]>
+        <link rel="stylesheet" rev="stylesheet" href="#Resource('asual-ie7.css')" type="text/css" media="screen" />
+        <![endif]-->
+		<script type="text/javascript" src="#Resource('asual.js')"></script>
+
+        #if ($BLOJSOM_PERMALINK)
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        #if ($velocityCount == 1)
+        <!-- Pingback link -->
+        #XMLRPCLink($entry 'xmlrpc')
+        <link rel="pingback" href="$xmlrpcLink" />
+        #end
+        #end
+        #end

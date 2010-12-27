@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment
+END
+comment-plugin-email-template-html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3434/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/comment-plugin-email-template-html.vm
+END
+comment-plugin-email-template-text.vm
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3434/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/comment-plugin-email-template-text.vm
+END
+CommentPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/CommentPlugin.java
+END
+CommentModerationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/CommentModerationPlugin.java
+END
+RecentCommentsPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/RecentCommentsPlugin.java
+END
+MathCommentAuthenticationPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3701/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/MathCommentAuthenticationPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/3135/trunk/blojsom-3.0/plugins/src/org/blojsom/plugin/comment/package.html
+END

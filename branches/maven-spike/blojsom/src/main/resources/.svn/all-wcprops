@@ -1,0 +1,209 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources
+END
+Category.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/Category.hbm.xml
+END
+Pingback.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/Pingback.hbm.xml
+END
+blojsom-full-initial-data-postgresql-less-text.sql
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-postgresql-less-text.sql
+END
+Trackback.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/Trackback.hbm.xml
+END
+blojsom-3_0-blojsom-3_1-upgrade-postgresql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-3_0-blojsom-3_1-upgrade-postgresql.sql
+END
+blojsom-full-initial-data-derby-embedded.sql
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-derby-embedded.sql
+END
+blojsom-full-initial-data-postgresql-lite.sql
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-postgresql-lite.sql
+END
+rome.properties
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/rome.properties
+END
+blojsom-full-initial-data-mssql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3774/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-mssql.sql
+END
+blojsom-full-initial-data-postgresql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-postgresql.sql
+END
+blojsom-full-initial-data-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-mysql.sql
+END
+Entry.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/Entry.hbm.xml
+END
+Comment.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/Comment.hbm.xml
+END
+blojsom-full-initial-data-h2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-h2.sql
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/log4j.properties
+END
+blojsom-full-initial-data-hsqldb.sql
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-hsqldb.sql
+END
+User.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/User.hbm.xml
+END
+blojsom-plugins.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/blojsom/!svn/ver/3778/branches/maven-spike/blojsom/src/main/resources/blojsom-plugins.xml
+END
+Blog.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/Blog.hbm.xml
+END
+blojsom-3_0-blojsom-3_1-upgrade-mssql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-3_0-blojsom-3_1-upgrade-mssql.sql
+END
+blojsom-helper-beans-include.xml
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3741/branches/maven-spike/blojsom/src/main/resources/blojsom-helper-beans-include.xml
+END
+blojsom-postgresql-less-text.sql
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-postgresql-less-text.sql
+END
+blojsom-3_0-blojsom-3_1-upgrade-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-3_0-blojsom-3_1-upgrade-mysql.sql
+END
+blojsom-3_0-blojsom-3_1-upgrade-oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-3_0-blojsom-3_1-upgrade-oracle.sql
+END
+blojsom-commentapi.xml
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-commentapi.xml
+END
+blojsom-postgresql-lite.sql
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-postgresql-lite.sql
+END
+blojsom-mssql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-mssql.sql
+END
+blojsom-3_2-blojsom-3_3-upgrade-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-3_2-blojsom-3_3-upgrade-mysql.sql
+END
+blojsom-full-initial-data-oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3773/branches/maven-spike/blojsom/src/main/resources/blojsom-full-initial-data-oracle.sql
+END
+blojsom.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/3741/branches/maven-spike/blojsom/src/main/resources/blojsom.xml
+END
+blojsom-postgresql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/3767/branches/maven-spike/blojsom/src/main/resources/blojsom-postgresql.sql
+END
+blojsom-mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-mysql.sql
+END
+blojsom-xmlrpc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-xmlrpc.xml
+END
+blojsom-h2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/3724/branches/maven-spike/blojsom/src/main/resources/blojsom-h2.sql
+END

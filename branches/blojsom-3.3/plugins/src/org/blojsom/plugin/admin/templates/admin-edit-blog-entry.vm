@@ -1,0 +1,258 @@
+#AdminPageTitle('edit.blog.entry.header' 'Edit Blog Entry')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body>
+    <div id="wrap">
+
+        <h1>Blojsom Administration Interface</h1>
+
+        #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+
+        #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+
+        #set($useRichtextEditor = ("true" == $BLOJSOM_USER_OBJECT.getMetaData().get("use-richtext-editor")))
+        #set($isPublished = ("published" == $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getStatus()))
+
+        #if ($useRichtextEditor)
+        <script language="javascript" type="text/javascript" src="#BlogBaseAdminURL()/administration/tiny_mce/tiny_mce.js"></script>
+        <script language="javascript" type="text/javascript">
+        tinyMCE.init({
+            theme        : "advanced",
+            mode         : "exact",
+            convert_urls : false,
+            theme_advanced_toolbar_location     : "top",
+            theme_advanced_resize_horizontal    : false,
+		    theme_advanced_path_location        : "bottom",
+            theme_advanced_toolbar_align        : "left",
+            theme_advanced_resizing             : true,
+            theme_advanced_source_editor_height : "600",
+            elements     : "blog-entry-description"
+        });
+        </script>
+        #else
+        <script type="text/javascript">
+            function reloadPreviewDiv() {
+                var previewString = document.getElementById('blog-entry-description').value;
+                document.getElementById('blog-entry-preview').innerHTML = previewString;
+            }
+
+            function loadPreviewText() {
+                document.getElementById('blog-entry-preview').innerHTML = document.getElementById('blog-entry-description').value;
+            }
+        </script>
+        #end
+
+        <script type="text/javascript">
+            function changeToDraft() {
+                document.getElementById('status').value = "draft";
+            }
+
+            function changeToPublish() {
+                document.getElementById('status').value = "published";
+            }
+        </script>
+
+        <script type="text/javascript">
+            function dropOut(id) {
+                new Effect.DropOut(id);
+            }
+
+            function approveResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, markSpamElement, unmarkSpamElement) {
+                Element.hide(shownElement);
+                Element.show(hiddenElement);
+                Element.hide(unmarkSpamElement);
+                Element.show(markSpamElement);
+
+                var postbody = 'flavor=admin&action=ajax-approve-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
+            }
+
+            function unapproveResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, markSpamElement, unmarkSpamElement) {
+                Element.hide(shownElement);
+                Element.show(hiddenElement);
+                Element.hide(unmarkSpamElement);
+                Element.show(markSpamElement);
+
+                var postbody = 'flavor=admin&action=ajax-unapprove-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
+            }
+
+            function markSpamResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, approveElement, unapproveElement) {
+                Element.hide(shownElement);
+                Element.show(hiddenElement);
+                Element.show(approveElement);
+                Element.hide(unapproveElement);
+
+                var postbody = 'flavor=admin&action=ajax-mark-spam-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
+            }
+
+            function unmarkSpamResponseAJAX(responseID, responseType, responseElement, shownElement, hiddenElement, approveElement, unapproveElement) {
+                Element.hide(shownElement);
+                Element.show(hiddenElement);
+                Element.show(approveElement);
+                Element.hide(unapproveElement);
+
+                var postbody = 'flavor=admin&action=ajax-unmark-spam-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody});
+            }
+
+            function deleteResponseAJAX(responseID, responseType, responseElement) {
+                var postbody = 'flavor=admin&action=ajax-delete-response&plugins=edit-blog-entries&response-type=' + responseType + '&response-id=' + responseID;
+                new Ajax.Request('#BlogAdminURL()/', {method:'post', postBody:postbody, onSuccess:dropOut(responseElement)});
+            }
+        </script>
+
+        <div id="main">
+                #showErrorMessage()
+
+                <p>
+                    <form name="edit-blog-entry" action="." method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="action" value="edit-blog-entry"/>
+                        <input type="hidden" name="flavor" value="admin"/>
+                        <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                        <input type="hidden" name="blog-category-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getBlogCategoryId()"/>
+                        <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
+                        <input type="submit" name="submit" value="#adminResource('reload.blog.entry.text' 'Reload blog entry')"/>
+                    </form>
+                </p>
+
+                <!-- Edit blog entries form -->
+                <div class="mainClm">
+                    <h3>#adminResource('edit.blog.entry.header' 'Edit Blog Entry')</h3>
+                    <table>
+                        <form name="edit-blog-entries" action="." method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="update-blog-entry"/>
+                            <input type="hidden" name="flavor" value="admin"/>
+                            <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                            <input type="hidden" name="blog-entry-id" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getId()"/>
+                            <input type="hidden" id="status" name="status" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getStatus()"/>
+                            <tr>
+                                <td>#adminResource('blog.entry.title.text' 'Blog entry title')</td>
+                                <td><input type="text" size="50" name="blog-entry-title" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedTitle()"/></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>#adminResource('status.text' ''): <strong>$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getStatus()</strong></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.entry.text.text' 'Blog entry text')</td>
+                                #if (!$useRichtextEditor)
+                                <td><textarea rows="10" cols="80" name="blog-entry-description" id="blog-entry-description" onkeyup="reloadPreviewDiv();">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
+                                #else
+                                <td><textarea cols="80" name="blog-entry-description" id="blog-entry-description">$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getEscapedDescription()</textarea></td>
+                                #end
+                            </tr>
+                            #if (!$useRichtextEditor)
+                            <tr><td></td><td>
+                                <div id="quicktags">
+                                Quicktags: <script src="#BlogBaseAdminURL()/quicktags.js" language="JavaScript" type="text/javascript"></script>
+                                <script language="JavaScript" type="text/javascript">edToolbar();</script>
+                                </div></td>
+                            </tr>
+                            <script type="text/javascript">var edCanvas = document.getElementById('blog-entry-description');</script>
+                            <tr></tr>
+                            <tr>
+                                <td colspan="2"><h4>Preview</h4></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="blog-entry-preview">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            #end
+                            <tr>
+                                <td>#adminResource('category.text' 'Category')</td>
+                                <td>
+                                    <select name="blog-category-id">
+                                    #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+                                        <option value="$blogCategory.getId()" #if ($blogCategory.getId().equals($BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getBlogCategoryId())) selected #end>#CategoryDescription($blogCategory)</option>
+                                    #end
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.entry.trackbackURLs.text' 'Blog trackback URLs')</td>
+                                <td><textarea rows="3" cols="70" name="blog-trackback-urls"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.entry.pingURLs.text' 'Ping blog notification URLs?')</td>
+                                <td><input type="checkbox" name="ping-blog-urls" /></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.entry.send.pingbacks.text' 'Send pingbacks to URLs?')</td>
+                                <td><input type="checkbox" name="send-pingbacks" /></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.disable.comments.text' 'Disable comments?')</td>
+                                <td><input type="checkbox" name="blog-entry-comments-disabled" value="y" #if (!$!BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.allowsComments()) CHECKED #end/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.disable.trackbacks.text' 'Disable trackbacks?')</td>
+                                <td><input type="checkbox" name="blog-entry-trackbacks-disabled" value="y" #if (!$!BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.allowsTrackbacks()) CHECKED #end/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.disable.pingbacks.text' 'Disable pingbacks?')</td>
+                                <td><input type="checkbox" name="blog-entry-pingbacks-disabled" value="y" #if (!$!BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.allowsPingbacks()) CHECKED #end/></td>
+                            </tr>
+                            <tr>
+                                <td>#adminResource('blog.publish.text' 'Blog entry publish date and time') <br />(MM/dd/yyyy HH:mm:ss)</td>
+                                <td><input type="text" size="30" name="blog-entry-publish-datetime" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getDateAsFormat('MM/dd/yyyy HH:mm:ss')"/></td>
+                            </tr>
+                            #DisplayTemplateAdditions()
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    #if (!$isPublished)
+                                    <input type="submit" name="submitdraft" value="#adminResource('save.as.draft.text' '')" onclick="changeToDraft();"/>
+                                    <input type="submit" name="submitpublish" value="#adminResource('publish.text' '')" onclick="changeToPublish();"/>
+                                    #else
+                                    <input type="submit" name="submitpublish" value="#adminResource('publish.text' '')" onclick="changeToPublish();"/>
+                                    <input type="submit" name="submitdraft" value="#adminResource('save.as.draft.text' '')" onclick="changeToDraft();"/>
+                                    #end
+                                    <input type="reset" name="reset" value="#adminResource('reset.text' 'Reset')"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                #set($responseCounter = 1)
+                #foreach ($response in $BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_ENTRY.getResponses())
+                <div id="response$responseCounter">
+                    <div class="mainClm">
+                        <p>
+                            <strong>$responseCounter.</strong> $response.getDateAsFormat("yyyy-M-d @ h:m:s a", $BLOJSOM_BLOG.getBlogAdministrationLocale()) ( <strong>$response.getType()</strong> ) ( IP: $!response.getIp() )<br/>
+                            #if ($response.getType().equals("comment"))
+                            #set ($delete = "delete_comments")
+                            #set ($approve = "approve_comments")
+                            <strong>$!response.getEscapedAuthor()</strong> ( <a href="mailto:$!response.getEscapedAuthorEmail()">$response.getEscapedAuthorEmail()</a> / <a href="$!response.getEscapedAuthorURL()">$!response.getEscapedAuthorURL()</a> )<br/>
+                            $response.getEscapedComment()
+                            #elseif ($response.getType().equals("trackback"))
+                            #set ($delete = "delete_trackbacks")
+                            #set ($approve = "approve_trackbacks")
+                            <strong>From: </strong><a href="$!response.getEscapedUrl()">$!response.getEscapedTitle()</a> ( $!response.getEscapedBlogName() )<br/>
+                            $response.getEscapedExcerpt()
+                            #elseif ($response.getType().equals("pingback"))
+                            #set ($delete = "delete_pingbacks")
+                            #set ($approve = "approve_pingbacks")
+                            <strong>From: </strong><a href="$!response.getEscapedSourceURI()">$!response.getEscapedSourceURI()</a><br/>
+                            <strong>  To: </strong><a href="$!response.getEscapedTargetURI()">$!response.getEscapedTargetURI()</a><br/>
+                            $response.getEscapedExcerpt()
+                            #end
+                            <p align="right">[ <a href="javascript:;" onclick="deleteResponseAJAX($response.getId(), '$response.getType()', response$responseCounter)">Delete</a> - <a href="javascript:;" #if ($response.getStatus().equals("approved"))style="display:none"#end id="approve$responseCounter" onclick="approveResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, approve$responseCounter, unapprove$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter)">Approve</a> <a href="javascript:;" #if (!$response.getStatus().equals("approved"))style="display:none"#end id="unapprove$responseCounter" onclick="unapproveResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, unapprove$responseCounter, approve$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter)">Unapprove</a> - <a href="javascript:;" #if ($response.getStatus().equals("spam"))style="display:none"#end id="markSpam$responseCounter" onclick="markSpamResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, markSpam$responseCounter, unmarkSpam$responseCounter, approve$responseCounter, unapprove$responseCounter)">Mark as spam</a> <a href="javascript:;" #if (!$response.getStatus().equals("spam"))style="display:none"#end id="unmarkSpam$responseCounter" onclick="unmarkSpamResponseAJAX($response.getId(), '$response.getType()', response$responseCounter, unmarkSpam$responseCounter, markSpam$responseCounter, approve$responseCounter, unapprove$responseCounter)">Unmark as spam</a> ]</p>
+                            #set ($delete = "")
+                            #set ($approve = "")
+                        </p>
+                        #set($responseCounter = $responseCounter + 1)
+                    </div>
+                </div>
+                #end
+
+        </div>
+    </div>
+</body>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

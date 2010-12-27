@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svnroot/blojsom/!svn/ver/3783/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates
+END
+admin-login.vm
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/3760/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-login.vm
+END
+admin-edit-blog-entries.vm
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svnroot/blojsom/!svn/ver/3766/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-entries.vm
+END
+admin-footer-include.vm
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svnroot/blojsom/!svn/ver/3744/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-footer-include.vm
+END
+admin-view-user-properties.vm
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-view-user-properties.vm
+END
+admin-navigation-include.vm
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svnroot/blojsom/!svn/ver/3751/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-navigation-include.vm
+END
+admin-manage-blog-entries.vm
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svnroot/blojsom/!svn/ver/3767/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-manage-blog-entries.vm
+END
+admin-edit-blog-flavors.vm
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-flavors.vm
+END
+admin-edit-blog-category.vm
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svnroot/blojsom/!svn/ver/3762/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-category.vm
+END
+admin-macros.vm
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svnroot/blojsom/!svn/ver/3783/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-macros.vm
+END
+admin-edit-blog-plugins.vm
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svnroot/blojsom/!svn/ver/3762/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-plugins.vm
+END
+admin-edit-blog-authorizations.vm
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/svnroot/blojsom/!svn/ver/3762/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-authorizations.vm
+END
+admin-login-include.vm
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svnroot/blojsom/!svn/ver/3751/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-login-include.vm
+END
+admin-file-upload.vm
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-file-upload.vm
+END
+admin.vm
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svnroot/blojsom/!svn/ver/3778/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin.vm
+END
+admin-edit-blog-authorization.vm
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-authorization.vm
+END
+admin-edit-blog-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svnroot/blojsom/!svn/ver/3767/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-entry.vm
+END
+admin-edit-blog-preferences.vm
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-preferences.vm
+END
+admin-forgotten-password.vm
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svnroot/blojsom/!svn/ver/3729/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-forgotten-password.vm
+END
+admin-add-blog-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svnroot/blojsom/!svn/ver/3766/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-add-blog-entry.vm
+END
+admin-header-include.vm
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svnroot/blojsom/!svn/ver/3765/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-header-include.vm
+END
+bulk-response-management.vm
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/bulk-response-management.vm
+END
+admin-ajax-response.vm
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svnroot/blojsom/!svn/ver/3729/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-ajax-response.vm
+END
+admin-edit-blog-permissions.vm
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-permissions.vm
+END
+admin-edit-blog-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-template.vm
+END
+admin-theme-switcher-settings.vm
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/svnroot/blojsom/!svn/ver/3759/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-theme-switcher-settings.vm
+END
+admin-edit-blog-entries-list.vm
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-entries-list.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3729/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/package.html
+END
+admin-edit-blogs.vm
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blogs.vm
+END
+admin-edit-blog-categories.vm
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svnroot/blojsom/!svn/ver/3762/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-categories.vm
+END
+admin-list-web-admin-plugins.vm
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-list-web-admin-plugins.vm
+END
+admin-edit-blog-flavor.vm
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-flavor.vm
+END
+admin-edit-blog-properties.vm
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svnroot/blojsom/!svn/ver/3758/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-properties.vm
+END
+admin-edit-blog-templates.vm
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svnroot/blojsom/!svn/ver/3762/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/admin/templates/admin-edit-blog-templates.vm
+END

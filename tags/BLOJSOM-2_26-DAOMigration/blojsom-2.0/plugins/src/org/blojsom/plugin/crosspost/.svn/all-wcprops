@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/crosspost
+END
+CrosspostConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/crosspost/CrosspostConstants.java
+END
+CrosspostPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/crosspost/CrosspostPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/2873/tags/BLOJSOM-2_26-DAOMigration/blojsom-2.0/plugins/src/org/blojsom/plugin/crosspost/package.html
+END

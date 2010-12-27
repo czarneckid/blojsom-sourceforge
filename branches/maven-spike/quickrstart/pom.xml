@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- The Basics -->
+    <groupId>${parent.groupId}</groupId>
+    <artifactId>blojsom-quickrstart</artifactId>
+    <version>${parent.version}</version>
+    <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>blojsom</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+    <parent>
+        <groupId>org.blojsom</groupId>
+        <artifactId>blojsom-maven</artifactId>
+        <version>3.5-SNAPSHOT</version>
+    </parent>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+    </properties>
+    <!-- More Project Information -->
+    <name>blojsom Web Application Quick Start</name>
+    <description>A blojsom web application instance capable of running completely in memory with no external resources necessary.</description>
+</project>

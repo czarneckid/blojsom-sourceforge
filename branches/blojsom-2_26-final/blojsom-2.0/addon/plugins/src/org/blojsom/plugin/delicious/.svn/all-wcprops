@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/delicious
+END
+DailyPostingPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/delicious/DailyPostingPlugin.java
+END
+daily-posting-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/delicious/daily-posting-template.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/2929/branches/blojsom-2_26-final/blojsom-2.0/addon/plugins/src/org/blojsom/plugin/delicious/package.html
+END

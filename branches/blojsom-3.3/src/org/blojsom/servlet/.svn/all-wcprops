@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/servlet
+END
+ServletConfigFactoryBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/servlet/ServletConfigFactoryBean.java
+END
+BlojsomServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/servlet/BlojsomServlet.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/src/org/blojsom/servlet/package.html
+END

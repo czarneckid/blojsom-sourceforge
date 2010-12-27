@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module
+END
+SimpleTrackback.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/SimpleTrackback.java
+END
+Metadata.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/Metadata.java
+END
+BlojsomParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/BlojsomParser.java
+END
+Blojsom.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/Blojsom.java
+END
+SimplePingback.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/SimplePingback.java
+END
+BlojsomImplementation.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/BlojsomImplementation.java
+END
+SimpleComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/SimpleComment.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/3753/branches/maven-spike/blojsom-addon-plugins/src/main/java/org/blojsom/plugin/syndication/module/package.html
+END

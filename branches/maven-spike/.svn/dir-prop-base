@@ -1,0 +1,32 @@
+K 10
+svn:ignore
+V 174
+*.iws
+*.jar
+archives
+docs
+releases
+.project
+blog
+build
+*.DS_Store
+agitar
+distro
+*.ipr
+*.jpg
+Agitar
+.classpath
+*.iml
+target
+api
+config
+testing
+nbproject
+Results
+nbactions.xml
+
+K 13
+svn:mergeinfo
+V 46
+/branches/blojsom-3.3:3691-3693,3697-3698,3700
+END

@@ -1,0 +1,30 @@
+## Autumn Theme by Cliffano Subagio - http://mbledug.com
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="#BlogLanguage()">
+	<head>
+		#parse( "autumn-head.vm" )
+	</head>
+	<body>
+		<div id="canvas">
+			<div id="header">
+				#parse( "autumn-header.vm" )
+			</div>
+			<div id="body" style="background: url(#Resource('autumn-body.gif')) repeat-y;">
+				<div id="leftColumn">
+					<div id="content">
+						#set( $totalEntries = 0)
+						#foreach ($entry in $BLOJSOM_ENTRIES)
+							#parse( "autumn-entry.vm" )
+						#end
+					</div>
+					<div id="footer">
+						#parse( "autumn-footer.vm" )
+					</div>
+				</div>
+				<div id="rightColumn">
+					#parse( "autumn-sidebar.vm" )
+				</div>
+			</div>
+		</div>
+	</body>
+</html>	

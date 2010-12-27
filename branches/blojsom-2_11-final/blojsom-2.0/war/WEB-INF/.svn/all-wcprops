@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF
+END
+blojsom.properties
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/blojsom.properties
+END
+xmlrpc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/xmlrpc.properties
+END
+dispatcher.properties
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/dispatcher.properties
+END
+plugin-admin-edit-users.properties
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/plugin-admin-edit-users.properties
+END
+plugin-admin-upload.properties
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/plugin-admin-upload.properties
+END
+plugin.properties
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/plugin.properties
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/velocity.properties
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/1824/branches/blojsom-2_11-final/blojsom-2.0/war/WEB-INF/web.xml
+END

@@ -1,0 +1,645 @@
+  body {
+    font: 76%/162% Georgia, "New Times Roman", serif;
+    background: #fff;
+    color: #999;
+    text-align: center;
+  }
+  
+  input, textarea, select {
+    font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+  }
+  
+  body, div, p, img, ul, li, h1, h2, h3, h4, h5, h6, form {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  
+  a {
+    color: #666;
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color: #666;
+  }
+  
+  a:hover {
+    color: #666;
+    text-decoration: underline;
+  }
+  
+  #main {
+    margin: 0 auto;
+    text-align: left;
+    width: 650px;
+  }
+  
+  #header {
+    height: 185px;
+    background-repeat: no-repeat;
+    background-position: top center;
+  }
+  
+  #name {
+    float: right;
+  }
+  
+  #name h1 {
+    font-size: 100%;
+    font-weight: normal;
+    margin: 168px 28px 6px 43px;
+  }
+  
+  #name h2 {
+    display: none;
+    font-size: 120%;
+    font-weight: normal;
+    margin-left: 43px;
+    color: #333;
+  }
+  
+  #name a {
+    text-decoration: none;
+    margin-left: -1px;
+  }
+  
+  #controls {
+    border: 0;
+    margin: 18px auto 0;
+  }
+  
+  #searchform {
+    text-align: center;
+  }
+  
+  #searchlabel {
+    margin-right: 4px;
+  }
+  
+  #searchfield {
+    margin: 0;
+    width: 12em;
+    border: 1px solid #ccc;
+    padding: 3px;
+    color: #ccc;
+  }
+  
+  #searchimage {
+    vertical-align: middle;
+  }
+  
+  #switcher {
+    width: 12em;
+    float: right;
+    display: inline;
+    margin: 4px 22px 0 0;
+    text-align: center;
+  }
+  
+  #switcher a {
+    font-size: 84%;
+    text-decoration: none;
+    color: #000000;
+    background: #FAFCFD;
+    padding: 0;
+    border-top: 1px solid #FAFCFD;
+    border-bottom: 1px solid #FAFCFD;
+  }
+  
+  #switcher a span {
+    border-top: 1px solid #FAFCFD;
+    border-bottom: 1px solid #FAFCFD;
+    height: 100%;
+    margin: -1px 1px;
+    padding: 0 2px;
+  }
+  
+  #switcher a:hover {
+    color: #FAFCFD;
+    background: #285090;
+    padding: 0;
+    border-top: 1px solid #93A9C9;
+    border-bottom: 1px solid #93A9C9;
+  }
+  
+  #switcher a:hover span {
+    border-top: 1px solid #285090;
+    border-bottom: 1px solid #285090;
+  }
+  
+  #footer {
+    display: block;
+    clear: both;
+    margin: -10px 22px 0;
+    height: 2.8em;
+    color: #888;
+  }
+  
+  #footer p {
+    font-size: 84%;
+  }
+  
+  #copyright {
+    float: right;
+    text-align: right;
+  }
+  
+  #info {
+    float: left;
+  }
+  
+  #info a {
+    color: #666;
+    text-decoration: none;
+    padding: 1px 0;
+  }
+  
+  #info a:hover {
+    text-decoration: underline;
+  }
+  
+  #poweredby {
+    width: 100%;
+    clear: both;
+    text-align: center;
+  }
+  
+  #poweredby a {
+    color: #666;
+    text-decoration: none;
+    padding: 1px 0;
+  }
+  
+  #poweredby a:hover {
+    text-decoration: underline;
+  }
+  
+  #contentHeadLeft {
+    background: #fff url(headleft.gif) no-repeat;
+    height: 28px;
+    padding-left: 22px;
+  }
+  
+  #contentHeadCenter {
+    background: url(headcenter.gif) repeat-x;
+    height: 100%;
+    margin: 0 6px;
+  }
+  
+  #contentHeadRight {
+    background: url(headright.gif) no-repeat right;
+    height: 100%;
+    padding-right: 22px;
+  }
+  
+  #contentBodyLeft {
+    background: url(bodyleft.gif) repeat-y;
+    padding-left: 26px;
+    clear: both;
+  }
+  
+  #contentBodyCenter {
+    height: auto;
+    background: #efefef;
+  }
+  
+  #contentBodyRight {
+    padding-right: 26px;
+    background: url(bodyright.gif) repeat-y right;
+  }
+  
+  #contentFootLeft {
+    background: #fff url(footleft.gif) no-repeat;
+    height: 28px;
+    padding-left: 22px;
+    clear: both;
+  }
+  
+  #contentFootCenter {
+    background: url(footcenter.gif) repeat-x;
+    height: 100%;
+    margin: 0 6px;
+  }
+  
+  #contentFootRight {
+    background: url(footright.gif) no-repeat right;
+    height: 100%;
+    padding-right: 22px;
+  }
+  
+  #content {
+    background: #efefef;
+    width: auto;
+    height: 300px;
+    margin: 0;
+    padding: 16px 22px 0;
+    color: #888;
+  }
+  
+  #entries {
+    width: 100%;
+    float: left;
+    clear: both;
+    margin-right: -18em;
+  }
+  
+  * html #entries {
+    overflow: hidden;
+  }
+  
+  #column {
+    font-size: 92%;
+    width: 18em;
+    float: right;
+  }
+  
+  #column a.rounded {
+    color: #666;
+    background: #efefef;
+    text-decoration: none;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+  }
+  
+  #column a.rounded span {
+    margin: -1px 1px;
+    padding: 0 2px;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+  }
+  
+  #column a.rounded:hover {
+    color: #efefef;
+    background: #666;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+  }
+  
+  #column a.rounded:hover span {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
+  
+  #column a.rounded span.break {
+    width: 0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #calendar {
+    font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+    background: #efefef;
+    padding: 0 .6em 1em;
+    text-align: center;
+  }
+  
+  #calendar table {
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  
+  #calendar caption {
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: .2em;
+    color: #999;
+  }
+  
+  #calendar caption a, #calendar caption a:visited {
+    color: #999;
+    margin: 0 .8em;
+    text-decoration: none;
+  }
+  
+  #calendar caption a:hover {
+    color: #000000;
+  }
+  
+  #calendar th, #calendar td {
+    color: #999;
+    text-align: center;
+    width: 2.6em;
+    margin: 0;
+  }
+  
+  #calendar thead th {
+    font-size: 94%;
+    font-weight: normal;
+    color: #999;
+  }
+  
+  #calendar tbody a {
+    display: block;
+    background: #666;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+  }
+  
+  #calendar tbody a span {
+    display: block;
+    background: #fff;
+    margin: -1px 1px;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
+  
+  #calendar tbody a:hover {
+    color: #efefef;
+    background: #666;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+  }
+  
+  #calendar tbody a:hover span {
+    background: #666;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
+  
+  #links {
+    padding: .8em;
+    line-height: 154%;
+  }
+  
+  #links h5 {
+    font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+    font-size: 100%;
+    font-weight: bold;
+    color: #999;
+    margin: 1.8em 2px .4em;
+    clear: both;
+    text-transform: lowercase;
+  }
+  
+  #links ul {
+    list-style: none;
+  }
+  
+  #links li {
+    margin-bottom: .8em;
+  }
+  
+  div.entry {
+    padding: 0;
+    margin: 0 18em 1em 0;
+    border-bottom: 1px #999 solid;
+  }
+  
+  div.entry div, div.entry p {
+    margin-bottom: 1.2em;
+  }
+  
+  div.entry h3 {
+    font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+    font-size: 100%;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  div.entry h4 {
+    font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+    font-size: 130%;
+    font-weight: normal;
+    padding-bottom: .2em;
+  }
+  
+  div.entry h4 a, div.entry h4 a:visited {
+    color: #999;
+    text-decoration: none;
+  }
+  
+  div.entry h4 a:hover {
+    color: #999;
+  }
+  
+  div.entry h5 {
+    font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+    font-size: 110%;
+    font-weight: normal;
+    padding-bottom: .2em;
+  }
+  
+  div.entry ul, div.entry ol, div.entry dl {
+    margin: 10px 0;
+    padding: 0;
+  }
+  
+  div.entry li {
+    margin-left: 15px;
+    padding: 0;
+    list-style: square;
+  }
+  
+  div.entry blockquote {
+    margin: 10px;
+    padding-left: 20px;
+    font-style: italic;
+    background: url(blockquote.gif) 0 .2em no-repeat;
+  }
+  
+  div.entry tt {
+    font-size: 120%;
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  div.entry .post {
+    padding-top: 1em;
+  }
+  
+  div.entry .thumb {
+    float: right;
+  }
+  
+  div.entry .thumb img {
+    margin: 0 0 0 6px;
+    padding: 2px;
+    background: #fff;
+    border: 1px solid #999;
+  }
+  
+  div.entry .thumbs {
+    text-align: center;
+  }
+  
+  div.entry .thumbs img {
+    margin: 1px;
+    padding: 2px;
+    background: #fff;
+    border: 1px solid #999;
+  }
+  
+  div.entry .info {
+    color: #666;
+    margin-bottom: 0;
+  }
+  
+  div.entry .info a, div.entry .info a:visited {
+    color: #333;
+  }
+  
+  div.entry .info a:hover {
+    color: #333;
+  }
+  
+  div.entry .links {
+    font: 80%/162% Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+    color: #000000;
+    text-align: right;
+  }
+  
+  div.entry .links a, div.entry .links a:visited {
+    color: #666;
+  }
+  
+  div.entry .links a:hover {
+    color: #666;
+  }
+  
+  div.entry .commentslink a {
+    margin: 0 0 1.8em 0;
+    padding: 1px;
+  }
+  
+  div.entry .trackbackslink a {
+    margin: 0 0 1.8em 0;
+    padding: 1px;
+  }
+  
+  div.comment {
+    margin: 0 0 1em 0;
+  }
+  
+  div.trackback {
+    margin: 0 18em 1em 0;
+  }
+  
+  div.comment .info, div.trackback .info {
+    color: #333333;
+    margin-bottom: .2em;
+    padding-left: 26px;
+    height: 22px;
+    display: block;
+  }
+  
+  div.comment .info {
+    background: url(blockquote.gif) no-repeat 0 .1em;
+  }
+  
+  div.trackback .info {
+    background: url(blockquote.gif) no-repeat 0 .1em;
+  }
+  
+  div.comment .post, div.trackback .post {
+    padding: 0 1.2em 1.2em 26px;
+    display: block;
+  }
+  
+  #trackback {
+    margin: 0 18em 3em 0;
+  }
+  
+  #comments {
+    margin: 0 18em 3em 0;
+  }
+  
+  #comments h3 {
+    display: block;
+    font-size: 100%;
+    font-weight: bold;
+    color: #000000;
+    clear: both;
+    margin-bottom: .8em;
+  }
+  
+  #commentform {
+    display: block;
+  }
+  
+  #commentform .label {
+    width: 8em;
+    float: left;
+    clear: both;
+    margin-bottom: 0;
+  }
+  
+  #commentform .input {
+    width: 300px;
+    float: left;
+    margin-bottom: .4em;
+  }
+  
+  #commentform .input span {
+    float: left;
+    display: inline;
+    margin-left: 5px;
+  }
+  
+  #commentform input.fixed {
+    width: 160px;
+    float: left;
+    border: 1px solid #999;
+  }
+  
+  #commentform textarea.fixed {
+    width: 300px;
+    float: left;
+    border: 1px solid #999;
+    font-size: 100%;
+  }
+  
+  #commentform .button {
+    width: auto;
+    float: left;
+  }
+  
+  #commentform textarea {
+    overflow: auto;
+  }
+  
+  #commentform h4 {
+    font-size: 100%;
+    font-weight: bold;
+    color: #000000;
+    clear: both;
+  }
+  
+  #commentPreview {
+    display: block;
+    margin: 0 0 1.8em 0;
+  }
+  
+  #commentPreview p {
+    margin-bottom: .8em;
+  }
+  
+  img.emoticons {
+    vertical-align: middle;
+  }
+  
+  .author {
+    color: #000000;
+  }
+  
+  .author a {
+    color: #000000;
+  }
+  
+  .author a:hover {
+    text-decoration: underline;
+  }
+  
+  .red {
+    color: #A30000;
+  }
+  
+  .clear {
+    clear: both;
+    height: 0;
+  }
+

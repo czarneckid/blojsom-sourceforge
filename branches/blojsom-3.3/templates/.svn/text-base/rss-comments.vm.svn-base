@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- name="generator" content="$BLOJSOM_VERSION" -->
+<rss version="0.92">
+    <channel>
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        #SimpleFriendlyPermalink($entry)
+        <title>$entry.getEscapedTitle()</title>
+        <link>$entryLink</link>
+        <description>$entry.getEscapedDescription()</description>
+        <language>#BlogLanguage()</language>
+
+        #set($approvedResponses = $entry.getResponsesMatchingStatus("approved"))
+        #foreach ($response in $approvedResponses)
+        <item>
+            <title>$entry.getEscapedTitle()</title>
+            <link>$entryLink</link>
+            #if ($response.getType().equals("comment"))
+            <description>$response.getEscapedComment()</description>
+            #elseif ($response.getType().equals("trackback"))
+            <description>$!response.getEscapedExcerpt()</description>
+            #elseif ($response.getType().equals("pingback"))
+            <description>$!response.getEscapedExcerpt()</description>
+            #end
+        </item>
+        #end
+
+        #end
+    </channel>
+</rss>
+
+

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="org.blojsom.blog.database.DatabaseComment" table="Comment">
+
+        <id name="id">
+            <column name="comment_id" sql-type="integer" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+
+        <property name="blogId">
+            <column name="blog_id" not-null="true"/>
+        </property>
+
+        <property name="blogEntryId">
+            <column name="entry_id" sql-type="integer" not-null="true"/>
+        </property>
+
+        <property name="author"/>
+
+        <property name="authorURL">
+            <column name="author_url"/>
+        </property>
+
+        <property name="authorEmail">
+            <column name="author_email"/>
+        </property>
+
+        <property name="comment"/>
+
+        <property name="commentDate">
+            <column name="date" not-null="true"/>
+        </property>
+
+        <property name="parentId">
+            <column name="comment_parent"/>
+        </property>
+
+        <property name="ip">
+            <column name="ip" length="100"/>
+        </property>
+
+        <property name="status">
+            <column name="status" length="255"/>
+        </property>
+
+        <map name="metaData" table="CommentMetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+            <key column="comment_id" not-null="true"/>
+            <map-key column="metadata_key" type="string"/>
+            <element column="metadata_value" type="string"/>
+        </map>
+
+    </class>
+
+</hibernate-mapping>

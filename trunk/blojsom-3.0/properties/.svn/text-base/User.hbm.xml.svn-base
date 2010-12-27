@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="org.blojsom.blog.database.DatabaseUser" table="DBUser">
+
+        <id name="id">
+            <column name="user_id" sql-type="integer" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+
+        <property name="blogId">
+            <column name="blog_id" not-null="true"/>
+        </property>
+
+        <property name="userLogin">
+            <column name="user_login" sql-type="string" not-null="true"/>
+        </property>
+
+        <property name="userPassword">
+            <column name="user_password" sql-type="string" not-null="true"/>
+        </property>
+
+        <property name="userName">
+            <column name="user_name" sql-type="string" not-null="true"/>
+        </property>
+
+        <property name="userEmail">
+            <column name="user_email" sql-type="string" not-null="true"/>
+        </property>
+
+        <property name="userRegistered">
+            <column name="user_registered" not-null="true"/>
+        </property>
+
+        <property name="userStatus">
+            <column name="user_status"/>
+        </property>
+
+        <map name="metaData" table="DBUserMetadata" cascade="all" inverse="false" lazy="false" order-by="metadata_key">
+            <key column="user_id" not-null="true"/>
+            <map-key column="metadata_key" type="string"/>
+            <element column="metadata_value" type="string"/>
+        </map>
+
+    </class>
+
+</hibernate-mapping>

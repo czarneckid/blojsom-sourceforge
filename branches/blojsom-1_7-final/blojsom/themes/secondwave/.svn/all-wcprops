@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave
+END
+secondwave.vm
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/secondwave.vm
+END
+secondwave-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/secondwave-comments.vm
+END
+secondwave-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/secondwave-trackback.vm
+END
+secondwave-trackback-failure.vm
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/secondwave-trackback-failure.vm
+END
+blojsom-secondwave.css
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/blojsom-secondwave.css
+END
+secondwave-trackback-success.vm
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/secondwave-trackback-success.vm
+END
+secondwave-referers.vm
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/664/branches/blojsom-1_7-final/blojsom/themes/secondwave/secondwave-referers.vm
+END

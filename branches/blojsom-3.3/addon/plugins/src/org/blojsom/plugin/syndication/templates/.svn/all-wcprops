@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/syndication/templates
+END
+feed-import.vm
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/syndication/templates/feed-import.vm
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/blojsom/plugin/syndication/templates/package.html
+END

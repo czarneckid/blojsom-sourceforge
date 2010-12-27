@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/addon/core/src/org/blojsom/dispatcher
+END
+FreeMarkerDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/addon/core/src/org/blojsom/dispatcher/FreeMarkerDispatcher.java
+END
+GroovyDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/addon/core/src/org/blojsom/dispatcher/GroovyDispatcher.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/blojsom/!svn/ver/2371/branches/blojsom-2_19-FINAL/blojsom-2.0/addon/core/src/org/blojsom/dispatcher/package.html
+END

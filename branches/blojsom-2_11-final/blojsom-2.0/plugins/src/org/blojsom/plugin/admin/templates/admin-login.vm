@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+#adminPageHeader("Login")
+
+        <center>
+            <table>
+                <form name="edit-blog-properties" action="$BLOJSOM_BLOG.getBlogURL()?flavor=admin" method="post">
+                    <tr>
+                        <td>Username</td>
+                        <td>
+                            <input name="username" type="text" size="25"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td>
+                            <input name="password" type="password" size="25"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Login"/>
+                                <input type="reset" name="Reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+
+#adminPageFooter()

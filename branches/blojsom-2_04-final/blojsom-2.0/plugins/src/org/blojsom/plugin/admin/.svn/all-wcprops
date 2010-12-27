@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin
+END
+admin-login.vm
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin-login.vm
+END
+admin-edit-blog-categories.vm
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin-edit-blog-categories.vm
+END
+BaseAdminPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/BaseAdminPlugin.java
+END
+EditBlogPropertiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/EditBlogPropertiesPlugin.java
+END
+admin-edit-blog-template.vm
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin-edit-blog-template.vm
+END
+EditBlogTemplatesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/EditBlogTemplatesPlugin.java
+END
+admin-edit-blog-properties.vm
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin-edit-blog-properties.vm
+END
+admin-edit-blog-category.vm
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin-edit-blog-category.vm
+END
+admin-edit-blog-templates.vm
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin-edit-blog-templates.vm
+END
+admin.vm
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/admin.vm
+END
+EditBlogCategoriesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/EditBlogCategoriesPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/blojsom/!svn/ver/1532/branches/blojsom-2_04-final/blojsom-2.0/plugins/src/org/blojsom/plugin/admin/package.html
+END

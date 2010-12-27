@@ -1,0 +1,8 @@
+#
+# blojsom XML-RPC API Handlers
+#
+blogger=org.blojsom.extension.xmlrpc.handlers.BloggerAPIHandler
+metaWeblog=org.blojsom.extension.xmlrpc.handlers.MetaWeblogAPIHandler
+mt=org.blojsom.extension.xmlrpc.handlers.MovableTypeAPIHandler
+pingback=org.blojsom.extension.xmlrpc.handlers.PingbackHandler
+$default=blogger

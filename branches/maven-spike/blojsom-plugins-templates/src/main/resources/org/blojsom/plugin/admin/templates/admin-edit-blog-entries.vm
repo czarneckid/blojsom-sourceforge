@@ -1,0 +1,80 @@
+#AdminPageTitle('entries.page.header' 'Entries')
+#parse("org/blojsom/plugin/admin/templates/admin-header-include.vm")
+
+<body class="yui-skin-sam">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Blojsom Administration Interface</h1>
+            #parse("org/blojsom/plugin/admin/templates/admin-login-include.vm")
+            #parse("org/blojsom/plugin/admin/templates/admin-navigation-include.vm")
+        </div>
+        <div id="errStatus">
+            #showErrorMessage()
+        </div>
+
+        <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+                    <div class="yui-g stdotcom">
+                        <h3>#adminResource('add.entry.to.category.section.text' 'Add entry to category')</h3>
+                        <form name="add-blog-entry" action="." method="post" accept-charset="UTF-8">
+                            <div style="display:none">
+                                <input type="hidden" name="action" value="new-blog-entry">
+                                <input type="hidden" name="flavor" value="admin">
+                                <input type="hidden" name="plugins" value="edit-blog-entries">
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>#adminResource('blog.category.text' 'Blog category')</td>
+                                    <td>
+                                        <select name="blog-category-id">
+                                        #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+                                            <option value="$blogCategory.getId()">#CategoryDescription($blogCategory)</option>
+                                        #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="submit" id="addEntryToCategory" name="submitAddEntryToCategory" value="#adminResource('add.entry.to.category.text' 'Add entry&#8230;')"> <span class="metalink">or Cancel</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="yui-g stdotcom">
+                        <h3>#adminResource('edit.entries.in.category.section.text' 'Edit entries in an existing blog category')</h3>
+                        <form name="edit-blog-entries" action="." method="post" accept-charset="UTF-8">
+                            <div style="display:none">
+                                <input type="hidden" name="action" value="edit-blog-entries">
+                                <input type="hidden" name="flavor" value="admin">
+                                <input type="hidden" name="plugins" value="edit-blog-entries">
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>#adminResource('blog.category.text' 'Blog category')</td>
+                                    <td>
+                                        <select name="blog-category-id">
+                                        #foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)
+                                            <option value="$blogCategory.getId()">#CategoryDescription($blogCategory)</option>
+                                        #end
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="submit" id="editEntriesInCategory" name="submitEditEntriesInCategory" value="#adminResource('edit.entries.in.category.text' 'Edit entries&#8230;')"> <span class="metalink">or Cancel</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="yui-b"></div>
+        </div>
+    </div>
+
+#parse("org/blojsom/plugin/admin/templates/admin-footer-include.vm")

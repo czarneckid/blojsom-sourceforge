@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/blojsom/!svn/ver/3485/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common
+END
+ConvertLineBreaksPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/ConvertLineBreaksPlugin.java
+END
+AllEntriesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/AllEntriesPlugin.java
+END
+StringUtilitiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/blojsom/!svn/ver/3052/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/StringUtilitiesPlugin.java
+END
+IPBanningPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/IPBanningPlugin.java
+END
+CollectionUtilitiesPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3084/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/CollectionUtilitiesPlugin.java
+END
+RSSEnclosurePlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3485/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/RSSEnclosurePlugin.java
+END
+VelocityPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/blojsom/!svn/ver/3045/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/VelocityPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/plugins/src/org/blojsom/plugin/common/package.html
+END

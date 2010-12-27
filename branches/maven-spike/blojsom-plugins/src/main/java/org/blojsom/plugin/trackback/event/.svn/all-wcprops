@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event
+END
+TrackbackUnmarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackUnmarkedSpamEvent.java
+END
+TrackbackResponseSubmissionEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackResponseSubmissionEvent.java
+END
+TrackbackEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackEvent.java
+END
+TrackbackApprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackApprovedEvent.java
+END
+TrackbackAddedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackAddedEvent.java
+END
+TrackbackUnapprovedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackUnapprovedEvent.java
+END
+TrackbackMarkedSpamEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackMarkedSpamEvent.java
+END
+TrackbackDeletedEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/TrackbackDeletedEvent.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svnroot/blojsom/!svn/ver/3707/branches/maven-spike/blojsom-plugins/src/main/java/org/blojsom/plugin/trackback/event/package.html
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback
+END
+pingback-plugin-email-template-html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/pingback-plugin-email-template-html.vm
+END
+pingback-plugin-email-template-text.vm
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/pingback-plugin-email-template-text.vm
+END
+PingbackPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/PingbackPlugin.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3476/branches/blojsom-2_31-final/blojsom-2.0/plugins/src/org/blojsom/plugin/pingback/package.html
+END

@@ -1,0 +1,178 @@
+	#remote {
+		text-align: center;
+	}
+	
+	#showHideMenu {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	
+	#photo {
+		width: auto;
+		margin: 0 auto 2em;
+		text-align: center;
+	}
+	
+	#photo img {
+		display: block;
+		background: white;
+		padding: 10px;
+		border: 1px solid #999;
+		margin: 0 auto;
+	}
+	
+	.p {
+	   width: 322px;
+	}
+	
+	.l {
+	    width: 484px;
+	}
+	
+	#column {
+		display: none;
+	}
+	
+	div.entry {
+		position: relative;
+		margin: 0;
+		border-right: 1px solid #999;
+		border-bottom: none;
+		padding-right: 10px;
+	}
+	
+	div.entryAlt {
+		position: relative;
+		padding: 0 10px 0 0;
+		margin: 0 18em 1em 0;
+		border-right: 1px #999 solid;
+		border-bottom: none;
+	}
+	
+	div.entryAlt .links {
+		font: 80%/162% Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+		color: #000000;
+		text-align: right;
+	}
+	
+	div.entryAlt div, div.entryAlt p {
+		margin-bottom: 1.2em;
+	}
+	
+	div.entryAlt h3 {
+		font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+		font-size: 100%;
+		font-weight: bold;
+		color: #333;
+	}
+	
+	div.entryAlt h4 {
+		font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+		font-size: 130%;
+		font-weight: normal;
+		padding-bottom: .2em;
+	}
+	
+	div.entryAlt h4 a, div.entryAlt h4 a:visited {
+		color: #999;
+		text-decoration: none;
+	}
+	
+	div.entryAlt h4 a:hover {
+		color: #999;
+	}
+	
+	div.entryAlt h5 {
+		font-family: Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+		font-size: 110%;
+		font-weight: normal;
+		padding-bottom: .2em;
+	}
+	
+	div.entryAlt ul, div.entryAlt ol, div.entryAlt dl {
+		margin: 10px 0;
+		padding: 0;
+	}
+	
+	div.entryAlt li {
+		margin-left: 15px;
+		padding: 0;
+		list-style: square;
+	}
+	
+	div.entryAlt blockquote {
+		margin: 10px;
+		padding-left: 20px;
+		font-style: italic;
+		background: url(blockquote.gif) 0 .2em no-repeat;
+	}
+	
+	div.entryAlt tt {
+		font-size: 120%;
+		font-weight: bold;
+		color: #333333;
+	}
+	
+	div.entryAlt .post {
+		padding-top: 1em;
+	}
+	
+	div.entryAlt .thumb {
+		float: right;
+	}
+	
+	div.entryAlt .thumb img {
+		margin: 0 0 0 6px;
+		padding: 2px;
+		background: #fff;
+		border: 1px solid #999;
+	}
+	
+	div.entryAlt .thumbs {
+		text-align: center;
+	}
+	
+	div.entryAlt .thumbs img {
+		margin: 1px;
+		padding: 2px;
+		background: #fff;
+		border: 1px solid #999;
+	}
+	
+	div.entryAlt .info {
+		color: #666;
+		margin-bottom: 0;
+	}
+	
+	div.entryAlt .info a, div.entryAlt .info a:visited {
+		color: #333;
+	}
+	
+	div.entryAlt .info a:hover {
+		color: #333;
+	}
+	
+	div.entryAlt .links a, div.entryAlt .links a:visited {
+		color: #666;
+	}
+	
+	div.entryAlt .links a:hover {
+		color: #666;
+	}
+	
+	div.entryAlt .commentslink a {
+		margin: 0 0 1.8em 0;
+		padding: 1px;
+	}
+	
+	div.entryAlt .trackbackslink a {
+		margin: 0 0 1.8em 0;
+		padding: 1px;
+	}
+	
+	div.entryAlt .links {
+		font: 80%/162% Verdana, 'Trebuchet MS', 'Bitstream Vera Sans', 'Lucida Sans Unicode', 'Lucida Grande', Geneva, Arial, sans-serif;
+		color: #000000;
+		text-align: right;
+	}

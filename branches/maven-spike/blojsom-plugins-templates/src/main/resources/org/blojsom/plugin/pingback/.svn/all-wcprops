@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/pingback
+END
+pingback-plugin-email-template-html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/pingback/pingback-plugin-email-template-html.vm
+END
+pingback-plugin-email-template-text.vm
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/pingback/pingback-plugin-email-template-text.vm
+END

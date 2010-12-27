@@ -1,0 +1,10 @@
+#
+# Moblog Plugin Configuration
+#
+moblog-hostname=
+moblog-userid=
+moblog-password=
+moblog-category=/
+moblog-enabled=false
+moblog-authorization=moblog-authorization.properties
+

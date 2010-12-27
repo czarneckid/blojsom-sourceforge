@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/util
+END
+BlojsomConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/util/BlojsomConstants.java
+END
+BlojsomMetaDataConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/util/BlojsomMetaDataConstants.java
+END
+BlojsomUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/util/BlojsomUtils.java
+END
+CookieUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/3700/branches/blojsom-3.3/src/org/blojsom/util/CookieUtils.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/src/org/blojsom/util/package.html
+END

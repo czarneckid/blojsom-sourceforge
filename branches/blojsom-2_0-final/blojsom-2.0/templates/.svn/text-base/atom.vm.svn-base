@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<feed xmlns="http://purl.org/atom/ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()"
+    version="0.2">
+
+    <!-- feed required elements -->
+    <title>$BLOJSOM_BLOG.getBlogName()</title>
+    <link>$BLOJSOM_BLOG.getBlogURL()</link>
+    <modified>$BLOJSOM_DATE_UTC</modified>
+
+    <!-- feed optional elements -->
+    <tagline>$BLOJSOM_BLOG.getBlogDescription().replaceAll("<.*?>","")</tagline>
+    <generator name="$BLOJSOM_VERSION">http://blojsom.sf.net</generator>
+    <copyright><!-- Insert your copyright --></copyright>
+
+    #foreach ($entry in $BLOJSOM_ENTRIES)
+    <entry>
+        <!-- entry required elements -->
+        <title>$entry.getTitle().replaceAll("<.*?>","")</title>
+        <link>$entry.getLink()</link>
+        <id>$entry.getLink()</id>
+        <issued>$entry.getISO8601Date()</issued>
+        <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
+
+        <!-- entry optional elements -->
+        <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
+        <author>
+            <name>$BLOJSOM_BLOG.getBlogOwner()</name>
+            <url>$BLOJSOM_BLOG.getBlogURL()</url>
+            <email>$BLOJSOM_BLOG.getBlogOwnerEmail()</email>
+        </author>
+        <content type="text/html" xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" mode="escaped">
+            <![CDATA[ $entry.getDescription() ]]>
+        </content>
+    </entry>
+    #end
+</feed>

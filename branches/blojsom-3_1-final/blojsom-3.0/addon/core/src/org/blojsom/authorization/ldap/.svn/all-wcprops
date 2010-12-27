@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/addon/core/src/org/blojsom/authorization/ldap
+END
+LDAPAuthorizationProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/addon/core/src/org/blojsom/authorization/ldap/LDAPAuthorizationProvider.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/3630/branches/blojsom-3_1-final/blojsom-3.0/addon/core/src/org/blojsom/authorization/ldap/package.html
+END

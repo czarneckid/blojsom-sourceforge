@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar
+END
+AbstractVisualCalendarPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/AbstractVisualCalendarPlugin.java
+END
+VelocityCalendarPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/VelocityCalendarPlugin.java
+END
+AbstractCalendarPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/AbstractCalendarPlugin.java
+END
+BlogCalendar.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/BlogCalendar.java
+END
+CalendarFilterPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/CalendarFilterPlugin.java
+END
+VelocityHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/VelocityHelper.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/2764/branches/blojsom-2_24-FINAL/blojsom-2.0/plugins/src/org/blojsom/plugin/calendar/package.html
+END

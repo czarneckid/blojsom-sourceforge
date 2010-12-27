@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/trackback
+END
+trackback-plugin-email-template-html.vm
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/trackback/trackback-plugin-email-template-html.vm
+END
+trackback-plugin-email-template-text.vm
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/trackback/trackback-plugin-email-template-text.vm
+END

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>blojsom-maven</artifactId>
+        <groupId>org.blojsom</groupId>
+        <version>3.5-SNAPSHOT</version>
+    </parent>
+    <groupId>org.blojsom</groupId>
+    <artifactId>blojsom-upgrade</artifactId>
+    <version>3.5-SNAPSHOT</version>
+    <name>blojsom-upgrade</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>org.blojsom</groupId>
+            <artifactId>upgrade-lib</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.blojsom</groupId>
+            <artifactId>blojsom-core</artifactId>
+            <version>3.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.blojsom</groupId>
+            <artifactId>blojsom-plugins</artifactId>
+            <version>3.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>anothercaffeinatedday.com</id>
+            <name>A Maven Repository for blojsom</name>
+            <url>https://www.anothercaffeinatedday.com/artifactory/repo</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>maven2-glassfish.dev.java.net</id>
+            <name>Glassfish Repository for Maven</name>
+            <url>http://download.java.net/maven/glassfish</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+</project>

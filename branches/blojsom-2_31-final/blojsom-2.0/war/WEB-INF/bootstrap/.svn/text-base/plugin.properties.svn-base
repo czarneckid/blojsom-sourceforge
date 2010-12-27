@@ -1,0 +1,15 @@
+#
+# blojsom user plugin configuration file
+#
+# Format is as follows:
+#
+# <flavor>.blojsom-plugin-chain
+#   There is only one plugin chain per flavor
+#
+# If no flavor is provided, blojsom will fallback to the "blojsom-plugin-chain"
+#
+# Default Flavor Chains
+#
+blojsom-plugin-chain=conditional-get, meta, limiter, nofollow, rss-enclosure
+html.blojsom-plugin-chain=meta, tag-cloud, date-format, referer-log, calendar-gui, calendar-filter, comment, trackback, simple-search, limiter, emoticons, macro-expansion, days-since-posted, word-count, simple-obfuscation, nofollow, rss-enclosure, technorati-tags
+admin.blojsom-plugin-chain=admin

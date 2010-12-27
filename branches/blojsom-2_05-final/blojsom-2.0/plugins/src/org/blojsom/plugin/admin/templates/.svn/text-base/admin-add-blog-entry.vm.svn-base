@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+
+    <head>
+        <title>$BLOJSOM_BLOG.getBlogName() - Add blog entry</title>
+    </head>
+
+    <body>
+        <center>
+            <h3>$BLOJSOM_BLOG.getBlogName() - Add blog entry</h3>
+        </center>
+        <a href="$BLOJSOM_BLOG.getBlogURL()?flavor=admin">Administration</a> homepage.
+        <p />
+
+        <!-- Add blog entry form -->
+        <center>
+            <h3>Add a blog entry</h3>
+            <table border="1">
+                <form name="add-blog-entry" action="." method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="add-blog-entry"/>
+                    <input type="hidden" name="flavor" value="admin"/>
+                    <input type="hidden" name="plugins" value="edit-blog-entries"/>
+                    <input type="hidden" name="blog-category-name" value="$BLOJSOM_PLUGIN_EDIT_BLOG_ENTRIES_CATEGORY"/>
+                    <tr>
+                        <td>Blog entry title</td>
+                        <td><input type="text" size="50" name="blog-entry-title"/></td>
+                    </tr>
+                    <tr>
+                        <td>Blog entry text</td>
+                        <td><textarea rows="10" cols="80" name="blog-entry-description"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <center>
+                                <input type="submit" name="submit" value="Add blog entry"/>
+                                <input type="reset" name="reset" value="Reset"/>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </center>
+    </body>
+</html>

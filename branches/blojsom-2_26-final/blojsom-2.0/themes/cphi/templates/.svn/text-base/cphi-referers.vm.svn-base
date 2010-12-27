@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<title>$BLOJSOM_BLOG.getBlogName() (Referer History)</title>
+		
+		#parse("cphi-header1.inc.vm")
+
+	</head>
+
+	<body> 
+		<div id="wrapper"> 
+			<div id="header"> 
+				<h1>$BLOJSOM_BLOG.getBlogName()<br />
+				<span>$BLOJSOM_BLOG.getBlogDescription()</span></h1>
+			</div>
+			
+			<!-- SITE NAVIGATION -->
+			#parse("cphi-sitenav.inc.vm")
+			
+			<!-- START CONTENT -->
+			<div id="content"> 
+				<div id="main">
+				
+					<h3>Complete Referer History:</h3>
+
+					<!-- Optional Code if you are using the referer plugin -->
+					#if($REFERER_HISTORY)
+						#foreach($flavorgroup in $REFERER_HISTORY.keySet())
+							#set ($group = $REFERER_HISTORY.get($flavorgroup))
+							#if ($group.isHitCounter())
+								<p>$flavorgroup hits:&nbsp;$group.getReferralCount()</p>
+						 	#else
+						   		<p>$flavorgroup referers&nbsp;($group.getReferralCount() total)</p>
+								<p>
+						   #foreach( $refererurl in $group.keySet())
+							   		<a href="$refererurl" rel="nofollow">$refererurl</a>&nbsp;($group.get($refererurl).getCount())<br />
+						   #end
+						   </p>
+						 #end
+					  #end
+					#end
+				</div> 
+				
+				<!-- SIDEBAR LINKS -->
+				#parse("cphi-blog-sidebar.inc.vm")
+				
+			</div> 
+			<!-- END CONTENT -->
+			
+			<!-- FOOTER -->
+			#parse("cphi-footer.inc.vm")
+		</div> 
+	</body>
+</html>

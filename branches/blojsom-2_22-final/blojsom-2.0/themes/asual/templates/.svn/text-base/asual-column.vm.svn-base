@@ -1,0 +1,29 @@
+
+						#Calendar()
+
+						<div>
+								<strong>About:</strong>
+								<p>E-mail: <a href="#Obfuscate($BLOJSOM_BLOG.getBlogOwnerEmail())">#BlogOwner()</a></p>
+						</div>
+						<div>
+							<strong>Categories:</strong>
+							<ul>#foreach ($blogCategory in $BLOJSOM_ALL_CATEGORIES)<li><a href="$blogCategory.getCategoryURL()">#CategoryName($blogCategory)</a></li>#end</ul>
+						</div>
+						#set ($entryCount = 0)
+						#foreach ($entry in $BLOJSOM_ENTRIES)
+							#set ($entryCount = $entryCount + 1)
+						#end
+						#if (!$BLOJSOM_PERMALINK && $entryCount > 0)
+						<div>
+							<strong>Recently:</strong>
+							<ul>#foreach($entry in $BLOJSOM_ENTRIES) #friendlyPermalink($entry)<li><a href="$entryLink">$entry.getTitle()</a></li>#end </ul>
+						</div>
+						#end
+						<div>
+							<strong>Syndication:</strong>
+							<p><a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rdf">XML</a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=rss2">RSS</a> <a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()?flavor=atom">ATOM</a></p>
+						</div>
+						<div id="blojsom">
+							<a href="http://blojsom.sf.net"><img src="#Resource('asual-blojsom.jpg')" alt="Powered by blojsom" /></a>
+						</div>
+

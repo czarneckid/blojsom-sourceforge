@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/blojsom/!svn/ver/3082/trunk/blojsom-2.0/templates
+END
+wml.vm
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/blojsom/!svn/ver/3029/trunk/blojsom-2.0/templates/wml.vm
+END
+atom.vm
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/blojsom/!svn/ver/2228/trunk/blojsom-2.0/templates/atom.vm
+END
+mobile-xhtml.vm
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/blojsom/!svn/ver/3025/trunk/blojsom-2.0/templates/mobile-xhtml.vm
+END
+text.vm
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/templates/text.vm
+END
+atom.css
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svnroot/blojsom/!svn/ver/1590/trunk/blojsom-2.0/templates/atom.css
+END
+rss.vm
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/blojsom/!svn/ver/3080/trunk/blojsom-2.0/templates/rss.vm
+END
+rsd.vm
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/blojsom/!svn/ver/3031/trunk/blojsom-2.0/templates/rsd.vm
+END
+rss2.vm
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/blojsom/!svn/ver/3082/trunk/blojsom-2.0/templates/rss2.vm
+END
+rss-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/blojsom/!svn/ver/1876/trunk/blojsom-2.0/templates/rss-comments.vm
+END
+trackback-failure.vm
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/templates/trackback-failure.vm
+END
+rdf.vm
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/blojsom/!svn/ver/2016/trunk/blojsom-2.0/templates/rdf.vm
+END
+trackback-success.vm
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/blojsom/!svn/ver/1262/trunk/blojsom-2.0/templates/trackback-success.vm
+END
+atom-1.0.vm
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svnroot/blojsom/!svn/ver/3048/trunk/blojsom-2.0/templates/atom-1.0.vm
+END
+rss2-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/blojsom/!svn/ver/2735/trunk/blojsom-2.0/templates/rss2-comments.vm
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates
+END
+snapshot-entry.vm
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-entry.vm
+END
+snapshot-head.vm
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-head.vm
+END
+snapshot.vm
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot.vm
+END
+snapshot-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-comments.vm
+END
+snapshot-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-trackback.vm
+END
+snapshot-header.vm
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-header.vm
+END
+snapshot-column.vm
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-column.vm
+END
+snapshot-footer.vm
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svnroot/blojsom/!svn/ver/3780/branches/maven-spike/blojsom/src/main/resources/themes/snapshots/templates/snapshot-footer.vm
+END

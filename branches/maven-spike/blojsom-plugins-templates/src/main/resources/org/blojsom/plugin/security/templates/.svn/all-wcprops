@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/security/templates
+END
+failed-authorization.vm
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svnroot/blojsom/!svn/ver/3732/branches/maven-spike/blojsom-plugins-templates/src/main/resources/org/blojsom/plugin/security/templates/failed-authorization.vm
+END

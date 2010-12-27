@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/apache/velocity/tools/generic
+END
+ListTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/apache/velocity/tools/generic/ListTool.java
+END
+ExtendedListTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/apache/velocity/tools/generic/ExtendedListTool.java
+END
+ArrayTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/blojsom/!svn/ver/3690/branches/blojsom-3.3/addon/plugins/src/org/apache/velocity/tools/generic/ArrayTool.java
+END

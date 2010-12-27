@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svnroot/blojsom/!svn/ver/3030/trunk/blojsom-2.0/themes/cphi/templates
+END
+cphi-referers.vm
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/2625/trunk/blojsom-2.0/themes/cphi/templates/cphi-referers.vm
+END
+cphi-blog-category-list.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/blojsom/!svn/ver/2341/trunk/blojsom-2.0/themes/cphi/templates/cphi-blog-category-list.inc.vm
+END
+cphi-autotrkbck.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/blojsom/!svn/ver/2990/trunk/blojsom-2.0/themes/cphi/templates/cphi-autotrkbck.inc.vm
+END
+cphi-header1.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/3030/trunk/blojsom-2.0/themes/cphi/templates/cphi-header1.inc.vm
+END
+cphi-sitenav.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/blojsom/!svn/ver/2341/trunk/blojsom-2.0/themes/cphi/templates/cphi-sitenav.inc.vm
+END
+cphi-blog-entries.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/2844/trunk/blojsom-2.0/themes/cphi/templates/cphi-blog-entries.inc.vm
+END
+cphi-blog-sidebar.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/blojsom/!svn/ver/2844/trunk/blojsom-2.0/themes/cphi/templates/cphi-blog-sidebar.inc.vm
+END
+cphi.vm
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/blojsom/!svn/ver/2341/trunk/blojsom-2.0/themes/cphi/templates/cphi.vm
+END
+cphi-comments.vm
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/blojsom/!svn/ver/2625/trunk/blojsom-2.0/themes/cphi/templates/cphi-comments.vm
+END
+cphi-trackback.vm
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/blojsom/!svn/ver/2844/trunk/blojsom-2.0/themes/cphi/templates/cphi-trackback.vm
+END
+cphi-footer.inc.vm
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/2350/trunk/blojsom-2.0/themes/cphi/templates/cphi-footer.inc.vm
+END

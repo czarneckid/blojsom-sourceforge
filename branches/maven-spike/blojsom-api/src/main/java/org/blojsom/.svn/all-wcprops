@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/blojsom/!svn/ver/3864/branches/maven-spike/blojsom-api/src/main/java/org/blojsom
+END
+BlojsomException.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/BlojsomException.java
+END
+ConfigurationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/ConfigurationException.java
+END
+package-info.html
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/blojsom/!svn/ver/3863/branches/maven-spike/blojsom-api/src/main/java/org/blojsom/package-info.html
+END

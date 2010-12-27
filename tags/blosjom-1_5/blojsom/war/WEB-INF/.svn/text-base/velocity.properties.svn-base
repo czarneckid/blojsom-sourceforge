@@ -1,0 +1,11 @@
+#
+# blojsom Velocity dispatcher configuration file
+#
+resource.loader=class
+#
+#  for the loader we call 'class', use the ClasspathResourceLoader
+#
+class.resource.loader.description=Velocity Classpath Resource Loader
+class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+class.resource.loader.cache=true
+class.resource.loader.modificationCheckInterval=0

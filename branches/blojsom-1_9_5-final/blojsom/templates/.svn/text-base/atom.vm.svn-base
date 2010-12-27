@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<feed xmlns="http://purl.org/atom/" version="1.0"
+    xml:lang="$BLOJSOM_BLOG.getBlogLanguage()" xml:base="http://example.com">
+
+    <title>$BLOJSOM_BLOG.getBlogName()</title>
+    <subtitle>$BLOJSOM_BLOG.getBlogDescription()</subtitle>
+    <link>$BLOJSOM_BLOG.getBlogURL()</link>
+
+    <author>
+        <name>$BLOJSOM_BLOG.getBlogOwner()</name>
+        <url>$BLOJSOM_BLOG.getBlogURL()</url>
+        <email>$BLOJSOM_BLOG.getBlogOwnerEmail()</email>
+    </author>
+
+    <modified>$BLOJSOM_DATE_ISO8601</modified>
+
+    #foreach ($entry in $BLOJSOM_ENTRIES)
+    <entry id="$entry.getCategory()$entry.getPermalink()">
+        <title>$entry.getTitle().replaceAll("<.*?>","")</title>
+
+        <author>
+            <name>$BLOJSOM_BLOG.getBlogOwner()</name>
+            <homepage>$BLOJSOM_BLOG.getBlogURL()</homepage>
+            <weblog>$BLOJSOM_BLOG.getBlogURL()</weblog>
+        </author>
+
+        <link>$entry.getLink()</link>
+
+        <created>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</created>
+        <issued>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</issued>
+        <modified>$entry.getDateAsFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")</modified>
+
+        <content type="text/html" mode="cdata">
+            <body><![CDATA[ $entry.getDescription() ]]></body>
+        </content>
+    </entry>
+    #end
+</feed>

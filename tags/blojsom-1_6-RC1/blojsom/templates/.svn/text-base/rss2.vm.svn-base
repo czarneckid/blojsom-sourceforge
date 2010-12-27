@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns="http://backend.userland.com/rss2">
+    <channel>
+        <title>$BLOJSOM_BLOG.getBlogName()</title>
+        <link>$BLOJSOM_BLOG.getBlogURL()</link>
+        <description>$BLOJSOM_BLOG.getBlogDescription()</description>
+        <language>$BLOJSOM_BLOG.getBlogLanguage()</language>
+        <docs>http://backend.userland.com/rss</docs>
+		<generator>blojsom</generator>
+
+        #foreach ($entry in $BLOJSOM_ENTRIES)
+        <item>
+            <title>$entry.getEscapedTitle()</title>
+            <link>$entry.getEscapedLink()</link>
+            <description>$entry.getEscapedDescription()</description>
+            <guid isPermaLink="true">$entry.getLink()</guid>
+			<pubDate>$entry.getRFC822Date()</pubDate>
+        </item>
+        #end
+    </channel>
+</rss>
