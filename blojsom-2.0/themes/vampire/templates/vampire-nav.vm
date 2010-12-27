@@ -1,4 +1,0 @@
-
-					<h2><a href="$BLOJSOM_BLOG.getBlogURL()">Blog</a>#if($BLOJSOM_REQUESTED_CATEGORY.toString() != "/")<a href="$BLOJSOM_REQUESTED_CATEGORY.getCategoryURL()">$BLOJSOM_REQUESTED_CATEGORY.toString()</a>#end</h2>
-					<div id="nav">#if ($BLOJSOM_PERMALINK && $BLOJSOM_BLOG.getLinearNavigationEnabled()) #if ($BLOJSOM_PERMALINK_PREVIOUS_ENTRY)<a href="$BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getLink()">&lt; $!BLOJSOM_PERMALINK_PREVIOUS_ENTRY.getTitle()</a> | #end <a href="$BLOJSOM_BLOG.getBlogURL()">Main</a> #if ($BLOJSOM_PERMALINK_NEXT_ENTRY) | <a href="$BLOJSOM_PERMALINK_NEXT_ENTRY.getLink()">$!BLOJSOM_PERMALINK_NEXT_ENTRY.getTitle() &gt;</a>#end #end</div>
-

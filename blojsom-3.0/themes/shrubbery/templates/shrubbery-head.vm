@@ -1,9 +1,0 @@
-<title>#BlogName()</title>
-<link rel="stylesheet" type="text/css" href="#Resource('shrubbery.css')" />
-<link rel="SHORTCUT ICON" type="image/gif" href="#BlogBaseURL()/favicon.ico" />
-<!-- Atom API Posting Autodiscovery -->
-<link rel="service.post" type="application/atom+xml" title="#BlogName()"  href="#BlogBaseURL()/atomapi/$BLOJSOM_BLOG_ID/"/>  
-<!-- Site Feed Autodiscovery-->
-<link rel="alternate" type="application/rss+xml" title="RSS" href="#BlogURL()/feed/rss2/"/>
-<link rel="alternate" type="application/atom+xml" title="Atom" href="#BlogURL()/feed/atom/"/>
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="#BlogURL()/feed/rsd/"/>

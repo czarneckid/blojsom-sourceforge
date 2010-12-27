@@ -1,3 +1,0 @@
-#set($postEntryTemplate = 'flex-inc-post-entry-trackback.vm')
-#set($mainContent = 'flex-inc-entries.vm')
-#parse('flex-inc-main.vm')

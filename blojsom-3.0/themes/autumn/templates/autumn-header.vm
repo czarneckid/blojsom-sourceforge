@@ -1,7 +1,0 @@
-## Autumn Theme by Cliffano Subagio - http://mbledug.com
-<h1 id="banner" style="background: url(#Resource('autumn-header.gif')) no-repeat;">
-	<span><br/><a href="$BLOJSOM_BLOG.getBlogURL()">#BlogName()</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-</h1>
-<h1 id="splash" style="background: url(#Resource('autumn-splash.jpg')) no-repeat;">
-	<span>&nbsp;</span>
-</h1>

@@ -1,2 +1,0 @@
-<div class="bn">
-	<h1 title="#EscapedBlogName()">#BlogName()</h1>	<a href="#BlogURL()"><img src="#Resource('shrubbery-header.jpg')" alt="#BlogDescription()" /></a></div>

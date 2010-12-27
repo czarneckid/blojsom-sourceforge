@@ -1,4 +1,0 @@
-        <div id="login">
-            <p>#adminResource('logged.in.as.text' '') <a href="#" title="view info">$BLOJSOM_ADMIN_PLUGIN_USERNAME</a> : <a href="#BlogAdminURL()/?flavor=admin&action=logout" title="log out">#adminResource('logout.text' '')</a></p>
-            <p>#adminResource('logged.in.to.text' '') <a href="#BlogURL()/" title="view site info">#BlogName()</a></p>
-        </div>
